@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://yoursite.com/blog/2012/11/10/why-i-chose-octopress/</loc>
-        <lastmod>2012-11-10T16:25:01-07:00</lastmod>
+        <loc>http://blog.jaketrent.com/post/why-i-chose-octopress/</loc>
+        <lastmod>2012-11-10T16:35:42-07:00</lastmod>
     </url>
     <url>
-        <loc>http://yoursite.com/blog/archives/</loc>
-        <lastmod>2012-11-10T16:25:01-07:00</lastmod>
+        <loc>http://blog.jaketrent.com/blog/archives/</loc>
+        <lastmod>2012-11-10T16:35:42-07:00</lastmod>
     </url>
     <url>
-        <loc>http://yoursite.com/</loc>
-        <lastmod>2012-11-10T16:25:01-07:00</lastmod>
+        <loc>http://blog.jaketrent.com/</loc>
+        <lastmod>2012-11-10T16:35:42-07:00</lastmod>
     </url>
 </urlset>
