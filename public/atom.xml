@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Jake Trent Blog]]></title>
-  <link href="http://blog.jaketrent.com/atom.xml" rel="self"/>
-  <link href="http://blog.jaketrent.com/"/>
-  <updated>2012-11-10T16:35:51-07:00</updated>
-  <id>http://blog.jaketrent.com/</id>
+  <title><![CDATA[Jake Trent]]></title>
+  <link href="http://jaketrent.com/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2012-11-10T16:40:28-07:00</updated>
+  <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
     
@@ -15,14 +15,13 @@
   
   <entry>
     <title type="html"><![CDATA[Why I Chose Octopress]]></title>
-    <link href="http://blog.jaketrent.com/post/why-i-chose-octopress/"/>
+    <link href="http://jaketrent.com/post/why-i-chose-octopress/"/>
     <updated>2012-11-10T16:16:00-07:00</updated>
-    <id>http://blog.jaketrent.com/post/why-i-chose-octopress</id>
+    <id>http://jaketrent.com/post/why-i-chose-octopress</id>
     <content type="html"><![CDATA[<p>Some might ask why a guy who loves his life of code would choose WordPress as the framework for one of his websites. Well, I chose a WordPress blog. I almost didn&#8217;t. It&#8217;s been a long time coming. It&#8217;s early in the game, but I think it was a good choice.</p>
 
-<p>[caption id=&#8221;&#8221; align=&#8221;aligncenter&#8221; width=&#8221;640&#8221;]
-<img src="http://i.imgur.com/Z9HMK.jpg" alt="WordPress T-Shirt" />
-http://flic.kr/p/6FFZMy[/caption]</p>
+<p><img src="http://i.imgur.com/Z9HMK.jpg" alt="WordPress T-Shirt" />
+http://flic.kr/p/6FFZMy</p>
 
 <!--more-->
 
