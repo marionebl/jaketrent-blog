@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Responsive Table with Scrolling - Jake Trent</title>
+  <meta name="author" content="Jake Trent">
+
+  
+  <meta name="description" content="Sometimes a table element is the most semantic element one can use in markup. It is true. If you&#8217;re displaying tabular data, a table is a &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/responsive-table-with-scrolling/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jake Trent</a></h1>
+  
+    <h2>Coding a Power Ballad</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jaketrent.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Responsive Table With Scrolling</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-07T17:06:00-07:00" pubdate data-updated="true">Nov 7<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Sometimes a <code>table</code> element is the most semantic element one can use in markup.  It is true.  If you&#8217;re displaying tabular data, a <code>table</code> is a likely option.  If you&#8217;re on a responsive site, however, you&#8217;ll cringe at this option.  It turns out that tables aren&#8217;t very responsive web design-friendly.  One way to create a more responsive table is with scrolling.</p>
+
+<p><img src="http://i.imgur.com/GeuZe.png" alt="Responsive Table with Scrolling" /></p>
+
+<!--more-->
+
+
+<h2>Responsive Table Options</h2>
+
+<p>I love the article by Chris Coyier that describes <a href="http://css-tricks.com/responsive-data-tables/">responsive tables</a>.  Some of his ideas and those of the commenters on his post a great at thinking outside the box on what the options include for responsive tables:</p>
+
+<ol>
+<li>Orient the table vertically when there&#8217;s not enough room for all the columns.</li>
+<li>Replace tabular data with a graphic, such as a pie graph, that communicates the same gist.</li>
+<li>Replace the table with a link that opens a scrollable view large enough for the regular-sized table.</li>
+</ol>
+
+
+<p>My favorite option is the first.  But, in my case, it didn&#8217;t seem to work extremely well because I have two headers.  The example had column headers only.  I have row headers as well.  After a bit more looking, I ran across this <a href="http://www.zurb.com/playground/playground/responsive-tables/">Zurb scrolling table css and js example</a>.  The best solution, it seemed for now, was scrolling.  (My example code is based on the markup and styles of the Zurb code with a few things taken out and a few things added.)</p>
+
+<h2>Table Horizontal Scrolling</h2>
+
+<p>On the web, vertical scrolling is a part of the full meal deal.  So, the only thing to solve is the horizontal scrolling.  Normally, we don&#8217;t want content flowing off the right side of the screen when browsing.  So, we when there&#8217;s scrolling required, we&#8217;re going to do it within the table only and for the columns we want.</p>
+
+<h4>Divide table in two</h4>
+
+<p>We want some columns to scroll and others to remain pinned whilst scrolling.  We&#8217;ll duplicate the table in the markup and wrap each, a la:</p>
+
+<pre><code>&lt;div class="table-wrapper"&gt;
+  &lt;div class="pinned"&gt;
+    &lt;!-- table here with pinned columns only--&gt;
+  &lt;/div&gt;
+  &lt;div class="scrollable"&gt;
+    &lt;!-- table here with scrollable columns only--&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<h4>Line up the rows</h4>
+
+<p>Now we have two tables.  The flexibility we&#8217;ve given ourself is that we can make some columns stick and others scroll easily.  Our new challenge is keeping the row height lined up so the two tables look like one.</p>
+
+<p>Put the two tables next to each other with a float left and a float right.  Make the widths percentage-based as with any <a href="http://en.wikipedia.org/wiki/Responsive_web_design">rwd</a>.</p>
+
+<p>Now we have a few options to make our rows line up:</p>
+
+<ol>
+<li>Explicitly set all table cells to the same height</li>
+<li>Use JavaScript to make each cell in a row be the same height as the tallest cell in that row</li>
+<li>Put similar content in each cell on a row (eg, just text with the same attributes that will not wrap for longer text)</li>
+</ol>
+
+
+<p>Turns out that I will choose option 1 for the table cells (<code>td</code>) and option 3 for the table headers (<code>th</code>).</p>
+
+<p>This is my least favorite feature of this solution.  Anyone have a better idea on lining up the rows?</p>
+
+<h4>Set column width</h4>
+
+<p>I want some of my columns to have a set width.  Well, as <em>set</em> as anything is in rwd.  An html <code>table</code> will usually expand and contract columns across the table to give optimum spacing based on the content.</p>
+
+<p>I want to make my pinned table columns allow extra-long content, but I don&#8217;t want their widths to change at all.  A bit of StackOverflow love yielded this answer on why <code>overflow: hidden</code> doesn&#8217;t work when <a href="http://stackoverflow.com/a/7570613/118561">constraining table cell width</a>.</p>
+
+<p>In short, the solution is to wrap the content inside of the <code>td</code> with two <code>divs</code>:</p>
+
+<pre><code>&lt;div class="outer"&gt;
+  &lt;div class="inner"&gt;
+    Row 4 longer than lotr
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>And sprinkle with a bit of stylesheet:</p>
+
+<pre><code>td .outer {
+  position: relative;
+  height: 30px;
+}
+td .inner {
+  overflow: hidden;
+  white-space: nowrap;
+  position: absolute;
+  width: 100%;
+}
+</code></pre>
+
+<p>This style will let the column width remain and the content overflow.  It will also keep the cell text on one line, and it will be hidden as it flows off the right-hand side of the cell.  To wrap and hide as it flows off the bottom of the cell, remove the <code>white-space: nowrap</code> attribute.</p>
+
+<h2>Responsive Table with Scrolling</h2>
+
+<p>For the final result, check out the <a href="http://codepen.io/jaketrent/pen/CcboI">CodePen for the Responsive table</a>.</p>
+
+<p><a href="http://codepen.io/jaketrent/pen/CcboI"><img src="http://i.imgur.com/mUfq4.jpg" alt="Responsive table" /></a></p>
+
+<p>What are your suggestions for making this better?  How have you solved the responsive table challenge?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-07T17:06:00-07:00" pubdate data-updated="true">Nov 7<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/responsive-table-with-scrolling/" data-via="jaketrent" data-counturl="http://jaketrent.com/post/responsive-table-with-scrolling/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/post/grunt-and-testacular/" title="Previous Post: Grunt and Testacular">&laquo; Grunt and Testacular</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/responsive-table-with-scrolling/">Responsive Table with Scrolling</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/grunt-and-testacular/">Grunt and Testacular</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/test-requirejs-testacular/">Test RequireJs Code in Testacular</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/an-environment-specific-grunt-build/">An Environment-specific Grunt Build</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/run-requirejs-with-gruntjs/">Run RequireJs with GruntJs</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("jaketrent", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/jaketrent" class="twitter-follow-button" data-show-count="false">Follow @jaketrent</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Jake Trent -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/responsive-table-with-scrolling/';
+        var disqus_url = 'http://jaketrent.com/post/responsive-table-with-scrolling/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
