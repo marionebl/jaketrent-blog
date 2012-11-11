@@ -3,7 +3,7 @@ layout: post
 title: "Developer Relations for Internal Developers"
 date: 2012-09-26 16:50
 comments: true
-categories: Productivity
+categories: [Productivity, career]
 ---
 
 When a company has a platform or API that it wants outside developers to create cool stuff on, it will sometimes create a developer relations group. This group will help developers get what they need. What about custom dev shops that already have a host of developers? Who's watching these developers' backs?

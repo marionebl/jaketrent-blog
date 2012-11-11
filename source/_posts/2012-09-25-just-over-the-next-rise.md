@@ -3,7 +3,7 @@ layout: post
 title: "Just Over the Next Rise"
 date: 2012-09-25 16:43
 comments: true
-categories: Announcement
+categories: [Announcement, blog]
 ---
 
 When you've climbed up a mountain before, have you ever noticed that there are probably 4 unexpected peaks before the real one?  And especially when you're calves are especially burning?  Sometimes blogging can be like that.
