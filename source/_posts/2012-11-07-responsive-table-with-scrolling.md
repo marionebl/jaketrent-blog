@@ -92,9 +92,9 @@ This style will let the column width remain and the content overflow.  It will a
 
 ## Responsive Table with Scrolling
 
-For the final result, check out the [CodePen for the Responsive table](http://codepen.io/jaketrent/pen/CcboI).
+For the final result, check out the [CodePen for the responsive table](http://codepen.io/jaketrent/pen/CcboI) below:
 
-[![Responsive table](http://i.imgur.com/mUfq4.jpg)](http://codepen.io/jaketrent/pen/CcboI)
+{% codepen CcboI jaketrent result 400 %}
 
 What are your suggestions for making this better?  How have you solved the responsive table challenge?
 
