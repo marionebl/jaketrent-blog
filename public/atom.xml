@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-10T16:40:28-07:00</updated>
+  <updated>2012-11-10T17:09:07-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -14,10 +14,1323 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Why I Chose Octopress]]></title>
-    <link href="http://jaketrent.com/post/why-i-chose-octopress/"/>
-    <updated>2012-11-10T16:16:00-07:00</updated>
-    <id>http://jaketrent.com/post/why-i-chose-octopress</id>
+    <title type="html"><![CDATA[Responsive Table with Scrolling]]></title>
+    <link href="http://jaketrent.com/post/responsive-table-with-scrolling/"/>
+    <updated>2012-11-07T17:06:00-07:00</updated>
+    <id>http://jaketrent.com/post/responsive-table-with-scrolling</id>
+    <content type="html"><![CDATA[<p>Sometimes a <code>table</code> element is the most semantic element one can use in markup.  It is true.  If you&#8217;re displaying tabular data, a <code>table</code> is a likely option.  If you&#8217;re on a responsive site, however, you&#8217;ll cringe at this option.  It turns out that tables aren&#8217;t very responsive web design-friendly.  One way to create a more responsive table is with scrolling.</p>
+
+<p><img src="http://i.imgur.com/GeuZe.png" alt="Responsive Table with Scrolling" /></p>
+
+<!--more-->
+
+
+<h2>Responsive Table Options</h2>
+
+<p>I love the article by Chris Coyier that describes <a href="http://css-tricks.com/responsive-data-tables/">responsive tables</a>.  Some of his ideas and those of the commenters on his post a great at thinking outside the box on what the options include for responsive tables:</p>
+
+<ol>
+<li>Orient the table vertically when there&#8217;s not enough room for all the columns.</li>
+<li>Replace tabular data with a graphic, such as a pie graph, that communicates the same gist.</li>
+<li>Replace the table with a link that opens a scrollable view large enough for the regular-sized table.</li>
+</ol>
+
+
+<p>My favorite option is the first.  But, in my case, it didn&#8217;t seem to work extremely well because I have two headers.  The example had column headers only.  I have row headers as well.  After a bit more looking, I ran across this <a href="http://www.zurb.com/playground/playground/responsive-tables/">Zurb scrolling table css and js example</a>.  The best solution, it seemed for now, was scrolling.  (My example code is based on the markup and styles of the Zurb code with a few things taken out and a few things added.)</p>
+
+<h2>Table Horizontal Scrolling</h2>
+
+<p>On the web, vertical scrolling is a part of the full meal deal.  So, the only thing to solve is the horizontal scrolling.  Normally, we don&#8217;t want content flowing off the right side of the screen when browsing.  So, we when there&#8217;s scrolling required, we&#8217;re going to do it within the table only and for the columns we want.</p>
+
+<h4>Divide table in two</h4>
+
+<p>We want some columns to scroll and others to remain pinned whilst scrolling.  We&#8217;ll duplicate the table in the markup and wrap each, a la:</p>
+
+<pre><code>&lt;div class="table-wrapper"&gt;
+  &lt;div class="pinned"&gt;
+    &lt;!-- table here with pinned columns only--&gt;
+  &lt;/div&gt;
+  &lt;div class="scrollable"&gt;
+    &lt;!-- table here with scrollable columns only--&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<h4>Line up the rows</h4>
+
+<p>Now we have two tables.  The flexibility we&#8217;ve given ourself is that we can make some columns stick and others scroll easily.  Our new challenge is keeping the row height lined up so the two tables look like one.</p>
+
+<p>Put the two tables next to each other with a float left and a float right.  Make the widths percentage-based as with any <a href="http://en.wikipedia.org/wiki/Responsive_web_design">rwd</a>.</p>
+
+<p>Now we have a few options to make our rows line up:</p>
+
+<ol>
+<li>Explicitly set all table cells to the same height</li>
+<li>Use JavaScript to make each cell in a row be the same height as the tallest cell in that row</li>
+<li>Put similar content in each cell on a row (eg, just text with the same attributes that will not wrap for longer text)</li>
+</ol>
+
+
+<p>Turns out that I will choose option 1 for the table cells (<code>td</code>) and option 3 for the table headers (<code>th</code>).</p>
+
+<p>This is my least favorite feature of this solution.  Anyone have a better idea on lining up the rows?</p>
+
+<h4>Set column width</h4>
+
+<p>I want some of my columns to have a set width.  Well, as <em>set</em> as anything is in rwd.  An html <code>table</code> will usually expand and contract columns across the table to give optimum spacing based on the content.</p>
+
+<p>I want to make my pinned table columns allow extra-long content, but I don&#8217;t want their widths to change at all.  A bit of StackOverflow love yielded this answer on why <code>overflow: hidden</code> doesn&#8217;t work when <a href="http://stackoverflow.com/a/7570613/118561">constraining table cell width</a>.</p>
+
+<p>In short, the solution is to wrap the content inside of the <code>td</code> with two <code>divs</code>:</p>
+
+<pre><code>&lt;div class="outer"&gt;
+  &lt;div class="inner"&gt;
+    Row 4 longer than lotr
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>And sprinkle with a bit of stylesheet:</p>
+
+<pre><code>td .outer {
+  position: relative;
+  height: 30px;
+}
+td .inner {
+  overflow: hidden;
+  white-space: nowrap;
+  position: absolute;
+  width: 100%;
+}
+</code></pre>
+
+<p>This style will let the column width remain and the content overflow.  It will also keep the cell text on one line, and it will be hidden as it flows off the right-hand side of the cell.  To wrap and hide as it flows off the bottom of the cell, remove the <code>white-space: nowrap</code> attribute.</p>
+
+<h2>Responsive Table with Scrolling</h2>
+
+<p>For the final result, check out the <a href="http://codepen.io/jaketrent/pen/CcboI">CodePen for the Responsive table</a>.</p>
+
+<p><a href="http://codepen.io/jaketrent/pen/CcboI"><img src="http://i.imgur.com/mUfq4.jpg" alt="Responsive table" /></a></p>
+
+<p>What are your suggestions for making this better?  How have you solved the responsive table challenge?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Grunt and Testacular]]></title>
+    <link href="http://jaketrent.com/post/grunt-and-testacular/"/>
+    <updated>2012-11-06T17:05:00-07:00</updated>
+    <id>http://jaketrent.com/post/grunt-and-testacular</id>
+    <content type="html"><![CDATA[<p><a href="http://vojtajina.github.com/testacular/">Testacular</a> is a test runner for running browser tests.  Once you have it <a href="http://jaketrent.com/post/test-requirejs-testacular/">up and running</a>, you may want to integrate it with your <a href="http://gruntjs.com/">Grunt</a> build process.  This will allow Testacular to be started and your tests to be run from Grunt.</p>
+
+<p><img src="http://i.imgur.com/zze56.jpg" alt="Grunt and Testacular" /></p>
+
+<!--more-->
+
+
+<h2>grunt-testacular</h2>
+
+<p>Lucky for us, <a href="https://npmjs.org/package/grunt-testacular">Friedel Ziegelmayer</a> has created a nice little plugin, <a href="https://npmjs.org/package/grunt-testacular">grunt-testacular</a>.</p>
+
+<p>To install:</p>
+
+<pre><code>&gt; npm install grunt-testacular
+</code></pre>
+
+<p>Add the current version to your <code>package.json</code> for the future:</p>
+
+<pre><code>"grunt-testacular": "0.2.x"
+</code></pre>
+
+<p>Import the plugin in your <code>grunt.js</code> file:</p>
+
+<pre><code>grunt.loadNpmTasks('grunt-testacular');
+</code></pre>
+
+<p>And finally, in <code>grunt.js</code>, specify your tasks:</p>
+
+<pre><code>testacularServer: {
+  unit: {
+    options: {
+      keepalive: true
+    },
+    configFile: 'testacular.conf.js'
+  }
+},
+testacularRun: {
+  unit: {
+    runnerPort: 9100
+  }
+},
+</code></pre>
+
+<h4>Two Tasks</h4>
+
+<p>Grunt-testacular provides two tasks:</p>
+
+<ol>
+<li>testacularServer - starts the Testacular server (equivalent to <code>testacular start</code>)</li>
+<li>testacularRun - runs your tests against an already-started server (equivalent to <code>testacular run</code>)</li>
+</ol>
+
+
+<h4>A grunt-testacular Oddity</h4>
+
+<p>If you don&#8217;t have <code>keepalive: true</code> set for grunt-testacular, the Testacular server will shutdown before it has a chance to capture browsers or run your tests.  I&#8217;m really not sure why this is even an option.  The false case behavior doesn&#8217;t seem to be useful.  With the <code>singleRun</code> ability of Testacular, the plugin should just call start on the server and let the server configuration decide when it&#8217;s appropriate to shut down.</p>
+
+<p><strong>Update:</strong>
+I logged an <a href="https://github.com/Dignifiedquire/grunt-testacular/issues/3#issuecomment-10234529">issue for grunt-testacular</a> that Grunt tasks listed after <code>testacularServer</code> weren&#8217;t being run.  Friedal responded that <code>keepalive: true</code> was the problem.  If it is specified true, then it has to be the last task in the list.  So, if you have tasks after <code>testacularServer</code> specified, remove <code>keepalive: true</code> and add <code>watch</code> to the end of your task list.</p>
+
+<h2>Grunt and Testacular Work Flow</h2>
+
+<p>Of course, your work flow is up to you, and Grunt and Testacular give you enough flexibility to decide your own, but I think you&#8217;ll run your tests in two main scenarios: development and continuous integration.</p>
+
+<h4>Development</h4>
+
+<p>For development, I like to start up the Testacular server and keep it running.  Then, I go write tests and update source code.  Testacular will notice my changes and automatically re-run my tests.</p>
+
+<p>To set this up, make sure your grunt-testacular task has this option:</p>
+
+<pre><code>keepalive: true
+</code></pre>
+
+<p>This will keep the server up even after the tests have completed.</p>
+
+<p>And make sure your <code>testacular.conf.js</code> file includes:</p>
+
+<pre><code>autoWatch = true;
+</code></pre>
+
+<p>This will force Testacular to re-run your tests if anything in your source or tests change (specifically, if anything in testacular.conf.js&#8217;s <code>files</code> array changes).</p>
+
+<h4>Continuous Integration</h4>
+
+<p>For continuous integration, you just want your automated build to be able to verify the source code integrity prior to deploying.</p>
+
+<p>We don&#8217;t want tests to re-run automatically based on our changes, so we turn off <code>autoWatch</code> in <code>testacular.conf.js</code>:</p>
+
+<pre><code>autoWatch = false;
+</code></pre>
+
+<p>And we set one more value in <code>testacular.conf.js</code> to:</p>
+
+<pre><code>singleRun = true;
+</code></pre>
+
+<p>This will allow the <code>testacularServer</code> task to be run once, have Testacular run all the tests, and then make the server shut down.</p>
+
+<p>Finally, remember to keep <code>keepalive: true</code> set in <code>grunt.js</code>.  Odd, right?</p>
+
+<h2>Multiple Testacular Configurations</h2>
+
+<p>To manage the options that are distinct to these two work flows, one could just create two separate <code>testacular.conf.js</code> files.  But, that would be overkill, because there&#8217;d be a lot of overlap between the two files.</p>
+
+<p>Instead, the grunt-testacular plugin gives you override ability on a per-variable basis.  To support the development and integration scenario, the grunt multiTask might look like this:</p>
+
+<pre><code>testacularServer: {
+  unit: {
+    options: {
+      keepalive: true
+    },
+    configFile: 'testacular.conf.js'
+  },
+  integration: {
+    options: {
+      keepalive: true
+    },
+    configFile: 'testacular.conf.js',
+    autoWatch: false,
+    singleRun: true
+  }
+},
+</code></pre>
+
+<p>Following this same pattern, you could create a separate config for automated functional or end-to-end tests as well.</p>
+
+<p>Note that the <code>options</code> object is strictly for the plugin.  The other variables at that level feed straight into Testacular as overrides.</p>
+
+<h2>Integrated Testing</h2>
+
+<p>Process and product maturity are increased as tests are integrated into the build process.  Grunt and Testacular make integrating your browser tests a snap.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Test RequireJs Code in Testacular]]></title>
+    <link href="http://jaketrent.com/post/test-requirejs-testacular/"/>
+    <updated>2012-10-31T17:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/test-requirejs-testacular</id>
+    <content type="html"><![CDATA[<p>Did you write your source code as JavaScript AMD modules in <a href="http://requirejs.org/">RequireJs</a>?  Do you want to test them in real browsers?  Do you want the flexibility of using <a href="http://visionmedia.github.com/mocha/">Mocha</a> or <a href="http://pivotal.github.com/jasmine/">Jasmine</a>?  This is the moment you&#8217;ve been waiting for.</p>
+
+<p><a href="http://vojtajina.github.com/testacular/">Testacular is a &#8220;spetacular test runner for JavaScript&#8221;</a> that was written to support the <a href="http://angularjs.org/">AngularJs</a> project.  It is valuable because it will run your tests in real browsers.  This is important for front-end code that relies on browser globals such as <code>window</code> (eg, if you use jQuery) or that manipulates the DOM (which could vary browser to browser).</p>
+
+<p>Client-side JavaScript testing is a somewhat crazy space.  Some have even called it <a href="http://rzrsharp.net/2012/08/01/client-side-testing-insanity.html">&#8220;insane&#8221;</a> and taken drastically different routes than what follows.  But we&#8217;re gonna see if we can power through, and Testacular will help us get the job done.</p>
+
+<p><img src="http://i.imgur.com/7gh40.jpg" alt="Testacular Javascript Testing" /></p>
+
+<!--more-->
+
+
+<h2>RequireJs Modules</h2>
+
+<p>We wrote our source code using RequireJs-implemented AMD modules.  This gives us:</p>
+
+<ul>
+<li>Clean code organization</li>
+<li>Namespaced code (not global)</li>
+<li>Explicit dependency management</li>
+<li>Source optimized via the RequireJs build</li>
+</ul>
+
+
+<p>Unfortunately, it also makes our source a bit more tricky to test.</p>
+
+<h2>Testacular RequireJs Support</h2>
+
+<p><a href="https://groups.google.com/forum/?fromgroups=#!topic/testacular/CRsf8Ig4bgE">RequireJs support was just barely added</a> to Testacular, so it only lives in the canary channel (master).  To install with npm:</p>
+
+<pre><code>npm install -g testacular@canary
+</code></pre>
+
+<p>This will currently install version <del datetime="2012-11-05T14:38:54+00:00">0.5.1</del> 0.5.2.  This is the first version of Testacular with RequireJs support.  So your <code>package.json</code> should include an entry like:</p>
+
+<pre><code>"testacular": "&gt;=0.5.2"
+</code></pre>
+
+<p>If <a href="https://npmjs.org/package/testacular">Testacular</a> has moved to >=0.6.0, you can use the stable channel.</p>
+
+<h2>Configure Testacular For RequireJs</h2>
+
+<h4>Directory Setup</h4>
+
+<p>For clarity in the example configuration files and test below, the directory structure upon which these are based looks like this:</p>
+
+<pre><code>project/
+    lib/
+        jquery.js #etc
+    node_modules/
+        chai/ #etc
+    src/
+        MyModule.js
+    test/
+        MyModule.test.js
+        test-main.js
+testacular.conf.js
+</code></pre>
+
+<h4>Initialize Testacular</h4>
+
+<p>Testacular comes with a nice utility for generating a config file (default name: &#8216;testacular.conf.js&#8217;) that it needs in order to run.  In your terminal, type:</p>
+
+<pre><code>testacular init
+</code></pre>
+
+<p>This will give you a series of prompts for things such as paths to source and tests and which browsers to capture.  <del datetime="2012-11-05T14:38:54+00:00">These prompts do not include the option to add RequireJs support automatically, so you&#8217;ll need to add those lines manually to your <code>testacular.conf.js</code> (see below).</del>  As of testacular 0.5.2, <code>testacular init</code> will prompt for usage of the RequireJs adapter.</p>
+
+<h4>Testacular Include</h4>
+
+<p>Testacular 0.5.1, while adding RequireJs support, has added a new concept of &#8220;included&#8221; to the files listed in your config.  This is because RequireJs will balk about a the module not being loaded correctly (ie, loaded synchronously in the <code>&lt;head/&gt;</code> tag of the runner).  From the <a href="http://requirejs.org/docs/errors.html#mismatch">RequireJs docs</a>:</p>
+
+<blockquote><p>&#8220;Be sure to load all scripts that call define() via the RequireJS API. Do not manually code script tags in HTML to load scripts that have define() calls in them.&#8221;</p></blockquote>
+
+<h4>RequireJs Shim</h4>
+
+<p>Not immediately apparent is the fact that the &#8216;shim&#8217; config from RequireJs 2.x does not work from within Testacular.  I haven&#8217;t yet figured out why.  For instance, I was constantly getting &#8220;&#8216;Backbone&#8217; is not defined&#8221; messages even though it was specified in the &#8216;shim&#8217; config and required in the test.  I could have been doing something wrong.  My solution thus far has been to list each of the non-RequireJs modules and their dependencies in the &#8216;files&#8217; attribute of <code>testacular.conf.js</code>.</p>
+
+<h4>testacular.conf.js</h4>
+
+<p>The final point is that the RequireJs main module for your test runner should be the last file listed.</p>
+
+<p>So, finally, here is the &#8216;file&#8217; excerpt of <code>testacular.conf.js</code>:</p>
+
+<pre><code>files = [
+  MOCHA,
+  MOCHA_ADAPTER,
+  REQUIRE,
+  REQUIRE_ADAPTER,
+
+  // !! libs required for test framework
+  {pattern: 'node_modules/chai/chai.js', included: false},
+
+  // !! put what used to be in your requirejs 'shim' config here
+  'lib/jquery.js',
+  'lib/underscore.js',
+  'lib/backbone.js',
+  'lib/handlebars.js',
+
+  // !! put all libs in requirejs 'paths' config here (included: false)
+  {pattern: 'lib/**/*.js', included: false},
+
+  // !! all src and test modules (included: false)
+  {pattern: 'src/**/*', included: false},
+  {pattern: 'test/**/*.test.js', included: false},
+
+  // !! test main require module last
+  'test/test-main.js'
+];
+</code></pre>
+
+<p>This config is awesome.  It replaces an html test runner that you would otherwise have to build.</p>
+
+<h2>RequireJs Main Module</h2>
+
+<p>Just like any RequireJs project, you need a main module to bootstrap your tests.  In the main module, you setup the <a href="http://requirejs.org/docs/api.html#config"><code>require.config</code></a>.</p>
+
+<h4>Testacular &#8216;/base&#8217; Directory</h4>
+
+<p>Testacular serves files under the &#8216;/base&#8217; directory.  So, on the server, requests to files will be served up under &#8216;http://localhost:9876/base/*&#8217;.  The RequireJs config for <code>baseUrl</code> gives a starting context for modules that load with relative paths.  When setting this value for the Testacular server, it will need to start with &#8216;/base&#8217;.  I want my baseUrl to be at the root of my &#8216;/src&#8217; directory so relative requires in the source won&#8217;t need to change.  My baseUrl has the value of &#8216;/base/src&#8217;.</p>
+
+<h4>Require Each Test File</h4>
+
+<p>One of the things I hate is having to update a master list of all tests to run every time I add a test.  Unfortunately, that&#8217;s what I currently have.  The test main module has to specifically require each of the test modules.  I would love it if I could add a <code>*.test.js</code> file to the test directory and just have it run the next time the tests run.</p>
+
+<h4>Asynchronously Run Testacular</h4>
+
+<p>Because the RequireJs require statements are asynchronous, Testacular needs to wait until they&#8217;re done (the code is loaded and ready) before it starts the tests.</p>
+
+<p>The <code>main-test.js</code> file ends up looking like this:</p>
+
+<pre><code>require({
+
+  // !! Testacular serves files from '/base'
+  baseUrl: '/base/src',
+  paths: {
+    require: '../lib/require',
+    text: '../lib/text'
+  },
+}, ['../test/MyModule.test'], function() {
+  window.__testacular__.start();
+});
+</code></pre>
+
+<h2>RequireJs Test in Testacular</h2>
+
+<p>All the setup thus far has been in preparation for the code to follow.  The test can now be setup as a RequireJs module.  It can require the source code under test.  It can use <a href="http://visionmedia.github.com/mocha/">Mocha</a> (or whatever framework there is a Testacular adapter for).</p>
+
+<p>I will also use <a href="http://chaijs.com/">Chai</a> in order to get the <a href="http://chaijs.com/guide/styles/">&#8216;should&#8217; BDD-style assertions</a>.  Note that by using RequireJs and running in the browser, we can&#8217;t just <code>require('chai')</code>.  It has to be required using the asynchronous callback to avoid <a href="http://requirejs.org/docs/errors.html#notloaded">this error</a>:</p>
+
+<blockquote><p>Uncaught Error: Module name &#8220;../node_modules/chai/chai&#8221; has not been loaded yet for context: _. Use require([])</p></blockquote>
+
+<p>And finally, <code>should()</code> must be invoked to be available in the test.</p>
+
+<p>So, a simple test will look like:</p>
+
+<pre><code>define(['../node_modules/chai/chai', 'MyModule'],
+  function(chai, MyModule) {
+
+  var assert = chai.assert,
+    expect = chai.expect,
+    should = chai.should();
+
+  describe('MyModule', function () {
+    describe('#initialize()', function () {
+      it('should be a stinkin object', function () {
+        var yippee = new MyModule();
+        yippee.should.be.an('object');
+      });
+    });
+  });
+});
+</code></pre>
+
+<h2>Run the Tests in Testacular</h2>
+
+<p>There are a couple options set in <code>testacular.conf.js</code> that will describe how your tests can be run:</p>
+
+<ul>
+<li><strong>singleRun</strong> - Start Testacular server, capture browsers, run all tests, shutdown server</li>
+<li><strong>autoWatch</strong> - Have the server run tests every time a source or test file changes (and requires you to turn off singleRun)</li>
+</ul>
+
+
+<p>To start the Testacular server:</p>
+
+<pre><code>testacular start
+</code></pre>
+
+<p>Finally, if your Testacular server is already running and you want to kick off the tests, type:</p>
+
+<pre><code>testacular run
+</code></pre>
+
+<h2>Now to Test</h2>
+
+<p>Thank you to <a href="https://github.com/vojtajina">Vojta Jina</a> and the rest of the AngularJs crew and other contributors for making an awesome test runner.  I&#8217;m very happy that RequireJs support was added.  Vojta has also provided an <a href="https://github.com/vojtajina/testacular/tree/master/test/e2e/requirejs">end-to-end example</a> with code on Github.</p>
+
+<p>How do you see that we could improve this configuration or testing process?</p>
+
+<p>Now to test some sweet code!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[An Environment-specific Grunt Build]]></title>
+    <link href="http://jaketrent.com/post/an-environment-specific-grunt-build/"/>
+    <updated>2012-10-28T17:03:00-06:00</updated>
+    <id>http://jaketrent.com/post/an-environment-specific-grunt-build</id>
+    <content type="html"><![CDATA[<p>Does your project use GruntJs as a build tool?  Have you ever to customize your build to the environment you&#8217;re deploying to?  It&#8217;s handy to be able to specify certain commands to run or keep from running.  It&#8217;s likely essential to be able to change environment-specific variables via Grunt.  It&#8217;s not bad.  Most of the leg-work has been done by earlier generations &#8211; that is, if Grunt is old enough to have earlier generations yet.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
+
+<!--more-->
+
+
+<h2>Grunt-context Plugin</h2>
+
+<p>Jonathan Barnett has created a nice little grunt plugin that called <a href="https://npmjs.org/package/grunt-context">grunt-context</a>.  With grunt-context, you can easily specify environment-specific overrides to your grunt tasks.  The <a href="https://github.com/indieisaconcept/grunt-context">github page for grunt-context</a> can provide you with the basics on how to configure your grunt build.</p>
+
+<p>Let&#8217;s try a concrete config.  Let&#8217;s say that I want to run the <a href="http://jaketrent.com/post/run-requirejs-with-gruntjs/">RequireJs optimizer</a> only when I deploy to my test environment or to production but not for my local build.</p>
+
+<p>First, install the plugin:</p>
+
+<pre><code>npm install grunt-context
+</code></pre>
+
+<p>Second, fix up your grunt.js file to include:</p>
+
+<pre><code>module.exports = function(grunt) {
+  grunt.initConfig({
+    /* ... */
+    // 'requirejs' task REQUIRED to be listed first at root level config
+    requirejs: {
+      compile: {
+        options: {
+          // !! all app.build.js standard requirejs options here
+        }
+      }
+    },
+    context: {
+      // !! list each of your desired environments/contexts here
+      local: {
+        tasks: {
+          // !! 'requirejs' task left out
+          default: 'lint test'
+        }
+      },
+      test: {
+        tasks: {
+          // !! put 'requirejs' in default task list
+          default: 'requirejs lint test'
+        }
+      },
+      prod: {
+        //  !! re-list the 'requirejs' task to override its behavior for this context
+        requirejs: {
+          compile: {
+            options: {
+              // !! override the standard requirejs options for something
+              // special in prod build only
+            }
+          }
+        },
+        tasks: {
+          default: 'requirejs lint test'
+        }
+      }
+    }
+  });
+
+  // !! load the plugin
+  grunt.loadNpmTasks('grunt-context');
+};
+</code></pre>
+
+<p>Finally, run the grunt build and target a specific context.  If you want to build locally and not have requirejs run, type:</p>
+
+<pre><code>grunt context:local
+</code></pre>
+
+<p>If you want to build for test, where requirejs will optimize, type:</p>
+
+<pre><code>grunt context:test
+</code></pre>
+
+<p>Notice in the &#8216;prod&#8217; context that I also can override the actual variables for running the requirejs build.  So, it will not only run things or not run things, but you can run tasks in specific ways per environment.</p>
+
+<h2>The Cons</h2>
+
+<p>The plugin works well most of the time, but I haven&#8217;t had a stellar performance in all cases.  It could be that I&#8217;m unknowingly using it wrong.  I&#8217;ve tried many different methods to try and work out some of my issues with it.</p>
+
+<p>For instance, I cannot get it to override functions set to the <a href="https://npmjs.org/package/grunt-exec">grunt-exec</a> <code>command</code> attribute.  It will override string commands just fine, but it has problems with functions.  This could be because it has to assemble task lists for execution within a context and calculate overrides.  My guess is that the implementation may just be lacking in this area.</p>
+
+<h2>Best Option So Far</h2>
+
+<p>For environment-specific grunt builds, <a href="https://npmjs.org/package/grunt-context">grunt-context</a> is the best solution I&#8217;ve found so far.  It&#8217;s not the best, but it usually gets the job done.  I&#8217;ve bent it to my will thus far.</p>
+
+<p>What have you found that works well for environment-specific JavaScript builds?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Run RequireJs with GruntJs]]></title>
+    <link href="http://jaketrent.com/post/run-requirejs-with-gruntjs/"/>
+    <updated>2012-10-28T17:02:00-06:00</updated>
+    <id>http://jaketrent.com/post/run-requirejs-with-gruntjs</id>
+    <content type="html"><![CDATA[<p>RequireJs features a fantastic optimization tool, <a href="http://requirejs.org/docs/optimization.html">r.js</a>, that utilizes <a href="https://github.com/mishoo/UglifyJS">UglifyJs</a> to minimize and concatenate your JavaScript code.  <a href="http://gruntjs.com/">Grunt</a> is a build tool that is great for standardizing your build configuration and coordinating multiple build steps &#8211; amongst its other wonders.  Hopefully you get to use both on your project, because they&#8217;ll both make your development process smoother and leave you to the funnerest stuff &#8211; writing sweet apps.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
+
+<!--more-->
+
+
+<h2>Vanilla RequireJs</h2>
+
+<p>To use <a href="http://requirejs.org/docs/optimization.html#wholeproject">vanilla RequireJS to optimize your project</a>, you&#8217;ll need to do two things:</p>
+
+<ol>
+<li><strong>Create app.build.js</strong>  - This file contains the configuration for how your want RequireJs react to your source code.  Among other things, paths to source directories and output files are specified.</li>
+<li><strong>Run the optimizer</strong> - via the command <code>node r.js -o app.build.js</code></li>
+</ol>
+
+
+<p>Grunt has essentially the same steps, but they&#8217;re specified in the standard grunt config file and will integrate better with the rest of your build process steps that are in grunt.</p>
+
+<h2>Grunt RequireJs Configuration</h2>
+
+<p>An easy way to get Grunt to run your RequireJs build is to use the <a href="https://npmjs.org/package/grunt-contrib-requirejs"><code>grunt-contrib-requirejs</code></a> plugin.</p>
+
+<p>Install the plugin:</p>
+
+<pre><code>npm install grunt-contrib-requirejs
+</code></pre>
+
+<p>Add the requirejs config to your grunt.js file:</p>
+
+<pre><code>module.exports = function(grunt) {
+  grunt.initConfig({
+    /* ... */
+
+    // !! This is the name of the task ('requirejs')
+    requirejs: {
+      compile: {
+
+        // !! You can drop your app.build.js config wholesale into 'options'
+        options: {
+          appDir: "src/",
+          baseUrl: ".",
+          dir: "target/",
+          optimize: 'uglify',
+          mainConfigFile:'./src/main.js',
+          modules:[
+            {
+              name:'MyModule'
+            }
+          ],
+          logLevel: 0,
+          findNestedDependencies: true,
+          fileExclusionRegExp: /^\./,
+          inlineText: true
+        }
+      }
+    }
+    /* ... */
+  });
+
+  // !! This loads the plugin into grunt
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
+
+};
+</code></pre>
+
+<p>And run the task:</p>
+
+<pre><code>grunt requirejs
+</code></pre>
+
+<p>You should get the regular RequireJs build output that you&#8217;re used to seeing, and you&#8217;ll be able to verify that it worked.</p>
+
+<h2>Solid Optimization</h2>
+
+<p>RequireJs does a great build.  Grunt is flexible and easy to work with.  They go well together thanks to the <a href="https://npmjs.org/package/grunt-contrib-requirejs">grunt-contrib-requirejs</a> plugin, which gives a solid performance.  You&#8217;ll have your JavaScript code done up so tight; it&#8217;ll be denser than lead &#8211; which is obviously what you&#8217;ve always dreamed of.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GruntJs Access to package.json]]></title>
+    <link href="http://jaketrent.com/post/gruntjs-access-to-package-dot-json/"/>
+    <updated>2012-10-25T17:02:00-06:00</updated>
+    <id>http://jaketrent.com/post/gruntjs-access-to-package-dot-json</id>
+    <content type="html"><![CDATA[<p>Have you used GruntJs to build your JavaScript project yet?  It&#8217;s a great tool.  Often as a part of the build configuration, you&#8217;ll want to access your package.json with grunt.  Grunt has some built-in support for this.  Some bits can be a little tricky, and some plugins have limited support.  Here are some ways around all that.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
+
+<!--more-->
+
+
+<h2>Grunt JSON Directive</h2>
+
+<p>Grunt supports a number of <a href="https://github.com/gruntjs/grunt/blob/master/docs/helpers_directives.md">directives</a> out of the box.  These are callable from within you <code>grunt.js</code> file.  The gruntfile template uses one of these directives like so:</p>
+
+<pre><code>grunt.initConfig({
+  pkg: '&lt;json:package.json&gt;',
+  /* ... */
+});
+</code></pre>
+
+<p>This is making the contents of your <code>package.json</code> file available to your grunt config.  And this is what we wanted!  So, if I want to put the version of my app into some grunt task config, I can use it like so:</p>
+
+<pre><code>someTask: {
+  options: 'doStuff &lt;%= pkg.version %&gt;'
+}
+</code></pre>
+
+<p>This would already be enough &#8211; it it worked all the time!  Turns out it doesn&#8217;t [tear].</p>
+
+<h2>grunt.template</h2>
+
+<p>This syntax (&#8220;&lt;%= someVar %>&#8221;) is referred to as a grunt.template.  It is based on  <a href="http://underscorejs.org/#template">underscore&#8217;s template</a> function.</p>
+
+<h2>Grunt Plugin Support</h2>
+
+<p>It turns out that all plugins are not created equal.  Some plugins do not support this syntax at all.  I wrestled with mainly two plugins</p>
+
+<ul>
+<li><a href="https://npmjs.org/package/grunt-exec">grunt-exec</a> - for executing scripts/commands in the shell</li>
+<li><a href="https://npmjs.org/package/grunt-jade">grunt-jade</a> - for compiling jade templates</li>
+</ul>
+
+
+<p>As far as I can tell, neither plugin supports <code>grunt.template</code>.  Lameo.  In the case of <code>grunt-jade</code>, I actually switched plugins to <a href="https://npmjs.org/package/grunt-contrib-jade"><code>grunt-contrib-jade</code></a>, which states explicit support for <code>grunt.template</code> in the docs.  Other than the docs or trying it out, I otherwise don&#8217;t know how to determine support.</p>
+
+<h2>Access package.json Directly</h2>
+
+<p>Where I couldn&#8217;t find a plugin that explicitly supported <code>grunt.template</code>, I needed another solution.  Guided by the power of Google, I ran across a good Stack Overflow post on <a href="http://stackoverflow.com/questions/12408535/how-to-pass-in-package-json-array-to-grunt-js">getting <code>package.json</code> values into the <code>grunt.js</code> file</a>.</p>
+
+<p>The post illuminated my dim mind:  Grunt runs in node.  Do what you would do in node.</p>
+
+<p>Thusly, I just require the <code>package.json</code> file, and it is available.  Voila.  Who needs a stinkin template directive?  And it looks like:</p>
+
+<pre><code>var pkgJson = require('./package.json');
+
+/* use as desired */
+var version = pkgJson.version;
+</code></pre>
+
+<p>My one departure from the Stack Overflow suggestion was to use a different variable name on the require statement (&#8216;package&#8217; -> &#8216;pkgJson&#8217;).  &#8216;package&#8217; is a keyword that doesn&#8217;t pass linting.</p>
+
+<h2>Grunt access package.json</h2>
+
+<p>As it turns out, Grunt has not problem accessing <code>package.json</code>.  Grunt was already a venerable build tool option.  Now, it running Javascript, speaking to your Javascript project descriptor (<code>package.json</code>) is pure genius.  And genius that is easily accomplished? &#8211; noteworthy indeed.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Blog Topics]]></title>
+    <link href="http://jaketrent.com/post/blog-topics/"/>
+    <updated>2012-10-22T17:01:00-06:00</updated>
+    <id>http://jaketrent.com/post/blog-topics</id>
+    <content type="html"><![CDATA[<p>I was inspired by <a href="http://jaketrent.com/post/platform-book-review/">Michael Hyatt&#8217;s book, Platform,</a> to start writing this blog.  As he suggested, I just started writing.  But also as he suggested, I&#8217;ve been percolating over what my blog topics will be.  I&#8217;ve just been writing for several weeks.  I&#8217;ve finally settled in on a number of categories that will help me focus a bit.  But each are plenty broad to be able to write on most any and all things related to software.</p>
+
+<p><img src="http://farm1.staticflickr.com/1/2612308_456907e315_z.jpg" alt="Categories" />
+http://flic.kr/p/eoxN</p>
+
+<!--more-->
+
+
+<h2><a href="http://jaketrent.com/post/category/code/">Code</a></h2>
+
+<p>I&#8217;m a coder.  This is probably my favorite category.  This is what I wake up in the morning and do.  Posts in this category will be heavy on the code snippets.  They will sometimes link to demos.  These will be the most technical of the posts</p>
+
+<h2><a href="http://jaketrent.com/post/category/software-design/">Design</a></h2>
+
+<p>I have a desire to use and expand my design skills.  I&#8217;ll probably never commit enough time to really be a fantastic designer like many that I know, but here I&#8217;ll post my own feeble designs and talk about all things having to do with look and feel and user experience.</p>
+
+<h2><a href="http://jaketrent.com/post/category/productivity/">Productivity</a></h2>
+
+<p>Software is such a malleable medium.  It is an art in many ways.  Thus there are many ways to make it happen.  Some methods work better for others.  Some processes improve upon those of the past.  Some ways are better than others to make a team work well.  Ideas similar to these will be posted here.</p>
+
+<h2><a href="http://jaketrent.com/post/category/reviews/">Reviews</a></h2>
+
+<p>The world of software and technology is rich with resources and activity.  With so much to choose from, sometimes its helpful to have a suggestion or two on where to (or not to) focus some time and energy.  Software, books, and conferences are subjects we&#8217;ve seen so far.  The reviews are worth the price of admission.  Get them here.</p>
+
+<h2><a href="http://jaketrent.com/post/category/announcement/">Announcements</a></h2>
+
+<p>Public service announcements will include things about me or the blog in particular that are informational but not to any end.  This post fits in this category.  Where a full review is not offered, tidbits about the software world in general might fit here.</p>
+
+<h2>Blog Topics</h2>
+
+<p>It turns out that it&#8217;s somewhat hard to choose topics to write about on one&#8217;s blog.  At least it is for me.  The tech world is changing quickly.  I&#8217;m one that likes to change it and and change with it.  So, these topics may evolve.  They seem broad enough to continue to be applicable.</p>
+
+<p>If you were to choose my next post, which category would it fit into?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Designers]]></title>
+    <link href="http://jaketrent.com/post/agile-designers/"/>
+    <updated>2012-10-15T17:00:00-06:00</updated>
+    <id>http://jaketrent.com/post/agile-designers</id>
+    <content type="html"><![CDATA[<p>The Agile method of software creation contains many principles of development that will help create good software.  Some of my most successful projects have had as a key feature an agile designer.  As Jobs said, design <em>is</em> how it works, and that means that to really deliver well in an agile environment, design <em>and</em> development have to be on the agile train together.</p>
+
+<p><img src="http://i.imgur.com/GOXzL.jpg" alt="Blueprint design" />
+http://flic.kr/p/bpV8UA</p>
+
+<!--more-->
+
+
+<h2>K-man Keeps it Alive</h2>
+
+<p>I work with a fantastic designer, the one and only <a href="http://www.composition3.com/">Kendall Chadwick</a>.  He has many great qualities of an agile designer:</p>
+
+<ol>
+<li><strong>He&#8217;s available</strong> - He lives with the cross-functional team.  He is there to participate in discussions.  It&#8217;s not hard to get a hold of him, so answers to questions flow more freely.</li>
+<li><strong>He listens</strong> - He asks a lot of questions.  He&#8217;s not stuffy about his design sense.  He realizes that many needs are represented in a project and product.  He attends discussion meetings not necessarily focused on design but on the details of the product or process.</li>
+<li><strong>He&#8217;s fully engaged</strong> - He knows his task doesn&#8217;t end when he clicks save in Photoshop.  He owns his designs and ideas all the way through the project, helping evolve them as we go. One of the most important things a software team member can do is remain fully engaged right up until the product ships.</li>
+</ol>
+
+
+<h2>Agile Experience Design</h2>
+
+<p>I just finished a book called &#8221;<a href="http://www.amazon.com/Agile-Experience-Design-Designers-Continuous/dp/0321804813">Agile Experience Design</a>&#8221; by Lindsay Ratcliffe and Marc McNeill.  I&#8217;ve read a fair bit on agile methods and currently live in a quasi-agile (hehe, let&#8217;s actually call it mini-waterfalls) shop.  This book was intriguing as its authors are speaking to designers as they try to integrate better in an agile environment.</p>
+
+<p>Of note was their Agile Design Manifesto:</p>
+
+<p>Agile experience design is
+Inclusive rather than elitist
+Emergent with direction rather than up front
+Integrated and collborative rather than handed over the fence
+Considerate of customer, business, and technology needs rather than biased toward a single factor.</p>
+
+<p>As a passing review:  The book won&#8217;t provide too much that is new to someone familiar with agile.  It speaks in terms that I suppose are probably more well related to by designers.  It&#8217;s a somewhat lengthy and dense book.  At times, it was hard to maintain reading momentum.  The book is beautiful &#8211; perhaps it had some real designers laying it out?</p>
+
+<h2>The Power of Design</h2>
+
+<p>It&#8217;s amazing how much depends on solid design.  The design will define the users&#8217; experience with the software.  It will never not matter.  To a great design in a software product is a difficult thing.  Good people in the design discipline who are fully engaged in adapting to the changing landscape of software creation are invaluable.  Agile designers rock.  Find one and figure out how to get him on your project.</p>
+
+<p>What have your best designers done to make great software on your teams?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The JakeTrent.com Logo]]></title>
+    <link href="http://jaketrent.com/post/the-jaketrent-dot-com-logo/"/>
+    <updated>2012-10-15T16:59:00-06:00</updated>
+    <id>http://jaketrent.com/post/the-jaketrent-dot-com-logo</id>
+    <content type="html"><![CDATA[<p>A logo is an essential part of a brand or image.  For me, I like something iconic that is captured through an eye catching image that is simple and elegant.  Logos have to be one of the visual elements that I enjoy watching others&#8217; creativity in the most.  For JakeTrent.com, one of the goals has been to <a href="http://jaketrent.com/post/why-i-chose-a-wordpress-blog/">write on it more and customize it less</a>.  So, far I&#8217;ve met that goal.  But I really couldn&#8217;t let this otherwise nice <a href="http://wordpress.org/extend/themes/living-journal">LivingJournal</a> theme sit without adding a bit of pizazz of my own.  So, here&#8217;s how I created the logo.</p>
+
+<p><img src="http://i.imgur.com/Hy8OR.jpg" alt="Logo progression" /></p>
+
+<!--more-->
+
+
+<h2>Inspiration</h2>
+
+<p>I would say that my logo is a confluence of 3 other logos.</p>
+
+<ol>
+<li>The <a href="http://trentwalton.com/">Trent Walton</a> logo - It is minimalistic.  Initials for personal sites seems to be all the rage anyway.  It seems to be fitting
+2.<a href="http://thenextweb.com/">The Next Web</a>logo - I loved how the type connected.  It&#8217;s very clean.  I almost went with red, but the site here has an accent color of yellow.  So in the end I went with that instead.</li>
+<li>Another conference or software logo - I really can&#8217;t remember which it is.  Perhaps you can help me.  It&#8217;s similar to The Next Web logo except that its letters are blue, and they&#8217;re loopier.  And it runs in my mind that it&#8217;s a single word split over multiple lines.  If this is ringing a bell for you, let me know in the comments.</li>
+</ol>
+
+
+<h2>Sketching</h2>
+
+<p><img src="http://i.imgur.com/mJPLW.jpg" alt="JT sketch" /></p>
+
+<p>I&#8217;m a doodler at heart.  I really like it.  And typography art has been one of my favorites since elementary school.  So, this little project was fun and natural for me once I decided on just doing some initials.</p>
+
+<p>In general, most of my designs are clean, modern, and minimalistic.  (At least those are the <em>good</em> words that come to mind. :)  So I was surprised when I decided I liked this design best.  After I drew it, I made a list of the things it reminded me of.  In order, they were: Tape worm, Christmas candy, measuring tape, bow on a present.  Hehe, what a logo, eh?!</p>
+
+<h2>Illustrator</h2>
+
+<p>I didn&#8217;t have access to a scanner at the time, and my digital camera was out of juice, so I didn&#8217;t make this sketch digital until later.  I just set to work in Illustrator with the pen tool.  I don&#8217;t feel very comfortable in Illustrator.  I feel much more adept at Photoshop.  But, I&#8217;ve been determined to better myself with the Pen tool especially and learn the Illustrator environment.  Given that, I&#8217;m happy with the paths that I drew.</p>
+
+<p><img src="http://i.imgur.com/SqUDw.png" alt="JT paths" /></p>
+
+<p>I only had one total restart.  This is version 2.  In planning for the gradients and just wanting to break up the path to make it easier to manage, I split the glyph into 3 separate paths.  I was just eye-balling the sketch, so it&#8217;s not entirely faithful.  Most obvious, the loop on the J has a much more tight, oval loop than in the sketch.  I can&#8217;t decide if I like that more or less.</p>
+
+<h2>Final Polish</h2>
+
+<p>With 3 separate paths, it was much easier to apply some cool-looking gradients to help give the shape some depth.  I chose yellow as the base color and orange as the shadow color.  Again, this was to match the theme.  And it is also reminiscient of a &#8220;dynaLink&#8221; logo that I did once upon a time.</p>
+
+<p>It was a fun project.  I hope it adds a bit to the site and my other online identities (see <a href="https://twitter.com/jaketrent">Twitter</a> and <a href="https://plus.google.com/115032056022257436849/">Google Plus</a>).</p>
+
+<p>It&#8217;s not perfect, but I wanted to ship it.  What do you like about it the most?  Or what suggestions might you have?  I&#8217;m also interested in which logos have given you the most inspiration in your work.</p>
+
+<p><img src="http://i.imgur.com/HCjNf.png" alt="JT logo final" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Paper by FiftyThree]]></title>
+    <link href="http://jaketrent.com/post/paper-by-fiftythree/"/>
+    <updated>2012-10-14T16:58:00-06:00</updated>
+    <id>http://jaketrent.com/post/paper-by-fiftythree</id>
+    <content type="html"><![CDATA[<p>Have you ever showed up in the App Store looking for an app in a particular category and been overwhelmed at the number of choices present?  This is certainly the case for the drawing and art app category.  But, there is at least one art app that stands out clearly from the others: <a href="http://www.fiftythree.com/paper">&#8220;Paper&#8221; by FiftyThree</a>.</p>
+
+<p><img src="http://i.imgur.com/M0kYA.jpg" alt="Paper brushes" /></p>
+
+<!--more-->
+
+
+<h2>Best Brush</h2>
+
+<p>The best feature of Paper is the one you get for free: the fountain pen.  It is easily the best brush I&#8217;ve used on any art app.  I&#8217;ve tried Sketchbook and Sketchbook Ink.  They are no where close.  It has the most beautiful tapered edges.  It responds best to speed and direction.  It comes the closest to a real fountain pen.</p>
+
+<h2>Gestures</h2>
+
+<p>The rewind/undo feature is invaluable when drawing.  It is immediately available by using two fingers.  You can activate it anywhere on screen.  This makes for very fast iterations on a drawing.  It&#8217;s both intuitive and fun.</p>
+
+<h2>Flair</h2>
+
+<p>The app has a great style.  It&#8217;s minimalistic and focused.  The notebook collection is fun.  The page flip is fun.  The UI is simple and powerful.  The focus remains on the drawing, where it should be.</p>
+
+<h2>Sharing</h2>
+
+<p>Sharing is straightforward and fast.  Exporting your drawings into your photo library is easy.  It&#8217;s just as easy to share on the web.  Tweet with &#8220;#MadeWithPaper&#8221; and you&#8217;ll show up on their <a href="http://madewithpaper.fiftythree.com/">blog</a>.</p>
+
+<h2>Pricing</h2>
+
+<p>I get the fountain pen brush for free, and I&#8217;m happy.  You pay $2 to get each of their 4 other brushes.  The next coolest is definitely the water color brush.  It totally makes sense to pay for these top-notch brushes.  Each brush takes considerable time and effort to develop.  Other apps &#8211; I&#8217;m looking at your Sketchbook &#8211; might include a pile of brushes at a lower price, but they are simply not as good.</p>
+
+<h2>Wish List</h2>
+
+<p>There are a few things that I think the app is lacking:</p>
+
+<ol>
+<li>The color palette is too simple.  I would love more options.  Apparently this is in the works.  There are many interesting <a href="http://support.fiftythree.com/fiftythree/topics/colour_palette">suggestions for expanding the palette</a> made on their forum.  <strong>Update:</strong> The latest update has a <a href="http://www.fastcompany.com/3002676/magical-tech-behind-paper-ipads-color-mixing-perfection">sweet color mixing tool</a>.</li>
+<li>A zoom feature would be nice.  The difficult thing would be mapping it to an intuitive gesture, especially differentiating it from the super-awesome rewind gesture.  The resolution is high (2048x1536), but it sometimes doesn&#8217;t feel very high given that detail work is hard without a zoom.</li>
+<li>Being able to change background/paper options would be awesome.  At this point, all you start with is a plain, off-white background with no texture.  The app is called &#8220;Paper&#8221;, afterall.  Wouldn&#8217;t it be nice to have some more options here?</li>
+</ol>
+
+
+<p>The product features are well-thought and the FiftyThree team obviously has a design philosophy.  So, my pining for new features is patient.  I love what they have thus far.</p>
+
+<h2>Magical</h2>
+
+<p>Using Paper really has been one of the magical moments of using the iPad.  It gives a slick experience that gets me drawing fast.  There are masterful, well-honed tools that make my art look good.  The use of gestures makes great use of the direct input ability of the touch device.  I&#8217;ve enjoyed many hours using Paper, and I look forward to more products from FiftyThree.</p>
+
+<p>What is your favorite feature of Paper?  Or of another art/drawing app?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SORT Conf 2012]]></title>
+    <link href="http://jaketrent.com/post/sort-conf-2012/"/>
+    <updated>2012-10-10T16:57:00-06:00</updated>
+    <id>http://jaketrent.com/post/sort-conf-2012</id>
+    <content type="html"><![CDATA[<p>The sky lightens with the rising sun.  Wheels are on the road.  Friends are in the car.  The leaves are changing on the towering Wasatch mountains.  Finally, we pull up to the University of Utah Institute building.  Stepping out of the car, the October air is fresh and clear, high in the Rockies.  It&#8217;s a good day for a tech conference.  It&#8217;s a good day for SORT.</p>
+
+<p><img src="http://i.imgur.com/q1cr5.jpg" alt="Wasatch mountains" />
+http://flic.kr/p/bDP2fF</p>
+
+<!--more-->
+
+
+<p>SORT is an annual tech conference put on by the LDS Church.  The IT shops of the Church are all represented, including ICS, Family Search, the BYUs, CES, and probably a couple more.  Attendance last year, I think, was about 1200.</p>
+
+<h2>Something For Everyone</h2>
+
+<p>A unique feature of the conference is that there are soooo many subjects covered.  It&#8217;s really kind of a joke the number of tracks that are represented:</p>
+
+<ol>
+<li>EIM</li>
+<li>Architecture</li>
+<li>Design</li>
+<li>Engineering</li>
+<li>Partner Summit</li>
+<li>Infrastructure</li>
+<li>Leadership</li>
+<li>PM</li>
+<li>QA</li>
+<li>Requirements</li>
+<li>Security</li>
+<li>Sharepoint/CRM</li>
+<li>Solution Mgmt</li>
+<li>Other (misc)</li>
+</ol>
+
+
+<p>Holy cow!  That&#8217;s a little nuts.  It started out as an engineering-only conference in 2009.  Since then, it&#8217;s blossomed.  I feel like it has been a double-edged sword:  The whole office is invited and should have something to soak up there, but it feels like the engineering track has been watered down a bit.</p>
+
+<h2>Mostly Intro</h2>
+
+<p>The topics are varied.  It&#8217;s often the case that there&#8217;s so much going on that you don&#8217;t know what to pick for each hour.  That is awesome!  Out of the presentations offered in the engineering track, I would love to see more intermediate or advanced topics.  More deep dives would be fun to geek out about.  I think we touch that in some cases, but in general, I feel that the presentations could be categorized as cursory introductions to topics.</p>
+
+<h2>Free-flowing Sugar</h2>
+
+<p>I am never lacking for ATP at SORT.  The day starts with a great breakfast.  Lunch is also delicious.  This year, both were provided by Kneaders bakery.  Between every session, there are plentiful mounds of various snack foods and refreshing beverages.  And being a conference put on by the Church, the drinks are top notch, ready for the Church membership. :)</p>
+
+<h2>Entry to Speaking</h2>
+
+<p>I have presented at SORT for each of the last 4 years.  You already know the bar can&#8217;t be that high.  If you submit a paper, you&#8217;ll probably be accepted.  I was 2 for 3 this year. :)  Some might worry that this would lower the quality of the conference material and presentation.  Yes, it probably does.  But, just like any conference, if you are a little careful in your schedule selection, you&#8217;ll find some fantastic speakers and super-compelling content.</p>
+
+<h2>A Yearly Highlight</h2>
+
+<p>In all, SORT is a fantastic experience.  I look forward to it next year.  It&#8217;s fun to review what I&#8217;ve learned and presented on in the past (Django, then jQuery plugins, then TDD on MarkLogic, this year BackboneJs).</p>
+
+<p>It&#8217;s at a great, close location.  The company is fantastic.  The topics are varied and interesting.  The two days are time well-spent to me.  I feel tired (a sign of lots of fire hose drinking).  I&#8217;m inspired to learn a few new things:</p>
+
+<ol>
+<li>Do more CoffeeScript</li>
+<li>Try SocketStream</li>
+<li>Use Postgres&#8217; row_to_json</li>
+<li>Try LawnChair and IndexDb</li>
+<li>Do some user media capture</li>
+</ol>
+
+
+<p>Did any of you go this year?  What do you appreciate the most about SORT or your most recent conference?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A Grab Bag of Backbone Tips]]></title>
+    <link href="http://jaketrent.com/post/a-grab-bag-of-backbone-tips/"/>
+    <updated>2012-10-09T16:56:00-06:00</updated>
+    <id>http://jaketrent.com/post/a-grab-bag-of-backbone-tips</id>
+    <content type="html"><![CDATA[<p>Backbone.js is a great MV* library created by Jeremy Ashkenas.  It is small and powerful, yet unopinionated.  That means that it will let you walk straight into a pit.  It so happens that I&#8217;m speaking to you now from the bottom of such a chasm.  Do not fall into the same pit.  As a guide to your travel, here are a few Backbone tips that might help you avoid a few problems.</p>
+
+<p><img src="http://i.imgur.com/yXrC3.png" alt="Backbonejs Tips" /></p>
+
+<!--more-->
+
+
+<h2>Tips for Backbone</h2>
+
+<p>The list of tips for using Backbone is assuredly long and storied.  Here is but a brief offering.</p>
+
+<h3>Make Views Reusable</h3>
+
+<p>Pass in the <code>el</code> attribute to your views.  Or create the container dynamically (via <code>tagName</code> attribute) and display using <code>$.html()</code> outside the view.  Essentially, don&#8217;t hardcode the <code>el</code> attr in the view.</p>
+
+<h3>Ensure DOM Element Exists</h3>
+
+<p>In short, pass <code>el</code> references as css selector strings (eg, &#8216;.viewLocation&#8217;) so Backbone will lazy evaluation them.  This is especially important in a <a href="http://rockycode.com/blog/backbone-views-dynamic-dom/">changing DOM</a>.</p>
+
+<h3>Clean Up Your Events</h3>
+
+<p>Create a <code>.close()</code> function on Backbone.View.prototype.  Implement an <code>onClose()</code> function in each view you create that unbinds events on the view and child models and collections.  <a href="http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/">Derick Bailey addresses zombie events</a> very well.</p>
+
+<h3>Inheritance</h3>
+
+<p>Create class trees just as you would doing regular OOP.  Keep the code DRY.  <code>Backbone.*.extend()</code> makes it easy.  <a href="http://underscorejs.org/#extend"><code>_.extend()</code></a> or the like can also be used for extending non-Backbone objects.</p>
+
+<h3>Develop Without a Real Backend</h3>
+
+<p>Because Backbone models allow specifying their own <code>fetch()</code> location (via <code>url</code> attr), you can specify you own stores, even local .json files as backends.  This can speed up development.</p>
+
+<h3>Bind in Initialize</h3>
+
+<p>Extending page state in single-page apps will allow event binding to stick around longer.  Usually, you&#8217;ll want to bind once per object.  Do that in <code>initialize()</code>.</p>
+
+<h3>Nest Your Views</h3>
+
+<p><code>Backbone.View</code>s can be nested within <code>Backbone.View</code>s.  Do it.  It will help organize your code.  It will make things like event scoping easier.</p>
+
+<h3>Communicate Between Objects</h3>
+
+<p>Interesting things will start to happen when objects start talking to each other.  You can pass references to provide a line of communication.  Or you can talk over the global <code>Backbone.Events</code> bus.</p>
+
+<h3>Model Newness</h3>
+
+<p><code>Backbone.Model</code> has the concept if <code>isNew()</code>.  It&#8217;s not magic.  If the model has an <a href="http://backbonejs.org/#Model-idAttribute"><code>id</code></a> attribute, it&#8217;s not new, meaning it&#8217;s already persisted in your data store.  This affects HTTP commands in <code>save()</code>: POST for new, PUT for not new.</p>
+
+<h3>Remember Who You Are</h3>
+
+<p>This is an issue you&#8217;ll deal with in all JavaScript.  Since Backbone is event heavy, you&#8217;ll see it a lot.  Within event callbacks, <code>this</code> will refer to <code>window</code>.  To <a href="http://backbonejs.org/#FAQ-this">maintain the context of your Backbone object</a>, pass context in your event <code>.on()</code> calls.  <a href="http://underscorejs.org/#bindAll"><code>_.bindAll()</code></a> is also handy where the API doesn&#8217;t support context passing directly.</p>
+
+<h3>Organize Your Files</h3>
+
+<p>You&#8217;re using Backbone because you&#8217;re creating a thicker client, and it&#8217;s getting crowded there.  For the same reasons, use an AMD loader, like <a href="http://requirejs.org/docs/start.html">RequireJs</a>, and encapsulate your files.</p>
+
+<h3>Minimize DOM Operations</h3>
+
+<p>Modifying the DOM is expensive.  Use <code>document.createDocumentFragment()</code> or use jQuery (eg, <code>$('&lt;div /')</code>) as a disconnected fragment.  Do all possible operations there, and touch the real DOM once.</p>
+
+<h2>War Stories</h2>
+
+<p>Each of these tips are topics in their own right.  This list is merely a mention of issues that have each affected me for hours in the past.  Which of them do you think deserves to be addressed further?  Those would be good topics for future posts.</p>
+
+<p>The ideas given in these tips are very subjective.  In some ways, they are prescriptions for a library which otherwise gives few.  As such, use them if you will.  Discard them just as well.</p>
+
+<p>For some code snippets, see my <a href="http://jaketrent.github.com/vertebrae-preso/">slides on the same Backbone tips</a>.</p>
+
+<p>Doubtless you have your own tips as well.  What are the issues that you&#8217;ve had with Backbone?  What are the tips you would offer to overcome them?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Every nth Item in Handlebars Loop]]></title>
+    <link href="http://jaketrent.com/post/every-nth-item-in-handlebars-loop/"/>
+    <updated>2012-10-03T16:55:00-06:00</updated>
+    <id>http://jaketrent.com/post/every-nth-item-in-handlebars-loop</id>
+    <content type="html"><![CDATA[<p>Have you ever wanted to do something special every nth time through a Handlebars loop?  The built-in &#8220; will loop through your items just fine.  It lacks a few features.  For one, you don&#8217;t have access to the loop index, though you can <a href="http://rockycode.com/blog/handlebars-loop-index/">find it</a>.  Without the index and simple comparisons like modulus, length of the array, and equals, you&#8217;ll be creating your own Handlebars helpers.  Here&#8217;s an example of one.</p>
+
+<p><img src="http://blog.teamtreehouse.com/wp-content/uploads/2011/03/handlebars.png" alt="Handlebars js" /></p>
+
+<!--more-->
+
+
+<h2>Extend the context</h2>
+
+<p>Inside a block helper in Handlebars, when you call <code>options.fn</code>, you pass the context to the first block.  We can extend what attributes are available in that context.  The <code>everyNth</code> helper below extends this context with variables that are useful for doing &#8220;every nth&#8221; operations:</p>
+
+<ol>
+<li>isModZero</li>
+<li>isModZeroNotFirst</li>
+<li>isLast</li>
+</ol>
+
+
+<p>The code in full looks like this:</p>
+
+<pre><code>Handlebars.registerHelper('everyNth', function(context, every, options) {
+  var fn = options.fn, inverse = options.inverse;
+  var ret = "";
+  if(context &amp;&amp; context.length &gt; 0) {
+    for(var i=0, j=context.length; i&lt;j; i++) {
+      var modZero = i % every === 0;
+      ret = ret + fn(_.extend({}, context[i], {
+        isModZero: modZero,
+        isModZeroNotFirst: modZero &amp;&amp; i &gt; 0,
+        isLast: i === context.length - 1
+      }));
+    }
+  } else {
+    ret = inverse(this);
+  }
+  return ret;
+});
+</code></pre>
+
+<p>Note: This implementation uses <a href="http://underscorejs.org/#extend">underscore <code>_.extend()</code></a>.</p>
+
+<h2>Scenario: Print rows</h2>
+
+<p>Here&#8217;s a scenario where this is useful:  In twitter bootstrap, each &#8220;span&#8221; div is inside of a &#8220;row-fluid&#8221; div (if using bootstrap responsive.css).  So, if I want three things, let&#8217;s say videos, per row printed in the markup, you can&#8217;t just use &#8220; because all it does is iterate through the videos.  You could print the &#8220;span4&#8221;s but you wouldn&#8217;t know when to print the &#8220;row-fluid&#8221;.  Hence, we need our helper.</p>
+
+<p>The usage:</p>
+
+<p>Our new helper <code>everyNth</code> allows us to write code like this:</p>
+
+<pre><code>    &lt;/div&gt;
+
+
+    &lt;div class="row-fluid"&gt;
+
+  &lt;div class="span4"&gt;
+    &lt;div class="thumb"&gt;
+      &lt;a href=""&gt;&lt;img src="" /&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+    &lt;/div&gt;
+</code></pre>
+
+<p>To clarify the need and usage of these new variables:</p>
+
+<ol>
+<li><strong>isModZero</strong> - in this example, every 3 videos should be on a row.  When mod 3 is 0, create a row.</li>
+<li><strong>isModZeroNotFirst</strong> - when I create a row (mod 3 is 0), I also need to end the row, except before the first row.</li>
+<li><strong>isLast</strong> - if the length of the video array is not divisible by 3, the last row needs to close anyway.</li>
+</ol>
+
+
+<p>The helper is simple, essentially just a copy of &#8220; with a few new variables in context.  That&#8217;s the beauty of Handlebars helpers.  With this little baby you can determine where you are in your iterations through your array.</p>
+
+<p>What are some of the things you use Handlebars helpers for?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Change Your Node Script Without Restarting]]></title>
+    <link href="http://jaketrent.com/post/change-your-node-script-without-restarting/"/>
+    <updated>2012-10-03T16:54:00-06:00</updated>
+    <id>http://jaketrent.com/post/change-your-node-script-without-restarting</id>
+    <content type="html"><![CDATA[<p>Have you every wished you could change your node script and not restart the server?  Restarting your node server after changing your script can get annoying.  This is especially true if you&#8217;re in guess and check mode, changing and checking a lot.  Luckily, there are a few tools to save you the pain.</p>
+
+<p><img src="http://i.imgur.com/jrkIv.jpg" alt="Node Monitor" /></p>
+
+<!--more-->
+
+
+<h2>Node-supervisor</h2>
+
+<p>Isaac Schlueter has created a <a href="https://github.com/isaacs/node-supervisor">node-supervisor</a>.  Install it with a quick npm:</p>
+
+<pre><code>sudo npm install supervisor -g
+</code></pre>
+
+<p>Use <code>supervisor</code>, instead of <code>node</code> to start your app:</p>
+
+<pre><code>supervisor app.js
+</code></pre>
+
+<p>By default, this will run with these options:</p>
+
+<pre><code>DEBUG: Running node-supervisor with
+DEBUG:   program 'app.js'
+DEBUG:   --watch '.'
+DEBUG:   --ignore 'undefined'
+DEBUG:   --extensions 'node|js'
+DEBUG:   --exec 'node'
+</code></pre>
+
+<p>There are other options for things like watching only specific extensions or not restarting on app errors.</p>
+
+<h2>Nodemon</h2>
+
+<p>Remy Sharp has created <a href="https://github.com/remy/nodemon">nodemon</a>.  It also is a quick npm install:</p>
+
+<pre><code>sudo npm install nodemon -g
+</code></pre>
+
+<p>Again, run with <code>nodemon</code> instead of <code>node</code>:</p>
+
+<pre><code>nodemon app.js
+</code></pre>
+
+<p>By default, runs:</p>
+
+<pre><code>[nodemon] v0.6.23
+[nodemon] watching: .
+[nodemon] starting `node app.js`
+</code></pre>
+
+<p>There are similar options here for what to watch.</p>
+
+<h2>Comparison of tools</h2>
+
+<p>Both tools will get the job done.  Choose either.  Both can specific directories or file extensions to watch.  Both can run other executables (like <a href="https://github.com/nodejitsu/forever">forever</a>, which is awesome, btw).</p>
+
+<p>Both tools are circa 2010.  Node-supervisor is the slightly older brother (by 8 months).  Both projects seem to have slow, steady development development activity.  What is there to add to tools that do their job already?</p>
+
+<p>In general, <code>nodemon</code> has a few more options.  For example, it has explicit support for coffee-script.  I like <code>supervisor</code> more for silly reasons:  I found it first, it works fine, feels better to type, and has fewer terminal command expansion conflicts.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to Organize NodeJs Routes]]></title>
+    <link href="http://jaketrent.com/post/how-to-organize-nodejs-routes/"/>
+    <updated>2012-10-02T16:52:00-06:00</updated>
+    <id>http://jaketrent.com/post/how-to-organize-nodejs-routes</id>
+    <content type="html"><![CDATA[<p>A few routes in a NodeJs app &#8211; no problem.  Just put them in your <code>app.js</code>.  More than a handful?  You&#8217;ll probably want to look at organizing your routes a different way.  This will help keep your core <code>app.js</code> clean and make your actual routes easier to find.</p>
+
+<p><img src="http://i.imgur.com/basH6.jpg" alt="Too many routes" />
+http://flic.kr/p/bihZUV</p>
+
+<!--more-->
+
+
+<h2>Express Routes</h2>
+
+<p>The favorite http framework on <a href="http://nodejs.org/">NodeJs</a> seems to be <a href="http://expressjs.com/">Express</a>.  I personally like it quite a bit.  It&#8217;s simple, declarative, and allows you to set up all the normal HTTP commands with ease.</p>
+
+<p>Did you know that Express comes with a binary/cli command called <code>express</code>.  This command will setup a project structure and a lot of the boilerplate code for you.  The docs contain a guide on <a href="http://expressjs.com/guide.html#executable">how to run this</a>.  It has support for other cool options like session support or various css preprocessors.</p>
+
+<p>A sample run and the file structure that it will create looks something like this:</p>
+
+<pre><code>$ express --sessions --css stylus --ejs myapp
+
+create : myapp
+create : myapp/package.json
+create : myapp/app.js
+create : myapp/public
+create : myapp/public/javascripts
+create : myapp/public/images
+create : myapp/public/stylesheets
+create : myapp/public/stylesheets/style.styl
+create : myapp/routes
+create : myapp/routes/index.js
+create : myapp/views
+create : myapp/views/index.ejs
+</code></pre>
+
+<p>In that generated code, your <code>app.js</code> references a route like this:</p>
+
+<pre><code>var routes = require('./routes');
+app.get('/', routes.index);
+</code></pre>
+
+<p>And the route, <code>index.js</code>, looks like:</p>
+
+<pre><code>exports.index = function(req, res){
+  res.render('index', { title: 'Express' });
+};
+</code></pre>
+
+<p>I like this, but it&#8217;s still not the best.  I don&#8217;t like having to list the <code>app.get()</code>, etc. in <code>app.js</code>.  This list will get long.  So, how would I adjust?</p>
+
+<h2>All http commands in separate files</h2>
+
+<p>Instead, I want to tell <code>app.js</code> about my routes, but I want each route file to hook itself up to express directly.</p>
+
+<p>Showing the adjustments, <code>app.js</code>:</p>
+
+<pre><code>var app = express();
+var indexRt = require('./routes/index')(app);
+</code></pre>
+
+<p>This time, more goodies in <code>index.js</code>:</p>
+
+<pre><code>module.exports = function (app) {
+  app.get('/', function (req, res) {
+    res.render('index');
+  });
+}
+</code></pre>
+
+<p>The difference is somewhat slight.  Now, instead of each http command listed in your app, only each resource (in REST terms) is listed in app.  Each command for a resource is listed in that resource&#8217;s route.js.</p>
+
+<p>There are surely many ways to organize your NodeJs routes.  Express gives a great starting pattern.  Our adjustment adds a slight optimization.  Organizing your routes will help your main <code>app.js</code> file stay way cleaner, and you&#8217;ll be able to find your routes more easily.</p>
+
+<p>But this surely can&#8217;t be the best way for everyone.  What are the ways that you&#8217;ve found successful in organizing your routes?</p>
+
+<p>Note: this post uses express 3 syntax.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Developer Relations for Internal Developers]]></title>
+    <link href="http://jaketrent.com/post/developer-relations-for-internal-developers/"/>
+    <updated>2012-09-26T16:50:00-06:00</updated>
+    <id>http://jaketrent.com/post/developer-relations-for-internal-developers</id>
+    <content type="html"><![CDATA[<p>When a company has a platform or API that it wants outside developers to create cool stuff on, it will sometimes create a developer relations group. This group will help developers get what they need. What about custom dev shops that already have a host of developers? Who&#8217;s watching these developers&#8217; backs?</p>
+
+<p><img src="http://i.imgur.com/QAxW5.jpg" alt="Love note" />
+http://flic.kr/p/5iwNAG</p>
+
+<!--more-->
+
+
+<h2>A new level of developer relations</h2>
+
+<p>RIM developer relation needs being what they are, they&#8217;ve gone this far to promote their BlackBerry 10 SDK:</p>
+
+<iframe width="560" height="315" src="http://www.youtube.com/embed/WlsahuZ_4oM" frameborder="0" allowfullscreen></iframe>
+
+
+<p>It&#8217;s awesome. Maybe &#8220;desperate&#8221;? It shows a definite effort (high notes) to attract and accommodate developers.</p>
+
+<h2>Essential vitamins and minerals</h2>
+
+<p>Once developers are in a company, what are the elements of developer relations that are needful there. What does a company need to retain top coding talent? I offer:</p>
+
+<ol>
+<li><p><strong>Engaging Responsibilities</strong> - Smart guys are not going to sit around in your company doing the same thing for 10 years. In tech, probably not even for a couple. This might also be stated as &#8220;Career Path&#8221;. I think this requirement is similar to what <a href="http://www.businessinsider.com/why-young-employees-quit-their-jobs-2012-9">Business Insider observed young workers</a> as needing: &#8220;Multiple studies find that today’s younger workers have absolutely no intention of sticking around if they don’t feel like they’re learning, growing and being valued in a job.&#8221;</p></li>
+<li><p><strong>Learning Opportunities</strong> - Learning is an inherent part of every developer job description. It must be kosher to spend time to sharpen the saw. This is building capactiy. No one will ever propose solutions that they don&#8217;t understand. If your company wants to broaden its offering, developers will need to broaden themselves.</p></li>
+<li><p><strong>Budget for Engineering</strong> - Build money into project budgets. Build time into the timelines. Good developers will quickly lose morale if there is never time to do it right. If you don&#8217;t give time to cleanup technical debt, developers will not feel satisfied in what they create.</p></li>
+<li><p><strong>Always Have an Advocate</strong> - Every company will get it wrong sometimes. Especially in large, specialized organizations, everyone has their own functional slice that they&#8217;re focused on, sometimes at the expense of all else. Developers need someone who speaks for them. They need someone who has a voice in the bureaucracy and can represent them well where they don&#8217;t personally have a voice.</p></li>
+</ol>
+
+
+<h2>Everyone needs a coder, especially a good one</h2>
+
+<p>If developer relations are not upkept with care, good coders are likely to head for the door. Alternately, if just certain elements are occassionally missing, good developers know how to fill in the gaps and provide for themselves.</p>
+
+<p>Just as an API/platform creator attract talent to build cool stuff for them, organizations with their own internal dev force need to take developer relations seriously. Good organizations and good leaders take good care of all their people.  I work at such an organization with such people.  We need more.</p>
+
+<p>What else might be an essential ingredient in maintaining favorable developer relationships?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Why I Chose a WordPress Blog]]></title>
+    <link href="http://jaketrent.com/post/why-i-chose-a-wordpress-blog/"/>
+    <updated>2012-09-25T16:49:00-06:00</updated>
+    <id>http://jaketrent.com/post/why-i-chose-a-wordpress-blog</id>
     <content type="html"><![CDATA[<p>Some might ask why a guy who loves his life of code would choose WordPress as the framework for one of his websites. Well, I chose a WordPress blog. I almost didn&#8217;t. It&#8217;s been a long time coming. It&#8217;s early in the game, but I think it was a good choice.</p>
 
 <p><img src="http://i.imgur.com/Z9HMK.jpg" alt="WordPress T-Shirt" />
@@ -53,6 +1366,93 @@ http://flic.kr/p/6FFZMy</p>
 <p>At the point I was getting the blog looking nice and doing what I wanted, did I care that the thing was written in PHP? No. I saw it just once when setting up my DB connection. I did cringe slightly upon seeing some <a href="http://php.net/manual/en/language.variables.superglobals.php">super globals</a> again (<code>$_SERVER</code>), but I hastily committed the change and deployed the app.</p>
 
 <p>We&#8217;ll see if I continue to love it, but so far, so good. My fellow coders, I ask: Is my reasoning sound?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Book Review for Platform]]></title>
+    <link href="http://jaketrent.com/post/book-review-for-platform/"/>
+    <updated>2012-09-25T16:46:00-06:00</updated>
+    <id>http://jaketrent.com/post/book-review-for-platform</id>
+    <content type="html"><![CDATA[<p>How do you inform people of your next big idea? How do you motivate others to continue listening to you once you have their attention? In the age of the Internet, there are countless competitors in almost every space. To differentiate yourself, you&#8217;ll need to create something truly amazing. But that&#8217;s not enough. Get that product or service into the public eye, and engage the masses to take a look and spread the good word. Michael Hyatt shares how to build the <em>platform</em> upon which this process will happen.</p>
+
+<p><img src="http://c.michaelhyatt.com/banners/platform/728x901.png" alt="Just over that rise" />
+http://michaelhyatt.com/platform</p>
+
+<!--more-->
+
+
+<h2>Is this book for you?</h2>
+
+<p>Michael Hyatt&#8217;s book, &#8221;<a href="http://www.amazon.com/Platform-Get-Noticed-Noisy-World/dp/159555503X">Platform - Get Noticed in a Noisy World</a>&#8221; is an impressive book. As the books second subtitle says, it&#8217;s &#8220;a step-by-step guide for anyone with something to say or sell&#8221;. As it turns out, anyone with a product, service, or idea fits in this category.</p>
+
+<h2>The Gist of Platform</h2>
+
+<p>His strategy, and book, is broken into 5 sequential areas:</p>
+
+<ol>
+<li>Start with Wow</li>
+<li>Prepare to Launch</li>
+<li>Build Your Home Base</li>
+<li>Expand Your Reach</li>
+<li>Engage Your Tribe</li>
+</ol>
+
+
+<h2>The importance of a blog</h2>
+
+<p>The doesn&#8217;t get too much into product creation. My favorite chapter on that topic was chapter 2, &#8220;Bake in the Wow&#8221;. It contained great &#8220;wow&#8221; checklist items that will be insightful for your own product creation.</p>
+
+<p>Michael&#8217;s strategy centers around a blog, or as he calls it, a &#8220;home base&#8221;. This is the channel you control. You control the content, the format, the distribution, the readership, etc. He fills most of the book with this advice. This is where your product or service happens. This is where you direct everyone.</p>
+
+<p>The advice is specific: titles, lengths of posts, frequency of writing, language, policies, and more is covered. He also gives ample treatment to the effective use of Twitter. Throughout, I was impressed with his sharing of specific tools or websites that are helpful.</p>
+
+<h2>One small, perhaps fundamental beef</h2>
+
+<p>To me, section 2, &#8220;Prepare to Launch&#8221;, comes before section 1, &#8220;Start with Wow&#8221;. Why? Because you really have to envision your product before you create it. What is the product you&#8217;ll create? What is the exact problem you are trying to solve? Who is your target market? How will you distribute your service?</p>
+
+<p>As Michael says in chapter 11 on creating an elevator pitch: You must first achieve clarity yourself before you can spread the message to others. Would this not come before potentially time/cost-intensive creation of your product? Both sections are fantastic, by the way.</p>
+
+<h2>Blog-like Style</h2>
+
+<p>Mike covers a lot of ground in this book. The information is immediately relevant to anyone (everyone) who wants (needs) an Internet presence. The read is quick and easy with short chapters that get right to the point (essentially a blog post per chapter). The core information close to the surface with little cruft. The voice is conversational and compelling as Mike tells his own story of how he has developed a following online.</p>
+
+<p>It&#8217;s no wonder that his blog has garnered thousands of followers &#8211; the book was a good read with great content for creating a strong online presence. Or was it?  It was enough to help motivate me to start this blog.  Did you find it helpful/original?</p>
+
+<p>&nbsp;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Just Over the Next Rise]]></title>
+    <link href="http://jaketrent.com/post/just-over-the-next-rise/"/>
+    <updated>2012-09-25T16:43:00-06:00</updated>
+    <id>http://jaketrent.com/post/just-over-the-next-rise</id>
+    <content type="html"><![CDATA[<p>When you&#8217;ve climbed up a mountain before, have you ever noticed that there are probably 4 unexpected peaks before the real one?  And especially when you&#8217;re calves are especially burning?  Sometimes blogging can be like that.</p>
+
+<p><img src="http://i.imgur.com/iJTmj.jpg" alt="Just over that rise" />
+http://flic.kr/p/6ChTAu</p>
+
+<!--more-->
+
+
+<h2>A Tech blog is born</h2>
+
+<p>One platform here, another blog there, and yet another line of thinking written about.  Well, jaketrent.com is yet another &#8211; or is it?  It&#8217;s my latest (and most glorious!) blog.  It shall be a blog to surpass all <a href="http://rockycode.com/authors/jaketrent">previous blogs</a> (of mine).</p>
+
+<h2>Mountain without a Peak</h2>
+
+<p>It is certainly possible that this isn&#8217;t the peak.  And that&#8217;s probably a good thing.  Do you know what happens when you get to the peak?  You climb down and hike another next weekend.</p>
+
+<p>So, what is the mountain I&#8217;m climbing?  I breath the world of tech.  I create lots of software.  I&#8217;m so intrigued by the fast-paced evolution of things.  There&#8217;s something new, literally every weekend.  So, instead of a new blog every week, this blog will have something new every week.  It&#8217;ll be tech, and it&#8217;ll be sweet.</p>
+
+<h2>Ever-evolving Tech</h2>
+
+<p>One of my favorite things about the tech world is its constant evolution.  There is always something new to learn.  There really never is a dull moment.  If you relax, you&#8217;ve fallen behind, and your relevancy begins to diminish.</p>
+
+<p>This blog will push me to be more consistently clear on the state of technology.  It will be a sharing medium for me to teach on what I&#8217;ve learned.  The way software is created in the Internet age is fundamentally different than it was before.  Google is the pair programmer of many.  May it lead you here to find a bit of what you need in your quest.</p>
+
+<p>Tune in.  It&#8217;s gonna be good.</p>
 ]]></content>
   </entry>
   

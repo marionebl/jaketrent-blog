@@ -1,15 +1,87 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://jaketrent.com/post/why-i-chose-octopress/</loc>
-        <lastmod>2012-11-10T16:39:26-07:00</lastmod>
+        <loc>http://jaketrent.com/post/just-over-the-next-rise/</loc>
+        <lastmod>2012-11-10T16:45:53-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/book-review-for-platform/</loc>
+        <lastmod>2012-11-10T16:47:56-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/why-i-chose-a-wordpress-blog/</loc>
+        <lastmod>2012-11-10T16:50:01-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/developer-relations-for-internal-developers/</loc>
+        <lastmod>2012-11-10T16:51:33-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/how-to-organize-nodejs-routes/</loc>
+        <lastmod>2012-11-10T16:53:24-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/change-your-node-script-without-restarting/</loc>
+        <lastmod>2012-11-10T16:54:45-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/every-nth-item-in-handlebars-loop/</loc>
+        <lastmod>2012-11-10T16:56:19-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/a-grab-bag-of-backbone-tips/</loc>
+        <lastmod>2012-11-10T16:57:04-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/sort-conf-2012/</loc>
+        <lastmod>2012-11-10T16:57:53-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/paper-by-fiftythree/</loc>
+        <lastmod>2012-11-10T16:58:50-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/the-jaketrent-dot-com-logo/</loc>
+        <lastmod>2012-11-10T16:59:43-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/agile-designers/</loc>
+        <lastmod>2012-11-10T17:00:59-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/blog-topics/</loc>
+        <lastmod>2012-11-10T17:01:48-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/gruntjs-access-to-package-dot-json/</loc>
+        <lastmod>2012-11-10T17:02:31-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/run-requirejs-with-gruntjs/</loc>
+        <lastmod>2012-11-10T17:04:05-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/an-environment-specific-grunt-build/</loc>
+        <lastmod>2012-11-10T17:04:21-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/test-requirejs-testacular/</loc>
+        <lastmod>2012-11-10T17:05:16-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/grunt-and-testacular/</loc>
+        <lastmod>2012-11-10T17:06:44-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/responsive-table-with-scrolling/</loc>
+        <lastmod>2012-11-10T17:06:44-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/blog/archives/</loc>
-        <lastmod>2012-11-10T16:39:26-07:00</lastmod>
+        <lastmod>2012-11-10T17:06:44-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/</loc>
-        <lastmod>2012-11-10T16:39:26-07:00</lastmod>
+        <lastmod>2012-11-10T17:06:44-07:00</lastmod>
     </url>
 </urlset>
