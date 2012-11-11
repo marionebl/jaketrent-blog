@@ -1,0 +1,15 @@
+---
+layout: default
+---
+
+<div class="blog-index">
+  <h1>404</h1>
+  <p>What now?</p>
+</div>
+<aside class="sidebar">
+  {% if site.blog_index_asides.size %}
+    {% include_array blog_index_asides %}
+  {% else %}
+    {% include_array default_asides %}
+  {% endif %}
+</aside>
