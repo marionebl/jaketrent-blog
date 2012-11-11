@@ -16,16 +16,20 @@ Have you used GruntJs to build your JavaScript project yet?  It's a great tool. 
 
 Grunt supports a number of [directives](https://github.com/gruntjs/grunt/blob/master/docs/helpers_directives.md) out of the box.  These are callable from within you `grunt.js` file.  The gruntfile template uses one of these directives like so:
 
-    grunt.initConfig({
-      pkg: '<json:package.json>',
-      /* ... */
-    });
+{% codeblock lang:js %}
+grunt.initConfig({
+  pkg: '<json:package.json>',
+  /* ... */
+});
+{% endcodeblock %}
 
 This is making the contents of your `package.json` file available to your grunt config.  And this is what we wanted!  So, if I want to put the version of my app into some grunt task config, I can use it like so:
 
-    someTask: {
-      options: 'doStuff <%= pkg.version %>'
-    }
+{% codeblock lang:js %}
+someTask: {
+  options: 'doStuff <%= pkg.version %>'
+}
+{% endcodeblock %}
 
 This would already be enough -- it it worked all the time!  Turns out it doesn't [tear].
 
@@ -50,10 +54,12 @@ The post illuminated my dim mind:  Grunt runs in node.  Do what you would do in 
 
 Thusly, I just require the `package.json` file, and it is available.  Voila.  Who needs a stinkin template directive?  And it looks like:
 
-    var pkgJson = require('./package.json');
+{% codeblock lang:js %}
+var pkgJson = require('./package.json');
 
-    /* use as desired */
-    var version = pkgJson.version;
+/* use as desired */
+var version = pkgJson.version;
+{% endcodeblock %}
 
 My one departure from the Stack Overflow suggestion was to use a different variable name on the require statement ('package' -> 'pkgJson').  'package' is a keyword that doesn't pass linting.
 

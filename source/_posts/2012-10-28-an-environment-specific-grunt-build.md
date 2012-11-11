@@ -24,51 +24,53 @@ First, install the plugin:
 
 Second, fix up your grunt.js file to include:
 
-    module.exports = function(grunt) {
-      grunt.initConfig({
-        /* ... */
-        // 'requirejs' task REQUIRED to be listed first at root level config
+{% codeblock lang:js %}
+module.exports = function(grunt) {
+  grunt.initConfig({
+    /* ... */
+    // 'requirejs' task REQUIRED to be listed first at root level config
+    requirejs: {
+      compile: {
+        options: {
+          // !! all app.build.js standard requirejs options here
+        }
+      }
+    },
+    context: {
+      // !! list each of your desired environments/contexts here
+      local: {
+        tasks: {
+          // !! 'requirejs' task left out
+          default: 'lint test'
+        }
+      },
+      test: {
+        tasks: {
+          // !! put 'requirejs' in default task list
+          default: 'requirejs lint test'
+        }
+      },
+      prod: {
+        //  !! re-list the 'requirejs' task to override its behavior for this context
         requirejs: {
           compile: {
             options: {
-              // !! all app.build.js standard requirejs options here
+              // !! override the standard requirejs options for something
+              // special in prod build only
             }
           }
         },
-        context: {
-          // !! list each of your desired environments/contexts here
-          local: {
-            tasks: {
-              // !! 'requirejs' task left out
-              default: 'lint test'
-            }
-          },
-          test: {
-            tasks: {
-              // !! put 'requirejs' in default task list
-              default: 'requirejs lint test'
-            }
-          },
-          prod: {
-            //  !! re-list the 'requirejs' task to override its behavior for this context
-            requirejs: {
-              compile: {
-                options: {
-                  // !! override the standard requirejs options for something
-                  // special in prod build only
-                }
-              }
-            },
-            tasks: {
-              default: 'requirejs lint test'
-            }
-          }
+        tasks: {
+          default: 'requirejs lint test'
         }
-      });
+      }
+    }
+  });
 
-      // !! load the plugin
-      grunt.loadNpmTasks('grunt-context');
-    };
+  // !! load the plugin
+  grunt.loadNpmTasks('grunt-context');
+};
+{% endcodeblock %}
 
 Finally, run the grunt build and target a specific context.  If you want to build locally and not have requirejs run, type:
 

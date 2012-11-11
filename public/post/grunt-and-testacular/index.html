@@ -107,7 +107,7 @@
 
 <p>To install:</p>
 
-<pre><code>&gt; npm install grunt-testacular
+<pre><code>$ npm install grunt-testacular
 </code></pre>
 
 <p>Add the current version to your <code>package.json</code> for the future:</p>
@@ -117,25 +117,41 @@
 
 <p>Import the plugin in your <code>grunt.js</code> file:</p>
 
-<pre><code>grunt.loadNpmTasks('grunt-testacular');
-</code></pre>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-testacular&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>And finally, in <code>grunt.js</code>, specify your tasks:</p>
 
-<pre><code>testacularServer: {
-  unit: {
-    options: {
-      keepalive: true
-    },
-    configFile: 'testacular.conf.js'
-  }
-},
-testacularRun: {
-  unit: {
-    runnerPort: 9100
-  }
-},
-</code></pre>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">testacularServer</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">unit</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="nx">configFile</span><span class="o">:</span> <span class="s1">&#39;testacular.conf.js&#39;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">},</span>
+</span><span class='line'><span class="nx">testacularRun</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">unit</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">runnerPort</span><span class="o">:</span> <span class="mi">9100</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h4>Two Tasks</h4>
 
@@ -200,23 +216,40 @@ I logged an <a href="https://github.com/Dignifiedquire/grunt-testacular/issues/3
 
 <p>Instead, the grunt-testacular plugin gives you override ability on a per-variable basis.  To support the development and integration scenario, the grunt multiTask might look like this:</p>
 
-<pre><code>testacularServer: {
-  unit: {
-    options: {
-      keepalive: true
-    },
-    configFile: 'testacular.conf.js'
-  },
-  integration: {
-    options: {
-      keepalive: true
-    },
-    configFile: 'testacular.conf.js',
-    autoWatch: false,
-    singleRun: true
-  }
-},
-</code></pre>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">testacularServer</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">unit</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="nx">configFile</span><span class="o">:</span> <span class="s1">&#39;testacular.conf.js&#39;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">integration</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="nx">configFile</span><span class="o">:</span> <span class="s1">&#39;testacular.conf.js&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">autoWatch</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">singleRun</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>Following this same pattern, you could create a separate config for automated functional or end-to-end tests as well.</p>
 

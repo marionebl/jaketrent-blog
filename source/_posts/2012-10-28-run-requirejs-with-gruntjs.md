@@ -31,40 +31,42 @@ Install the plugin:
 
 Add the requirejs config to your grunt.js file:
 
-    module.exports = function(grunt) {
-      grunt.initConfig({
-        /* ... */
+{% codeblock lang:js %}
+module.exports = function(grunt) {
+  grunt.initConfig({
+    /* ... */
 
-        // !! This is the name of the task ('requirejs')
-        requirejs: {
-          compile: {
+    // !! This is the name of the task ('requirejs')
+    requirejs: {
+      compile: {
 
-            // !! You can drop your app.build.js config wholesale into 'options'
-            options: {
-              appDir: "src/",
-              baseUrl: ".",
-              dir: "target/",
-              optimize: 'uglify',
-              mainConfigFile:'./src/main.js',
-              modules:[
-                {
-                  name:'MyModule'
-                }
-              ],
-              logLevel: 0,
-              findNestedDependencies: true,
-              fileExclusionRegExp: /^\./,
-              inlineText: true
+        // !! You can drop your app.build.js config wholesale into 'options'
+        options: {
+          appDir: "src/",
+          baseUrl: ".",
+          dir: "target/",
+          optimize: 'uglify',
+          mainConfigFile:'./src/main.js',
+          modules:[
+            {
+              name:'MyModule'
             }
-          }
+          ],
+          logLevel: 0,
+          findNestedDependencies: true,
+          fileExclusionRegExp: /^\./,
+          inlineText: true
         }
-        /* ... */
-      });
+      }
+    }
+    /* ... */
+  });
 
-      // !! This loads the plugin into grunt
-      grunt.loadNpmTasks('grunt-contrib-requirejs');
+  // !! This loads the plugin into grunt
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
 
-    };
+};
+{% endcodeblock %}
 
 And run the task:
 

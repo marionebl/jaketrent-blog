@@ -82,31 +82,33 @@ The final point is that the RequireJs main module for your test runner should be
 
 So, finally, here is the 'file' excerpt of `testacular.conf.js`:
 
-    files = [
-      MOCHA,
-      MOCHA_ADAPTER,
-      REQUIRE,
-      REQUIRE_ADAPTER,
+{% codeblock lang:js %}
+files = [
+  MOCHA,
+  MOCHA_ADAPTER,
+  REQUIRE,
+  REQUIRE_ADAPTER,
 
-      // !! libs required for test framework
-      {pattern: 'node_modules/chai/chai.js', included: false},
+  // !! libs required for test framework
+  {pattern: 'node_modules/chai/chai.js', included: false},
 
-      // !! put what used to be in your requirejs 'shim' config here
-      'lib/jquery.js',
-      'lib/underscore.js',
-      'lib/backbone.js',
-      'lib/handlebars.js',
+  // !! put what used to be in your requirejs 'shim' config here
+  'lib/jquery.js',
+  'lib/underscore.js',
+  'lib/backbone.js',
+  'lib/handlebars.js',
 
-      // !! put all libs in requirejs 'paths' config here (included: false)
-      {pattern: 'lib/**/*.js', included: false},
+  // !! put all libs in requirejs 'paths' config here (included: false)
+  {pattern: 'lib/**/*.js', included: false},
 
-      // !! all src and test modules (included: false)
-      {pattern: 'src/**/*', included: false},
-      {pattern: 'test/**/*.test.js', included: false},
+  // !! all src and test modules (included: false)
+  {pattern: 'src/**/*', included: false},
+  {pattern: 'test/**/*.test.js', included: false},
 
-      // !! test main require module last
-      'test/test-main.js'
-    ];
+  // !! test main require module last
+  'test/test-main.js'
+];
+{% endcodeblock %}
 
 This config is awesome.  It replaces an html test runner that you would otherwise have to build.
 
@@ -128,17 +130,19 @@ Because the RequireJs require statements are asynchronous, Testacular needs to w
 
 The `main-test.js` file ends up looking like this:
 
-    require({
+{% codeblock lang:js %}
+require({
 
-      // !! Testacular serves files from '/base'
-      baseUrl: '/base/src',
-      paths: {
-        require: '../lib/require',
-        text: '../lib/text'
-      },
-    }, ['../test/MyModule.test'], function() {
-      window.__testacular__.start();
-    });
+  // !! Testacular serves files from '/base'
+  baseUrl: '/base/src',
+  paths: {
+    require: '../lib/require',
+    text: '../lib/text'
+  },
+}, ['../test/MyModule.test'], function() {
+  window.__testacular__.start();
+});
+{% endcodeblock %}
 
 ## RequireJs Test in Testacular
 
@@ -152,22 +156,24 @@ And finally, `should()` must be invoked to be available in the test.
 
 So, a simple test will look like:
 
-    define(['../node_modules/chai/chai', 'MyModule'],
-      function(chai, MyModule) {
+{% codeblock lang:js %}
+define(['../node_modules/chai/chai', 'MyModule'],
+  function(chai, MyModule) {
 
-      var assert = chai.assert,
-        expect = chai.expect,
-        should = chai.should();
+  var assert = chai.assert,
+    expect = chai.expect,
+    should = chai.should();
 
-      describe('MyModule', function () {
-        describe('#initialize()', function () {
-          it('should be a stinkin object', function () {
-            var yippee = new MyModule();
-            yippee.should.be.an('object');
-          });
-        });
+  describe('MyModule', function () {
+    describe('#initialize()', function () {
+      it('should be a stinkin object', function () {
+        var yippee = new MyModule();
+        yippee.should.be.an('object');
       });
     });
+  });
+});
+{% endcodeblock %}
 
 ## Run the Tests in Testacular
 

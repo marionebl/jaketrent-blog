@@ -18,7 +18,7 @@ Lucky for us, [Friedel Ziegelmayer](https://npmjs.org/package/grunt-testacular) 
 
 To install:
 
-    > npm install grunt-testacular
+    $ npm install grunt-testacular
 
 Add the current version to your `package.json` for the future:
 
@@ -26,23 +26,27 @@ Add the current version to your `package.json` for the future:
 
 Import the plugin in your `grunt.js` file:
 
-    grunt.loadNpmTasks('grunt-testacular');
+{% codeblock lang:js %}
+grunt.loadNpmTasks('grunt-testacular');
+{% endcodeblock %}
 
 And finally, in `grunt.js`, specify your tasks:
 
-    testacularServer: {
-      unit: {
-        options: {
-          keepalive: true
-        },
-        configFile: 'testacular.conf.js'
-      }
+{% codeblock lang:js %}
+testacularServer: {
+  unit: {
+    options: {
+      keepalive: true
     },
-    testacularRun: {
-      unit: {
-        runnerPort: 9100
-      }
-    },
+    configFile: 'testacular.conf.js'
+  }
+},
+testacularRun: {
+  unit: {
+    runnerPort: 9100
+  }
+}
+{% endcodeblock %}
 
 #### Two Tasks
 
@@ -100,22 +104,24 @@ To manage the options that are distinct to these two work flows, one could just 
 
 Instead, the grunt-testacular plugin gives you override ability on a per-variable basis.  To support the development and integration scenario, the grunt multiTask might look like this:
 
-    testacularServer: {
-      unit: {
-        options: {
-          keepalive: true
-        },
-        configFile: 'testacular.conf.js'
-      },
-      integration: {
-        options: {
-          keepalive: true
-        },
-        configFile: 'testacular.conf.js',
-        autoWatch: false,
-        singleRun: true
-      }
+{% codeblock lang:js %}
+testacularServer: {
+  unit: {
+    options: {
+      keepalive: true
     },
+    configFile: 'testacular.conf.js'
+  },
+  integration: {
+    options: {
+      keepalive: true
+    },
+    configFile: 'testacular.conf.js',
+    autoWatch: false,
+    singleRun: true
+  }
+}
+{% endcodeblock %}
 
 Following this same pattern, you could create a separate config for automated functional or end-to-end tests as well.
 

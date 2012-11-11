@@ -30,14 +30,16 @@ On the web, vertical scrolling is a part of the full meal deal.  So, the only th
 
 We want some columns to scroll and others to remain pinned whilst scrolling.  We'll duplicate the table in the markup and wrap each, a la:
 
-    <div class="table-wrapper">
-      <div class="pinned">
-        <!-- table here with pinned columns only-->
-      </div>
-      <div class="scrollable">
-        <!-- table here with scrollable columns only-->
-      </div>
-    </div>
+{% codeblock lang:html %}
+<div class="table-wrapper">
+  <div class="pinned">
+    <!-- table here with pinned columns only-->
+  </div>
+  <div class="scrollable">
+    <!-- table here with scrollable columns only-->
+  </div>
+</div>
+{% endcodeblock %}
 
 #### Line up the rows
 
@@ -63,24 +65,28 @@ I want to make my pinned table columns allow extra-long content, but I don't wan
 
 In short, the solution is to wrap the content inside of the `td` with two `divs`:
 
-    <div class="outer">
-      <div class="inner">
-        Row 4 longer than lotr
-      </div>
-    </div>
+{% codeblock lang:html %}
+<div class="outer">
+  <div class="inner">
+    Row 4 longer than lotr
+  </div>
+</div>
+{% endcodeblock %}
 
 And sprinkle with a bit of stylesheet:
 
-    td .outer {
-      position: relative;
-      height: 30px;
-    }
-    td .inner {
-      overflow: hidden;
-      white-space: nowrap;
-      position: absolute;
-      width: 100%;
-    }
+{% codeblock lang:css %}
+td .outer {
+  position: relative;
+  height: 30px;
+}
+td .inner {
+  overflow: hidden;
+  white-space: nowrap;
+  position: absolute;
+  width: 100%;
+}
+{% endcodeblock %}
 
 This style will let the column width remain and the content overflow.  It will also keep the cell text on one line, and it will be hidden as it flows off the right-hand side of the cell.  To wrap and hide as it flows off the bottom of the cell, remove the `white-space: nowrap` attribute.
 

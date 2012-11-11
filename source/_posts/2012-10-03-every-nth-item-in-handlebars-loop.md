@@ -22,23 +22,25 @@ Inside a block helper in Handlebars, when you call `options.fn`, you pass the co
 
 The code in full looks like this:
 
-    Handlebars.registerHelper('everyNth', function(context, every, options) {
-      var fn = options.fn, inverse = options.inverse;
-      var ret = "";
-      if(context && context.length > 0) {
-        for(var i=0, j=context.length; i<j; i++) {
-          var modZero = i % every === 0;
-          ret = ret + fn(_.extend({}, context[i], {
-            isModZero: modZero,
-            isModZeroNotFirst: modZero && i > 0,
-            isLast: i === context.length - 1
-          }));
-        }
-      } else {
-        ret = inverse(this);
-      }
-      return ret;
-    });
+{% codeblock lang:js %}
+Handlebars.registerHelper('everyNth', function(context, every, options) {
+  var fn = options.fn, inverse = options.inverse;
+  var ret = "";
+  if(context && context.length > 0) {
+    for(var i=0, j=context.length; i<j; i++) {
+      var modZero = i % every === 0;
+      ret = ret + fn(_.extend({}, context[i], {
+        isModZero: modZero,
+        isModZeroNotFirst: modZero && i > 0,
+        isLast: i === context.length - 1
+      }));
+    }
+  } else {
+    ret = inverse(this);
+  }
+  return ret;
+});
+{% endcodeblock %}
 
 Note: This implementation uses [underscore `_.extend()`](http://underscorejs.org/#extend).
 
@@ -48,27 +50,31 @@ Here's a scenario where this is useful:  In twitter bootstrap, each "span" div i
 
 The usage:
 
-    {{#everyNth myArray theNumberN}}
-    {{/everyNth}}
+{% codeblock lang:html %}
+{{#everyNth myArray theNumberN}}
+{{/everyNth}}
+{% endcodeblock %}
 
 Our new helper `everyNth` allows us to write code like this:
 
-    {{#everyNth vids 3}}
-      {{#if isModZeroNotFirst}}
-        </div>
-      {{/if}}
-      {{#if isModZero}}
-        <div class="row-fluid">
-      {{/if}}
-      <div class="span4">
-        <div class="thumb">
-          <a href="{{ linkUrl }}"><img src="{{ image }}" /></a>
-        </div>
-      </div>
-      {{#if isLast}}
-        </div>
-      {{/if}}
-    {{/everyNth}}
+{% codeblock lang:html %}
+{{#everyNth vids 3}}
+  {{#if isModZeroNotFirst}}
+    </div>
+  {{/if}}
+  {{#if isModZero}}
+    <div class="row-fluid">
+  {{/if}}
+  <div class="span4">
+    <div class="thumb">
+      <a href="{{ linkUrl }}"><img src="{{ image }}" /></a>
+    </div>
+  </div>
+  {{#if isLast}}
+    </div>
+  {{/if}}
+{{/everyNth}}
+{% endcodeblock %}
 
 To clarify the need and usage of these new variables:
 
