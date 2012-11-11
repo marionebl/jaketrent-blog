@@ -105,18 +105,27 @@
 
 <p>Grunt supports a number of <a href="https://github.com/gruntjs/grunt/blob/master/docs/helpers_directives.md">directives</a> out of the box.  These are callable from within you <code>grunt.js</code> file.  The gruntfile template uses one of these directives like so:</p>
 
-<pre><code>grunt.initConfig({
-  pkg: '&lt;json:package.json&gt;',
-  /* ... */
-});
-</code></pre>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">pkg</span><span class="o">:</span> <span class="s1">&#39;&lt;json:package.json&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="cm">/* ... */</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>This is making the contents of your <code>package.json</code> file available to your grunt config.  And this is what we wanted!  So, if I want to put the version of my app into some grunt task config, I can use it like so:</p>
 
-<pre><code>someTask: {
-  options: 'doStuff &lt;%= pkg.version %&gt;'
-}
-</code></pre>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">someTask</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">options</span><span class="o">:</span> <span class="s1">&#39;doStuff &lt;%= pkg.version %&gt;&#39;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>This would already be enough &#8211; it it worked all the time!  Turns out it doesn&#8217;t [tear].</p>
 
@@ -144,11 +153,16 @@
 
 <p>Thusly, I just require the <code>package.json</code> file, and it is available.  Voila.  Who needs a stinkin template directive?  And it looks like:</p>
 
-<pre><code>var pkgJson = require('./package.json');
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">pkgJson</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./package.json&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* use as desired */</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">version</span> <span class="o">=</span> <span class="nx">pkgJson</span><span class="p">.</span><span class="nx">version</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-/* use as desired */
-var version = pkgJson.version;
-</code></pre>
 
 <p>My one departure from the Stack Overflow suggestion was to use a different variable name on the require statement (&#8216;package&#8217; -> &#8216;pkgJson&#8217;).  &#8216;package&#8217; is a keyword that doesn&#8217;t pass linting.</p>
 
