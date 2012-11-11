@@ -1,0 +1,838 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: js | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2012-11-11T15:56:20-07:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Grunt and Testacular]]></title>
+    <link href="http://jaketrent.com/post/grunt-and-testacular/"/>
+    <updated>2012-11-06T17:05:00-07:00</updated>
+    <id>http://jaketrent.com/post/grunt-and-testacular</id>
+    <content type="html"><![CDATA[<p><a href="http://vojtajina.github.com/testacular/">Testacular</a> is a test runner for running browser tests.  Once you have it <a href="http://jaketrent.com/post/test-requirejs-testacular/">up and running</a>, you may want to integrate it with your <a href="http://gruntjs.com/">Grunt</a> build process.  This will allow Testacular to be started and your tests to be run from Grunt.</p>
+
+<p><img src="http://i.imgur.com/zze56.jpg" alt="Grunt and Testacular" /></p>
+
+<!--more-->
+
+
+<h2>grunt-testacular</h2>
+
+<p>Lucky for us, <a href="https://npmjs.org/package/grunt-testacular">Friedel Ziegelmayer</a> has created a nice little plugin, <a href="https://npmjs.org/package/grunt-testacular">grunt-testacular</a>.</p>
+
+<p>To install:</p>
+
+<pre><code>$ npm install grunt-testacular
+</code></pre>
+
+<p>Add the current version to your <code>package.json</code> for the future:</p>
+
+<pre><code>"grunt-testacular": "0.2.x"
+</code></pre>
+
+<p>Import the plugin in your <code>grunt.js</code> file:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-testacular&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And finally, in <code>grunt.js</code>, specify your tasks:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">testacularServer</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">unit</span><span class="o">:</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'><span class="p">},</span>
+</span><span class='line'><span class="nx">configFile</span><span class="o">:</span> <span class="s1">&#39;testacular.conf.js&#39;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}</span>
+</span><span class='line'><span class="p">},</span>
+</span><span class='line'><span class="nx">testacularRun</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">unit</span><span class="o">:</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">runnerPort</span><span class="o">:</span> <span class="mi">9100</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>Two Tasks</h4>
+
+<p>Grunt-testacular provides two tasks:</p>
+
+<ol>
+<li>testacularServer - starts the Testacular server (equivalent to <code>testacular start</code>)</li>
+<li>testacularRun - runs your tests against an already-started server (equivalent to <code>testacular run</code>)</li>
+</ol>
+
+
+<h4>A grunt-testacular Oddity</h4>
+
+<p>If you don't have <code>keepalive: true</code> set for grunt-testacular, the Testacular server will shutdown before it has a chance to capture browsers or run your tests.  I'm really not sure why this is even an option.  The false case behavior doesn't seem to be useful.  With the <code>singleRun</code> ability of Testacular, the plugin should just call start on the server and let the server configuration decide when it's appropriate to shut down.</p>
+
+<p><strong>Update:</strong>
+I logged an <a href="https://github.com/Dignifiedquire/grunt-testacular/issues/3#issuecomment-10234529">issue for grunt-testacular</a> that Grunt tasks listed after <code>testacularServer</code> weren't being run.  Friedal responded that <code>keepalive: true</code> was the problem.  If it is specified true, then it has to be the last task in the list.  So, if you have tasks after <code>testacularServer</code> specified, remove <code>keepalive: true</code> and add <code>watch</code> to the end of your task list.</p>
+
+<h2>Grunt and Testacular Work Flow</h2>
+
+<p>Of course, your work flow is up to you, and Grunt and Testacular give you enough flexibility to decide your own, but I think you'll run your tests in two main scenarios: development and continuous integration.</p>
+
+<h4>Development</h4>
+
+<p>For development, I like to start up the Testacular server and keep it running.  Then, I go write tests and update source code.  Testacular will notice my changes and automatically re-run my tests.</p>
+
+<p>To set this up, make sure your grunt-testacular task has this option:</p>
+
+<pre><code>keepalive: true
+</code></pre>
+
+<p>This will keep the server up even after the tests have completed.</p>
+
+<p>And make sure your <code>testacular.conf.js</code> file includes:</p>
+
+<pre><code>autoWatch = true;
+</code></pre>
+
+<p>This will force Testacular to re-run your tests if anything in your source or tests change (specifically, if anything in testacular.conf.js's <code>files</code> array changes).</p>
+
+<h4>Continuous Integration</h4>
+
+<p>For continuous integration, you just want your automated build to be able to verify the source code integrity prior to deploying.</p>
+
+<p>We don't want tests to re-run automatically based on our changes, so we turn off <code>autoWatch</code> in <code>testacular.conf.js</code>:</p>
+
+<pre><code>autoWatch = false;
+</code></pre>
+
+<p>And we set one more value in <code>testacular.conf.js</code> to:</p>
+
+<pre><code>singleRun = true;
+</code></pre>
+
+<p>This will allow the <code>testacularServer</code> task to be run once, have Testacular run all the tests, and then make the server shut down.</p>
+
+<p>Finally, remember to keep <code>keepalive: true</code> set in <code>grunt.js</code>.  Odd, right?</p>
+
+<h2>Multiple Testacular Configurations</h2>
+
+<p>To manage the options that are distinct to these two work flows, one could just create two separate <code>testacular.conf.js</code> files.  But, that would be overkill, because there'd be a lot of overlap between the two files.</p>
+
+<p>Instead, the grunt-testacular plugin gives you override ability on a per-variable basis.  To support the development and integration scenario, the grunt multiTask might look like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">testacularServer</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">unit</span><span class="o">:</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'><span class="p">},</span>
+</span><span class='line'><span class="nx">configFile</span><span class="o">:</span> <span class="s1">&#39;testacular.conf.js&#39;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">integration</span><span class="o">:</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'><span class="p">},</span>
+</span><span class='line'><span class="nx">configFile</span><span class="o">:</span> <span class="s1">&#39;testacular.conf.js&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="nx">autoWatch</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class='line'><span class="nx">singleRun</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Following this same pattern, you could create a separate config for automated functional or end-to-end tests as well.</p>
+
+<p>Note that the <code>options</code> object is strictly for the plugin.  The other variables at that level feed straight into Testacular as overrides.</p>
+
+<h2>Integrated Testing</h2>
+
+<p>Process and product maturity are increased as tests are integrated into the build process.  Grunt and Testacular make integrating your browser tests a snap.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Test RequireJs Code in Testacular]]></title>
+    <link href="http://jaketrent.com/post/test-requirejs-testacular/"/>
+    <updated>2012-10-31T17:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/test-requirejs-testacular</id>
+    <content type="html"><![CDATA[<p>Did you write your source code as JavaScript AMD modules in <a href="http://requirejs.org/">RequireJs</a>?  Do you want to test them in real browsers?  Do you want the flexibility of using <a href="http://visionmedia.github.com/mocha/">Mocha</a> or <a href="http://pivotal.github.com/jasmine/">Jasmine</a>?  This is the moment you've been waiting for.</p>
+
+<p><a href="http://vojtajina.github.com/testacular/">Testacular is a "spetacular test runner for JavaScript"</a> that was written to support the <a href="http://angularjs.org/">AngularJs</a> project.  It is valuable because it will run your tests in real browsers.  This is important for front-end code that relies on browser globals such as <code>window</code> (eg, if you use jQuery) or that manipulates the DOM (which could vary browser to browser).</p>
+
+<p>Client-side JavaScript testing is a somewhat crazy space.  Some have even called it <a href="http://rzrsharp.net/2012/08/01/client-side-testing-insanity.html">"insane"</a> and taken drastically different routes than what follows.  But we're gonna see if we can power through, and Testacular will help us get the job done.</p>
+
+<p><img src="http://i.imgur.com/7gh40.jpg" alt="Testacular Javascript Testing" /></p>
+
+<!--more-->
+
+
+<h2>RequireJs Modules</h2>
+
+<p>We wrote our source code using RequireJs-implemented AMD modules.  This gives us:</p>
+
+<ul>
+<li>Clean code organization</li>
+<li>Namespaced code (not global)</li>
+<li>Explicit dependency management</li>
+<li>Source optimized via the RequireJs build</li>
+</ul>
+
+
+<p>Unfortunately, it also makes our source a bit more tricky to test.</p>
+
+<h2>Testacular RequireJs Support</h2>
+
+<p><a href="https://groups.google.com/forum/?fromgroups=#!topic/testacular/CRsf8Ig4bgE">RequireJs support was just barely added</a> to Testacular, so it only lives in the canary channel (master).  To install with npm:</p>
+
+<pre><code>npm install -g testacular@canary
+</code></pre>
+
+<p>This will currently install version <del datetime="2012-11-05T14:38:54+00:00">0.5.1</del> 0.5.2.  This is the first version of Testacular with RequireJs support.  So your <code>package.json</code> should include an entry like:</p>
+
+<pre><code>"testacular": "&gt;=0.5.2"
+</code></pre>
+
+<p>If <a href="https://npmjs.org/package/testacular">Testacular</a> has moved to >=0.6.0, you can use the stable channel.</p>
+
+<h2>Configure Testacular For RequireJs</h2>
+
+<h4>Directory Setup</h4>
+
+<p>For clarity in the example configuration files and test below, the directory structure upon which these are based looks like this:</p>
+
+<pre><code>project/
+    lib/
+        jquery.js #etc
+    node_modules/
+        chai/ #etc
+    src/
+        MyModule.js
+    test/
+        MyModule.test.js
+        test-main.js
+testacular.conf.js
+</code></pre>
+
+<h4>Initialize Testacular</h4>
+
+<p>Testacular comes with a nice utility for generating a config file (default name: 'testacular.conf.js') that it needs in order to run.  In your terminal, type:</p>
+
+<pre><code>testacular init
+</code></pre>
+
+<p>This will give you a series of prompts for things such as paths to source and tests and which browsers to capture.  <del datetime="2012-11-05T14:38:54+00:00">These prompts do not include the option to add RequireJs support automatically, so you'll need to add those lines manually to your <code>testacular.conf.js</code> (see below).</del>  As of testacular 0.5.2, <code>testacular init</code> will prompt for usage of the RequireJs adapter.</p>
+
+<h4>Testacular Include</h4>
+
+<p>Testacular 0.5.1, while adding RequireJs support, has added a new concept of "included" to the files listed in your config.  This is because RequireJs will balk about a the module not being loaded correctly (ie, loaded synchronously in the <code>&lt;head/&gt;</code> tag of the runner).  From the <a href="http://requirejs.org/docs/errors.html#mismatch">RequireJs docs</a>:</p>
+
+<blockquote><p>"Be sure to load all scripts that call define() via the RequireJS API. Do not manually code script tags in HTML to load scripts that have define() calls in them."</p></blockquote>
+
+<h4>RequireJs Shim</h4>
+
+<p>Not immediately apparent is the fact that the 'shim' config from RequireJs 2.x does not work from within Testacular.  I haven't yet figured out why.  For instance, I was constantly getting "'Backbone' is not defined" messages even though it was specified in the 'shim' config and required in the test.  I could have been doing something wrong.  My solution thus far has been to list each of the non-RequireJs modules and their dependencies in the 'files' attribute of <code>testacular.conf.js</code>.</p>
+
+<h4>testacular.conf.js</h4>
+
+<p>The final point is that the RequireJs main module for your test runner should be the last file listed.</p>
+
+<p>So, finally, here is the 'file' excerpt of <code>testacular.conf.js</code>:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">files</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>  <span class="nx">MOCHA</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">MOCHA_ADAPTER</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">REQUIRE</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">REQUIRE_ADAPTER</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! libs required for test framework</span>
+</span><span class='line'>  <span class="p">{</span><span class="nx">pattern</span><span class="o">:</span> <span class="s1">&#39;node_modules/chai/chai.js&#39;</span><span class="p">,</span> <span class="nx">included</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! put what used to be in your requirejs &#39;shim&#39; config here</span>
+</span><span class='line'>  <span class="s1">&#39;lib/jquery.js&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;lib/underscore.js&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;lib/backbone.js&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;lib/handlebars.js&#39;</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! put all libs in requirejs &#39;paths&#39; config here (included: false)</span>
+</span><span class='line'>  <span class="p">{</span><span class="nx">pattern</span><span class="o">:</span> <span class="s1">&#39;lib/&lt;em&gt;*/&lt;/em&gt;.js&#39;</span><span class="p">,</span> <span class="nx">included</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! all src and test modules (included: false)</span>
+</span><span class='line'>  <span class="p">{</span><span class="nx">pattern</span><span class="o">:</span> <span class="s1">&#39;src/&lt;strong&gt;/*&#39;</span><span class="p">,</span> <span class="nx">included</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span>
+</span><span class='line'>  <span class="p">{</span><span class="nx">pattern</span><span class="o">:</span> <span class="s1">&#39;test/&lt;/strong&gt;/*.test.js&#39;</span><span class="p">,</span> <span class="nx">included</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! test main require module last</span>
+</span><span class='line'>  <span class="s1">&#39;test/test-main.js&#39;</span>
+</span><span class='line'><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This config is awesome.  It replaces an html test runner that you would otherwise have to build.</p>
+
+<h2>RequireJs Main Module</h2>
+
+<p>Just like any RequireJs project, you need a main module to bootstrap your tests.  In the main module, you setup the <a href="http://requirejs.org/docs/api.html#config"><code>require.config</code></a>.</p>
+
+<h4>Testacular '/base' Directory</h4>
+
+<p>Testacular serves files under the '/base' directory.  So, on the server, requests to files will be served up under 'http://localhost:9876/base/*'.  The RequireJs config for <code>baseUrl</code> gives a starting context for modules that load with relative paths.  When setting this value for the Testacular server, it will need to start with '/base'.  I want my baseUrl to be at the root of my '/src' directory so relative requires in the source won't need to change.  My baseUrl has the value of '/base/src'.</p>
+
+<h4>Require Each Test File</h4>
+
+<p>One of the things I hate is having to update a master list of all tests to run every time I add a test.  Unfortunately, that's what I currently have.  The test main module has to specifically require each of the test modules.  I would love it if I could add a <code>*.test.js</code> file to the test directory and just have it run the next time the tests run.</p>
+
+<h4>Asynchronously Run Testacular</h4>
+
+<p>Because the RequireJs require statements are asynchronous, Testacular needs to wait until they're done (the code is loaded and ready) before it starts the tests.</p>
+
+<p>The <code>main-test.js</code> file ends up looking like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">require</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! Testacular serves files from &#39;/base&#39;</span>
+</span><span class='line'>  <span class="nx">baseUrl</span><span class="o">:</span> <span class="s1">&#39;/base/src&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">require</span><span class="o">:</span> <span class="s1">&#39;../lib/require&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="nx">text</span><span class="o">:</span> <span class="s1">&#39;../lib/text&#39;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">},</span>
+</span><span class='line'><span class="p">},</span> <span class="p">[</span><span class="s1">&#39;../test/MyModule.test&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="o">&lt;</span><span class="nx">strong</span><span class="o">&gt;</span><span class="nx">testacular</span><span class="o">&lt;</span><span class="err">/strong&gt;.start();</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>RequireJs Test in Testacular</h2>
+
+<p>All the setup thus far has been in preparation for the code to follow.  The test can now be setup as a RequireJs module.  It can require the source code under test.  It can use <a href="http://visionmedia.github.com/mocha/">Mocha</a> (or whatever framework there is a Testacular adapter for).</p>
+
+<p>I will also use <a href="http://chaijs.com/">Chai</a> in order to get the <a href="http://chaijs.com/guide/styles/">'should' BDD-style assertions</a>.  Note that by using RequireJs and running in the browser, we can't just <code>require('chai')</code>.  It has to be required using the asynchronous callback to avoid <a href="http://requirejs.org/docs/errors.html#notloaded">this error</a>:</p>
+
+<blockquote><p>Uncaught Error: Module name "../node_modules/chai/chai" has not been loaded yet for context: _. Use require([])</p></blockquote>
+
+<p>And finally, <code>should()</code> must be invoked to be available in the test.</p>
+
+<p>So, a simple test will look like:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;../node_modules/chai/chai&#39;</span><span class="p">,</span> <span class="s1">&#39;MyModule&#39;</span><span class="p">],</span>
+</span><span class='line'>  <span class="kd">function</span><span class="p">(</span><span class="nx">chai</span><span class="p">,</span> <span class="nx">MyModule</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">assert</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">expect</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">expect</span><span class="p">,</span>
+</span><span class='line'><span class="nx">should</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">should</span><span class="p">();</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;MyModule&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;#initialize()&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be a stinkin object&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">yippee</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyModule</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">yippee</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">an</span><span class="p">(</span><span class="s1">&#39;object&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Run the Tests in Testacular</h2>
+
+<p>There are a couple options set in <code>testacular.conf.js</code> that will describe how your tests can be run:</p>
+
+<ul>
+<li><strong>singleRun</strong> - Start Testacular server, capture browsers, run all tests, shutdown server</li>
+<li><strong>autoWatch</strong> - Have the server run tests every time a source or test file changes (and requires you to turn off singleRun)</li>
+</ul>
+
+
+<p>To start the Testacular server:</p>
+
+<pre><code>testacular start
+</code></pre>
+
+<p>Finally, if your Testacular server is already running and you want to kick off the tests, type:</p>
+
+<pre><code>testacular run
+</code></pre>
+
+<h2>Now to Test</h2>
+
+<p>Thank you to <a href="https://github.com/vojtajina">Vojta Jina</a> and the rest of the AngularJs crew and other contributors for making an awesome test runner.  I'm very happy that RequireJs support was added.  Vojta has also provided an <a href="https://github.com/vojtajina/testacular/tree/master/test/e2e/requirejs">end-to-end example</a> with code on Github.</p>
+
+<p>How do you see that we could improve this configuration or testing process?</p>
+
+<p>Now to test some sweet code!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[An Environment-specific Grunt Build]]></title>
+    <link href="http://jaketrent.com/post/an-environment-specific-grunt-build/"/>
+    <updated>2012-10-28T17:03:00-06:00</updated>
+    <id>http://jaketrent.com/post/an-environment-specific-grunt-build</id>
+    <content type="html"><![CDATA[<p>Does your project use GruntJs as a build tool?  Have you ever to customize your build to the environment you're deploying to?  It's handy to be able to specify certain commands to run or keep from running.  It's likely essential to be able to change environment-specific variables via Grunt.  It's not bad.  Most of the leg-work has been done by earlier generations -- that is, if Grunt is old enough to have earlier generations yet.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
+
+<!--more-->
+
+
+<h2>Grunt-context Plugin</h2>
+
+<p>Jonathan Barnett has created a nice little grunt plugin that called <a href="https://npmjs.org/package/grunt-context">grunt-context</a>.  With grunt-context, you can easily specify environment-specific overrides to your grunt tasks.  The <a href="https://github.com/indieisaconcept/grunt-context">github page for grunt-context</a> can provide you with the basics on how to configure your grunt build.</p>
+
+<p>Let's try a concrete config.  Let's say that I want to run the <a href="http://jaketrent.com/post/run-requirejs-with-gruntjs/">RequireJs optimizer</a> only when I deploy to my test environment or to production but not for my local build.</p>
+
+<p>First, install the plugin:</p>
+
+<pre><code>npm install grunt-context
+</code></pre>
+
+<p>Second, fix up your grunt.js file to include:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="cm">/* ... */</span>
+</span><span class='line'><span class="c1">// &#39;requirejs&#39; task REQUIRED to be listed first at root level config</span>
+</span><span class='line'><span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">compile</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// !! all app.build.js standard requirejs options here</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">},</span>
+</span><span class='line'><span class="nx">context</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// !! list each of your desired environments/contexts here</span>
+</span><span class='line'>  <span class="nx">local</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">tasks</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// !! &#39;requirejs&#39; task left out</span>
+</span><span class='line'>      <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;lint test&#39;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">test</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">tasks</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// !! put &#39;requirejs&#39; in default task list</span>
+</span><span class='line'>      <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;requirejs lint test&#39;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">prod</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">//  !! re-list the &#39;requirejs&#39; task to override its behavior for this context</span>
+</span><span class='line'>    <span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">compile</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="c1">// !! override the standard requirejs options for something</span>
+</span><span class='line'>          <span class="c1">// special in prod build only</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="nx">tasks</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;requirejs lint test&#39;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! load the plugin</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-context&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Finally, run the grunt build and target a specific context.  If you want to build locally and not have requirejs run, type:</p>
+
+<pre><code>grunt context:local
+</code></pre>
+
+<p>If you want to build for test, where requirejs will optimize, type:</p>
+
+<pre><code>grunt context:test
+</code></pre>
+
+<p>Notice in the 'prod' context that I also can override the actual variables for running the requirejs build.  So, it will not only run things or not run things, but you can run tasks in specific ways per environment.</p>
+
+<h2>The Cons</h2>
+
+<p>The plugin works well most of the time, but I haven't had a stellar performance in all cases.  It could be that I'm unknowingly using it wrong.  I've tried many different methods to try and work out some of my issues with it.</p>
+
+<p>For instance, I cannot get it to override functions set to the <a href="https://npmjs.org/package/grunt-exec">grunt-exec</a> <code>command</code> attribute.  It will override string commands just fine, but it has problems with functions.  This could be because it has to assemble task lists for execution within a context and calculate overrides.  My guess is that the implementation may just be lacking in this area.</p>
+
+<h2>Best Option So Far</h2>
+
+<p>For environment-specific grunt builds, <a href="https://npmjs.org/package/grunt-context">grunt-context</a> is the best solution I've found so far.  It's not the best, but it usually gets the job done.  I've bent it to my will thus far.</p>
+
+<p>What have you found that works well for environment-specific JavaScript builds?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Run RequireJs with GruntJs]]></title>
+    <link href="http://jaketrent.com/post/run-requirejs-with-gruntjs/"/>
+    <updated>2012-10-28T17:02:00-06:00</updated>
+    <id>http://jaketrent.com/post/run-requirejs-with-gruntjs</id>
+    <content type="html"><![CDATA[<p>RequireJs features a fantastic optimization tool, <a href="http://requirejs.org/docs/optimization.html">r.js</a>, that utilizes <a href="https://github.com/mishoo/UglifyJS">UglifyJs</a> to minimize and concatenate your JavaScript code.  <a href="http://gruntjs.com/">Grunt</a> is a build tool that is great for standardizing your build configuration and coordinating multiple build steps -- amongst its other wonders.  Hopefully you get to use both on your project, because they'll both make your development process smoother and leave you to the funnerest stuff -- writing sweet apps.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
+
+<!--more-->
+
+
+<h2>Vanilla RequireJs</h2>
+
+<p>To use <a href="http://requirejs.org/docs/optimization.html#wholeproject">vanilla RequireJS to optimize your project</a>, you'll need to do two things:</p>
+
+<ol>
+<li><strong>Create app.build.js</strong>  - This file contains the configuration for how your want RequireJs react to your source code.  Among other things, paths to source directories and output files are specified.</li>
+<li><strong>Run the optimizer</strong> - via the command <code>node r.js -o app.build.js</code></li>
+</ol>
+
+
+<p>Grunt has essentially the same steps, but they're specified in the standard grunt config file and will integrate better with the rest of your build process steps that are in grunt.</p>
+
+<h2>Grunt RequireJs Configuration</h2>
+
+<p>An easy way to get Grunt to run your RequireJs build is to use the <a href="https://npmjs.org/package/grunt-contrib-requirejs"><code>grunt-contrib-requirejs</code></a> plugin.</p>
+
+<p>Install the plugin:</p>
+
+<pre><code>npm install grunt-contrib-requirejs
+</code></pre>
+
+<p>Add the requirejs config to your grunt.js file:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="cm">/* ... */</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// !! This is the name of the task (&#39;requirejs&#39;)</span>
+</span><span class='line'><span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">compile</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// !! You can drop your app.build.js config wholesale into &#39;options&#39;</span>
+</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">appDir</span><span class="o">:</span> <span class="s2">&quot;src/&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">dir</span><span class="o">:</span> <span class="s2">&quot;target/&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">optimize</span><span class="o">:</span> <span class="s1">&#39;uglify&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">mainConfigFile</span><span class="o">:</span><span class="s1">&#39;./src/main.js&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">modules</span><span class="o">:</span><span class="p">[</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>          <span class="nx">name</span><span class="o">:</span><span class="s1">&#39;MyModule&#39;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>      <span class="p">],</span>
+</span><span class='line'>      <span class="nx">logLevel</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">findNestedDependencies</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">fileExclusionRegExp</span><span class="o">:</span> <span class="sr">/^\./</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">inlineText</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="cm">/* ... */</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! This loads the plugin into grunt</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-requirejs&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And run the task:</p>
+
+<pre><code>grunt requirejs
+</code></pre>
+
+<p>You should get the regular RequireJs build output that you're used to seeing, and you'll be able to verify that it worked.</p>
+
+<h2>Solid Optimization</h2>
+
+<p>RequireJs does a great build.  Grunt is flexible and easy to work with.  They go well together thanks to the <a href="https://npmjs.org/package/grunt-contrib-requirejs">grunt-contrib-requirejs</a> plugin, which gives a solid performance.  You'll have your JavaScript code done up so tight; it'll be denser than lead -- which is obviously what you've always dreamed of.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GruntJs Access to package.json]]></title>
+    <link href="http://jaketrent.com/post/gruntjs-access-to-package-dot-json/"/>
+    <updated>2012-10-25T17:02:00-06:00</updated>
+    <id>http://jaketrent.com/post/gruntjs-access-to-package-dot-json</id>
+    <content type="html"><![CDATA[<p>Have you used GruntJs to build your JavaScript project yet?  It's a great tool.  Often as a part of the build configuration, you'll want to access your package.json with grunt.  Grunt has some built-in support for this.  Some bits can be a little tricky, and some plugins have limited support.  Here are some ways around all that.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
+
+<!--more-->
+
+
+<h2>Grunt JSON Directive</h2>
+
+<p>Grunt supports a number of <a href="https://github.com/gruntjs/grunt/blob/master/docs/helpers_directives.md">directives</a> out of the box.  These are callable from within you <code>grunt.js</code> file.  The gruntfile template uses one of these directives like so:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">pkg</span><span class="o">:</span> <span class="s1">&#39;&amp;lt;json:package.json&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="err">/&lt;em&gt; ... &lt;/em&gt;/</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This is making the contents of your <code>package.json</code> file available to your grunt config.  And this is what we wanted!  So, if I want to put the version of my app into some grunt task config, I can use it like so:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">someTask</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">options</span><span class="o">:</span> <span class="s1">&#39;doStuff &amp;lt;%= pkg.version %&gt;&#39;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This would already be enough -- it it worked all the time!  Turns out it doesn't [tear].</p>
+
+<h2>grunt.template</h2>
+
+<p>This syntax ("&lt;%= someVar %>") is referred to as a grunt.template.  It is based on  <a href="http://underscorejs.org/#template">underscore's template</a> function.</p>
+
+<h2>Grunt Plugin Support</h2>
+
+<p>It turns out that all plugins are not created equal.  Some plugins do not support this syntax at all.  I wrestled with mainly two plugins</p>
+
+<ul>
+<li><a href="https://npmjs.org/package/grunt-exec">grunt-exec</a> - for executing scripts/commands in the shell</li>
+<li><a href="https://npmjs.org/package/grunt-jade">grunt-jade</a> - for compiling jade templates</li>
+</ul>
+
+
+<p>As far as I can tell, neither plugin supports <code>grunt.template</code>.  Lameo.  In the case of <code>grunt-jade</code>, I actually switched plugins to <a href="https://npmjs.org/package/grunt-contrib-jade"><code>grunt-contrib-jade</code></a>, which states explicit support for <code>grunt.template</code> in the docs.  Other than the docs or trying it out, I otherwise don't know how to determine support.</p>
+
+<h2>Access package.json Directly</h2>
+
+<p>Where I couldn't find a plugin that explicitly supported <code>grunt.template</code>, I needed another solution.  Guided by the power of Google, I ran across a good Stack Overflow post on <a href="http://stackoverflow.com/questions/12408535/how-to-pass-in-package-json-array-to-grunt-js">getting <code>package.json</code> values into the <code>grunt.js</code> file</a>.</p>
+
+<p>The post illuminated my dim mind:  Grunt runs in node.  Do what you would do in node.</p>
+
+<p>Thusly, I just require the <code>package.json</code> file, and it is available.  Voila.  Who needs a stinkin template directive?  And it looks like:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">pkgJson</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./package.json&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="err">/&lt;em&gt; use as desired &lt;/em&gt;/</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">version</span> <span class="o">=</span> <span class="nx">pkgJson</span><span class="p">.</span><span class="nx">version</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>My one departure from the Stack Overflow suggestion was to use a different variable name on the require statement ('package' -> 'pkgJson').  'package' is a keyword that doesn't pass linting.</p>
+
+<h2>Grunt access package.json</h2>
+
+<p>As it turns out, Grunt has not problem accessing <code>package.json</code>.  Grunt was already a venerable build tool option.  Now, it running Javascript, speaking to your Javascript project descriptor (<code>package.json</code>) is pure genius.  And genius that is easily accomplished? -- noteworthy indeed.</p>
+]]></content>
+  </entry>
+  
+</feed>

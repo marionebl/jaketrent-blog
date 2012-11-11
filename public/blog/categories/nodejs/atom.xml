@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: nodejs | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2012-11-11T15:56:20-07:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Change Your Node Script Without Restarting]]></title>
+    <link href="http://jaketrent.com/post/change-your-node-script-without-restarting/"/>
+    <updated>2012-10-03T16:54:00-06:00</updated>
+    <id>http://jaketrent.com/post/change-your-node-script-without-restarting</id>
+    <content type="html"><![CDATA[<p>Have you every wished you could change your node script and not restart the server?  Restarting your node server after changing your script can get annoying.  This is especially true if you're in guess and check mode, changing and checking a lot.  Luckily, there are a few tools to save you the pain.</p>
+
+<p><img src="http://i.imgur.com/jrkIv.jpg" alt="Node Monitor" /></p>
+
+<!--more-->
+
+
+<h2>Node-supervisor</h2>
+
+<p>Isaac Schlueter has created a <a href="https://github.com/isaacs/node-supervisor">node-supervisor</a>.  Install it with a quick npm:</p>
+
+<pre><code>sudo npm install supervisor -g
+</code></pre>
+
+<p>Use <code>supervisor</code>, instead of <code>node</code> to start your app:</p>
+
+<pre><code>supervisor app.js
+</code></pre>
+
+<p>By default, this will run with these options:</p>
+
+<pre><code>DEBUG: Running node-supervisor with
+DEBUG:   program 'app.js'
+DEBUG:   --watch '.'
+DEBUG:   --ignore 'undefined'
+DEBUG:   --extensions 'node|js'
+DEBUG:   --exec 'node'
+</code></pre>
+
+<p>There are other options for things like watching only specific extensions or not restarting on app errors.</p>
+
+<h2>Nodemon</h2>
+
+<p>Remy Sharp has created <a href="https://github.com/remy/nodemon">nodemon</a>.  It also is a quick npm install:</p>
+
+<pre><code>sudo npm install nodemon -g
+</code></pre>
+
+<p>Again, run with <code>nodemon</code> instead of <code>node</code>:</p>
+
+<pre><code>nodemon app.js
+</code></pre>
+
+<p>By default, runs:</p>
+
+<pre><code>[nodemon] v0.6.23
+[nodemon] watching: .
+[nodemon] starting `node app.js`
+</code></pre>
+
+<p>There are similar options here for what to watch.</p>
+
+<h2>Comparison of tools</h2>
+
+<p>Both tools will get the job done.  Choose either.  Both can specific directories or file extensions to watch.  Both can run other executables (like <a href="https://github.com/nodejitsu/forever">forever</a>, which is awesome, btw).</p>
+
+<p>Both tools are circa 2010.  Node-supervisor is the slightly older brother (by 8 months).  Both projects seem to have slow, steady development development activity.  What is there to add to tools that do their job already?</p>
+
+<p>In general, <code>nodemon</code> has a few more options.  For example, it has explicit support for coffee-script.  I like <code>supervisor</code> more for silly reasons:  I found it first, it works fine, feels better to type, and has fewer terminal command expansion conflicts.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to Organize NodeJs Routes]]></title>
+    <link href="http://jaketrent.com/post/how-to-organize-nodejs-routes/"/>
+    <updated>2012-10-02T16:52:00-06:00</updated>
+    <id>http://jaketrent.com/post/how-to-organize-nodejs-routes</id>
+    <content type="html"><![CDATA[<p>A few routes in a NodeJs app -- no problem.  Just put them in your <code>app.js</code>.  More than a handful?  You'll probably want to look at organizing your routes a different way.  This will help keep your core <code>app.js</code> clean and make your actual routes easier to find.</p>
+
+<p><img src="http://i.imgur.com/basH6.jpg" alt="Too many routes" />
+http://flic.kr/p/bihZUV</p>
+
+<!--more-->
+
+
+<h2>Express Routes</h2>
+
+<p>The favorite http framework on <a href="http://nodejs.org/">NodeJs</a> seems to be <a href="http://expressjs.com/">Express</a>.  I personally like it quite a bit.  It's simple, declarative, and allows you to set up all the normal HTTP commands with ease.</p>
+
+<p>Did you know that Express comes with a binary/cli command called <code>express</code>.  This command will setup a project structure and a lot of the boilerplate code for you.  The docs contain a guide on <a href="http://expressjs.com/guide.html#executable">how to run this</a>.  It has support for other cool options like session support or various css preprocessors.</p>
+
+<p>A sample run and the file structure that it will create looks something like this:</p>
+
+<pre><code>$ express --sessions --css stylus --ejs myapp
+
+create : myapp
+create : myapp/package.json
+create : myapp/app.js
+create : myapp/public
+create : myapp/public/javascripts
+create : myapp/public/images
+create : myapp/public/stylesheets
+create : myapp/public/stylesheets/style.styl
+create : myapp/routes
+create : myapp/routes/index.js
+create : myapp/views
+create : myapp/views/index.ejs
+</code></pre>
+
+<p>In that generated code, your <code>app.js</code> references a route like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">routes</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./routes&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">index</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And the route, <code>index.js</code>, looks like:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">exports</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Express&#39;</span> <span class="p">});</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>I like this, but it's still not the best.  I don't like having to list the <code>app.get()</code>, etc. in <code>app.js</code>.  This list will get long.  So, how would I adjust?</p>
+
+<h2>All http commands in separate files</h2>
+
+<p>Instead, I want to tell <code>app.js</code> about my routes, but I want each route file to hook itself up to express directly.</p>
+
+<p>Showing the adjustments, <code>app.js</code>:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">indexRt</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./routes/index&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This time, more goodies in <code>index.js</code>:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The difference is somewhat slight.  Now, instead of each http command listed in your app, only each resource (in REST terms) is listed in app.  Each command for a resource is listed in that resource's route.js.</p>
+
+<p>There are surely many ways to organize your NodeJs routes.  Express gives a great starting pattern.  Our adjustment adds a slight optimization.  Organizing your routes will help your main <code>app.js</code> file stay way cleaner, and you'll be able to find your routes more easily.</p>
+
+<p>But this surely can't be the best way for everyone.  What are the ways that you've found successful in organizing your routes?</p>
+
+<p>Note: this post uses express 3 syntax.</p>
+]]></content>
+  </entry>
+  
+</feed>

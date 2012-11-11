@@ -1,2 +1,18 @@
 // This File is imported last, and will override other styles in the cascade
 // Add styles here to make changes without digging in too much
+.logo {
+  float: left;
+  width: 85px;
+  max-width: 100%;
+  display: none;
+}
+
+@media only screen and (min-width: 300px) {
+  .logo {
+    display: block;
+  }
+  .desc {
+    float: left;
+    margin: 8px 0 0 10px;
+  }
+}

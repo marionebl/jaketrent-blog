@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: npm | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/npm/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2012-11-11T15:56:20-07:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GruntJs Access to package.json]]></title>
+    <link href="http://jaketrent.com/post/gruntjs-access-to-package-dot-json/"/>
+    <updated>2012-10-25T17:02:00-06:00</updated>
+    <id>http://jaketrent.com/post/gruntjs-access-to-package-dot-json</id>
+    <content type="html"><![CDATA[<p>Have you used GruntJs to build your JavaScript project yet?  It's a great tool.  Often as a part of the build configuration, you'll want to access your package.json with grunt.  Grunt has some built-in support for this.  Some bits can be a little tricky, and some plugins have limited support.  Here are some ways around all that.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
+
+<!--more-->
+
+
+<h2>Grunt JSON Directive</h2>
+
+<p>Grunt supports a number of <a href="https://github.com/gruntjs/grunt/blob/master/docs/helpers_directives.md">directives</a> out of the box.  These are callable from within you <code>grunt.js</code> file.  The gruntfile template uses one of these directives like so:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">pkg</span><span class="o">:</span> <span class="s1">&#39;&amp;lt;json:package.json&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="err">/&lt;em&gt; ... &lt;/em&gt;/</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This is making the contents of your <code>package.json</code> file available to your grunt config.  And this is what we wanted!  So, if I want to put the version of my app into some grunt task config, I can use it like so:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">someTask</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">options</span><span class="o">:</span> <span class="s1">&#39;doStuff &amp;lt;%= pkg.version %&gt;&#39;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This would already be enough -- it it worked all the time!  Turns out it doesn't [tear].</p>
+
+<h2>grunt.template</h2>
+
+<p>This syntax ("&lt;%= someVar %>") is referred to as a grunt.template.  It is based on  <a href="http://underscorejs.org/#template">underscore's template</a> function.</p>
+
+<h2>Grunt Plugin Support</h2>
+
+<p>It turns out that all plugins are not created equal.  Some plugins do not support this syntax at all.  I wrestled with mainly two plugins</p>
+
+<ul>
+<li><a href="https://npmjs.org/package/grunt-exec">grunt-exec</a> - for executing scripts/commands in the shell</li>
+<li><a href="https://npmjs.org/package/grunt-jade">grunt-jade</a> - for compiling jade templates</li>
+</ul>
+
+
+<p>As far as I can tell, neither plugin supports <code>grunt.template</code>.  Lameo.  In the case of <code>grunt-jade</code>, I actually switched plugins to <a href="https://npmjs.org/package/grunt-contrib-jade"><code>grunt-contrib-jade</code></a>, which states explicit support for <code>grunt.template</code> in the docs.  Other than the docs or trying it out, I otherwise don't know how to determine support.</p>
+
+<h2>Access package.json Directly</h2>
+
+<p>Where I couldn't find a plugin that explicitly supported <code>grunt.template</code>, I needed another solution.  Guided by the power of Google, I ran across a good Stack Overflow post on <a href="http://stackoverflow.com/questions/12408535/how-to-pass-in-package-json-array-to-grunt-js">getting <code>package.json</code> values into the <code>grunt.js</code> file</a>.</p>
+
+<p>The post illuminated my dim mind:  Grunt runs in node.  Do what you would do in node.</p>
+
+<p>Thusly, I just require the <code>package.json</code> file, and it is available.  Voila.  Who needs a stinkin template directive?  And it looks like:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">pkgJson</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./package.json&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="err">/&lt;em&gt; use as desired &lt;/em&gt;/</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">version</span> <span class="o">=</span> <span class="nx">pkgJson</span><span class="p">.</span><span class="nx">version</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>My one departure from the Stack Overflow suggestion was to use a different variable name on the require statement ('package' -> 'pkgJson').  'package' is a keyword that doesn't pass linting.</p>
+
+<h2>Grunt access package.json</h2>
+
+<p>As it turns out, Grunt has not problem accessing <code>package.json</code>.  Grunt was already a venerable build tool option.  Now, it running Javascript, speaking to your Javascript project descriptor (<code>package.json</code>) is pure genius.  And genius that is easily accomplished? -- noteworthy indeed.</p>
+]]></content>
+  </entry>
+  
+</feed>

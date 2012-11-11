@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: wordpress | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/wordpress/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2012-11-11T15:56:20-07:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Why I Chose a WordPress Blog]]></title>
+    <link href="http://jaketrent.com/post/why-i-chose-a-wordpress-blog/"/>
+    <updated>2012-09-25T16:49:00-06:00</updated>
+    <id>http://jaketrent.com/post/why-i-chose-a-wordpress-blog</id>
+    <content type="html"><![CDATA[<p>Some might ask why a guy who loves his life of code would choose WordPress as the framework for one of his websites. Well, I chose a WordPress blog. I almost didn't. It's been a long time coming. It's early in the game, but I think it was a good choice.</p>
+
+<p><img src="http://i.imgur.com/Z9HMK.jpg" alt="WordPress T-Shirt" />
+http://flic.kr/p/6FFZMy</p>
+
+<!--more-->
+
+
+<h2>Why I wouldn't choose WordPress blog</h2>
+
+<p>I only had one job about 7 years back that consisted of mostly PHP. The job was great for many reasons. PHP wasn't the highlight. We did some cool stuff with it. At the time, it was all right. Since, I have coded full time in Java, Python, XQuery, or JavaScript. I would count each as <strong>more</strong> enjoyable than PHP.</p>
+
+<p>Secondly, I'm a coder. I love to build stuff. Custom software is way more fun than boxed software. WordPress is something that is literally accessible to anyone that's just computer savvy. I'm not breaking new ground on WordPress.</p>
+
+<h2>An insightful article</h2>
+
+<p>A week or so ago, I ran into an article on a site called "Virtuous Code". That site name was cool enough. The article was typed ("penned" is such a cooler word) by Avdi Grimm and is named <a href="http://devblog.avdi.org/2012/08/09/why-wordpress/">"Why WordPress"</a>. I was caught off guard by how well it described my personal predicament.</p>
+
+<h2>Why I chose a WordPress blog</h2>
+
+<p>When I read Avid's article, I realized that the reasons I, as a coder, had been avoiding WordPress were the very reasons I should embrace it:</p>
+
+<ol>
+<li>As a coder, my tendency to jump into the internals and start toying around is strong. This hinders my writing ability. It competes for my time. Writing is something that I really want to do more of. By choosing a package that's tied up with a bow will encourage me to just use it instead of over-customize it. And since the innards of the package is a language that I don't want to devote a ton of my time to, I'm even less inclined to customize it.</li>
+<li>PHP and WordPress are, in a way, like JavaScript -- they're everwhere, and everyone is using them. This means that probably just about everything that I could imagine wanting (ok, I'll probably come up with something innane) on a blog has already been built. I don't need to reinvent it.</li>
+</ol>
+
+
+<h2>Driven to the edge</h2>
+
+<p>So, I made the jump. I just downloaded the latest <a href="http:://wordpress.org">WordPress.org</a> package. I ran Apache on my local box and pointed my browser to <code>localhost:8888</code>. I was presented with the pleasant admin UI. I chose a new theme. It installed in place. It was a 2-click ordeal. I chose a few plugins to replace default functionality and add a bit more. I was pleasantly surprised by the smoothness of it all.</p>
+
+<p>At the point I was getting the blog looking nice and doing what I wanted, did I care that the thing was written in PHP? No. I saw it just once when setting up my DB connection. I did cringe slightly upon seeing some <a href="http://php.net/manual/en/language.variables.superglobals.php">super globals</a> again (<code>$_SERVER</code>), but I hastily committed the change and deployed the app.</p>
+
+<p>We'll see if I continue to love it, but so far, so good. My fellow coders, I ask: Is my reasoning sound?</p>
+]]></content>
+  </entry>
+  
+</feed>
