@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Code | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2012-11-10T17:32:04-07:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Responsive Table with Scrolling]]></title>
+    <link href="http://jaketrent.com/post/responsive-table-with-scrolling/"/>
+    <updated>2012-11-07T17:06:00-07:00</updated>
+    <id>http://jaketrent.com/post/responsive-table-with-scrolling</id>
+    <content type="html"><![CDATA[<p>Sometimes a <code>table</code> element is the most semantic element one can use in markup.  It is true.  If you're displaying tabular data, a <code>table</code> is a likely option.  If you're on a responsive site, however, you'll cringe at this option.  It turns out that tables aren't very responsive web design-friendly.  One way to create a more responsive table is with scrolling.</p>
+
+<p><img src="http://i.imgur.com/GeuZe.png" alt="Responsive Table with Scrolling" /></p>
+
+<!--more-->
+
+
+<h2>Responsive Table Options</h2>
+
+<p>I love the article by Chris Coyier that describes <a href="http://css-tricks.com/responsive-data-tables/">responsive tables</a>.  Some of his ideas and those of the commenters on his post a great at thinking outside the box on what the options include for responsive tables:</p>
+
+<ol>
+<li>Orient the table vertically when there's not enough room for all the columns.</li>
+<li>Replace tabular data with a graphic, such as a pie graph, that communicates the same gist.</li>
+<li>Replace the table with a link that opens a scrollable view large enough for the regular-sized table.</li>
+</ol>
+
+
+<p>My favorite option is the first.  But, in my case, it didn't seem to work extremely well because I have two headers.  The example had column headers only.  I have row headers as well.  After a bit more looking, I ran across this <a href="http://www.zurb.com/playground/playground/responsive-tables/">Zurb scrolling table css and js example</a>.  The best solution, it seemed for now, was scrolling.  (My example code is based on the markup and styles of the Zurb code with a few things taken out and a few things added.)</p>
+
+<h2>Table Horizontal Scrolling</h2>
+
+<p>On the web, vertical scrolling is a part of the full meal deal.  So, the only thing to solve is the horizontal scrolling.  Normally, we don't want content flowing off the right side of the screen when browsing.  So, we when there's scrolling required, we're going to do it within the table only and for the columns we want.</p>
+
+<h4>Divide table in two</h4>
+
+<p>We want some columns to scroll and others to remain pinned whilst scrolling.  We'll duplicate the table in the markup and wrap each, a la:</p>
+
+<pre><code>&lt;div class="table-wrapper"&gt;
+  &lt;div class="pinned"&gt;
+    &lt;!-- table here with pinned columns only--&gt;
+  &lt;/div&gt;
+  &lt;div class="scrollable"&gt;
+    &lt;!-- table here with scrollable columns only--&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<h4>Line up the rows</h4>
+
+<p>Now we have two tables.  The flexibility we've given ourself is that we can make some columns stick and others scroll easily.  Our new challenge is keeping the row height lined up so the two tables look like one.</p>
+
+<p>Put the two tables next to each other with a float left and a float right.  Make the widths percentage-based as with any <a href="http://en.wikipedia.org/wiki/Responsive_web_design">rwd</a>.</p>
+
+<p>Now we have a few options to make our rows line up:</p>
+
+<ol>
+<li>Explicitly set all table cells to the same height</li>
+<li>Use JavaScript to make each cell in a row be the same height as the tallest cell in that row</li>
+<li>Put similar content in each cell on a row (eg, just text with the same attributes that will not wrap for longer text)</li>
+</ol>
+
+
+<p>Turns out that I will choose option 1 for the table cells (<code>td</code>) and option 3 for the table headers (<code>th</code>).</p>
+
+<p>This is my least favorite feature of this solution.  Anyone have a better idea on lining up the rows?</p>
+
+<h4>Set column width</h4>
+
+<p>I want some of my columns to have a set width.  Well, as <em>set</em> as anything is in rwd.  An html <code>table</code> will usually expand and contract columns across the table to give optimum spacing based on the content.</p>
+
+<p>I want to make my pinned table columns allow extra-long content, but I don't want their widths to change at all.  A bit of StackOverflow love yielded this answer on why <code>overflow: hidden</code> doesn't work when <a href="http://stackoverflow.com/a/7570613/118561">constraining table cell width</a>.</p>
+
+<p>In short, the solution is to wrap the content inside of the <code>td</code> with two <code>divs</code>:</p>
+
+<pre><code>&lt;div class="outer"&gt;
+  &lt;div class="inner"&gt;
+    Row 4 longer than lotr
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>And sprinkle with a bit of stylesheet:</p>
+
+<pre><code>td .outer {
+  position: relative;
+  height: 30px;
+}
+td .inner {
+  overflow: hidden;
+  white-space: nowrap;
+  position: absolute;
+  width: 100%;
+}
+</code></pre>
+
+<p>This style will let the column width remain and the content overflow.  It will also keep the cell text on one line, and it will be hidden as it flows off the right-hand side of the cell.  To wrap and hide as it flows off the bottom of the cell, remove the <code>white-space: nowrap</code> attribute.</p>
+
+<h2>Responsive Table with Scrolling</h2>
+
+<p>For the final result, check out the <a href="http://codepen.io/jaketrent/pen/CcboI">CodePen for the Responsive table</a>.</p>
+
+<p><a href="http://codepen.io/jaketrent/pen/CcboI"><img src="http://i.imgur.com/mUfq4.jpg" alt="Responsive table" /></a></p>
+
+<p>What are your suggestions for making this better?  How have you solved the responsive table challenge?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Grunt and Testacular]]></title>
+    <link href="http://jaketrent.com/post/grunt-and-testacular/"/>
+    <updated>2012-11-06T17:05:00-07:00</updated>
+    <id>http://jaketrent.com/post/grunt-and-testacular</id>
+    <content type="html"><![CDATA[<p><a href="http://vojtajina.github.com/testacular/">Testacular</a> is a test runner for running browser tests.  Once you have it <a href="http://jaketrent.com/post/test-requirejs-testacular/">up and running</a>, you may want to integrate it with your <a href="http://gruntjs.com/">Grunt</a> build process.  This will allow Testacular to be started and your tests to be run from Grunt.</p>
+
+<p><img src="http://i.imgur.com/zze56.jpg" alt="Grunt and Testacular" /></p>
+
+<!--more-->
+
+
+<h2>grunt-testacular</h2>
+
+<p>Lucky for us, <a href="https://npmjs.org/package/grunt-testacular">Friedel Ziegelmayer</a> has created a nice little plugin, <a href="https://npmjs.org/package/grunt-testacular">grunt-testacular</a>.</p>
+
+<p>To install:</p>
+
+<pre><code>&gt; npm install grunt-testacular
+</code></pre>
+
+<p>Add the current version to your <code>package.json</code> for the future:</p>
+
+<pre><code>"grunt-testacular": "0.2.x"
+</code></pre>
+
+<p>Import the plugin in your <code>grunt.js</code> file:</p>
+
+<pre><code>grunt.loadNpmTasks('grunt-testacular');
+</code></pre>
+
+<p>And finally, in <code>grunt.js</code>, specify your tasks:</p>
+
+<pre><code>testacularServer: {
+  unit: {
+    options: {
+      keepalive: true
+    },
+    configFile: 'testacular.conf.js'
+  }
+},
+testacularRun: {
+  unit: {
+    runnerPort: 9100
+  }
+},
+</code></pre>
+
+<h4>Two Tasks</h4>
+
+<p>Grunt-testacular provides two tasks:</p>
+
+<ol>
+<li>testacularServer - starts the Testacular server (equivalent to <code>testacular start</code>)</li>
+<li>testacularRun - runs your tests against an already-started server (equivalent to <code>testacular run</code>)</li>
+</ol>
+
+
+<h4>A grunt-testacular Oddity</h4>
+
+<p>If you don't have <code>keepalive: true</code> set for grunt-testacular, the Testacular server will shutdown before it has a chance to capture browsers or run your tests.  I'm really not sure why this is even an option.  The false case behavior doesn't seem to be useful.  With the <code>singleRun</code> ability of Testacular, the plugin should just call start on the server and let the server configuration decide when it's appropriate to shut down.</p>
+
+<p><strong>Update:</strong>
+I logged an <a href="https://github.com/Dignifiedquire/grunt-testacular/issues/3#issuecomment-10234529">issue for grunt-testacular</a> that Grunt tasks listed after <code>testacularServer</code> weren't being run.  Friedal responded that <code>keepalive: true</code> was the problem.  If it is specified true, then it has to be the last task in the list.  So, if you have tasks after <code>testacularServer</code> specified, remove <code>keepalive: true</code> and add <code>watch</code> to the end of your task list.</p>
+
+<h2>Grunt and Testacular Work Flow</h2>
+
+<p>Of course, your work flow is up to you, and Grunt and Testacular give you enough flexibility to decide your own, but I think you'll run your tests in two main scenarios: development and continuous integration.</p>
+
+<h4>Development</h4>
+
+<p>For development, I like to start up the Testacular server and keep it running.  Then, I go write tests and update source code.  Testacular will notice my changes and automatically re-run my tests.</p>
+
+<p>To set this up, make sure your grunt-testacular task has this option:</p>
+
+<pre><code>keepalive: true
+</code></pre>
+
+<p>This will keep the server up even after the tests have completed.</p>
+
+<p>And make sure your <code>testacular.conf.js</code> file includes:</p>
+
+<pre><code>autoWatch = true;
+</code></pre>
+
+<p>This will force Testacular to re-run your tests if anything in your source or tests change (specifically, if anything in testacular.conf.js's <code>files</code> array changes).</p>
+
+<h4>Continuous Integration</h4>
+
+<p>For continuous integration, you just want your automated build to be able to verify the source code integrity prior to deploying.</p>
+
+<p>We don't want tests to re-run automatically based on our changes, so we turn off <code>autoWatch</code> in <code>testacular.conf.js</code>:</p>
+
+<pre><code>autoWatch = false;
+</code></pre>
+
+<p>And we set one more value in <code>testacular.conf.js</code> to:</p>
+
+<pre><code>singleRun = true;
+</code></pre>
+
+<p>This will allow the <code>testacularServer</code> task to be run once, have Testacular run all the tests, and then make the server shut down.</p>
+
+<p>Finally, remember to keep <code>keepalive: true</code> set in <code>grunt.js</code>.  Odd, right?</p>
+
+<h2>Multiple Testacular Configurations</h2>
+
+<p>To manage the options that are distinct to these two work flows, one could just create two separate <code>testacular.conf.js</code> files.  But, that would be overkill, because there'd be a lot of overlap between the two files.</p>
+
+<p>Instead, the grunt-testacular plugin gives you override ability on a per-variable basis.  To support the development and integration scenario, the grunt multiTask might look like this:</p>
+
+<pre><code>testacularServer: {
+  unit: {
+    options: {
+      keepalive: true
+    },
+    configFile: 'testacular.conf.js'
+  },
+  integration: {
+    options: {
+      keepalive: true
+    },
+    configFile: 'testacular.conf.js',
+    autoWatch: false,
+    singleRun: true
+  }
+},
+</code></pre>
+
+<p>Following this same pattern, you could create a separate config for automated functional or end-to-end tests as well.</p>
+
+<p>Note that the <code>options</code> object is strictly for the plugin.  The other variables at that level feed straight into Testacular as overrides.</p>
+
+<h2>Integrated Testing</h2>
+
+<p>Process and product maturity are increased as tests are integrated into the build process.  Grunt and Testacular make integrating your browser tests a snap.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Test RequireJs Code in Testacular]]></title>
+    <link href="http://jaketrent.com/post/test-requirejs-testacular/"/>
+    <updated>2012-10-31T17:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/test-requirejs-testacular</id>
+    <content type="html"><![CDATA[<p>Did you write your source code as JavaScript AMD modules in <a href="http://requirejs.org/">RequireJs</a>?  Do you want to test them in real browsers?  Do you want the flexibility of using <a href="http://visionmedia.github.com/mocha/">Mocha</a> or <a href="http://pivotal.github.com/jasmine/">Jasmine</a>?  This is the moment you've been waiting for.</p>
+
+<p><a href="http://vojtajina.github.com/testacular/">Testacular is a "spetacular test runner for JavaScript"</a> that was written to support the <a href="http://angularjs.org/">AngularJs</a> project.  It is valuable because it will run your tests in real browsers.  This is important for front-end code that relies on browser globals such as <code>window</code> (eg, if you use jQuery) or that manipulates the DOM (which could vary browser to browser).</p>
+
+<p>Client-side JavaScript testing is a somewhat crazy space.  Some have even called it <a href="http://rzrsharp.net/2012/08/01/client-side-testing-insanity.html">"insane"</a> and taken drastically different routes than what follows.  But we're gonna see if we can power through, and Testacular will help us get the job done.</p>
+
+<p><img src="http://i.imgur.com/7gh40.jpg" alt="Testacular Javascript Testing" /></p>
+
+<!--more-->
+
+
+<h2>RequireJs Modules</h2>
+
+<p>We wrote our source code using RequireJs-implemented AMD modules.  This gives us:</p>
+
+<ul>
+<li>Clean code organization</li>
+<li>Namespaced code (not global)</li>
+<li>Explicit dependency management</li>
+<li>Source optimized via the RequireJs build</li>
+</ul>
+
+
+<p>Unfortunately, it also makes our source a bit more tricky to test.</p>
+
+<h2>Testacular RequireJs Support</h2>
+
+<p><a href="https://groups.google.com/forum/?fromgroups=#!topic/testacular/CRsf8Ig4bgE">RequireJs support was just barely added</a> to Testacular, so it only lives in the canary channel (master).  To install with npm:</p>
+
+<pre><code>npm install -g testacular@canary
+</code></pre>
+
+<p>This will currently install version <del datetime="2012-11-05T14:38:54+00:00">0.5.1</del> 0.5.2.  This is the first version of Testacular with RequireJs support.  So your <code>package.json</code> should include an entry like:</p>
+
+<pre><code>"testacular": "&gt;=0.5.2"
+</code></pre>
+
+<p>If <a href="https://npmjs.org/package/testacular">Testacular</a> has moved to >=0.6.0, you can use the stable channel.</p>
+
+<h2>Configure Testacular For RequireJs</h2>
+
+<h4>Directory Setup</h4>
+
+<p>For clarity in the example configuration files and test below, the directory structure upon which these are based looks like this:</p>
+
+<pre><code>project/
+    lib/
+        jquery.js #etc
+    node_modules/
+        chai/ #etc
+    src/
+        MyModule.js
+    test/
+        MyModule.test.js
+        test-main.js
+testacular.conf.js
+</code></pre>
+
+<h4>Initialize Testacular</h4>
+
+<p>Testacular comes with a nice utility for generating a config file (default name: 'testacular.conf.js') that it needs in order to run.  In your terminal, type:</p>
+
+<pre><code>testacular init
+</code></pre>
+
+<p>This will give you a series of prompts for things such as paths to source and tests and which browsers to capture.  <del datetime="2012-11-05T14:38:54+00:00">These prompts do not include the option to add RequireJs support automatically, so you'll need to add those lines manually to your <code>testacular.conf.js</code> (see below).</del>  As of testacular 0.5.2, <code>testacular init</code> will prompt for usage of the RequireJs adapter.</p>
+
+<h4>Testacular Include</h4>
+
+<p>Testacular 0.5.1, while adding RequireJs support, has added a new concept of "included" to the files listed in your config.  This is because RequireJs will balk about a the module not being loaded correctly (ie, loaded synchronously in the <code>&lt;head/&gt;</code> tag of the runner).  From the <a href="http://requirejs.org/docs/errors.html#mismatch">RequireJs docs</a>:</p>
+
+<blockquote><p>"Be sure to load all scripts that call define() via the RequireJS API. Do not manually code script tags in HTML to load scripts that have define() calls in them."</p></blockquote>
+
+<h4>RequireJs Shim</h4>
+
+<p>Not immediately apparent is the fact that the 'shim' config from RequireJs 2.x does not work from within Testacular.  I haven't yet figured out why.  For instance, I was constantly getting "'Backbone' is not defined" messages even though it was specified in the 'shim' config and required in the test.  I could have been doing something wrong.  My solution thus far has been to list each of the non-RequireJs modules and their dependencies in the 'files' attribute of <code>testacular.conf.js</code>.</p>
+
+<h4>testacular.conf.js</h4>
+
+<p>The final point is that the RequireJs main module for your test runner should be the last file listed.</p>
+
+<p>So, finally, here is the 'file' excerpt of <code>testacular.conf.js</code>:</p>
+
+<pre><code>files = [
+  MOCHA,
+  MOCHA_ADAPTER,
+  REQUIRE,
+  REQUIRE_ADAPTER,
+
+  // !! libs required for test framework
+  {pattern: 'node_modules/chai/chai.js', included: false},
+
+  // !! put what used to be in your requirejs 'shim' config here
+  'lib/jquery.js',
+  'lib/underscore.js',
+  'lib/backbone.js',
+  'lib/handlebars.js',
+
+  // !! put all libs in requirejs 'paths' config here (included: false)
+  {pattern: 'lib/**/*.js', included: false},
+
+  // !! all src and test modules (included: false)
+  {pattern: 'src/**/*', included: false},
+  {pattern: 'test/**/*.test.js', included: false},
+
+  // !! test main require module last
+  'test/test-main.js'
+];
+</code></pre>
+
+<p>This config is awesome.  It replaces an html test runner that you would otherwise have to build.</p>
+
+<h2>RequireJs Main Module</h2>
+
+<p>Just like any RequireJs project, you need a main module to bootstrap your tests.  In the main module, you setup the <a href="http://requirejs.org/docs/api.html#config"><code>require.config</code></a>.</p>
+
+<h4>Testacular '/base' Directory</h4>
+
+<p>Testacular serves files under the '/base' directory.  So, on the server, requests to files will be served up under 'http://localhost:9876/base/*'.  The RequireJs config for <code>baseUrl</code> gives a starting context for modules that load with relative paths.  When setting this value for the Testacular server, it will need to start with '/base'.  I want my baseUrl to be at the root of my '/src' directory so relative requires in the source won't need to change.  My baseUrl has the value of '/base/src'.</p>
+
+<h4>Require Each Test File</h4>
+
+<p>One of the things I hate is having to update a master list of all tests to run every time I add a test.  Unfortunately, that's what I currently have.  The test main module has to specifically require each of the test modules.  I would love it if I could add a <code>*.test.js</code> file to the test directory and just have it run the next time the tests run.</p>
+
+<h4>Asynchronously Run Testacular</h4>
+
+<p>Because the RequireJs require statements are asynchronous, Testacular needs to wait until they're done (the code is loaded and ready) before it starts the tests.</p>
+
+<p>The <code>main-test.js</code> file ends up looking like this:</p>
+
+<pre><code>require({
+
+  // !! Testacular serves files from '/base'
+  baseUrl: '/base/src',
+  paths: {
+    require: '../lib/require',
+    text: '../lib/text'
+  },
+}, ['../test/MyModule.test'], function() {
+  window.__testacular__.start();
+});
+</code></pre>
+
+<h2>RequireJs Test in Testacular</h2>
+
+<p>All the setup thus far has been in preparation for the code to follow.  The test can now be setup as a RequireJs module.  It can require the source code under test.  It can use <a href="http://visionmedia.github.com/mocha/">Mocha</a> (or whatever framework there is a Testacular adapter for).</p>
+
+<p>I will also use <a href="http://chaijs.com/">Chai</a> in order to get the <a href="http://chaijs.com/guide/styles/">'should' BDD-style assertions</a>.  Note that by using RequireJs and running in the browser, we can't just <code>require('chai')</code>.  It has to be required using the asynchronous callback to avoid <a href="http://requirejs.org/docs/errors.html#notloaded">this error</a>:</p>
+
+<blockquote><p>Uncaught Error: Module name "../node_modules/chai/chai" has not been loaded yet for context: _. Use require([])</p></blockquote>
+
+<p>And finally, <code>should()</code> must be invoked to be available in the test.</p>
+
+<p>So, a simple test will look like:</p>
+
+<pre><code>define(['../node_modules/chai/chai', 'MyModule'],
+  function(chai, MyModule) {
+
+  var assert = chai.assert,
+    expect = chai.expect,
+    should = chai.should();
+
+  describe('MyModule', function () {
+    describe('#initialize()', function () {
+      it('should be a stinkin object', function () {
+        var yippee = new MyModule();
+        yippee.should.be.an('object');
+      });
+    });
+  });
+});
+</code></pre>
+
+<h2>Run the Tests in Testacular</h2>
+
+<p>There are a couple options set in <code>testacular.conf.js</code> that will describe how your tests can be run:</p>
+
+<ul>
+<li><strong>singleRun</strong> - Start Testacular server, capture browsers, run all tests, shutdown server</li>
+<li><strong>autoWatch</strong> - Have the server run tests every time a source or test file changes (and requires you to turn off singleRun)</li>
+</ul>
+
+
+<p>To start the Testacular server:</p>
+
+<pre><code>testacular start
+</code></pre>
+
+<p>Finally, if your Testacular server is already running and you want to kick off the tests, type:</p>
+
+<pre><code>testacular run
+</code></pre>
+
+<h2>Now to Test</h2>
+
+<p>Thank you to <a href="https://github.com/vojtajina">Vojta Jina</a> and the rest of the AngularJs crew and other contributors for making an awesome test runner.  I'm very happy that RequireJs support was added.  Vojta has also provided an <a href="https://github.com/vojtajina/testacular/tree/master/test/e2e/requirejs">end-to-end example</a> with code on Github.</p>
+
+<p>How do you see that we could improve this configuration or testing process?</p>
+
+<p>Now to test some sweet code!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[An Environment-specific Grunt Build]]></title>
+    <link href="http://jaketrent.com/post/an-environment-specific-grunt-build/"/>
+    <updated>2012-10-28T17:03:00-06:00</updated>
+    <id>http://jaketrent.com/post/an-environment-specific-grunt-build</id>
+    <content type="html"><![CDATA[<p>Does your project use GruntJs as a build tool?  Have you ever to customize your build to the environment you're deploying to?  It's handy to be able to specify certain commands to run or keep from running.  It's likely essential to be able to change environment-specific variables via Grunt.  It's not bad.  Most of the leg-work has been done by earlier generations -- that is, if Grunt is old enough to have earlier generations yet.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
+
+<!--more-->
+
+
+<h2>Grunt-context Plugin</h2>
+
+<p>Jonathan Barnett has created a nice little grunt plugin that called <a href="https://npmjs.org/package/grunt-context">grunt-context</a>.  With grunt-context, you can easily specify environment-specific overrides to your grunt tasks.  The <a href="https://github.com/indieisaconcept/grunt-context">github page for grunt-context</a> can provide you with the basics on how to configure your grunt build.</p>
+
+<p>Let's try a concrete config.  Let's say that I want to run the <a href="http://jaketrent.com/post/run-requirejs-with-gruntjs/">RequireJs optimizer</a> only when I deploy to my test environment or to production but not for my local build.</p>
+
+<p>First, install the plugin:</p>
+
+<pre><code>npm install grunt-context
+</code></pre>
+
+<p>Second, fix up your grunt.js file to include:</p>
+
+<pre><code>module.exports = function(grunt) {
+  grunt.initConfig({
+    /* ... */
+    // 'requirejs' task REQUIRED to be listed first at root level config
+    requirejs: {
+      compile: {
+        options: {
+          // !! all app.build.js standard requirejs options here
+        }
+      }
+    },
+    context: {
+      // !! list each of your desired environments/contexts here
+      local: {
+        tasks: {
+          // !! 'requirejs' task left out
+          default: 'lint test'
+        }
+      },
+      test: {
+        tasks: {
+          // !! put 'requirejs' in default task list
+          default: 'requirejs lint test'
+        }
+      },
+      prod: {
+        //  !! re-list the 'requirejs' task to override its behavior for this context
+        requirejs: {
+          compile: {
+            options: {
+              // !! override the standard requirejs options for something
+              // special in prod build only
+            }
+          }
+        },
+        tasks: {
+          default: 'requirejs lint test'
+        }
+      }
+    }
+  });
+
+  // !! load the plugin
+  grunt.loadNpmTasks('grunt-context');
+};
+</code></pre>
+
+<p>Finally, run the grunt build and target a specific context.  If you want to build locally and not have requirejs run, type:</p>
+
+<pre><code>grunt context:local
+</code></pre>
+
+<p>If you want to build for test, where requirejs will optimize, type:</p>
+
+<pre><code>grunt context:test
+</code></pre>
+
+<p>Notice in the 'prod' context that I also can override the actual variables for running the requirejs build.  So, it will not only run things or not run things, but you can run tasks in specific ways per environment.</p>
+
+<h2>The Cons</h2>
+
+<p>The plugin works well most of the time, but I haven't had a stellar performance in all cases.  It could be that I'm unknowingly using it wrong.  I've tried many different methods to try and work out some of my issues with it.</p>
+
+<p>For instance, I cannot get it to override functions set to the <a href="https://npmjs.org/package/grunt-exec">grunt-exec</a> <code>command</code> attribute.  It will override string commands just fine, but it has problems with functions.  This could be because it has to assemble task lists for execution within a context and calculate overrides.  My guess is that the implementation may just be lacking in this area.</p>
+
+<h2>Best Option So Far</h2>
+
+<p>For environment-specific grunt builds, <a href="https://npmjs.org/package/grunt-context">grunt-context</a> is the best solution I've found so far.  It's not the best, but it usually gets the job done.  I've bent it to my will thus far.</p>
+
+<p>What have you found that works well for environment-specific JavaScript builds?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Run RequireJs with GruntJs]]></title>
+    <link href="http://jaketrent.com/post/run-requirejs-with-gruntjs/"/>
+    <updated>2012-10-28T17:02:00-06:00</updated>
+    <id>http://jaketrent.com/post/run-requirejs-with-gruntjs</id>
+    <content type="html"><![CDATA[<p>RequireJs features a fantastic optimization tool, <a href="http://requirejs.org/docs/optimization.html">r.js</a>, that utilizes <a href="https://github.com/mishoo/UglifyJS">UglifyJs</a> to minimize and concatenate your JavaScript code.  <a href="http://gruntjs.com/">Grunt</a> is a build tool that is great for standardizing your build configuration and coordinating multiple build steps -- amongst its other wonders.  Hopefully you get to use both on your project, because they'll both make your development process smoother and leave you to the funnerest stuff -- writing sweet apps.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
+
+<!--more-->
+
+
+<h2>Vanilla RequireJs</h2>
+
+<p>To use <a href="http://requirejs.org/docs/optimization.html#wholeproject">vanilla RequireJS to optimize your project</a>, you'll need to do two things:</p>
+
+<ol>
+<li><strong>Create app.build.js</strong>  - This file contains the configuration for how your want RequireJs react to your source code.  Among other things, paths to source directories and output files are specified.</li>
+<li><strong>Run the optimizer</strong> - via the command <code>node r.js -o app.build.js</code></li>
+</ol>
+
+
+<p>Grunt has essentially the same steps, but they're specified in the standard grunt config file and will integrate better with the rest of your build process steps that are in grunt.</p>
+
+<h2>Grunt RequireJs Configuration</h2>
+
+<p>An easy way to get Grunt to run your RequireJs build is to use the <a href="https://npmjs.org/package/grunt-contrib-requirejs"><code>grunt-contrib-requirejs</code></a> plugin.</p>
+
+<p>Install the plugin:</p>
+
+<pre><code>npm install grunt-contrib-requirejs
+</code></pre>
+
+<p>Add the requirejs config to your grunt.js file:</p>
+
+<pre><code>module.exports = function(grunt) {
+  grunt.initConfig({
+    /* ... */
+
+    // !! This is the name of the task ('requirejs')
+    requirejs: {
+      compile: {
+
+        // !! You can drop your app.build.js config wholesale into 'options'
+        options: {
+          appDir: "src/",
+          baseUrl: ".",
+          dir: "target/",
+          optimize: 'uglify',
+          mainConfigFile:'./src/main.js',
+          modules:[
+            {
+              name:'MyModule'
+            }
+          ],
+          logLevel: 0,
+          findNestedDependencies: true,
+          fileExclusionRegExp: /^\./,
+          inlineText: true
+        }
+      }
+    }
+    /* ... */
+  });
+
+  // !! This loads the plugin into grunt
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
+
+};
+</code></pre>
+
+<p>And run the task:</p>
+
+<pre><code>grunt requirejs
+</code></pre>
+
+<p>You should get the regular RequireJs build output that you're used to seeing, and you'll be able to verify that it worked.</p>
+
+<h2>Solid Optimization</h2>
+
+<p>RequireJs does a great build.  Grunt is flexible and easy to work with.  They go well together thanks to the <a href="https://npmjs.org/package/grunt-contrib-requirejs">grunt-contrib-requirejs</a> plugin, which gives a solid performance.  You'll have your JavaScript code done up so tight; it'll be denser than lead -- which is obviously what you've always dreamed of.</p>
+]]></content>
+  </entry>
+  
+</feed>
