@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-11T18:12:45-07:00</updated>
+  <updated>2012-11-11T18:24:24-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -1722,6 +1722,26 @@ http://flic.kr/p/6ChTAu</p>
 <p>This blog will push me to be more consistently clear on the state of technology.  It will be a sharing medium for me to teach on what I&#8217;ve learned.  The way software is created in the Internet age is fundamentally different than it was before.  Google is the pair programmer of many.  May it lead you here to find a bit of what you need in your quest.</p>
 
 <p>Tune in.  It&#8217;s gonna be good.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[BLOG TEMPLATE]]></title>
+    <link href="http://jaketrent.com/post/blog-template/"/>
+    <updated>2012-01-01T18:18:00-07:00</updated>
+    <id>http://jaketrent.com/post/blog-template</id>
+    <content type="html"><![CDATA[<p>[[INTRO - include keyword; start with question or story]]</p>
+
+<p><img src="http://i.imgur.com/M0kYA.jpg" alt="Alt Text" /></p>
+
+<!--more-->
+
+
+<h2>[[Secondary - include keyword]]</h2>
+
+<p>[[BODY]]</p>
+
+<p>[[CLOSE-Summarize, end with question]]</p>
 ]]></content>
   </entry>
   
