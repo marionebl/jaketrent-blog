@@ -6,7 +6,7 @@ comments: true
 categories: [Code, js, handlebars]
 ---
 
-Have you ever wanted to do something special every nth time through a Handlebars loop?  The built-in `{{#each}}` will loop through your items just fine.  It lacks a few features.  For one, you don't have access to the loop index, though you can [find it](http://rockycode.com/blog/handlebars-loop-index/).  Without the index and simple comparisons like modulus, length of the array, and equals, you'll be creating your own Handlebars helpers.  Here's an example of one.
+Have you ever wanted to do something special every nth time through a Handlebars loop?  The built-in `{ {#each} }` will loop through your items just fine.  It lacks a few features.  For one, you don't have access to the loop index, though you can [find it](http://rockycode.com/blog/handlebars-loop-index/).  Without the index and simple comparisons like modulus, length of the array, and equals, you'll be creating your own Handlebars helpers.  Here's an example of one.
 
 ![Handlebars js](http://blog.teamtreehouse.com/wp-content/uploads/2011/03/handlebars.png)
 
@@ -46,34 +46,34 @@ Note: This implementation uses [underscore `_.extend()`](http://underscorejs.org
 
 ## Scenario: Print rows
 
-Here's a scenario where this is useful:  In twitter bootstrap, each "span" div is inside of a "row-fluid" div (if using bootstrap responsive.css).  So, if I want three things, let's say videos, per row printed in the markup, you can't just use `{{#each}}` because all it does is iterate through the videos.  You could print the "span4"s but you wouldn't know when to print the "row-fluid".  Hence, we need our helper.
+Here's a scenario where this is useful:  In twitter bootstrap, each "span" div is inside of a "row-fluid" div (if using bootstrap responsive.css).  So, if I want three things, let's say videos, per row printed in the markup, you can't just use `{ {#each} }` because all it does is iterate through the videos.  You could print the "span4"s but you wouldn't know when to print the "row-fluid".  Hence, we need our helper.
 
-The usage:
+The usage (Note: Sorry about the lame/wrong double curlies with a space between them.  This is a current [Octopress bug](https://github.com/imathis/octopress/issues/813).):
 
 {% codeblock lang:html %}
-{{#everyNth myArray theNumberN}}
-{{/everyNth}}
+{ {#everyNth myArray theNumberN} }
+{ {/everyNth} }
 {% endcodeblock %}
 
 Our new helper `everyNth` allows us to write code like this:
 
 {% codeblock lang:html %}
-{{#everyNth vids 3}}
-  {{#if isModZeroNotFirst}}
+{ {#everyNth vids 3} }
+  { {#if isModZeroNotFirst} }
     </div>
-  {{/if}}
-  {{#if isModZero}}
+  { {/if} }
+  { {#if isModZero} }
     <div class="row-fluid">
-  {{/if}}
+  { {/if} }
   <div class="span4">
     <div class="thumb">
-      <a href="{{ linkUrl }}"><img src="{{ image }}" /></a>
+      <a href="{ { linkUrl } }"><img src="{ { image } }" /></a>
     </div>
   </div>
-  {{#if isLast}}
+  { {#if isLast} }
     </div>
-  {{/if}}
-{{/everyNth}}
+  { {/if} }
+{ {/everyNth} }
 {% endcodeblock %}
 
 To clarify the need and usage of these new variables:
@@ -82,7 +82,7 @@ To clarify the need and usage of these new variables:
 2. **isModZeroNotFirst** - when I create a row (mod 3 is 0), I also need to end the row, except before the first row.
 3. **isLast** - if the length of the video array is not divisible by 3, the last row needs to close anyway.
 
-The helper is simple, essentially just a copy of `{{#each}}` with a few new variables in context.  That's the beauty of Handlebars helpers.  With this little baby you can determine where you are in your iterations through your array.
+The helper is simple, essentially just a copy of `{ {#each} }` with a few new variables in context.  That's the beauty of Handlebars helpers.  With this little baby you can determine where you are in your iterations through your array.
 
 What are some of the things you use Handlebars helpers for?
 

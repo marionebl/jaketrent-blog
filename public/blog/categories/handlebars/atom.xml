@@ -4,7 +4,7 @@
   <title><![CDATA[Category: handlebars | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/handlebars/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-12T20:34:34-07:00</updated>
+  <updated>2012-11-13T08:40:43-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -18,7 +18,7 @@
     <link href="http://jaketrent.com/post/every-nth-item-in-handlebars-loop/"/>
     <updated>2012-10-03T16:55:00-06:00</updated>
     <id>http://jaketrent.com/post/every-nth-item-in-handlebars-loop</id>
-    <content type="html"><![CDATA[<p>Have you ever wanted to do something special every nth time through a Handlebars loop?  The built-in <code></code> will loop through your items just fine.  It lacks a few features.  For one, you don't have access to the loop index, though you can <a href="http://rockycode.com/blog/handlebars-loop-index/">find it</a>.  Without the index and simple comparisons like modulus, length of the array, and equals, you'll be creating your own Handlebars helpers.  Here's an example of one.</p>
+    <content type="html"><![CDATA[<p>Have you ever wanted to do something special every nth time through a Handlebars loop?  The built-in <code>{ {#each} }</code> will loop through your items just fine.  It lacks a few features.  For one, you don't have access to the loop index, though you can <a href="http://rockycode.com/blog/handlebars-loop-index/">find it</a>.  Without the index and simple comparisons like modulus, length of the array, and equals, you'll be creating your own Handlebars helpers.  Here's an example of one.</p>
 
 <p><img src="http://blog.teamtreehouse.com/wp-content/uploads/2011/03/handlebars.png" alt="Handlebars js" /></p>
 
@@ -90,12 +90,14 @@
 
 <h2>Scenario: Print rows</h2>
 
-<p>Here's a scenario where this is useful:  In twitter bootstrap, each "span" div is inside of a "row-fluid" div (if using bootstrap responsive.css).  So, if I want three things, let's say videos, per row printed in the markup, you can't just use <code></code> because all it does is iterate through the videos.  You could print the "span4"s but you wouldn't know when to print the "row-fluid".  Hence, we need our helper.</p>
+<p>Here's a scenario where this is useful:  In twitter bootstrap, each "span" div is inside of a "row-fluid" div (if using bootstrap responsive.css).  So, if I want three things, let's say videos, per row printed in the markup, you can't just use <code>{ {#each} }</code> because all it does is iterate through the videos.  You could print the "span4"s but you wouldn't know when to print the "row-fluid".  Hence, we need our helper.</p>
 
-<p>The usage:</p>
+<p>The usage (Note: Sorry about the lame/wrong double curlies with a space between them.  This is a current <a href="https://github.com/imathis/octopress/issues/813">Octopress bug</a>.):</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>{ {#everyNth myArray theNumberN} }
+</span><span class='line'>{ {/everyNth} }
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Our new helper <code>everyNth</code> allows us to write code like this:</p>
@@ -126,32 +128,36 @@
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
 <span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>  <span class="nt">&lt;/p&gt;</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>{ {#everyNth vids 3} }
+</span><span class='line'>  { {#if isModZeroNotFirst} }<span class="nt">&lt;/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>/div<span class="ni">&amp;gt;</span>
 </span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="nt">&lt;p&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  { {/if} }
+</span><span class='line'>  { {#if isModZero} }<span class="nt">&lt;/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>div class=&quot;row-fluid&quot;<span class="ni">&amp;gt;</span>
 </span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  { {/if} }
 </span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span4&quot;</span><span class="nt">&gt;&lt;/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>div class=&quot;thumb&quot;<span class="ni">&amp;gt;</span>
-</span><span class='line'>  <span class="ni">&amp;lt;</span>a href=&quot;&quot;<span class="ni">&amp;gt;&amp;lt;</span>img src=&quot;&quot; /<span class="ni">&amp;gt;&amp;lt;</span>/a<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>a href=&quot;{ { linkUrl } }&quot;<span class="ni">&amp;gt;&amp;lt;</span>img src=&quot;{ { image } }&quot; /<span class="ni">&amp;gt;&amp;lt;</span>/a<span class="ni">&amp;gt;</span>
 </span><span class='line'><span class="ni">&amp;lt;</span>/div<span class="ni">&amp;gt;</span>
 </span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="nt">&lt;p&gt;</span>  <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>  { {#if isLast} }<span class="nt">&lt;/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>/div<span class="ni">&amp;gt;</span>
 </span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  { {/if} }
+</span><span class='line'>{ {/everyNth} }
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>To clarify the need and usage of these new variables:</p>
@@ -163,7 +169,7 @@
 </ol>
 
 
-<p>The helper is simple, essentially just a copy of <code></code> with a few new variables in context.  That's the beauty of Handlebars helpers.  With this little baby you can determine where you are in your iterations through your array.</p>
+<p>The helper is simple, essentially just a copy of <code>{ {#each} }</code> with a few new variables in context.  That's the beauty of Handlebars helpers.  With this little baby you can determine where you are in your iterations through your array.</p>
 
 <p>What are some of the things you use Handlebars helpers for?</p>
 ]]></content>
