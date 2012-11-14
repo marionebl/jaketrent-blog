@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-13T08:40:43-07:00</updated>
+  <updated>2012-11-14T10:04:14-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,63 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Cons of CSS Preprocessors]]></title>
+    <link href="http://jaketrent.com/post/cons-css-preprocessors/"/>
+    <updated>2012-11-14T09:20:00-07:00</updated>
+    <id>http://jaketrent.com/post/cons-css-preprocessors</id>
+    <content type="html"><![CDATA[<p>If you have any sizeable stylesheet these days, you should use a CSS preprocessor.  They&#8217;re awesome, but they come with a few cons.  The pros still definitely out-weigh the cons.  Use the preprocessor.  The cons are just things you&#8217;ll want to look out for to make your experience with CSS preprocessors better.</p>
+
+<p><img src="http://i.imgur.com/Mzozm.jpg" alt="CSS Preprocessors" /></p>
+
+<!--more-->
+
+
+<h2>CSS Preprocessors are Popular</h2>
+
+<p>Chris Coyier recently <a href="http://css-tricks.com/poll-results-popularity-of-css-preprocessors/">took a poll on the usage of CSS preprocessors</a>.  About half use one of the preprocessor options available to them.  Of the languages used, <a href="http://lesscss.org/">LESS</a> is the most popular.  (<a href="http://learnboost.github.com/stylus/">Stylus</a> is my current favorite.  I like the HAML-style syntax.)</p>
+
+<p>This means that half of the people who write CSS aren&#8217;t, in fact, writing CSS.  They&#8217;re writing in <a href="http://net.tutsplus.com/tutorials/html-css-techniques/sass-vs-less-vs-stylus-a-preprocessor-shootout/">some language</a> that transpiles to CSS.  So, half of these developers are getting the pros, but there&#8217;s a bit of baggage too.</p>
+
+<h2>Cons of a CSS Preprocessor</h2>
+
+<h4>File Size is Deceiving</h4>
+
+<p>When you&#8217;re writing in a higher-level styling language, it&#8217;s often much smaller than the generated CSS will be.  Thus, you could be deceiving yourself thinking that your resulting CSS will be just as a small as what you&#8217;re editing.  Why?</p>
+
+<ol>
+<li>Hiearchy will be flattened in the resulting CSS.  And the tree of selectors will be duplicated for every selector.</li>
+<li>You can loop in a preprocessor, generating n items where you only see one.  All those items will be listed in the final, static CSS file.</li>
+<li>In some of these languages, you don&#8217;t have to write vendor prefixes.  This is a fantastic feature, but it makes you tend to forget that one attribut will expand into 5 or 6 in the resulting CSS. (Stylus&#8217; <a href="https://github.com/visionmedia/nib">nib</a> is great for this, btw.)</li>
+</ol>
+
+
+<p>Maybe not a big deal.  Remove an image from your site, and you&#8217;ve made up the difference in bits on the wire.</p>
+
+<h4>More Process</h4>
+
+<p>Because you usually won&#8217;t be deploying your .less or .styl file, you&#8217;ll need to have a point in your development lifecycle where the .css gets generated.  This can potentially slow you down, but there are great tools like <a href="https://github.com/gruntjs/grunt-contrib-stylus/">Grunt</a> or <a href="http://incident57.com/codekit/">CodeKit</a> to make this quite automagic.  These tools have good, logical defaults, but still require configuration for your specific project.</p>
+
+<h4>Hard to Go Back</h4>
+
+<p>After working with Stylus or another language for a while, you&#8217;ll meet a project that is straight CSS, and the RoI on conversion to a preprocessor is small.  So, you&#8217;ll be back in CSS land.  This will be hard.  You&#8217;ll realize how nice you&#8217;ve had it.  The mechanisms you&#8217;ve grown to rely on won&#8217;t be there.</p>
+
+<h4>Variety of Syntax</h4>
+
+<p>Each CSS Processor&#8217;s syntax is different.  The features largely overlap, but they&#8217;re implemented differently.  It&#8217;s a polyglot world, so it&#8217;s no big deal.  Still, it can be confusing switching between projects that have different styling syntax.  You&#8217;ll write your styles twice after you realize that Stylus syntax doesn&#8217;t work in a LESS file.</p>
+
+<h4>Team Coordination</h4>
+
+<p>You need to get everyone on your team on board when using a CSS preprocessor.  If someone starts editing a .css file, their changes will be overwritten.  Minify the generated .css.  That should make it less savory to edit.  It&#8217;ll be a deterrent, but I can almost guarantee someone will edit it anyway. :)  Make the stylesheet workflow very clear.</p>
+
+<h2>The Native Future</h2>
+
+<p>We really only have these CSS preprocessors because CSS is too strict, flat, unflexible, and verbose for the amazing things being written for the web today.  Wouldn&#8217;t it be nice if these styling languages or some new, similar version of CSS was available natively in the browser?</p>
+
+<p>Meanwhile, we&#8217;ll use these tools.  What have you found your greatest challenge to be using a CSS preprocessor?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Octopress vs. WordPress]]></title>
@@ -1741,39 +1798,6 @@ http://michaelhyatt.com/platform</p>
 <p>It&#8217;s no wonder that his blog has garnered thousands of followers &#8211; the book was a good read with great content for creating a strong online presence. Or was it?  It was enough to help motivate me to start this blog.  Did you find it helpful/original?</p>
 
 <p>&nbsp;</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Just Over the Next Rise]]></title>
-    <link href="http://jaketrent.com/post/just-over-the-next-rise/"/>
-    <updated>2012-09-25T16:43:00-06:00</updated>
-    <id>http://jaketrent.com/post/just-over-the-next-rise</id>
-    <content type="html"><![CDATA[<p>When you&#8217;ve climbed up a mountain before, have you ever noticed that there are probably 4 unexpected peaks before the real one?  And especially when you&#8217;re calves are especially burning?  Sometimes blogging can be like that.</p>
-
-<p><img src="http://i.imgur.com/iJTmj.jpg" alt="Just over that rise" />
-http://flic.kr/p/6ChTAu</p>
-
-<!--more-->
-
-
-<h2>A Tech blog is born</h2>
-
-<p>One platform here, another blog there, and yet another line of thinking written about.  Well, jaketrent.com is yet another &#8211; or is it?  It&#8217;s my latest (and most glorious!) blog.  It shall be a blog to surpass all <a href="http://rockycode.com/authors/jaketrent">previous blogs</a> (of mine).</p>
-
-<h2>Mountain without a Peak</h2>
-
-<p>It is certainly possible that this isn&#8217;t the peak.  And that&#8217;s probably a good thing.  Do you know what happens when you get to the peak?  You climb down and hike another next weekend.</p>
-
-<p>So, what is the mountain I&#8217;m climbing?  I breath the world of tech.  I create lots of software.  I&#8217;m so intrigued by the fast-paced evolution of things.  There&#8217;s something new, literally every weekend.  So, instead of a new blog every week, this blog will have something new every week.  It&#8217;ll be tech, and it&#8217;ll be sweet.</p>
-
-<h2>Ever-evolving Tech</h2>
-
-<p>One of my favorite things about the tech world is its constant evolution.  There is always something new to learn.  There really never is a dull moment.  If you relax, you&#8217;ve fallen behind, and your relevancy begins to diminish.</p>
-
-<p>This blog will push me to be more consistently clear on the state of technology.  It will be a sharing medium for me to teach on what I&#8217;ve learned.  The way software is created in the Internet age is fundamentally different than it was before.  Google is the pair programmer of many.  May it lead you here to find a bit of what you need in your quest.</p>
-
-<p>Tune in.  It&#8217;s gonna be good.</p>
 ]]></content>
   </entry>
   
