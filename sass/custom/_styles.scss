@@ -12,6 +12,97 @@ $link-color-active: adjust-color($link-color-hover, $lightness: -15) !default;
   display: none;
 }
 
+/* Social Media Icons
+------------------------------------------------------------ */
+#social {
+  margin-top: 30px;
+  overflow: hidden;
+}
+
+#social li.social-facebook,
+#social li.social-googleplus,
+#social li.social-linkedin,
+#social li.social-pinterest,
+#social li.social-rss,
+#social li.social-twitter {
+  float: left;
+  border-bottom: 0;
+}
+
+#social li.social-facebook a,
+#social li.social-facebook a:hover,
+#social li.social-googleplus a,
+#social li.social-googleplus a:hover,
+#social li.social-linkedin a,
+#social li.social-linkedin a:hover,
+#social li.social-pinterest a,
+#social li.social-pinterest a:hover,
+#social li.social-rss a,
+#social li.social-rss a:hover,
+#social li.social-twitter a,
+#social li.social-twitter a:hover {
+  display: block;
+  height: 32px;
+  margin: 0 0 0 10px;
+  padding: 0;
+  text-indent: -9999px;
+  width: 32px;
+}
+
+#social li a.first,
+#social li a.first:hover {
+  margin-left: 0;
+}
+
+#social li.social-facebook a {
+  background: #333 url(/images/social/32x32_facebook.png);
+}
+
+#social li.social-facebook a:hover {
+  background: #000 url(/images/social/32x32_facebook.png);
+}
+
+#social li.social-googleplus a {
+  background: #333 url(/images/social/32x32_googleplus.png);
+}
+
+#social li.social-googleplus a:hover {
+  background: #000 url(/images/social/32x32_googleplus.png);
+}
+
+#social li.social-linkedin a {
+  background: #333 url(/images/social/32x32_linkedin.png);
+}
+
+#social li.social-linkedin a:hover {
+  background: #000 url(/images/social/32x32_linkedin.png);
+}
+
+#social li.social-pinterest a {
+  background: #333 url(/images/social/32x32_pinterest.png);
+}
+
+#social li.social-pinterest a:hover {
+  background: #000 url(/images/social/32x32_pinterest.png);
+}
+
+#social li.social-rss a {
+  background: #333 url(/images/social/32x32_rss.png);
+}
+
+#social li.social-rss a:hover {
+  background: #000 url(/images/social/32x32_rss.png);
+}
+
+#social li.social-twitter a {
+  background: #333 url(/images/social/32x32_twitter.png);
+}
+
+#social li.social-twitter a:hover {
+  background: #000 url(/images/social/32x32_twitter.png);
+}
+
+
 @media only screen and (min-width: 300px) {
   .logo {
     display: block;
