@@ -19,28 +19,13 @@ $link-color-active: adjust-color($link-color-hover, $lightness: -15) !default;
   overflow: hidden;
 }
 
-#social li.social-facebook,
-#social li.social-googleplus,
-#social li.social-linkedin,
-#social li.social-pinterest,
-#social li.social-rss,
-#social li.social-twitter {
+#social li {
   float: left;
   border-bottom: 0;
 }
 
-#social li.social-facebook a,
-#social li.social-facebook a:hover,
-#social li.social-googleplus a,
-#social li.social-googleplus a:hover,
-#social li.social-linkedin a,
-#social li.social-linkedin a:hover,
-#social li.social-pinterest a,
-#social li.social-pinterest a:hover,
-#social li.social-rss a,
-#social li.social-rss a:hover,
-#social li.social-twitter a,
-#social li.social-twitter a:hover {
+#social li a,
+#social li a:hover {
   display: block;
   height: 32px;
   margin: 0 0 0 10px;
@@ -100,6 +85,14 @@ $link-color-active: adjust-color($link-color-hover, $lightness: -15) !default;
 
 #social li.social-twitter a:hover {
   background: #000 url(/images/social/32x32_twitter.png);
+}
+
+#social li.social-github a {
+  background: #333 url(/images/social/32x32_github.png);
+}
+
+#social li.social-github a:hover {
+  background: #000 url(/images/social/32x32_github.png);
 }
 
 
