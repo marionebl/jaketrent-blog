@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Read Request Body in Spring"
+title: "Read Request Body in Spring Bean"
 date: 2012-11-27 14:10
 comments: true
 categories: [Code, java, spring, http]

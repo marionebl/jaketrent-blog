@@ -4,7 +4,7 @@
   <title><![CDATA[Category: http | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/http/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-27T16:02:28-07:00</updated>
+  <updated>2012-11-27T16:10:19-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Read Request Body in Spring]]></title>
+    <title type="html"><![CDATA[Read Request Body in Spring Bean]]></title>
     <link href="http://jaketrent.com/post/http-request-body-spring/"/>
     <updated>2012-11-27T14:10:00-07:00</updated>
     <id>http://jaketrent.com/post/http-request-body-spring</id>
