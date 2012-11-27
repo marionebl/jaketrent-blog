@@ -28,7 +28,7 @@ And now for the pile of non-abstracted code.
 
 ## Parse the Body
 
-Number one, the body is accessed from the [`HttpServletRequest`](http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html) object it a place that wasn't obvious to me: `request.getReader()`.  Heads up, we've got a BufferedReader here.  Hey, at least we don't get a string that we have to wrap in more than one reader!
+Number one, the body is accessed from the [`HttpServletRequest`](http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html) object it a place that wasn't obvious to me: `request.getReader()`.  Heads up, we've got a BufferedReader here.  Hey, at least we don't get a stream that we have to wrap in more than one reader!
 
 {% codeblock lang:java %}
     private String getBody() {

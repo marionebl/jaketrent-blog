@@ -4,7 +4,7 @@
   <title><![CDATA[Category: java | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-27T15:58:57-07:00</updated>
+  <updated>2012-11-27T16:00:44-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -39,7 +39,7 @@
 
 <h2>Parse the Body</h2>
 
-<p>Number one, the body is accessed from the <a href="http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html"><code>HttpServletRequest</code></a> object it a place that wasn't obvious to me: <code>request.getReader()</code>.  Heads up, we've got a BufferedReader here.  Hey, at least we don't get a string that we have to wrap in more than one reader!</p>
+<p>Number one, the body is accessed from the <a href="http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html"><code>HttpServletRequest</code></a> object it a place that wasn't obvious to me: <code>request.getReader()</code>.  Heads up, we've got a BufferedReader here.  Hey, at least we don't get a stream that we have to wrap in more than one reader!</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
