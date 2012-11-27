@@ -4,7 +4,7 @@
   <title><![CDATA[Category: spring | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/spring/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-27T15:52:34-07:00</updated>
+  <updated>2012-11-27T15:58:57-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -18,7 +18,7 @@
     <link href="http://jaketrent.com/post/http-request-body-spring/"/>
     <updated>2012-11-27T14:10:00-07:00</updated>
     <id>http://jaketrent.com/post/http-request-body-spring</id>
-    <content type="html"><![CDATA[<p>Spring is a great addition to your Java stack.  Some things it does very well.  Maybe I'm doing it wrong, but reading the request body doesn't seem to be one of them.  It takes a surprising amount of code.</p>
+    <content type="html"><![CDATA[<p>Spring is a great addition to your Java stack.  It helps you access the request for inside your Spring beans easily.  Maybe I'm doing it wrong, but reading the request body seems blasted verbose after that.  It takes a surprising amount of code.</p>
 
 <p><img src="http://i.imgur.com/w8Ezm.jpg" alt="Happy Spring" /></p>
 
