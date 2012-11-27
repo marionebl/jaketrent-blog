@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-26T20:51:55-07:00</updated>
+  <updated>2012-11-27T15:52:34-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,112 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Read Request Body in Spring]]></title>
+    <link href="http://jaketrent.com/post/http-request-body-spring/"/>
+    <updated>2012-11-27T14:10:00-07:00</updated>
+    <id>http://jaketrent.com/post/http-request-body-spring</id>
+    <content type="html"><![CDATA[<p>Spring is a great addition to your Java stack.  Some things it does very well.  Maybe I'm doing it wrong, but reading the request body doesn't seem to be one of them.  It takes a surprising amount of code.</p>
+
+<p><img src="http://i.imgur.com/w8Ezm.jpg" alt="Happy Spring" /></p>
+
+<!--more-->
+
+
+<h2>Access the Request</h2>
+
+<p>Spring's bread and butter, of course, is inversion of control.  So, to get to the request object itself is no big deal.  Just inject it (canonical packages shown for… fun, mostly):</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>  <span class="nd">@javax.inject.Inject</span>
+</span><span class='line'>  <span class="n">javax</span><span class="o">.</span><span class="na">servlet</span><span class="o">.</span><span class="na">http</span><span class="o">.</span><span class="na">HttpServletRequest</span> <span class="n">req</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And now for the pile of non-abstracted code.</p>
+
+<h2>Parse the Body</h2>
+
+<p>Number one, the body is accessed from the <a href="http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html"><code>HttpServletRequest</code></a> object it a place that wasn't obvious to me: <code>request.getReader()</code>.  Heads up, we've got a BufferedReader here.  Hey, at least we don't get a string that we have to wrap in more than one reader!</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">private</span> <span class="n">String</span> <span class="n">getBody</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">String</span> <span class="n">body</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">req</span><span class="o">.</span><span class="na">getMethod</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;POST&quot;</span><span class="o">)</span> <span class="o">)</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>    <span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">BufferedReader</span> <span class="n">bufferedReader</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">bufferedReader</span> <span class="o">=</span>  <span class="n">req</span><span class="o">.</span><span class="na">getReader</span><span class="o">();</span>
+</span><span class='line'>      <span class="kt">char</span><span class="o">[]</span> <span class="n">charBuffer</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="o">[</span><span class="mi">128</span><span class="o">];</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">bytesRead</span><span class="o">;</span>
+</span><span class='line'>      <span class="k">while</span> <span class="o">(</span> <span class="o">(</span><span class="n">bytesRead</span> <span class="o">=</span> <span class="n">bufferedReader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">charBuffer</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">charBuffer</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">bytesRead</span><span class="o">);</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="c1">// swallow silently -- can&#39;t get body, won&#39;t</span>
+</span><span class='line'>    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">bufferedReader</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>          <span class="n">bufferedReader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="c1">// swallow silently -- can&#39;t get body, won&#39;t</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">body</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">body</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The code.  There is to much.  Let me sum up.  There's only going to be a body if you are doing a post.  Otherwise, don't worry about it.  If there is data, pull it into a string.  Everything else is for (not) handling errors.</p>
+
+<p>There's a bit there.  It's not the worst.  But after getting used to <a href="http://expressjs.com/api.html#req.body">Express' bodyParser</a>, it was hard to see this.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Cons of CSS Preprocessors]]></title>
@@ -683,155 +789,6 @@ testacular.conf.js
 <p>How do you see that we could improve this configuration or testing process?</p>
 
 <p>Now to test some sweet code!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[An Environment-specific Grunt Build]]></title>
-    <link href="http://jaketrent.com/post/an-environment-specific-grunt-build/"/>
-    <updated>2012-10-28T17:03:00-06:00</updated>
-    <id>http://jaketrent.com/post/an-environment-specific-grunt-build</id>
-    <content type="html"><![CDATA[<p>Does your project use GruntJs as a build tool?  Have you ever to customize your build to the environment you're deploying to?  It's handy to be able to specify certain commands to run or keep from running.  It's likely essential to be able to change environment-specific variables via Grunt.  It's not bad.  Most of the leg-work has been done by earlier generations -- that is, if Grunt is old enough to have earlier generations yet.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
-
-<!--more-->
-
-
-<h2>Grunt-context Plugin</h2>
-
-<p>Jonathan Barnett has created a nice little grunt plugin that called <a href="https://npmjs.org/package/grunt-context">grunt-context</a>.  With grunt-context, you can easily specify environment-specific overrides to your grunt tasks.  The <a href="https://github.com/indieisaconcept/grunt-context">github page for grunt-context</a> can provide you with the basics on how to configure your grunt build.</p>
-
-<p>Let's try a concrete config.  Let's say that I want to run the <a href="http://jaketrent.com/post/run-requirejs-with-gruntjs/">RequireJs optimizer</a> only when I deploy to my test environment or to production but not for my local build.</p>
-
-<p>First, install the plugin:</p>
-
-<pre><code>npm install grunt-context
-</code></pre>
-
-<p>Second, fix up your grunt.js file to include:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="cm">/* ... */</span>
-</span><span class='line'><span class="c1">// &#39;requirejs&#39; task REQUIRED to be listed first at root level config</span>
-</span><span class='line'><span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">compile</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// !! all app.build.js standard requirejs options here</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">},</span>
-</span><span class='line'><span class="nx">context</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// !! list each of your desired environments/contexts here</span>
-</span><span class='line'>  <span class="nx">local</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">tasks</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// !! &#39;requirejs&#39; task left out</span>
-</span><span class='line'>      <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;lint test&#39;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="nx">test</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">tasks</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// !! put &#39;requirejs&#39; in default task list</span>
-</span><span class='line'>      <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;requirejs lint test&#39;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="nx">prod</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">//  !! re-list the &#39;requirejs&#39; task to override its behavior for this context</span>
-</span><span class='line'>    <span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">compile</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>          <span class="c1">// !! override the standard requirejs options for something</span>
-</span><span class='line'>          <span class="c1">// special in prod build only</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>    <span class="nx">tasks</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;requirejs lint test&#39;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! load the plugin</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-context&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Finally, run the grunt build and target a specific context.  If you want to build locally and not have requirejs run, type:</p>
-
-<pre><code>grunt context:local
-</code></pre>
-
-<p>If you want to build for test, where requirejs will optimize, type:</p>
-
-<pre><code>grunt context:test
-</code></pre>
-
-<p>Notice in the 'prod' context that I also can override the actual variables for running the requirejs build.  So, it will not only run things or not run things, but you can run tasks in specific ways per environment.</p>
-
-<h2>The Cons</h2>
-
-<p>The plugin works well most of the time, but I haven't had a stellar performance in all cases.  It could be that I'm unknowingly using it wrong.  I've tried many different methods to try and work out some of my issues with it.</p>
-
-<p>For instance, I cannot get it to override functions set to the <a href="https://npmjs.org/package/grunt-exec">grunt-exec</a> <code>command</code> attribute.  It will override string commands just fine, but it has problems with functions.  This could be because it has to assemble task lists for execution within a context and calculate overrides.  My guess is that the implementation may just be lacking in this area.</p>
-
-<h2>Best Option So Far</h2>
-
-<p>For environment-specific grunt builds, <a href="https://npmjs.org/package/grunt-context">grunt-context</a> is the best solution I've found so far.  It's not the best, but it usually gets the job done.  I've bent it to my will thus far.</p>
-
-<p>What have you found that works well for environment-specific JavaScript builds?</p>
 ]]></content>
   </entry>
   

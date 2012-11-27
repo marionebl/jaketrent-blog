@@ -82,7 +82,11 @@
     </url>
     <url>
         <loc>http://jaketrent.com/post/cons-css-preprocessors/</loc>
-        <lastmod>2012-11-14T10:03:30-07:00</lastmod>
+        <lastmod>2012-11-27T14:10:03-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/http-request-body-spring/</loc>
+        <lastmod>2012-11-27T15:51:59-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/404.html</loc>
@@ -90,10 +94,10 @@
     </url>
     <url>
         <loc>http://jaketrent.com/blog/archives/</loc>
-        <lastmod>2012-11-14T10:03:30-07:00</lastmod>
+        <lastmod>2012-11-27T15:51:59-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/</loc>
-        <lastmod>2012-11-14T10:03:30-07:00</lastmod>
+        <lastmod>2012-11-27T15:51:59-07:00</lastmod>
     </url>
 </urlset>

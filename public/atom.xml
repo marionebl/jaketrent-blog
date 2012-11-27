@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-26T20:51:55-07:00</updated>
+  <updated>2012-11-27T15:52:34-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,104 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Read Request Body in Spring]]></title>
+    <link href="http://jaketrent.com/post/http-request-body-spring/"/>
+    <updated>2012-11-27T14:10:00-07:00</updated>
+    <id>http://jaketrent.com/post/http-request-body-spring</id>
+    <content type="html"><![CDATA[<p>Spring is a great addition to your Java stack.  Some things it does very well.  Maybe I&#8217;m doing it wrong, but reading the request body doesn&#8217;t seem to be one of them.  It takes a surprising amount of code.</p>
+
+<p><img src="http://i.imgur.com/w8Ezm.jpg" alt="Happy Spring" /></p>
+
+<!--more-->
+
+
+<h2>Access the Request</h2>
+
+<p>Spring&#8217;s bread and butter, of course, is inversion of control.  So, to get to the request object itself is no big deal.  Just inject it (canonical packages shown for… fun, mostly):</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>  <span class="nd">@javax.inject.Inject</span>
+</span><span class='line'>  <span class="n">javax</span><span class="o">.</span><span class="na">servlet</span><span class="o">.</span><span class="na">http</span><span class="o">.</span><span class="na">HttpServletRequest</span> <span class="n">req</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And now for the pile of non-abstracted code.</p>
+
+<h2>Parse the Body</h2>
+
+<p>Number one, the body is accessed from the <a href="http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html"><code>HttpServletRequest</code></a> object it a place that wasn&#8217;t obvious to me: <code>request.getReader()</code>.  Heads up, we&#8217;ve got a BufferedReader here.  Hey, at least we don&#8217;t get a string that we have to wrap in more than one reader!</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="nf">getBody</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">String</span> <span class="n">body</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
+</span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">req</span><span class="o">.</span><span class="na">getMethod</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;POST&quot;</span><span class="o">)</span> <span class="o">)</span>
+</span><span class='line'>      <span class="o">{</span>
+</span><span class='line'>        <span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">BufferedReader</span> <span class="n">bufferedReader</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>          <span class="n">bufferedReader</span> <span class="o">=</span>  <span class="n">req</span><span class="o">.</span><span class="na">getReader</span><span class="o">();</span>
+</span><span class='line'>          <span class="kt">char</span><span class="o">[]</span> <span class="n">charBuffer</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="o">[</span><span class="mi">128</span><span class="o">];</span>
+</span><span class='line'>          <span class="kt">int</span> <span class="n">bytesRead</span><span class="o">;</span>
+</span><span class='line'>          <span class="k">while</span> <span class="o">(</span> <span class="o">(</span><span class="n">bytesRead</span> <span class="o">=</span> <span class="n">bufferedReader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">charBuffer</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">charBuffer</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">bytesRead</span><span class="o">);</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="c1">// swallow silently -- can&#39;t get body, won&#39;t</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">if</span> <span class="o">(</span><span class="n">bufferedReader</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>              <span class="n">bufferedReader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>              <span class="c1">// swallow silently -- can&#39;t get body, won&#39;t</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="n">body</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">body</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The code.  There is to much.  Let me sum up.  There&#8217;s only going to be a body if you are doing a post.  Otherwise, don&#8217;t worry about it.  If there is data, pull it into a string.  Everything else is for (not) handling errors.</p>
+
+<p>There&#8217;s a bit there.  It&#8217;s not the worst.  But after getting used to <a href="http://expressjs.com/api.html#req.body">Express&#8217; bodyParser</a>, it was hard to see this.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Cons of CSS Preprocessors]]></title>
@@ -1744,60 +1842,6 @@ http://flic.kr/p/6FFZMy</p>
 <p>At the point I was getting the blog looking nice and doing what I wanted, did I care that the thing was written in PHP? No. I saw it just once when setting up my DB connection. I did cringe slightly upon seeing some <a href="http://php.net/manual/en/language.variables.superglobals.php">super globals</a> again (<code>$_SERVER</code>), but I hastily committed the change and deployed the app.</p>
 
 <p>We&#8217;ll see if I continue to love it, but so far, so good. My fellow coders, I ask: Is my reasoning sound?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Book Review for Platform]]></title>
-    <link href="http://jaketrent.com/post/book-review-for-platform/"/>
-    <updated>2012-09-25T16:46:00-06:00</updated>
-    <id>http://jaketrent.com/post/book-review-for-platform</id>
-    <content type="html"><![CDATA[<p>How do you inform people of your next big idea? How do you motivate others to continue listening to you once you have their attention? In the age of the Internet, there are countless competitors in almost every space. To differentiate yourself, you&#8217;ll need to create something truly amazing. But that&#8217;s not enough. Get that product or service into the public eye, and engage the masses to take a look and spread the good word. Michael Hyatt shares how to build the <em>platform</em> upon which this process will happen.</p>
-
-<p><img src="http://c.michaelhyatt.com/banners/platform/728x901.png" alt="Just over that rise" />
-http://michaelhyatt.com/platform</p>
-
-<!--more-->
-
-
-<h2>Is this book for you?</h2>
-
-<p>Michael Hyatt&#8217;s book, &#8221;<a href="http://www.amazon.com/Platform-Get-Noticed-Noisy-World/dp/159555503X">Platform - Get Noticed in a Noisy World</a>&#8221; is an impressive book. As the books second subtitle says, it&#8217;s &#8220;a step-by-step guide for anyone with something to say or sell&#8221;. As it turns out, anyone with a product, service, or idea fits in this category.</p>
-
-<h2>The Gist of Platform</h2>
-
-<p>His strategy, and book, is broken into 5 sequential areas:</p>
-
-<ol>
-<li>Start with Wow</li>
-<li>Prepare to Launch</li>
-<li>Build Your Home Base</li>
-<li>Expand Your Reach</li>
-<li>Engage Your Tribe</li>
-</ol>
-
-
-<h2>The importance of a blog</h2>
-
-<p>The doesn&#8217;t get too much into product creation. My favorite chapter on that topic was chapter 2, &#8220;Bake in the Wow&#8221;. It contained great &#8220;wow&#8221; checklist items that will be insightful for your own product creation.</p>
-
-<p>Michael&#8217;s strategy centers around a blog, or as he calls it, a &#8220;home base&#8221;. This is the channel you control. You control the content, the format, the distribution, the readership, etc. He fills most of the book with this advice. This is where your product or service happens. This is where you direct everyone.</p>
-
-<p>The advice is specific: titles, lengths of posts, frequency of writing, language, policies, and more is covered. He also gives ample treatment to the effective use of Twitter. Throughout, I was impressed with his sharing of specific tools or websites that are helpful.</p>
-
-<h2>One small, perhaps fundamental beef</h2>
-
-<p>To me, section 2, &#8220;Prepare to Launch&#8221;, comes before section 1, &#8220;Start with Wow&#8221;. Why? Because you really have to envision your product before you create it. What is the product you&#8217;ll create? What is the exact problem you are trying to solve? Who is your target market? How will you distribute your service?</p>
-
-<p>As Michael says in chapter 11 on creating an elevator pitch: You must first achieve clarity yourself before you can spread the message to others. Would this not come before potentially time/cost-intensive creation of your product? Both sections are fantastic, by the way.</p>
-
-<h2>Blog-like Style</h2>
-
-<p>Mike covers a lot of ground in this book. The information is immediately relevant to anyone (everyone) who wants (needs) an Internet presence. The read is quick and easy with short chapters that get right to the point (essentially a blog post per chapter). The core information close to the surface with little cruft. The voice is conversational and compelling as Mike tells his own story of how he has developed a following online.</p>
-
-<p>It&#8217;s no wonder that his blog has garnered thousands of followers &#8211; the book was a good read with great content for creating a strong online presence. Or was it?  It was enough to help motivate me to start this blog.  Did you find it helpful/original?</p>
-
-<p>&nbsp;</p>
 ]]></content>
   </entry>
   
