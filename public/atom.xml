@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-27T16:00:44-07:00</updated>
+  <updated>2012-11-27T16:02:28-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -71,20 +71,18 @@
 <span class='line-number'>27</span>
 <span class='line-number'>28</span>
 <span class='line-number'>29</span>
-<span class='line-number'>30</span>
 </pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="nf">getBody</span><span class="o">()</span> <span class="o">{</span>
 </span><span class='line'>      <span class="n">String</span> <span class="n">body</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
 </span><span class='line'>      <span class="k">if</span> <span class="o">(</span><span class="n">req</span><span class="o">.</span><span class="na">getMethod</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;POST&quot;</span><span class="o">)</span> <span class="o">)</span>
 </span><span class='line'>      <span class="o">{</span>
 </span><span class='line'>        <span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
 </span><span class='line'>        <span class="n">BufferedReader</span> <span class="n">bufferedReader</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
 </span><span class='line'>          <span class="n">bufferedReader</span> <span class="o">=</span>  <span class="n">req</span><span class="o">.</span><span class="na">getReader</span><span class="o">();</span>
 </span><span class='line'>          <span class="kt">char</span><span class="o">[]</span> <span class="n">charBuffer</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="o">[</span><span class="mi">128</span><span class="o">];</span>
 </span><span class='line'>          <span class="kt">int</span> <span class="n">bytesRead</span><span class="o">;</span>
-</span><span class='line'>          <span class="k">while</span> <span class="o">(</span> <span class="o">(</span><span class="n">bytesRead</span> <span class="o">=</span> <span class="n">bufferedReader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">charBuffer</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">while</span> <span class="o">((</span><span class="n">bytesRead</span> <span class="o">=</span> <span class="n">bufferedReader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">charBuffer</span><span class="o">))</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
 </span><span class='line'>            <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">charBuffer</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">bytesRead</span><span class="o">);</span>
 </span><span class='line'>          <span class="o">}</span>
 </span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>

@@ -37,13 +37,12 @@ Number one, the body is accessed from the [`HttpServletRequest`](http://docs.ora
       {
         StringBuilder sb = new StringBuilder();
         BufferedReader bufferedReader = null;
-        String content = "";
   
         try {
           bufferedReader =  req.getReader();
           char[] charBuffer = new char[128];
           int bytesRead;
-          while ( (bytesRead = bufferedReader.read(charBuffer)) != -1 ) {
+          while ((bytesRead = bufferedReader.read(charBuffer)) != -1) {
             sb.append(charBuffer, 0, bytesRead);
           }
         } catch (IOException ex) {
