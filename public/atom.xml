@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-27T16:10:19-07:00</updated>
+  <updated>2012-11-29T13:27:25-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,109 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Count Attributes in JavaScript Object]]></title>
+    <link href="http://jaketrent.com/post/count-javascript-object-attributes/"/>
+    <updated>2012-11-29T13:11:00-07:00</updated>
+    <id>http://jaketrent.com/post/count-javascript-object-attributes</id>
+    <content type="html"><![CDATA[<p>Sometimes it may be useful to know how many attributes a JavaScript object has.  There&#8217;s not a fantastic way to do this.  Or maybe there is.  Do you know one?  For what it&#8217;s worth, here&#8217;s a way.</p>
+
+<p><img src="http://i.imgur.com/54smb.jpg" alt="Count attributes in js object" /></p>
+
+<!--more-->
+
+
+<h2>Which Objects have a Length</h2>
+
+<p>If instantiate a new object, it does <em>not</em> have a built-in length attribute:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&gt;</span> <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{}</span><span class="kc">undefined</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">length</span>
+</span><span class='line'><span class="kc">undefined</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If I add an arbitrary property that object, it still doesn&#8217;t affect the length:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&gt;</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">prop1</span> <span class="o">=</span> <span class="s2">&quot;adsf&quot;</span>
+</span><span class='line'><span class="s1">&#39;adsf&#39;</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">length</span>
+</span><span class='line'><span class="kc">undefined</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If I instantiate a new array, it has a built-in length attribute:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&gt;</span> <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'><span class="kc">undefined</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">length</span>
+</span><span class='line'><span class="mi">2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But an array is an object whose attributes are numbers, right?  So, if I put an arbitrary property on it, does it affect length:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&gt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">prop1</span> <span class="o">=</span> <span class="s2">&quot;asdf&quot;</span>
+</span><span class='line'><span class="s1">&#39;asdf&#39;</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">length</span>
+</span><span class='line'><span class="mi">2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>No, this <code>arr</code> array still just has the two items we previously pushed onto it.</p>
+
+<h2>Just Iterating</h2>
+
+<p>So, how do you find out how many attributes are in an object (not array)?  Just iterate on it:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">numAttrs</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="o">++</span><span class="nx">count</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">count</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I found this a bit painful to write.  There should be a better way, right?  Do you know what it is?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Read Request Body in Spring Bean]]></title>
@@ -1797,49 +1900,6 @@ http://flic.kr/p/5iwNAG</p>
 <p>Just as an API/platform creator attract talent to build cool stuff for them, organizations with their own internal dev force need to take developer relations seriously. Good organizations and good leaders take good care of all their people.  I work at such an organization with such people.  We need more.</p>
 
 <p>What else might be an essential ingredient in maintaining favorable developer relationships?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Why I Chose a WordPress Blog]]></title>
-    <link href="http://jaketrent.com/post/why-i-chose-a-wordpress-blog/"/>
-    <updated>2012-09-25T16:49:00-06:00</updated>
-    <id>http://jaketrent.com/post/why-i-chose-a-wordpress-blog</id>
-    <content type="html"><![CDATA[<p>Some might ask why a guy who loves his life of code would choose WordPress as the framework for one of his websites. Well, I chose a WordPress blog. I almost didn&#8217;t. It&#8217;s been a long time coming. It&#8217;s early in the game, but I think it was a good choice.</p>
-
-<p><img src="http://i.imgur.com/Z9HMK.jpg" alt="WordPress T-Shirt" />
-http://flic.kr/p/6FFZMy</p>
-
-<!--more-->
-
-
-<h2>Why I wouldn&#8217;t choose WordPress blog</h2>
-
-<p>I only had one job about 7 years back that consisted of mostly PHP. The job was great for many reasons. PHP wasn&#8217;t the highlight. We did some cool stuff with it. At the time, it was all right. Since, I have coded full time in Java, Python, XQuery, or JavaScript. I would count each as <strong>more</strong> enjoyable than PHP.</p>
-
-<p>Secondly, I&#8217;m a coder. I love to build stuff. Custom software is way more fun than boxed software. WordPress is something that is literally accessible to anyone that&#8217;s just computer savvy. I&#8217;m not breaking new ground on WordPress.</p>
-
-<h2>An insightful article</h2>
-
-<p>A week or so ago, I ran into an article on a site called &#8220;Virtuous Code&#8221;. That site name was cool enough. The article was typed (&#8220;penned&#8221; is such a cooler word) by Avdi Grimm and is named <a href="http://devblog.avdi.org/2012/08/09/why-wordpress/">&#8220;Why WordPress&#8221;</a>. I was caught off guard by how well it described my personal predicament.</p>
-
-<h2>Why I chose a WordPress blog</h2>
-
-<p>When I read Avid&#8217;s article, I realized that the reasons I, as a coder, had been avoiding WordPress were the very reasons I should embrace it:</p>
-
-<ol>
-<li>As a coder, my tendency to jump into the internals and start toying around is strong. This hinders my writing ability. It competes for my time. Writing is something that I really want to do more of. By choosing a package that&#8217;s tied up with a bow will encourage me to just use it instead of over-customize it. And since the innards of the package is a language that I don&#8217;t want to devote a ton of my time to, I&#8217;m even less inclined to customize it.</li>
-<li>PHP and WordPress are, in a way, like JavaScript &#8211; they&#8217;re everwhere, and everyone is using them. This means that probably just about everything that I could imagine wanting (ok, I&#8217;ll probably come up with something innane) on a blog has already been built. I don&#8217;t need to reinvent it.</li>
-</ol>
-
-
-<h2>Driven to the edge</h2>
-
-<p>So, I made the jump. I just downloaded the latest <a href="http:://wordpress.org">WordPress.org</a> package. I ran Apache on my local box and pointed my browser to <code>localhost:8888</code>. I was presented with the pleasant admin UI. I chose a new theme. It installed in place. It was a 2-click ordeal. I chose a few plugins to replace default functionality and add a bit more. I was pleasantly surprised by the smoothness of it all.</p>
-
-<p>At the point I was getting the blog looking nice and doing what I wanted, did I care that the thing was written in PHP? No. I saw it just once when setting up my DB connection. I did cringe slightly upon seeing some <a href="http://php.net/manual/en/language.variables.superglobals.php">super globals</a> again (<code>$_SERVER</code>), but I hastily committed the change and deployed the app.</p>
-
-<p>We&#8217;ll see if I continue to love it, but so far, so good. My fellow coders, I ask: Is my reasoning sound?</p>
 ]]></content>
   </entry>
   

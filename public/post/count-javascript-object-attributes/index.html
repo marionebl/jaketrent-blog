@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>How to Organize NodeJs Routes - Jake Trent</title>
+  <title>Count Attributes in JavaScript Object - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="A few routes in a NodeJs app &#8211; no problem. Just put them in your app.js. More than a handful? You&#8217;ll probably want to look at organizing &hellip;">
-  
+  <meta name="description" content="How do you find the number of attributes in a JS object? Turns out there's not a fantastic way to do it">
+  <meta name="keywords" content="js, javascript attributes, count js attributes">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/how-to-organize-nodejs-routes/">
+  <link rel="canonical" href="http://jaketrent.com/post/count-javascript-object-attributes/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -86,7 +86,7 @@
   
   <header>
     
-      <h1 class="entry-title">How to Organize NodeJs Routes</h1>
+      <h1 class="entry-title">Count Attributes in JavaScript Object</h1>
     
     
       <p class="meta">
@@ -102,7 +102,7 @@
   
 
 
-<time datetime="2012-10-02T16:52:00-06:00" pubdate data-updated="true">Oct 2<span>nd</span>, 2012</time>
+<time datetime="2012-11-29T13:11:00-07:00" pubdate data-updated="true">Nov 29<span>th</span>, 2012</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -111,95 +111,101 @@
   </header>
 
 
-<div class="entry-content"><p>A few routes in a NodeJs app &#8211; no problem.  Just put them in your <code>app.js</code>.  More than a handful?  You&#8217;ll probably want to look at organizing your routes a different way.  This will help keep your core <code>app.js</code> clean and make your actual routes easier to find.</p>
+<div class="entry-content"><p>Sometimes it may be useful to know how many attributes a JavaScript object has.  There&#8217;s not a fantastic way to do this.  Or maybe there is.  Do you know one?  For what it&#8217;s worth, here&#8217;s a way.</p>
 
-<p><img src="http://i.imgur.com/basH6.jpg" alt="Too many routes" />
-http://flic.kr/p/bihZUV</p>
+<p><img src="http://i.imgur.com/54smb.jpg" alt="Count attributes in js object" /></p>
 
 <!--more-->
 
 
-<h2>Express Routes</h2>
+<h2>Which Objects have a Length</h2>
 
-<p>The favorite http framework on <a href="http://nodejs.org/">NodeJs</a> seems to be <a href="http://expressjs.com/">Express</a>.  I personally like it quite a bit.  It&#8217;s simple, declarative, and allows you to set up all the normal HTTP commands with ease.</p>
-
-<p>Did you know that Express comes with a binary/cli command called <code>express</code>.  This command will setup a project structure and a lot of the boilerplate code for you.  The docs contain a guide on <a href="http://expressjs.com/guide.html#executable">how to run this</a>.  It has support for other cool options like session support or various css preprocessors.</p>
-
-<p>A sample run and the file structure that it will create looks something like this:</p>
-
-<pre><code>$ express --sessions --css stylus --ejs myapp
-
-create : myapp
-create : myapp/package.json
-create : myapp/app.js
-create : myapp/public
-create : myapp/public/javascripts
-create : myapp/public/images
-create : myapp/public/stylesheets
-create : myapp/public/stylesheets/style.styl
-create : myapp/routes
-create : myapp/routes/index.js
-create : myapp/views
-create : myapp/views/index.ejs
-</code></pre>
-
-<p>In that generated code, your <code>app.js</code> references a route like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">routes</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./routes&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">index</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And the route, <code>index.js</code>, looks like:</p>
+<p>If instantiate a new object, it does <em>not</em> have a built-in length attribute:</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">exports</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
-</span><span class='line'>  <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Express&#39;</span> <span class="p">});</span>
-</span><span class='line'><span class="p">};</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&gt;</span> <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{}</span><span class="kc">undefined</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">length</span>
+</span><span class='line'><span class="kc">undefined</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>I like this, but it&#8217;s still not the best.  I don&#8217;t like having to list the <code>app.get()</code>, etc. in <code>app.js</code>.  This list will get long.  So, how would I adjust?</p>
-
-<h2>All http commands in separate files</h2>
-
-<p>Instead, I want to tell <code>app.js</code> about my routes, but I want each route file to hook itself up to express directly.</p>
-
-<p>Showing the adjustments, <code>app.js</code>:</p>
+<p>If I add an arbitrary property that object, it still doesn&#8217;t affect the length:</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">indexRt</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./routes/index&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&gt;</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">prop1</span> <span class="o">=</span> <span class="s2">&quot;adsf&quot;</span>
+</span><span class='line'><span class="s1">&#39;adsf&#39;</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">length</span>
+</span><span class='line'><span class="kc">undefined</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>This time, more goodies in <code>index.js</code>:</p>
+<p>If I instantiate a new array, it has a built-in length attribute:</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">});</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&gt;</span> <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'><span class="kc">undefined</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">length</span>
+</span><span class='line'><span class="mi">2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But an array is an object whose attributes are numbers, right?  So, if I put an arbitrary property on it, does it affect length:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&gt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">prop1</span> <span class="o">=</span> <span class="s2">&quot;asdf&quot;</span>
+</span><span class='line'><span class="s1">&#39;asdf&#39;</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">length</span>
+</span><span class='line'><span class="mi">2</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>No, this <code>arr</code> array still just has the two items we previously pushed onto it.</p>
+
+<h2>Just Iterating</h2>
+
+<p>So, how do you find out how many attributes are in an object (not array)?  Just iterate on it:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">numAttrs</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="o">++</span><span class="nx">count</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">count</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The difference is somewhat slight.  Now, instead of each http command listed in your app, only each resource (in REST terms) is listed in app.  Each command for a resource is listed in that resource&#8217;s route.js.</p>
-
-<p>There are surely many ways to organize your NodeJs routes.  Express gives a great starting pattern.  Our adjustment adds a slight optimization.  Organizing your routes will help your main <code>app.js</code> file stay way cleaner, and you&#8217;ll be able to find your routes more easily.</p>
-
-<p>But this surely can&#8217;t be the best way for everyone.  What are the ways that you&#8217;ve found successful in organizing your routes?</p>
-
-<p>Note: this post uses express 3 syntax.</p>
+<p>I found this a bit painful to write.  There should be a better way, right?  Do you know what it is?</p>
 </div>
 
 
@@ -222,12 +228,12 @@ create : myapp/views/index.ejs
   
 
 
-<time datetime="2012-10-02T16:52:00-06:00" pubdate data-updated="true">Oct 2<span>nd</span>, 2012</time>
+<time datetime="2012-11-29T13:11:00-07:00" pubdate data-updated="true">Nov 29<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/express/'>express</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>
   
 </span>
 
@@ -236,7 +242,7 @@ create : myapp/views/index.ejs
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/how-to-organize-nodejs-routes/" data-via="jaketrent" data-counturl="http://jaketrent.com/post/how-to-organize-nodejs-routes/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/count-javascript-object-attributes/" data-via="jaketrent" data-counturl="http://jaketrent.com/post/count-javascript-object-attributes/" >Tweet</a>
   
   
   
@@ -245,10 +251,8 @@ create : myapp/views/index.ejs
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/developer-relations-for-internal-developers/" title="Previous Post: Developer Relations for Internal Developers">&laquo; Developer Relations for Internal Developers</a>
+        <a class="basic-alignment left" href="/post/http-request-body-spring/" title="Previous Post: Read Request Body in Spring Bean">&laquo; Read Request Body in Spring Bean</a>
       
-      
-        <a class="basic-alignment right" href="/post/change-your-node-script-without-restarting/" title="Next Post: Change Your Node Script Without Restarting">Change Your Node Script Without Restarting &raquo;</a>
       
     </p>
   </footer>
@@ -343,8 +347,8 @@ create : myapp/views/index.ejs
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/how-to-organize-nodejs-routes/';
-        var disqus_url = 'http://jaketrent.com/post/how-to-organize-nodejs-routes/';
+        var disqus_identifier = 'http://jaketrent.com/post/count-javascript-object-attributes/';
+        var disqus_url = 'http://jaketrent.com/post/count-javascript-object-attributes/';
         var disqus_script = 'embed.js';
       
     (function () {
