@@ -20,7 +20,8 @@ Sometimes it may be useful to know how many attributes a JavaScript object has. 
 If instantiate a new object, it does *not* have a built-in length attribute:
 
 {% codeblock lang:js %}
-> var obj = {}undefined
+> var obj = {}
+undefined
 > obj.length
 undefined
 {% endcodeblock %}
