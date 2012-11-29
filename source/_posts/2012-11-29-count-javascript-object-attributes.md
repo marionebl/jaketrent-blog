@@ -67,7 +67,7 @@ So, how do you find out how many attributes are in an object (not array)?  Just 
 function numAttrs(obj) {
   var count = 0;
   for(var key in obj) {
-    if (obj(key)) {
+    if (obj.hasOwnProperty(key)) {
       ++count;
     }
   }
@@ -76,3 +76,13 @@ function numAttrs(obj) {
 {% endcodeblock %}
 
 I found this a bit painful to write.  There should be a better way, right?  Do you know what it is?
+
+## A Better Way for Better Browsers
+
+If your in a [Modern JavaScript environment](http://kangax.github.com/es5-compat-table/), give this a whirl:
+
+{% codeblock lang:js %}
+  Object.keys(obj).length
+{% endcodeblock %}
+
+Way nicer.  Don't try in <= IE8.

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-29T13:31:14-07:00</updated>
+  <updated>2012-11-29T15:29:17-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -121,7 +121,7 @@
 </span><span class='line'>  <span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
 </span><span class='line'>  <span class="o">++</span><span class="nx">count</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
@@ -132,6 +132,16 @@
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>I found this a bit painful to write.  There should be a better way, right?  Do you know what it is?</p>
+
+<h2>A Better Way for Better Browsers</h2>
+
+<p>If your in a <a href="http://kangax.github.com/es5-compat-table/">Modern JavaScript environment</a>, give this a whirl:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">obj</span><span class="p">).</span><span class="nx">length</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Way nicer.  Don't try in &lt;= IE8.</p>
 ]]></content>
   </entry>
   
