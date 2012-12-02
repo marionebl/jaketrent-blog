@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-29T15:29:17-07:00</updated>
+  <updated>2012-12-02T15:01:10-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -18,7 +18,7 @@
     <link href="http://jaketrent.com/post/count-javascript-object-attributes/"/>
     <updated>2012-11-29T13:11:00-07:00</updated>
     <id>http://jaketrent.com/post/count-javascript-object-attributes</id>
-    <content type="html"><![CDATA[<p>Sometimes it may be useful to know how many attributes a JavaScript object has.  There&#8217;s not a fantastic way to do this.  Or maybe there is.  Do you know one?  For what it&#8217;s worth, here&#8217;s a way.</p>
+    <content type="html"><![CDATA[<p>Sometimes it may be useful to know how many attributes a JavaScript object has.  There&#8217;s not a fantastic way to do this.  Or maybe there is.  Do you know one?  Could cut out IE8 support.  Or, for what it&#8217;s worth, here&#8217;s a way.</p>
 
 <p><img src="http://i.imgur.com/54smb.jpg" alt="Count attributes in js object" /></p>
 
@@ -1584,7 +1584,7 @@ http://flic.kr/p/bDP2fF</p>
     <link href="http://jaketrent.com/post/every-nth-item-in-handlebars-loop/"/>
     <updated>2012-10-03T16:55:00-06:00</updated>
     <id>http://jaketrent.com/post/every-nth-item-in-handlebars-loop</id>
-    <content type="html"><![CDATA[<p>Have you ever wanted to do something special every nth time through a Handlebars loop?  The built-in <code>{ {#each} }</code> will loop through your items just fine.  It lacks a few features.  For one, you don&#8217;t have access to the loop index, though you can <a href="http://rockycode.com/blog/handlebars-loop-index/">find it</a>.  Without the index and simple comparisons like modulus, length of the array, and equals, you&#8217;ll be creating your own Handlebars helpers.  Here&#8217;s an example of one.</p>
+    <content type="html"><![CDATA[<p>Have you ever wanted to do something special every nth time through a Handlebars loop?  The built-in &#8220; will loop through your items just fine.  It lacks a few features.  For one, you don&#8217;t have access to the loop index, though you can <a href="http://rockycode.com/blog/handlebars-loop-index/">find it</a>.  Without the index and simple comparisons like modulus, length of the array, and equals, you&#8217;ll be creating your own Handlebars helpers.  Here&#8217;s an example of one.</p>
 
 <p><img src="http://blog.teamtreehouse.com/wp-content/uploads/2011/03/handlebars.png" alt="Handlebars js" /></p>
 
@@ -1645,14 +1645,12 @@ http://flic.kr/p/bDP2fF</p>
 
 <h2>Scenario: Print rows</h2>
 
-<p>Here&#8217;s a scenario where this is useful:  In twitter bootstrap, each &#8220;span&#8221; div is inside of a &#8220;row-fluid&#8221; div (if using bootstrap responsive.css).  So, if I want three things, let&#8217;s say videos, per row printed in the markup, you can&#8217;t just use <code>{ {#each} }</code> because all it does is iterate through the videos.  You could print the &#8220;span4&#8221;s but you wouldn&#8217;t know when to print the &#8220;row-fluid&#8221;.  Hence, we need our helper.</p>
-
-<p>The usage (Note: Sorry about the lame/wrong double curlies with a space between them.  This is a current <a href="https://github.com/imathis/octopress/issues/813">Octopress bug</a>.):</p>
+<p>Here&#8217;s a scenario where this is useful:  In twitter bootstrap, each &#8220;span&#8221; div is inside of a &#8220;row-fluid&#8221; div (if using bootstrap responsive.css).  So, if I want three things, let&#8217;s say videos, per row printed in the markup, you can&#8217;t just use &#8220; because all it does is iterate through the videos.  You could print the &#8220;span4&#8221;s but you wouldn&#8217;t know when to print the &#8220;row-fluid&#8221;.  Hence, we need our helper.</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>{ {#everyNth myArray theNumberN} }
-</span><span class='line'>{ {/everyNth} }
+</pre></td><td class='code'><pre><code class='html'><span class='line'>{{#everyNth myArray theNumberN}}
+</span><span class='line'>{{/everyNth}}
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1674,22 +1672,22 @@ http://flic.kr/p/bDP2fF</p>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>{ {#everyNth vids 3} }
-</span><span class='line'>  { {#if isModZeroNotFirst} }
+</pre></td><td class='code'><pre><code class='html'><span class='line'>{{#everyNth vids 3}}
+</span><span class='line'>  {{#if isModZeroNotFirst}}
 </span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>  { {/if} }
-</span><span class='line'>  { {#if isModZero} }
+</span><span class='line'>  {{/if}}
+</span><span class='line'>  {{#if isModZero}}
 </span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row-fluid&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  { {/if} }
+</span><span class='line'>  {{/if}}
 </span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span4&quot;</span><span class="nt">&gt;</span>
 </span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;thumb&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{ { linkUrl } }&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;{ { image } }&quot;</span> <span class="nt">/&gt;&lt;/a&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{ linkUrl }}&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;{{ image }}&quot;</span> <span class="nt">/&gt;&lt;/a&gt;</span>
 </span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
 </span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>  { {#if isLast} }
+</span><span class='line'>  {{#if isLast}}
 </span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>  { {/if} }
-</span><span class='line'>{ {/everyNth} }
+</span><span class='line'>  {{/if}}
+</span><span class='line'>{{/everyNth}}
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1702,7 +1700,7 @@ http://flic.kr/p/bDP2fF</p>
 </ol>
 
 
-<p>The helper is simple, essentially just a copy of <code>{ {#each} }</code> with a few new variables in context.  That&#8217;s the beauty of Handlebars helpers.  With this little baby you can determine where you are in your iterations through your array.</p>
+<p>The helper is simple, essentially just a copy of <code>#each</code> with a few new variables in context.  That&#8217;s the beauty of Handlebars helpers.  With this little baby you can determine where you are in your iterations through your array.</p>
 
 <p>What are some of the things you use Handlebars helpers for?</p>
 ]]></content>

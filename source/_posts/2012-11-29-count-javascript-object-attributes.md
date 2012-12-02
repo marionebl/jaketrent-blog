@@ -9,7 +9,7 @@ keywords: js, javascript attributes, count js attributes
 published: true
 ---
 
-Sometimes it may be useful to know how many attributes a JavaScript object has.  There's not a fantastic way to do this.  Or maybe there is.  Do you know one?  For what it's worth, here's a way.
+Sometimes it may be useful to know how many attributes a JavaScript object has.  There's not a fantastic way to do this.  Or maybe there is.  Do you know one?  Could cut out IE8 support.  Or, for what it's worth, here's a way.
 
 ![Count attributes in js object](http://i.imgur.com/54smb.jpg)
 

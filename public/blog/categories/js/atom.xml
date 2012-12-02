@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-11-29T15:29:17-07:00</updated>
+  <updated>2012-12-02T15:01:10-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -18,7 +18,7 @@
     <link href="http://jaketrent.com/post/count-javascript-object-attributes/"/>
     <updated>2012-11-29T13:11:00-07:00</updated>
     <id>http://jaketrent.com/post/count-javascript-object-attributes</id>
-    <content type="html"><![CDATA[<p>Sometimes it may be useful to know how many attributes a JavaScript object has.  There's not a fantastic way to do this.  Or maybe there is.  Do you know one?  For what it's worth, here's a way.</p>
+    <content type="html"><![CDATA[<p>Sometimes it may be useful to know how many attributes a JavaScript object has.  There's not a fantastic way to do this.  Or maybe there is.  Do you know one?  Could cut out IE8 support.  Or, for what it's worth, here's a way.</p>
 
 <p><img src="http://i.imgur.com/54smb.jpg" alt="Count attributes in js object" /></p>
 
