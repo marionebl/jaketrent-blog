@@ -1,6 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
+        <loc>http://jaketrent.com/post/blog-template/</loc>
+        <lastmod>2012-11-26T20:51:46-07:00</lastmod>
+    </url>
+    <url>
         <loc>http://jaketrent.com/post/just-over-the-next-rise/</loc>
         <lastmod>2012-11-11T14:32:26-07:00</lastmod>
     </url>
