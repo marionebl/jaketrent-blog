@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-12-05T16:50:07-07:00</updated>
+  <updated>2012-12-05T16:55:40-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,117 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Environment Specific Variables in NodeJs]]></title>
+    <link href="http://jaketrent.com/post/environment-variables-in-node/"/>
+    <updated>2012-12-05T16:12:00-07:00</updated>
+    <id>http://jaketrent.com/post/environment-variables-in-node</id>
+    <content type="html"><![CDATA[<p>Sometimes things change in different environments.  For one, I wear a tie to church but try not to otherwise.  In Node, you might want variables to change per environment.  And it turns out people have wanted this exact thing, creating marvels of code for us to use as we please.  Enter, nconf.</p>
+
+<p><img src="http://i.imgur.com/5rZ8H.png" alt="Environment variables in Node" /></p>
+
+<!--more-->
+
+
+<h2>Nconf</h2>
+
+<p><a href="https://github.com/flatiron/nconf">Nconf</a> provides &#8220;hierarchical node.js configuration with files, environment variables, command-line arguments, and atomic object merging.&#8221;  It is a great little package provided by the folks at <a href="http://nodejitsu.com/">NodeJitsu</a>.</p>
+
+<p>To install, run a little:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ npm install nconf</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Environment Variables in Node</h4>
+
+<p>Often, NodeJs environments are specified through the aptly-named environment variables.  These are the variables that are set on a system level, available to yours and other applications.  In Unixy environments, you&#8217;d set one with:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ export NODE_ENV=production</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And it turns out that <code>NODE_ENV</code> is the single most-used environment variable of them all.  Really, it&#8217;s the big kahuna that triggers other environment variables or code for activation.</p>
+
+<p>For instance, in an <a href="http://expressjs.com/">Express</a> app, you&#8217;ll see this a lot:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="s1">&#39;production&#39;</span> <span class="o">==</span> <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;env&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;dbUri&#39;</span><span class="p">,</span> <span class="s1">&#39;n.n.n.n/prod&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Actually, you see <a href="http://expressjs.com/api.html#app.configure"><code>configure()</code></a>, but it&#8217;s all just sugar around a check to <code>process.env.NODE_ENV</code>.</p>
+
+<h4>Set NODE_ENV and Start Node</h4>
+
+<p>If you want to start node and set the environment variable all in a one liner, try:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ export NODE_ENV=production && node app.js</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Multiple, Variable Sources</h4>
+
+<p>You could just grab all your variables out the process environment, but the cool thing that nconf gives you is a hierarchy.  The <a href="https://github.com/flatiron/nconf">docs</a> give the probable example of the following hierarchy:</p>
+
+<ol>
+<li>Command-line arguments</li>
+<li>Environment variables</li>
+<li>A file</li>
+</ol>
+
+
+<p>One could access these sources in code with this beaut:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">nconf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nconf&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">argv</span><span class="p">()</span>
+</span><span class='line'>     <span class="p">.</span><span class="nx">env</span><span class="p">()</span>
+</span><span class='line'>     <span class="p">.</span><span class="nx">file</span><span class="p">({</span> <span class="nx">file</span><span class="o">:</span>
+</span><span class='line'>       <span class="s1">&#39;config.json&#39;</span>
+</span><span class='line'>     <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You could even have a config file specific to each environment that ships with your app and load it with a slightly spiffier:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">nconf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nconf&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">argv</span><span class="p">()</span>
+</span><span class='line'>     <span class="p">.</span><span class="nx">env</span><span class="p">()</span>
+</span><span class='line'>     <span class="p">.</span><span class="nx">file</span><span class="p">({</span> <span class="nx">file</span><span class="o">:</span>
+</span><span class='line'>       <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">+</span> <span class="s1">&#39;.json&#39;</span>
+</span><span class='line'>     <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Using the Data</h4>
+
+<p>Finally, after loading, just access your environment variables and incorporate them in your code as you will:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;NODE_ENV&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Declare some variables per environment.  Likely candidates are database connection strings or web service endpoints or feature flags.  These will help you avoid as many nasty if-else branches in your code.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Count Attributes in JavaScript Object]]></title>
@@ -1867,50 +1978,6 @@ create : myapp/views/index.ejs
 <p>But this surely can&#8217;t be the best way for everyone.  What are the ways that you&#8217;ve found successful in organizing your routes?</p>
 
 <p>Note: this post uses express 3 syntax.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Developer Relations for Internal Developers]]></title>
-    <link href="http://jaketrent.com/post/developer-relations-for-internal-developers/"/>
-    <updated>2012-09-26T16:50:00-06:00</updated>
-    <id>http://jaketrent.com/post/developer-relations-for-internal-developers</id>
-    <content type="html"><![CDATA[<p>When a company has a platform or API that it wants outside developers to create cool stuff on, it will sometimes create a developer relations group. This group will help developers get what they need. What about custom dev shops that already have a host of developers? Who&#8217;s watching these developers&#8217; backs?</p>
-
-<p><img src="http://i.imgur.com/QAxW5.jpg" alt="Love note" />
-http://flic.kr/p/5iwNAG</p>
-
-<!--more-->
-
-
-<h2>A new level of developer relations</h2>
-
-<p>RIM developer relation needs being what they are, they&#8217;ve gone this far to promote their BlackBerry 10 SDK:</p>
-
-<iframe width="560" height="315" src="http://www.youtube.com/embed/WlsahuZ_4oM" frameborder="0" allowfullscreen></iframe>
-
-
-<p>It&#8217;s awesome. Maybe &#8220;desperate&#8221;? It shows a definite effort (high notes) to attract and accommodate developers.</p>
-
-<h2>Essential vitamins and minerals</h2>
-
-<p>Once developers are in a company, what are the elements of developer relations that are needful there. What does a company need to retain top coding talent? I offer:</p>
-
-<ol>
-<li><p><strong>Engaging Responsibilities</strong> - Smart guys are not going to sit around in your company doing the same thing for 10 years. In tech, probably not even for a couple. This might also be stated as &#8220;Career Path&#8221;. I think this requirement is similar to what <a href="http://www.businessinsider.com/why-young-employees-quit-their-jobs-2012-9">Business Insider observed young workers</a> as needing: &#8220;Multiple studies find that today’s younger workers have absolutely no intention of sticking around if they don’t feel like they’re learning, growing and being valued in a job.&#8221;</p></li>
-<li><p><strong>Learning Opportunities</strong> - Learning is an inherent part of every developer job description. It must be kosher to spend time to sharpen the saw. This is building capactiy. No one will ever propose solutions that they don&#8217;t understand. If your company wants to broaden its offering, developers will need to broaden themselves.</p></li>
-<li><p><strong>Budget for Engineering</strong> - Build money into project budgets. Build time into the timelines. Good developers will quickly lose morale if there is never time to do it right. If you don&#8217;t give time to cleanup technical debt, developers will not feel satisfied in what they create.</p></li>
-<li><p><strong>Always Have an Advocate</strong> - Every company will get it wrong sometimes. Especially in large, specialized organizations, everyone has their own functional slice that they&#8217;re focused on, sometimes at the expense of all else. Developers need someone who speaks for them. They need someone who has a voice in the bureaucracy and can represent them well where they don&#8217;t personally have a voice.</p></li>
-</ol>
-
-
-<h2>Everyone needs a coder, especially a good one</h2>
-
-<p>If developer relations are not upkept with care, good coders are likely to head for the door. Alternately, if just certain elements are occassionally missing, good developers know how to fill in the gaps and provide for themselves.</p>
-
-<p>Just as an API/platform creator attract talent to build cool stuff for them, organizations with their own internal dev force need to take developer relations seriously. Good organizations and good leaders take good care of all their people.  I work at such an organization with such people.  We need more.</p>
-
-<p>What else might be an essential ingredient in maintaining favorable developer relationships?</p>
 ]]></content>
   </entry>
   

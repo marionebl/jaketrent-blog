@@ -11,7 +11,7 @@ published: true
 
 Sometimes things change in different environments.  For one, I wear a tie to church but try not to otherwise.  In Node, you might want variables to change per environment.  And it turns out people have wanted this exact thing, creating marvels of code for us to use as we please.  Enter, nconf.
 
-![Alt Text](http://i.imgur.com/M0kYA.jpg)
+![Environment variables in Node](http://i.imgur.com/5rZ8H.png)
 
 <!--more-->
 

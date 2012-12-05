@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-12-05T16:50:07-07:00</updated>
+  <updated>2012-12-05T16:55:40-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,129 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Environment Specific Variables in NodeJs]]></title>
+    <link href="http://jaketrent.com/post/environment-variables-in-node/"/>
+    <updated>2012-12-05T16:12:00-07:00</updated>
+    <id>http://jaketrent.com/post/environment-variables-in-node</id>
+    <content type="html"><![CDATA[<p>Sometimes things change in different environments.  For one, I wear a tie to church but try not to otherwise.  In Node, you might want variables to change per environment.  And it turns out people have wanted this exact thing, creating marvels of code for us to use as we please.  Enter, nconf.</p>
+
+<p><img src="http://i.imgur.com/5rZ8H.png" alt="Environment variables in Node" /></p>
+
+<!--more-->
+
+
+<h2>Nconf</h2>
+
+<p><a href="https://github.com/flatiron/nconf">Nconf</a> provides "hierarchical node.js configuration with files, environment variables, command-line arguments, and atomic object merging."  It is a great little package provided by the folks at <a href="http://nodejitsu.com/">NodeJitsu</a>.</p>
+
+<p>To install, run a little:</p>
+
+<p><code>
+$ npm install nconf
+</code></p>
+
+<h4>Environment Variables in Node</h4>
+
+<p>Often, NodeJs environments are specified through the aptly-named environment variables.  These are the variables that are set on a system level, available to yours and other applications.  In Unixy environments, you'd set one with:</p>
+
+<p><code>
+$ export NODE_ENV=production
+</code></p>
+
+<p>And it turns out that <code>NODE_ENV</code> is the single most-used environment variable of them all.  Really, it's the big kahuna that triggers other environment variables or code for activation.</p>
+
+<p>For instance, in an <a href="http://expressjs.com/">Express</a> app, you'll see this a lot:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="s1">&#39;production&#39;</span> <span class="o">==</span> <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;env&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;dbUri&#39;</span><span class="p">,</span> <span class="s1">&#39;n.n.n.n/prod&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Actually, you see <a href="http://expressjs.com/api.html#app.configure"><code>configure()</code></a>, but it's all just sugar around a check to <code>process.env.NODE_ENV</code>.</p>
+
+<h4>Set NODE_ENV and Start Node</h4>
+
+<p>If you want to start node and set the environment variable all in a one liner, try:</p>
+
+<p><code>
+$ export NODE_ENV=production &amp;&amp; node app.js
+</code></p>
+
+<h4>Multiple, Variable Sources</h4>
+
+<p>You could just grab all your variables out the process environment, but the cool thing that nconf gives you is a hierarchy.  The <a href="https://github.com/flatiron/nconf">docs</a> give the probable example of the following hierarchy:</p>
+
+<ol>
+<li>Command-line arguments</li>
+<li>Environment variables</li>
+<li>A file</li>
+</ol>
+
+
+<p>One could access these sources in code with this beaut:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">nconf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nconf&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">argv</span><span class="p">()</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span> <span class="p">.</span><span class="nx">env</span><span class="p">()</span>
+</span><span class='line'> <span class="p">.</span><span class="nx">file</span><span class="p">({</span> <span class="nx">file</span><span class="o">:</span>
+</span><span class='line'>   <span class="s1">&#39;config.json&#39;</span>
+</span><span class='line'> <span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>You could even have a config file specific to each environment that ships with your app and load it with a slightly spiffier:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">nconf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nconf&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">argv</span><span class="p">()</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span> <span class="p">.</span><span class="nx">env</span><span class="p">()</span>
+</span><span class='line'> <span class="p">.</span><span class="nx">file</span><span class="p">({</span> <span class="nx">file</span><span class="o">:</span>
+</span><span class='line'>   <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">+</span> <span class="s1">&#39;.json&#39;</span>
+</span><span class='line'> <span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>Using the Data</h4>
+
+<p>Finally, after loading, just access your environment variables and incorporate them in your code as you will:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;NODE_ENV&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Declare some variables per environment.  Likely candidates are database connection strings or web service endpoints or feature flags.  These will help you avoid as many nasty if-else branches in your code.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Change Your Node Script Without Restarting]]></title>

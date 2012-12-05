@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-12-05T16:50:07-07:00</updated>
+  <updated>2012-12-05T16:55:40-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,129 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Environment Specific Variables in NodeJs]]></title>
+    <link href="http://jaketrent.com/post/environment-variables-in-node/"/>
+    <updated>2012-12-05T16:12:00-07:00</updated>
+    <id>http://jaketrent.com/post/environment-variables-in-node</id>
+    <content type="html"><![CDATA[<p>Sometimes things change in different environments.  For one, I wear a tie to church but try not to otherwise.  In Node, you might want variables to change per environment.  And it turns out people have wanted this exact thing, creating marvels of code for us to use as we please.  Enter, nconf.</p>
+
+<p><img src="http://i.imgur.com/5rZ8H.png" alt="Environment variables in Node" /></p>
+
+<!--more-->
+
+
+<h2>Nconf</h2>
+
+<p><a href="https://github.com/flatiron/nconf">Nconf</a> provides "hierarchical node.js configuration with files, environment variables, command-line arguments, and atomic object merging."  It is a great little package provided by the folks at <a href="http://nodejitsu.com/">NodeJitsu</a>.</p>
+
+<p>To install, run a little:</p>
+
+<p><code>
+$ npm install nconf
+</code></p>
+
+<h4>Environment Variables in Node</h4>
+
+<p>Often, NodeJs environments are specified through the aptly-named environment variables.  These are the variables that are set on a system level, available to yours and other applications.  In Unixy environments, you'd set one with:</p>
+
+<p><code>
+$ export NODE_ENV=production
+</code></p>
+
+<p>And it turns out that <code>NODE_ENV</code> is the single most-used environment variable of them all.  Really, it's the big kahuna that triggers other environment variables or code for activation.</p>
+
+<p>For instance, in an <a href="http://expressjs.com/">Express</a> app, you'll see this a lot:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="s1">&#39;production&#39;</span> <span class="o">==</span> <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;env&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;dbUri&#39;</span><span class="p">,</span> <span class="s1">&#39;n.n.n.n/prod&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Actually, you see <a href="http://expressjs.com/api.html#app.configure"><code>configure()</code></a>, but it's all just sugar around a check to <code>process.env.NODE_ENV</code>.</p>
+
+<h4>Set NODE_ENV and Start Node</h4>
+
+<p>If you want to start node and set the environment variable all in a one liner, try:</p>
+
+<p><code>
+$ export NODE_ENV=production &amp;&amp; node app.js
+</code></p>
+
+<h4>Multiple, Variable Sources</h4>
+
+<p>You could just grab all your variables out the process environment, but the cool thing that nconf gives you is a hierarchy.  The <a href="https://github.com/flatiron/nconf">docs</a> give the probable example of the following hierarchy:</p>
+
+<ol>
+<li>Command-line arguments</li>
+<li>Environment variables</li>
+<li>A file</li>
+</ol>
+
+
+<p>One could access these sources in code with this beaut:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">nconf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nconf&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">argv</span><span class="p">()</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span> <span class="p">.</span><span class="nx">env</span><span class="p">()</span>
+</span><span class='line'> <span class="p">.</span><span class="nx">file</span><span class="p">({</span> <span class="nx">file</span><span class="o">:</span>
+</span><span class='line'>   <span class="s1">&#39;config.json&#39;</span>
+</span><span class='line'> <span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>You could even have a config file specific to each environment that ships with your app and load it with a slightly spiffier:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">nconf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nconf&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">argv</span><span class="p">()</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span> <span class="p">.</span><span class="nx">env</span><span class="p">()</span>
+</span><span class='line'> <span class="p">.</span><span class="nx">file</span><span class="p">({</span> <span class="nx">file</span><span class="o">:</span>
+</span><span class='line'>   <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">+</span> <span class="s1">&#39;.json&#39;</span>
+</span><span class='line'> <span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>Using the Data</h4>
+
+<p>Finally, after loading, just access your environment variables and incorporate them in your code as you will:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;NODE_ENV&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Declare some variables per environment.  Likely candidates are database connection strings or web service endpoints or feature flags.  These will help you avoid as many nasty if-else branches in your code.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Count Attributes in JavaScript Object]]></title>
@@ -760,130 +883,6 @@ testacular.conf.js
 <p>For environment-specific grunt builds, <a href="https://npmjs.org/package/grunt-context">grunt-context</a> is the best solution I've found so far.  It's not the best, but it usually gets the job done.  I've bent it to my will thus far.</p>
 
 <p>What have you found that works well for environment-specific JavaScript builds?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Run RequireJs with GruntJs]]></title>
-    <link href="http://jaketrent.com/post/run-requirejs-with-gruntjs/"/>
-    <updated>2012-10-28T17:02:00-06:00</updated>
-    <id>http://jaketrent.com/post/run-requirejs-with-gruntjs</id>
-    <content type="html"><![CDATA[<p>RequireJs features a fantastic optimization tool, <a href="http://requirejs.org/docs/optimization.html">r.js</a>, that utilizes <a href="https://github.com/mishoo/UglifyJS">UglifyJs</a> to minimize and concatenate your JavaScript code.  <a href="http://gruntjs.com/">Grunt</a> is a build tool that is great for standardizing your build configuration and coordinating multiple build steps -- amongst its other wonders.  Hopefully you get to use both on your project, because they'll both make your development process smoother and leave you to the funnerest stuff -- writing sweet apps.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
-
-<!--more-->
-
-
-<h2>Vanilla RequireJs</h2>
-
-<p>To use <a href="http://requirejs.org/docs/optimization.html#wholeproject">vanilla RequireJS to optimize your project</a>, you'll need to do two things:</p>
-
-<ol>
-<li><strong>Create app.build.js</strong>  - This file contains the configuration for how your want RequireJs react to your source code.  Among other things, paths to source directories and output files are specified.</li>
-<li><strong>Run the optimizer</strong> - via the command <code>node r.js -o app.build.js</code></li>
-</ol>
-
-
-<p>Grunt has essentially the same steps, but they're specified in the standard grunt config file and will integrate better with the rest of your build process steps that are in grunt.</p>
-
-<h2>Grunt RequireJs Configuration</h2>
-
-<p>An easy way to get Grunt to run your RequireJs build is to use the <a href="https://npmjs.org/package/grunt-contrib-requirejs"><code>grunt-contrib-requirejs</code></a> plugin.</p>
-
-<p>Install the plugin:</p>
-
-<pre><code>npm install grunt-contrib-requirejs
-</code></pre>
-
-<p>Add the requirejs config to your grunt.js file:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="cm">/* ... */</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// !! This is the name of the task (&#39;requirejs&#39;)</span>
-</span><span class='line'><span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">compile</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// !! You can drop your app.build.js config wholesale into &#39;options&#39;</span>
-</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">appDir</span><span class="o">:</span> <span class="s2">&quot;src/&quot;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">dir</span><span class="o">:</span> <span class="s2">&quot;target/&quot;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">optimize</span><span class="o">:</span> <span class="s1">&#39;uglify&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">mainConfigFile</span><span class="o">:</span><span class="s1">&#39;./src/main.js&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">modules</span><span class="o">:</span><span class="p">[</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>          <span class="nx">name</span><span class="o">:</span><span class="s1">&#39;MyModule&#39;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">],</span>
-</span><span class='line'>      <span class="nx">logLevel</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">findNestedDependencies</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">fileExclusionRegExp</span><span class="o">:</span> <span class="sr">/^\./</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">inlineText</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="cm">/* ... */</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! This loads the plugin into grunt</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-requirejs&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>And run the task:</p>
-
-<pre><code>grunt requirejs
-</code></pre>
-
-<p>You should get the regular RequireJs build output that you're used to seeing, and you'll be able to verify that it worked.</p>
-
-<h2>Solid Optimization</h2>
-
-<p>RequireJs does a great build.  Grunt is flexible and easy to work with.  They go well together thanks to the <a href="https://npmjs.org/package/grunt-contrib-requirejs">grunt-contrib-requirejs</a> plugin, which gives a solid performance.  You'll have your JavaScript code done up so tight; it'll be denser than lead -- which is obviously what you've always dreamed of.</p>
 ]]></content>
   </entry>
   
