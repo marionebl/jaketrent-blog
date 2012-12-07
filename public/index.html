@@ -9,7 +9,7 @@
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="Sometimes things change in different environments. For one, I wear a tie to church but try not to otherwise. In Node, you might want variables to &hellip;">
+  <meta name="description" content="RequireJs makes dependency management on the client mostly better. Once it&#8217;s setup, it&#8217;s nice. Getting the patterns of your paths to work &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -83,6 +83,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/requirejs-paths-in-prod-test-build/">RequireJs Paths in Prod, Test, and Build</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-07T11:18:00-07:00" pubdate data-updated="true">Dec 7<span>th</span>, 2012</time>
+        
+         | <a href="/post/requirejs-paths-in-prod-test-build/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>RequireJs makes dependency management on the client mostly better.  Once it&#8217;s setup, it&#8217;s nice.  Getting the patterns of your paths to work correctly can be difficult to setup, depending on the constraints of your system.  Making the same paths work in a prod, test, and build environment can be even more adventuresome.  In my case, there were a few extra hoops.  My scenario might not fully match yours, but perhaps you can apply this solution to your own needs.</p>
+
+<p><img src="http://i.imgur.com/xZqm5.png" alt="Alt Text" /></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/post/requirejs-paths-in-prod-test-build/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -493,51 +538,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/post/run-requirejs-with-gruntjs/">Run RequireJs With GruntJs</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-28T17:02:00-06:00" pubdate data-updated="true">Oct 28<span>th</span>, 2012</time>
-        
-         | <a href="/post/run-requirejs-with-gruntjs/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>RequireJs features a fantastic optimization tool, <a href="http://requirejs.org/docs/optimization.html">r.js</a>, that utilizes <a href="https://github.com/mishoo/UglifyJS">UglifyJs</a> to minimize and concatenate your JavaScript code.  <a href="http://gruntjs.com/">Grunt</a> is a build tool that is great for standardizing your build configuration and coordinating multiple build steps &#8211; amongst its other wonders.  Hopefully you get to use both on your project, because they&#8217;ll both make your development process smoother and leave you to the funnerest stuff &#8211; writing sweet apps.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/post/run-requirejs-with-gruntjs/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -562,6 +562,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/post/requirejs-paths-in-prod-test-build/">RequireJs Paths in Prod, Test, and Build</a>
+      </li>
+    
+      <li class="post">
         <a href="/post/environment-variables-in-node/">Environment Specific Variables in NodeJs</a>
       </li>
     
@@ -575,10 +579,6 @@
     
       <li class="post">
         <a href="/post/cons-css-preprocessors/">Cons of CSS Preprocessors</a>
-      </li>
-    
-      <li class="post">
-        <a href="/post/octopress-vs-wordpress/">Octopress vs. WordPress</a>
       </li>
     
   </ul>

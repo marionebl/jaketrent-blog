@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-12-05T16:55:40-07:00</updated>
+  <updated>2012-12-07T14:32:26-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[RequireJs Paths in Prod, Test, and Build]]></title>
+    <link href="http://jaketrent.com/post/requirejs-paths-in-prod-test-build/"/>
+    <updated>2012-12-07T11:18:00-07:00</updated>
+    <id>http://jaketrent.com/post/requirejs-paths-in-prod-test-build</id>
+    <content type="html"><![CDATA[<p>RequireJs makes dependency management on the client mostly better.  Once it's setup, it's nice.  Getting the patterns of your paths to work correctly can be difficult to setup, depending on the constraints of your system.  Making the same paths work in a prod, test, and build environment can be even more adventuresome.  In my case, there were a few extra hoops.  My scenario might not fully match yours, but perhaps you can apply this solution to your own needs.</p>
+
+<p><img src="http://i.imgur.com/xZqm5.png" alt="Alt Text" /></p>
+
+<!--more-->
+
+
+<h2>Prod: Loading Modules From a Different Server</h2>
+
+<p>Recently, we built a portal.  It contains a bunch of widgets that are served from domains different from the host page.  The portal requested these widget js files via <a href="http://requirejs.org/">RequireJs</a>.</p>
+
+<p>Because the widgets live on other domains, those widgets' subdependencies needed a path that would be relative to that other widget domain and not the portal domain.  In order to accomplish this, widget dependencies were specified in this way:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;./widgetDependency.js&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dep</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// my widget code</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The <code>.js</code> extension tells RequireJs to load the dependency <a href="https://github.com/jrburke/r.js/blob/2.1.1/require.js#L1521">as a URL</a>.  The <code>./</code> makes the URL relative to the widget domain.</p>
+
+<h2>Test: RequireJs Paths in Testacular</h2>
+
+<p>When you go to test your modules in a test environment, you may not want to load your modules as URLs.  Such was the case for me, <a href="http://jaketrent.com/post/test-requirejs-testacular/">running Testacular</a>, where the source code is requested into the context of the test server already.</p>
+
+<p>In prod, I needed the <code>.js</code> extension.  But, in test I didn't want to load modules from URLs.  So, I need to make the test environment ignore the extension.  The solution?  Override the regular expression that checks for the extension in my test runner to be something that was never matched:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">require</span><span class="p">.</span><span class="nx">jsExtRegExp</span> <span class="o">=</span> <span class="sr">/&lt;sup&gt;pileOTest/</span><span class="p">;</span><span class="o">&lt;</span><span class="err">/sup&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This allows RequireJs to load the module by module name.</p>
+
+<h4>RequireJs Adds Double .js Extension</h4>
+
+<p>It's getting better in the test environment, but we still haven't totally appeased RequireJs.  It turns out that when it loads a module by name, it still has to <a href="https://github.com/jrburke/r.js/blob/2.1.1/require.js#L1526">convert that name to a path</a>.</p>
+
+<p>Given my constraints (widgets from another domain on a portal), my name actually includes a <code>.js</code> extension.  This isn't usually the case.  RequireJs doesn't test for this again (remember, we overrode the regex that did), so it just adds a <code>.js</code> extension on the end, creating two: <code>.js.js</code>.</p>
+
+<p>But there is one final way to trick it out:  Add a '?' to the name.  This rule was meant to apply to URLs that represented dynamic scripts (and would thus take query strings) as opposed to static js files.  That's not why we'll add it, but it will help us nonetheless.</p>
+
+<p>So now your module dependencies will look like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;./widgetDependency.js?&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dep</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// my widget code</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And in your test environment they will load, and you will be happy.  Until...</p>
+
+<h2>Build: Module Names for Optimization</h2>
+
+<p>When you go to <a href="http://requirejs.org/docs/optimization.html#basics">optimize your RequireJs modules</a> you'll again need RequireJs to load your modules by module name instead of url.  If you don't, you'll get nice messages like:</p>
+
+<p>```</p>
+
+<blockquote><blockquote><p>Tracing dependencies for: MyModule
+Cannot optimize network URL, skipping: nls/str.js?
+Error: ENOENT, no such file or directory
+'/Users/.../style.css?'
+In module tree:</p>
+
+<pre><code>MyModule
+</code></pre>
+
+<p>```</p></blockquote></blockquote>
+
+<p>You may cry a little, but we're almost there.  Remember, your module dependency paths worked just fine in prod.  You only changed them to accommodate the test environment.  So, it's time to change them back when you optimize your module into one file for production use.</p>
+
+<p>The <code>r.js</code> configuration in <code>app.build.js</code> includes an function called <code>onBuildRead()</code>'.  Call it to transform the code as it goes out the door for optimization.  We want to strip out the '?' question marks from our dependency arrays.  Stripping out all '?'s might be a bit too dangerous.  So, let's make a benign adjustment that will help us identify exactly what we're trying to strip out and replace our '?' string in our dependency paths with '?test', finally:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;./widgetDependency.js?test&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dep</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// my widget code</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And <a href="https://github.com/jrburke/r.js/blob/2.1.1/build/example.build.js#L417">implement <code>onBuildRead</code></a> as:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">onBuildRead</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">moduleName</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">contents</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="nx">br</span><span class="o">/&gt;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">contents</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\?test/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>"Shut off all the garbage smashers on the detention level!"</h4>
+
+<p>Take a deep breath.  That was a little much to make all that work.  You have made your RequireJs paths happy in 3 contexts:</p>
+
+<ol>
+<li>In production, where modules are served from domains different from the host page and must be loaded by URL.</li>
+<li>In test, where your modules must be loaded by module name.</li>
+<li>In the optimization build, where modules must be loaded by module name.</li>
+</ol>
+
+
+<p>I fill like I've tricked out RequireJs a bit to make this work.  How could we adjust the solution to be more straightforward?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Environment Specific Variables in NodeJs]]></title>
@@ -734,155 +848,6 @@ testacular.conf.js
 <p>How do you see that we could improve this configuration or testing process?</p>
 
 <p>Now to test some sweet code!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[An Environment-specific Grunt Build]]></title>
-    <link href="http://jaketrent.com/post/an-environment-specific-grunt-build/"/>
-    <updated>2012-10-28T17:03:00-06:00</updated>
-    <id>http://jaketrent.com/post/an-environment-specific-grunt-build</id>
-    <content type="html"><![CDATA[<p>Does your project use GruntJs as a build tool?  Have you ever to customize your build to the environment you're deploying to?  It's handy to be able to specify certain commands to run or keep from running.  It's likely essential to be able to change environment-specific variables via Grunt.  It's not bad.  Most of the leg-work has been done by earlier generations -- that is, if Grunt is old enough to have earlier generations yet.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
-
-<!--more-->
-
-
-<h2>Grunt-context Plugin</h2>
-
-<p>Jonathan Barnett has created a nice little grunt plugin that called <a href="https://npmjs.org/package/grunt-context">grunt-context</a>.  With grunt-context, you can easily specify environment-specific overrides to your grunt tasks.  The <a href="https://github.com/indieisaconcept/grunt-context">github page for grunt-context</a> can provide you with the basics on how to configure your grunt build.</p>
-
-<p>Let's try a concrete config.  Let's say that I want to run the <a href="http://jaketrent.com/post/run-requirejs-with-gruntjs/">RequireJs optimizer</a> only when I deploy to my test environment or to production but not for my local build.</p>
-
-<p>First, install the plugin:</p>
-
-<pre><code>npm install grunt-context
-</code></pre>
-
-<p>Second, fix up your grunt.js file to include:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="cm">/* ... */</span>
-</span><span class='line'><span class="c1">// &#39;requirejs&#39; task REQUIRED to be listed first at root level config</span>
-</span><span class='line'><span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">compile</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// !! all app.build.js standard requirejs options here</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">},</span>
-</span><span class='line'><span class="nx">context</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// !! list each of your desired environments/contexts here</span>
-</span><span class='line'>  <span class="nx">local</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">tasks</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// !! &#39;requirejs&#39; task left out</span>
-</span><span class='line'>      <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;lint test&#39;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="nx">test</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">tasks</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// !! put &#39;requirejs&#39; in default task list</span>
-</span><span class='line'>      <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;requirejs lint test&#39;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="nx">prod</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">//  !! re-list the &#39;requirejs&#39; task to override its behavior for this context</span>
-</span><span class='line'>    <span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">compile</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>          <span class="c1">// !! override the standard requirejs options for something</span>
-</span><span class='line'>          <span class="c1">// special in prod build only</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>    <span class="nx">tasks</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;requirejs lint test&#39;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! load the plugin</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-context&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Finally, run the grunt build and target a specific context.  If you want to build locally and not have requirejs run, type:</p>
-
-<pre><code>grunt context:local
-</code></pre>
-
-<p>If you want to build for test, where requirejs will optimize, type:</p>
-
-<pre><code>grunt context:test
-</code></pre>
-
-<p>Notice in the 'prod' context that I also can override the actual variables for running the requirejs build.  So, it will not only run things or not run things, but you can run tasks in specific ways per environment.</p>
-
-<h2>The Cons</h2>
-
-<p>The plugin works well most of the time, but I haven't had a stellar performance in all cases.  It could be that I'm unknowingly using it wrong.  I've tried many different methods to try and work out some of my issues with it.</p>
-
-<p>For instance, I cannot get it to override functions set to the <a href="https://npmjs.org/package/grunt-exec">grunt-exec</a> <code>command</code> attribute.  It will override string commands just fine, but it has problems with functions.  This could be because it has to assemble task lists for execution within a context and calculate overrides.  My guess is that the implementation may just be lacking in this area.</p>
-
-<h2>Best Option So Far</h2>
-
-<p>For environment-specific grunt builds, <a href="https://npmjs.org/package/grunt-context">grunt-context</a> is the best solution I've found so far.  It's not the best, but it usually gets the job done.  I've bent it to my will thus far.</p>
-
-<p>What have you found that works well for environment-specific JavaScript builds?</p>
 ]]></content>
   </entry>
   
