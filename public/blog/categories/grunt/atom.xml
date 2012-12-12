@@ -4,7 +4,7 @@
   <title><![CDATA[Category: grunt | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/grunt/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-12-12T15:20:54-07:00</updated>
+  <updated>2012-12-12T15:24:21-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,90 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Impressions of Grunt]]></title>
+    <link href="http://jaketrent.com/post/impressions-of-grunt/"/>
+    <updated>2012-12-12T14:24:00-07:00</updated>
+    <id>http://jaketrent.com/post/impressions-of-grunt</id>
+    <content type="html"><![CDATA[<p>Grunt is a great build tool for JavaScript projects.  It comes with a lot out of the box, and you can write your own custom tasks.  It joins a world fraught with many, glorious build tool options.  So, a bit has been made of the decision to have Grunt join the fray.  Perhaps most prominently, Miller Medeiros had <a href="http://blog.millermedeiros.com/node-js-ant-grunt-and-other-build-tools/">a few problems with Grunt</a>.  And in response, Ben Alman gave his reasoning on <a href="http://benalman.com/news/2012/08/why-grunt/">why he wrote it</a>.  Having used it for a bit, I have a few impressions.  Here they are so far.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt impressions" /></p>
+
+<!--more-->
+
+
+<h2>Community</h2>
+
+<p>There will probably never be any build tool that gains more mass than what already exists as just a bash or a make script.  And really nothing needs to.  Healthy-sized communities have been built up around different build tool options where those that used it liked the style, it fit their platform, and they found it useful.  Grunt feels like it's on track to become a highlight build tool in the Js community.  There are many using it <a href="https://github.com/gruntjs/gruntjs.com/issues/9">already</a> and more <a href="https://github.com/angular/angular.js/pull/1544">on the way</a>.</p>
+
+<h2>Declarative vs. Procedural</h2>
+
+<p>Which style of project configuration is better?  Declarative or procedural?  Wars have been started with lesser words.  I don't feel like it's a question of better.  It's just a matter of style.  There are pros and cons.  Where you do the many of same things as everyone else, declarative works just fine.  When you have to do new, original things, you have to write code to support that.  You might wrap that in a grunt plugin to encapsulate it then write declarative options to feed it.  But, you still own the plugin implementation.</p>
+
+<h2>JavaScript Build for JavaScript Project</h2>
+
+<p>Maybe obviously, the sweet spot for Grunt is for JavaScript projects.  Js projects are becoming more complex all the time.  Often, complementary build tools are lacking.  There are other projects that are named <a href="https://github.com/280north/jake">awesomely</a>, though they are mostly dead.  Grunt fills a gap for JavaScript projects.  It seems that the advantages of writing client <em>and</em> server js apply here as well:  Js build tools take advantage of the Js (Node) environment.  You can use your Js skills here.  The context switching is diminished.</p>
+
+<h2>Synchronous Exec for JavaScript Build</h2>
+
+<p>One of the main sellings points for NodeJs is that it is built from the ground up for using in asychronous environments and problems.  Build scripts aren't generally asynchronous.  Usually, it's quite the opposite.  Step 1 leads to step 2 and so on.  You can't skip, and future steps rely upon completion of the previous.</p>
+
+<p>So, you can try <a href="http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback">child_process.exec</a>, but it's synchronous.  So, make it synchronous and try <a href="https://github.com/jeremyfa/node-exec-sync">exec-sync</a>.  But it has <a href="https://github.com/jeremyfa/node-exec-sync/issues/8">problems</a> vanilla exec doesn't.  The best synchronous exec for JavaScript I've found so far is <a href="http://documentup.com/arturadib/shelljs#command-reference/exec-command-options-callback">shelljs.exec</a>.</p>
+
+<p>In this way, NodeJs/Grunt seems like an awkward fit as a build tool.</p>
+
+<h2>Shell Commands in Grunt</h2>
+
+<p>When I end up doing custom things in my Grunt build, it tends to be that I'm trying to get to the shell and execute something.  If I have a shell script, I can just execute it with <a href="https://github.com/jharding/grunt-exec">grunt-exec</a>.  If I'm trying to keep all logic in Grunt, I'll use <a href="https://github.com/arturadib/shelljs">shelljs</a>.  The thing that gets me with both of these solutions is that I'm in Node, constantly trying to get out of Node to run something in the shell, like a git command.  So my code ends up looking like lots of these:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">shell</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;shelljs&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">writeln</span><span class="p">(</span><span class="s1">&#39;Cloning repo&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">shell</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="s1">&#39;git clone &#39;</span> <span class="o">+</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">repo</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>There's a bit of cruft to recreate bash in Node.  It's not as clean and does not read as well as a vanilla shell script might:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">echo</span> <span class="s1">&#39;Cloning repo&#39;</span>;
+</span><span class='line'>git clone <span class="nv">$repo</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>New APIs</h2>
+
+<p>Grunt does quite a bit for you.  It's now up to me to go figure out all the cool stuff it can do.  Once I found the <a href="https://github.com/gruntjs/grunt/wiki/grunt.file">file API</a>, I was excited and retained a touch of the nagging feeling I just mentioned related to shell commands.</p>
+
+<h2>JavaScript Build Scripts are Cross-OS Compatible</h2>
+
+<p>One of the main reasons you would choose to write JavaScript for a build script instead of a .sh or a .bat file is that you can use it multiple OS'es.  Node <a href="https://github.com/jeremyfa/node-exec-sync/pull/6">should</a> :) execute the same on each platform it supports -- essentially Windows, Linux, and Osx.</p>
+
+<h2>Builds Scripts as Plugins</h2>
+
+<p>When you come up with a new Grunt task that is obviously useful for someone else out in the world, you'll likely generalize it and publish it to npm.  There already a good number of <a href="https://npmjs.org/browse/keyword/gruntplugin">'gruntplugin'</a>s out there.  This is a great sharing mechanism that not every build tool environment will give you.  I'm grateful for the good Grunt plugins shared out there.</p>
+
+<h2>Grunt Configuration</h2>
+
+<p>Grunt, by default, has a declarative configuration style.  This means lots of json, often long and nested.  It's all organized by task names, so it's fairly easy to find stuff.  But the bottom line is that there is a fair bit to navigate in the average grunt file.</p>
+
+<h2>Breaking Changes in Grunt API</h2>
+
+<p>As of this writing, Grunt 0.4 is on the verge of release.  By all accounts it will make things better, and it looks promising.  They have a mostly-straightforward <a href="https://github.com/gruntjs/grunt/wiki/Upgrading-from-0.3-to-0.4">migration guide</a>.  The thing that has been the most painful is the lack of backward compatibility.  My current, working builds rely on Grunt plugins that are not 0.4 compliant, so I have two choices:  Help each of those plugins upgrade or wait until 0.4 reaches critical mass -- ie, most worthy plugins are upgraded.</p>
+
+<h2>Grunt is Fast</h2>
+
+<p>Grunt is faster than Pumba being chased by a hyena.  Previous to Grunt, we were using Maven to do similar tasks.  Now we do more (Grunt has made it easy for us to incorporate more good practices -- eg, linting), and the build is done is a serious fraction of the time.  The speed is super dependant on what operations the build actually performs, but my impression for my builds is that Grunt is fast.</p>
+
+<h2>The Grunt Logo</h2>
+
+<p>Yes, it's superficial, and it's even a lame reason, but I like Grunt because they have a great logo.  Wild boar for logo?  Instant win.  (That is what it is, right?)</p>
+
+<p>So, is Grunt helping you out?  What are your impressions?  Or are you using something else entirely?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Grunt and Testacular]]></title>
