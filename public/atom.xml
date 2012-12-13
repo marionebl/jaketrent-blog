@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-12-12T15:24:21-07:00</updated>
+  <updated>2012-12-12T20:09:27-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,64 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[IntelliJ 12 Review]]></title>
+    <link href="http://jaketrent.com/post/intellij-12-review/"/>
+    <updated>2012-12-12T15:33:00-07:00</updated>
+    <id>http://jaketrent.com/post/intellij-12-review</id>
+    <content type="html"><![CDATA[<p>I&#8217;ve used IntelliJ since version 6.  Now we&#8217;re version 12.  It&#8217;s just gotten better.  Version 12 is definitely an incremental release.  There&#8217;s nothing too whiz bang here that I care about, but the quality overall is increased.</p>
+
+<p><img src="http://i.imgur.com/RM3Q1.jpg" alt="IntelliJ 12" /></p>
+
+<!--more-->
+
+
+<h2>IntelliJ 12 New Core Features</h2>
+
+<p>The highlights of the <a href="http://www.jetbrains.com/idea/whatsnew/index.html">&#8220;What&#8217;s New&#8221;</a> list include Java 8 support, Spring tools update, Play 2.0 support, and Android UI designer.  All positives, but not really things I care very deeply about and will probably never use.  There&#8217;s a bit more on the list, but there&#8217;s nothing that is a huge, &#8220;Now IntelliJ can do ______&#8221; item.</p>
+
+<h2>IntelliJ 12 Quality of Life</h2>
+
+<p>During my evaluation, however, I have been very pleased with the quality of life it has afforded me.  IntelliJ has always treated me very well in comparison to the competition.  IntelliJ 12 just makes that good experience a little bit sweeter.</p>
+
+<h4>Darkula Theme</h4>
+
+<p>This has to be inspired by the rise of <a href="http://www.sublimetext.com/">Sublime Text</a>, which has a dark theme as its default.  More and more devs I know are using Sublime extensively.  Overall, I like the look of the Darkula theme.  It&#8217;s a bit easier on the eyes.  The icons got a fun, retro overhaul.  In some cases, I&#8217;ve noticed things that my eyes have grown so accustomed to that they have ignored for some time.  It&#8217;s also taken a bit to get used to it and start to expect things and see them faster.  I find it interesting that soooo much of this release has been focused on this UI theme.</p>
+
+<h4>Popup Dialogs are Faster</h4>
+
+<p>It seems that when a non-main window is told to appear that it does so a bit quicker now.  Intellisense seems a bit more snappy, and the &#8220;recent files&#8221; switcher doesn&#8217;t lag as it seemed to in the past sometimes.  It&#8217;s fun, and it lets me go faster.</p>
+
+<h4>Better OSX Shortcuts</h4>
+
+<p>When I switched to OSX from Linux, I was immediately disappointed by the lack of keyboard shortcuts in comparison to Linux.  The most egregious omission was the lack of alt-* combos to press buttons in the UI via the keyboard.  Alt-p to engage the &#8216;push&#8217; button in the Git push dialog has been a long time coming.</p>
+
+<p><img src="http://i.imgur.com/FYe1O.jpg" alt="P for Push" /></p>
+
+<h4>Git Integration is better</h4>
+
+<p>For performance and UI reasons, I would often just use Git on the command line instead of from within IntelliJ.  Now the Git integration is better than ever.  It seems waaaay fast.  I&#8217;m a little puzzled at <em>how</em> the git push could be so much faster in comparison to the previous version.</p>
+
+<h4>Project Type Support</h4>
+
+<p>Small thing, but I like the new &#8220;New Project&#8221; dialog.  It&#8217;s simplified and easier to navigate.  It is fast and simple.  It doesn&#8217;t take you through options that don&#8217;t apply.  I&#8217;m in that dialog a lot, and I like the change.</p>
+
+<h2>The Right Direction</h2>
+
+<p>Really, there&#8217;s not a ton new here.  It&#8217;s such a solid tool to start.  It&#8217;s where I spend most of my day though, so even incremental quality improvement is welcome.</p>
+
+<p>Let&#8217;s see, what&#8217;s not there that I wish for?:</p>
+
+<ul>
+<li>Live debug the JavaScript running in Chrome (not just Firefox)</li>
+<li>Run and debug Grunt and other Node-based cli apps</li>
+</ul>
+
+
+<p>Does IntelliJ already do those things?  Probably, and I just don&#8217;t yet know how to bend it to my will.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Impressions of Grunt]]></title>
@@ -1895,133 +1953,6 @@ http://flic.kr/p/bDP2fF</p>
 <p>For some code snippets, see my <a href="http://jaketrent.github.com/vertebrae-preso/">slides on the same Backbone tips</a>.</p>
 
 <p>Doubtless you have your own tips as well.  What are the issues that you&#8217;ve had with Backbone?  What are the tips you would offer to overcome them?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Every nth Item in Handlebars Loop]]></title>
-    <link href="http://jaketrent.com/post/every-nth-item-in-handlebars-loop/"/>
-    <updated>2012-10-03T16:55:00-06:00</updated>
-    <id>http://jaketrent.com/post/every-nth-item-in-handlebars-loop</id>
-    <content type="html"><![CDATA[<p>Have you ever wanted to do something special every nth time through a Handlebars loop?  The built-in &#8220; will loop through your items just fine.  It lacks a few features.  For one, you don&#8217;t have access to the loop index, though you can <a href="http://rockycode.com/blog/handlebars-loop-index/">find it</a>.  Without the index and simple comparisons like modulus, length of the array, and equals, you&#8217;ll be creating your own Handlebars helpers.  Here&#8217;s an example of one.</p>
-
-<p><img src="http://blog.teamtreehouse.com/wp-content/uploads/2011/03/handlebars.png" alt="Handlebars js" /></p>
-
-<!--more-->
-
-
-<h2>Extend the context</h2>
-
-<p>Inside a block helper in Handlebars, when you call <code>options.fn</code>, you pass the context to the first block.  We can extend what attributes are available in that context.  The <code>everyNth</code> helper below extends this context with variables that are useful for doing &#8220;every nth&#8221; operations:</p>
-
-<ol>
-<li>isModZero</li>
-<li>isModZeroNotFirst</li>
-<li>isLast</li>
-</ol>
-
-
-<p>The code in full looks like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">Handlebars</span><span class="p">.</span><span class="nx">registerHelper</span><span class="p">(</span><span class="s1">&#39;everyNth&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">every</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">inverse</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">inverse</span><span class="p">;</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">ret</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="nx">context</span> <span class="o">&amp;&amp;</span> <span class="nx">context</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nx">j</span><span class="o">=</span><span class="nx">context</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">j</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">modZero</span> <span class="o">=</span> <span class="nx">i</span> <span class="o">%</span> <span class="nx">every</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>      <span class="nx">ret</span> <span class="o">=</span> <span class="nx">ret</span> <span class="o">+</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">context</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">isModZero</span><span class="o">:</span> <span class="nx">modZero</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">isModZeroNotFirst</span><span class="o">:</span> <span class="nx">modZero</span> <span class="o">&amp;&amp;</span> <span class="nx">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">isLast</span><span class="o">:</span> <span class="nx">i</span> <span class="o">===</span> <span class="nx">context</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span>
-</span><span class='line'>      <span class="p">}));</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">ret</span> <span class="o">=</span> <span class="nx">inverse</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">ret</span><span class="p">;</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Note: This implementation uses <a href="http://underscorejs.org/#extend">underscore <code>_.extend()</code></a>.</p>
-
-<h2>Scenario: Print rows</h2>
-
-<p>Here&#8217;s a scenario where this is useful:  In twitter bootstrap, each &#8220;span&#8221; div is inside of a &#8220;row-fluid&#8221; div (if using bootstrap responsive.css).  So, if I want three things, let&#8217;s say videos, per row printed in the markup, you can&#8217;t just use &#8220; because all it does is iterate through the videos.  You could print the &#8220;span4&#8221;s but you wouldn&#8217;t know when to print the &#8220;row-fluid&#8221;.  Hence, we need our helper.</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>{{#everyNth myArray theNumberN}}
-</span><span class='line'>{{/everyNth}}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Our new helper <code>everyNth</code> allows us to write code like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>{{#everyNth vids 3}}
-</span><span class='line'>  {{#if isModZeroNotFirst}}
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>  {{/if}}
-</span><span class='line'>  {{#if isModZero}}
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row-fluid&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  {{/if}}
-</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span4&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;thumb&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{ linkUrl }}&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;{{ image }}&quot;</span> <span class="nt">/&gt;&lt;/a&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>  {{#if isLast}}
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>  {{/if}}
-</span><span class='line'>{{/everyNth}}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To clarify the need and usage of these new variables:</p>
-
-<ol>
-<li><strong>isModZero</strong> - in this example, every 3 videos should be on a row.  When mod 3 is 0, create a row.</li>
-<li><strong>isModZeroNotFirst</strong> - when I create a row (mod 3 is 0), I also need to end the row, except before the first row.</li>
-<li><strong>isLast</strong> - if the length of the video array is not divisible by 3, the last row needs to close anyway.</li>
-</ol>
-
-
-<p>The helper is simple, essentially just a copy of <code>#each</code> with a few new variables in context.  That&#8217;s the beauty of Handlebars helpers.  With this little baby you can determine where you are in your iterations through your array.</p>
-
-<p>What are some of the things you use Handlebars helpers for?</p>
 ]]></content>
   </entry>
   
