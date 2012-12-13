@@ -25,13 +25,13 @@ Which style of project configuration is better?  Declarative or procedural?  War
 
 ## JavaScript Build for JavaScript Project
 
-Maybe obviously, the sweet spot for Grunt is for JavaScript projects.  Js projects are becoming more complex all the time.  Often, complementary build tools are lacking.  There are other projects that are named [awesomely](https://github.com/280north/jake), though they are mostly dead.  Grunt fills a gap for JavaScript projects.  It seems that the advantages of writing client *and* server js apply here as well:  Js build tools take advantage of the Js (Node) environment.  You can use your Js skills here.  The context switching is diminished.
+Maybe obviously, the sweet spot for Grunt is building JavaScript projects.  Js projects are becoming more complex all the time.  Often, complementary build tools are lacking.  There are other projects that are named [awesomely](https://github.com/280north/jake), though they are mostly dead.  Grunt fills a gap for JavaScript projects.  It seems that the advantages of writing client *and* server js apply here as well:  Js build tools take advantage of the Js (Node) environment.  You can use your Js skills here.  The context switching is diminished.
 
 ## Synchronous Exec for JavaScript Build
 
 One of the main sellings points for NodeJs is that it is built from the ground up for using in asychronous environments and problems.  Build scripts aren't generally asynchronous.  Usually, it's quite the opposite.  Step 1 leads to step 2 and so on.  You can't skip, and future steps rely upon completion of the previous.  
 
-So, you can try [child_process.exec](http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback), but it's synchronous.  So, make it synchronous and try [exec-sync](https://github.com/jeremyfa/node-exec-sync).  But it has [problems](https://github.com/jeremyfa/node-exec-sync/issues/8) vanilla exec doesn't.  The best synchronous exec for JavaScript I've found so far is [shelljs.exec](http://documentup.com/arturadib/shelljs#command-reference/exec-command-options-callback). 
+So, you can try [child_process.exec](http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback), but it's asynchronous.  So, make it synchronous and try [exec-sync](https://github.com/jeremyfa/node-exec-sync).  But it has [problems](https://github.com/jeremyfa/node-exec-sync/issues/8) vanilla exec doesn't.  The best synchronous exec for JavaScript I've found so far is [shelljs.exec](http://documentup.com/arturadib/shelljs#command-reference/exec-command-options-callback). 
 
 In this way, NodeJs/Grunt seems like an awkward fit as a build tool.
 

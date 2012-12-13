@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-12-12T20:09:27-07:00</updated>
+  <updated>2012-12-13T07:28:35-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -93,13 +93,13 @@
 
 <h2>JavaScript Build for JavaScript Project</h2>
 
-<p>Maybe obviously, the sweet spot for Grunt is for JavaScript projects.  Js projects are becoming more complex all the time.  Often, complementary build tools are lacking.  There are other projects that are named <a href="https://github.com/280north/jake">awesomely</a>, though they are mostly dead.  Grunt fills a gap for JavaScript projects.  It seems that the advantages of writing client <em>and</em> server js apply here as well:  Js build tools take advantage of the Js (Node) environment.  You can use your Js skills here.  The context switching is diminished.</p>
+<p>Maybe obviously, the sweet spot for Grunt is building JavaScript projects.  Js projects are becoming more complex all the time.  Often, complementary build tools are lacking.  There are other projects that are named <a href="https://github.com/280north/jake">awesomely</a>, though they are mostly dead.  Grunt fills a gap for JavaScript projects.  It seems that the advantages of writing client <em>and</em> server js apply here as well:  Js build tools take advantage of the Js (Node) environment.  You can use your Js skills here.  The context switching is diminished.</p>
 
 <h2>Synchronous Exec for JavaScript Build</h2>
 
 <p>One of the main sellings points for NodeJs is that it is built from the ground up for using in asychronous environments and problems.  Build scripts aren&#8217;t generally asynchronous.  Usually, it&#8217;s quite the opposite.  Step 1 leads to step 2 and so on.  You can&#8217;t skip, and future steps rely upon completion of the previous.</p>
 
-<p>So, you can try <a href="http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback">child_process.exec</a>, but it&#8217;s synchronous.  So, make it synchronous and try <a href="https://github.com/jeremyfa/node-exec-sync">exec-sync</a>.  But it has <a href="https://github.com/jeremyfa/node-exec-sync/issues/8">problems</a> vanilla exec doesn&#8217;t.  The best synchronous exec for JavaScript I&#8217;ve found so far is <a href="http://documentup.com/arturadib/shelljs#command-reference/exec-command-options-callback">shelljs.exec</a>.</p>
+<p>So, you can try <a href="http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback">child_process.exec</a>, but it&#8217;s asynchronous.  So, make it synchronous and try <a href="https://github.com/jeremyfa/node-exec-sync">exec-sync</a>.  But it has <a href="https://github.com/jeremyfa/node-exec-sync/issues/8">problems</a> vanilla exec doesn&#8217;t.  The best synchronous exec for JavaScript I&#8217;ve found so far is <a href="http://documentup.com/arturadib/shelljs#command-reference/exec-command-options-callback">shelljs.exec</a>.</p>
 
 <p>In this way, NodeJs/Grunt seems like an awkward fit as a build tool.</p>
 
