@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-12-13T07:28:35-07:00</updated>
+  <updated>2012-12-14T09:28:43-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,85 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Npm Install Local Files]]></title>
+    <link href="http://jaketrent.com/post/npm-install-local-files/"/>
+    <updated>2012-12-14T08:23:00-07:00</updated>
+    <id>http://jaketrent.com/post/npm-install-local-files</id>
+    <content type="html"><![CDATA[<p>Sometimes you'll want to use <a href="http://npmjs.org/">npm</a> to install a package that doesn't exist in the official npm registry for some reason.  Maybe you're developing the package yourself.  Maybe it's an internal use-only package. Maybe the package writer never published it.  Here are a few ways to install a local package with npm.</p>
+
+<p><img src="http://i.imgur.com/xnDMm.jpg" alt="Node Package Manager" /></p>
+
+<!--more-->
+
+
+<h2>Link the Local Node Package</h2>
+
+<p>If you're developing a package locally, you're likely making lots of changes to the source.  You don't want to publish after each change in order to install this package as a dependency elsewhere.  Npm has provided the <a href="http://npmjs.org/doc/link.html">link</a> keyword.</p>
+
+<p>This allows your put a global label on your package that tells your local npm cache about it:</p>
+
+<p><code>bash
+cd &lt;pkg_dir&gt;;
+npm link;
+</code></p>
+
+<p>And then go to the local project that you're using the package in and point to the dependency by package name:</p>
+
+<p><code>bash
+cd &lt;project_dir&gt;;
+npm link &lt;pkg_name&gt;;
+</code></p>
+
+<p>Now you have symlinked a directory called <code>&lt;pkg_name&gt;</code> in the project's node_modules directory.  Changes you make in your package will appear and be usable from within your project.</p>
+
+<h2>Tarball the Local Node Package</h2>
+
+<p>Npm can <a href="https://npmjs.org/doc/install.html">install</a> either a path or url to a local tarball.  To create a tarball that npm will like, you want to run npm <a href="https://npmjs.org/doc/pack.html">pack</a>:</p>
+
+<p><code>bash
+cd &lt;pkg_dir&gt;;
+npm pack
+</code>
+This will create a tarball a la <code>&lt;pkg_name&gt;-&lt;pkg_ver&gt;.tgz</code>.  Now just store your new tarball somewhere like a local filesystem or server that is accessible when you run npm install on your dependant project.</p>
+
+<p>You can ask for the tarball manually:</p>
+
+<p><code>bash
+npm install http://localServer/my-pkg-0.0.1.tgz
+</code></p>
+
+<p>Or put the reference in your package.json for later:</p>
+
+<p>```js
+{
+  "dependencies": {</p>
+
+<pre><code>"my-pkg": "http://localServer/my-pkg-0.0.1.tgz"
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>You probably have a node package that's only available locally for a reason.  To guarantee that it's not accidentally published to the world via the npm registry, add this beaut to your package.json:</p>
+
+<p><code>js
+{
+   "private": true
+}
+</code></p>
+
+<h2>Replicate the Npm Registry</h2>
+
+<p>If you're going all out, like creating a corporate npm registry, you always have the option of <a href="https://npmjs.org/doc/registry.html#Can-I-run-my-own-private-registry">replicating</a> the Npm registry internally.  It's CouchDb, and '<a href="http://www.imdb.com/title/tt0120029/quotes?qt=qt0192627">replication</a>' is its Chinese neighbor's middle name.  You can publish your own packages there so they're still private to your and your organization.  And you also get local references to the public packages.</p>
+
+<h2>The Glory of Npm</h2>
+
+<p>Npm is great.  The ability to install published or local packages is an example of its flexibility and usefulness.  What are the other ways that you've found to make non-public packages installable -- for instance, that package that the writer just never bothered to publish to npm?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Environment Specific Variables in NodeJs]]></title>

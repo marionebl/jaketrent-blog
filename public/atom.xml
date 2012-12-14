@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-12-13T07:28:35-07:00</updated>
+  <updated>2012-12-14T09:28:43-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,98 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Npm Install Local Files]]></title>
+    <link href="http://jaketrent.com/post/npm-install-local-files/"/>
+    <updated>2012-12-14T08:23:00-07:00</updated>
+    <id>http://jaketrent.com/post/npm-install-local-files</id>
+    <content type="html"><![CDATA[<p>Sometimes you&#8217;ll want to use <a href="http://npmjs.org/">npm</a> to install a package that doesn&#8217;t exist in the official npm registry for some reason.  Maybe you&#8217;re developing the package yourself.  Maybe it&#8217;s an internal use-only package. Maybe the package writer never published it.  Here are a few ways to install a local package with npm.</p>
+
+<p><img src="http://i.imgur.com/xnDMm.jpg" alt="Node Package Manager" /></p>
+
+<!--more-->
+
+
+<h2>Link the Local Node Package</h2>
+
+<p>If you&#8217;re developing a package locally, you&#8217;re likely making lots of changes to the source.  You don&#8217;t want to publish after each change in order to install this package as a dependency elsewhere.  Npm has provided the <a href="http://npmjs.org/doc/link.html">link</a> keyword.</p>
+
+<p>This allows your put a global label on your package that tells your local npm cache about it:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> &lt;pkg_dir&gt;;
+</span><span class='line'>npm link;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And then go to the local project that you&#8217;re using the package in and point to the dependency by package name:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> &lt;project_dir&gt;;
+</span><span class='line'>npm link &lt;pkg_name&gt;;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you have symlinked a directory called <code>&lt;pkg_name&gt;</code> in the project&#8217;s node_modules directory.  Changes you make in your package will appear and be usable from within your project.</p>
+
+<h2>Tarball the Local Node Package</h2>
+
+<p>Npm can <a href="https://npmjs.org/doc/install.html">install</a> either a path or url to a local tarball.  To create a tarball that npm will like, you want to run npm <a href="https://npmjs.org/doc/pack.html">pack</a>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> &lt;pkg_dir&gt;;
+</span><span class='line'>npm pack
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will create a tarball a la <code>&lt;pkg_name&gt;-&lt;pkg_ver&gt;.tgz</code>.  Now just store your new tarball somewhere like a local filesystem or server that is accessible when you run npm install on your dependant project.</p>
+
+<p>You can ask for the tarball manually:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install http://localServer/my-pkg-0.0.1.tgz
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Or put the reference in your package.json for later:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;dependencies&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;my-pkg&quot;</span><span class="o">:</span> <span class="s2">&quot;http://localServer/my-pkg-0.0.1.tgz&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You probably have a node package that&#8217;s only available locally for a reason.  To guarantee that it&#8217;s not accidentally published to the world via the npm registry, add this beaut to your package.json:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
+</span><span class='line'>   <span class="s2">&quot;private&quot;</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Replicate the Npm Registry</h2>
+
+<p>If you&#8217;re going all out, like creating a corporate npm registry, you always have the option of <a href="https://npmjs.org/doc/registry.html#Can-I-run-my-own-private-registry">replicating</a> the Npm registry internally.  It&#8217;s CouchDb, and &#8217;<a href="http://www.imdb.com/title/tt0120029/quotes?qt=qt0192627">replication</a>&#8217; is its Chinese neighbor&#8217;s middle name.  You can publish your own packages there so they&#8217;re still private to your and your organization.  And you also get local references to the public packages.</p>
+
+<h2>The Glory of Npm</h2>
+
+<p>Npm is great.  The ability to install published or local packages is an example of its flexibility and usefulness.  What are the other ways that you&#8217;ve found to make non-public packages installable &#8211; for instance, that package that the writer just never bothered to publish to npm?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[IntelliJ 12 Review]]></title>
@@ -1877,82 +1969,6 @@ http://flic.kr/p/bDP2fF</p>
 
 
 <p>Did any of you go this year?  What do you appreciate the most about SORT or your most recent conference?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[A Grab Bag of Backbone Tips]]></title>
-    <link href="http://jaketrent.com/post/a-grab-bag-of-backbone-tips/"/>
-    <updated>2012-10-09T16:56:00-06:00</updated>
-    <id>http://jaketrent.com/post/a-grab-bag-of-backbone-tips</id>
-    <content type="html"><![CDATA[<p>Backbone.js is a great MV* library created by Jeremy Ashkenas.  It is small and powerful, yet unopinionated.  That means that it will let you walk straight into a pit.  It so happens that I&#8217;m speaking to you now from the bottom of such a chasm.  Do not fall into the same pit.  As a guide to your travel, here are a few Backbone tips that might help you avoid a few problems.</p>
-
-<p><img src="http://i.imgur.com/yXrC3.png" alt="Backbonejs Tips" /></p>
-
-<!--more-->
-
-
-<h2>Tips for Backbone</h2>
-
-<p>The list of tips for using Backbone is assuredly long and storied.  Here is but a brief offering.</p>
-
-<h3>Make Views Reusable</h3>
-
-<p>Pass in the <code>el</code> attribute to your views.  Or create the container dynamically (via <code>tagName</code> attribute) and display using <code>$.html()</code> outside the view.  Essentially, don&#8217;t hardcode the <code>el</code> attr in the view.</p>
-
-<h3>Ensure DOM Element Exists</h3>
-
-<p>In short, pass <code>el</code> references as css selector strings (eg, &#8216;.viewLocation&#8217;) so Backbone will lazy evaluation them.  This is especially important in a <a href="http://rockycode.com/blog/backbone-views-dynamic-dom/">changing DOM</a>.</p>
-
-<h3>Clean Up Your Events</h3>
-
-<p>Create a <code>.close()</code> function on Backbone.View.prototype.  Implement an <code>onClose()</code> function in each view you create that unbinds events on the view and child models and collections.  <a href="http://lostechies.com/derickbailey/2011/09/15/zombies-run-managing-page-transitions-in-backbone-apps/">Derick Bailey addresses zombie events</a> very well.</p>
-
-<h3>Inheritance</h3>
-
-<p>Create class trees just as you would doing regular OOP.  Keep the code DRY.  <code>Backbone.*.extend()</code> makes it easy.  <a href="http://underscorejs.org/#extend"><code>_.extend()</code></a> or the like can also be used for extending non-Backbone objects.</p>
-
-<h3>Develop Without a Real Backend</h3>
-
-<p>Because Backbone models allow specifying their own <code>fetch()</code> location (via <code>url</code> attr), you can specify you own stores, even local .json files as backends.  This can speed up development.</p>
-
-<h3>Bind in Initialize</h3>
-
-<p>Extending page state in single-page apps will allow event binding to stick around longer.  Usually, you&#8217;ll want to bind once per object.  Do that in <code>initialize()</code>.</p>
-
-<h3>Nest Your Views</h3>
-
-<p><code>Backbone.View</code>s can be nested within <code>Backbone.View</code>s.  Do it.  It will help organize your code.  It will make things like event scoping easier.</p>
-
-<h3>Communicate Between Objects</h3>
-
-<p>Interesting things will start to happen when objects start talking to each other.  You can pass references to provide a line of communication.  Or you can talk over the global <code>Backbone.Events</code> bus.</p>
-
-<h3>Model Newness</h3>
-
-<p><code>Backbone.Model</code> has the concept if <code>isNew()</code>.  It&#8217;s not magic.  If the model has an <a href="http://backbonejs.org/#Model-idAttribute"><code>id</code></a> attribute, it&#8217;s not new, meaning it&#8217;s already persisted in your data store.  This affects HTTP commands in <code>save()</code>: POST for new, PUT for not new.</p>
-
-<h3>Remember Who You Are</h3>
-
-<p>This is an issue you&#8217;ll deal with in all JavaScript.  Since Backbone is event heavy, you&#8217;ll see it a lot.  Within event callbacks, <code>this</code> will refer to <code>window</code>.  To <a href="http://backbonejs.org/#FAQ-this">maintain the context of your Backbone object</a>, pass context in your event <code>.on()</code> calls.  <a href="http://underscorejs.org/#bindAll"><code>_.bindAll()</code></a> is also handy where the API doesn&#8217;t support context passing directly.</p>
-
-<h3>Organize Your Files</h3>
-
-<p>You&#8217;re using Backbone because you&#8217;re creating a thicker client, and it&#8217;s getting crowded there.  For the same reasons, use an AMD loader, like <a href="http://requirejs.org/docs/start.html">RequireJs</a>, and encapsulate your files.</p>
-
-<h3>Minimize DOM Operations</h3>
-
-<p>Modifying the DOM is expensive.  Use <code>document.createDocumentFragment()</code> or use jQuery (eg, <code>$('&lt;div /')</code>) as a disconnected fragment.  Do all possible operations there, and touch the real DOM once.</p>
-
-<h2>War Stories</h2>
-
-<p>Each of these tips are topics in their own right.  This list is merely a mention of issues that have each affected me for hours in the past.  Which of them do you think deserves to be addressed further?  Those would be good topics for future posts.</p>
-
-<p>The ideas given in these tips are very subjective.  In some ways, they are prescriptions for a library which otherwise gives few.  As such, use them if you will.  Discard them just as well.</p>
-
-<p>For some code snippets, see my <a href="http://jaketrent.github.com/vertebrae-preso/">slides on the same Backbone tips</a>.</p>
-
-<p>Doubtless you have your own tips as well.  What are the issues that you&#8217;ve had with Backbone?  What are the tips you would offer to overcome them?</p>
 ]]></content>
   </entry>
   
