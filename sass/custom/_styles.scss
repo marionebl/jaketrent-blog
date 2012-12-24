@@ -32,6 +32,7 @@ $link-color-active: adjust-color($link-color-hover, $lightness: -15) !default;
   padding: 0;
   text-indent: -9999px;
   width: 32px;
+  border-radius: 2px;
 }
 
 #social li a.first,
@@ -44,7 +45,7 @@ $link-color-active: adjust-color($link-color-hover, $lightness: -15) !default;
 }
 
 #social li.social-facebook a:hover {
-  background: #000 url(/images/social/32x32_facebook.png);
+  background: #ff9f0a url(/images/social/32x32_facebook.png);
 }
 
 #social li.social-googleplus a {
@@ -52,7 +53,7 @@ $link-color-active: adjust-color($link-color-hover, $lightness: -15) !default;
 }
 
 #social li.social-googleplus a:hover {
-  background: #000 url(/images/social/32x32_googleplus.png);
+  background: #ff9f0a url(/images/social/32x32_googleplus.png);
 }
 
 #social li.social-linkedin a {
@@ -60,7 +61,7 @@ $link-color-active: adjust-color($link-color-hover, $lightness: -15) !default;
 }
 
 #social li.social-linkedin a:hover {
-  background: #000 url(/images/social/32x32_linkedin.png);
+  background: #ff9f0a url(/images/social/32x32_linkedin.png);
 }
 
 #social li.social-pinterest a {
@@ -68,7 +69,7 @@ $link-color-active: adjust-color($link-color-hover, $lightness: -15) !default;
 }
 
 #social li.social-pinterest a:hover {
-  background: #000 url(/images/social/32x32_pinterest.png);
+  background: #ff9f0a url(/images/social/32x32_pinterest.png);
 }
 
 #social li.social-rss a {
@@ -76,7 +77,7 @@ $link-color-active: adjust-color($link-color-hover, $lightness: -15) !default;
 }
 
 #social li.social-rss a:hover {
-  background: #000 url(/images/social/32x32_rss.png);
+  background: #ff9f0a url(/images/social/32x32_rss.png);
 }
 
 #social li.social-twitter a {
@@ -84,7 +85,7 @@ $link-color-active: adjust-color($link-color-hover, $lightness: -15) !default;
 }
 
 #social li.social-twitter a:hover {
-  background: #000 url(/images/social/32x32_twitter.png);
+  background: #ff9f0a url(/images/social/32x32_twitter.png);
 }
 
 #social li.social-github a {
@@ -92,7 +93,7 @@ $link-color-active: adjust-color($link-color-hover, $lightness: -15) !default;
 }
 
 #social li.social-github a:hover {
-  background: #000 url(/images/social/32x32_github.png);
+  background: #ff9f0a url(/images/social/32x32_github.png);
 }
 
 
