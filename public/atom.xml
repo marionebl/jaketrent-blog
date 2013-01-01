@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-12-24T15:47:54-07:00</updated>
+  <updated>2012-12-31T20:22:38-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,90 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Minimized AngularJs Dependency Injection]]></title>
+    <link href="http://jaketrent.com/post/minimizedAngularjsDependencyInjection/"/>
+    <updated>2012-12-31T16:20:00-07:00</updated>
+    <id>http://jaketrent.com/post/minimizedAngularjsDependencyInjection</id>
+    <content type="html"><![CDATA[<p>Aren&#8217;t environment-specific bugs some of the hardest to troubleshoot!  You may find yourself scratching your head after building and deploying your AngularJs code.  If you minimize or uglify your Angular code, there may be a few things you need to do differently to make it work.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs" /></p>
+
+<!--more-->
+
+
+<h2>Dependency Injection</h2>
+
+<p>Angular has a great feature for sharing code and declaring dependencies.  They use dependency injection, where modules or controllers and the like can use services available to them.  You can even define your own services to inject.  Our need here is nothing that fancy.  We just want the thing to work &#8211; always and in any environment.</p>
+
+<h2>Angular Unknown Provider</h2>
+
+<p>It&#8217;s hard to track down what&#8217;s really the problem in minimized code.  Everything&#8217;s on line 1.  And all the variable names are shortened and obfuscated.  Thus, when I first got this error, I was a bit lost:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Uncaught Error: Unknown provider: e from myModule</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In my local environment, my code looked like this and worked fine:</p>
+
+<figure class='code'><figcaption><span>lang:&#8221;js&#8221; </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>angular.module('myModule', [], function ($interpolateProvider) {
+</span><span class='line'>  // interpolate stuff
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After my build process and mangled local variables, it looked like this:</p>
+
+<figure class='code'><figcaption><span>lang:&#8221;js&#8221; </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>angular.module('myModule', [], function (e) {
+</span><span class='line'>  // interpolate stuff
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Oh boy.  A few StackOverflow articles later, and I was led to the <a href="http://docs.angularjs.org/guide/di">dependency injection guide</a> that&#8217;s a part of the Angular docs.  It revealed that my pattern of dependency injection wasn&#8217;t gonna cut it:</p>
+
+<blockquote><p>While straightforward, this method will not work with JavaScript minifiers/obfuscators as they rename the method parameter names. This makes this way of annotating only useful for pretotyping, and demo applications.</p></blockquote>
+
+<h2>Reliable Angular Injection</h2>
+
+<p>While you can build Angular code that way, it just simply won&#8217;t be reliable.  &#8220;Pretotyping&#8221;, as the docs say, is only for trying stuff out and seeing how you like it.  Okaaaay.  I guess that&#8217;s kind of nice, since the reliable way is more verbose, requires writing things twice, and keeping them in sync.  Stink!</p>
+
+<h4>Reliable Style #1: &#8220;Controller Style&#8221;</h4>
+
+<figure class='code'><figcaption><span>lang:&#8221;js&#8221; </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var MyController = function ($scope) {
+</span><span class='line'>};
+</span><span class='line'>MyController.$inject = ['$scope'];</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>$scope</code> parameter in the function is soon to be renamed once minified, so save a list of the parameter names as strings in the <code>$inject</code> array.  Make sure the order and length of these two lists match.</p>
+
+<h4>Reliable Style #2: &#8220;Module Style&#8221;</h4>
+
+<figure class='code'><figcaption><span>lang:&#8221;js&#8221; </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>angular.module('myModule', [])
+</span><span class='line'>  .config(['$interpolateProvider', function ($interpolateProvider) {
+</span><span class='line'>  }]);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The idea is the exact same.  Note the placement of the square brackets;  It&#8217;s a bit different.</p>
+
+<p>Well, there you are.  Write Angular dependency injection once and run anywhere.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Npm Install Local Files]]></title>
@@ -1899,76 +1983,6 @@ Considerate of customer, business, and technology needs rather than biased towar
 <p>Using Paper really has been one of the magical moments of using the iPad.  It gives a slick experience that gets me drawing fast.  There are masterful, well-honed tools that make my art look good.  The use of gestures makes great use of the direct input ability of the touch device.  I&#8217;ve enjoyed many hours using Paper, and I look forward to more products from FiftyThree.</p>
 
 <p>What is your favorite feature of Paper?  Or of another art/drawing app?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[SORT Conf 2012]]></title>
-    <link href="http://jaketrent.com/post/sort-conf-2012/"/>
-    <updated>2012-10-10T16:57:00-06:00</updated>
-    <id>http://jaketrent.com/post/sort-conf-2012</id>
-    <content type="html"><![CDATA[<p>The sky lightens with the rising sun.  Wheels are on the road.  Friends are in the car.  The leaves are changing on the towering Wasatch mountains.  Finally, we pull up to the University of Utah Institute building.  Stepping out of the car, the October air is fresh and clear, high in the Rockies.  It&#8217;s a good day for a tech conference.  It&#8217;s a good day for SORT.</p>
-
-<p><img src="http://i.imgur.com/q1cr5.jpg" alt="Wasatch mountains" />
-http://flic.kr/p/bDP2fF</p>
-
-<!--more-->
-
-
-<p>SORT is an annual tech conference put on by the LDS Church.  The IT shops of the Church are all represented, including ICS, Family Search, the BYUs, CES, and probably a couple more.  Attendance last year, I think, was about 1200.</p>
-
-<h2>Something For Everyone</h2>
-
-<p>A unique feature of the conference is that there are soooo many subjects covered.  It&#8217;s really kind of a joke the number of tracks that are represented:</p>
-
-<ol>
-<li>EIM</li>
-<li>Architecture</li>
-<li>Design</li>
-<li>Engineering</li>
-<li>Partner Summit</li>
-<li>Infrastructure</li>
-<li>Leadership</li>
-<li>PM</li>
-<li>QA</li>
-<li>Requirements</li>
-<li>Security</li>
-<li>Sharepoint/CRM</li>
-<li>Solution Mgmt</li>
-<li>Other (misc)</li>
-</ol>
-
-
-<p>Holy cow!  That&#8217;s a little nuts.  It started out as an engineering-only conference in 2009.  Since then, it&#8217;s blossomed.  I feel like it has been a double-edged sword:  The whole office is invited and should have something to soak up there, but it feels like the engineering track has been watered down a bit.</p>
-
-<h2>Mostly Intro</h2>
-
-<p>The topics are varied.  It&#8217;s often the case that there&#8217;s so much going on that you don&#8217;t know what to pick for each hour.  That is awesome!  Out of the presentations offered in the engineering track, I would love to see more intermediate or advanced topics.  More deep dives would be fun to geek out about.  I think we touch that in some cases, but in general, I feel that the presentations could be categorized as cursory introductions to topics.</p>
-
-<h2>Free-flowing Sugar</h2>
-
-<p>I am never lacking for ATP at SORT.  The day starts with a great breakfast.  Lunch is also delicious.  This year, both were provided by Kneaders bakery.  Between every session, there are plentiful mounds of various snack foods and refreshing beverages.  And being a conference put on by the Church, the drinks are top notch, ready for the Church membership. :)</p>
-
-<h2>Entry to Speaking</h2>
-
-<p>I have presented at SORT for each of the last 4 years.  You already know the bar can&#8217;t be that high.  If you submit a paper, you&#8217;ll probably be accepted.  I was 2 for 3 this year. :)  Some might worry that this would lower the quality of the conference material and presentation.  Yes, it probably does.  But, just like any conference, if you are a little careful in your schedule selection, you&#8217;ll find some fantastic speakers and super-compelling content.</p>
-
-<h2>A Yearly Highlight</h2>
-
-<p>In all, SORT is a fantastic experience.  I look forward to it next year.  It&#8217;s fun to review what I&#8217;ve learned and presented on in the past (Django, then jQuery plugins, then TDD on MarkLogic, this year BackboneJs).</p>
-
-<p>It&#8217;s at a great, close location.  The company is fantastic.  The topics are varied and interesting.  The two days are time well-spent to me.  I feel tired (a sign of lots of fire hose drinking).  I&#8217;m inspired to learn a few new things:</p>
-
-<ol>
-<li>Do more CoffeeScript</li>
-<li>Try SocketStream</li>
-<li>Use Postgres&#8217; row_to_json</li>
-<li>Try LawnChair and IndexDb</li>
-<li>Do some user media capture</li>
-</ol>
-
-
-<p>Did any of you go this year?  What do you appreciate the most about SORT or your most recent conference?</p>
 ]]></content>
   </entry>
   

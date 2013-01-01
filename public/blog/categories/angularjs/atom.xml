@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: angularjs | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/angularjs/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2012-12-31T20:22:38-07:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Minimized AngularJs Dependency Injection]]></title>
+    <link href="http://jaketrent.com/post/minimizedAngularjsDependencyInjection/"/>
+    <updated>2012-12-31T16:20:00-07:00</updated>
+    <id>http://jaketrent.com/post/minimizedAngularjsDependencyInjection</id>
+    <content type="html"><![CDATA[<p>Aren't environment-specific bugs some of the hardest to troubleshoot!  You may find yourself scratching your head after building and deploying your AngularJs code.  If you minimize or uglify your Angular code, there may be a few things you need to do differently to make it work.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs" /></p>
+
+<!--more-->
+
+
+<h2>Dependency Injection</h2>
+
+<p>Angular has a great feature for sharing code and declaring dependencies.  They use dependency injection, where modules or controllers and the like can use services available to them.  You can even define your own services to inject.  Our need here is nothing that fancy.  We just want the thing to work -- always and in any environment.</p>
+
+<h2>Angular Unknown Provider</h2>
+
+<p>It's hard to track down what's really the problem in minimized code.  Everything's on line 1.  And all the variable names are shortened and obfuscated.  Thus, when I first got this error, I was a bit lost:</p>
+
+<p><code>
+Uncaught Error: Unknown provider: e from myModule
+</code></p>
+
+<p>In my local environment, my code looked like this and worked fine:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>lang:"js" </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>angular.module('myModule', [], function ($interpolateProvider) {
+</span><span class='line'>  // interpolate stuff
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>After my build process and mangled local variables, it looked like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>lang:"js" </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>angular.module('myModule', [], function (e) {
+</span><span class='line'>  // interpolate stuff
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Oh boy.  A few StackOverflow articles later, and I was led to the <a href="http://docs.angularjs.org/guide/di">dependency injection guide</a> that's a part of the Angular docs.  It revealed that my pattern of dependency injection wasn't gonna cut it:</p>
+
+<blockquote><p>While straightforward, this method will not work with JavaScript minifiers/obfuscators as they rename the method parameter names. This makes this way of annotating only useful for pretotyping, and demo applications.</p></blockquote>
+
+<h2>Reliable Angular Injection</h2>
+
+<p>While you can build Angular code that way, it just simply won't be reliable.  "Pretotyping", as the docs say, is only for trying stuff out and seeing how you like it.  Okaaaay.  I guess that's kind of nice, since the reliable way is more verbose, requires writing things twice, and keeping them in sync.  Stink!</p>
+
+<h4>Reliable Style #1: "Controller Style"</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>lang:"js" </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var MyController = function ($scope) {
+</span><span class='line'>};
+</span><span class='line'>MyController.$inject = ['$scope'];</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The <code>$scope</code> parameter in the function is soon to be renamed once minified, so save a list of the parameter names as strings in the <code>$inject</code> array.  Make sure the order and length of these two lists match.</p>
+
+<h4>Reliable Style #2: "Module Style"</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>lang:"js" </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>angular.module('myModule', [])
+</span><span class='line'>  .config(['$interpolateProvider', function ($interpolateProvider) {
+</span><span class='line'>  }]);</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The idea is the exact same.  Note the placement of the square brackets;  It's a bit different.</p>
+
+<p>Well, there you are.  Write Angular dependency injection once and run anywhere.</p>
+]]></content>
+  </entry>
+  
+</feed>

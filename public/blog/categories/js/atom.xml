@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-12-24T15:47:54-07:00</updated>
+  <updated>2012-12-31T20:22:38-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,86 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Minimized AngularJs Dependency Injection]]></title>
+    <link href="http://jaketrent.com/post/minimizedAngularjsDependencyInjection/"/>
+    <updated>2012-12-31T16:20:00-07:00</updated>
+    <id>http://jaketrent.com/post/minimizedAngularjsDependencyInjection</id>
+    <content type="html"><![CDATA[<p>Aren't environment-specific bugs some of the hardest to troubleshoot!  You may find yourself scratching your head after building and deploying your AngularJs code.  If you minimize or uglify your Angular code, there may be a few things you need to do differently to make it work.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs" /></p>
+
+<!--more-->
+
+
+<h2>Dependency Injection</h2>
+
+<p>Angular has a great feature for sharing code and declaring dependencies.  They use dependency injection, where modules or controllers and the like can use services available to them.  You can even define your own services to inject.  Our need here is nothing that fancy.  We just want the thing to work -- always and in any environment.</p>
+
+<h2>Angular Unknown Provider</h2>
+
+<p>It's hard to track down what's really the problem in minimized code.  Everything's on line 1.  And all the variable names are shortened and obfuscated.  Thus, when I first got this error, I was a bit lost:</p>
+
+<p><code>
+Uncaught Error: Unknown provider: e from myModule
+</code></p>
+
+<p>In my local environment, my code looked like this and worked fine:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>lang:"js" </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>angular.module('myModule', [], function ($interpolateProvider) {
+</span><span class='line'>  // interpolate stuff
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>After my build process and mangled local variables, it looked like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>lang:"js" </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>angular.module('myModule', [], function (e) {
+</span><span class='line'>  // interpolate stuff
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Oh boy.  A few StackOverflow articles later, and I was led to the <a href="http://docs.angularjs.org/guide/di">dependency injection guide</a> that's a part of the Angular docs.  It revealed that my pattern of dependency injection wasn't gonna cut it:</p>
+
+<blockquote><p>While straightforward, this method will not work with JavaScript minifiers/obfuscators as they rename the method parameter names. This makes this way of annotating only useful for pretotyping, and demo applications.</p></blockquote>
+
+<h2>Reliable Angular Injection</h2>
+
+<p>While you can build Angular code that way, it just simply won't be reliable.  "Pretotyping", as the docs say, is only for trying stuff out and seeing how you like it.  Okaaaay.  I guess that's kind of nice, since the reliable way is more verbose, requires writing things twice, and keeping them in sync.  Stink!</p>
+
+<h4>Reliable Style #1: "Controller Style"</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>lang:"js" </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var MyController = function ($scope) {
+</span><span class='line'>};
+</span><span class='line'>MyController.$inject = ['$scope'];</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The <code>$scope</code> parameter in the function is soon to be renamed once minified, so save a list of the parameter names as strings in the <code>$inject</code> array.  Make sure the order and length of these two lists match.</p>
+
+<h4>Reliable Style #2: "Module Style"</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>lang:"js" </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>angular.module('myModule', [])
+</span><span class='line'>  .config(['$interpolateProvider', function ($interpolateProvider) {
+</span><span class='line'>  }]);</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The idea is the exact same.  Note the placement of the square brackets;  It's a bit different.</p>
+
+<p>Well, there you are.  Write Angular dependency injection once and run anywhere.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Npm Install Local Files]]></title>
@@ -410,138 +490,6 @@ $ export NODE_ENV=production &amp;&amp; node app.js
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Declare some variables per environment.  Likely candidates are database connection strings or web service endpoints or feature flags.  These will help you avoid as many nasty if-else branches in your code.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Count Attributes in JavaScript Object]]></title>
-    <link href="http://jaketrent.com/post/count-javascript-object-attributes/"/>
-    <updated>2012-11-29T13:11:00-07:00</updated>
-    <id>http://jaketrent.com/post/count-javascript-object-attributes</id>
-    <content type="html"><![CDATA[<p>Sometimes it may be useful to know how many attributes a JavaScript object has.  There's not a fantastic way to do this.  Or maybe there is.  Do you know one?  Could cut out IE8 support.  Or, for what it's worth, here's a way.</p>
-
-<p><img src="http://i.imgur.com/54smb.jpg" alt="Count attributes in js object" /></p>
-
-<!--more-->
-
-
-<h2>Which Objects have a Length</h2>
-
-<p>If instantiate a new object, it does <em>not</em> have a built-in length attribute:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">blockquote</span><span class="o">&gt;&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span class='line'><span class="kc">undefined</span>
-</span><span class='line'><span class="nx">obj</span><span class="p">.</span><span class="nx">length</span>
-</span><span class='line'><span class="kc">undefined</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p></blockquote>
-
-<p>If I add an arbitrary property that object, it still doesn't affect the length:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">blockquote</span><span class="o">&gt;&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">obj</span><span class="p">.</span><span class="nx">prop1</span> <span class="o">=</span> <span class="s2">&quot;adsf&quot;</span>
-</span><span class='line'><span class="s1">&#39;adsf&#39;</span>
-</span><span class='line'><span class="nx">obj</span><span class="p">.</span><span class="nx">length</span>
-</span><span class='line'><span class="kc">undefined</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p></blockquote>
-
-<p>If I instantiate a new array, it has a built-in length attribute:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">blockquote</span><span class="o">&gt;&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span class='line'><span class="kc">undefined</span>
-</span><span class='line'><span class="nx">arr</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'><span class="mi">1</span>
-</span><span class='line'><span class="nx">arr</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</span><span class='line'><span class="mi">2</span>
-</span><span class='line'><span class="nx">arr</span><span class="p">.</span><span class="nx">length</span>
-</span><span class='line'><span class="mi">2</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p></blockquote>
-
-<p>But an array is an object whose attributes are numbers, right?  So, if I put an arbitrary property on it, does it affect length:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">blockquote</span><span class="o">&gt;&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">arr</span><span class="p">.</span><span class="nx">prop1</span> <span class="o">=</span> <span class="s2">&quot;asdf&quot;</span>
-</span><span class='line'><span class="s1">&#39;asdf&#39;</span>
-</span><span class='line'><span class="nx">arr</span><span class="p">.</span><span class="nx">length</span>
-</span><span class='line'><span class="mi">2</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p></blockquote>
-
-<p>No, this <code>arr</code> array still just has the two items we previously pushed onto it.</p>
-
-<h2>Just Iterating</h2>
-
-<p>So, how do you find out how many attributes are in an object (not array)?  Just iterate on it:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">numAttrs</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>  <span class="o">++</span><span class="nx">count</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">count</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>I found this a bit painful to write.  There should be a better way, right?  Do you know what it is?</p>
-
-<h2>A Better Way for Better Browsers</h2>
-
-<p>If your in a <a href="http://kangax.github.com/es5-compat-table/">Modern JavaScript environment</a>, give this a whirl:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">obj</span><span class="p">).</span><span class="nx">length</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Way nicer.  Don't try in &lt;= IE8.</p>
 ]]></content>
   </entry>
   
