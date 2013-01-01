@@ -53,7 +53,7 @@ While you can build Angular code that way, it just simply won't be reliable.  "P
 
 #### Reliable Style #1: "Controller Style"
 
-{% codeblock lang:"js" %}
+{% codeblock lang:javascript %}
 var MyController = function ($scope) {
 };
 MyController.$inject = ['$scope'];
@@ -63,7 +63,7 @@ The `$scope` parameter in the function is soon to be renamed once minified, so s
 
 #### Reliable Style #2: "Module Style"
 
-{% codeblock lang:"js" %}
+{% codeblock lang:javascript %}
 angular.module('myModule', [])
   .config(['$interpolateProvider', function ($interpolateProvider) {
   }]);

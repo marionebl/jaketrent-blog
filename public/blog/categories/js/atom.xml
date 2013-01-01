@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2012-12-31T20:22:38-07:00</updated>
+  <updated>2012-12-31T20:26:16-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Minimized AngularJs Dependency Injection]]></title>
-    <link href="http://jaketrent.com/post/minimizedAngularjsDependencyInjection/"/>
+    <link href="http://jaketrent.com/post/minimized-angularjs-dependency-injection/"/>
     <updated>2012-12-31T16:20:00-07:00</updated>
-    <id>http://jaketrent.com/post/minimizedAngularjsDependencyInjection</id>
+    <id>http://jaketrent.com/post/minimized-angularjs-dependency-injection</id>
     <content type="html"><![CDATA[<p>Aren't environment-specific bugs some of the hardest to troubleshoot!  You may find yourself scratching your head after building and deploying your AngularJs code.  If you minimize or uglify your Angular code, there may be a few things you need to do differently to make it work.</p>
 
 <p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs" /></p>
@@ -67,25 +67,25 @@ Uncaught Error: Unknown provider: e from myModule
 
 <h4>Reliable Style #1: "Controller Style"</h4>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>lang:"js" </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>var MyController = function ($scope) {
-</span><span class='line'>};
-</span><span class='line'>MyController.$inject = ['$scope'];</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">MyController</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'><span class="nx">MyController</span><span class="p">.</span><span class="nx">$inject</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$scope&#39;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>The <code>$scope</code> parameter in the function is soon to be renamed once minified, so save a list of the parameter names as strings in the <code>$inject</code> array.  Make sure the order and length of these two lists match.</p>
 
 <h4>Reliable Style #2: "Module Style"</h4>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>lang:"js" </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>angular.module('myModule', [])
-</span><span class='line'>  .config(['$interpolateProvider', function ($interpolateProvider) {
-</span><span class='line'>  }]);</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;myModule&#39;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">config</span><span class="p">([</span><span class="s1">&#39;$interpolateProvider&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$interpolateProvider</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">}]);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>The idea is the exact same.  Note the placement of the square brackets;  It's a bit different.</p>
 
