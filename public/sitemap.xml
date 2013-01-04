@@ -1,6 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
+        <loc>http://jaketrent.com/post/mocha-testing-angularjs-dependency-injection/</loc>
+        <lastmod>2013-01-03T18:44:13-07:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/quitter-review/</loc>
+        <lastmod>2013-01-03T18:43:10-07:00</lastmod>
+    </url>
+    <url>
         <loc>http://jaketrent.com/post/just-over-the-next-rise/</loc>
         <lastmod>2012-12-24T10:24:35-07:00</lastmod>
     </url>
@@ -122,10 +130,10 @@
     </url>
     <url>
         <loc>http://jaketrent.com/blog/archives/</loc>
-        <lastmod>2012-12-31T20:26:09-07:00</lastmod>
+        <lastmod>2013-01-03T18:44:13-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/</loc>
-        <lastmod>2012-12-31T20:26:09-07:00</lastmod>
+        <lastmod>2013-01-03T18:44:13-07:00</lastmod>
     </url>
 </urlset>
