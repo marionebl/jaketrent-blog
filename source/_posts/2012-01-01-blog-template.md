@@ -1,12 +1,12 @@
 ---
 layout: post
 title: "BLOG TEMPLATE"
-date: 2012-01-01 18:18
+date: 2013-01-01 18:18
 comments: true
 categories: []
 description:
 keywords:
-published: false 
+published: false
 ---
 
 [[INTRO - include keyword; start with question or story]]

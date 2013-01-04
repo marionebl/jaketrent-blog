@@ -1,12 +1,12 @@
 ---
 layout: post
 title: "Quitter Review"
-date: 2012-01-03 07:26
+date: 2013-01-03 07:26
 comments: true
 categories: [Review]
-description: When you're ready to quit your day job to pursue your dream job, think twice, and read this book.  
+description: When you're ready to quit your day job to pursue your dream job, think twice, and read this book.
 keywords: quitter, jon acuff, dream job, quitter book
-published: true 
+published: true
 ---
 
 When you feel you're ready to quit your day job to pursue your dream job, think twice, and read this book.
@@ -25,7 +25,7 @@ Given that his book is based on his real life experiences, it should be no surpr
 
 #### The Value of Invisilibity
 
-Invisibility has value.  When we haven't set ourselves up as the biggest professional around, we have a shorter distance to fall.  We all still fail at times, so the combo is a plus.  You can dream big in this mode because when you fail big, no one cares.  And you can do this over and over again.  
+Invisibility has value.  When we haven't set ourselves up as the biggest professional around, we have a shorter distance to fall.  We all still fail at times, so the combo is a plus.  You can dream big in this mode because when you fail big, no one cares.  And you can do this over and over again.
 
 The safest or most conservative person in the world will be the person with the most visibility.  Why?  Because they have a reputation and a performance record to keep up.  If you don't have to maintain that, you'll probably take interesting risks more readily.  When we see people at the height of their success, we don't have visibility into the long years that came before when they were building it.
 

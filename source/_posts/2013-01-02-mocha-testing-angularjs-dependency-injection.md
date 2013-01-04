@@ -1,12 +1,12 @@
 ---
 layout: post
 title: "Mocha Testing AngularJs Dependency Injection"
-date: 2012-01-02 16:48
+date: 2013-01-02 16:48
 comments: true
 categories: [Code, js, angularjs, mocha]
-description: When you test your AngularJs code, you need to explicitly inject the services your controllers and modules require.  
+description: When you test your AngularJs code, you need to explicitly inject the services your controllers and modules require.
 keywords: js, javascript, mocha, angularjs, dependency injection, $scope
-published: true 
+published: true
 ---
 
 When you test your AngularJs code, you need to explicitly inject the services that your controllers and modules require.  It has its own special syntax.  It requires mocking.  You'll see a slightly different syntax than you may have expected.
@@ -67,7 +67,7 @@ And this was the start of my test:
 {% codeblock lang:javascript %}
   it('should be available', function() {
     var ctrl = new MyController();
-    // ... assertions 
+    // ... assertions
   });
 {% endcodeblock %}
 
