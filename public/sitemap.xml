@@ -117,10 +117,6 @@
         <lastmod>2012-12-31T20:26:09-07:00</lastmod>
     </url>
     <url>
-        <loc>http://jaketrent.com/post/blog-template/</loc>
-        <lastmod>2013-01-03T18:51:03-07:00</lastmod>
-    </url>
-    <url>
         <loc>http://jaketrent.com/post/mocha-testing-angularjs-dependency-injection/</loc>
         <lastmod>2013-01-03T18:50:53-07:00</lastmod>
     </url>
@@ -134,10 +130,10 @@
     </url>
     <url>
         <loc>http://jaketrent.com/blog/archives/</loc>
-        <lastmod>2013-01-03T18:51:03-07:00</lastmod>
+        <lastmod>2013-01-03T18:50:53-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/</loc>
-        <lastmod>2013-01-03T18:51:03-07:00</lastmod>
+        <lastmod>2013-01-03T18:50:53-07:00</lastmod>
     </url>
 </urlset>
