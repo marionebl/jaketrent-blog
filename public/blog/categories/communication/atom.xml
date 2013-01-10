@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: communication | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/communication/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2013-01-10T15:57:18-07:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Why Log Your Issues]]></title>
+    <link href="http://jaketrent.com/post/why-log-you-issues/"/>
+    <updated>2013-01-10T07:06:00-07:00</updated>
+    <id>http://jaketrent.com/post/why-log-you-issues</id>
+    <content type="html"><![CDATA[<p>When you're working on a software project, what's the most important deliverable?  Why, the software!  It's your eventual product.  Along the way, however, there will be some things you can do that will make it more likely you successfully ship great software. One of those is logging issues.  Here's why you might want to do it.</p>
+
+<p><img src="http://i.imgur.com/QNf1k.jpg" alt="A github log" /></p>
+
+<!--more-->
+
+
+<h2>Just Log It</h2>
+
+<p>There are many tools.  There are many strategies.  The most important thing will be to just get your issues logged in a persistent system that everyone involved agrees upon.</p>
+
+<p>The benefits will include:</p>
+
+<ol>
+<li><strong>You'll remember it</strong> - Software projects are complex.  You'll run into a lot of issues.  You don't want to keep them in your head.</li>
+<li><strong>You'll have a historical record</strong> - Projects can take a long time to finish.  And often they aren't done in contiguous calendar time.</li>
+<li><strong>You'll remember past mistakes</strong></li>
+<li>Maybe it's a bit of lemon juice on old wounds, but that's better than reverting your software to do the same dumb things again.  By examining your once-resolved issues, you can remember not to go down certain paths again.</li>
+<li><strong>You'll have a todo list</strong> - Today's software projects move fast, and there's a lot going on in the office.  To help you remember, what you need to do and in what order, look to your issues list.</li>
+<li><strong>You'll have a clearer picture of your progress</strong> - You'll know how much farther you have to go on your milestones.  You'll have a finite list of exactly what is left that needs to be solved.</li>
+<li><strong>You'll have an alert system</strong> - When things go South, and bugs pop up, you'll have an immediate global notification system.  That is, if the team is tuned into your issue tracker this way.</li>
+<li><strong>You'll invite others to help you</strong> - When it's clear what needs to be done, people have a better-defined path to get started helping you out.  He sees an issue that is close to his expertise or interest, assigns it to himself, and goes!</li>
+</ol>
+
+
+<h2>Some Effort</h2>
+
+<p>Of course this takes some effort.  Try to track issues more readily and steadily, and see if you don't feel some of these benefits for yourself.  It's an investment into your process that should add to your capability to ship great software.</p>
+
+<h2>Some Caveats</h2>
+
+<p>This benefits mostly have some major assumptions, like: people actually care; it's a painless process to add issues, assign issues, and resolve issues; the issue tracker has good notifications -- meaningingful and to the people that matter.  Well, there are lots of ways to mess that up as well.  But try it.  Do what works for your team.</p>
+
+<p>What have you found to help your team be most successful in issue tracking?</p>
+]]></content>
+  </entry>
+  
+</feed>

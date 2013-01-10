@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-01-09T19:55:13-07:00</updated>
+  <updated>2013-01-10T15:57:18-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Why Log Your Issues]]></title>
+    <link href="http://jaketrent.com/post/why-log-you-issues/"/>
+    <updated>2013-01-10T07:06:00-07:00</updated>
+    <id>http://jaketrent.com/post/why-log-you-issues</id>
+    <content type="html"><![CDATA[<p>When you&#8217;re working on a software project, what&#8217;s the most important deliverable?  Why, the software!  It&#8217;s your eventual product.  Along the way, however, there will be some things you can do that will make it more likely you successfully ship great software. One of those is logging issues.  Here&#8217;s why you might want to do it.</p>
+
+<p><img src="http://i.imgur.com/QNf1k.jpg" alt="A github log" /></p>
+
+<!--more-->
+
+
+<h2>Just Log It</h2>
+
+<p>There are many tools.  There are many strategies.  The most important thing will be to just get your issues logged in a persistent system that everyone involved agrees upon.</p>
+
+<p>The benefits will include:</p>
+
+<ol>
+<li><strong>You&#8217;ll remember it</strong> - Software projects are complex.  You&#8217;ll run into a lot of issues.  You don&#8217;t want to keep them in your head.</li>
+<li><strong>You&#8217;ll have a historical record</strong> - Projects can take a long time to finish.  And often they aren&#8217;t done in contiguous calendar time.</li>
+<li><strong>You&#8217;ll remember past mistakes</strong></li>
+<li>Maybe it&#8217;s a bit of lemon juice on old wounds, but that&#8217;s better than reverting your software to do the same dumb things again.  By examining your once-resolved issues, you can remember not to go down certain paths again.</li>
+<li><strong>You&#8217;ll have a todo list</strong> - Today&#8217;s software projects move fast, and there&#8217;s a lot going on in the office.  To help you remember, what you need to do and in what order, look to your issues list.</li>
+<li><strong>You&#8217;ll have a clearer picture of your progress</strong> - You&#8217;ll know how much farther you have to go on your milestones.  You&#8217;ll have a finite list of exactly what is left that needs to be solved.</li>
+<li><strong>You&#8217;ll have an alert system</strong> - When things go South, and bugs pop up, you&#8217;ll have an immediate global notification system.  That is, if the team is tuned into your issue tracker this way.</li>
+<li><strong>You&#8217;ll invite others to help you</strong> - When it&#8217;s clear what needs to be done, people have a better-defined path to get started helping you out.  He sees an issue that is close to his expertise or interest, assigns it to himself, and goes!</li>
+</ol>
+
+
+<h2>Some Effort</h2>
+
+<p>Of course this takes some effort.  Try to track issues more readily and steadily, and see if you don&#8217;t feel some of these benefits for yourself.  It&#8217;s an investment into your process that should add to your capability to ship great software.</p>
+
+<h2>Some Caveats</h2>
+
+<p>This benefits mostly have some major assumptions, like: people actually care; it&#8217;s a painless process to add issues, assign issues, and resolve issues; the issue tracker has good notifications &#8211; meaningingful and to the people that matter.  Well, there are lots of ways to mess that up as well.  But try it.  Do what works for your team.</p>
+
+<p>What have you found to help your team be most successful in issue tracking?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Be True to Your Heart]]></title>
@@ -1967,47 +2009,6 @@ testacular.conf.js
 <h2>Grunt access package.json</h2>
 
 <p>As it turns out, Grunt has not problem accessing <code>package.json</code>.  Grunt was already a venerable build tool option.  Now, it running Javascript, speaking to your Javascript project descriptor (<code>package.json</code>) is pure genius.  And genius that is easily accomplished? &#8211; noteworthy indeed.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Blog Topics]]></title>
-    <link href="http://jaketrent.com/post/blog-topics/"/>
-    <updated>2012-10-22T17:01:00-06:00</updated>
-    <id>http://jaketrent.com/post/blog-topics</id>
-    <content type="html"><![CDATA[<p>I was inspired by <a href="http://jaketrent.com/post/platform-book-review/">Michael Hyatt&#8217;s book, Platform,</a> to start writing this blog.  As he suggested, I just started writing.  But also as he suggested, I&#8217;ve been percolating over what my blog topics will be.  I&#8217;ve just been writing for several weeks.  I&#8217;ve finally settled in on a number of categories that will help me focus a bit.  But each are plenty broad to be able to write on most any and all things related to software.</p>
-
-<p><img src="http://farm1.staticflickr.com/1/2612308_456907e315_z.jpg" alt="Categories" />
-http://flic.kr/p/eoxN</p>
-
-<!--more-->
-
-
-<h2><a href="http://jaketrent.com/post/category/code/">Code</a></h2>
-
-<p>I&#8217;m a coder.  This is probably my favorite category.  This is what I wake up in the morning and do.  Posts in this category will be heavy on the code snippets.  They will sometimes link to demos.  These will be the most technical of the posts</p>
-
-<h2><a href="http://jaketrent.com/post/category/software-design/">Design</a></h2>
-
-<p>I have a desire to use and expand my design skills.  I&#8217;ll probably never commit enough time to really be a fantastic designer like many that I know, but here I&#8217;ll post my own feeble designs and talk about all things having to do with look and feel and user experience.</p>
-
-<h2><a href="http://jaketrent.com/post/category/productivity/">Productivity</a></h2>
-
-<p>Software is such a malleable medium.  It is an art in many ways.  Thus there are many ways to make it happen.  Some methods work better for others.  Some processes improve upon those of the past.  Some ways are better than others to make a team work well.  Ideas similar to these will be posted here.</p>
-
-<h2><a href="http://jaketrent.com/post/category/reviews/">Reviews</a></h2>
-
-<p>The world of software and technology is rich with resources and activity.  With so much to choose from, sometimes its helpful to have a suggestion or two on where to (or not to) focus some time and energy.  Software, books, and conferences are subjects we&#8217;ve seen so far.  The reviews are worth the price of admission.  Get them here.</p>
-
-<h2><a href="http://jaketrent.com/post/category/announcement/">Announcements</a></h2>
-
-<p>Public service announcements will include things about me or the blog in particular that are informational but not to any end.  This post fits in this category.  Where a full review is not offered, tidbits about the software world in general might fit here.</p>
-
-<h2>Blog Topics</h2>
-
-<p>It turns out that it&#8217;s somewhat hard to choose topics to write about on one&#8217;s blog.  At least it is for me.  The tech world is changing quickly.  I&#8217;m one that likes to change it and and change with it.  So, these topics may evolve.  They seem broad enough to continue to be applicable.</p>
-
-<p>If you were to choose my next post, which category would it fit into?</p>
 ]]></content>
   </entry>
   
