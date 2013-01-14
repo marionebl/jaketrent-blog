@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-01-10T15:57:18-07:00</updated>
+  <updated>2013-01-14T08:15:23-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,162 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Authenticated Supertest Tests]]></title>
+    <link href="http://jaketrent.com/post/authenticated-supertest-tests/"/>
+    <updated>2013-01-14T07:07:00-07:00</updated>
+    <id>http://jaketrent.com/post/authenticated-supertest-tests</id>
+    <content type="html"><![CDATA[<p>When you're trying to test your authenticated URLs via supertest, there are just a couple things you'll need to do that aren't spelled out in the docs.</p>
+
+<p><img src="http://i.imgur.com/PFUGV.jpg" alt="Supertest" /></p>
+
+<!--more-->
+
+
+<h2>Supertest</h2>
+
+<p><a href="https://github.com/visionmedia/supertest">Supertest</a> is a library written by the prolific TJ Holowaychuk.  It is a companion to <a href="https://github.com/visionmedia/superagent">superagent</a>.  Superagent provides a clean API for issuing HTTP commands.  Supertest ties into superagent for allowing easy assertions on top of those HTTP requests.</p>
+
+<h2>Authenticated Requests</h2>
+
+<p>Lots of webapps have portions of their sites that require authenticated to access, so it makes sense that there's a great need to test requests against these portions.  Yet in supertest, there's not a totally-straightforward way to login for the sake of a test and do subsequent requests under that login.  At least there's no explicit API for it in the current release.  But there have been <a href="https://github.com/visionmedia/supertest/issues/26">many</a> <a href="https://github.com/visionmedia/supertest/issues/46">requests</a> for it.  Who knows if it will come.  Given that we know the mechanism for session continuity between requests, cookies, we can make it happen ourselves.</p>
+
+<h2>Login for Supertest</h2>
+
+<h4>Use Superagent</h4>
+
+<p>Supertest has no cookiejar for holding cookies like the sessionid.  But, superagent does.  So, we're going to need to import it explicitly.  A login helper could look something like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">superagent</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;superagent&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">agent</span> <span class="o">=</span> <span class="nx">superagent</span><span class="p">.</span><span class="nx">agent</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">theAccount</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;nacho&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s2">&quot;password&quot;</span><span class="o">:</span> <span class="s2">&quot;iamtheluchadore&quot;</span>
+</span><span class='line'><span class="p">};</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">exports</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">request</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">theAccount</span><span class="p">)</span>
+</span><span class='line'><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">agent</span><span class="p">.</span><span class="nx">saveCookies</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">done</span><span class="p">(</span><span class="nx">agent</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>A few points:</p>
+
+<ul>
+<li><code>theAccount</code> information could come from anywhere.  You could use the same pattern from this login process to setup a newly-registered user as well.</li>
+<li>The <code>request</code> parameter to <code>login()</code> is the supertest request.</li>
+<li>After we post to '/login' and a response returns in the <code>end()</code> function, we are saving the cookies from that response (a login response should return with a 'Set-cookies' header).  This superagent agent (with the login cookie) is what we send back to the caller of the login helper via <code>done()</code>.</li>
+</ul>
+
+
+<h4>Attach the Cookies to Supertest</h4>
+
+<p>Now that we've made login request and saved the cookies, it's time to make our authenticated request(s).  Easy cheesy.  A simple test to see if the login worked might look like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;supertest&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">login</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./login&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;MyApp&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="kd">var</span> <span class="nx">agent</span><span class="p">;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">before</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">login</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">loginAgent</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">agent</span> <span class="o">=</span> <span class="nx">loginAgent</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">done</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should allow access to admin when logged in&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/admin&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">agent</span><span class="p">.</span><span class="nx">attachCookies</span><span class="p">(</span><span class="nx">req</span><span class="p">);</span>
+</span><span class='line'><span class="nx">req</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nx">done</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>More jabber about the code:</p>
+
+<ul>
+<li><code>app</code> is my Express app.  This is your webserver.</li>
+<li>We're importing the login helper, and we've called it one time before all the tests in our <code>MyApp</code> spec via <code>before()</code>.  This call to <code>before()</code> is asynchronous, just like our test in this case, because we have to do a full login to setup our test.  When the <code>loginAgent</code> is returned, we save it for use in our actual tests.</li>
+<li>The test gets the best of both worlds.  When doing <code>request.get()</code>, we're using the supertest request.  So, we can then do cool <code>expect()</code>s on it.  Right before the request goes out the door, we grab the superagent <code>agent</code> and attach its cookies to our new request.</li>
+</ul>
+
+
+<p>In the future, perhaps there will be a more expressive way to do this that's worked into the supertest API.  For now, this strategy is the best I've found.  It's based on the method I originally found in <a href="https://github.com/visionmedia/supertest/issues/46#issuecomment-11679706">visionmedia/supertest#46</a>.</p>
+
+<p>Is there a better way that you've found to do this kind of authenticated test?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mocha Testing AngularJs Dependency Injection]]></title>
@@ -386,120 +542,6 @@ npm install http://localServer/my-pkg-0.0.1.tgz
 <p>Yes, it's superficial, and it's even a lame reason, but I like Grunt because they have a great logo.  Wild boar for logo?  Instant win.  (That is what it is, right?)</p>
 
 <p>So, is Grunt helping you out?  What are your impressions?  Or are you using something else entirely?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[RequireJs Paths in Prod, Test, and Build]]></title>
-    <link href="http://jaketrent.com/post/requirejs-paths-in-prod-test-build/"/>
-    <updated>2012-12-07T11:18:00-07:00</updated>
-    <id>http://jaketrent.com/post/requirejs-paths-in-prod-test-build</id>
-    <content type="html"><![CDATA[<p>RequireJs makes dependency management on the client mostly better.  Once it's setup, it's nice.  Getting the patterns of your paths to work correctly can be difficult to setup, depending on the constraints of your system.  Making the same paths work in a prod, test, and build environment can be even more adventuresome.  In my case, there were a few extra hoops.  My scenario might not fully match yours, but perhaps you can apply this solution to your own needs.</p>
-
-<p><img src="http://i.imgur.com/xZqm5.png" alt="Alt Text" /></p>
-
-<!--more-->
-
-
-<h2>Prod: Loading Modules From a Different Server</h2>
-
-<p>Recently, we built a portal.  It contains a bunch of widgets that are served from domains different from the host page.  The portal requested these widget js files via <a href="http://requirejs.org/">RequireJs</a>.</p>
-
-<p>Because the widgets live on other domains, those widgets' subdependencies needed a path that would be relative to that other widget domain and not the portal domain.  In order to accomplish this, widget dependencies were specified in this way:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;./widgetDependency.js&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dep</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// my widget code</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>The <code>.js</code> extension tells RequireJs to load the dependency <a href="https://github.com/jrburke/r.js/blob/2.1.1/require.js#L1521">as a URL</a>.  The <code>./</code> makes the URL relative to the widget domain.</p>
-
-<h2>Test: RequireJs Paths in Testacular</h2>
-
-<p>When you go to test your modules in a test environment, you may not want to load your modules as URLs.  Such was the case for me, <a href="http://jaketrent.com/post/test-requirejs-testacular/">running Testacular</a>, where the source code is requested into the context of the test server already.</p>
-
-<p>In prod, I needed the <code>.js</code> extension.  But, in test I didn't want to load modules from URLs.  So, I need to make the test environment ignore the extension.  The solution?  Override the regular expression that checks for the extension in my test runner to be something that was never matched:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">require</span><span class="p">.</span><span class="nx">jsExtRegExp</span> <span class="o">=</span> <span class="sr">/&lt;sup&gt;pileOTest/</span><span class="p">;</span><span class="o">&lt;</span><span class="err">/sup&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>This allows RequireJs to load the module by module name.</p>
-
-<h4>RequireJs Adds Double .js Extension</h4>
-
-<p>It's getting better in the test environment, but we still haven't totally appeased RequireJs.  It turns out that when it loads a module by name, it still has to <a href="https://github.com/jrburke/r.js/blob/2.1.1/require.js#L1526">convert that name to a path</a>.</p>
-
-<p>Given my constraints (widgets from another domain on a portal), my name actually includes a <code>.js</code> extension.  This isn't usually the case.  RequireJs doesn't test for this again (remember, we overrode the regex that did), so it just adds a <code>.js</code> extension on the end, creating two: <code>.js.js</code>.</p>
-
-<p>But there is one final way to trick it out:  Add a '?' to the name.  This rule was meant to apply to URLs that represented dynamic scripts (and would thus take query strings) as opposed to static js files.  That's not why we'll add it, but it will help us nonetheless.</p>
-
-<p>So now your module dependencies will look like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;./widgetDependency.js?&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dep</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// my widget code</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>And in your test environment they will load, and you will be happy.  Until...</p>
-
-<h2>Build: Module Names for Optimization</h2>
-
-<p>When you go to <a href="http://requirejs.org/docs/optimization.html#basics">optimize your RequireJs modules</a> you'll again need RequireJs to load your modules by module name instead of url.  If you don't, you'll get nice messages like:</p>
-
-<p>```</p>
-
-<blockquote><blockquote><p>Tracing dependencies for: MyModule
-Cannot optimize network URL, skipping: nls/str.js?
-Error: ENOENT, no such file or directory
-'/Users/.../style.css?'
-In module tree:</p>
-
-<pre><code>MyModule
-</code></pre>
-
-<p>```</p></blockquote></blockquote>
-
-<p>You may cry a little, but we're almost there.  Remember, your module dependency paths worked just fine in prod.  You only changed them to accommodate the test environment.  So, it's time to change them back when you optimize your module into one file for production use.</p>
-
-<p>The <code>r.js</code> configuration in <code>app.build.js</code> includes an function called <code>onBuildRead()</code>'.  Call it to transform the code as it goes out the door for optimization.  We want to strip out the '?' question marks from our dependency arrays.  Stripping out all '?'s might be a bit too dangerous.  So, let's make a benign adjustment that will help us identify exactly what we're trying to strip out and replace our '?' string in our dependency paths with '?test', finally:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;./widgetDependency.js?test&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dep</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// my widget code</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>And <a href="https://github.com/jrburke/r.js/blob/2.1.1/build/example.build.js#L417">implement <code>onBuildRead</code></a> as:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">onBuildRead</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">moduleName</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">contents</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="nx">br</span><span class="o">/&gt;</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">contents</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\?test/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h4>"Shut off all the garbage smashers on the detention level!"</h4>
-
-<p>Take a deep breath.  That was a little much to make all that work.  You have made your RequireJs paths happy in 3 contexts:</p>
-
-<ol>
-<li>In production, where modules are served from domains different from the host page and must be loaded by URL.</li>
-<li>In test, where your modules must be loaded by module name.</li>
-<li>In the optimization build, where modules must be loaded by module name.</li>
-</ol>
-
-
-<p>I fill like I've tricked out RequireJs a bit to make this work.  How could we adjust the solution to be more straightforward?</p>
 ]]></content>
   </entry>
   

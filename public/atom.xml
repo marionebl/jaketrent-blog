@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-01-10T15:57:18-07:00</updated>
+  <updated>2013-01-14T08:15:23-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,146 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Authenticated Supertest Tests]]></title>
+    <link href="http://jaketrent.com/post/authenticated-supertest-tests/"/>
+    <updated>2013-01-14T07:07:00-07:00</updated>
+    <id>http://jaketrent.com/post/authenticated-supertest-tests</id>
+    <content type="html"><![CDATA[<p>When you&#8217;re trying to test your authenticated URLs via supertest, there are just a couple things you&#8217;ll need to do that aren&#8217;t spelled out in the docs.</p>
+
+<p><img src="http://i.imgur.com/PFUGV.jpg" alt="Supertest" /></p>
+
+<!--more-->
+
+
+<h2>Supertest</h2>
+
+<p><a href="https://github.com/visionmedia/supertest">Supertest</a> is a library written by the prolific TJ Holowaychuk.  It is a companion to <a href="https://github.com/visionmedia/superagent">superagent</a>.  Superagent provides a clean API for issuing HTTP commands.  Supertest ties into superagent for allowing easy assertions on top of those HTTP requests.</p>
+
+<h2>Authenticated Requests</h2>
+
+<p>Lots of webapps have portions of their sites that require authenticated to access, so it makes sense that there&#8217;s a great need to test requests against these portions.  Yet in supertest, there&#8217;s not a totally-straightforward way to login for the sake of a test and do subsequent requests under that login.  At least there&#8217;s no explicit API for it in the current release.  But there have been <a href="https://github.com/visionmedia/supertest/issues/26">many</a> <a href="https://github.com/visionmedia/supertest/issues/46">requests</a> for it.  Who knows if it will come.  Given that we know the mechanism for session continuity between requests, cookies, we can make it happen ourselves.</p>
+
+<h2>Login for Supertest</h2>
+
+<h4>Use Superagent</h4>
+
+<p>Supertest has no cookiejar for holding cookies like the sessionid.  But, superagent does.  So, we&#8217;re going to need to import it explicitly.  A login helper could look something like this:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">superagent</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;superagent&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">agent</span> <span class="o">=</span> <span class="nx">superagent</span><span class="p">.</span><span class="nx">agent</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">theAccount</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;nacho&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s2">&quot;password&quot;</span><span class="o">:</span> <span class="s2">&quot;iamtheluchadore&quot;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">exports</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">request</span>
+</span><span class='line'>    <span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">theAccount</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="nx">agent</span><span class="p">.</span><span class="nx">saveCookies</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">done</span><span class="p">(</span><span class="nx">agent</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A few points:</p>
+
+<ul>
+<li><code>theAccount</code> information could come from anywhere.  You could use the same pattern from this login process to setup a newly-registered user as well.</li>
+<li>The <code>request</code> parameter to <code>login()</code> is the supertest request.</li>
+<li>After we post to &#8216;/login&#8217; and a response returns in the <code>end()</code> function, we are saving the cookies from that response (a login response should return with a &#8216;Set-cookies&#8217; header).  This superagent agent (with the login cookie) is what we send back to the caller of the login helper via <code>done()</code>.</li>
+</ul>
+
+
+<h4>Attach the Cookies to Supertest</h4>
+
+<p>Now that we&#8217;ve made login request and saved the cookies, it&#8217;s time to make our authenticated request(s).  Easy cheesy.  A simple test to see if the login worked might look like this:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;supertest&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">login</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./login&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;MyApp&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">agent</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">before</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">login</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">loginAgent</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">agent</span> <span class="o">=</span> <span class="nx">loginAgent</span><span class="p">;</span>
+</span><span class='line'>      <span class="nx">done</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should allow access to admin when logged in&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/admin&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">agent</span><span class="p">.</span><span class="nx">attachCookies</span><span class="p">(</span><span class="nx">req</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">req</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nx">done</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>More jabber about the code:</p>
+
+<ul>
+<li><code>app</code> is my Express app.  This is your webserver.</li>
+<li>We&#8217;re importing the login helper, and we&#8217;ve called it one time before all the tests in our <code>MyApp</code> spec via <code>before()</code>.  This call to <code>before()</code> is asynchronous, just like our test in this case, because we have to do a full login to setup our test.  When the <code>loginAgent</code> is returned, we save it for use in our actual tests.</li>
+<li>The test gets the best of both worlds.  When doing <code>request.get()</code>, we&#8217;re using the supertest request.  So, we can then do cool <code>expect()</code>s on it.  Right before the request goes out the door, we grab the superagent <code>agent</code> and attach its cookies to our new request.</li>
+</ul>
+
+
+<p>In the future, perhaps there will be a more expressive way to do this that&#8217;s worked into the supertest API.  For now, this strategy is the best I&#8217;ve found.  It&#8217;s based on the method I originally found in <a href="https://github.com/visionmedia/supertest/issues/46#issuecomment-11679706">visionmedia/supertest#46</a>.</p>
+
+<p>Is there a better way that you&#8217;ve found to do this kind of authenticated test?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Why Log Your Issues]]></title>
@@ -1926,89 +2066,6 @@ testacular.conf.js
 <h2>Solid Optimization</h2>
 
 <p>RequireJs does a great build.  Grunt is flexible and easy to work with.  They go well together thanks to the <a href="https://npmjs.org/package/grunt-contrib-requirejs">grunt-contrib-requirejs</a> plugin, which gives a solid performance.  You&#8217;ll have your JavaScript code done up so tight; it&#8217;ll be denser than lead &#8211; which is obviously what you&#8217;ve always dreamed of.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[GruntJs Access to package.json]]></title>
-    <link href="http://jaketrent.com/post/gruntjs-access-to-package-dot-json/"/>
-    <updated>2012-10-25T17:02:00-06:00</updated>
-    <id>http://jaketrent.com/post/gruntjs-access-to-package-dot-json</id>
-    <content type="html"><![CDATA[<p>Have you used GruntJs to build your JavaScript project yet?  It&#8217;s a great tool.  Often as a part of the build configuration, you&#8217;ll want to access your package.json with grunt.  Grunt has some built-in support for this.  Some bits can be a little tricky, and some plugins have limited support.  Here are some ways around all that.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
-
-<!--more-->
-
-
-<h2>Grunt JSON Directive</h2>
-
-<p>Grunt supports a number of <a href="https://github.com/gruntjs/grunt/blob/master/docs/helpers_directives.md">directives</a> out of the box.  These are callable from within you <code>grunt.js</code> file.  The gruntfile template uses one of these directives like so:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">pkg</span><span class="o">:</span> <span class="s1">&#39;&lt;json:package.json&gt;&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="cm">/* ... */</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is making the contents of your <code>package.json</code> file available to your grunt config.  And this is what we wanted!  So, if I want to put the version of my app into some grunt task config, I can use it like so:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">someTask</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">options</span><span class="o">:</span> <span class="s1">&#39;doStuff &lt;%= pkg.version %&gt;&#39;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This would already be enough &#8211; it it worked all the time!  Turns out it doesn&#8217;t [tear].</p>
-
-<h2>grunt.template</h2>
-
-<p>This syntax (&#8220;&lt;%= someVar %>&#8221;) is referred to as a grunt.template.  It is based on  <a href="http://underscorejs.org/#template">underscore&#8217;s template</a> function.</p>
-
-<h2>Grunt Plugin Support</h2>
-
-<p>It turns out that all plugins are not created equal.  Some plugins do not support this syntax at all.  I wrestled with mainly two plugins</p>
-
-<ul>
-<li><a href="https://npmjs.org/package/grunt-exec">grunt-exec</a> - for executing scripts/commands in the shell</li>
-<li><a href="https://npmjs.org/package/grunt-jade">grunt-jade</a> - for compiling jade templates</li>
-</ul>
-
-
-<p>As far as I can tell, neither plugin supports <code>grunt.template</code>.  Lameo.  In the case of <code>grunt-jade</code>, I actually switched plugins to <a href="https://npmjs.org/package/grunt-contrib-jade"><code>grunt-contrib-jade</code></a>, which states explicit support for <code>grunt.template</code> in the docs.  Other than the docs or trying it out, I otherwise don&#8217;t know how to determine support.</p>
-
-<h2>Access package.json Directly</h2>
-
-<p>Where I couldn&#8217;t find a plugin that explicitly supported <code>grunt.template</code>, I needed another solution.  Guided by the power of Google, I ran across a good Stack Overflow post on <a href="http://stackoverflow.com/questions/12408535/how-to-pass-in-package-json-array-to-grunt-js">getting <code>package.json</code> values into the <code>grunt.js</code> file</a>.</p>
-
-<p>The post illuminated my dim mind:  Grunt runs in node.  Do what you would do in node.</p>
-
-<p>Thusly, I just require the <code>package.json</code> file, and it is available.  Voila.  Who needs a stinkin template directive?  And it looks like:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">pkgJson</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./package.json&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/* use as desired */</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">version</span> <span class="o">=</span> <span class="nx">pkgJson</span><span class="p">.</span><span class="nx">version</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>My one departure from the Stack Overflow suggestion was to use a different variable name on the require statement (&#8216;package&#8217; -> &#8216;pkgJson&#8217;).  &#8216;package&#8217; is a keyword that doesn&#8217;t pass linting.</p>
-
-<h2>Grunt access package.json</h2>
-
-<p>As it turns out, Grunt has not problem accessing <code>package.json</code>.  Grunt was already a venerable build tool option.  Now, it running Javascript, speaking to your Javascript project descriptor (<code>package.json</code>) is pure genius.  And genius that is easily accomplished? &#8211; noteworthy indeed.</p>
 ]]></content>
   </entry>
   
