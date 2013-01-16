@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-01-14T08:15:23-07:00</updated>
+  <updated>2013-01-16T08:03:19-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,86 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Run a Single Mocha Test]]></title>
+    <link href="http://jaketrent.com/post/run-single-mocha-test/"/>
+    <updated>2013-01-16T07:07:00-07:00</updated>
+    <id>http://jaketrent.com/post/run-single-mocha-test</id>
+    <content type="html"><![CDATA[<p>When working inside your test suite, it&#8217;s often the case that you don&#8217;t want to run all of your tests.  Mocha has a great mechanism that allows you to easily specify what exactly you want run.  This can help make your processes such as TDD faster and more focused.</p>
+
+<p><img src="http://i.imgur.com/hbcnU.png" alt="Mocha" /></p>
+
+<!--more-->
+
+
+<h2>Run a Single Test File</h2>
+
+<p>Using the mocha cli, you can easily specify an exact or wildcarded pattern that you want to run.  This is accomplished with the <code>grep</code> option when running the <code>mocha</code> command.</p>
+
+<p>If you wanted to run only the login-failure.js suite, the command would look like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ mocha --grep login-failiure.js</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you happen to have multiple suites that match a filename pattern that you wanted to run, exclusive to all others, you would run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ mocha --grep login-*.js</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Run a Single Spec</h2>
+
+<p>Often we&#8217;re in the test code making changes, and it&#8217;s easy to make adjustments to what subset of tests you run from here as well.  If I want to run a single <code>describe()</code> function, I can add a <code>.only()</code> to the function call, like this:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// these tests will be skipped</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">describe</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// these tests will run </span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can stick the <code>.only()</code> on any <code>describe</code>, no matter if it&#8217;s first or last in the list of specs.</p>
+
+<h2>Run a Single Test</h2>
+
+<p>Just as you can with <code>describe</code>, the tests can be specified to exclusively run if you attach <code>.only()</code> to the function call.</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">it</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// this test will run</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">it</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// this test will be skipped</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Note!</strong> that by putting the <code>.only()</code> on a test, all other functions in the spec are skipped.  This means that your <code>before</code>, <code>beforeEach</code>, <code>after</code>, and <code>afterEach</code> functions are <em>not</em> called.  Sometimes it&#8217;s hard to remember when that matters, so I usually end up running single specs instead of single tests.</p>
+
+<h2>Skip Something</h2>
+
+<p>If you want to run all the specs/tests that you have minus some subset, effectively commenting out these tests, you can add <code>.skip()</code> to either <code>describe</code> or <code>it</code> function calls.</p>
+
+<h2>Remember to Remove</h2>
+
+<p>With the additions of the <code>.only()</code> or <code>.skip()</code> you are altering the actual code of your tests.  This is great for your local development process.  You&#8217;ll need to be careful that you don&#8217;t commit this change &#8211; at least you usually won&#8217;t want to.  Otherwise, you CI process will be running a subset of your tests, just as you are locally, which is no bueno.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Authenticated Supertest Tests]]></title>
@@ -1947,125 +2027,6 @@ testacular.conf.js
 <p>For environment-specific grunt builds, <a href="https://npmjs.org/package/grunt-context">grunt-context</a> is the best solution I&#8217;ve found so far.  It&#8217;s not the best, but it usually gets the job done.  I&#8217;ve bent it to my will thus far.</p>
 
 <p>What have you found that works well for environment-specific JavaScript builds?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Run RequireJs with GruntJs]]></title>
-    <link href="http://jaketrent.com/post/run-requirejs-with-gruntjs/"/>
-    <updated>2012-10-28T17:02:00-06:00</updated>
-    <id>http://jaketrent.com/post/run-requirejs-with-gruntjs</id>
-    <content type="html"><![CDATA[<p>RequireJs features a fantastic optimization tool, <a href="http://requirejs.org/docs/optimization.html">r.js</a>, that utilizes <a href="https://github.com/mishoo/UglifyJS">UglifyJs</a> to minimize and concatenate your JavaScript code.  <a href="http://gruntjs.com/">Grunt</a> is a build tool that is great for standardizing your build configuration and coordinating multiple build steps &#8211; amongst its other wonders.  Hopefully you get to use both on your project, because they&#8217;ll both make your development process smoother and leave you to the funnerest stuff &#8211; writing sweet apps.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
-
-<!--more-->
-
-
-<h2>Vanilla RequireJs</h2>
-
-<p>To use <a href="http://requirejs.org/docs/optimization.html#wholeproject">vanilla RequireJS to optimize your project</a>, you&#8217;ll need to do two things:</p>
-
-<ol>
-<li><strong>Create app.build.js</strong>  - This file contains the configuration for how your want RequireJs react to your source code.  Among other things, paths to source directories and output files are specified.</li>
-<li><strong>Run the optimizer</strong> - via the command <code>node r.js -o app.build.js</code></li>
-</ol>
-
-
-<p>Grunt has essentially the same steps, but they&#8217;re specified in the standard grunt config file and will integrate better with the rest of your build process steps that are in grunt.</p>
-
-<h2>Grunt RequireJs Configuration</h2>
-
-<p>An easy way to get Grunt to run your RequireJs build is to use the <a href="https://npmjs.org/package/grunt-contrib-requirejs"><code>grunt-contrib-requirejs</code></a> plugin.</p>
-
-<p>Install the plugin:</p>
-
-<pre><code>npm install grunt-contrib-requirejs
-</code></pre>
-
-<p>Add the requirejs config to your grunt.js file:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
-</span><span class='line'>    <span class="cm">/* ... */</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// !! This is the name of the task (&#39;requirejs&#39;)</span>
-</span><span class='line'>    <span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">compile</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">// !! You can drop your app.build.js config wholesale into &#39;options&#39;</span>
-</span><span class='line'>        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">appDir</span><span class="o">:</span> <span class="s2">&quot;src/&quot;</span><span class="p">,</span>
-</span><span class='line'>          <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
-</span><span class='line'>          <span class="nx">dir</span><span class="o">:</span> <span class="s2">&quot;target/&quot;</span><span class="p">,</span>
-</span><span class='line'>          <span class="nx">optimize</span><span class="o">:</span> <span class="s1">&#39;uglify&#39;</span><span class="p">,</span>
-</span><span class='line'>          <span class="nx">mainConfigFile</span><span class="o">:</span><span class="s1">&#39;./src/main.js&#39;</span><span class="p">,</span>
-</span><span class='line'>          <span class="nx">modules</span><span class="o">:</span><span class="p">[</span>
-</span><span class='line'>            <span class="p">{</span>
-</span><span class='line'>              <span class="nx">name</span><span class="o">:</span><span class="s1">&#39;MyModule&#39;</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>          <span class="p">],</span>
-</span><span class='line'>          <span class="nx">logLevel</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-</span><span class='line'>          <span class="nx">findNestedDependencies</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>          <span class="nx">fileExclusionRegExp</span><span class="o">:</span> <span class="sr">/^\./</span><span class="p">,</span>
-</span><span class='line'>          <span class="nx">inlineText</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="cm">/* ... */</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// !! This loads the plugin into grunt</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-requirejs&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And run the task:</p>
-
-<pre><code>grunt requirejs
-</code></pre>
-
-<p>You should get the regular RequireJs build output that you&#8217;re used to seeing, and you&#8217;ll be able to verify that it worked.</p>
-
-<h2>Solid Optimization</h2>
-
-<p>RequireJs does a great build.  Grunt is flexible and easy to work with.  They go well together thanks to the <a href="https://npmjs.org/package/grunt-contrib-requirejs">grunt-contrib-requirejs</a> plugin, which gives a solid performance.  You&#8217;ll have your JavaScript code done up so tight; it&#8217;ll be denser than lead &#8211; which is obviously what you&#8217;ve always dreamed of.</p>
 ]]></content>
   </entry>
   
