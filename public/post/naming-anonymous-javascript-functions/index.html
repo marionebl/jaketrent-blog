@@ -1,0 +1,385 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Naming Anonymous JavaScript Functions - Jake Trent</title>
+  <meta name="author" content="Jake Trent">
+
+  
+  <meta name="description" content="In JavaScript, functions can be defined and used in the same statement. These are anonymous, but labeling them can be helpful.">
+  <meta name="keywords" content="js, javascript, anonymous functions, stack trace">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/naming-anonymous-javascript-functions/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1 class="title"><a href="/">Jake Trent</a></h1>
+  <div class="desc">
+    
+      <h2>Power Ballad Coding</h2>
+    
+  </div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jaketrent.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/blog/categories/code/">Code</a></li>
+  <li><a href="/blog/categories/design/">Design</a></li>
+  <li><a href="/blog/categories/productivity/">Productivity</a></li>
+  <li><a href="/blog/categories/review/">Reviews</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Naming Anonymous JavaScript Functions</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-17T07:10:00-07:00" pubdate data-updated="true">Jan 17<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In JavaScript, functions can be defined and used in the same statement.  This makes creation quick, and the functions are considered anonymous because of their inline use and lack of assignment to a local variable.  But, there are a couple reasons you might want to label them.</p>
+
+<p><img src="http://i.imgur.com/uH7E2.jpg" alt="JavaScript Anonymous Functions" /></p>
+
+<!--more-->
+
+
+<h2>Readability</h2>
+
+<p>A great thing about functions in general is that they will tell you what they&#8217;re used for.  If I call a function called <code>calculatePi()</code>, I expect it to do just that.  It&#8217;s a great abstraction.  We can look at the name of the function without having to learn exactly how it does its stated task.</p>
+
+<p>The performance of anonymous functions can often be determined from the calling context, but why not just name it for what it does like all other functions?  Did you know that you can?  Piece of pi.  Where you would normally write this:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">doStuff</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;reporting…&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Additionally label your callback:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">doStuff</span><span class="p">(</span><span class="kd">function</span> <span class="nx">reportResults</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;reporting…&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Easier Stack Traces</h2>
+
+<p>To make this code actually run, let&#8217;s add a little bit and stick in a thrown error that should provide us a stack trace:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">doStuff</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>   <span class="nx">callback</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">doStuff</span><span class="p">(</span><span class="kd">function</span> <span class="nx">reportResults</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;problem&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Another difference between labeled and non-labeled anonymous functions is what they print in a stack trace. Without a label, you are getting line numbers, but the stack trace itself is harder to follow without bring up the source in order to interpret it.</p>
+
+<p>Without named function:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="err">/.../error.js:10</span>
+</span><span class='line'>  <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;problem&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="o">^</span>
+</span><span class='line'><span class="nb">Error</span><span class="o">:</span> <span class="nx">problem</span>
+</span><span class='line'>    <span class="nx">at</span> <span class="o">/</span><span class="p">...</span><span class="o">/</span><span class="nx">error</span><span class="p">.</span><span class="nx">js</span><span class="o">:</span><span class="mi">10</span><span class="o">:</span><span class="mi">8</span>
+</span><span class='line'>    <span class="nx">at</span> <span class="nx">doStuff</span> <span class="p">(</span><span class="err">/.../error.js:5:4)</span>
+</span><span class='line'>    <span class="nx">at</span> <span class="nb">Object</span><span class="p">.</span><span class="o">&lt;</span><span class="nx">anonymous</span><span class="o">&gt;</span> <span class="p">(</span><span class="err">/.../error.js:8:1)</span>
+</span><span class='line'>    <span class="nx">at</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">_compile</span> <span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">js</span><span class="o">:</span><span class="mi">449</span><span class="o">:</span><span class="mi">26</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="err">/.../error.js:8</span>
+</span><span class='line'>  <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;problem&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="o">^</span>
+</span><span class='line'><span class="nb">Error</span><span class="o">:</span> <span class="nx">problem</span>
+</span><span class='line'>    <span class="nx">at</span> <span class="nx">reportResults</span> <span class="p">(</span><span class="err">/.../error.js:8:8)</span>
+</span><span class='line'>    <span class="nx">at</span> <span class="nx">doStuff</span> <span class="p">(</span><span class="err">/.../error.js:4:4)</span>
+</span><span class='line'>    <span class="nx">at</span> <span class="nb">Object</span><span class="p">.</span><span class="o">&lt;</span><span class="nx">anonymous</span><span class="o">&gt;</span> <span class="p">(</span><span class="err">/.../error.js:7:1)</span>
+</span><span class='line'>    <span class="nx">at</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">_compile</span> <span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">js</span><span class="o">:</span><span class="mi">449</span><span class="o">:</span><span class="mi">26</span><span class="p">)</span>
+</span><span class='line'>    <span class="err">…</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice that every frame of the stack is now clearly displaying its name.</p>
+
+<p>And wouldn&#8217;t this be awesome if everyone did this, including all the people that wrote some of those favorite libraries that you use but that you have occassion to debug through?</p>
+
+<p>What other benefits do you see that might come from naming your anonymous functions?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-17T07:10:00-07:00" pubdate data-updated="true">Jan 17<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/naming-anonymous-javascript-functions/" data-via="" data-counturl="http://jaketrent.com/post/naming-anonymous-javascript-functions/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/post/run-single-mocha-test/" title="Previous Post: Run a Single Mocha Test">&laquo; Run a Single Mocha Test</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="social">
+    <li><a class="social social-github" href="http://github.com/jaketrent" title="Github" class="first">Github</a></li>
+    <li><a class="social social-twitter" href="http://twitter.com/jaketrent" title="Twitter">Twitter</a></li>
+    <li><a class="social social-linkedin" href="http://linkedin.com/in/jaketrent" title="LinkedIn">LinkedIn</a></li>
+    <li><a class="social social-googleplus" href="https://plus.google.com/115032056022257436849?rel=author" title="Google Plus">Google Plus</a></li>
+    <li><a class="social social-rss" href="/atom.xml" title="RSS">RSS</a></li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/naming-anonymous-javascript-functions/">Naming Anonymous JavaScript Functions</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/run-single-mocha-test/">Run a Single Mocha Test</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/authenticated-supertest-tests/">Authenticated Supertest Tests</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/why-log-you-issues/">Why Log Your Issues</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/be-true-to-your-heart/">Be True to Your Heart</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/115032056022257436849?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Jake Trent -
+  <a href="/blog/archives">Archives</a> -
+  <a href="/atom.xml">Feed</a> -
+  <a href="/sitemap.xml">Sitemap</a> -
+  <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/naming-anonymous-javascript-functions/';
+        var disqus_url = 'http://jaketrent.com/post/naming-anonymous-javascript-functions/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

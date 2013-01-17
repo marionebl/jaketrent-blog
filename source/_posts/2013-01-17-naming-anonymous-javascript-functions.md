@@ -6,7 +6,7 @@ comments: true
 categories: [Code, js]
 description: In JavaScript, functions can be defined and used in the same statement.  These are anonymous, but labeling them can be helpful.
 keywords: js, javascript, anonymous functions, stack trace
-published: false
+published: true
 ---
 
 In JavaScript, functions can be defined and used in the same statement.  This makes creation quick, and the functions are considered anonymous because of their inline use and lack of assignment to a local variable.  But, there are a couple reasons you might want to label them.

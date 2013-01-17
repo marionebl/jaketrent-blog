@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-01-17T08:38:44-07:00</updated>
+  <updated>2013-01-17T08:58:00-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,148 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Naming Anonymous JavaScript Functions]]></title>
+    <link href="http://jaketrent.com/post/naming-anonymous-javascript-functions/"/>
+    <updated>2013-01-17T07:10:00-07:00</updated>
+    <id>http://jaketrent.com/post/naming-anonymous-javascript-functions</id>
+    <content type="html"><![CDATA[<p>In JavaScript, functions can be defined and used in the same statement.  This makes creation quick, and the functions are considered anonymous because of their inline use and lack of assignment to a local variable.  But, there are a couple reasons you might want to label them.</p>
+
+<p><img src="http://i.imgur.com/uH7E2.jpg" alt="JavaScript Anonymous Functions" /></p>
+
+<!--more-->
+
+
+<h2>Readability</h2>
+
+<p>A great thing about functions in general is that they will tell you what they're used for.  If I call a function called <code>calculatePi()</code>, I expect it to do just that.  It's a great abstraction.  We can look at the name of the function without having to learn exactly how it does its stated task.</p>
+
+<p>The performance of anonymous functions can often be determined from the calling context, but why not just name it for what it does like all other functions?  Did you know that you can?  Piece of pi.  Where you would normally write this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">doStuff</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;reporting…&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Additionally label your callback:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">doStuff</span><span class="p">(</span><span class="kd">function</span> <span class="nx">reportResults</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;reporting…&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Easier Stack Traces</h2>
+
+<p>To make this code actually run, let's add a little bit and stick in a thrown error that should provide us a stack trace:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">doStuff</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>   <span class="nx">callback</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">doStuff</span><span class="p">(</span><span class="kd">function</span> <span class="nx">reportResults</span><span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;problem&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Another difference between labeled and non-labeled anonymous functions is what they print in a stack trace. Without a label, you are getting line numbers, but the stack trace itself is harder to follow without bring up the source in order to interpret it.</p>
+
+<p>Without named function:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="err">/.../error.js:10&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;problem&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="o">^</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nb">Error</span><span class="o">:</span> <span class="nx">problem</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">at</span> <span class="o">/</span><span class="p">...</span><span class="o">/</span><span class="nx">error</span><span class="p">.</span><span class="nx">js</span><span class="o">:</span><span class="mi">10</span><span class="o">:</span><span class="mi">8</span>
+</span><span class='line'><span class="nx">at</span> <span class="nx">doStuff</span> <span class="p">(</span><span class="err">/.../error.js:5:4)</span>
+</span><span class='line'><span class="nx">at</span> <span class="nb">Object</span><span class="p">.</span><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="nx">anonymous</span><span class="o">&amp;</span><span class="nx">gt</span><span class="p">;</span> <span class="p">(</span><span class="err">/.../error.js:8:1)</span>
+</span><span class='line'><span class="nx">at</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">_compile</span> <span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">js</span><span class="o">:</span><span class="mi">449</span><span class="o">:</span><span class="mi">26</span><span class="p">)</span>
+</span><span class='line'><span class="p">...</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="err">/.../error.js:8&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;problem&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="o">^</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nb">Error</span><span class="o">:</span> <span class="nx">problem</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">at</span> <span class="nx">reportResults</span> <span class="p">(</span><span class="err">/.../error.js:8:8)</span>
+</span><span class='line'><span class="nx">at</span> <span class="nx">doStuff</span> <span class="p">(</span><span class="err">/.../error.js:4:4)</span>
+</span><span class='line'><span class="nx">at</span> <span class="nb">Object</span><span class="p">.</span><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="nx">anonymous</span><span class="o">&amp;</span><span class="nx">gt</span><span class="p">;</span> <span class="p">(</span><span class="err">/.../error.js:7:1)</span>
+</span><span class='line'><span class="nx">at</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">_compile</span> <span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">js</span><span class="o">:</span><span class="mi">449</span><span class="o">:</span><span class="mi">26</span><span class="p">)</span>
+</span><span class='line'><span class="err">…</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Notice that every frame of the stack is now clearly displaying its name.</p>
+
+<p>And wouldn't this be awesome if everyone did this, including all the people that wrote some of those favorite libraries that you use but that you have occassion to debug through?</p>
+
+<p>What other benefits do you see that might come from naming your anonymous functions?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Run a Single Mocha Test]]></title>
@@ -457,85 +599,6 @@ Uncaught Error: Unknown provider: e from myModule
 <p>The idea is the exact same.  Note the placement of the square brackets;  It's a bit different.</p>
 
 <p>Well, there you are.  Write Angular dependency injection once and run anywhere.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Npm Install Local Files]]></title>
-    <link href="http://jaketrent.com/post/npm-install-local-files/"/>
-    <updated>2012-12-14T08:23:00-07:00</updated>
-    <id>http://jaketrent.com/post/npm-install-local-files</id>
-    <content type="html"><![CDATA[<p>Sometimes you'll want to use <a href="http://npmjs.org/">npm</a> to install a package that doesn't exist in the official npm registry for some reason.  Maybe you're developing the package yourself.  Maybe it's an internal use-only package. Maybe the package writer never published it.  Here are a few ways to install a local package with npm.</p>
-
-<p><img src="http://i.imgur.com/xnDMm.jpg" alt="Node Package Manager" /></p>
-
-<!--more-->
-
-
-<h2>Link the Local Node Package</h2>
-
-<p>If you're developing a package locally, you're likely making lots of changes to the source.  You don't want to publish after each change in order to install this package as a dependency elsewhere.  Npm has provided the <a href="http://npmjs.org/doc/link.html">link</a> keyword.</p>
-
-<p>This allows your put a global label on your package that tells your local npm cache about it:</p>
-
-<p><code>bash
-cd &lt;pkg_dir&gt;;
-npm link;
-</code></p>
-
-<p>And then go to the local project that you're using the package in and point to the dependency by package name:</p>
-
-<p><code>bash
-cd &lt;project_dir&gt;;
-npm link &lt;pkg_name&gt;;
-</code></p>
-
-<p>Now you have symlinked a directory called <code>&lt;pkg_name&gt;</code> in the project's node_modules directory.  Changes you make in your package will appear and be usable from within your project.</p>
-
-<h2>Tarball the Local Node Package</h2>
-
-<p>Npm can <a href="https://npmjs.org/doc/install.html">install</a> either a path or url to a local tarball.  To create a tarball that npm will like, you want to run npm <a href="https://npmjs.org/doc/pack.html">pack</a>:</p>
-
-<p><code>bash
-cd &lt;pkg_dir&gt;;
-npm pack
-</code>
-This will create a tarball a la <code>&lt;pkg_name&gt;-&lt;pkg_ver&gt;.tgz</code>.  Now just store your new tarball somewhere like a local filesystem or server that is accessible when you run npm install on your dependant project.</p>
-
-<p>You can ask for the tarball manually:</p>
-
-<p><code>bash
-npm install http://localServer/my-pkg-0.0.1.tgz
-</code></p>
-
-<p>Or put the reference in your package.json for later:</p>
-
-<p>```js
-{
-  "dependencies": {</p>
-
-<pre><code>"my-pkg": "http://localServer/my-pkg-0.0.1.tgz"
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>You probably have a node package that's only available locally for a reason.  To guarantee that it's not accidentally published to the world via the npm registry, add this beaut to your package.json:</p>
-
-<p><code>js
-{
-   "private": true
-}
-</code></p>
-
-<h2>Replicate the Npm Registry</h2>
-
-<p>If you're going all out, like creating a corporate npm registry, you always have the option of <a href="https://npmjs.org/doc/registry.html#Can-I-run-my-own-private-registry">replicating</a> the Npm registry internally.  It's CouchDb, and '<a href="http://www.imdb.com/title/tt0120029/quotes?qt=qt0192627">replication</a>' is its Chinese neighbor's middle name.  You can publish your own packages there so they're still private to your and your organization.  And you also get local references to the public packages.</p>
-
-<h2>The Glory of Npm</h2>
-
-<p>Npm is great.  The ability to install published or local packages is an example of its flexibility and usefulness.  What are the other ways that you've found to make non-public packages installable -- for instance, that package that the writer just never bothered to publish to npm?</p>
 ]]></content>
   </entry>
   
