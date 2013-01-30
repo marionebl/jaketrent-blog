@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-01-18T08:09:07-07:00</updated>
+  <updated>2013-01-29T20:30:29-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,64 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Smashing Node Review]]></title>
+    <link href="http://jaketrent.com/post/smashing-node-review/"/>
+    <updated>2013-01-29T16:51:00-07:00</updated>
+    <id>http://jaketrent.com/post/smashing-node-review</id>
+    <content type="html"><![CDATA[<p>Node.js is everywhere.  There's a lot of room foro people to learn and get into it.  A good starter book is <a href="http://amzn.to/14ttetp">Smashing Node by Guillermo Rauch</a>.  Here's what I thought and what I learned while reading it.</p>
+
+<p><img src="http://i.imgur.com/hQTBeAF.jpg" alt="Smashing Node" /></p>
+
+<!--more-->
+
+
+<h2>Overall</h2>
+
+<p>Overall, I would call Smashing Node an introduction to Node book.  This is a good thing.  It does a nice job of building on itself.  It starts with the JavaScript that everyone knows and advances to the new places that Node allows you to go.  The chapters are incremental.</p>
+
+<p>It's a good length.  This is not a tome that you might pick up in a level 3 dungeon in order to boost your fire magic.  You can read a couple chapters a day and be done in a week.  Thankfully, it's in consumable-sized bits.  Maybe you'll end up boosting your fire magic a bit too.</p>
+
+<p>The book boasts a fair breadth of subjects.  It introduces purely syntax subjects.  It also expands into working examples dealing with real network protocols and database apis.</p>
+
+<h2>Style</h2>
+
+<p>Guirremo has a very easy-to-read, conversational style.  I value this more and more in books -- perhaps even especially in technical books.  It helps me engage.  It helps me read faster and more.  I can read API docs when I need them.  A book should not read like an API doc.</p>
+
+<p>Most subjects in the book were chosen well.  I enjoyed almost all of them.  There always is a bottom of the list, however, and mine ended with the MySQL, HTTP, and TCP chapters.  Knowledge on those subjects is probably good to have, but I had to slog through these chapters.</p>
+
+<p>The code examples were enjoyable because they eventually turned into functional prototypes.  We built a Twitter client, an IRC chat, a social DJ program, and more.  That's pretty cool.  The downside was that the code examples could get a little long.  And with the entire working example, complete with all the npm commands and boilerplate code, sometimes the meaningful bits got a little obscured.  I read the book as a <a href="http://amzn.to/14ttetp">Kindle book</a> on a phone, so the long code snippets probably seemed even longer than they were.</p>
+
+<h2>Highlight Subjects</h2>
+
+<h4>Express Features</h4>
+
+<p>I use <a href="http://expressjs.com/">Express</a> more than any other library in Node.  It's a great HTTP request/response wrapper that makes creating web servers fun and easy.  Even so, this book introduced a number of features of the library that I was previously unaware of.  Generally, I think it helped illuminate for me a lot of the bits of Connect, which functions underneath Express.  Specifically, did you know that you can modify the Express logger to log specific request tokens of your choosing?</p>
+
+<h4>Redis</h4>
+
+<p>There was a great section that took a look at <a href="http://www.mongodb.org/">Mongo</a>, <a href="http://www.mysql.com/">MySQL</a>, and <a href="http://redis.io/">Redis</a>.  I enjoyed the chapter on Redis the most.  This is probaby somewhat because I have the most to learn in Redis and have used it the least.  I was also impressed at the ease with which Guirremo layed out a simple social graph using the Redis API.  The chosen tools, Node and Redis, made it simple, short, and elegant.</p>
+
+<p>Try writing many of the code examples in this book in Java and printing them on dead trees.  You'll need a bigger backpack.</p>
+
+<h4>Testing</h4>
+
+<p>I enjoyed the fact that testing was even mentioned.  A few testing styles and frameworks were introduced.  It was enjoyable but very light.  It would be cool to see a more thorough treatment, perhaps with applicable tests worked into the examples throughout the book.</p>
+
+<p>In this same vein, I think the book did an ok job at addressing the subject of error handling.  I think this book and other Node resources and educators should focus more on this issue.  It is, after all, more important in Node's single-threaded environment than on most platforms.</p>
+
+<h4>Web Sockets</h4>
+
+<p>I had only previously done web sockets via <a href="http://socket.io/">Socket.IO</a>, a web socket wrapper written by the author of the book.  It was good to see vanilla web sockets in action so I could better understand the technology, its limitations, and be grateful for the great libraries that help it be more useful and easy to use.</p>
+
+<h4>Great Libraries</h4>
+
+<p>The booked worked in usages of some great libraries throughout the coding examples.  As mentioned, <a href="http://socket.io/">Socket.IO</a> is a great web socket wrapper.  <a href="https://github.com/visionmedia/superagent">Superagent</a> is a great higher-level request API.  <a href="http://visionmedia.github.com/mocha/">Mocha</a> is a fantastic test framework.  And <a href="http://mongoosejs.com/">Mongoose</a> provides a nice model layer on top of the native MongoDb calls.</p>
+
+<p>So, what are you waiting for?  Go learn Node!  Use this book to help you.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to Make a Pinterest Webservice]]></title>
@@ -421,105 +479,6 @@ DEBUG:   --exec 'node'
 <p>Both tools are circa 2010.  Node-supervisor is the slightly older brother (by 8 months).  Both projects seem to have slow, steady development development activity.  What is there to add to tools that do their job already?</p>
 
 <p>In general, <code>nodemon</code> has a few more options.  For example, it has explicit support for coffee-script.  I like <code>supervisor</code> more for silly reasons:  I found it first, it works fine, feels better to type, and has fewer terminal command expansion conflicts.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[How to Organize NodeJs Routes]]></title>
-    <link href="http://jaketrent.com/post/how-to-organize-nodejs-routes/"/>
-    <updated>2012-10-02T16:52:00-06:00</updated>
-    <id>http://jaketrent.com/post/how-to-organize-nodejs-routes</id>
-    <content type="html"><![CDATA[<p>A few routes in a NodeJs app -- no problem.  Just put them in your <code>app.js</code>.  More than a handful?  You'll probably want to look at organizing your routes a different way.  This will help keep your core <code>app.js</code> clean and make your actual routes easier to find.</p>
-
-<p><img src="http://i.imgur.com/basH6.jpg" alt="Too many routes" />
-http://flic.kr/p/bihZUV</p>
-
-<!--more-->
-
-
-<h2>Express Routes</h2>
-
-<p>The favorite http framework on <a href="http://nodejs.org/">NodeJs</a> seems to be <a href="http://expressjs.com/">Express</a>.  I personally like it quite a bit.  It's simple, declarative, and allows you to set up all the normal HTTP commands with ease.</p>
-
-<p>Did you know that Express comes with a binary/cli command called <code>express</code>.  This command will setup a project structure and a lot of the boilerplate code for you.  The docs contain a guide on <a href="http://expressjs.com/guide.html#executable">how to run this</a>.  It has support for other cool options like session support or various css preprocessors.</p>
-
-<p>A sample run and the file structure that it will create looks something like this:</p>
-
-<pre><code>$ express --sessions --css stylus --ejs myapp
-
-create : myapp
-create : myapp/package.json
-create : myapp/app.js
-create : myapp/public
-create : myapp/public/javascripts
-create : myapp/public/images
-create : myapp/public/stylesheets
-create : myapp/public/stylesheets/style.styl
-create : myapp/routes
-create : myapp/routes/index.js
-create : myapp/views
-create : myapp/views/index.ejs
-</code></pre>
-
-<p>In that generated code, your <code>app.js</code> references a route like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">routes</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./routes&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">index</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>And the route, <code>index.js</code>, looks like:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">exports</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
-</span><span class='line'>  <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Express&#39;</span> <span class="p">});</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>I like this, but it's still not the best.  I don't like having to list the <code>app.get()</code>, etc. in <code>app.js</code>.  This list will get long.  So, how would I adjust?</p>
-
-<h2>All http commands in separate files</h2>
-
-<p>Instead, I want to tell <code>app.js</code> about my routes, but I want each route file to hook itself up to express directly.</p>
-
-<p>Showing the adjustments, <code>app.js</code>:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">indexRt</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./routes/index&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>This time, more goodies in <code>index.js</code>:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>The difference is somewhat slight.  Now, instead of each http command listed in your app, only each resource (in REST terms) is listed in app.  Each command for a resource is listed in that resource's route.js.</p>
-
-<p>There are surely many ways to organize your NodeJs routes.  Express gives a great starting pattern.  Our adjustment adds a slight optimization.  Organizing your routes will help your main <code>app.js</code> file stay way cleaner, and you'll be able to find your routes more easily.</p>
-
-<p>But this surely can't be the best way for everyone.  What are the ways that you've found successful in organizing your routes?</p>
-
-<p>Note: this post uses express 3 syntax.</p>
 ]]></content>
   </entry>
   

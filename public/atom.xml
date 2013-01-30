@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-01-18T08:09:07-07:00</updated>
+  <updated>2013-01-29T20:30:29-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,84 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Smashing Node Review]]></title>
+    <link href="http://jaketrent.com/post/smashing-node-review/"/>
+    <updated>2013-01-29T16:51:00-07:00</updated>
+    <id>http://jaketrent.com/post/smashing-node-review</id>
+    <content type="html"><![CDATA[<p>Node.js is everywhere.  There&#8217;s a lot of room foro people to learn and get into it.  A good starter book is <a href="http://amzn.to/14ttetp">Smashing Node by Guillermo Rauch</a>.  Here&#8217;s what I thought and what I learned while reading it.</p>
+
+<p><img src="http://i.imgur.com/hQTBeAF.jpg" alt="Smashing Node" /></p>
+
+<!--more-->
+
+
+<h2>Overall</h2>
+
+<p>Overall, I would call Smashing Node an introduction to Node book.  This is a good thing.  It does a nice job of building on itself.  It starts with the JavaScript that everyone knows and advances to the new places that Node allows you to go.  The chapters are incremental.</p>
+
+<p>It&#8217;s a good length.  This is not a tome that you might pick up in a level 3 dungeon in order to boost your fire magic.  You can read a couple chapters a day and be done in a week.  Thankfully, it&#8217;s in consumable-sized bits.  Maybe you&#8217;ll end up boosting your fire magic a bit too.</p>
+
+<p>The book boasts a fair breadth of subjects.  It introduces purely syntax subjects.  It also expands into working examples dealing with real network protocols and database apis.</p>
+
+<h2>Style</h2>
+
+<p>Guirremo has a very easy-to-read, conversational style.  I value this more and more in books &#8211; perhaps even especially in technical books.  It helps me engage.  It helps me read faster and more.  I can read API docs when I need them.  A book should not read like an API doc.</p>
+
+<p>Most subjects in the book were chosen well.  I enjoyed almost all of them.  There always is a bottom of the list, however, and mine ended with the MySQL, HTTP, and TCP chapters.  Knowledge on those subjects is probably good to have, but I had to slog through these chapters.</p>
+
+<p>The code examples were enjoyable because they eventually turned into functional prototypes.  We built a Twitter client, an IRC chat, a social DJ program, and more.  That&#8217;s pretty cool.  The downside was that the code examples could get a little long.  And with the entire working example, complete with all the npm commands and boilerplate code, sometimes the meaningful bits got a little obscured.  I read the book as a <a href="http://amzn.to/14ttetp">Kindle book</a> on a phone, so the long code snippets probably seemed even longer than they were.</p>
+
+<h2>Highlight Subjects</h2>
+
+<h4>Express Features</h4>
+
+<p>I use <a href="http://expressjs.com/">Express</a> more than any other library in Node.  It&#8217;s a great HTTP request/response wrapper that makes creating web servers fun and easy.  Even so, this book introduced a number of features of the library that I was previously unaware of.  Generally, I think it helped illuminate for me a lot of the bits of Connect, which functions underneath Express.  Specifically, did you know that you can modify the Express logger to log specific request tokens of your choosing?</p>
+
+<h4>Redis</h4>
+
+<p>There was a great section that took a look at <a href="http://www.mongodb.org/">Mongo</a>, <a href="http://www.mysql.com/">MySQL</a>, and <a href="http://redis.io/">Redis</a>.  I enjoyed the chapter on Redis the most.  This is probaby somewhat because I have the most to learn in Redis and have used it the least.  I was also impressed at the ease with which Guirremo layed out a simple social graph using the Redis API.  The chosen tools, Node and Redis, made it simple, short, and elegant.</p>
+
+<p>Try writing many of the code examples in this book in Java and printing them on dead trees.  You&#8217;ll need a bigger backpack.</p>
+
+<h4>Testing</h4>
+
+<p>I enjoyed the fact that testing was even mentioned.  A few testing styles and frameworks were introduced.  It was enjoyable but very light.  It would be cool to see a more thorough treatment, perhaps with applicable tests worked into the examples throughout the book.</p>
+
+<p>In this same vein, I think the book did an ok job at addressing the subject of error handling.  I think this book and other Node resources and educators should focus more on this issue.  It is, after all, more important in Node&#8217;s single-threaded environment than on most platforms.</p>
+
+<h4>Web Sockets</h4>
+
+<p>I had only previously done web sockets via <a href="http://socket.io/">Socket.IO</a>, a web socket wrapper written by the author of the book.  It was good to see vanilla web sockets in action so I could better understand the technology, its limitations, and be grateful for the great libraries that help it be more useful and easy to use.</p>
+
+<h4>Great Libraries</h4>
+
+<p>The booked worked in usages of some great libraries throughout the coding examples.  As mentioned, <a href="http://socket.io/">Socket.IO</a> is a great web socket wrapper.  <a href="https://github.com/visionmedia/superagent">Superagent</a> is a great higher-level request API.  <a href="http://visionmedia.github.com/mocha/">Mocha</a> is a fantastic test framework.  And <a href="http://mongoosejs.com/">Mongoose</a> provides a nice model layer on top of the native MongoDb calls.</p>
+
+<p>So, what are you waiting for?  Go learn Node!  Use this book to help you.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JavaScript Copy to Clipboard]]></title>
+    <link href="http://jaketrent.com/post/javascript-copy-to-clipboard/"/>
+    <updated>2013-01-25T07:11:00-07:00</updated>
+    <id>http://jaketrent.com/post/javascript-copy-to-clipboard</id>
+    <content type="html"><![CDATA[<p>[[INTRO - include keyword; start with question or story]]</p>
+
+<p><img src="http://i.imgur.com/M0kYA.jpg" alt="Alt Text" /></p>
+
+<!--more-->
+
+
+<h2>[[Secondary - include keyword]]</h2>
+
+<p>[[BODY]]</p>
+
+<p>[[CLOSE-Summarize, end with question]]</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to Make a Pinterest Webservice]]></title>
@@ -696,6 +774,26 @@ blah - scope is not there</p>
 
 
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[BLOG TEMPLATE]]></title>
+    <link href="http://jaketrent.com/post/blog-template/"/>
+    <updated>2013-01-01T18:18:00-07:00</updated>
+    <id>http://jaketrent.com/post/blog-template</id>
+    <content type="html"><![CDATA[<p>[[INTRO - include keyword; start with question or story]]</p>
+
+<p><img src="http://i.imgur.com/M0kYA.jpg" alt="Alt Text" /></p>
+
+<!--more-->
+
+
+<h2>[[Secondary - include keyword]]</h2>
+
+<p>[[BODY]]</p>
+
+<p>[[CLOSE-Summarize, end with question]]</p>
 ]]></content>
   </entry>
   
@@ -1518,357 +1616,6 @@ blah - scope is not there</p>
 <p>We really only have these CSS preprocessors because CSS is too strict, flat, unflexible, and verbose for the amazing things being written for the web today.  Wouldn&#8217;t it be nice if these styling languages or some new, similar version of CSS was available natively in the browser?</p>
 
 <p>Meanwhile, we&#8217;ll use these tools.  What have you found your greatest challenge to be using a CSS preprocessor?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress vs. WordPress]]></title>
-    <link href="http://jaketrent.com/post/octopress-vs-wordpress/"/>
-    <updated>2012-11-12T16:42:00-07:00</updated>
-    <id>http://jaketrent.com/post/octopress-vs-wordpress</id>
-    <content type="html"><![CDATA[<p>Why would one choose Octopress over WordPress?  What are the pros and cons?  I&#8217;ve recently implemented a blog &#8211; this blog &#8211; in WordPress.  It was a difficult decision for me.  At the time, I looked at Octopress, but I was jazzed by the success of others on WordPress, and I wanted to try it out.  I&#8217;m glad that I did try it out, but now I&#8217;m glad that I&#8217;ve switched to Octopress.  Here&#8217;s why.</p>
-
-<p><img src="http://i.imgur.com/uACBn.jpg" alt="Octopress" /></p>
-
-<!--more-->
-
-
-<h2>Just Posts</h2>
-
-<p>Octopress is so dead simple, it just makes sense.  The post is a file in a folder.  I edit it in my current favorite MarkDown editor, <a href="http://mouapp.com/">Mou</a>.  The workflow is thus very easy.  I&#8217;m not transferring my post which I wrote offline to a web interface only available online.</p>
-
-<h2>Nerd Cred</h2>
-
-<p>Nerd cred or geek cred?  I don&#8217;t know, but Octopress bumps it right up.  As it says, it&#8217;s a &#8220;blogging framework for hackers&#8221;.  Given that I&#8217;m a creator of software and that&#8217;s the main topic of my blog, it seems fitting, doesn&#8217;t it.  Plenty of coders have WordPress sites, I suppose.  Still, I didn&#8217;t feel super awesome about running a WordPress PHP site as my home base.</p>
-
-<h2>Performance</h2>
-
-<p>The whole idea of a generated static site seems genius.  It&#8217;s blazing fast.  I&#8217;m on Heroku.  Currently, my site experiences very low volume traffic.  With one dyno, when the site goes without traffic for a certain amount of time, Heroku will power down the dyno.  WordPress takes a fair bit to come back up on the first request after that.  Octopress, no problem.  Pops back like it was never gone.  And why not?  There&#8217;s really nothing to spin up.</p>
-
-<h2>No Reinvention</h2>
-
-<p>I landed on Octopress for one of the same reasons I initially chose WordPress for this new blog.  It is a ready-made blogging platform.  I don&#8217;t need to reinvent the wheel.  It works, and it works well.</p>
-
-<h2>A Bit of Customization</h2>
-
-<p>I chose WordPress for the blog because I wanted to write blog posts, not tinker with the innards of the site.  (I do that plenty elsewhere.)  But it turns out that I couldn&#8217;t quite bare just using an out-of-the-box theme.  I literally needed to add my own flair and customizations.  I still want to keep that to a minimum.  Octopress&#8217; classic theme (the only one?) is fantastic &#8211; clean and crisp.  When I want to make a few changes, it&#8217;s a much more straight-forward task to find the place that needs editing and get it done.</p>
-
-<h2>Ruby</h2>
-
-<p>I&#8217;ve hardly done any Ruby.  Octopress is an easy little touch of Ruby.  I don&#8217;t have to mess with it unless I want to.  Ruby is much more appealing to me than PHP.</p>
-
-<h2>Plugin Pluses</h2>
-
-<p>When I chose WordPress, I figured that if there was any feature that I desired, there was probably already a plugin for it.  And that turned out to be true.  Octopress certainly <a href="https://github.com/imathis/octopress/wiki/3rd-party-plugins">has fewer options</a>.  But on the whole, I think they cater well to the coder crowd.</p>
-
-<h2>For Now</h2>
-
-<p>So, for now, I&#8217;m on Octopress.  It&#8217;s nice to think that my data is just a folder of files that I could really recreate anywhere.  So, we&#8217;ll see how long this lasts.  So far, it&#8217;s a blogging platform for this hacker, and I&#8217;m liking it.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Responsive Table with Scrolling]]></title>
-    <link href="http://jaketrent.com/post/responsive-table-with-scrolling/"/>
-    <updated>2012-11-07T17:06:00-07:00</updated>
-    <id>http://jaketrent.com/post/responsive-table-with-scrolling</id>
-    <content type="html"><![CDATA[<p>Sometimes a <code>table</code> element is the most semantic element one can use in markup.  It is true.  If you&#8217;re displaying tabular data, a <code>table</code> is a likely option.  If you&#8217;re on a responsive site, however, you&#8217;ll cringe at this option.  It turns out that tables aren&#8217;t very responsive web design-friendly.  One way to create a more responsive table is with scrolling.</p>
-
-<p><img src="http://i.imgur.com/GeuZe.png" alt="Responsive Table with Scrolling" /></p>
-
-<!--more-->
-
-
-<h2>Responsive Table Options</h2>
-
-<p>I love the article by Chris Coyier that describes <a href="http://css-tricks.com/responsive-data-tables/">responsive tables</a>.  Some of his ideas and those of the commenters on his post a great at thinking outside the box on what the options include for responsive tables:</p>
-
-<ol>
-<li>Orient the table vertically when there&#8217;s not enough room for all the columns.</li>
-<li>Replace tabular data with a graphic, such as a pie graph, that communicates the same gist.</li>
-<li>Replace the table with a link that opens a scrollable view large enough for the regular-sized table.</li>
-</ol>
-
-
-<p>My favorite option is the first.  But, in my case, it didn&#8217;t seem to work extremely well because I have two headers.  The example had column headers only.  I have row headers as well.  After a bit more looking, I ran across this <a href="http://www.zurb.com/playground/playground/responsive-tables/">Zurb scrolling table css and js example</a>.  The best solution, it seemed for now, was scrolling.  (My example code is based on the markup and styles of the Zurb code with a few things taken out and a few things added.)</p>
-
-<h2>Table Horizontal Scrolling</h2>
-
-<p>On the web, vertical scrolling is a part of the full meal deal.  So, the only thing to solve is the horizontal scrolling.  Normally, we don&#8217;t want content flowing off the right side of the screen when browsing.  So, we when there&#8217;s scrolling required, we&#8217;re going to do it within the table only and for the columns we want.</p>
-
-<h4>Divide table in two</h4>
-
-<p>We want some columns to scroll and others to remain pinned whilst scrolling.  We&#8217;ll duplicate the table in the markup and wrap each, a la:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;table-wrapper&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;pinned&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="c">&lt;!-- table here with pinned columns only--&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;scrollable&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="c">&lt;!-- table here with scrollable columns only--&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Line up the rows</h4>
-
-<p>Now we have two tables.  The flexibility we&#8217;ve given ourself is that we can make some columns stick and others scroll easily.  Our new challenge is keeping the row height lined up so the two tables look like one.</p>
-
-<p>Put the two tables next to each other with a float left and a float right.  Make the widths percentage-based as with any <a href="http://en.wikipedia.org/wiki/Responsive_web_design">rwd</a>.</p>
-
-<p>Now we have a few options to make our rows line up:</p>
-
-<ol>
-<li>Explicitly set all table cells to the same height</li>
-<li>Use JavaScript to make each cell in a row be the same height as the tallest cell in that row</li>
-<li>Put similar content in each cell on a row (eg, just text with the same attributes that will not wrap for longer text)</li>
-</ol>
-
-
-<p>Turns out that I will choose option 1 for the table cells (<code>td</code>) and option 3 for the table headers (<code>th</code>).</p>
-
-<p>This is my least favorite feature of this solution.  Anyone have a better idea on lining up the rows?</p>
-
-<h4>Set column width</h4>
-
-<p>I want some of my columns to have a set width.  Well, as <em>set</em> as anything is in rwd.  An html <code>table</code> will usually expand and contract columns across the table to give optimum spacing based on the content.</p>
-
-<p>I want to make my pinned table columns allow extra-long content, but I don&#8217;t want their widths to change at all.  A bit of StackOverflow love yielded this answer on why <code>overflow: hidden</code> doesn&#8217;t work when <a href="http://stackoverflow.com/a/7570613/118561">constraining table cell width</a>.</p>
-
-<p>In short, the solution is to wrap the content inside of the <code>td</code> with two <code>divs</code>:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;outer&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inner&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    Row 4 longer than lotr
-</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And sprinkle with a bit of stylesheet:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nt">td</span> <span class="nc">.outer</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nt">td</span> <span class="nc">.inner</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">white-space</span><span class="o">:</span> <span class="k">nowrap</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">width</span><span class="o">:</span> <span class="m">100</span><span class="o">%</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This style will let the column width remain and the content overflow.  It will also keep the cell text on one line, and it will be hidden as it flows off the right-hand side of the cell.  To wrap and hide as it flows off the bottom of the cell, remove the <code>white-space: nowrap</code> attribute.</p>
-
-<h2>Responsive Table with Scrolling</h2>
-
-<p>For the final result, check out the <a href="http://codepen.io/jaketrent/pen/CcboI">CodePen for the responsive table</a> below:</p>
-
-<pre class="codepen" data-height="400" data-type="result" data-href="CcboI" data-user="jaketrent"><code></code></pre>
-
-
-<script async src="http://codepen.io:/assets/embed/ei.js"></script>
-
-
-<p>What are your suggestions for making this better?  How have you solved the responsive table challenge?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Grunt and Testacular]]></title>
-    <link href="http://jaketrent.com/post/grunt-and-testacular/"/>
-    <updated>2012-11-06T17:05:00-07:00</updated>
-    <id>http://jaketrent.com/post/grunt-and-testacular</id>
-    <content type="html"><![CDATA[<p><a href="http://vojtajina.github.com/testacular/">Testacular</a> is a test runner for running browser tests.  Once you have it <a href="http://jaketrent.com/post/test-requirejs-testacular/">up and running</a>, you may want to integrate it with your <a href="http://gruntjs.com/">Grunt</a> build process.  This will allow Testacular to be started and your tests to be run from Grunt.</p>
-
-<p><img src="http://i.imgur.com/zze56.jpg" alt="Grunt and Testacular" /></p>
-
-<!--more-->
-
-
-<h2>grunt-testacular</h2>
-
-<p>Lucky for us, <a href="https://npmjs.org/package/grunt-testacular">Friedel Ziegelmayer</a> has created a nice little plugin, <a href="https://npmjs.org/package/grunt-testacular">grunt-testacular</a>.</p>
-
-<p>To install:</p>
-
-<pre><code>$ npm install grunt-testacular
-</code></pre>
-
-<p>Add the current version to your <code>package.json</code> for the future:</p>
-
-<pre><code>"grunt-testacular": "0.2.x"
-</code></pre>
-
-<p>Import the plugin in your <code>grunt.js</code> file:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-testacular&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And finally, in <code>grunt.js</code>, specify your tasks:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">testacularServer</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">unit</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>    <span class="nx">configFile</span><span class="o">:</span> <span class="s1">&#39;testacular.conf.js&#39;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">},</span>
-</span><span class='line'><span class="nx">testacularRun</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">unit</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">runnerPort</span><span class="o">:</span> <span class="mi">9100</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Two Tasks</h4>
-
-<p>Grunt-testacular provides two tasks:</p>
-
-<ol>
-<li>testacularServer - starts the Testacular server (equivalent to <code>testacular start</code>)</li>
-<li>testacularRun - runs your tests against an already-started server (equivalent to <code>testacular run</code>)</li>
-</ol>
-
-
-<h4>A grunt-testacular Oddity</h4>
-
-<p>If you don&#8217;t have <code>keepalive: true</code> set for grunt-testacular, the Testacular server will shutdown before it has a chance to capture browsers or run your tests.  I&#8217;m really not sure why this is even an option.  The false case behavior doesn&#8217;t seem to be useful.  With the <code>singleRun</code> ability of Testacular, the plugin should just call start on the server and let the server configuration decide when it&#8217;s appropriate to shut down.</p>
-
-<p><strong>Update:</strong>
-I logged an <a href="https://github.com/Dignifiedquire/grunt-testacular/issues/3#issuecomment-10234529">issue for grunt-testacular</a> that Grunt tasks listed after <code>testacularServer</code> weren&#8217;t being run.  Friedal responded that <code>keepalive: true</code> was the problem.  If it is specified true, then it has to be the last task in the list.  So, if you have tasks after <code>testacularServer</code> specified, remove <code>keepalive: true</code> and add <code>watch</code> to the end of your task list.</p>
-
-<h2>Grunt and Testacular Work Flow</h2>
-
-<p>Of course, your work flow is up to you, and Grunt and Testacular give you enough flexibility to decide your own, but I think you&#8217;ll run your tests in two main scenarios: development and continuous integration.</p>
-
-<h4>Development</h4>
-
-<p>For development, I like to start up the Testacular server and keep it running.  Then, I go write tests and update source code.  Testacular will notice my changes and automatically re-run my tests.</p>
-
-<p>To set this up, make sure your grunt-testacular task has this option:</p>
-
-<pre><code>keepalive: true
-</code></pre>
-
-<p>This will keep the server up even after the tests have completed.</p>
-
-<p>And make sure your <code>testacular.conf.js</code> file includes:</p>
-
-<pre><code>autoWatch = true;
-</code></pre>
-
-<p>This will force Testacular to re-run your tests if anything in your source or tests change (specifically, if anything in testacular.conf.js&#8217;s <code>files</code> array changes).</p>
-
-<h4>Continuous Integration</h4>
-
-<p>For continuous integration, you just want your automated build to be able to verify the source code integrity prior to deploying.</p>
-
-<p>We don&#8217;t want tests to re-run automatically based on our changes, so we turn off <code>autoWatch</code> in <code>testacular.conf.js</code>:</p>
-
-<pre><code>autoWatch = false;
-</code></pre>
-
-<p>And we set one more value in <code>testacular.conf.js</code> to:</p>
-
-<pre><code>singleRun = true;
-</code></pre>
-
-<p>This will allow the <code>testacularServer</code> task to be run once, have Testacular run all the tests, and then make the server shut down.</p>
-
-<p>Finally, remember to keep <code>keepalive: true</code> set in <code>grunt.js</code>.  Odd, right?</p>
-
-<h2>Multiple Testacular Configurations</h2>
-
-<p>To manage the options that are distinct to these two work flows, one could just create two separate <code>testacular.conf.js</code> files.  But, that would be overkill, because there&#8217;d be a lot of overlap between the two files.</p>
-
-<p>Instead, the grunt-testacular plugin gives you override ability on a per-variable basis.  To support the development and integration scenario, the grunt multiTask might look like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">testacularServer</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">unit</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>    <span class="nx">configFile</span><span class="o">:</span> <span class="s1">&#39;testacular.conf.js&#39;</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="nx">integration</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>    <span class="nx">configFile</span><span class="o">:</span> <span class="s1">&#39;testacular.conf.js&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">autoWatch</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">singleRun</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Following this same pattern, you could create a separate config for automated functional or end-to-end tests as well.</p>
-
-<p>Note that the <code>options</code> object is strictly for the plugin.  The other variables at that level feed straight into Testacular as overrides.</p>
-
-<h2>Integrated Testing</h2>
-
-<p>Process and product maturity are increased as tests are integrated into the build process.  Grunt and Testacular make integrating your browser tests a snap.</p>
 ]]></content>
   </entry>
   
