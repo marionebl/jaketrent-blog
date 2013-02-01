@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Topics - Jake Trent</title>
+  <title>Run a Pow Server on a VM - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="I was inspired by Michael Hyatt&#8217;s book, Platform, to start writing this blog. As he suggested, I just started writing. But also as he suggested &hellip;">
-  
+  <meta name="description" content="Pow creates an easy way to run Rails server locally. Running them on a Windows VM is just as easy.">
+  <meta name="keywords" content="pow, vm, rails, windows, virtualbox, powder, ruby">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/blog-topics/">
+  <link rel="canonical" href="http://jaketrent.com/post/run-pow-server-on-vm/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Blog Topics</h1>
+      <h1 class="entry-title">Run a Pow Server on a VM</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2012-10-22T17:01:00-06:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2012</time>
+<time datetime="2013-01-31T16:14:00-07:00" pubdate data-updated="true">Jan 31<span>st</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,39 +108,78 @@
   </header>
 
 
-<div class="entry-content"><p>I was inspired by <a href="http://jaketrent.com/post/platform-book-review/">Michael Hyatt&#8217;s book, Platform,</a> to start writing this blog.  As he suggested, I just started writing.  But also as he suggested, I&#8217;ve been percolating over what my blog topics will be.  I&#8217;ve just been writing for several weeks.  I&#8217;ve finally settled in on a number of categories that will help me focus a bit.  But each are plenty broad to be able to write on most any and all things related to software.</p>
+<div class="entry-content"><p>It&#8217;s really pretty cool how easy <a href="http://pow.cx/">Pow</a> makes running a Rails server.  <a href="https://github.com/rodreegez/powder">Powder</a> makes it even easier.  Here&#8217;s how to run your Rails server via Pow on a VM in order to test IE.</p>
 
-<p><img src="http://farm1.staticflickr.com/1/2612308_456907e315_z.jpg" alt="Categories" />
-http://flic.kr/p/eoxN</p>
+<p><img src="http://i.imgur.com/XdExdtS.jpg" alt="Pow Server" /></p>
 
 <!--more-->
 
 
-<h2><a href="http://jaketrent.com/post/category/code/">Code</a></h2>
+<h2>Install Pow</h2>
 
-<p>I&#8217;m a coder.  This is probably my favorite category.  This is what I wake up in the morning and do.  Posts in this category will be heavy on the code snippets.  They will sometimes link to demos.  These will be the most technical of the posts</p>
+<p>Get your Ruby environment otherwise setup for Rails dev. Then install <a href="http://pow.cx/">Pow</a>.  It&#8217;s a nice little utility created by the folks at 37 Signals.  They have a short little install script you can run, as <a href="http://pow.cx/">referenced on the Pow site</a>.  Or, you can use a utility created to make it <em>even easier</em> &#8211; <a href="https://github.com/rodreegez/powder">powder</a>.</p>
 
-<h2><a href="http://jaketrent.com/post/category/software-design/">Design</a></h2>
+<p>To install, you&#8217;ll need <a href="http://rubygems.org">Rubygems</a> installed, and run:</p>
 
-<p>I have a desire to use and expand my design skills.  I&#8217;ll probably never commit enough time to really be a fantastic designer like many that I know, but here I&#8217;ll post my own feeble designs and talk about all things having to do with look and feel and user experience.</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gem install powder</span></code></pre></td></tr></table></div></figure>
 
-<h2><a href="http://jaketrent.com/post/category/productivity/">Productivity</a></h2>
 
-<p>Software is such a malleable medium.  It is an art in many ways.  Thus there are many ways to make it happen.  Some methods work better for others.  Some processes improve upon those of the past.  Some ways are better than others to make a team work well.  Ideas similar to these will be posted here.</p>
+<p>Then link your project to Pow via the command:</p>
 
-<h2><a href="http://jaketrent.com/post/category/reviews/">Reviews</a></h2>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ cd &lt;my_proj_dir&gt;
+</span><span class='line'>$ powder link</span></code></pre></td></tr></table></div></figure>
 
-<p>The world of software and technology is rich with resources and activity.  With so much to choose from, sometimes its helpful to have a suggestion or two on where to (or not to) focus some time and energy.  Software, books, and conferences are subjects we&#8217;ve seen so far.  The reviews are worth the price of admission.  Get them here.</p>
 
-<h2><a href="http://jaketrent.com/post/category/announcement/">Announcements</a></h2>
+<p>Make sure Pow is running:</p>
 
-<p>Public service announcements will include things about me or the blog in particular that are informational but not to any end.  This post fits in this category.  Where a full review is not offered, tidbits about the software world in general might fit here.</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ powder up</span></code></pre></td></tr></table></div></figure>
 
-<h2>Blog Topics</h2>
 
-<p>It turns out that it&#8217;s somewhat hard to choose topics to write about on one&#8217;s blog.  At least it is for me.  The tech world is changing quickly.  I&#8217;m one that likes to change it and and change with it.  So, these topics may evolve.  They seem broad enough to continue to be applicable.</p>
+<p>And access your Pow-powered site by going to your project&#8217;s address in your browser:</p>
 
-<p>If you were to choose my next post, which category would it fit into?</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>http://&lt;my_project_dir&gt;.dev</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are other options in the <code>powder link</code> step.  For instance, if you want to access your site through an http address different than <code>&lt;my_proj_dir&gt;</code> you can specify that.</p>
+
+<h2>Install your VM</h2>
+
+<p>There are a few different VM options.  My favorite is <a href="http://virtualbox.org">VirtualBox</a>.  It does hurt a bit seeing the &#8220;Oracle&#8221; moniker on it, but I&#8217;ve found it to be as responsive as a VM can be and generally stable.</p>
+
+<h2>Install Internet Explorer</h2>
+
+<p>There really wasn&#8217;t another reason that you wanted a Windows VM was there?</p>
+
+<p>I&#8217;ve had good success with  the project <a href="https://github.com/xdissent/ievms">xdissent/ievms</a>.  To download the IE-ready images, the README invites us to run this script in our shell:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl -s https://raw.github.com/xdissent/ievms/master/ievms.sh | bash</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It will download multiple parts of several Windows/IE VM images into <code>~/.ievms</code> and install them so they&#8217;re ready to roll with VirtualBox.  Run this way, images for Internet Explorer 6, 7, 8, and 9 are all downloaded.  If you wanted to just download IE 9, you could run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl -s https://raw.github.com/xdissent/ievms/master/ievms.sh | IEVMS_VERSIONS="9" bash</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Either way, this download takes quite a while to complete, but the shell script that&#8217;s running it takes pretty good care of you, restarting on the last incomplete download part.</p>
+
+<h2>Access Pow via VirtualBox</h2>
+
+<p>Accessing Pow in the VM isn&#8217;t bad at all.  Pow makes use of <a href="http://xip.io">xip.io</a>, which provides a wildcard DNS entry used by Pow and thus your app.</p>
+
+<p>For the next step, take note of your IP by running <code>ifconfig</code>.  Then from IE inside of VirtualBox, point your browser at:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>http://&lt;my_proj_dir&gt;.&lt;my_ip&gt;:xip.io</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And you should see your project running in the VM just as you do from your better, native OS.  Pow!</p>
 </div>
 
 
@@ -163,12 +202,12 @@ http://flic.kr/p/eoxN</p>
   
 
 
-<time datetime="2012-10-22T17:01:00-06:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2012</time>
+<time datetime="2013-01-31T16:14:00-07:00" pubdate data-updated="true">Jan 31<span>st</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/announcement/'>Announcement</a>, <a class='category' href='/blog/categories/blog/'>blog</a>
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
   
 </span>
 
@@ -177,7 +216,7 @@ http://flic.kr/p/eoxN</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/blog-topics/" data-via="" data-counturl="http://jaketrent.com/post/blog-topics/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/run-pow-server-on-vm/" data-via="" data-counturl="http://jaketrent.com/post/run-pow-server-on-vm/" >Tweet</a>
   
   
   
@@ -186,10 +225,8 @@ http://flic.kr/p/eoxN</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/agile-designers/" title="Previous Post: Agile Designers">&laquo; Agile Designers</a>
+        <a class="basic-alignment left" href="/post/smashing-node-review/" title="Previous Post: Smashing Node Review">&laquo; Smashing Node Review</a>
       
-      
-        <a class="basic-alignment right" href="/post/gruntjs-access-to-package-dot-json/" title="Next Post: GruntJs Access to package.json">GruntJs Access to package.json &raquo;</a>
       
     </p>
   </footer>
@@ -278,8 +315,8 @@ http://flic.kr/p/eoxN</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/blog-topics/';
-        var disqus_url = 'http://jaketrent.com/post/blog-topics/';
+        var disqus_identifier = 'http://jaketrent.com/post/run-pow-server-on-vm/';
+        var disqus_url = 'http://jaketrent.com/post/run-pow-server-on-vm/';
         var disqus_script = 'embed.js';
       
     (function () {

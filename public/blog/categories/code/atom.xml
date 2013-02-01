@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-01-29T20:34:53-07:00</updated>
+  <updated>2013-01-31T21:37:36-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,85 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Run a Pow Server on a VM]]></title>
+    <link href="http://jaketrent.com/post/run-pow-server-on-vm/"/>
+    <updated>2013-01-31T16:14:00-07:00</updated>
+    <id>http://jaketrent.com/post/run-pow-server-on-vm</id>
+    <content type="html"><![CDATA[<p>It's really pretty cool how easy <a href="http://pow.cx/">Pow</a> makes running a Rails server.  <a href="https://github.com/rodreegez/powder">Powder</a> makes it even easier.  Here's how to run your Rails server via Pow on a VM in order to test IE.</p>
+
+<p><img src="http://i.imgur.com/XdExdtS.jpg" alt="Pow Server" /></p>
+
+<!--more-->
+
+
+<h2>Install Pow</h2>
+
+<p>Get your Ruby environment otherwise setup for Rails dev. Then install <a href="http://pow.cx/">Pow</a>.  It's a nice little utility created by the folks at 37 Signals.  They have a short little install script you can run, as <a href="http://pow.cx/">referenced on the Pow site</a>.  Or, you can use a utility created to make it <em>even easier</em> -- <a href="https://github.com/rodreegez/powder">powder</a>.</p>
+
+<p>To install, you'll need <a href="http://rubygems.org">Rubygems</a> installed, and run:</p>
+
+<p><code>
+$ gem install powder
+</code></p>
+
+<p>Then link your project to Pow via the command:</p>
+
+<p><code>
+$ cd &lt;my_proj_dir&gt;
+$ powder link
+</code></p>
+
+<p>Make sure Pow is running:</p>
+
+<p><code>
+$ powder up
+</code></p>
+
+<p>And access your Pow-powered site by going to your project's address in your browser:</p>
+
+<p><code>
+http://&lt;my_project_dir&gt;.dev
+</code></p>
+
+<p>There are other options in the <code>powder link</code> step.  For instance, if you want to access your site through an http address different than <code>&lt;my_proj_dir&gt;</code> you can specify that.</p>
+
+<h2>Install your VM</h2>
+
+<p>There are a few different VM options.  My favorite is <a href="http://virtualbox.org">VirtualBox</a>.  It does hurt a bit seeing the "Oracle" moniker on it, but I've found it to be as responsive as a VM can be and generally stable.</p>
+
+<h2>Install Internet Explorer</h2>
+
+<p>There really wasn't another reason that you wanted a Windows VM was there?</p>
+
+<p>I've had good success with  the project <a href="https://github.com/xdissent/ievms">xdissent/ievms</a>.  To download the IE-ready images, the README invites us to run this script in our shell:</p>
+
+<p><code>
+curl -s https://raw.github.com/xdissent/ievms/master/ievms.sh | bash
+</code></p>
+
+<p>It will download multiple parts of several Windows/IE VM images into <code>~/.ievms</code> and install them so they're ready to roll with VirtualBox.  Run this way, images for Internet Explorer 6, 7, 8, and 9 are all downloaded.  If you wanted to just download IE 9, you could run:</p>
+
+<p><code>
+curl -s https://raw.github.com/xdissent/ievms/master/ievms.sh | IEVMS_VERSIONS="9" bash
+</code></p>
+
+<p>Either way, this download takes quite a while to complete, but the shell script that's running it takes pretty good care of you, restarting on the last incomplete download part.</p>
+
+<h2>Access Pow via VirtualBox</h2>
+
+<p>Accessing Pow in the VM isn't bad at all.  Pow makes use of <a href="http://xip.io">xip.io</a>, which provides a wildcard DNS entry used by Pow and thus your app.</p>
+
+<p>For the next step, take note of your IP by running <code>ifconfig</code>.  Then from IE inside of VirtualBox, point your browser at:</p>
+
+<p><code>
+http://&lt;my_proj_dir&gt;.&lt;my_ip&gt;:xip.io
+</code></p>
+
+<p>And you should see your project running in the VM just as you do from your better, native OS.  Pow!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to Make a Pinterest Webservice]]></title>
@@ -528,139 +607,6 @@ $ mocha --grep login-*.js
 <p>In the future, perhaps there will be a more expressive way to do this that's worked into the supertest API.  For now, this strategy is the best I've found.  It's based on the method I originally found in <a href="https://github.com/visionmedia/supertest/issues/46#issuecomment-11679706">visionmedia/supertest#46</a>.</p>
 
 <p>Is there a better way that you've found to do this kind of authenticated test?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mocha Testing AngularJs Dependency Injection]]></title>
-    <link href="http://jaketrent.com/post/mocha-testing-angularjs-dependency-injection/"/>
-    <updated>2013-01-02T16:48:00-07:00</updated>
-    <id>http://jaketrent.com/post/mocha-testing-angularjs-dependency-injection</id>
-    <content type="html"><![CDATA[<p>When you test your AngularJs code, you need to explicitly inject the services that your controllers and modules require.  It has its own special syntax.  It requires mocking.  You'll see a slightly different syntax than you may have expected.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs" /></p>
-
-<!--more-->
-
-
-<h2>The Solution: Mocking AngularJs Injections</h2>
-
-<p>Angular is simple and quick on many things.  On some things, it's not as simple as we are be led to believe from simple examples.  From the <a href="http://docs.angularjs.org/tutorial/step_05">Angular tutorial</a>:</p>
-
-<blockquote><p>Because we started using dependency injection and our controller has dependencies, constructing the controller in our tests is a bit more complicated.</p></blockquote>
-
-<p>And really, who doesn't use dependency injection in any of their Angular code?  But don't worry, it's not much worse.  And really, it makes sense that things would be this way.</p>
-
-<p>The final Mocha code to test our simple controller should look something like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">assert</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">expect</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">expect</span><span class="p">,</span>
-</span><span class='line'><span class="nx">should</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">should</span><span class="p">();</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be available&#39;</span><span class="p">,</span> <span class="nx">inject</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$rootScope</span><span class="p">,</span> <span class="nx">$controller</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">scope</span> <span class="o">=</span> <span class="nx">$rootScope</span><span class="p">.</span><span class="nx">$new</span><span class="p">();</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">ctrl</span> <span class="o">=</span> <span class="nx">$controller</span><span class="p">(</span><span class="nx">MyController</span><span class="p">,</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="o">:</span> <span class="nx">scope</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">expect</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">undefined</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}));</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>A couple of points:</p>
-
-<ul>
-<li><a href="http://"><code>chai</code> is an assertion library</a> that makes a great bdd/should-style assertion available in browser tests.</li>
-<li><code>inject()</code> is made available through the <a href="http://"><code>angular-mocks.js</code> file</a>.  This is available automagically in Jasmine, but in Mocha, you have to include this extra file to get the function.</li>
-<li><code>$rootScope</code> is a scope available to all controllers, so it's not dependent on <code>ng-controller</code> references which are in your src, but not your test environment.  From this scope, we create a new scope.</li>
-<li>Initializing <code>MyController</code> with the <code>$controller</code> function allows us to mock the value of <code>$scope</code> in the controller.</li>
-</ul>
-
-
-<h2>Potential Errors</h2>
-
-<p>If you look at the solution above, it should give you the working test of DI that you want.  Here are a few things I worked through when testing my Angular controller...</p>
-
-<h4>TypeError: 'undefined' is not an object</h4>
-
-<p>My controller looked somewhat like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">MyController</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">$on</span><span class="p">(</span><span class="s1">&#39;$viewContentLoaded&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="c1">// ... stuff when dom in the controller is ready</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>And this was the start of my test:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be available&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">ctrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyController</span><span class="p">();</span>
-</span><span class='line'><span class="c1">// ... assertions</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Ths <code>$scope.$on()</code> line couldn't run because <code>$scope</code> was simply not injected and undefined.
-blah - scope is not there</p>
-
-<h4>ReferenceError: Can't find variable: expect</h4>
-
-<p>In Mocha, you'll need to import an assertion library of your choice.  Otherwise, <code>expect()</code> and other assertions will not be available to use.  I prefer Chai for its should-style assertions.  They read as a sentence really well:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">expect</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">undefined</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   
