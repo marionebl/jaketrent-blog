@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-01-31T21:37:36-07:00</updated>
+  <updated>2013-02-01T09:17:18-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -83,10 +83,10 @@
 
 <p>Accessing Pow in the VM isn&#8217;t bad at all.  Pow makes use of <a href="http://xip.io">xip.io</a>, which provides a wildcard DNS entry used by Pow and thus your app.</p>
 
-<p>For the next step, take note of your IP by running <code>ifconfig</code>.  Then from IE inside of VirtualBox, point your browser at:</p>
+<p>For the <a href="http://pow.cx/manual.html#section_2.1.5">next step</a>, take note of your IP by running <code>ifconfig</code>.  Then from IE inside of VirtualBox, point your browser at:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>http://&lt;my_proj_dir&gt;.&lt;my_ip&gt;:xip.io</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>http://&lt;my_proj_dir&gt;.&lt;my_ip&gt;.xip.io</span></code></pre></td></tr></table></div></figure>
 
 
 <p>And you should see your project running in the VM just as you do from your better, native OS.  Pow!</p>
@@ -834,26 +834,6 @@ blah - scope is not there</p>
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[BLOG TEMPLATE]]></title>
-    <link href="http://jaketrent.com/post/blog-template/"/>
-    <updated>2013-01-01T18:18:00-07:00</updated>
-    <id>http://jaketrent.com/post/blog-template</id>
-    <content type="html"><![CDATA[<p>[[INTRO - include keyword; start with question or story]]</p>
-
-<p><img src="http://i.imgur.com/M0kYA.jpg" alt="Alt Text" /></p>
-
-<!--more-->
-
-
-<h2>[[Secondary - include keyword]]</h2>
-
-<p>[[BODY]]</p>
-
-<p>[[CLOSE-Summarize, end with question]]</p>
 ]]></content>
   </entry>
   
@@ -1676,6 +1656,52 @@ blah - scope is not there</p>
 <p>We really only have these CSS preprocessors because CSS is too strict, flat, unflexible, and verbose for the amazing things being written for the web today.  Wouldn&#8217;t it be nice if these styling languages or some new, similar version of CSS was available natively in the browser?</p>
 
 <p>Meanwhile, we&#8217;ll use these tools.  What have you found your greatest challenge to be using a CSS preprocessor?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress vs. WordPress]]></title>
+    <link href="http://jaketrent.com/post/octopress-vs-wordpress/"/>
+    <updated>2012-11-12T16:42:00-07:00</updated>
+    <id>http://jaketrent.com/post/octopress-vs-wordpress</id>
+    <content type="html"><![CDATA[<p>Why would one choose Octopress over WordPress?  What are the pros and cons?  I&#8217;ve recently implemented a blog &#8211; this blog &#8211; in WordPress.  It was a difficult decision for me.  At the time, I looked at Octopress, but I was jazzed by the success of others on WordPress, and I wanted to try it out.  I&#8217;m glad that I did try it out, but now I&#8217;m glad that I&#8217;ve switched to Octopress.  Here&#8217;s why.</p>
+
+<p><img src="http://i.imgur.com/uACBn.jpg" alt="Octopress" /></p>
+
+<!--more-->
+
+
+<h2>Just Posts</h2>
+
+<p>Octopress is so dead simple, it just makes sense.  The post is a file in a folder.  I edit it in my current favorite MarkDown editor, <a href="http://mouapp.com/">Mou</a>.  The workflow is thus very easy.  I&#8217;m not transferring my post which I wrote offline to a web interface only available online.</p>
+
+<h2>Nerd Cred</h2>
+
+<p>Nerd cred or geek cred?  I don&#8217;t know, but Octopress bumps it right up.  As it says, it&#8217;s a &#8220;blogging framework for hackers&#8221;.  Given that I&#8217;m a creator of software and that&#8217;s the main topic of my blog, it seems fitting, doesn&#8217;t it.  Plenty of coders have WordPress sites, I suppose.  Still, I didn&#8217;t feel super awesome about running a WordPress PHP site as my home base.</p>
+
+<h2>Performance</h2>
+
+<p>The whole idea of a generated static site seems genius.  It&#8217;s blazing fast.  I&#8217;m on Heroku.  Currently, my site experiences very low volume traffic.  With one dyno, when the site goes without traffic for a certain amount of time, Heroku will power down the dyno.  WordPress takes a fair bit to come back up on the first request after that.  Octopress, no problem.  Pops back like it was never gone.  And why not?  There&#8217;s really nothing to spin up.</p>
+
+<h2>No Reinvention</h2>
+
+<p>I landed on Octopress for one of the same reasons I initially chose WordPress for this new blog.  It is a ready-made blogging platform.  I don&#8217;t need to reinvent the wheel.  It works, and it works well.</p>
+
+<h2>A Bit of Customization</h2>
+
+<p>I chose WordPress for the blog because I wanted to write blog posts, not tinker with the innards of the site.  (I do that plenty elsewhere.)  But it turns out that I couldn&#8217;t quite bare just using an out-of-the-box theme.  I literally needed to add my own flair and customizations.  I still want to keep that to a minimum.  Octopress&#8217; classic theme (the only one?) is fantastic &#8211; clean and crisp.  When I want to make a few changes, it&#8217;s a much more straight-forward task to find the place that needs editing and get it done.</p>
+
+<h2>Ruby</h2>
+
+<p>I&#8217;ve hardly done any Ruby.  Octopress is an easy little touch of Ruby.  I don&#8217;t have to mess with it unless I want to.  Ruby is much more appealing to me than PHP.</p>
+
+<h2>Plugin Pluses</h2>
+
+<p>When I chose WordPress, I figured that if there was any feature that I desired, there was probably already a plugin for it.  And that turned out to be true.  Octopress certainly <a href="https://github.com/imathis/octopress/wiki/3rd-party-plugins">has fewer options</a>.  But on the whole, I think they cater well to the coder crowd.</p>
+
+<h2>For Now</h2>
+
+<p>So, for now, I&#8217;m on Octopress.  It&#8217;s nice to think that my data is just a folder of files that I could really recreate anywhere.  So, we&#8217;ll see how long this lasts.  So far, it&#8217;s a blogging platform for this hacker, and I&#8217;m liking it.</p>
 ]]></content>
   </entry>
   

@@ -72,10 +72,10 @@ Either way, this download takes quite a while to complete, but the shell script 
 
 Accessing Pow in the VM isn't bad at all.  Pow makes use of [xip.io](http://xip.io), which provides a wildcard DNS entry used by Pow and thus your app.  
 
-For the next step, take note of your IP by running `ifconfig`.  Then from IE inside of VirtualBox, point your browser at:
+For the [next step](http://pow.cx/manual.html#section_2.1.5), take note of your IP by running `ifconfig`.  Then from IE inside of VirtualBox, point your browser at:
 
 ```
-http://<my_proj_dir>.<my_ip>:xip.io
+http://<my_proj_dir>.<my_ip>.xip.io
 ```
 
 And you should see your project running in the VM just as you do from your better, native OS.  Pow!

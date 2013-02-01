@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-01-31T21:37:36-07:00</updated>
+  <updated>2013-02-01T09:17:18-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -82,10 +82,10 @@ curl -s https://raw.github.com/xdissent/ievms/master/ievms.sh | IEVMS_VERSIONS="
 
 <p>Accessing Pow in the VM isn't bad at all.  Pow makes use of <a href="http://xip.io">xip.io</a>, which provides a wildcard DNS entry used by Pow and thus your app.</p>
 
-<p>For the next step, take note of your IP by running <code>ifconfig</code>.  Then from IE inside of VirtualBox, point your browser at:</p>
+<p>For the <a href="http://pow.cx/manual.html#section_2.1.5">next step</a>, take note of your IP by running <code>ifconfig</code>.  Then from IE inside of VirtualBox, point your browser at:</p>
 
 <p><code>
-http://&lt;my_proj_dir&gt;.&lt;my_ip&gt;:xip.io
+http://&lt;my_proj_dir&gt;.&lt;my_ip&gt;.xip.io
 </code></p>
 
 <p>And you should see your project running in the VM just as you do from your better, native OS.  Pow!</p>
