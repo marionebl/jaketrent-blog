@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Run a Single Mocha Test - Jake Trent</title>
+  <title>Rename Files in Rails Asset Pipeline - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="If you have a whole suite of Mocha tests, sometimes you don't want to run all of them. Here's how to run a subset of Mocha tests.">
-  <meta name="keywords" content="js, javascript, mocha, subset, run subset, run one">
+  <meta name="description" content="Rails' asset pipeline provides a powerful mechanism for preparing your static assets for the web. There are defaults. Learn how to change them.">
+  <meta name="keywords" content="asset pipeline, precompile, rails, ruby, default name, application.js, application.css">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/run-single-mocha-test/">
+  <link rel="canonical" href="http://jaketrent.com/post/rename-files-in-asset-pipeline/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Run a Single Mocha Test</h1>
+      <h1 class="entry-title">Rename Files in Rails Asset Pipeline</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2013-01-16T07:07:00-07:00" pubdate data-updated="true">Jan 16<span>th</span>, 2013</time>
+<time datetime="2013-02-06T07:06:00-07:00" pubdate data-updated="true">Feb 6<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,78 +108,83 @@
   </header>
 
 
-<div class="entry-content"><p>When working inside your test suite, it&#8217;s often the case that you don&#8217;t want to run all of your tests.  Mocha has a great mechanism that allows you to easily specify what exactly you want run.  This can help make your processes such as TDD faster and more focused.</p>
+<div class="entry-content"><p>Rails provides a powerful mechanism for preparing your site&#8217;s static assets for the web.  It&#8217;s called the asset pipeline.  True to Rails, it has sensible defaults.  Also true to form, it&#8217;s not immediately clear what&#8217;s required to change from the defaults.</p>
 
-<p><img src="http://i.imgur.com/hbcnU.png" alt="Mocha" /></p>
+<p><img src="http://i.imgur.com/HPJDXPB.jpg" alt="Asset Pipeline" /></p>
 
 <!--more-->
 
 
-<h2>Run a Single Test File</h2>
+<h2>Multiple Compilers</h2>
 
-<p>Using the mocha cli, you can easily specify an exact or wildcarded pattern that you want to run.  This is accomplished with the <code>grep</code> option when running the <code>mocha</code> command.</p>
-
-<p>If you wanted to run only the login-failure.js suite, the command would look like:</p>
+<p>The asset pipeline has the ability to pass your static assets through multiple compilers.  Thus, they seem much less static than they might be.  The compilers used are determined by the file extension.  For instance, this file:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ mocha --grep login-failiure.js</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>myscripts.js.coffee.erb</span></code></pre></td></tr></table></div></figure>
 
 
-<p>If you happen to have multiple suites that match a filename pattern that you wanted to run, exclusive to all others, you would run:</p>
+<p>Will go through the Erb compiler first, then the Coffeescript compiler, then finally will output pure JavaScript.</p>
+
+<p>Changing these files are no problem.  Want a new compiler?  Slap on a new file extension.  Don&#8217;t need one?  Remove it.</p>
+
+<h2>Manifest File</h2>
+
+<p>Manifest files are full of Sprocket directives.  Sprockets will use these files to combine and minify your css and js.  A manifest will look something like this:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ mocha --grep login-*.js</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Run a Single Spec</h2>
-
-<p>Often we&#8217;re in the test code making changes, and it&#8217;s easy to make adjustments to what subset of tests you run from here as well.  If I want to run a single <code>describe()</code> function, I can add a <code>.only()</code> to the function call, like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// these tests will be skipped</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">describe</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// these tests will run </span>
-</span><span class='line'><span class="p">});</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//= require vendor/jquery
+</span><span class='line'>//= require vendor/angular.min
+</span><span class='line'>//= require vendor/angular-cookies</span></code></pre></td></tr></table></div></figure>
+
+
+<p>These directives identify what files will eventually be combined, replacing the contents of your manifest file in the final output.</p>
+
+<p>If you change the name of scripts or stylesheets, you need to ensure that your manifest file is changed to match.  Otherwise, asset precompilation will fail.</p>
+
+<p>By default the manifest filenames are these:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>app/assets/javascripts/application.js
+</span><span class='line'>app/assets/stylesheets/application.css</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Changing Manifest Filenames</h2>
+
+<p>Changing the manifest default filenames will require some tweaking.</p>
+
+<p>For instance, if I change application.js to be split into two separate manifest files, <code>scripts-foot.js</code> and <code>scripts-head.js</code>, the next time I run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake assets:precompile</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It will succceed, and everything will look like it&#8217;s just fine.  But when I go to run the app, it will give my an error like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ActionView::Template::Error (scripts-head.js isn't precompiled):
+</span><span class='line'>
+</span><span class='line'>2013-02-04T16:24:05+00:00 app[web.1]: app/views/layouts/application.html.erb:14:in `_app_views_layouts_application_html_erb__3761578772688930207_28706600'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When you switch from the default manifest files or when you reference a static asset like a js or css directly from your view, you&#8217;ll need to mark it as explicitly requiring precompilation.</p>
+
+<p>This is done in an environment file, such as <code>config/environments/production.rb</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)</span>
+</span><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">precompile</span> <span class="o">+=</span> <span class="sx">%w( scripts-foot.js scripts-head.js )</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>You can stick the <code>.only()</code> on any <code>describe</code>, no matter if it&#8217;s first or last in the list of specs.</p>
+<p>It&#8217;s that easy.  It&#8217;s too bad you have to wait until the app runs to discover this is a problem.  But now you&#8217;re ready.</p>
 
-<h2>Run a Single Test</h2>
-
-<p>Just as you can with <code>describe</code>, the tests can be specified to exclusively run if you attach <code>.only()</code> to the function call.</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">it</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// this test will run</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">it</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// this test will be skipped</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Note!</strong> that by putting the <code>.only()</code> on a test, all other functions in the spec are skipped.  This means that your <code>before</code>, <code>beforeEach</code>, <code>after</code>, and <code>afterEach</code> functions are <em>not</em> called.  Sometimes it&#8217;s hard to remember when that matters, so I usually end up running single specs instead of single tests.</p>
-
-<h2>Skip Something</h2>
-
-<p>If you want to run all the specs/tests that you have minus some subset, effectively commenting out these tests, you can add <code>.skip()</code> to either <code>describe</code> or <code>it</code> function calls.</p>
-
-<h2>Remember to Remove</h2>
-
-<p>With the additions of the <code>.only()</code> or <code>.skip()</code> you are altering the actual code of your tests.  This is great for your local development process.  You&#8217;ll need to be careful that you don&#8217;t commit this change &#8211; at least you usually won&#8217;t want to.  Otherwise, you CI process will be running a subset of your tests, just as you are locally, which is no bueno.</p>
+<p>Now if we could only customize the directory structure under <code>app/assets</code>.  I would much rather use the path <code>js/</code> instead of <code>javascripts/</code>.  Does anyone know how?</p>
 </div>
 
 
@@ -202,12 +207,12 @@
   
 
 
-<time datetime="2013-01-16T07:07:00-07:00" pubdate data-updated="true">Jan 16<span>th</span>, 2013</time>
+<time datetime="2013-02-06T07:06:00-07:00" pubdate data-updated="true">Feb 6<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/mocha/'>mocha</a>
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
   
 </span>
 
@@ -216,7 +221,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/run-single-mocha-test/" data-via="" data-counturl="http://jaketrent.com/post/run-single-mocha-test/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/rename-files-in-asset-pipeline/" data-via="" data-counturl="http://jaketrent.com/post/rename-files-in-asset-pipeline/" >Tweet</a>
   
   
   
@@ -225,10 +230,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/authenticated-supertest-tests/" title="Previous Post: Authenticated Supertest Tests">&laquo; Authenticated Supertest Tests</a>
+        <a class="basic-alignment left" href="/post/run-pow-server-on-vm/" title="Previous Post: Run a Pow Server on a VM">&laquo; Run a Pow Server on a VM</a>
       
-      
-        <a class="basic-alignment right" href="/post/naming-anonymous-javascript-functions/" title="Next Post: Naming Anonymous JavaScript Functions">Naming Anonymous JavaScript Functions &raquo;</a>
       
     </p>
   </footer>
@@ -317,8 +320,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/run-single-mocha-test/';
-        var disqus_url = 'http://jaketrent.com/post/run-single-mocha-test/';
+        var disqus_identifier = 'http://jaketrent.com/post/rename-files-in-asset-pipeline/';
+        var disqus_url = 'http://jaketrent.com/post/rename-files-in-asset-pipeline/';
         var disqus_script = 'embed.js';
       
     (function () {
