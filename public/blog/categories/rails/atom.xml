@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-08T07:57:39-07:00</updated>
+  <updated>2013-02-20T08:10:09-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,189 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Setup Slim on Sinatra]]></title>
+    <link href="http://jaketrent.com/post/setup-slim-on-sinatra/"/>
+    <updated>2013-02-19T07:34:00-07:00</updated>
+    <id>http://jaketrent.com/post/setup-slim-on-sinatra</id>
+    <content type="html"><![CDATA[<p><a href="http://www.sinatrarb.com/">Sintra</a> is a light web server that's easy to start writing Ruby on.  Coming from Node/Express, I feel quite at home there.  Slim also feels like another JavaScript-world templating language, Jade, that I've had good experiences with.  <a href="http://slim-lang.com/">Slim</a> makes for quick templating and feels quite nice compared to ERB if you can handle the Haml style.  It's likewise quick and easy to get working on Sinatra.</p>
+
+<p><img src="http://i.imgur.com/Dsnu3jA.png" alt="Slim templates" /></p>
+
+<!--more-->
+
+
+<h2>Quick Sinatra Setup</h2>
+
+<h4>Require Sinatra</h4>
+
+<p>Sinatra is super easy to setup.  Create a <code>Gemfile</code> with the dependencies as follows:</p>
+
+<p>```ruby
+source "http://rubygems.org"</p>
+
+<p>gem "sinatra"
+gem "thin"
+```</p>
+
+<p>Then create a default <code>web.rb</code> webserver with contents that look something like:</p>
+
+<p>```ruby
+require "sinatra"</p>
+
+<p>get "/" do
+  "Hello, world!"
+end
+```</p>
+
+<p>Then if you run the command:</p>
+
+<p><code>
+$ ruby web.rb
+</code></p>
+
+<p>You should get a startup message like:</p>
+
+<p>```
+== Sinatra/1.3.4 has taken the stage on 4567 for development with backup from Thin</p>
+
+<blockquote><blockquote><p>Thin web server (v1.5.0 codename Knife)
+Maximum connections set to 1024
+Listening on 0.0.0.0:4567, CTRL+C to stop
+```</p></blockquote></blockquote>
+
+<p>Go to <code>localhost:4567</code> in your browser to try out your server.</p>
+
+<h4>Require Slim</h4>
+
+<p>Returning a string is all well and good, but let's include Slim to be able to create more sophisticated templates. Include your Slim dependency in your <code>Gemfile</code> with the line:</p>
+
+<p><code>ruby
+gem "slim"
+</code></p>
+
+<p>Then from the Terminal, run:</p>
+
+<p><code>
+$ bundle install
+</code></p>
+
+<h4>Setup your Views</h4>
+
+<p>Then create a directory next to your <code>web.rb</code> file called <code>views</code>.  Inside <code>views</code>, you can create your templates.  You can create a layout template aptly named <code>layout.slim</code>.  By default, your templates will extend from this layout.  Most simply, these files might look like this:</p>
+
+<p>layout.slim:</p>
+
+<p>```haml
+doctype html
+html
+  head</p>
+
+<pre><code>title My Slim Templates App
+</code></pre>
+
+<p>  body</p>
+
+<pre><code>= yield
+</code></pre>
+
+<p>```</p>
+
+<p>And, index.slim:</p>
+
+<p><code>haml
+h1 Loving Slim
+</code></p>
+
+<h4>Serve a Slim File</h4>
+
+<p>And now to adjust our <code>web.rb</code> file to serve the new <code>index.slim</code> file:</p>
+
+<p>```ruby
+require "sinatra"
+require "slim"</p>
+
+<p>get "/" do
+  slim :index
+end
+```</p>
+
+<p>Finally restart your server, and you should see your new template shown in all it's glory.  Pretty easy cheesy.</p>
+
+<h2>Setup Slim on Rails</h2>
+
+<p>Want something even easier?  Well, if you know <a href="http://rubyonrails.org/">Rails</a> already, this will be a cinch.  The hardest part of getting Slim running on Rails is Rails itself.  Slim integration is even easier than on Sinatra.  Simply add this line to your Gemfile:</p>
+
+<p><code>
+gem "slim-rails"
+</code></p>
+
+<p>And then in order to activate the Slim handler, merely add the <code>.slim</code> extension onto the end of any of your template file names.  Your file names probably end in <a href="http://guides.rubyonrails.org/layouts_and_rendering.html"><code>.erb</code> by default</a>.  Change the ones that you want to convert to Slim templates to look like:</p>
+
+<p><code>
+index.html.slim
+</code></p>
+
+<p>Now the Rails are even slicker.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Jumpstart Lab Ruby Training Review]]></title>
+    <link href="http://jaketrent.com/post/jumpstartlab-ruby-training-review/"/>
+    <updated>2013-02-19T07:06:00-07:00</updated>
+    <id>http://jaketrent.com/post/jumpstartlab-ruby-training-review</id>
+    <content type="html"><![CDATA[<p><a href="http://jumpstartlab.com/">Jumpstart Lab</a> offers a <a href="http://www.jumpstartlab.com/courses/">Ruby training</a>.  I recently attended.  I had a great experience and learned a lot in my first real introduction to Ruby and Ruby on Rails.  I would highly recommend the course.  Here are a few more details on my experience.</p>
+
+<p><img src="http://i.imgur.com/DniDljD.png" alt="Jumpstart Lab" /></p>
+
+<!--more-->
+
+
+<h2>Format</h2>
+
+<h4>Length</h4>
+
+<p>Jumpstart sent a great instructor, <a href="https://twitter.com/franklinwebber">Franklin Webber</a>, to come lead us through the exercises.  The course was on site at our company.  It was 5 days in length.  Instruction went from 9am to 4pm daily, with a 1 hour break at lunch time.</p>
+
+<h4>Breaks</h4>
+
+<p>Exercises throughout the day were split up into 25 min time chunks with 5 min breaks following.  Some will recognize this usual time chunks for the <a href="http://www.pomodorotechnique.com/">Pomodoro technique</a>.  Frank, as the leader of the exercises, was more strict in his observance of the Pomodoro time slices than I'm used to seeing.  Many people I've worked with would work right through a short break, but we took breaks quite religiously.</p>
+
+<h4>Content Split</h4>
+
+<p>In our 5 day training, we spent about the first 3 days going over vanilla Ruby.  The next 2 days, we focused on the Ruby on Rails framework specifically.</p>
+
+<h2>Approach</h2>
+
+<h4>TDD</h4>
+
+<p>Probably about the coolest aspect of this training was its relying on <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a> to get stuff done.  Often training courses, especially those that introduce brand new languages and concepts, leave testing as a tack-on feature, meantioned in parting near the end of the course.  Thankfully, Jumpstart did a great job integrating this best practice into most of its instruction.</p>
+
+<p>We used <a href="https://www.relishapp.com/rspec">Rspec</a> as a test runner.  We used <a href="https://github.com/guard/guard">Guard</a> to help us go faster through our test iterations.  We discussed what to test, how to make our tests more readable, how to isolate tests using <a href="https://relishapp.com/rspec/rspec-mocks/docs">mocks</a>, and practiced doing lots of tests.</p>
+
+<p>Only the Rails portion of the course was taught using error-driven development.  This actually worked quite well, as learning to use a framework requires learning how the pieces connect and trying not to test the framework.</p>
+
+<h4>Instructor-Led</h4>
+
+<p>Frank made the class successful.  He is super knowledgeable about the subject matter.  He is fun and funny.  He is great at introducing topics that built upon each other.  He is great at letting the students figure things out for themselves and jumping in at the right moment to help clear hurdles.  It was great to meet and work with Frank, and I hope to do so again.</p>
+
+<h2>Bonuses</h2>
+
+<h4>Hack Night</h4>
+
+<p>We do a <a href="http://tannerhack.eventbrite.com/">hack night</a> every other week at work anyway.  Since Frank was here, he led the hack night.  We did a Codemash kata exercise where we created code to generate a <a href="https://github.com/jaketrent/minesweeper">Minesweeper</a> board.  We split into teams and pair-programmed our different solutions.  Everyone came up with unique solutions, we compared them, and then iterated.  I had so much fun with the exercise, I put a frontend on the game and made it <a href="http://minemopper.herokuapp.com">playable</a>.</p>
+
+<h4>Tutorial Content</h4>
+
+<p>Jumpstart printed materials for us in a booklet.  The <a href="http://tutorials.jumpstartlab.com">tutorials</a> are also available online.  Frank took a unique path through the content, and we talked through our specific approach.  As he worked, Frank also <a href="https://github.com/burtlo/training-021113">uploaded the code</a> from our instruction to Github.  I did the same for <a href="http://github.com/jaketrent/ruby-training">my code</a>.</p>
+
+<h4>Recommendation</h4>
+
+<p>I think that this training series was about the best I've attended.  I'm doing a lot more Ruby and Rails in my current job than I expected even a few weeks ago, so it was very timely and useful for me.  The content was good, but it was the instruction that made it top notch.  Thanks, Frank and Jumpstart, for the great experience!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Multiple Yields in an ERB Template]]></title>

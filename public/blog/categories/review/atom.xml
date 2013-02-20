@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Review | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/review/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-08T07:57:39-07:00</updated>
+  <updated>2013-02-20T08:10:09-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,62 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Jumpstart Lab Ruby Training Review]]></title>
+    <link href="http://jaketrent.com/post/jumpstartlab-ruby-training-review/"/>
+    <updated>2013-02-19T07:06:00-07:00</updated>
+    <id>http://jaketrent.com/post/jumpstartlab-ruby-training-review</id>
+    <content type="html"><![CDATA[<p><a href="http://jumpstartlab.com/">Jumpstart Lab</a> offers a <a href="http://www.jumpstartlab.com/courses/">Ruby training</a>.  I recently attended.  I had a great experience and learned a lot in my first real introduction to Ruby and Ruby on Rails.  I would highly recommend the course.  Here are a few more details on my experience.</p>
+
+<p><img src="http://i.imgur.com/DniDljD.png" alt="Jumpstart Lab" /></p>
+
+<!--more-->
+
+
+<h2>Format</h2>
+
+<h4>Length</h4>
+
+<p>Jumpstart sent a great instructor, <a href="https://twitter.com/franklinwebber">Franklin Webber</a>, to come lead us through the exercises.  The course was on site at our company.  It was 5 days in length.  Instruction went from 9am to 4pm daily, with a 1 hour break at lunch time.</p>
+
+<h4>Breaks</h4>
+
+<p>Exercises throughout the day were split up into 25 min time chunks with 5 min breaks following.  Some will recognize this usual time chunks for the <a href="http://www.pomodorotechnique.com/">Pomodoro technique</a>.  Frank, as the leader of the exercises, was more strict in his observance of the Pomodoro time slices than I'm used to seeing.  Many people I've worked with would work right through a short break, but we took breaks quite religiously.</p>
+
+<h4>Content Split</h4>
+
+<p>In our 5 day training, we spent about the first 3 days going over vanilla Ruby.  The next 2 days, we focused on the Ruby on Rails framework specifically.</p>
+
+<h2>Approach</h2>
+
+<h4>TDD</h4>
+
+<p>Probably about the coolest aspect of this training was its relying on <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a> to get stuff done.  Often training courses, especially those that introduce brand new languages and concepts, leave testing as a tack-on feature, meantioned in parting near the end of the course.  Thankfully, Jumpstart did a great job integrating this best practice into most of its instruction.</p>
+
+<p>We used <a href="https://www.relishapp.com/rspec">Rspec</a> as a test runner.  We used <a href="https://github.com/guard/guard">Guard</a> to help us go faster through our test iterations.  We discussed what to test, how to make our tests more readable, how to isolate tests using <a href="https://relishapp.com/rspec/rspec-mocks/docs">mocks</a>, and practiced doing lots of tests.</p>
+
+<p>Only the Rails portion of the course was taught using error-driven development.  This actually worked quite well, as learning to use a framework requires learning how the pieces connect and trying not to test the framework.</p>
+
+<h4>Instructor-Led</h4>
+
+<p>Frank made the class successful.  He is super knowledgeable about the subject matter.  He is fun and funny.  He is great at introducing topics that built upon each other.  He is great at letting the students figure things out for themselves and jumping in at the right moment to help clear hurdles.  It was great to meet and work with Frank, and I hope to do so again.</p>
+
+<h2>Bonuses</h2>
+
+<h4>Hack Night</h4>
+
+<p>We do a <a href="http://tannerhack.eventbrite.com/">hack night</a> every other week at work anyway.  Since Frank was here, he led the hack night.  We did a Codemash kata exercise where we created code to generate a <a href="https://github.com/jaketrent/minesweeper">Minesweeper</a> board.  We split into teams and pair-programmed our different solutions.  Everyone came up with unique solutions, we compared them, and then iterated.  I had so much fun with the exercise, I put a frontend on the game and made it <a href="http://minemopper.herokuapp.com">playable</a>.</p>
+
+<h4>Tutorial Content</h4>
+
+<p>Jumpstart printed materials for us in a booklet.  The <a href="http://tutorials.jumpstartlab.com">tutorials</a> are also available online.  Frank took a unique path through the content, and we talked through our specific approach.  As he worked, Frank also <a href="https://github.com/burtlo/training-021113">uploaded the code</a> from our instruction to Github.  I did the same for <a href="http://github.com/jaketrent/ruby-training">my code</a>.</p>
+
+<h4>Recommendation</h4>
+
+<p>I think that this training series was about the best I've attended.  I'm doing a lot more Ruby and Rails in my current job than I expected even a few weeks ago, so it was very timely and useful for me.  The content was good, but it was the instruction that made it top notch.  Thanks, Frank and Jumpstart, for the great experience!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Smashing Node Review]]></title>
@@ -221,76 +277,6 @@
 <p>Using Paper really has been one of the magical moments of using the iPad.  It gives a slick experience that gets me drawing fast.  There are masterful, well-honed tools that make my art look good.  The use of gestures makes great use of the direct input ability of the touch device.  I've enjoyed many hours using Paper, and I look forward to more products from FiftyThree.</p>
 
 <p>What is your favorite feature of Paper?  Or of another art/drawing app?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[SORT Conf 2012]]></title>
-    <link href="http://jaketrent.com/post/sort-conf-2012/"/>
-    <updated>2012-10-10T16:57:00-06:00</updated>
-    <id>http://jaketrent.com/post/sort-conf-2012</id>
-    <content type="html"><![CDATA[<p>The sky lightens with the rising sun.  Wheels are on the road.  Friends are in the car.  The leaves are changing on the towering Wasatch mountains.  Finally, we pull up to the University of Utah Institute building.  Stepping out of the car, the October air is fresh and clear, high in the Rockies.  It's a good day for a tech conference.  It's a good day for SORT.</p>
-
-<p><img src="http://i.imgur.com/q1cr5.jpg" alt="Wasatch mountains" />
-http://flic.kr/p/bDP2fF</p>
-
-<!--more-->
-
-
-<p>SORT is an annual tech conference put on by the LDS Church.  The IT shops of the Church are all represented, including ICS, Family Search, the BYUs, CES, and probably a couple more.  Attendance last year, I think, was about 1200.</p>
-
-<h2>Something For Everyone</h2>
-
-<p>A unique feature of the conference is that there are soooo many subjects covered.  It's really kind of a joke the number of tracks that are represented:</p>
-
-<ol>
-<li>EIM</li>
-<li>Architecture</li>
-<li>Design</li>
-<li>Engineering</li>
-<li>Partner Summit</li>
-<li>Infrastructure</li>
-<li>Leadership</li>
-<li>PM</li>
-<li>QA</li>
-<li>Requirements</li>
-<li>Security</li>
-<li>Sharepoint/CRM</li>
-<li>Solution Mgmt</li>
-<li>Other (misc)</li>
-</ol>
-
-
-<p>Holy cow!  That's a little nuts.  It started out as an engineering-only conference in 2009.  Since then, it's blossomed.  I feel like it has been a double-edged sword:  The whole office is invited and should have something to soak up there, but it feels like the engineering track has been watered down a bit.</p>
-
-<h2>Mostly Intro</h2>
-
-<p>The topics are varied.  It's often the case that there's so much going on that you don't know what to pick for each hour.  That is awesome!  Out of the presentations offered in the engineering track, I would love to see more intermediate or advanced topics.  More deep dives would be fun to geek out about.  I think we touch that in some cases, but in general, I feel that the presentations could be categorized as cursory introductions to topics.</p>
-
-<h2>Free-flowing Sugar</h2>
-
-<p>I am never lacking for ATP at SORT.  The day starts with a great breakfast.  Lunch is also delicious.  This year, both were provided by Kneaders bakery.  Between every session, there are plentiful mounds of various snack foods and refreshing beverages.  And being a conference put on by the Church, the drinks are top notch, ready for the Church membership. :)</p>
-
-<h2>Entry to Speaking</h2>
-
-<p>I have presented at SORT for each of the last 4 years.  You already know the bar can't be that high.  If you submit a paper, you'll probably be accepted.  I was 2 for 3 this year. :)  Some might worry that this would lower the quality of the conference material and presentation.  Yes, it probably does.  But, just like any conference, if you are a little careful in your schedule selection, you'll find some fantastic speakers and super-compelling content.</p>
-
-<h2>A Yearly Highlight</h2>
-
-<p>In all, SORT is a fantastic experience.  I look forward to it next year.  It's fun to review what I've learned and presented on in the past (Django, then jQuery plugins, then TDD on MarkLogic, this year BackboneJs).</p>
-
-<p>It's at a great, close location.  The company is fantastic.  The topics are varied and interesting.  The two days are time well-spent to me.  I feel tired (a sign of lots of fire hose drinking).  I'm inspired to learn a few new things:</p>
-
-<ol>
-<li>Do more CoffeeScript</li>
-<li>Try SocketStream</li>
-<li>Use Postgres' row_to_json</li>
-<li>Try LawnChair and IndexDb</li>
-<li>Do some user media capture</li>
-</ol>
-
-
-<p>Did any of you go this year?  What do you appreciate the most about SORT or your most recent conference?</p>
 ]]></content>
   </entry>
   
