@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-20T08:10:09-07:00</updated>
+  <updated>2013-02-20T17:42:16-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,82 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Serve CoffeeScript from Sinatra]]></title>
+    <link href="http://jaketrent.com/post/serve-coffeescript-with-sinatra/"/>
+    <updated>2013-02-20T16:39:00-07:00</updated>
+    <id>http://jaketrent.com/post/serve-coffeescript-with-sinatra</id>
+    <content type="html"><![CDATA[<p>Sinatra is nice because it&#8217;s super lightweight.  This will allow you to make it do exactly what you want, nothing more.  This is the opposite of Ruby on Rail&#8217;s convention.  Likewise, it takes just a bit more configuration to make Sinatra serve CoffeeScript as compared to Rails.</p>
+
+<p><img src="http://i.imgur.com/Ta27Zd4.jpg" alt="Sintra and CoffeeScripting" /></p>
+
+<!--more-->
+
+
+<h2>Sinatra and CoffeeScript</h2>
+
+<p>Surprisingly, there are no fantastic gems, at least that I could churn up in a few Google searches, that make serving CoffeeScript bone head easy.  I found a few, such as the Sinatra Assetpack.  It looked like serious overkill, and my Sinatra app is very small, so I wanted a quick and easy way to serve the static goods.</p>
+
+<h4>CoffeeScript Gem</h4>
+
+<p>Sinatra needs a Gem to compile the CoffeeScript.  Put this line in your <code>Gemfile</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem "coffee-script"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And run a:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ bundle install</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Public Directory</h4>
+
+<p>In my app, <code>web.rb</code> is the main controller file.  Next to that file, I have a directory structure like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>public/
+</span><span class='line'>  js/
+</span><span class='line'>  coffee/
+</span><span class='line'>web.rb</span></code></pre></td></tr></table></div></figure>
+
+
+<p>By default, Sinatra will serve static assets out of this <code>public</code> directory.</p>
+
+<h4>CoffeeScript Handler</h4>
+
+<p>I created the <code>coffee</code> directory separate from the <code>js</code> directory so that I could write this little handler in <code>web.rb</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">get</span> <span class="s2">&quot;/coffee/*.js&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">filename</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:splat</span><span class="o">].</span><span class="n">first</span>
+</span><span class='line'>  <span class="n">coffee</span> <span class="s2">&quot;../public/coffee/</span><span class="si">#{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">to_sym</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This handler will pick up requests that match &#8220;/coffee/*.js&#8221;, find the associated <code>.coffee</code> file, compile it to JavaScript and serve it.  I kept the file extension as <code>.js</code> to help avoid handling any potential mime-type setting requirements.  Obviously, this handler is simple and won&#8217;t handle complicated cases.  But that is also a plus.</p>
+
+<h4>CoffeeScript in Templates</h4>
+
+<p>In my <a href="http://">Slim</a> template, if I wanted to get the compiled contents of the file named <code>myscripts.coffee</code>, I would write a script tag like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">script</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;/coffee/myscripts.js&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sinatra.  Coffee.  Bam.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Setup Slim on Sinatra]]></title>
@@ -1195,6 +1271,26 @@ blah - scope is not there</p>
   </entry>
   
   <entry>
+    <title type="html"><![CDATA[BLOG TEMPLATE]]></title>
+    <link href="http://jaketrent.com/post/blog-template/"/>
+    <updated>2013-01-01T18:18:00-07:00</updated>
+    <id>http://jaketrent.com/post/blog-template</id>
+    <content type="html"><![CDATA[<p>[[INTRO - include keyword; start with question or story]]</p>
+
+<p><img src="http://i.imgur.com/M0kYA.jpg" alt="Alt Text" /></p>
+
+<!--more-->
+
+
+<h2>[[Secondary - include keyword]]</h2>
+
+<p>[[BODY]]</p>
+
+<p>[[CLOSE-Summarize, end with question]]</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Minimized AngularJs Dependency Injection]]></title>
     <link href="http://jaketrent.com/post/minimized-angularjs-dependency-injection/"/>
     <updated>2012-12-31T16:20:00-07:00</updated>
@@ -1511,239 +1607,6 @@ blah - scope is not there</p>
 <p>Yes, it&#8217;s superficial, and it&#8217;s even a lame reason, but I like Grunt because they have a great logo.  Wild boar for logo?  Instant win.  (That is what it is, right?)</p>
 
 <p>So, is Grunt helping you out?  What are your impressions?  Or are you using something else entirely?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[RequireJs Paths in Prod, Test, and Build]]></title>
-    <link href="http://jaketrent.com/post/requirejs-paths-in-prod-test-build/"/>
-    <updated>2012-12-07T11:18:00-07:00</updated>
-    <id>http://jaketrent.com/post/requirejs-paths-in-prod-test-build</id>
-    <content type="html"><![CDATA[<p>RequireJs makes dependency management on the client mostly better.  Once it&#8217;s setup, it&#8217;s nice.  Getting the patterns of your paths to work correctly can be difficult to setup, depending on the constraints of your system.  Making the same paths work in a prod, test, and build environment can be even more adventuresome.  In my case, there were a few extra hoops.  My scenario might not fully match yours, but perhaps you can apply this solution to your own needs.</p>
-
-<p><img src="http://i.imgur.com/xZqm5.png" alt="Alt Text" /></p>
-
-<!--more-->
-
-
-<h2>Prod: Loading Modules From a Different Server</h2>
-
-<p>Recently, we built a portal.  It contains a bunch of widgets that are served from domains different from the host page.  The portal requested these widget js files via <a href="http://requirejs.org/">RequireJs</a>.</p>
-
-<p>Because the widgets live on other domains, those widgets&#8217; subdependencies needed a path that would be relative to that other widget domain and not the portal domain.  In order to accomplish this, widget dependencies were specified in this way:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;./widgetDependency.js&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dep</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// my widget code</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <code>.js</code> extension tells RequireJs to load the dependency <a href="https://github.com/jrburke/r.js/blob/2.1.1/require.js#L1521">as a URL</a>.  The <code>./</code> makes the URL relative to the widget domain.</p>
-
-<h2>Test: RequireJs Paths in Testacular</h2>
-
-<p>When you go to test your modules in a test environment, you may not want to load your modules as URLs.  Such was the case for me, <a href="http://jaketrent.com/post/test-requirejs-testacular/">running Testacular</a>, where the source code is requested into the context of the test server already.</p>
-
-<p>In prod, I needed the <code>.js</code> extension.  But, in test I didn&#8217;t want to load modules from URLs.  So, I need to make the test environment ignore the extension.  The solution?  Override the regular expression that checks for the extension in my test runner to be something that was never matched:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">require</span><span class="p">.</span><span class="nx">jsExtRegExp</span> <span class="o">=</span> <span class="sr">/^pileOTest/</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This allows RequireJs to load the module by module name.</p>
-
-<h4>RequireJs Adds Double .js Extension</h4>
-
-<p>It&#8217;s getting better in the test environment, but we still haven&#8217;t totally appeased RequireJs.  It turns out that when it loads a module by name, it still has to <a href="https://github.com/jrburke/r.js/blob/2.1.1/require.js#L1526">convert that name to a path</a>.</p>
-
-<p>Given my constraints (widgets from another domain on a portal), my name actually includes a <code>.js</code> extension.  This isn&#8217;t usually the case.  RequireJs doesn&#8217;t test for this again (remember, we overrode the regex that did), so it just adds a <code>.js</code> extension on the end, creating two: <code>.js.js</code>.</p>
-
-<p>But there is one final way to trick it out:  Add a &#8216;?&#8217; to the name.  This rule was meant to apply to URLs that represented dynamic scripts (and would thus take query strings) as opposed to static js files.  That&#8217;s not why we&#8217;ll add it, but it will help us nonetheless.</p>
-
-<p>So now your module dependencies will look like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;./widgetDependency.js?&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dep</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// my widget code</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And in your test environment they will load, and you will be happy.  Until&#8230;</p>
-
-<h2>Build: Module Names for Optimization</h2>
-
-<p>When you go to <a href="http://requirejs.org/docs/optimization.html#basics">optimize your RequireJs modules</a> you&#8217;ll again need RequireJs to load your modules by module name instead of url.  If you don&#8217;t, you&#8217;ll get nice messages like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&gt;&gt; Tracing dependencies for: MyModule
-</span><span class='line'>&gt;&gt; Cannot optimize network URL, skipping: nls/str.js?
-</span><span class='line'>&gt;&gt; Error: ENOENT, no such file or directory
-</span><span class='line'>&gt;&gt; '/Users/.../style.css?'
-</span><span class='line'>&gt;&gt; In module tree:
-</span><span class='line'>&gt;&gt;     MyModule</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>You may cry a little, but we&#8217;re almost there.  Remember, your module dependency paths worked just fine in prod.  You only changed them to accommodate the test environment.  So, it&#8217;s time to change them back when you optimize your module into one file for production use.</p>
-
-<p>The <code>r.js</code> configuration in <code>app.build.js</code> includes an function called <code>onBuildRead()</code>&#8217;.  Call it to transform the code as it goes out the door for optimization.  We want to strip out the &#8216;?&#8217; question marks from our dependency arrays.  Stripping out all &#8216;?&#8217;s might be a bit too dangerous.  So, let&#8217;s make a benign adjustment that will help us identify exactly what we&#8217;re trying to strip out and replace our &#8216;?&#8217; string in our dependency paths with &#8216;?test&#8217;, finally:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;./widgetDependency.js?test&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dep</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// my widget code</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And <a href="https://github.com/jrburke/r.js/blob/2.1.1/build/example.build.js#L417">implement <code>onBuildRead</code></a> as:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">onBuildRead</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">moduleName</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">contents</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">contents</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\?test/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>&#8220;Shut off all the garbage smashers on the detention level!&#8221;</h4>
-
-<p>Take a deep breath.  That was a little much to make all that work.  You have made your RequireJs paths happy in 3 contexts:</p>
-
-<ol>
-<li>In production, where modules are served from domains different from the host page and must be loaded by URL.</li>
-<li>In test, where your modules must be loaded by module name.</li>
-<li>In the optimization build, where modules must be loaded by module name.</li>
-</ol>
-
-
-<p>I fill like I&#8217;ve tricked out RequireJs a bit to make this work.  How could we adjust the solution to be more straightforward?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Environment Specific Variables in NodeJs]]></title>
-    <link href="http://jaketrent.com/post/environment-variables-in-node/"/>
-    <updated>2012-12-05T16:12:00-07:00</updated>
-    <id>http://jaketrent.com/post/environment-variables-in-node</id>
-    <content type="html"><![CDATA[<p>Sometimes things change in different environments.  For one, I wear a tie to church but try not to otherwise.  In Node, you might want variables to change per environment.  And it turns out people have wanted this exact thing, creating marvels of code for us to use as we please.  Enter, nconf.</p>
-
-<p><img src="http://i.imgur.com/5rZ8H.png" alt="Environment variables in Node" /></p>
-
-<!--more-->
-
-
-<h2>Nconf</h2>
-
-<p><a href="https://github.com/flatiron/nconf">Nconf</a> provides &#8220;hierarchical node.js configuration with files, environment variables, command-line arguments, and atomic object merging.&#8221;  It is a great little package provided by the folks at <a href="http://nodejitsu.com/">NodeJitsu</a>.</p>
-
-<p>To install, run a little:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ npm install nconf</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Environment Variables in Node</h4>
-
-<p>Often, NodeJs environments are specified through the aptly-named environment variables.  These are the variables that are set on a system level, available to yours and other applications.  In Unixy environments, you&#8217;d set one with:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ export NODE_ENV=production</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And it turns out that <code>NODE_ENV</code> is the single most-used environment variable of them all.  Really, it&#8217;s the big kahuna that triggers other environment variables or code for activation.</p>
-
-<p>For instance, in an <a href="http://expressjs.com/">Express</a> app, you&#8217;ll see this a lot:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="s1">&#39;production&#39;</span> <span class="o">==</span> <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;env&#39;</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;dbUri&#39;</span><span class="p">,</span> <span class="s1">&#39;n.n.n.n/prod&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Actually, you see <a href="http://expressjs.com/api.html#app.configure"><code>configure()</code></a>, but it&#8217;s all just sugar around a check to <code>process.env.NODE_ENV</code>.</p>
-
-<h4>Set NODE_ENV and Start Node</h4>
-
-<p>If you want to start node and set the environment variable all in a one liner, try:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ export NODE_ENV=production && node app.js</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Multiple, Variable Sources</h4>
-
-<p>You could just grab all your variables out the process environment, but the cool thing that nconf gives you is a hierarchy.  The <a href="https://github.com/flatiron/nconf">docs</a> give the probable example of the following hierarchy:</p>
-
-<ol>
-<li>Command-line arguments</li>
-<li>Environment variables</li>
-<li>A file</li>
-</ol>
-
-
-<p>One could access these sources in code with this beaut:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">nconf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nconf&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">argv</span><span class="p">()</span>
-</span><span class='line'>     <span class="p">.</span><span class="nx">env</span><span class="p">()</span>
-</span><span class='line'>     <span class="p">.</span><span class="nx">file</span><span class="p">({</span> <span class="nx">file</span><span class="o">:</span>
-</span><span class='line'>       <span class="s1">&#39;config.json&#39;</span>
-</span><span class='line'>     <span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You could even have a config file specific to each environment that ships with your app and load it with a slightly spiffier:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">nconf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nconf&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">argv</span><span class="p">()</span>
-</span><span class='line'>     <span class="p">.</span><span class="nx">env</span><span class="p">()</span>
-</span><span class='line'>     <span class="p">.</span><span class="nx">file</span><span class="p">({</span> <span class="nx">file</span><span class="o">:</span>
-</span><span class='line'>       <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">+</span> <span class="s1">&#39;.json&#39;</span>
-</span><span class='line'>     <span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Using the Data</h4>
-
-<p>Finally, after loading, just access your environment variables and incorporate them in your code as you will:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;NODE_ENV&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Declare some variables per environment.  Likely candidates are database connection strings or web service endpoints or feature flags.  These will help you avoid as many nasty if-else branches in your code.</p>
 ]]></content>
   </entry>
   

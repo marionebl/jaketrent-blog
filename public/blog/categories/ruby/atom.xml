@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-20T08:10:09-07:00</updated>
+  <updated>2013-02-20T17:42:16-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Serve CoffeeScript from Sinatra]]></title>
+    <link href="http://jaketrent.com/post/serve-coffeescript-with-sinatra/"/>
+    <updated>2013-02-20T16:39:00-07:00</updated>
+    <id>http://jaketrent.com/post/serve-coffeescript-with-sinatra</id>
+    <content type="html"><![CDATA[<p>Sinatra is nice because it's super lightweight.  This will allow you to make it do exactly what you want, nothing more.  This is the opposite of Ruby on Rail's convention.  Likewise, it takes just a bit more configuration to make Sinatra serve CoffeeScript as compared to Rails.</p>
+
+<p><img src="http://i.imgur.com/Ta27Zd4.jpg" alt="Sintra and CoffeeScripting" /></p>
+
+<!--more-->
+
+
+<h2>Sinatra and CoffeeScript</h2>
+
+<p>Surprisingly, there are no fantastic gems, at least that I could churn up in a few Google searches, that make serving CoffeeScript bone head easy.  I found a few, such as the Sinatra Assetpack.  It looked like serious overkill, and my Sinatra app is very small, so I wanted a quick and easy way to serve the static goods.</p>
+
+<h4>CoffeeScript Gem</h4>
+
+<p>Sinatra needs a Gem to compile the CoffeeScript.  Put this line in your <code>Gemfile</code>:</p>
+
+<p><code>
+gem "coffee-script"
+</code></p>
+
+<p>And run a:</p>
+
+<p><code>
+$ bundle install
+</code></p>
+
+<h4>Public Directory</h4>
+
+<p>In my app, <code>web.rb</code> is the main controller file.  Next to that file, I have a directory structure like this:</p>
+
+<p><code>
+public/
+  js/
+  coffee/
+web.rb
+</code></p>
+
+<p>By default, Sinatra will serve static assets out of this <code>public</code> directory.</p>
+
+<h4>CoffeeScript Handler</h4>
+
+<p>I created the <code>coffee</code> directory separate from the <code>js</code> directory so that I could write this little handler in <code>web.rb</code>:</p>
+
+<p><code>ruby
+get "/coffee/*.js" do
+  filename = params[:splat].first
+  coffee "../public/coffee/#{filename}".to_sym
+end
+</code></p>
+
+<p>This handler will pick up requests that match "/coffee/*.js", find the associated <code>.coffee</code> file, compile it to JavaScript and serve it.  I kept the file extension as <code>.js</code> to help avoid handling any potential mime-type setting requirements.  Obviously, this handler is simple and won't handle complicated cases.  But that is also a plus.</p>
+
+<h4>CoffeeScript in Templates</h4>
+
+<p>In my <a href="http://">Slim</a> template, if I wanted to get the compiled contents of the file named <code>myscripts.coffee</code>, I would write a script tag like this:</p>
+
+<p><code>ruby
+script src="http://jaketrent.com/coffee/myscripts.js"
+</code></p>
+
+<p>Sinatra.  Coffee.  Bam.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Setup Slim on Sinatra]]></title>
@@ -332,85 +400,6 @@ ActionView::Template::Error (scripts-head.js isn't precompiled):</p>
 <p>It's that easy.  It's too bad you have to wait until the app runs to discover this is a problem.  But now you're ready.</p>
 
 <p>Now if we could only customize the directory structure under <code>app/assets</code>.  I would much rather use the path <code>js/</code> instead of <code>javascripts/</code>.  Does anyone know how?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Run a Pow Server on a VM]]></title>
-    <link href="http://jaketrent.com/post/run-pow-server-on-vm/"/>
-    <updated>2013-01-31T16:14:00-07:00</updated>
-    <id>http://jaketrent.com/post/run-pow-server-on-vm</id>
-    <content type="html"><![CDATA[<p>It's really pretty cool how easy <a href="http://pow.cx/">Pow</a> makes running a Rails server.  <a href="https://github.com/rodreegez/powder">Powder</a> makes it even easier.  Here's how to run your Rails server via Pow on a VM in order to test IE.</p>
-
-<p><img src="http://i.imgur.com/XdExdtS.jpg" alt="Pow Server" /></p>
-
-<!--more-->
-
-
-<h2>Install Pow</h2>
-
-<p>Get your Ruby environment otherwise setup for Rails dev. Then install <a href="http://pow.cx/">Pow</a>.  It's a nice little utility created by the folks at 37 Signals.  They have a short little install script you can run, as <a href="http://pow.cx/">referenced on the Pow site</a>.  Or, you can use a utility created to make it <em>even easier</em> -- <a href="https://github.com/rodreegez/powder">powder</a>.</p>
-
-<p>To install, you'll need <a href="http://rubygems.org">Rubygems</a> installed, and run:</p>
-
-<p><code>
-$ gem install powder
-</code></p>
-
-<p>Then link your project to Pow via the command:</p>
-
-<p><code>
-$ cd &lt;my_proj_dir&gt;
-$ powder link
-</code></p>
-
-<p>Make sure Pow is running:</p>
-
-<p><code>
-$ powder up
-</code></p>
-
-<p>And access your Pow-powered site by going to your project's address in your browser:</p>
-
-<p><code>
-http://&lt;my_project_dir&gt;.dev
-</code></p>
-
-<p>There are other options in the <code>powder link</code> step.  For instance, if you want to access your site through an http address different than <code>&lt;my_proj_dir&gt;</code> you can specify that.</p>
-
-<h2>Install your VM</h2>
-
-<p>There are a few different VM options.  My favorite is <a href="http://virtualbox.org">VirtualBox</a>.  It does hurt a bit seeing the "Oracle" moniker on it, but I've found it to be as responsive as a VM can be and generally stable.</p>
-
-<h2>Install Internet Explorer</h2>
-
-<p>There really wasn't another reason that you wanted a Windows VM was there?</p>
-
-<p>I've had good success with  the project <a href="https://github.com/xdissent/ievms">xdissent/ievms</a>.  To download the IE-ready images, the README invites us to run this script in our shell:</p>
-
-<p><code>
-curl -s https://raw.github.com/xdissent/ievms/master/ievms.sh | bash
-</code></p>
-
-<p>It will download multiple parts of several Windows/IE VM images into <code>~/.ievms</code> and install them so they're ready to roll with VirtualBox.  Run this way, images for Internet Explorer 6, 7, 8, and 9 are all downloaded.  If you wanted to just download IE 9, you could run:</p>
-
-<p><code>
-curl -s https://raw.github.com/xdissent/ievms/master/ievms.sh | IEVMS_VERSIONS="9" bash
-</code></p>
-
-<p>Either way, this download takes quite a while to complete, but the shell script that's running it takes pretty good care of you, restarting on the last incomplete download part.</p>
-
-<h2>Access Pow via VirtualBox</h2>
-
-<p>Accessing Pow in the VM isn't bad at all.  Pow makes use of <a href="http://xip.io">xip.io</a>, which provides a wildcard DNS entry used by Pow and thus your app.</p>
-
-<p>For the <a href="http://pow.cx/manual.html#section_2.1.5">next step</a>, take note of your IP by running <code>ifconfig</code>.  Then from IE inside of VirtualBox, point your browser at:</p>
-
-<p><code>
-http://&lt;my_proj_dir&gt;.&lt;my_ip&gt;.xip.io
-</code></p>
-
-<p>And you should see your project running in the VM just as you do from your better, native OS.  Pow!</p>
 ]]></content>
   </entry>
   

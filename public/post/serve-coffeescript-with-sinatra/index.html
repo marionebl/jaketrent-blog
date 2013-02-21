@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Why I Chose a WordPress Blog - Jake Trent</title>
+  <title>Serve CoffeeScript from Sinatra - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="Some might ask why a guy who loves his life of code would choose WordPress as the framework for one of his websites. Well, I chose a WordPress blog. &hellip;">
-  
+  <meta name="description" content="CoffeeScript is nice. Sinatra is nice. Get Sinatra to serve your nice CoffeeScript.">
+  <meta name="keywords" content="sinatra, coffeescript, ruby">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/why-i-chose-a-wordpress-blog/">
+  <link rel="canonical" href="http://jaketrent.com/post/serve-coffeescript-with-sinatra/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Why I Chose a WordPress Blog</h1>
+      <h1 class="entry-title">Serve CoffeeScript From Sinatra</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2012-09-25T16:49:00-06:00" pubdate data-updated="true">Sep 25<span>th</span>, 2012</time>
+<time datetime="2013-02-20T16:39:00-07:00" pubdate data-updated="true">Feb 20<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,41 +108,74 @@
   </header>
 
 
-<div class="entry-content"><p>Some might ask why a guy who loves his life of code would choose WordPress as the framework for one of his websites. Well, I chose a WordPress blog. I almost didn&#8217;t. It&#8217;s been a long time coming. It&#8217;s early in the game, but I think it was a good choice.</p>
+<div class="entry-content"><p>Sinatra is nice because it&#8217;s super lightweight.  This will allow you to make it do exactly what you want, nothing more.  This is the opposite of Ruby on Rail&#8217;s convention.  Likewise, it takes just a bit more configuration to make Sinatra serve CoffeeScript as compared to Rails.</p>
 
-<p><img src="http://i.imgur.com/Z9HMK.jpg" alt="WordPress T-Shirt" />
-http://flic.kr/p/6FFZMy</p>
+<p><img src="http://i.imgur.com/Ta27Zd4.jpg" alt="Sintra and CoffeeScripting" /></p>
 
 <!--more-->
 
 
-<h2>Why I wouldn&#8217;t choose WordPress blog</h2>
+<h2>Sinatra and CoffeeScript</h2>
 
-<p>I only had one job about 7 years back that consisted of mostly PHP. The job was great for many reasons. PHP wasn&#8217;t the highlight. We did some cool stuff with it. At the time, it was all right. Since, I have coded full time in Java, Python, XQuery, or JavaScript. I would count each as <strong>more</strong> enjoyable than PHP.</p>
+<p>Surprisingly, there are no fantastic gems, at least that I could churn up in a few Google searches, that make serving CoffeeScript bone head easy.  I found a few, such as the Sinatra Assetpack.  It looked like serious overkill, and my Sinatra app is very small, so I wanted a quick and easy way to serve the static goods.</p>
 
-<p>Secondly, I&#8217;m a coder. I love to build stuff. Custom software is way more fun than boxed software. WordPress is something that is literally accessible to anyone that&#8217;s just computer savvy. I&#8217;m not breaking new ground on WordPress.</p>
+<h4>CoffeeScript Gem</h4>
 
-<h2>An insightful article</h2>
+<p>Sinatra needs a Gem to compile the CoffeeScript.  Put this line in your <code>Gemfile</code>:</p>
 
-<p>A week or so ago, I ran into an article on a site called &#8220;Virtuous Code&#8221;. That site name was cool enough. The article was typed (&#8220;penned&#8221; is such a cooler word) by Avdi Grimm and is named <a href="http://devblog.avdi.org/2012/08/09/why-wordpress/">&#8220;Why WordPress&#8221;</a>. I was caught off guard by how well it described my personal predicament.</p>
-
-<h2>Why I chose a WordPress blog</h2>
-
-<p>When I read Avid&#8217;s article, I realized that the reasons I, as a coder, had been avoiding WordPress were the very reasons I should embrace it:</p>
-
-<ol>
-<li>As a coder, my tendency to jump into the internals and start toying around is strong. This hinders my writing ability. It competes for my time. Writing is something that I really want to do more of. By choosing a package that&#8217;s tied up with a bow will encourage me to just use it instead of over-customize it. And since the innards of the package is a language that I don&#8217;t want to devote a ton of my time to, I&#8217;m even less inclined to customize it.</li>
-<li>PHP and WordPress are, in a way, like JavaScript &#8211; they&#8217;re everwhere, and everyone is using them. This means that probably just about everything that I could imagine wanting (ok, I&#8217;ll probably come up with something innane) on a blog has already been built. I don&#8217;t need to reinvent it.</li>
-</ol>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem "coffee-script"</span></code></pre></td></tr></table></div></figure>
 
 
-<h2>Driven to the edge</h2>
+<p>And run a:</p>
 
-<p>So, I made the jump. I just downloaded the latest <a href="http:://wordpress.org">WordPress.org</a> package. I ran Apache on my local box and pointed my browser to <code>localhost:8888</code>. I was presented with the pleasant admin UI. I chose a new theme. It installed in place. It was a 2-click ordeal. I chose a few plugins to replace default functionality and add a bit more. I was pleasantly surprised by the smoothness of it all.</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ bundle install</span></code></pre></td></tr></table></div></figure>
 
-<p>At the point I was getting the blog looking nice and doing what I wanted, did I care that the thing was written in PHP? No. I saw it just once when setting up my DB connection. I did cringe slightly upon seeing some <a href="http://php.net/manual/en/language.variables.superglobals.php">super globals</a> again (<code>$_SERVER</code>), but I hastily committed the change and deployed the app.</p>
 
-<p>We&#8217;ll see if I continue to love it, but so far, so good. My fellow coders, I ask: Is my reasoning sound?</p>
+<h4>Public Directory</h4>
+
+<p>In my app, <code>web.rb</code> is the main controller file.  Next to that file, I have a directory structure like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>public/
+</span><span class='line'>  js/
+</span><span class='line'>  coffee/
+</span><span class='line'>web.rb</span></code></pre></td></tr></table></div></figure>
+
+
+<p>By default, Sinatra will serve static assets out of this <code>public</code> directory.</p>
+
+<h4>CoffeeScript Handler</h4>
+
+<p>I created the <code>coffee</code> directory separate from the <code>js</code> directory so that I could write this little handler in <code>web.rb</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">get</span> <span class="s2">&quot;/coffee/*.js&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">filename</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:splat</span><span class="o">].</span><span class="n">first</span>
+</span><span class='line'>  <span class="n">coffee</span> <span class="s2">&quot;../public/coffee/</span><span class="si">#{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">to_sym</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This handler will pick up requests that match &#8220;/coffee/*.js&#8221;, find the associated <code>.coffee</code> file, compile it to JavaScript and serve it.  I kept the file extension as <code>.js</code> to help avoid handling any potential mime-type setting requirements.  Obviously, this handler is simple and won&#8217;t handle complicated cases.  But that is also a plus.</p>
+
+<h4>CoffeeScript in Templates</h4>
+
+<p>In my <a href="http://">Slim</a> template, if I wanted to get the compiled contents of the file named <code>myscripts.coffee</code>, I would write a script tag like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">script</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;/coffee/myscripts.js&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sinatra.  Coffee.  Bam.</p>
 </div>
 
 
@@ -165,12 +198,12 @@ http://flic.kr/p/6FFZMy</p>
   
 
 
-<time datetime="2012-09-25T16:49:00-06:00" pubdate data-updated="true">Sep 25<span>th</span>, 2012</time>
+<time datetime="2013-02-20T16:39:00-07:00" pubdate data-updated="true">Feb 20<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/announcement/'>Announcement</a>, <a class='category' href='/blog/categories/blog/'>blog</a>, <a class='category' href='/blog/categories/php/'>php</a>, <a class='category' href='/blog/categories/wordpress/'>wordpress</a>
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/coffeescript/'>coffeescript</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/sinatra/'>sinatra</a>
   
 </span>
 
@@ -179,7 +212,7 @@ http://flic.kr/p/6FFZMy</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/why-i-chose-a-wordpress-blog/" data-via="" data-counturl="http://jaketrent.com/post/why-i-chose-a-wordpress-blog/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/serve-coffeescript-with-sinatra/" data-via="" data-counturl="http://jaketrent.com/post/serve-coffeescript-with-sinatra/" >Tweet</a>
   
   
   
@@ -188,10 +221,8 @@ http://flic.kr/p/6FFZMy</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/book-review-for-platform/" title="Previous Post: Book Review for Platform">&laquo; Book Review for Platform</a>
+        <a class="basic-alignment left" href="/post/setup-slim-on-sinatra/" title="Previous Post: Setup Slim on Sinatra">&laquo; Setup Slim on Sinatra</a>
       
-      
-        <a class="basic-alignment right" href="/post/developer-relations-for-internal-developers/" title="Next Post: Developer Relations for Internal Developers">Developer Relations for Internal Developers &raquo;</a>
       
     </p>
   </footer>
@@ -280,8 +311,8 @@ http://flic.kr/p/6FFZMy</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/why-i-chose-a-wordpress-blog/';
-        var disqus_url = 'http://jaketrent.com/post/why-i-chose-a-wordpress-blog/';
+        var disqus_identifier = 'http://jaketrent.com/post/serve-coffeescript-with-sinatra/';
+        var disqus_url = 'http://jaketrent.com/post/serve-coffeescript-with-sinatra/';
         var disqus_script = 'embed.js';
       
     (function () {
