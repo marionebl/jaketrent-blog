@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-20T17:42:16-07:00</updated>
+  <updated>2013-02-21T18:02:11-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,72 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[AngularJs Find Element in Context]]></title>
+    <link href="http://jaketrent.com/post/angularjs-find-element-in-context/"/>
+    <updated>2013-02-21T17:35:00-07:00</updated>
+    <id>http://jaketrent.com/post/angularjs-find-element-in-context</id>
+    <content type="html"><![CDATA[<p>Finding an element in context means that I can select a node from the dom within a certain range -- specifically either a node or any of its children nodes.  Is there an "Angular way" to do this?</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs find in context" /></p>
+
+<!--more-->
+
+
+<h2>Angular's Element() API</h2>
+
+<p>Angular provides jqLite for doing basic CSS selections.  As far as I can tell, it does not give you the ability to specify a context node.  Sure, you can specify a more specific selector, but you can't pass a context programmatically.  The best you could do would look something like:</p>
+
+<p><code>js
+angular.element('.my-preknown-context .element-to-find')
+</code></p>
+
+<p>If that's sufficient for your use case, this would be the most "Angular way" to make an element selection.</p>
+
+<h2>jQuery's API</h2>
+
+<p>If you need to make CSS selections within a given context, you'll need to use jQuery.  jQuery's selector will be used in place of jqLite if it is loaded previous to the <code>DOMContentLoaded</code> event firing.  In other words, import jQuery in the <code>head</code> tag.</p>
+
+<p>With jQuery, you can do things like this:</p>
+
+<p><code>js
+$('.element-to-find', $('.my-preknown-context'))
+</code></p>
+
+<p>But we could already do that with the above <code>angular.element</code> function.  If a constraint of our use case is that we don't yet know the selector of the context, then we need to  use this same jQuery API to do what we couldn't before.  For instance, if we want to find a child element of an element that was clicked, the inside of the click handler might look like this:</p>
+
+<p><code>js
+$('.element-to-find', $(event.currentTarget))
+</code></p>
+
+<p>We could also write it like this:</p>
+
+<p><code>js
+$(event.currentTarget).find('.element-to-find')
+</code></p>
+
+<p>Well, why not use <code>angular.element().find()</code>?  Because it is limited to querying children by tagName only.  Oh boy.  That's not all that useful.  Interesting/weird constraint.  Oh well, maybe someday.</p>
+
+<h2>jQuery, Meet Angular</h2>
+
+<p>So, using full jQuery is probably not the most "Angular way".  So, what's the best you can do?  Use Angular to get the context reference.  In a click handler, use the <code>$event</code> service which references the event object:</p>
+
+<p><code>js
+$('.element-to-find', $event.currentTarget)
+</code></p>
+
+<p>In a controller, use the <code>$element</code> service which references the dom node the controller is attached to:</p>
+
+<p><code>js
+$('.element-to-find', $element)
+</code></p>
+
+<p>This method uses jQuery to fill in for something it seems Angular can't do yet.  And it uses Angular where possible, since it has access to these dom references already.</p>
+
+<p>What do you think?  Is there a more "Angular way" to do this?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Serve CoffeeScript from Sinatra]]></title>
@@ -344,85 +410,6 @@ ActionView::Template::Error (scripts-head.js isn't precompiled):</p>
 <p>It's that easy.  It's too bad you have to wait until the app runs to discover this is a problem.  But now you're ready.</p>
 
 <p>Now if we could only customize the directory structure under <code>app/assets</code>.  I would much rather use the path <code>js/</code> instead of <code>javascripts/</code>.  Does anyone know how?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Run a Pow Server on a VM]]></title>
-    <link href="http://jaketrent.com/post/run-pow-server-on-vm/"/>
-    <updated>2013-01-31T16:14:00-07:00</updated>
-    <id>http://jaketrent.com/post/run-pow-server-on-vm</id>
-    <content type="html"><![CDATA[<p>It's really pretty cool how easy <a href="http://pow.cx/">Pow</a> makes running a Rails server.  <a href="https://github.com/rodreegez/powder">Powder</a> makes it even easier.  Here's how to run your Rails server via Pow on a VM in order to test IE.</p>
-
-<p><img src="http://i.imgur.com/XdExdtS.jpg" alt="Pow Server" /></p>
-
-<!--more-->
-
-
-<h2>Install Pow</h2>
-
-<p>Get your Ruby environment otherwise setup for Rails dev. Then install <a href="http://pow.cx/">Pow</a>.  It's a nice little utility created by the folks at 37 Signals.  They have a short little install script you can run, as <a href="http://pow.cx/">referenced on the Pow site</a>.  Or, you can use a utility created to make it <em>even easier</em> -- <a href="https://github.com/rodreegez/powder">powder</a>.</p>
-
-<p>To install, you'll need <a href="http://rubygems.org">Rubygems</a> installed, and run:</p>
-
-<p><code>
-$ gem install powder
-</code></p>
-
-<p>Then link your project to Pow via the command:</p>
-
-<p><code>
-$ cd &lt;my_proj_dir&gt;
-$ powder link
-</code></p>
-
-<p>Make sure Pow is running:</p>
-
-<p><code>
-$ powder up
-</code></p>
-
-<p>And access your Pow-powered site by going to your project's address in your browser:</p>
-
-<p><code>
-http://&lt;my_project_dir&gt;.dev
-</code></p>
-
-<p>There are other options in the <code>powder link</code> step.  For instance, if you want to access your site through an http address different than <code>&lt;my_proj_dir&gt;</code> you can specify that.</p>
-
-<h2>Install your VM</h2>
-
-<p>There are a few different VM options.  My favorite is <a href="http://virtualbox.org">VirtualBox</a>.  It does hurt a bit seeing the "Oracle" moniker on it, but I've found it to be as responsive as a VM can be and generally stable.</p>
-
-<h2>Install Internet Explorer</h2>
-
-<p>There really wasn't another reason that you wanted a Windows VM was there?</p>
-
-<p>I've had good success with  the project <a href="https://github.com/xdissent/ievms">xdissent/ievms</a>.  To download the IE-ready images, the README invites us to run this script in our shell:</p>
-
-<p><code>
-curl -s https://raw.github.com/xdissent/ievms/master/ievms.sh | bash
-</code></p>
-
-<p>It will download multiple parts of several Windows/IE VM images into <code>~/.ievms</code> and install them so they're ready to roll with VirtualBox.  Run this way, images for Internet Explorer 6, 7, 8, and 9 are all downloaded.  If you wanted to just download IE 9, you could run:</p>
-
-<p><code>
-curl -s https://raw.github.com/xdissent/ievms/master/ievms.sh | IEVMS_VERSIONS="9" bash
-</code></p>
-
-<p>Either way, this download takes quite a while to complete, but the shell script that's running it takes pretty good care of you, restarting on the last incomplete download part.</p>
-
-<h2>Access Pow via VirtualBox</h2>
-
-<p>Accessing Pow in the VM isn't bad at all.  Pow makes use of <a href="http://xip.io">xip.io</a>, which provides a wildcard DNS entry used by Pow and thus your app.</p>
-
-<p>For the <a href="http://pow.cx/manual.html#section_2.1.5">next step</a>, take note of your IP by running <code>ifconfig</code>.  Then from IE inside of VirtualBox, point your browser at:</p>
-
-<p><code>
-http://&lt;my_proj_dir&gt;.&lt;my_ip&gt;.xip.io
-</code></p>
-
-<p>And you should see your project running in the VM just as you do from your better, native OS.  Pow!</p>
 ]]></content>
   </entry>
   

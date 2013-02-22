@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-20T17:42:16-07:00</updated>
+  <updated>2013-02-21T18:02:11-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,72 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[AngularJs Find Element in Context]]></title>
+    <link href="http://jaketrent.com/post/angularjs-find-element-in-context/"/>
+    <updated>2013-02-21T17:35:00-07:00</updated>
+    <id>http://jaketrent.com/post/angularjs-find-element-in-context</id>
+    <content type="html"><![CDATA[<p>Finding an element in context means that I can select a node from the dom within a certain range -- specifically either a node or any of its children nodes.  Is there an "Angular way" to do this?</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs find in context" /></p>
+
+<!--more-->
+
+
+<h2>Angular's Element() API</h2>
+
+<p>Angular provides jqLite for doing basic CSS selections.  As far as I can tell, it does not give you the ability to specify a context node.  Sure, you can specify a more specific selector, but you can't pass a context programmatically.  The best you could do would look something like:</p>
+
+<p><code>js
+angular.element('.my-preknown-context .element-to-find')
+</code></p>
+
+<p>If that's sufficient for your use case, this would be the most "Angular way" to make an element selection.</p>
+
+<h2>jQuery's API</h2>
+
+<p>If you need to make CSS selections within a given context, you'll need to use jQuery.  jQuery's selector will be used in place of jqLite if it is loaded previous to the <code>DOMContentLoaded</code> event firing.  In other words, import jQuery in the <code>head</code> tag.</p>
+
+<p>With jQuery, you can do things like this:</p>
+
+<p><code>js
+$('.element-to-find', $('.my-preknown-context'))
+</code></p>
+
+<p>But we could already do that with the above <code>angular.element</code> function.  If a constraint of our use case is that we don't yet know the selector of the context, then we need to  use this same jQuery API to do what we couldn't before.  For instance, if we want to find a child element of an element that was clicked, the inside of the click handler might look like this:</p>
+
+<p><code>js
+$('.element-to-find', $(event.currentTarget))
+</code></p>
+
+<p>We could also write it like this:</p>
+
+<p><code>js
+$(event.currentTarget).find('.element-to-find')
+</code></p>
+
+<p>Well, why not use <code>angular.element().find()</code>?  Because it is limited to querying children by tagName only.  Oh boy.  That's not all that useful.  Interesting/weird constraint.  Oh well, maybe someday.</p>
+
+<h2>jQuery, Meet Angular</h2>
+
+<p>So, using full jQuery is probably not the most "Angular way".  So, what's the best you can do?  Use Angular to get the context reference.  In a click handler, use the <code>$event</code> service which references the event object:</p>
+
+<p><code>js
+$('.element-to-find', $event.currentTarget)
+</code></p>
+
+<p>In a controller, use the <code>$element</code> service which references the dom node the controller is attached to:</p>
+
+<p><code>js
+$('.element-to-find', $element)
+</code></p>
+
+<p>This method uses jQuery to fill in for something it seems Angular can't do yet.  And it uses Angular where possible, since it has access to these dom references already.</p>
+
+<p>What do you think?  Is there a more "Angular way" to do this?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mocha Testing AngularJs Dependency Injection]]></title>

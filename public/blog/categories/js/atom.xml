@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-20T17:42:16-07:00</updated>
+  <updated>2013-02-21T18:02:11-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,72 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[AngularJs Find Element in Context]]></title>
+    <link href="http://jaketrent.com/post/angularjs-find-element-in-context/"/>
+    <updated>2013-02-21T17:35:00-07:00</updated>
+    <id>http://jaketrent.com/post/angularjs-find-element-in-context</id>
+    <content type="html"><![CDATA[<p>Finding an element in context means that I can select a node from the dom within a certain range -- specifically either a node or any of its children nodes.  Is there an "Angular way" to do this?</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs find in context" /></p>
+
+<!--more-->
+
+
+<h2>Angular's Element() API</h2>
+
+<p>Angular provides jqLite for doing basic CSS selections.  As far as I can tell, it does not give you the ability to specify a context node.  Sure, you can specify a more specific selector, but you can't pass a context programmatically.  The best you could do would look something like:</p>
+
+<p><code>js
+angular.element('.my-preknown-context .element-to-find')
+</code></p>
+
+<p>If that's sufficient for your use case, this would be the most "Angular way" to make an element selection.</p>
+
+<h2>jQuery's API</h2>
+
+<p>If you need to make CSS selections within a given context, you'll need to use jQuery.  jQuery's selector will be used in place of jqLite if it is loaded previous to the <code>DOMContentLoaded</code> event firing.  In other words, import jQuery in the <code>head</code> tag.</p>
+
+<p>With jQuery, you can do things like this:</p>
+
+<p><code>js
+$('.element-to-find', $('.my-preknown-context'))
+</code></p>
+
+<p>But we could already do that with the above <code>angular.element</code> function.  If a constraint of our use case is that we don't yet know the selector of the context, then we need to  use this same jQuery API to do what we couldn't before.  For instance, if we want to find a child element of an element that was clicked, the inside of the click handler might look like this:</p>
+
+<p><code>js
+$('.element-to-find', $(event.currentTarget))
+</code></p>
+
+<p>We could also write it like this:</p>
+
+<p><code>js
+$(event.currentTarget).find('.element-to-find')
+</code></p>
+
+<p>Well, why not use <code>angular.element().find()</code>?  Because it is limited to querying children by tagName only.  Oh boy.  That's not all that useful.  Interesting/weird constraint.  Oh well, maybe someday.</p>
+
+<h2>jQuery, Meet Angular</h2>
+
+<p>So, using full jQuery is probably not the most "Angular way".  So, what's the best you can do?  Use Angular to get the context reference.  In a click handler, use the <code>$event</code> service which references the event object:</p>
+
+<p><code>js
+$('.element-to-find', $event.currentTarget)
+</code></p>
+
+<p>In a controller, use the <code>$element</code> service which references the dom node the controller is attached to:</p>
+
+<p><code>js
+$('.element-to-find', $element)
+</code></p>
+
+<p>This method uses jQuery to fill in for something it seems Angular can't do yet.  And it uses Angular where possible, since it has access to these dom references already.</p>
+
+<p>What do you think?  Is there a more "Angular way" to do this?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Smashing Node Review]]></title>
@@ -430,162 +496,6 @@ $ mocha --grep login-*.js
 <h2>Remember to Remove</h2>
 
 <p>With the additions of the <code>.only()</code> or <code>.skip()</code> you are altering the actual code of your tests.  This is great for your local development process.  You'll need to be careful that you don't commit this change -- at least you usually won't want to.  Otherwise, you CI process will be running a subset of your tests, just as you are locally, which is no bueno.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Authenticated Supertest Tests]]></title>
-    <link href="http://jaketrent.com/post/authenticated-supertest-tests/"/>
-    <updated>2013-01-14T07:07:00-07:00</updated>
-    <id>http://jaketrent.com/post/authenticated-supertest-tests</id>
-    <content type="html"><![CDATA[<p>When you're trying to test your authenticated URLs via supertest, there are just a couple things you'll need to do that aren't spelled out in the docs.</p>
-
-<p><img src="http://i.imgur.com/PFUGV.jpg" alt="Supertest" /></p>
-
-<!--more-->
-
-
-<h2>Supertest</h2>
-
-<p><a href="https://github.com/visionmedia/supertest">Supertest</a> is a library written by the prolific TJ Holowaychuk.  It is a companion to <a href="https://github.com/visionmedia/superagent">superagent</a>.  Superagent provides a clean API for issuing HTTP commands.  Supertest ties into superagent for allowing easy assertions on top of those HTTP requests.</p>
-
-<h2>Authenticated Requests</h2>
-
-<p>Lots of webapps have portions of their sites that require authenticated to access, so it makes sense that there's a great need to test requests against these portions.  Yet in supertest, there's not a totally-straightforward way to login for the sake of a test and do subsequent requests under that login.  At least there's no explicit API for it in the current release.  But there have been <a href="https://github.com/visionmedia/supertest/issues/26">many</a> <a href="https://github.com/visionmedia/supertest/issues/46">requests</a> for it.  Who knows if it will come.  Given that we know the mechanism for session continuity between requests, cookies, we can make it happen ourselves.</p>
-
-<h2>Login for Supertest</h2>
-
-<h4>Use Superagent</h4>
-
-<p>Supertest has no cookiejar for holding cookies like the sessionid.  But, superagent does.  So, we're going to need to import it explicitly.  A login helper could look something like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">superagent</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;superagent&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">agent</span> <span class="o">=</span> <span class="nx">superagent</span><span class="p">.</span><span class="nx">agent</span><span class="p">();</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">theAccount</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;nacho&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s2">&quot;password&quot;</span><span class="o">:</span> <span class="s2">&quot;iamtheluchadore&quot;</span>
-</span><span class='line'><span class="p">};</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">exports</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">request</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">theAccount</span><span class="p">)</span>
-</span><span class='line'><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="nx">agent</span><span class="p">.</span><span class="nx">saveCookies</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">done</span><span class="p">(</span><span class="nx">agent</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>A few points:</p>
-
-<ul>
-<li><code>theAccount</code> information could come from anywhere.  You could use the same pattern from this login process to setup a newly-registered user as well.</li>
-<li>The <code>request</code> parameter to <code>login()</code> is the supertest request.</li>
-<li>After we post to '/login' and a response returns in the <code>end()</code> function, we are saving the cookies from that response (a login response should return with a 'Set-cookies' header).  This superagent agent (with the login cookie) is what we send back to the caller of the login helper via <code>done()</code>.</li>
-</ul>
-
-
-<h4>Attach the Cookies to Supertest</h4>
-
-<p>Now that we've made login request and saved the cookies, it's time to make our authenticated request(s).  Easy cheesy.  A simple test to see if the login worked might look like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;supertest&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">login</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./login&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;MyApp&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="kd">var</span> <span class="nx">agent</span><span class="p">;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">before</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">login</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">loginAgent</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">agent</span> <span class="o">=</span> <span class="nx">loginAgent</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">done</span><span class="p">();</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should allow access to admin when logged in&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/admin&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">agent</span><span class="p">.</span><span class="nx">attachCookies</span><span class="p">(</span><span class="nx">req</span><span class="p">);</span>
-</span><span class='line'><span class="nx">req</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nx">done</span><span class="p">);</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>More jabber about the code:</p>
-
-<ul>
-<li><code>app</code> is my Express app.  This is your webserver.</li>
-<li>We're importing the login helper, and we've called it one time before all the tests in our <code>MyApp</code> spec via <code>before()</code>.  This call to <code>before()</code> is asynchronous, just like our test in this case, because we have to do a full login to setup our test.  When the <code>loginAgent</code> is returned, we save it for use in our actual tests.</li>
-<li>The test gets the best of both worlds.  When doing <code>request.get()</code>, we're using the supertest request.  So, we can then do cool <code>expect()</code>s on it.  Right before the request goes out the door, we grab the superagent <code>agent</code> and attach its cookies to our new request.</li>
-</ul>
-
-
-<p>In the future, perhaps there will be a more expressive way to do this that's worked into the supertest API.  For now, this strategy is the best I've found.  It's based on the method I originally found in <a href="https://github.com/visionmedia/supertest/issues/46#issuecomment-11679706">visionmedia/supertest#46</a>.</p>
-
-<p>Is there a better way that you've found to do this kind of authenticated test?</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-20T17:42:16-07:00</updated>
+  <updated>2013-02-21T18:02:11-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,78 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[AngularJs Find Element in Context]]></title>
+    <link href="http://jaketrent.com/post/angularjs-find-element-in-context/"/>
+    <updated>2013-02-21T17:35:00-07:00</updated>
+    <id>http://jaketrent.com/post/angularjs-find-element-in-context</id>
+    <content type="html"><![CDATA[<p>Finding an element in context means that I can select a node from the dom within a certain range &#8211; specifically either a node or any of its children nodes.  Is there an &#8220;Angular way&#8221; to do this?</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs find in context" /></p>
+
+<!--more-->
+
+
+<h2>Angular&#8217;s Element() API</h2>
+
+<p>Angular provides jqLite for doing basic CSS selections.  As far as I can tell, it does not give you the ability to specify a context node.  Sure, you can specify a more specific selector, but you can&#8217;t pass a context programmatically.  The best you could do would look something like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">element</span><span class="p">(</span><span class="s1">&#39;.my-preknown-context .element-to-find&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If that&#8217;s sufficient for your use case, this would be the most &#8220;Angular way&#8221; to make an element selection.</p>
+
+<h2>jQuery&#8217;s API</h2>
+
+<p>If you need to make CSS selections within a given context, you&#8217;ll need to use jQuery.  jQuery&#8217;s selector will be used in place of jqLite if it is loaded previous to the <code>DOMContentLoaded</code> event firing.  In other words, import jQuery in the <code>head</code> tag.</p>
+
+<p>With jQuery, you can do things like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.element-to-find&#39;</span><span class="p">,</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.my-preknown-context&#39;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But we could already do that with the above <code>angular.element</code> function.  If a constraint of our use case is that we don&#8217;t yet know the selector of the context, then we need to  use this same jQuery API to do what we couldn&#8217;t before.  For instance, if we want to find a child element of an element that was clicked, the inside of the click handler might look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.element-to-find&#39;</span><span class="p">,</span> <span class="nx">$</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We could also write it like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.element-to-find&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Well, why not use <code>angular.element().find()</code>?  Because it is limited to querying children by tagName only.  Oh boy.  That&#8217;s not all that useful.  Interesting/weird constraint.  Oh well, maybe someday.</p>
+
+<h2>jQuery, Meet Angular</h2>
+
+<p>So, using full jQuery is probably not the most &#8220;Angular way&#8221;.  So, what&#8217;s the best you can do?  Use Angular to get the context reference.  In a click handler, use the <code>$event</code> service which references the event object:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.element-to-find&#39;</span><span class="p">,</span> <span class="nx">$event</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In a controller, use the <code>$element</code> service which references the dom node the controller is attached to:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.element-to-find&#39;</span><span class="p">,</span> <span class="nx">$element</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This method uses jQuery to fill in for something it seems Angular can&#8217;t do yet.  And it uses Angular where possible, since it has access to these dom references already.</p>
+
+<p>What do you think?  Is there a more &#8220;Angular way&#8221; to do this?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Serve CoffeeScript from Sinatra]]></title>
@@ -1267,26 +1339,6 @@ blah - scope is not there</p>
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[BLOG TEMPLATE]]></title>
-    <link href="http://jaketrent.com/post/blog-template/"/>
-    <updated>2013-01-01T18:18:00-07:00</updated>
-    <id>http://jaketrent.com/post/blog-template</id>
-    <content type="html"><![CDATA[<p>[[INTRO - include keyword; start with question or story]]</p>
-
-<p><img src="http://i.imgur.com/M0kYA.jpg" alt="Alt Text" /></p>
-
-<!--more-->
-
-
-<h2>[[Secondary - include keyword]]</h2>
-
-<p>[[BODY]]</p>
-
-<p>[[CLOSE-Summarize, end with question]]</p>
 ]]></content>
   </entry>
   
