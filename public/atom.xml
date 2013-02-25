@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-21T18:02:11-07:00</updated>
+  <updated>2013-02-25T07:36:22-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,117 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Pass Values From the Page to AngularJs]]></title>
+    <link href="http://jaketrent.com/post/pass-values-from-page-to-angular/"/>
+    <updated>2013-02-22T07:10:00-07:00</updated>
+    <id>http://jaketrent.com/post/pass-values-from-page-to-angular</id>
+    <content type="html"><![CDATA[<p>There are simple mechanisms for passing data from your web page to AngularJs.  One directive is called <code>ngInit</code>.  You may well need it.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular data passing" /></p>
+
+<!--more-->
+
+
+<h2>The Use Cases</h2>
+
+<p>The use cases don&#8217;t make a ton of sense without a concrete example.  There are several ways to implement even the most simple example.  If the solution doesn&#8217;t seem to fit the problem, try another way.</p>
+
+<p>For our purposes, let&#8217;s say that we&#8217;re displaying a list of comments on the screen.</p>
+
+<h4>Angular Requests Data</h4>
+
+<p>It&#8217;s easy to put data into scope for AngularJs to use if Angular is the one to request the data initially.  This often will look something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&#39;/comments&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="nf">(comments) -&gt;</span>
+</span><span class='line'>    <span class="nv">$scope.comments = </span><span class="nx">comments</span>
+</span><span class='line'>  <span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then your template will automatically have the data in scope.  And the template (<a href="http://slim-lang.org">Slim</a> syntax used below) can look like this:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
+</span><span class='line'><span class="n">ul</span>
+</span><span class='line'>  <span class="n">li</span> <span class="n">ng</span><span class="o">-</span><span class="n">repeat</span><span class="o">=</span><span class="s2">&quot;comment in comments&quot;</span>
+</span><span class='line'>    <span class="o">|</span> <span class="p">{{</span> <span class="n">comment</span> <span class="p">}}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now when we add a new comment via Ajax, we can push it right into the comment collection, and the page is updated by Angular with the appropriate data.  Or if we want to perform an operation on a pre-existing comment, it&#8217;s easy to do via an AJAX operation and display the result.</p>
+
+<h4>Server Renders Data Initially</h4>
+
+<p>Sometimes it&#8217;ll make sense for the server to render the data.  Often this kind of data will be the main content on the page.  When the client receives the page, we want the data display to be immediate.  We don&#8217;t want them to load a page with a spinner for the main content, then wait and watch it spin while the real content is requested secondarily.</p>
+
+<p>If the server was to initially print the comments, like so:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
+</span><span class='line'><span class="n">ul</span>
+</span><span class='line'>  <span class="o">-</span> <span class="k">for</span> <span class="n">comment</span> <span class="k">in</span> <span class="n">comments</span>
+</span><span class='line'>    <span class="n">li</span>
+</span><span class='line'>      <span class="o">=</span> <span class="n">comment</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We still might want to do AJAX&#8217;y things with a comment, such as like it.  When I like it, I don&#8217;t want the browser to have to refresh, so I want to make Angular do this for me.</p>
+
+<h2>ngInit Passes Angular Server Data</h2>
+
+<p>Angular provides a nice directive, <code>ngInit</code> for passing Angular data.  It&#8217;s a mechanism by which you can bootstrap your scripts with the data they need to function.  A mixture of server rendering and client-side AJAX requests on the same data will probably mean that you&#8217;re going to use this directive.</p>
+
+<p>From the <code>ngInit</code> docs:</p>
+
+<blockquote><p> The ngInit directive specifies initialization tasks to be executed before the template enters execution mode during bootstrap.</p></blockquote>
+
+<p>Our server/client mixture code might look something like this:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
+</span><span class='line'><span class="n">ul</span>
+</span><span class='line'>  <span class="o">-</span> <span class="k">for</span> <span class="n">comment</span> <span class="k">in</span> <span class="n">comments</span>
+</span><span class='line'>    <span class="n">li</span> <span class="n">ng</span><span class="o">-</span><span class="n">init</span><span class="o">=</span><span class="s2">&quot;commentLikeCount[i]=</span><span class="si">#{</span><span class="n">comment</span><span class="o">.</span><span class="n">likeCount</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="o">=</span> <span class="n">comment</span>
+</span><span class='line'>      <span class="o">|</span> <span class="no">Likes</span> <span class="k">for</span> <span class="n">this</span> <span class="n">comment</span><span class="p">:</span> <span class="p">{{</span><span class="n">commentLikeCount</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">}}</span>
+</span><span class='line'>      <span class="n">a</span> <span class="n">ng</span><span class="o">-</span><span class="n">click</span><span class="o">=</span><span class="s2">&quot;like(commentLikeCount[i])&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s important to realize where data is coming from in this example.  The syntax <code>=</code> as in <code>= comment</code> and <code>#{}</code> as in <code>#{comment.likeCount}</code> are server-rendered bits.  As you know, the curlies and the ng attribute syntax is for Angular&#8217;s client side rendering.</p>
+
+<p>So how has this mixture bought us anything?</p>
+
+<ol>
+<li>The server renders the comments initially.  This makes the display immediate when the browser loads the page.</li>
+<li>We init the value of <code>commentLikeCount</code>, making it available for Angular to display once the client compiles the template.</li>
+<li>Since Angular has a count of the likes, it can easily update it and redisplay without a page reload after calling <code>like()</code> to increment the count.</li>
+</ol>
+
+
+<p>Frankly, the mixture feels a little bit odd to me.  I&#8217;ve seen it work.  I know there are different ways to get this done.  I think there are probably better ways.  What has worked well for you in similar use cases?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[AngularJs Find Element in Context]]></title>
@@ -1573,92 +1684,6 @@ blah - scope is not there</p>
 
 
 <p>Does IntelliJ already do those things?  Probably, and I just don&#8217;t yet know how to bend it to my will.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Impressions of Grunt]]></title>
-    <link href="http://jaketrent.com/post/impressions-of-grunt/"/>
-    <updated>2012-12-12T14:24:00-07:00</updated>
-    <id>http://jaketrent.com/post/impressions-of-grunt</id>
-    <content type="html"><![CDATA[<p>Grunt is a great build tool for JavaScript projects.  It comes with a lot out of the box, and you can write your own custom tasks.  It joins a world fraught with many, glorious build tool options.  So, a bit has been made of the decision to have Grunt join the fray.  Perhaps most prominently, Miller Medeiros had <a href="http://blog.millermedeiros.com/node-js-ant-grunt-and-other-build-tools/">a few problems with Grunt</a>.  And in response, Ben Alman gave his reasoning on <a href="http://benalman.com/news/2012/08/why-grunt/">why he wrote it</a>.  Having used it for a bit, I have a few impressions.  Here they are so far.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt impressions" /></p>
-
-<!--more-->
-
-
-<h2>Community</h2>
-
-<p>There will probably never be any build tool that gains more mass than what already exists as just a bash or a make script.  And really nothing needs to.  Healthy-sized communities have been built up around different build tool options where those that used it liked the style, it fit their platform, and they found it useful.  Grunt feels like it&#8217;s on track to become a highlight build tool in the Js community.  There are many using it <a href="https://github.com/gruntjs/gruntjs.com/issues/9">already</a> and more <a href="https://github.com/angular/angular.js/pull/1544">on the way</a>.</p>
-
-<h2>Declarative vs. Procedural</h2>
-
-<p>Which style of project configuration is better?  Declarative or procedural?  Wars have been started with lesser words.  I don&#8217;t feel like it&#8217;s a question of better.  It&#8217;s just a matter of style.  There are pros and cons.  Where you do the many of same things as everyone else, declarative works just fine.  When you have to do new, original things, you have to write code to support that.  You might wrap that in a grunt plugin to encapsulate it then write declarative options to feed it.  But, you still own the plugin implementation.</p>
-
-<h2>JavaScript Build for JavaScript Project</h2>
-
-<p>Maybe obviously, the sweet spot for Grunt is building JavaScript projects.  Js projects are becoming more complex all the time.  Often, complementary build tools are lacking.  There are other projects that are named <a href="https://github.com/280north/jake">awesomely</a>, though they are mostly dead.  Grunt fills a gap for JavaScript projects.  It seems that the advantages of writing client <em>and</em> server js apply here as well:  Js build tools take advantage of the Js (Node) environment.  You can use your Js skills here.  The context switching is diminished.</p>
-
-<h2>Synchronous Exec for JavaScript Build</h2>
-
-<p>One of the main sellings points for NodeJs is that it is built from the ground up for using in asychronous environments and problems.  Build scripts aren&#8217;t generally asynchronous.  Usually, it&#8217;s quite the opposite.  Step 1 leads to step 2 and so on.  You can&#8217;t skip, and future steps rely upon completion of the previous.</p>
-
-<p>So, you can try <a href="http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback">child_process.exec</a>, but it&#8217;s asynchronous.  So, make it synchronous and try <a href="https://github.com/jeremyfa/node-exec-sync">exec-sync</a>.  But it has <a href="https://github.com/jeremyfa/node-exec-sync/issues/8">problems</a> vanilla exec doesn&#8217;t.  The best synchronous exec for JavaScript I&#8217;ve found so far is <a href="http://documentup.com/arturadib/shelljs#command-reference/exec-command-options-callback">shelljs.exec</a>.</p>
-
-<p>In this way, NodeJs/Grunt seems like an awkward fit as a build tool.</p>
-
-<h2>Shell Commands in Grunt</h2>
-
-<p>When I end up doing custom things in my Grunt build, it tends to be that I&#8217;m trying to get to the shell and execute something.  If I have a shell script, I can just execute it with <a href="https://github.com/jharding/grunt-exec">grunt-exec</a>.  If I&#8217;m trying to keep all logic in Grunt, I&#8217;ll use <a href="https://github.com/arturadib/shelljs">shelljs</a>.  The thing that gets me with both of these solutions is that I&#8217;m in Node, constantly trying to get out of Node to run something in the shell, like a git command.  So my code ends up looking like lots of these:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">shell</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;shelljs&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">writeln</span><span class="p">(</span><span class="s1">&#39;Cloning repo&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">shell</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="s1">&#39;git clone &#39;</span> <span class="o">+</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">repo</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There&#8217;s a bit of cruft to recreate bash in Node.  It&#8217;s not as clean and does not read as well as a vanilla shell script might:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">echo</span> <span class="s1">&#39;Cloning repo&#39;</span>;
-</span><span class='line'>git clone <span class="nv">$repo</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>New APIs</h2>
-
-<p>Grunt does quite a bit for you.  It&#8217;s now up to me to go figure out all the cool stuff it can do.  Once I found the <a href="https://github.com/gruntjs/grunt/wiki/grunt.file">file API</a>, I was excited and retained a touch of the nagging feeling I just mentioned related to shell commands.</p>
-
-<h2>JavaScript Build Scripts are Cross-OS Compatible</h2>
-
-<p>One of the main reasons you would choose to write JavaScript for a build script instead of a .sh or a .bat file is that you can use it multiple OS&#8217;es.  Node <a href="https://github.com/jeremyfa/node-exec-sync/pull/6">should</a> :) execute the same on each platform it supports &#8211; essentially Windows, Linux, and Osx.</p>
-
-<h2>Builds Scripts as Plugins</h2>
-
-<p>When you come up with a new Grunt task that is obviously useful for someone else out in the world, you&#8217;ll likely generalize it and publish it to npm.  There already a good number of <a href="https://npmjs.org/browse/keyword/gruntplugin">&#8216;gruntplugin&#8217;</a>s out there.  This is a great sharing mechanism that not every build tool environment will give you.  I&#8217;m grateful for the good Grunt plugins shared out there.</p>
-
-<h2>Grunt Configuration</h2>
-
-<p>Grunt, by default, has a declarative configuration style.  This means lots of json, often long and nested.  It&#8217;s all organized by task names, so it&#8217;s fairly easy to find stuff.  But the bottom line is that there is a fair bit to navigate in the average grunt file.</p>
-
-<h2>Breaking Changes in Grunt API</h2>
-
-<p>As of this writing, Grunt 0.4 is on the verge of release.  By all accounts it will make things better, and it looks promising.  They have a mostly-straightforward <a href="https://github.com/gruntjs/grunt/wiki/Upgrading-from-0.3-to-0.4">migration guide</a>.  The thing that has been the most painful is the lack of backward compatibility.  My current, working builds rely on Grunt plugins that are not 0.4 compliant, so I have two choices:  Help each of those plugins upgrade or wait until 0.4 reaches critical mass &#8211; ie, most worthy plugins are upgraded.</p>
-
-<h2>Grunt is Fast</h2>
-
-<p>Grunt is faster than Pumba being chased by a hyena.  Previous to Grunt, we were using Maven to do similar tasks.  Now we do more (Grunt has made it easy for us to incorporate more good practices &#8211; eg, linting), and the build is done is a serious fraction of the time.  The speed is super dependant on what operations the build actually performs, but my impression for my builds is that Grunt is fast.</p>
-
-<h2>The Grunt Logo</h2>
-
-<p>Yes, it&#8217;s superficial, and it&#8217;s even a lame reason, but I like Grunt because they have a great logo.  Wild boar for logo?  Instant win.  (That is what it is, right?)</p>
-
-<p>So, is Grunt helping you out?  What are your impressions?  Or are you using something else entirely?</p>
 ]]></content>
   </entry>
   

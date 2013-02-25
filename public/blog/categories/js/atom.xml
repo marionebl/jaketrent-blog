@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-21T18:02:11-07:00</updated>
+  <updated>2013-02-25T07:36:22-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,128 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Pass Values From the Page to AngularJs]]></title>
+    <link href="http://jaketrent.com/post/pass-values-from-page-to-angular/"/>
+    <updated>2013-02-22T07:10:00-07:00</updated>
+    <id>http://jaketrent.com/post/pass-values-from-page-to-angular</id>
+    <content type="html"><![CDATA[<p>There are simple mechanisms for passing data from your web page to AngularJs.  One directive is called <code>ngInit</code>.  You may well need it.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular data passing" /></p>
+
+<!--more-->
+
+
+<h2>The Use Cases</h2>
+
+<p>The use cases don't make a ton of sense without a concrete example.  There are several ways to implement even the most simple example.  If the solution doesn't seem to fit the problem, try another way.</p>
+
+<p>For our purposes, let's say that we're displaying a list of comments on the screen.</p>
+
+<h4>Angular Requests Data</h4>
+
+<p>It's easy to put data into scope for AngularJs to use if Angular is the one to request the data initially.  This often will look something like this:</p>
+
+<p>```coffeescript
+$http.get('/comments')
+  .success((comments) -></p>
+
+<pre><code>$scope.comments = comments
+</code></pre>
+
+<p>  )
+```</p>
+
+<p>Then your template will automatically have the data in scope.  And the template (<a href="http://slim-lang.org">Slim</a> syntax used below) can look like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
+</span><span class='line'><span class="n">ul</span>
+</span><span class='line'>  <span class="n">li</span> <span class="n">ng</span><span class="o">-</span><span class="n">repeat</span><span class="o">=</span><span class="s2">&quot;comment in comments&quot;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;| {{ comment }}</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now when we add a new comment via Ajax, we can push it right into the comment collection, and the page is updated by Angular with the appropriate data.  Or if we want to perform an operation on a pre-existing comment, it's easy to do via an AJAX operation and display the result.</p>
+
+<h4>Server Renders Data Initially</h4>
+
+<p>Sometimes it'll make sense for the server to render the data.  Often this kind of data will be the main content on the page.  When the client receives the page, we want the data display to be immediate.  We don't want them to load a page with a spinner for the main content, then wait and watch it spin while the real content is requested secondarily.</p>
+
+<p>If the server was to initially print the comments, like so:</p>
+
+<p>```ruby
+h1 Comments
+ul
+  - for comment in comments</p>
+
+<pre><code>li 
+  = comment
+</code></pre>
+
+<p>```</p>
+
+<p>We still might want to do AJAX'y things with a comment, such as like it.  When I like it, I don't want the browser to have to refresh, so I want to make Angular do this for me.</p>
+
+<h2>ngInit Passes Angular Server Data</h2>
+
+<p>Angular provides a nice directive, <code>ngInit</code> for passing Angular data.  It's a mechanism by which you can bootstrap your scripts with the data they need to function.  A mixture of server rendering and client-side AJAX requests on the same data will probably mean that you're going to use this directive.</p>
+
+<p>From the <code>ngInit</code> docs:</p>
+
+<blockquote><p> The ngInit directive specifies initialization tasks to be executed before the template enters execution mode during bootstrap.</p></blockquote>
+
+<p>Our server/client mixture code might look something like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
+</span><span class='line'><span class="n">ul</span>
+</span><span class='line'>  <span class="o">-</span> <span class="k">for</span> <span class="n">comment</span> <span class="k">in</span> <span class="n">comments</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;li ng-init=&quot;commentLikeCount[i]=</span><span class="si">#{</span><span class="n">comment</span><span class="o">.</span><span class="n">likeCount</span><span class="si">}</span><span class="sr">&quot;</span>
+</span><span class='line'><span class="sr">  = comment</span>
+</span><span class='line'><span class="sr">  | Likes for this comment: {{commentLikeCount[i]}}</span>
+</span><span class='line'><span class="sr">  a ng-click=&quot;like(commentLikeCount[i])&quot;</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>It's important to realize where data is coming from in this example.  The syntax <code>=</code> as in <code>= comment</code> and <code>#{}</code> as in <code>#{comment.likeCount}</code> are server-rendered bits.  As you know, the curlies and the ng attribute syntax is for Angular's client side rendering.</p>
+
+<p>So how has this mixture bought us anything?</p>
+
+<ol>
+<li>The server renders the comments initially.  This makes the display immediate when the browser loads the page.</li>
+<li>We init the value of <code>commentLikeCount</code>, making it available for Angular to display once the client compiles the template.</li>
+<li>Since Angular has a count of the likes, it can easily update it and redisplay without a page reload after calling <code>like()</code> to increment the count.</li>
+</ol>
+
+
+<p>Frankly, the mixture feels a little bit odd to me.  I've seen it work.  I know there are different ways to get this done.  I think there are probably better ways.  What has worked well for you in similar use cases?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[AngularJs Find Element in Context]]></title>
@@ -418,84 +540,6 @@ $('.element-to-find', $element)
 <p>And wouldn't this be awesome if everyone did this, including all the people that wrote some of those favorite libraries that you use but that you have occassion to debug through?</p>
 
 <p>What other benefits do you see that might come from naming your anonymous functions?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Run a Single Mocha Test]]></title>
-    <link href="http://jaketrent.com/post/run-single-mocha-test/"/>
-    <updated>2013-01-16T07:07:00-07:00</updated>
-    <id>http://jaketrent.com/post/run-single-mocha-test</id>
-    <content type="html"><![CDATA[<p>When working inside your test suite, it's often the case that you don't want to run all of your tests.  Mocha has a great mechanism that allows you to easily specify what exactly you want run.  This can help make your processes such as TDD faster and more focused.</p>
-
-<p><img src="http://i.imgur.com/hbcnU.png" alt="Mocha" /></p>
-
-<!--more-->
-
-
-<h2>Run a Single Test File</h2>
-
-<p>Using the mocha cli, you can easily specify an exact or wildcarded pattern that you want to run.  This is accomplished with the <code>grep</code> option when running the <code>mocha</code> command.</p>
-
-<p>If you wanted to run only the login-failure.js suite, the command would look like:</p>
-
-<p><code>
-$ mocha --grep login-failiure.js
-</code></p>
-
-<p>If you happen to have multiple suites that match a filename pattern that you wanted to run, exclusive to all others, you would run:</p>
-
-<p><code>
-$ mocha --grep login-*.js
-</code></p>
-
-<h2>Run a Single Spec</h2>
-
-<p>Often we're in the test code making changes, and it's easy to make adjustments to what subset of tests you run from here as well.  If I want to run a single <code>describe()</code> function, I can add a <code>.only()</code> to the function call, like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// these tests will be skipped</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">describe</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// these tests will run</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>You can stick the <code>.only()</code> on any <code>describe</code>, no matter if it's first or last in the list of specs.</p>
-
-<h2>Run a Single Test</h2>
-
-<p>Just as you can with <code>describe</code>, the tests can be specified to exclusively run if you attach <code>.only()</code> to the function call.</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">it</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// this test will run</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">it</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// this test will be skipped</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p><strong>Note!</strong> that by putting the <code>.only()</code> on a test, all other functions in the spec are skipped.  This means that your <code>before</code>, <code>beforeEach</code>, <code>after</code>, and <code>afterEach</code> functions are <em>not</em> called.  Sometimes it's hard to remember when that matters, so I usually end up running single specs instead of single tests.</p>
-
-<h2>Skip Something</h2>
-
-<p>If you want to run all the specs/tests that you have minus some subset, effectively commenting out these tests, you can add <code>.skip()</code> to either <code>describe</code> or <code>it</code> function calls.</p>
-
-<h2>Remember to Remove</h2>
-
-<p>With the additions of the <code>.only()</code> or <code>.skip()</code> you are altering the actual code of your tests.  This is great for your local development process.  You'll need to be careful that you don't commit this change -- at least you usually won't want to.  Otherwise, you CI process will be running a subset of your tests, just as you are locally, which is no bueno.</p>
 ]]></content>
   </entry>
   
