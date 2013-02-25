@@ -54,7 +54,7 @@ If the server was to initially print the comments, like so:
 ```ruby
 h1 Comments
 ul
-  - for comment in comments
+  - comments.each do |comment|
     li 
       = comment
 ```
@@ -75,7 +75,7 @@ Our server/client mixture code might look something like this:
 {% raw %}
 h1 Comments
 ul
-  - for comment in comments
+  - comments.each_with_index do |comment, i|
     li ng-init="commentLikeCount[i]=#{comment.likeCount}"
       = comment
       | Likes for this comment: {{commentLikeCount[i]}}

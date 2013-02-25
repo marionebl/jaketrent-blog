@@ -164,7 +164,7 @@
 <span class='line-number'>5</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
 </span><span class='line'><span class="n">ul</span>
-</span><span class='line'>  <span class="o">-</span> <span class="k">for</span> <span class="n">comment</span> <span class="k">in</span> <span class="n">comments</span>
+</span><span class='line'>  <span class="o">-</span> <span class="n">comments</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">comment</span><span class="o">|</span>
 </span><span class='line'>    <span class="n">li</span>
 </span><span class='line'>      <span class="o">=</span> <span class="n">comment</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -191,7 +191,7 @@
 <span class='line-number'>7</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
 </span><span class='line'><span class="n">ul</span>
-</span><span class='line'>  <span class="o">-</span> <span class="k">for</span> <span class="n">comment</span> <span class="k">in</span> <span class="n">comments</span>
+</span><span class='line'>  <span class="o">-</span> <span class="n">comments</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">comment</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span>
 </span><span class='line'>    <span class="n">li</span> <span class="n">ng</span><span class="o">-</span><span class="n">init</span><span class="o">=</span><span class="s2">&quot;commentLikeCount[i]=</span><span class="si">#{</span><span class="n">comment</span><span class="o">.</span><span class="n">likeCount</span><span class="si">}</span><span class="s2">&quot;</span>
 </span><span class='line'>      <span class="o">=</span> <span class="n">comment</span>
 </span><span class='line'>      <span class="o">|</span> <span class="no">Likes</span> <span class="k">for</span> <span class="n">this</span> <span class="n">comment</span><span class="p">:</span> <span class="p">{{</span><span class="n">commentLikeCount</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">}}</span>

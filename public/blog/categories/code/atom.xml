@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-25T07:36:22-07:00</updated>
+  <updated>2013-02-25T08:11:08-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -76,7 +76,7 @@ $http.get('/comments')
 <p>```ruby
 h1 Comments
 ul
-  - for comment in comments</p>
+  - comments.each do |comment|</p>
 
 <pre><code>li 
   = comment
@@ -109,7 +109,7 @@ ul
 <span class='line-number'>11</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
 </span><span class='line'><span class="n">ul</span>
-</span><span class='line'>  <span class="o">-</span> <span class="k">for</span> <span class="n">comment</span> <span class="k">in</span> <span class="n">comments</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>  <span class="o">-</span> <span class="n">comments</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">comment</span><span class="p">,</span> <span class="n">i</span><span class="o">|&lt;</span><span class="sr">/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;li ng-init=&quot;commentLikeCount[i]=</span><span class="si">#{</span><span class="n">comment</span><span class="o">.</span><span class="n">likeCount</span><span class="si">}</span><span class="sr">&quot;</span>
 </span><span class='line'><span class="sr">  = comment</span>
