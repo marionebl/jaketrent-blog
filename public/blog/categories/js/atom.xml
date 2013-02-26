@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-26T07:14:08-07:00</updated>
+  <updated>2013-02-26T08:12:59-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Serve Json from Sinatra]]></title>
+    <link href="http://jaketrent.com/post/serve-json-from-sinatra/"/>
+    <updated>2013-02-26T07:18:00-07:00</updated>
+    <id>http://jaketrent.com/post/serve-json-from-sinatra</id>
+    <content type="html"><![CDATA[<p>By default, Sinatra knows how to serve up a rendered html page.  With a slight tweak, we can make it spit out Json too!</p>
+
+<p><img src="http://i.imgur.com/ZyCgi56.jpg" alt="JSON on Sinatra" /></p>
+
+<!--more-->
+
+
+<h2>Data Format of the Web</h2>
+
+<p>Json is my favorite data format for web applications.  Really, who wouldn't want their webservice to expose Json?  It's mucho useful.</p>
+
+<p>First, add a line to the <code>Gemfile</code> that makes a Json helper method available to Sinatra:</p>
+
+<p><code>ruby
+gem "sinatra-contrib"
+</code>
+Next, all you need to do is query the data that you want to return and actually return it, as in:</p>
+
+<p>```ruby
+require "sinatra/json"</p>
+
+<p>get "/my-models" do
+  json MyModel.all
+end
+```</p>
+
+<p>The <code>json</code> helper will then serialize your objects into Json, much to the delight of your clients!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Pass Values From the Page to AngularJs]]></title>
@@ -398,148 +433,6 @@ $('.element-to-find', $element)
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>It's ready for use by a json-ready client.  So stinkin easy.  We're connecting the web together, and it's awesome!  Now the world will know of the baked goods and flower arrangements that we love the most.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Naming Anonymous JavaScript Functions]]></title>
-    <link href="http://jaketrent.com/post/naming-anonymous-javascript-functions/"/>
-    <updated>2013-01-17T07:10:00-07:00</updated>
-    <id>http://jaketrent.com/post/naming-anonymous-javascript-functions</id>
-    <content type="html"><![CDATA[<p>In JavaScript, functions can be defined and used in the same statement.  This makes creation quick, and the functions are considered anonymous because of their inline use and lack of assignment to a local variable.  But, there are a couple reasons you might want to label them.</p>
-
-<p><img src="http://i.imgur.com/uH7E2.jpg" alt="JavaScript Anonymous Functions" /></p>
-
-<!--more-->
-
-
-<h2>Readability</h2>
-
-<p>A great thing about functions in general is that they will tell you what they're used for.  If I call a function called <code>calculatePi()</code>, I expect it to do just that.  It's a great abstraction.  We can look at the name of the function without having to learn exactly how it does its stated task.</p>
-
-<p>The performance of anonymous functions can often be determined from the calling context, but why not just name it for what it does like all other functions?  Did you know that you can?  Piece of pi.  Where you would normally write this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">doStuff</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;reporting…&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Additionally label your callback:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">doStuff</span><span class="p">(</span><span class="kd">function</span> <span class="nx">reportResults</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;reporting…&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h2>Easier Stack Traces</h2>
-
-<p>To make this code actually run, let's add a little bit and stick in a thrown error that should provide us a stack trace:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">doStuff</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>   <span class="nx">callback</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">doStuff</span><span class="p">(</span><span class="kd">function</span> <span class="nx">reportResults</span><span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;problem&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Another difference between labeled and non-labeled anonymous functions is what they print in a stack trace. Without a label, you are getting line numbers, but the stack trace itself is harder to follow without bring up the source in order to interpret it.</p>
-
-<p>Without named function:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="err">/.../error.js:10&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;problem&#39;</span><span class="p">);</span>
-</span><span class='line'>      <span class="o">^</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nb">Error</span><span class="o">:</span> <span class="nx">problem</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">at</span> <span class="o">/</span><span class="p">...</span><span class="o">/</span><span class="nx">error</span><span class="p">.</span><span class="nx">js</span><span class="o">:</span><span class="mi">10</span><span class="o">:</span><span class="mi">8</span>
-</span><span class='line'><span class="nx">at</span> <span class="nx">doStuff</span> <span class="p">(</span><span class="err">/.../error.js:5:4)</span>
-</span><span class='line'><span class="nx">at</span> <span class="nb">Object</span><span class="p">.</span><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="nx">anonymous</span><span class="o">&amp;</span><span class="nx">gt</span><span class="p">;</span> <span class="p">(</span><span class="err">/.../error.js:8:1)</span>
-</span><span class='line'><span class="nx">at</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">_compile</span> <span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">js</span><span class="o">:</span><span class="mi">449</span><span class="o">:</span><span class="mi">26</span><span class="p">)</span>
-</span><span class='line'><span class="p">...</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="err">/.../error.js:8&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;problem&#39;</span><span class="p">);</span>
-</span><span class='line'>      <span class="o">^</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nb">Error</span><span class="o">:</span> <span class="nx">problem</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">at</span> <span class="nx">reportResults</span> <span class="p">(</span><span class="err">/.../error.js:8:8)</span>
-</span><span class='line'><span class="nx">at</span> <span class="nx">doStuff</span> <span class="p">(</span><span class="err">/.../error.js:4:4)</span>
-</span><span class='line'><span class="nx">at</span> <span class="nb">Object</span><span class="p">.</span><span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span><span class="nx">anonymous</span><span class="o">&amp;</span><span class="nx">gt</span><span class="p">;</span> <span class="p">(</span><span class="err">/.../error.js:7:1)</span>
-</span><span class='line'><span class="nx">at</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">_compile</span> <span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">js</span><span class="o">:</span><span class="mi">449</span><span class="o">:</span><span class="mi">26</span><span class="p">)</span>
-</span><span class='line'><span class="err">…</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Notice that every frame of the stack is now clearly displaying its name.</p>
-
-<p>And wouldn't this be awesome if everyone did this, including all the people that wrote some of those favorite libraries that you use but that you have occassion to debug through?</p>
-
-<p>What other benefits do you see that might come from naming your anonymous functions?</p>
 ]]></content>
   </entry>
   

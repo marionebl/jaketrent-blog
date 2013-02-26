@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-26T07:14:08-07:00</updated>
+  <updated>2013-02-26T08:12:59-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Serve Json from Sinatra]]></title>
+    <link href="http://jaketrent.com/post/serve-json-from-sinatra/"/>
+    <updated>2013-02-26T07:18:00-07:00</updated>
+    <id>http://jaketrent.com/post/serve-json-from-sinatra</id>
+    <content type="html"><![CDATA[<p>By default, Sinatra knows how to serve up a rendered html page.  With a slight tweak, we can make it spit out Json too!</p>
+
+<p><img src="http://i.imgur.com/ZyCgi56.jpg" alt="JSON on Sinatra" /></p>
+
+<!--more-->
+
+
+<h2>Data Format of the Web</h2>
+
+<p>Json is my favorite data format for web applications.  Really, who wouldn't want their webservice to expose Json?  It's mucho useful.</p>
+
+<p>First, add a line to the <code>Gemfile</code> that makes a Json helper method available to Sinatra:</p>
+
+<p><code>ruby
+gem "sinatra-contrib"
+</code>
+Next, all you need to do is query the data that you want to return and actually return it, as in:</p>
+
+<p>```ruby
+require "sinatra/json"</p>
+
+<p>get "/my-models" do
+  json MyModel.all
+end
+```</p>
+
+<p>The <code>json</code> helper will then serialize your objects into Json, much to the delight of your clients!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Serve CoffeeScript from Sinatra]]></title>
@@ -320,86 +355,6 @@ app/views/layouts/application.html.erb
 
 Throw down a `content_for` block, matching the name of the `yield` block in your layout file, and you're set.  Order does not matter.  Your specific `content_for` blocks can come before, after, or in the middle of your main content.  Easy as Ruby pie.
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rename Files in Rails Asset Pipeline]]></title>
-    <link href="http://jaketrent.com/post/rename-files-in-asset-pipeline/"/>
-    <updated>2013-02-06T07:06:00-07:00</updated>
-    <id>http://jaketrent.com/post/rename-files-in-asset-pipeline</id>
-    <content type="html"><![CDATA[<p>Rails provides a powerful mechanism for preparing your site's static assets for the web.  It's called the asset pipeline.  True to Rails, it has sensible defaults.  Also true to form, it's not immediately clear what's required to change from the defaults.</p>
-
-<p><img src="http://i.imgur.com/HPJDXPB.jpg" alt="Asset Pipeline" /></p>
-
-<!--more-->
-
-
-<h2>Multiple Compilers</h2>
-
-<p>The asset pipeline has the ability to pass your static assets through multiple compilers.  Thus, they seem much less static than they might be.  The compilers used are determined by the file extension.  For instance, this file:</p>
-
-<p><code>
-myscripts.js.coffee.erb
-</code></p>
-
-<p>Will go through the Erb compiler first, then the Coffeescript compiler, then finally will output pure JavaScript.</p>
-
-<p>Changing these files are no problem.  Want a new compiler?  Slap on a new file extension.  Don't need one?  Remove it.</p>
-
-<h2>Manifest File</h2>
-
-<p>Manifest files are full of Sprocket directives.  Sprockets will use these files to combine and minify your css and js.  A manifest will look something like this:</p>
-
-<p><code>
-//= require vendor/jquery
-//= require vendor/angular.min
-//= require vendor/angular-cookies
-</code></p>
-
-<p>These directives identify what files will eventually be combined, replacing the contents of your manifest file in the final output.</p>
-
-<p>If you change the name of scripts or stylesheets, you need to ensure that your manifest file is changed to match.  Otherwise, asset precompilation will fail.</p>
-
-<p>By default the manifest filenames are these:</p>
-
-<p><code>
-app/assets/javascripts/application.js
-app/assets/stylesheets/application.css
-</code></p>
-
-<h2>Changing Manifest Filenames</h2>
-
-<p>Changing the manifest default filenames will require some tweaking.</p>
-
-<p>For instance, if I change application.js to be split into two separate manifest files, <code>scripts-foot.js</code> and <code>scripts-head.js</code>, the next time I run:</p>
-
-<p><code>
-rake assets:precompile
-</code></p>
-
-<p>It will succceed, and everything will look like it's just fine.  But when I go to run the app, it will give my an error like:</p>
-
-<p>```
-ActionView::Template::Error (scripts-head.js isn't precompiled):</p>
-
-<p>2013-02-04T16:24:05+00:00 app[web.1]: app/views/layouts/application.html.erb:14:in `_app_views_layouts_application_html_erb__3761578772688930207_28706600'
-```</p>
-
-<p>When you switch from the default manifest files or when you reference a static asset like a js or css directly from your view, you'll need to mark it as explicitly requiring precompilation.</p>
-
-<p>This is done in an environment file, such as <code>config/environments/production.rb</code>:</p>
-
-<p>```ruby</p>
-
-<h1>Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)</h1>
-
-<p>config.assets.precompile += %w( scripts-foot.js scripts-head.js )
-```</p>
-
-<p>It's that easy.  It's too bad you have to wait until the app runs to discover this is a problem.  But now you're ready.</p>
-
-<p>Now if we could only customize the directory structure under <code>app/assets</code>.  I would much rather use the path <code>js/</code> instead of <code>javascripts/</code>.  Does anyone know how?</p>
 ]]></content>
   </entry>
   

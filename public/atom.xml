@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-26T07:14:08-07:00</updated>
+  <updated>2013-02-26T08:12:59-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Serve Json from Sinatra]]></title>
+    <link href="http://jaketrent.com/post/serve-json-from-sinatra/"/>
+    <updated>2013-02-26T07:18:00-07:00</updated>
+    <id>http://jaketrent.com/post/serve-json-from-sinatra</id>
+    <content type="html"><![CDATA[<p>By default, Sinatra knows how to serve up a rendered html page.  With a slight tweak, we can make it spit out Json too!</p>
+
+<p><img src="http://i.imgur.com/ZyCgi56.jpg" alt="JSON on Sinatra" /></p>
+
+<!--more-->
+
+
+<h2>Data Format of the Web</h2>
+
+<p>Json is my favorite data format for web applications.  Really, who wouldn&#8217;t want their webservice to expose Json?  It&#8217;s mucho useful.</p>
+
+<p>First, add a line to the <code>Gemfile</code> that makes a Json helper method available to Sinatra:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s2">&quot;sinatra-contrib&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, all you need to do is query the data that you want to return and actually return it, as in:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;sinatra/json&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">get</span> <span class="s2">&quot;/my-models&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">json</span> <span class="no">MyModel</span><span class="o">.</span><span class="n">all</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>json</code> helper will then serialize your objects into Json, much to the delight of your clients!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Pass Values From the Page to AngularJs]]></title>
@@ -1626,64 +1668,6 @@ blah - scope is not there</p>
 <h2>The Glory of Npm</h2>
 
 <p>Npm is great.  The ability to install published or local packages is an example of its flexibility and usefulness.  What are the other ways that you&#8217;ve found to make non-public packages installable &#8211; for instance, that package that the writer just never bothered to publish to npm?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[IntelliJ 12 Review]]></title>
-    <link href="http://jaketrent.com/post/intellij-12-review/"/>
-    <updated>2012-12-12T15:33:00-07:00</updated>
-    <id>http://jaketrent.com/post/intellij-12-review</id>
-    <content type="html"><![CDATA[<p>I&#8217;ve used IntelliJ since version 6.  Now we&#8217;re version 12.  It&#8217;s just gotten better.  Version 12 is definitely an incremental release.  There&#8217;s nothing too whiz bang here that I care about, but the quality overall is increased.</p>
-
-<p><img src="http://i.imgur.com/RM3Q1.jpg" alt="IntelliJ 12" /></p>
-
-<!--more-->
-
-
-<h2>IntelliJ 12 New Core Features</h2>
-
-<p>The highlights of the <a href="http://www.jetbrains.com/idea/whatsnew/index.html">&#8220;What&#8217;s New&#8221;</a> list include Java 8 support, Spring tools update, Play 2.0 support, and Android UI designer.  All positives, but not really things I care very deeply about and will probably never use.  There&#8217;s a bit more on the list, but there&#8217;s nothing that is a huge, &#8220;Now IntelliJ can do ______&#8221; item.</p>
-
-<h2>IntelliJ 12 Quality of Life</h2>
-
-<p>During my evaluation, however, I have been very pleased with the quality of life it has afforded me.  IntelliJ has always treated me very well in comparison to the competition.  IntelliJ 12 just makes that good experience a little bit sweeter.</p>
-
-<h4>Darkula Theme</h4>
-
-<p>This has to be inspired by the rise of <a href="http://www.sublimetext.com/">Sublime Text</a>, which has a dark theme as its default.  More and more devs I know are using Sublime extensively.  Overall, I like the look of the Darkula theme.  It&#8217;s a bit easier on the eyes.  The icons got a fun, retro overhaul.  In some cases, I&#8217;ve noticed things that my eyes have grown so accustomed to that they have ignored for some time.  It&#8217;s also taken a bit to get used to it and start to expect things and see them faster.  I find it interesting that soooo much of this release has been focused on this UI theme.</p>
-
-<h4>Popup Dialogs are Faster</h4>
-
-<p>It seems that when a non-main window is told to appear that it does so a bit quicker now.  Intellisense seems a bit more snappy, and the &#8220;recent files&#8221; switcher doesn&#8217;t lag as it seemed to in the past sometimes.  It&#8217;s fun, and it lets me go faster.</p>
-
-<h4>Better OSX Shortcuts</h4>
-
-<p>When I switched to OSX from Linux, I was immediately disappointed by the lack of keyboard shortcuts in comparison to Linux.  The most egregious omission was the lack of alt-* combos to press buttons in the UI via the keyboard.  Alt-p to engage the &#8216;push&#8217; button in the Git push dialog has been a long time coming.</p>
-
-<p><img src="http://i.imgur.com/FYe1O.jpg" alt="P for Push" /></p>
-
-<h4>Git Integration is better</h4>
-
-<p>For performance and UI reasons, I would often just use Git on the command line instead of from within IntelliJ.  Now the Git integration is better than ever.  It seems waaaay fast.  I&#8217;m a little puzzled at <em>how</em> the git push could be so much faster in comparison to the previous version.</p>
-
-<h4>Project Type Support</h4>
-
-<p>Small thing, but I like the new &#8220;New Project&#8221; dialog.  It&#8217;s simplified and easier to navigate.  It is fast and simple.  It doesn&#8217;t take you through options that don&#8217;t apply.  I&#8217;m in that dialog a lot, and I like the change.</p>
-
-<h2>The Right Direction</h2>
-
-<p>Really, there&#8217;s not a ton new here.  It&#8217;s such a solid tool to start.  It&#8217;s where I spend most of my day though, so even incremental quality improvement is welcome.</p>
-
-<p>Let&#8217;s see, what&#8217;s not there that I wish for?:</p>
-
-<ul>
-<li>Live debug the JavaScript running in Chrome (not just Firefox)</li>
-<li>Run and debug Grunt and other Node-based cli apps</li>
-</ul>
-
-
-<p>Does IntelliJ already do those things?  Probably, and I just don&#8217;t yet know how to bend it to my will.</p>
 ]]></content>
   </entry>
   

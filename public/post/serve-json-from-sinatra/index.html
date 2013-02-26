@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: wordpress - Jake Trent</title>
+  <title>Serve Json from Sinatra - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="Category: wordpress">
-  
+  <meta name="description" content="Your Sinatra webservice can be made to serve json quite easily.">
+  <meta name="keywords" content="sinatra, json, sinatra-contrib, ruby">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.comblog/categories/wordpress/">
+  <link rel="canonical" href="http://jaketrent.com/post/serve-json-from-sinatra/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -79,36 +79,126 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Wordpress</h1>
+    
+      <h1 class="entry-title">Serve Json From Sinatra</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-26T07:18:00-07:00" pubdate data-updated="true">Feb 26<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>By default, Sinatra knows how to serve up a rendered html page.  With a slight tweak, we can make it spit out Json too!</p>
 
-  
-  <h2>2012</h2>
+<p><img src="http://i.imgur.com/ZyCgi56.jpg" alt="JSON on Sinatra" /></p>
 
-<article>
-  
-<h1><a href="/post/why-i-chose-a-wordpress-blog/">Why I Chose a WordPress Blog</a></h1>
-<time datetime="2012-09-25T16:49:00-06:00" pubdate><span class='month'>Sep</span> <span class='day'>25</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/announcement/'>Announcement</a>, <a class='category' href='/blog/categories/blog/'>blog</a>, <a class='category' href='/blog/categories/php/'>php</a>, <a class='category' href='/blog/categories/wordpress/'>wordpress</a></span>
-</footer>
+<!--more-->
 
 
-</article>
+<h2>Data Format of the Web</h2>
 
+<p>Json is my favorite data format for web applications.  Really, who wouldn&#8217;t want their webservice to expose Json?  It&#8217;s mucho useful.</p>
+
+<p>First, add a line to the <code>Gemfile</code> that makes a Json helper method available to Sinatra:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s2">&quot;sinatra-contrib&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, all you need to do is query the data that you want to return and actually return it, as in:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;sinatra/json&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">get</span> <span class="s2">&quot;/my-models&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">json</span> <span class="no">MyModel</span><span class="o">.</span><span class="n">all</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>json</code> helper will then serialize your objects into Json, much to the delight of your clients!</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-26T07:18:00-07:00" pubdate data-updated="true">Feb 26<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/sinatra/'>sinatra</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/serve-json-from-sinatra/" data-via="" data-counturl="http://jaketrent.com/post/serve-json-from-sinatra/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/post/pass-values-from-page-to-angular/" title="Previous Post: Pass Values From the Page to AngularJs">&laquo; Pass Values From the Page to AngularJs</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -186,7 +276,10 @@
       var disqus_shortname = 'jaketrent';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/serve-json-from-sinatra/';
+        var disqus_url = 'http://jaketrent.com/post/serve-json-from-sinatra/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

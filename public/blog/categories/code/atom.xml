@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-26T07:14:08-07:00</updated>
+  <updated>2013-02-26T08:12:59-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Serve Json from Sinatra]]></title>
+    <link href="http://jaketrent.com/post/serve-json-from-sinatra/"/>
+    <updated>2013-02-26T07:18:00-07:00</updated>
+    <id>http://jaketrent.com/post/serve-json-from-sinatra</id>
+    <content type="html"><![CDATA[<p>By default, Sinatra knows how to serve up a rendered html page.  With a slight tweak, we can make it spit out Json too!</p>
+
+<p><img src="http://i.imgur.com/ZyCgi56.jpg" alt="JSON on Sinatra" /></p>
+
+<!--more-->
+
+
+<h2>Data Format of the Web</h2>
+
+<p>Json is my favorite data format for web applications.  Really, who wouldn't want their webservice to expose Json?  It's mucho useful.</p>
+
+<p>First, add a line to the <code>Gemfile</code> that makes a Json helper method available to Sinatra:</p>
+
+<p><code>ruby
+gem "sinatra-contrib"
+</code>
+Next, all you need to do is query the data that you want to return and actually return it, as in:</p>
+
+<p>```ruby
+require "sinatra/json"</p>
+
+<p>get "/my-models" do
+  json MyModel.all
+end
+```</p>
+
+<p>The <code>json</code> helper will then serialize your objects into Json, much to the delight of your clients!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Pass Values From the Page to AngularJs]]></title>
@@ -393,65 +428,6 @@ index.html.slim
 </code></p>
 
 <p>Now the Rails are even slicker.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Multiple Yields in an ERB Template]]></title>
-    <link href="http://jaketrent.com/post/multiple-yields-in-erb-template/"/>
-    <updated>2013-02-08T07:13:00-07:00</updated>
-    <id>http://jaketrent.com/post/multiple-yields-in-erb-template</id>
-    <content type="html"><![CDATA[<p>When you setup a new Rails project, you'll have a single layout file which has a single default <code>yield</code> block.  This will soon be inadequate, and you'll want another.  Here's how to setup multiple <code>yield</code> blocks per ERB template.</p>
-
-<p><img src="http://i.imgur.com/YqUKEfw.png" alt="Multiple ERB yields" /></p>
-
-<!--more-->
-
-
-<h2>Layout File</h2>
-
-<p>By default, Rails will create a file at:</p>
-
-<p><code>
-app/views/layouts/application.html.erb
-</code></p>
-
-<p>In this file, there will be a default <code>yield</code> block similar to this:</p>
-
-<p><code>ruby
-&lt;%= yield %&gt;
-</code></p>
-
-<p>It has no name.  It's just the default place for templates that use this layout file to put their content.</p>
-
-<p>We can create new <code>yield</code> blocks.  We'll have to give them a distinguishing name.  They look about the same.  If I wanted to create a new <code>yield</code> block where, for instance, alerts could be displayed if the child template had them, I could put this in my layout file:</p>
-
-<p><code>ruby
-&lt;%= yield(:alert) %&gt;
-</code></p>
-
-<p>Now I would just need something to go in it.</p>
-
-<h2>Child Templates</h2>
-
-<p>A child template that uses the <code>application.html.erb</code> layout file can just start blasting out markup that will go into the default <code>yield</code> block.  This will usually be the main content.  But in our example, there might be more focused content such as alerts that we want to display in a separate area.  Thus, our template could potentially look like this:</p>
-
-<p>```erb</p>
-
-<h1>My main content</h1>
-
-
-<p>Bacon ipsum…<p>
-
-<% content_for :alert do %>
-  <div class="alert alert-success">
-    You created multiple yield blocks!
-  </div>
-<% end %>
-```
-
-Throw down a `content_for` block, matching the name of the `yield` block in your layout file, and you're set.  Order does not matter.  Your specific `content_for` blocks can come before, after, or in the middle of your main content.  Easy as Ruby pie.
-
 ]]></content>
   </entry>
   
