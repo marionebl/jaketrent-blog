@@ -41,8 +41,8 @@ The final Mocha code to test our simple controller should look something like th
 
 A couple of points:
 
-- [`chai` is an assertion library](http://) that makes a great bdd/should-style assertion available in browser tests.
-- `inject()` is made available through the [`angular-mocks.js` file](http://).  This is available automagically in Jasmine, but in Mocha, you have to include this extra file to get the function.
+- [`chai` is an assertion library](http://chaijs.com/api/bdd/) that makes a great bdd/should-style assertion available in browser tests.
+- `inject()` is made available through the [`angular-mocks.js` file](https://github.com/angular/angular-seed/blob/master/test/lib/angular/angular-mocks.js).  This is available automagically in Jasmine, but in Mocha, you have to include this extra file to get the function.
 - `$rootScope` is a scope available to all controllers, so it's not dependent on `ng-controller` references which are in your src, but not your test environment.  From this scope, we create a new scope.
 - Initializing `MyController` with the `$controller` function allows us to mock the value of `$scope` in the controller.
 

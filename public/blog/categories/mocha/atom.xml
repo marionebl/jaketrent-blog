@@ -4,7 +4,7 @@
   <title><![CDATA[Category: mocha | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/mocha/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-25T08:11:08-07:00</updated>
+  <updated>2013-02-26T07:12:03-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -306,8 +306,8 @@ $ mocha --grep login-*.js
 <p>A couple of points:</p>
 
 <ul>
-<li><a href="http://"><code>chai</code> is an assertion library</a> that makes a great bdd/should-style assertion available in browser tests.</li>
-<li><code>inject()</code> is made available through the <a href="http://"><code>angular-mocks.js</code> file</a>.  This is available automagically in Jasmine, but in Mocha, you have to include this extra file to get the function.</li>
+<li><a href="http://chaijs.com/api/bdd/"><code>chai</code> is an assertion library</a> that makes a great bdd/should-style assertion available in browser tests.</li>
+<li><code>inject()</code> is made available through the <a href="https://github.com/angular/angular-seed/blob/master/test/lib/angular/angular-mocks.js"><code>angular-mocks.js</code> file</a>.  This is available automagically in Jasmine, but in Mocha, you have to include this extra file to get the function.</li>
 <li><code>$rootScope</code> is a scope available to all controllers, so it's not dependent on <code>ng-controller</code> references which are in your src, but not your test environment.  From this scope, we create a new scope.</li>
 <li>Initializing <code>MyController</code> with the <code>$controller</code> function allows us to mock the value of <code>$scope</code> in the controller.</li>
 </ul>
