@@ -9,7 +9,7 @@ keywords: js, nodejs, smashing mag, smashing node, guillermo rauch, javascript e
 published: true
 ---
 
-Node.js is everywhere.  There's a lot of room foro people to learn and get into it.  A good starter book is [Smashing Node by Guillermo Rauch](http://amzn.to/14ttetp).  Here's what I thought and what I learned while reading it.
+Node.js is everywhere.  There's a lot of room for people to learn and get into it.  A good starter book is [Smashing Node by Guillermo Rauch](http://amzn.to/14ttetp).  Here's what I thought and what I learned while reading it.
 
 ![Smashing Node](http://i.imgur.com/hQTBeAF.jpg)
 

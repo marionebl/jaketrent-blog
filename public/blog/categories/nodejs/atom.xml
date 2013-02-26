@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-26T07:12:03-07:00</updated>
+  <updated>2013-02-26T07:14:08-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -18,7 +18,7 @@
     <link href="http://jaketrent.com/post/smashing-node-review/"/>
     <updated>2013-01-29T16:51:00-07:00</updated>
     <id>http://jaketrent.com/post/smashing-node-review</id>
-    <content type="html"><![CDATA[<p>Node.js is everywhere.  There's a lot of room foro people to learn and get into it.  A good starter book is <a href="http://amzn.to/14ttetp">Smashing Node by Guillermo Rauch</a>.  Here's what I thought and what I learned while reading it.</p>
+    <content type="html"><![CDATA[<p>Node.js is everywhere.  There's a lot of room for people to learn and get into it.  A good starter book is <a href="http://amzn.to/14ttetp">Smashing Node by Guillermo Rauch</a>.  Here's what I thought and what I learned while reading it.</p>
 
 <p><img src="http://i.imgur.com/hQTBeAF.jpg" alt="Smashing Node" /></p>
 
