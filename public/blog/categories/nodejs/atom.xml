@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-02-26T08:12:59-07:00</updated>
+  <updated>2013-02-27T07:27:01-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,56 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Https Redirect for Node on Heroku]]></title>
+    <link href="http://jaketrent.com/post/https-redirect-node-heroku/"/>
+    <updated>2013-02-26T07:33:00-07:00</updated>
+    <id>http://jaketrent.com/post/https-redirect-node-heroku</id>
+    <content type="html"><![CDATA[<p>When your app requires users to be using the <code>https</code> protocol to make requests and get responses, it's helpful to have an automatic redirect so the user is always in the right place.  Here's how to do that for a Node Express app on Heroku.</p>
+
+<p><img src="http://i.imgur.com/5rZ8H.png" alt="NodeJs Https Redirect" /></p>
+
+<!--more-->
+
+
+<h2>Secure Express Requests</h2>
+
+<p>The <a href="http://expressjs.com">Express</a> request object has a bunch of great information.  One of its attributes is <code>secure</code>.  It's a boolean.  Usually, <code>secure == true</code> will mean that you're on <code>https</code>.  When that is not true, you're ready for a redirect.</p>
+
+<p>Unfortunately for apps hosted on Heroku, <code>request.secure</code> will always be false.  The way that Heroku routing works, it will just never be set.</p>
+
+<h2>Heroku Https Header</h2>
+
+<p>Instead, Heroku forwards an http header that allows us to do the same "is secure" test.  On Heroku, <code>request.header('x-forwarded-proto')</code> will contain the actual protocol string (eg, 'http' or 'https').</p>
+
+<h2>Express Middleware SSL Redirect</h2>
+
+<p>If you're using the Express framework on Node, then you have it easy.  There's already a great middleware mechanism for you to send any or all requests through.  If you set your Express app (v3) up like this:</p>
+
+<p><code>coffeescript
+app = express()
+</code></p>
+
+<p>Then you can use the <code>app.use</code> functionality to specify a middleware.  Since I only have certificates and want the redirect to happen in the production environment, I will likewise wrap this middleware inside <code>app.configure</code> for prod (it inspects <code>NODE_ENV</code> for you).  This redirect will be pretty rudimentary, but it's just that simple, so here it goes:</p>
+
+<p>```coffeescript
+app.configure 'production', ->
+  app.use forceSsl(req, res, next) -></p>
+
+<pre><code>if req.header 'x-forwarded-proto' != 'https'
+  res.redirect "https://#{req.header 'host'}#{req.url}"
+else
+  next()
+</code></pre>
+
+<p>```</p>
+
+<p>If it's not <code>https</code> already, redirect the same url on <code>https</code>.  If it is, that's what I want, and you can pass on through my middleware function.  Note that this middleware will protect <em>all</em> urls on the site with an <code>https</code> redirect.  Your middleware could be more selective.  You could even create this as a stacked middleware per route if you wanted.  We could even enhance our middleware to use inspect both the http header <em>and</em> the <code>secure</code> flag.</p>
+
+<p>Heroku threw us a for a minor, unexpected loop, but it was nothing that we couldn't easily code for.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Smashing Node Review]]></title>
@@ -412,73 +462,6 @@ $ export NODE_ENV=production &amp;&amp; node app.js
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Declare some variables per environment.  Likely candidates are database connection strings or web service endpoints or feature flags.  These will help you avoid as many nasty if-else branches in your code.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Change Your Node Script Without Restarting]]></title>
-    <link href="http://jaketrent.com/post/change-your-node-script-without-restarting/"/>
-    <updated>2012-10-03T16:54:00-06:00</updated>
-    <id>http://jaketrent.com/post/change-your-node-script-without-restarting</id>
-    <content type="html"><![CDATA[<p>Have you every wished you could change your node script and not restart the server?  Restarting your node server after changing your script can get annoying.  This is especially true if you're in guess and check mode, changing and checking a lot.  Luckily, there are a few tools to save you the pain.</p>
-
-<p><img src="http://i.imgur.com/jrkIv.jpg" alt="Node Monitor" /></p>
-
-<!--more-->
-
-
-<h2>Node-supervisor</h2>
-
-<p>Isaac Schlueter has created a <a href="https://github.com/isaacs/node-supervisor">node-supervisor</a>.  Install it with a quick npm:</p>
-
-<pre><code>sudo npm install supervisor -g
-</code></pre>
-
-<p>Use <code>supervisor</code>, instead of <code>node</code> to start your app:</p>
-
-<pre><code>supervisor app.js
-</code></pre>
-
-<p>By default, this will run with these options:</p>
-
-<pre><code>DEBUG: Running node-supervisor with
-DEBUG:   program 'app.js'
-DEBUG:   --watch '.'
-DEBUG:   --ignore 'undefined'
-DEBUG:   --extensions 'node|js'
-DEBUG:   --exec 'node'
-</code></pre>
-
-<p>There are other options for things like watching only specific extensions or not restarting on app errors.</p>
-
-<h2>Nodemon</h2>
-
-<p>Remy Sharp has created <a href="https://github.com/remy/nodemon">nodemon</a>.  It also is a quick npm install:</p>
-
-<pre><code>sudo npm install nodemon -g
-</code></pre>
-
-<p>Again, run with <code>nodemon</code> instead of <code>node</code>:</p>
-
-<pre><code>nodemon app.js
-</code></pre>
-
-<p>By default, runs:</p>
-
-<pre><code>[nodemon] v0.6.23
-[nodemon] watching: .
-[nodemon] starting `node app.js`
-</code></pre>
-
-<p>There are similar options here for what to watch.</p>
-
-<h2>Comparison of tools</h2>
-
-<p>Both tools will get the job done.  Choose either.  Both can specific directories or file extensions to watch.  Both can run other executables (like <a href="https://github.com/nodejitsu/forever">forever</a>, which is awesome, btw).</p>
-
-<p>Both tools are circa 2010.  Node-supervisor is the slightly older brother (by 8 months).  Both projects seem to have slow, steady development development activity.  What is there to add to tools that do their job already?</p>
-
-<p>In general, <code>nodemon</code> has a few more options.  For example, it has explicit support for coffee-script.  I like <code>supervisor</code> more for silly reasons:  I found it first, it works fine, feels better to type, and has fewer terminal command expansion conflicts.</p>
 ]]></content>
   </entry>
   

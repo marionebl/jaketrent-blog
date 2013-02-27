@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: heroku | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/heroku/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2013-02-27T07:27:01-07:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Https Redirect for Node on Heroku]]></title>
+    <link href="http://jaketrent.com/post/https-redirect-node-heroku/"/>
+    <updated>2013-02-26T07:33:00-07:00</updated>
+    <id>http://jaketrent.com/post/https-redirect-node-heroku</id>
+    <content type="html"><![CDATA[<p>When your app requires users to be using the <code>https</code> protocol to make requests and get responses, it's helpful to have an automatic redirect so the user is always in the right place.  Here's how to do that for a Node Express app on Heroku.</p>
+
+<p><img src="http://i.imgur.com/5rZ8H.png" alt="NodeJs Https Redirect" /></p>
+
+<!--more-->
+
+
+<h2>Secure Express Requests</h2>
+
+<p>The <a href="http://expressjs.com">Express</a> request object has a bunch of great information.  One of its attributes is <code>secure</code>.  It's a boolean.  Usually, <code>secure == true</code> will mean that you're on <code>https</code>.  When that is not true, you're ready for a redirect.</p>
+
+<p>Unfortunately for apps hosted on Heroku, <code>request.secure</code> will always be false.  The way that Heroku routing works, it will just never be set.</p>
+
+<h2>Heroku Https Header</h2>
+
+<p>Instead, Heroku forwards an http header that allows us to do the same "is secure" test.  On Heroku, <code>request.header('x-forwarded-proto')</code> will contain the actual protocol string (eg, 'http' or 'https').</p>
+
+<h2>Express Middleware SSL Redirect</h2>
+
+<p>If you're using the Express framework on Node, then you have it easy.  There's already a great middleware mechanism for you to send any or all requests through.  If you set your Express app (v3) up like this:</p>
+
+<p><code>coffeescript
+app = express()
+</code></p>
+
+<p>Then you can use the <code>app.use</code> functionality to specify a middleware.  Since I only have certificates and want the redirect to happen in the production environment, I will likewise wrap this middleware inside <code>app.configure</code> for prod (it inspects <code>NODE_ENV</code> for you).  This redirect will be pretty rudimentary, but it's just that simple, so here it goes:</p>
+
+<p>```coffeescript
+app.configure 'production', ->
+  app.use forceSsl(req, res, next) -></p>
+
+<pre><code>if req.header 'x-forwarded-proto' != 'https'
+  res.redirect "https://#{req.header 'host'}#{req.url}"
+else
+  next()
+</code></pre>
+
+<p>```</p>
+
+<p>If it's not <code>https</code> already, redirect the same url on <code>https</code>.  If it is, that's what I want, and you can pass on through my middleware function.  Note that this middleware will protect <em>all</em> urls on the site with an <code>https</code> redirect.  Your middleware could be more selective.  You could even create this as a stacked middleware per route if you wanted.  We could even enhance our middleware to use inspect both the http header <em>and</em> the <code>secure</code> flag.</p>
+
+<p>Heroku threw us a for a minor, unexpected loop, but it was nothing that we couldn't easily code for.</p>
+]]></content>
+  </entry>
+  
+</feed>

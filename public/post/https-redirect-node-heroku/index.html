@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Run a Single Mocha Test - Jake Trent</title>
+  <title>Https Redirect for Node on Heroku - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="If you have a whole suite of Mocha tests, sometimes you don't want to run all of them. Here's how to run a subset of Mocha tests.">
-  <meta name="keywords" content="js, javascript, mocha, subset, run subset, run one">
+  <meta name="description" content="Make a NodeJs app on Heroku redirect to an https address when it is not using one.">
+  <meta name="keywords" content="js, nodejs, node, heroku, https, https redirect, express">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/run-single-mocha-test/">
+  <link rel="canonical" href="http://jaketrent.com/post/https-redirect-node-heroku/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Run a Single Mocha Test</h1>
+      <h1 class="entry-title">Https Redirect for Node on Heroku</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2013-01-16T07:07:00-07:00" pubdate data-updated="true">Jan 16<span>th</span>, 2013</time>
+<time datetime="2013-02-26T07:33:00-07:00" pubdate data-updated="true">Feb 26<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,78 +108,52 @@
   </header>
 
 
-<div class="entry-content"><p>When working inside your test suite, it&#8217;s often the case that you don&#8217;t want to run all of your tests.  Mocha has a great mechanism that allows you to easily specify what exactly you want run.  This can help make your processes such as TDD faster and more focused.</p>
+<div class="entry-content"><p>When your app requires users to be using the <code>https</code> protocol to make requests and get responses, it&#8217;s helpful to have an automatic redirect so the user is always in the right place.  Here&#8217;s how to do that for a Node Express app on Heroku.</p>
 
-<p><img src="http://i.imgur.com/hbcnU.png" alt="Mocha" /></p>
+<p><img src="http://i.imgur.com/5rZ8H.png" alt="NodeJs Https Redirect" /></p>
 
 <!--more-->
 
 
-<h2>Run a Single Test File</h2>
+<h2>Secure Express Requests</h2>
 
-<p>Using the mocha cli, you can easily specify an exact or wildcarded pattern that you want to run.  This is accomplished with the <code>grep</code> option when running the <code>mocha</code> command.</p>
+<p>The <a href="http://expressjs.com">Express</a> request object has a bunch of great information.  One of its attributes is <code>secure</code>.  It&#8217;s a boolean.  Usually, <code>secure == true</code> will mean that you&#8217;re on <code>https</code>.  When that is not true, you&#8217;re ready for a redirect.</p>
 
-<p>If you wanted to run only the login-failure.js suite, the command would look like:</p>
+<p>Unfortunately for apps hosted on Heroku, <code>request.secure</code> will always be false.  The way that Heroku routing works, it will just never be set.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ mocha --grep login-failiure.js</span></code></pre></td></tr></table></div></figure>
+<h2>Heroku Https Header</h2>
+
+<p>Instead, Heroku forwards an http header that allows us to do the same &#8220;is secure&#8221; test.  On Heroku, <code>request.header('x-forwarded-proto')</code> will contain the actual protocol string (eg, &#8216;http&#8217; or &#8216;https&#8217;).</p>
+
+<h2>Express Middleware SSL Redirect</h2>
+
+<p>If you&#8217;re using the Express framework on Node, then you have it easy.  There&#8217;s already a great middleware mechanism for you to send any or all requests through.  If you set your Express app (v3) up like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">app = </span><span class="nx">express</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>If you happen to have multiple suites that match a filename pattern that you wanted to run, exclusive to all others, you would run:</p>
+<p>Then you can use the <code>app.use</code> functionality to specify a middleware.  Since I only have certificates and want the redirect to happen in the production environment, I will likewise wrap this middleware inside <code>app.configure</code> for prod (it inspects <code>NODE_ENV</code> for you).  This redirect will be pretty rudimentary, but it&#8217;s just that simple, so here it goes:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ mocha --grep login-*.js</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Run a Single Spec</h2>
-
-<p>Often we&#8217;re in the test code making changes, and it&#8217;s easy to make adjustments to what subset of tests you run from here as well.  If I want to run a single <code>describe()</code> function, I can add a <code>.only()</code> to the function call, like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// these tests will be skipped</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">describe</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// these tests will run </span>
-</span><span class='line'><span class="p">});</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span> <span class="s">&#39;production&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">forceSsl</span><span class="nf">(req, res, next) -&gt;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="nx">req</span><span class="p">.</span><span class="nx">header</span> <span class="s">&#39;x-forwarded-proto&#39;</span> <span class="o">!=</span> <span class="s">&#39;https&#39;</span>
+</span><span class='line'>      <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span> <span class="s">&quot;https://</span><span class="si">#{</span><span class="nx">req</span><span class="p">.</span><span class="nx">header</span> <span class="s">&#39;host&#39;</span><span class="si">}#{</span><span class="nx">req</span><span class="p">.</span><span class="nx">url</span><span class="si">}</span><span class="s">&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="nx">next</span><span class="p">()</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>You can stick the <code>.only()</code> on any <code>describe</code>, no matter if it&#8217;s first or last in the list of specs.</p>
+<p>If it&#8217;s not <code>https</code> already, redirect the same url on <code>https</code>.  If it is, that&#8217;s what I want, and you can pass on through my middleware function.  Note that this middleware will protect <em>all</em> urls on the site with an <code>https</code> redirect.  Your middleware could be more selective.  You could even create this as a stacked middleware per route if you wanted.  We could even enhance our middleware to use inspect both the http header <em>and</em> the <code>secure</code> flag.</p>
 
-<h2>Run a Single Test</h2>
-
-<p>Just as you can with <code>describe</code>, the tests can be specified to exclusively run if you attach <code>.only()</code> to the function call.</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">it</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// this test will run</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">it</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// this test will be skipped</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Note!</strong> that by putting the <code>.only()</code> on a test, all other functions in the spec are skipped.  This means that your <code>before</code>, <code>beforeEach</code>, <code>after</code>, and <code>afterEach</code> functions are <em>not</em> called.  Sometimes it&#8217;s hard to remember when that matters, so I usually end up running single specs instead of single tests.</p>
-
-<h2>Skip Something</h2>
-
-<p>If you want to run all the specs/tests that you have minus some subset, effectively commenting out these tests, you can add <code>.skip()</code> to either <code>describe</code> or <code>it</code> function calls.</p>
-
-<h2>Remember to Remove</h2>
-
-<p>With the additions of the <code>.only()</code> or <code>.skip()</code> you are altering the actual code of your tests.  This is great for your local development process.  You&#8217;ll need to be careful that you don&#8217;t commit this change &#8211; at least you usually won&#8217;t want to.  Otherwise, you CI process will be running a subset of your tests, just as you are locally, which is no bueno.</p>
+<p>Heroku threw us a for a minor, unexpected loop, but it was nothing that we couldn&#8217;t easily code for.</p>
 </div>
 
 
@@ -202,12 +176,12 @@
   
 
 
-<time datetime="2013-01-16T07:07:00-07:00" pubdate data-updated="true">Jan 16<span>th</span>, 2013</time>
+<time datetime="2013-02-26T07:33:00-07:00" pubdate data-updated="true">Feb 26<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/mocha/'>mocha</a>
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/express/'>express</a>, <a class='category' href='/blog/categories/heroku/'>heroku</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>
   
 </span>
 
@@ -216,7 +190,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/run-single-mocha-test/" data-via="" data-counturl="http://jaketrent.com/post/run-single-mocha-test/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/https-redirect-node-heroku/" data-via="" data-counturl="http://jaketrent.com/post/https-redirect-node-heroku/" >Tweet</a>
   
   
   
@@ -225,10 +199,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/authenticated-supertest-tests/" title="Previous Post: Authenticated Supertest Tests">&laquo; Authenticated Supertest Tests</a>
+        <a class="basic-alignment left" href="/post/serve-json-from-sinatra/" title="Previous Post: Serve Json from Sinatra">&laquo; Serve Json from Sinatra</a>
       
-      
-        <a class="basic-alignment right" href="/post/naming-anonymous-javascript-functions/" title="Next Post: Naming Anonymous JavaScript Functions">Naming Anonymous JavaScript Functions &raquo;</a>
       
     </p>
   </footer>
@@ -317,8 +289,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/run-single-mocha-test/';
-        var disqus_url = 'http://jaketrent.com/post/run-single-mocha-test/';
+        var disqus_identifier = 'http://jaketrent.com/post/https-redirect-node-heroku/';
+        var disqus_url = 'http://jaketrent.com/post/https-redirect-node-heroku/';
         var disqus_script = 'embed.js';
       
     (function () {
