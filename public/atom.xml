@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-03-19T08:14:37-06:00</updated>
+  <updated>2013-03-20T07:26:33-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,51 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Make Jsonp Requests with AngularJs]]></title>
+    <link href="http://jaketrent.com/post/make-jsonp-requests-with-angularjs/"/>
+    <updated>2013-03-20T07:08:00-06:00</updated>
+    <id>http://jaketrent.com/post/make-jsonp-requests-with-angularjs</id>
+    <content type="html"><![CDATA[<p>There are a couple ways to make cross domain requests from a client browser.  One method is called Jsonp or Json with padding.  The AngularJs library makes this really simple.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs Jsonp" /></p>
+
+<!--more-->
+
+
+<h2>Web Server Support</h2>
+
+<p>First of all, your Jsonp request will be worth nothing if the server you&#8217;re requesting data from does not support it.  Jsonp requests require explicit support on the server side.  This is because the data that&#8217;s returned is formatted differently.  The &#8216;p&#8217; in Jsonp stands for padding.</p>
+
+<p>But that&#8217;s kind of a weird name.  Maybe Jsonf would be more analogous to reality.  This is because the Json data that you seek is really wrapped in a Javascript function.  This function is then evaluated as a script, passing the data into a callback to be saved by your client program.</p>
+
+<p>This essentially is a browser hack to get around the security constraint of browsers not being able to request non-script items from different domains.  But since we request Javascript this way all the time, we&#8217;ll just make our data look like Javascript.</p>
+
+<h2>Angular Jsonp</h2>
+
+<p>You&#8217;re probably already used to using the <code>$http</code> service.  It provides the normal <code>get</code>, <code>post</code> and other functions mapped to http methods.  It also provides the function that we&#8217;ll need: <code>jsonp</code>.</p>
+
+<p>The client script also requires that we specify the callback to send data to.  AngularJs has its own callback pattern, so it would follow that it has a pattern to handle Jsonp callbacks.  It does.  The callback is always called <code>JSON_CALLBACK</code>.  What parameter that it&#8217;s assigned to in the query string depends on the design of the web service you&#8217;re calling.  Take a look at the documentation on what&#8217;s required there.</p>
+
+<p>All that jibber jabber for this simple example of a script asking for <a href="http://colorwheelie.tumblr.com">Tumblr</a> data:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$http</span><span class="p">.</span><span class="nx">jsonp</span> <span class="s">&#39;http://api.tumblr.com/v2/blog/colorwheelie.tumblr.com/posts/photo?api_key=&lt;mykey&gt;&amp;callback=JSON_CALLBACK&#39;</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">success</span> <span class="nf">(data) -&gt;</span>
+</span><span class='line'>     <span class="nv">$scope.colorwheelies = </span><span class="nx">data</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">posts</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">error</span> <span class="nf">(data) -&gt;</span>
+</span><span class='line'>     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s">&#39;ERROR&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The interesting line is line one.  We call the <code>jsonp</code> function.  We assign our callback like this: <code>callback=JSON_CALLBACK</code>.  And in our success callback, we can consume our data variable like it was pure Json.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Have More Fun]]></title>
@@ -1471,113 +1516,6 @@
 <p>I was unprepared for how much I would laugh while reading Jon&#8217;s book.  Business self-help books are not expected to be very comical or entertaining.  Jon gave the book a fun voice.  It was easy to read out loud to my wife &#8211; you know, for getting on the same dream page.  Jon doesn&#8217;t take himself to seriously, and that&#8217;s refreshing.</p>
 
 <p>It&#8217;s a short read.  It&#8217;s a fun read.  The information is from the heart, and I think it&#8217;s worth learning from Jon&#8217;s experience.  If you&#8217;re considering ever starting your own business or if you&#8217;re not in your dream job yet and want to get there, I recommend this book on the subject.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mocha Testing AngularJs Dependency Injection]]></title>
-    <link href="http://jaketrent.com/post/mocha-testing-angularjs-dependency-injection/"/>
-    <updated>2013-01-02T16:48:00-07:00</updated>
-    <id>http://jaketrent.com/post/mocha-testing-angularjs-dependency-injection</id>
-    <content type="html"><![CDATA[<p>When you test your AngularJs code, you need to explicitly inject the services that your controllers and modules require.  It has its own special syntax.  It requires mocking.  You&#8217;ll see a slightly different syntax than you may have expected.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs" /></p>
-
-<!--more-->
-
-
-<h2>The Solution: Mocking AngularJs Injections</h2>
-
-<p>Angular is simple and quick on many things.  On some things, it&#8217;s not as simple as we are be led to believe from simple examples.  From the <a href="http://docs.angularjs.org/tutorial/step_05">Angular tutorial</a>:</p>
-
-<blockquote><p>Because we started using dependency injection and our controller has dependencies, constructing the controller in our tests is a bit more complicated.</p></blockquote>
-
-<p>And really, who doesn&#8217;t use dependency injection in any of their Angular code?  But don&#8217;t worry, it&#8217;s not much worse.  And really, it makes sense that things would be this way.</p>
-
-<p>The final Mocha code to test our simple controller should look something like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">assert</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">expect</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">expect</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">should</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">should</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be available&#39;</span><span class="p">,</span> <span class="nx">inject</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$rootScope</span><span class="p">,</span> <span class="nx">$controller</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">scope</span> <span class="o">=</span> <span class="nx">$rootScope</span><span class="p">.</span><span class="nx">$new</span><span class="p">();</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">ctrl</span> <span class="o">=</span> <span class="nx">$controller</span><span class="p">(</span><span class="nx">MyController</span><span class="p">,</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">$scope</span><span class="o">:</span> <span class="nx">scope</span>
-</span><span class='line'>    <span class="p">});</span>
-</span><span class='line'>    <span class="nx">expect</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">undefined</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}));</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>A couple of points:</p>
-
-<ul>
-<li><a href="http://chaijs.com/api/bdd/"><code>chai</code> is an assertion library</a> that makes a great bdd/should-style assertion available in browser tests.</li>
-<li><code>inject()</code> is made available through the <a href="https://github.com/angular/angular-seed/blob/master/test/lib/angular/angular-mocks.js"><code>angular-mocks.js</code> file</a>.  This is available automagically in Jasmine, but in Mocha, you have to include this extra file to get the function.</li>
-<li><code>$rootScope</code> is a scope available to all controllers, so it&#8217;s not dependent on <code>ng-controller</code> references which are in your src, but not your test environment.  From this scope, we create a new scope.</li>
-<li>Initializing <code>MyController</code> with the <code>$controller</code> function allows us to mock the value of <code>$scope</code> in the controller.</li>
-</ul>
-
-
-<h2>Potential Errors</h2>
-
-<p>If you look at the solution above, it should give you the working test of DI that you want.  Here are a few things I worked through when testing my Angular controller&#8230;</p>
-
-<h4>TypeError: &#8216;undefined&#8217; is not an object</h4>
-
-<p>My controller looked somewhat like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">MyController</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">$on</span><span class="p">(</span><span class="s1">&#39;$viewContentLoaded&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// ... stuff when dom in the controller is ready</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And this was the start of my test:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be available&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">ctrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyController</span><span class="p">();</span>
-</span><span class='line'>    <span class="c1">// ... assertions</span>
-</span><span class='line'>  <span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ths <code>$scope.$on()</code> line couldn&#8217;t run because <code>$scope</code> was simply not injected and undefined.
-blah - scope is not there</p>
-
-<h4>ReferenceError: Can&#8217;t find variable: expect</h4>
-
-<p>In Mocha, you&#8217;ll need to import an assertion library of your choice.  Otherwise, <code>expect()</code> and other assertions will not be available to use.  I prefer Chai for its should-style assertions.  They read as a sentence really well:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'>    <span class="nx">expect</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">undefined</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
 ]]></content>
   </entry>
   

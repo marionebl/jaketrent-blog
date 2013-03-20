@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-03-19T08:14:37-06:00</updated>
+  <updated>2013-03-20T07:26:33-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,52 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Make Jsonp Requests with AngularJs]]></title>
+    <link href="http://jaketrent.com/post/make-jsonp-requests-with-angularjs/"/>
+    <updated>2013-03-20T07:08:00-06:00</updated>
+    <id>http://jaketrent.com/post/make-jsonp-requests-with-angularjs</id>
+    <content type="html"><![CDATA[<p>There are a couple ways to make cross domain requests from a client browser.  One method is called Jsonp or Json with padding.  The AngularJs library makes this really simple.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs Jsonp" /></p>
+
+<!--more-->
+
+
+<h2>Web Server Support</h2>
+
+<p>First of all, your Jsonp request will be worth nothing if the server you're requesting data from does not support it.  Jsonp requests require explicit support on the server side.  This is because the data that's returned is formatted differently.  The 'p' in Jsonp stands for padding.</p>
+
+<p>But that's kind of a weird name.  Maybe Jsonf would be more analogous to reality.  This is because the Json data that you seek is really wrapped in a Javascript function.  This function is then evaluated as a script, passing the data into a callback to be saved by your client program.</p>
+
+<p>This essentially is a browser hack to get around the security constraint of browsers not being able to request non-script items from different domains.  But since we request Javascript this way all the time, we'll just make our data look like Javascript.</p>
+
+<h2>Angular Jsonp</h2>
+
+<p>You're probably already used to using the <code>$http</code> service.  It provides the normal <code>get</code>, <code>post</code> and other functions mapped to http methods.  It also provides the function that we'll need: <code>jsonp</code>.</p>
+
+<p>The client script also requires that we specify the callback to send data to.  AngularJs has its own callback pattern, so it would follow that it has a pattern to handle Jsonp callbacks.  It does.  The callback is always called <code>JSON_CALLBACK</code>.  What parameter that it's assigned to in the query string depends on the design of the web service you're calling.  Take a look at the documentation on what's required there.</p>
+
+<p>All that jibber jabber for this simple example of a script asking for <a href="http://colorwheelie.tumblr.com">Tumblr</a> data:</p>
+
+<p>```coffeescript
+$http.jsonp 'http://api.tumblr.com/v2/blog/colorwheelie.tumblr.com/posts/photo?api_key=<mykey>&amp;callback=JSON_CALLBACK'
+  .success (data) -></p>
+
+<pre><code> $scope.colorwheelies = data.response.posts;
+</code></pre>
+
+<p>  .error (data) -></p>
+
+<pre><code> console.log('ERROR');
+</code></pre>
+
+<p>```</p>
+
+<p>The interesting line is line one.  We call the <code>jsonp</code> function.  We assign our callback like this: <code>callback=JSON_CALLBACK</code>.  And in our success callback, we can consume our data variable like it was pure Json.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Https Redirect for Node on Heroku]]></title>
@@ -283,74 +329,6 @@ $('.element-to-find', $element)
 <p>This method uses jQuery to fill in for something it seems Angular can't do yet.  And it uses Angular where possible, since it has access to these dom references already.</p>
 
 <p>What do you think?  Is there a more "Angular way" to do this?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Serve CoffeeScript from Sinatra]]></title>
-    <link href="http://jaketrent.com/post/serve-coffeescript-with-sinatra/"/>
-    <updated>2013-02-20T16:39:00-07:00</updated>
-    <id>http://jaketrent.com/post/serve-coffeescript-with-sinatra</id>
-    <content type="html"><![CDATA[<p>Sinatra is nice because it's super lightweight.  This will allow you to make it do exactly what you want, nothing more.  This is the opposite of Ruby on Rail's convention.  Likewise, it takes just a bit more configuration to make Sinatra serve CoffeeScript as compared to Rails.</p>
-
-<p><img src="http://i.imgur.com/Ta27Zd4.jpg" alt="Sintra and CoffeeScripting" /></p>
-
-<!--more-->
-
-
-<h2>Sinatra and CoffeeScript</h2>
-
-<p>Surprisingly, there are no fantastic gems, at least that I could churn up in a few Google searches, that make serving CoffeeScript bone head easy.  I found a few, such as the Sinatra Assetpack.  It looked like serious overkill, and my Sinatra app is very small, so I wanted a quick and easy way to serve the static goods.</p>
-
-<h4>CoffeeScript Gem</h4>
-
-<p>Sinatra needs a Gem to compile the CoffeeScript.  Put this line in your <code>Gemfile</code>:</p>
-
-<p><code>
-gem "coffee-script"
-</code></p>
-
-<p>And run a:</p>
-
-<p><code>
-$ bundle install
-</code></p>
-
-<h4>Public Directory</h4>
-
-<p>In my app, <code>web.rb</code> is the main controller file.  Next to that file, I have a directory structure like this:</p>
-
-<p><code>
-public/
-  js/
-  coffee/
-web.rb
-</code></p>
-
-<p>By default, Sinatra will serve static assets out of this <code>public</code> directory.</p>
-
-<h4>CoffeeScript Handler</h4>
-
-<p>I created the <code>coffee</code> directory separate from the <code>js</code> directory so that I could write this little handler in <code>web.rb</code>:</p>
-
-<p><code>ruby
-get "/coffee/*.js" do
-  filename = params[:splat].first
-  coffee "../public/coffee/#{filename}".to_sym
-end
-</code></p>
-
-<p>This handler will pick up requests that match "/coffee/*.js", find the associated <code>.coffee</code> file, compile it to JavaScript and serve it.  I kept the file extension as <code>.js</code> to help avoid handling any potential mime-type setting requirements.  Obviously, this handler is simple and won't handle complicated cases.  But that is also a plus.</p>
-
-<h4>CoffeeScript in Templates</h4>
-
-<p>In my <a href="http://">Slim</a> template, if I wanted to get the compiled contents of the file named <code>myscripts.coffee</code>, I would write a script tag like this:</p>
-
-<p><code>ruby
-script src="http://jaketrent.com/coffee/myscripts.js"
-</code></p>
-
-<p>Sinatra.  Coffee.  Bam.</p>
 ]]></content>
   </entry>
   

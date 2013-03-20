@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Topics - Jake Trent</title>
+  <title>Make Jsonp Requests with AngularJs - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="I was inspired by Michael Hyatt&#8217;s book, Platform, to start writing this blog. As he suggested, I just started writing. But also as he suggested &hellip;">
-  
+  <meta name="description" content="How to make a jsonp request in AngularJs for cross-domain requests.">
+  <meta name="keywords" content="angularjs, js, javascript, cors, cross domain, jsonp, json">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/blog-topics/">
+  <link rel="canonical" href="http://jaketrent.com/post/make-jsonp-requests-with-angularjs/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Blog Topics</h1>
+      <h1 class="entry-title">Make Jsonp Requests With AngularJs</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2012-10-22T17:01:00-06:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2012</time>
+<time datetime="2013-03-20T07:08:00-06:00" pubdate data-updated="true">Mar 20<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,39 +108,43 @@
   </header>
 
 
-<div class="entry-content"><p>I was inspired by <a href="http://jaketrent.com/post/platform-book-review/">Michael Hyatt&#8217;s book, Platform,</a> to start writing this blog.  As he suggested, I just started writing.  But also as he suggested, I&#8217;ve been percolating over what my blog topics will be.  I&#8217;ve just been writing for several weeks.  I&#8217;ve finally settled in on a number of categories that will help me focus a bit.  But each are plenty broad to be able to write on most any and all things related to software.</p>
+<div class="entry-content"><p>There are a couple ways to make cross domain requests from a client browser.  One method is called Jsonp or Json with padding.  The AngularJs library makes this really simple.</p>
 
-<p><img src="http://farm1.staticflickr.com/1/2612308_456907e315_z.jpg" alt="Categories" />
-http://flic.kr/p/eoxN</p>
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs Jsonp" /></p>
 
 <!--more-->
 
 
-<h2><a href="http://jaketrent.com/post/category/code/">Code</a></h2>
+<h2>Web Server Support</h2>
 
-<p>I&#8217;m a coder.  This is probably my favorite category.  This is what I wake up in the morning and do.  Posts in this category will be heavy on the code snippets.  They will sometimes link to demos.  These will be the most technical of the posts</p>
+<p>First of all, your Jsonp request will be worth nothing if the server you&#8217;re requesting data from does not support it.  Jsonp requests require explicit support on the server side.  This is because the data that&#8217;s returned is formatted differently.  The &#8216;p&#8217; in Jsonp stands for padding.</p>
 
-<h2><a href="http://jaketrent.com/post/category/software-design/">Design</a></h2>
+<p>But that&#8217;s kind of a weird name.  Maybe Jsonf would be more analogous to reality.  This is because the Json data that you seek is really wrapped in a Javascript function.  This function is then evaluated as a script, passing the data into a callback to be saved by your client program.</p>
 
-<p>I have a desire to use and expand my design skills.  I&#8217;ll probably never commit enough time to really be a fantastic designer like many that I know, but here I&#8217;ll post my own feeble designs and talk about all things having to do with look and feel and user experience.</p>
+<p>This essentially is a browser hack to get around the security constraint of browsers not being able to request non-script items from different domains.  But since we request Javascript this way all the time, we&#8217;ll just make our data look like Javascript.</p>
 
-<h2><a href="http://jaketrent.com/post/category/productivity/">Productivity</a></h2>
+<h2>Angular Jsonp</h2>
 
-<p>Software is such a malleable medium.  It is an art in many ways.  Thus there are many ways to make it happen.  Some methods work better for others.  Some processes improve upon those of the past.  Some ways are better than others to make a team work well.  Ideas similar to these will be posted here.</p>
+<p>You&#8217;re probably already used to using the <code>$http</code> service.  It provides the normal <code>get</code>, <code>post</code> and other functions mapped to http methods.  It also provides the function that we&#8217;ll need: <code>jsonp</code>.</p>
 
-<h2><a href="http://jaketrent.com/post/category/reviews/">Reviews</a></h2>
+<p>The client script also requires that we specify the callback to send data to.  AngularJs has its own callback pattern, so it would follow that it has a pattern to handle Jsonp callbacks.  It does.  The callback is always called <code>JSON_CALLBACK</code>.  What parameter that it&#8217;s assigned to in the query string depends on the design of the web service you&#8217;re calling.  Take a look at the documentation on what&#8217;s required there.</p>
 
-<p>The world of software and technology is rich with resources and activity.  With so much to choose from, sometimes its helpful to have a suggestion or two on where to (or not to) focus some time and energy.  Software, books, and conferences are subjects we&#8217;ve seen so far.  The reviews are worth the price of admission.  Get them here.</p>
+<p>All that jibber jabber for this simple example of a script asking for <a href="http://colorwheelie.tumblr.com">Tumblr</a> data:</p>
 
-<h2><a href="http://jaketrent.com/post/category/announcement/">Announcements</a></h2>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$http</span><span class="p">.</span><span class="nx">jsonp</span> <span class="s">&#39;http://api.tumblr.com/v2/blog/colorwheelie.tumblr.com/posts/photo?api_key=&lt;mykey&gt;&amp;callback=JSON_CALLBACK&#39;</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">success</span> <span class="nf">(data) -&gt;</span>
+</span><span class='line'>     <span class="nv">$scope.colorwheelies = </span><span class="nx">data</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">posts</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">error</span> <span class="nf">(data) -&gt;</span>
+</span><span class='line'>     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s">&#39;ERROR&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Public service announcements will include things about me or the blog in particular that are informational but not to any end.  This post fits in this category.  Where a full review is not offered, tidbits about the software world in general might fit here.</p>
 
-<h2>Blog Topics</h2>
-
-<p>It turns out that it&#8217;s somewhat hard to choose topics to write about on one&#8217;s blog.  At least it is for me.  The tech world is changing quickly.  I&#8217;m one that likes to change it and and change with it.  So, these topics may evolve.  They seem broad enough to continue to be applicable.</p>
-
-<p>If you were to choose my next post, which category would it fit into?</p>
+<p>The interesting line is line one.  We call the <code>jsonp</code> function.  We assign our callback like this: <code>callback=JSON_CALLBACK</code>.  And in our success callback, we can consume our data variable like it was pure Json.</p>
 </div>
 
 
@@ -163,12 +167,12 @@ http://flic.kr/p/eoxN</p>
   
 
 
-<time datetime="2012-10-22T17:01:00-06:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2012</time>
+<time datetime="2013-03-20T07:08:00-06:00" pubdate data-updated="true">Mar 20<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/announcement/'>Announcement</a>, <a class='category' href='/blog/categories/blog/'>blog</a>
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/angularjs/'>angularjs</a>, <a class='category' href='/blog/categories/cors/'>cors</a>, <a class='category' href='/blog/categories/js/'>js</a>
   
 </span>
 
@@ -177,7 +181,7 @@ http://flic.kr/p/eoxN</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/blog-topics/" data-via="" data-counturl="http://jaketrent.com/post/blog-topics/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/make-jsonp-requests-with-angularjs/" data-via="" data-counturl="http://jaketrent.com/post/make-jsonp-requests-with-angularjs/" >Tweet</a>
   
   
   
@@ -186,10 +190,8 @@ http://flic.kr/p/eoxN</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/agile-designers/" title="Previous Post: Agile Designers">&laquo; Agile Designers</a>
+        <a class="basic-alignment left" href="/post/have-more-fun/" title="Previous Post: Have More Fun">&laquo; Have More Fun</a>
       
-      
-        <a class="basic-alignment right" href="/post/gruntjs-access-to-package-dot-json/" title="Next Post: GruntJs Access to package.json">GruntJs Access to package.json &raquo;</a>
       
     </p>
   </footer>
@@ -278,8 +280,8 @@ http://flic.kr/p/eoxN</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/blog-topics/';
-        var disqus_url = 'http://jaketrent.com/post/blog-topics/';
+        var disqus_identifier = 'http://jaketrent.com/post/make-jsonp-requests-with-angularjs/';
+        var disqus_url = 'http://jaketrent.com/post/make-jsonp-requests-with-angularjs/';
         var disqus_script = 'embed.js';
       
     (function () {
