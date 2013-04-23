@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-03-20T07:26:33-06:00</updated>
+  <updated>2013-04-23T08:06:38-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,116 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Access NodeJs App on Xip.io]]></title>
+    <link href="http://jaketrent.com/post/nodejs-app-on-xipio/"/>
+    <updated>2013-04-23T07:22:00-06:00</updated>
+    <id>http://jaketrent.com/post/nodejs-app-on-xipio</id>
+    <content type="html"><![CDATA[<p>Xip.io is a DNS wildcard domain that was initially created for use on Ruby projects.  But its application is desirable across platforms.  Recently, I wanted to use Xip.io on a NodeJs project.  It was easy to make happen.</p>
+
+<p><img src="http://i.imgur.com/M0kYA.jpg" alt="xip.io" /></p>
+
+<!--more-->
+
+
+<h2>Install Pow and Powder</h2>
+
+<p>Pow is a development server that uses Xip.io.  Powder is a cli that makes working with Pow even easier.  To start, make sure that <a href="http://www.ruby-lang.org/en/downloads/">Ruby</a> is setup with <a href="http://rubygems.org">Rubygems</a> in your environment.  Then install Pow.  They have a short little install script you can run, as <a href="http://pow.cx/">referenced on the Pow site</a>.</p>
+
+<p>Then install Powder:</p>
+
+<p><code>
+gem install powder
+</code></p>
+
+<h2>Proxy your NodeJs app</h2>
+
+<p>Pow only knows how to handle Rack apps, so we have to create one to be loaded into Pow.  Since we're writing the guts of our app on another platform -- in this case, Node -- we'll just create a proxy Rack app.</p>
+
+<p>I found a bit of <a href="https://github.com/linjunpop/node-with-pow">proxy app code</a>, which you should save in your project root as <code>config.ru</code>, and which I paste here:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;net/http&quot;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;class ProxyApp</span>
+</span><span class='line'><span class="sr">  def call(env)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">begin</span>
+</span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Request</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>  <span class="n">env</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">key</span> <span class="o">=~</span> <span class="sr">/^http_(.*)/i</span>
+</span><span class='line'>      <span class="n">headers</span><span class="o">[</span><span class="vg">$1</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">3000</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">http</span><span class="o">.</span><span class="n">start</span> <span class="k">do</span> <span class="o">|</span><span class="n">http</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">send_request</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">request_method</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">fullpath</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">read</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">[</span><span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">to_hash</span><span class="p">,</span> <span class="o">[</span><span class="n">response</span><span class="o">.</span><span class="n">body</span><span class="o">]]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">rescue</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ECONNREFUSED</span>
+</span><span class='line'>  <span class="o">[</span><span class="mi">500</span><span class="p">,</span> <span class="p">{},</span> <span class="o">[</span><span class="s2">&quot;Server is down, try $npm start&quot;</span><span class="o">]]</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">run</span> <span class="no">ProxyApp</span><span class="o">.</span><span class="n">new</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The only change you might have to make is the port number for your app (line 13).  In this case, I'm using port 3000 for my NodeJs app.</p>
+
+<h2>Link Your App</h2>
+
+<p>Now all we have to do is link our app to Pow.  Powder helps us do this easily.  Go to your project root directory and type:</p>
+
+<p><code>
+powder link &lt;project_name&gt;
+</code></p>
+
+<p>Now run your app with whatever command starts NodeJs.  It's probably something like this:</p>
+
+<p><code>
+node app.js
+</code></p>
+
+<p>Now you should be able to access your app via your web browser at <code>http://&lt;project_name&gt;.dev</code>.  One of the great things about Xip.io is that it makes running your local app <a href="http://jaketrent.com/post/run-pow-server-on-vm/">extremely easy from a local Virtual machine</a> as well.  To get the address of your app to use in your VM, type this from your native terminal:</p>
+
+<p><code>
+powder open --xip
+</code></p>
+
+<p>And copy the resulting URL into your VM web browser.</p>
+
+<p>Ah, the fusion of Node and Ruby is pretty sweet.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Make Jsonp Requests with AngularJs]]></title>
@@ -263,72 +373,6 @@ ul
 
 
 <p>Frankly, the mixture feels a little bit odd to me.  I've seen it work.  I know there are different ways to get this done.  I think there are probably better ways.  What has worked well for you in similar use cases?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[AngularJs Find Element in Context]]></title>
-    <link href="http://jaketrent.com/post/angularjs-find-element-in-context/"/>
-    <updated>2013-02-21T17:35:00-07:00</updated>
-    <id>http://jaketrent.com/post/angularjs-find-element-in-context</id>
-    <content type="html"><![CDATA[<p>Finding an element in context means that I can select a node from the dom within a certain range -- specifically either a node or any of its children nodes.  Is there an "Angular way" to do this?</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs find in context" /></p>
-
-<!--more-->
-
-
-<h2>Angular's Element() API</h2>
-
-<p>Angular provides jqLite for doing basic CSS selections.  As far as I can tell, it does not give you the ability to specify a context node.  Sure, you can specify a more specific selector, but you can't pass a context programmatically.  The best you could do would look something like:</p>
-
-<p><code>js
-angular.element('.my-preknown-context .element-to-find')
-</code></p>
-
-<p>If that's sufficient for your use case, this would be the most "Angular way" to make an element selection.</p>
-
-<h2>jQuery's API</h2>
-
-<p>If you need to make CSS selections within a given context, you'll need to use jQuery.  jQuery's selector will be used in place of jqLite if it is loaded previous to the <code>DOMContentLoaded</code> event firing.  In other words, import jQuery in the <code>head</code> tag.</p>
-
-<p>With jQuery, you can do things like this:</p>
-
-<p><code>js
-$('.element-to-find', $('.my-preknown-context'))
-</code></p>
-
-<p>But we could already do that with the above <code>angular.element</code> function.  If a constraint of our use case is that we don't yet know the selector of the context, then we need to  use this same jQuery API to do what we couldn't before.  For instance, if we want to find a child element of an element that was clicked, the inside of the click handler might look like this:</p>
-
-<p><code>js
-$('.element-to-find', $(event.currentTarget))
-</code></p>
-
-<p>We could also write it like this:</p>
-
-<p><code>js
-$(event.currentTarget).find('.element-to-find')
-</code></p>
-
-<p>Well, why not use <code>angular.element().find()</code>?  Because it is limited to querying children by tagName only.  Oh boy.  That's not all that useful.  Interesting/weird constraint.  Oh well, maybe someday.</p>
-
-<h2>jQuery, Meet Angular</h2>
-
-<p>So, using full jQuery is probably not the most "Angular way".  So, what's the best you can do?  Use Angular to get the context reference.  In a click handler, use the <code>$event</code> service which references the event object:</p>
-
-<p><code>js
-$('.element-to-find', $event.currentTarget)
-</code></p>
-
-<p>In a controller, use the <code>$element</code> service which references the dom node the controller is attached to:</p>
-
-<p><code>js
-$('.element-to-find', $element)
-</code></p>
-
-<p>This method uses jQuery to fill in for something it seems Angular can't do yet.  And it uses Angular where possible, since it has access to these dom references already.</p>
-
-<p>What do you think?  Is there a more "Angular way" to do this?</p>
 ]]></content>
   </entry>
   

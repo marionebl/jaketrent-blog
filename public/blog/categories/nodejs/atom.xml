@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-03-20T07:26:33-06:00</updated>
+  <updated>2013-04-23T08:06:38-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,116 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Access NodeJs App on Xip.io]]></title>
+    <link href="http://jaketrent.com/post/nodejs-app-on-xipio/"/>
+    <updated>2013-04-23T07:22:00-06:00</updated>
+    <id>http://jaketrent.com/post/nodejs-app-on-xipio</id>
+    <content type="html"><![CDATA[<p>Xip.io is a DNS wildcard domain that was initially created for use on Ruby projects.  But its application is desirable across platforms.  Recently, I wanted to use Xip.io on a NodeJs project.  It was easy to make happen.</p>
+
+<p><img src="http://i.imgur.com/M0kYA.jpg" alt="xip.io" /></p>
+
+<!--more-->
+
+
+<h2>Install Pow and Powder</h2>
+
+<p>Pow is a development server that uses Xip.io.  Powder is a cli that makes working with Pow even easier.  To start, make sure that <a href="http://www.ruby-lang.org/en/downloads/">Ruby</a> is setup with <a href="http://rubygems.org">Rubygems</a> in your environment.  Then install Pow.  They have a short little install script you can run, as <a href="http://pow.cx/">referenced on the Pow site</a>.</p>
+
+<p>Then install Powder:</p>
+
+<p><code>
+gem install powder
+</code></p>
+
+<h2>Proxy your NodeJs app</h2>
+
+<p>Pow only knows how to handle Rack apps, so we have to create one to be loaded into Pow.  Since we're writing the guts of our app on another platform -- in this case, Node -- we'll just create a proxy Rack app.</p>
+
+<p>I found a bit of <a href="https://github.com/linjunpop/node-with-pow">proxy app code</a>, which you should save in your project root as <code>config.ru</code>, and which I paste here:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;net/http&quot;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;class ProxyApp</span>
+</span><span class='line'><span class="sr">  def call(env)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">begin</span>
+</span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Request</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>  <span class="n">env</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">key</span> <span class="o">=~</span> <span class="sr">/^http_(.*)/i</span>
+</span><span class='line'>      <span class="n">headers</span><span class="o">[</span><span class="vg">$1</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">3000</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">http</span><span class="o">.</span><span class="n">start</span> <span class="k">do</span> <span class="o">|</span><span class="n">http</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">send_request</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">request_method</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">fullpath</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">read</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">[</span><span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">to_hash</span><span class="p">,</span> <span class="o">[</span><span class="n">response</span><span class="o">.</span><span class="n">body</span><span class="o">]]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">rescue</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ECONNREFUSED</span>
+</span><span class='line'>  <span class="o">[</span><span class="mi">500</span><span class="p">,</span> <span class="p">{},</span> <span class="o">[</span><span class="s2">&quot;Server is down, try $npm start&quot;</span><span class="o">]]</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">run</span> <span class="no">ProxyApp</span><span class="o">.</span><span class="n">new</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The only change you might have to make is the port number for your app (line 13).  In this case, I'm using port 3000 for my NodeJs app.</p>
+
+<h2>Link Your App</h2>
+
+<p>Now all we have to do is link our app to Pow.  Powder helps us do this easily.  Go to your project root directory and type:</p>
+
+<p><code>
+powder link &lt;project_name&gt;
+</code></p>
+
+<p>Now run your app with whatever command starts NodeJs.  It's probably something like this:</p>
+
+<p><code>
+node app.js
+</code></p>
+
+<p>Now you should be able to access your app via your web browser at <code>http://&lt;project_name&gt;.dev</code>.  One of the great things about Xip.io is that it makes running your local app <a href="http://jaketrent.com/post/run-pow-server-on-vm/">extremely easy from a local Virtual machine</a> as well.  To get the address of your app to use in your VM, type this from your native terminal:</p>
+
+<p><code>
+powder open --xip
+</code></p>
+
+<p>And copy the resulting URL into your VM web browser.</p>
+
+<p>Ah, the fusion of Node and Ruby is pretty sweet.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Https Redirect for Node on Heroku]]></title>
@@ -339,129 +449,6 @@ npm install http://localServer/my-pkg-0.0.1.tgz
 <h2>The Glory of Npm</h2>
 
 <p>Npm is great.  The ability to install published or local packages is an example of its flexibility and usefulness.  What are the other ways that you've found to make non-public packages installable -- for instance, that package that the writer just never bothered to publish to npm?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Environment Specific Variables in NodeJs]]></title>
-    <link href="http://jaketrent.com/post/environment-variables-in-node/"/>
-    <updated>2012-12-05T16:12:00-07:00</updated>
-    <id>http://jaketrent.com/post/environment-variables-in-node</id>
-    <content type="html"><![CDATA[<p>Sometimes things change in different environments.  For one, I wear a tie to church but try not to otherwise.  In Node, you might want variables to change per environment.  And it turns out people have wanted this exact thing, creating marvels of code for us to use as we please.  Enter, nconf.</p>
-
-<p><img src="http://i.imgur.com/5rZ8H.png" alt="Environment variables in Node" /></p>
-
-<!--more-->
-
-
-<h2>Nconf</h2>
-
-<p><a href="https://github.com/flatiron/nconf">Nconf</a> provides "hierarchical node.js configuration with files, environment variables, command-line arguments, and atomic object merging."  It is a great little package provided by the folks at <a href="http://nodejitsu.com/">NodeJitsu</a>.</p>
-
-<p>To install, run a little:</p>
-
-<p><code>
-$ npm install nconf
-</code></p>
-
-<h4>Environment Variables in Node</h4>
-
-<p>Often, NodeJs environments are specified through the aptly-named environment variables.  These are the variables that are set on a system level, available to yours and other applications.  In Unixy environments, you'd set one with:</p>
-
-<p><code>
-$ export NODE_ENV=production
-</code></p>
-
-<p>And it turns out that <code>NODE_ENV</code> is the single most-used environment variable of them all.  Really, it's the big kahuna that triggers other environment variables or code for activation.</p>
-
-<p>For instance, in an <a href="http://expressjs.com/">Express</a> app, you'll see this a lot:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="s1">&#39;production&#39;</span> <span class="o">==</span> <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;env&#39;</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;dbUri&#39;</span><span class="p">,</span> <span class="s1">&#39;n.n.n.n/prod&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Actually, you see <a href="http://expressjs.com/api.html#app.configure"><code>configure()</code></a>, but it's all just sugar around a check to <code>process.env.NODE_ENV</code>.</p>
-
-<h4>Set NODE_ENV and Start Node</h4>
-
-<p>If you want to start node and set the environment variable all in a one liner, try:</p>
-
-<p><code>
-$ export NODE_ENV=production &amp;&amp; node app.js
-</code></p>
-
-<h4>Multiple, Variable Sources</h4>
-
-<p>You could just grab all your variables out the process environment, but the cool thing that nconf gives you is a hierarchy.  The <a href="https://github.com/flatiron/nconf">docs</a> give the probable example of the following hierarchy:</p>
-
-<ol>
-<li>Command-line arguments</li>
-<li>Environment variables</li>
-<li>A file</li>
-</ol>
-
-
-<p>One could access these sources in code with this beaut:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">nconf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nconf&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">argv</span><span class="p">()</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span> <span class="p">.</span><span class="nx">env</span><span class="p">()</span>
-</span><span class='line'> <span class="p">.</span><span class="nx">file</span><span class="p">({</span> <span class="nx">file</span><span class="o">:</span>
-</span><span class='line'>   <span class="s1">&#39;config.json&#39;</span>
-</span><span class='line'> <span class="p">});</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>You could even have a config file specific to each environment that ships with your app and load it with a slightly spiffier:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">nconf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nconf&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">argv</span><span class="p">()</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span> <span class="p">.</span><span class="nx">env</span><span class="p">()</span>
-</span><span class='line'> <span class="p">.</span><span class="nx">file</span><span class="p">({</span> <span class="nx">file</span><span class="o">:</span>
-</span><span class='line'>   <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">+</span> <span class="s1">&#39;.json&#39;</span>
-</span><span class='line'> <span class="p">});</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h4>Using the Data</h4>
-
-<p>Finally, after loading, just access your environment variables and incorporate them in your code as you will:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">nconf</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;NODE_ENV&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Declare some variables per environment.  Likely candidates are database connection strings or web service endpoints or feature flags.  These will help you avoid as many nasty if-else branches in your code.</p>
 ]]></content>
   </entry>
   
