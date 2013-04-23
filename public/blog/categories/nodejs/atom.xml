@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-04-23T08:06:38-06:00</updated>
+  <updated>2013-04-23T08:10:55-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -20,7 +20,7 @@
     <id>http://jaketrent.com/post/nodejs-app-on-xipio</id>
     <content type="html"><![CDATA[<p>Xip.io is a DNS wildcard domain that was initially created for use on Ruby projects.  But its application is desirable across platforms.  Recently, I wanted to use Xip.io on a NodeJs project.  It was easy to make happen.</p>
 
-<p><img src="http://i.imgur.com/M0kYA.jpg" alt="xip.io" /></p>
+<p><img src="http://i.imgur.com/PJTnZmM.jpg" alt="xip.io" /></p>
 
 <!--more-->
 
