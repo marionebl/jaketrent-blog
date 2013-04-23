@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-04-23T08:10:55-06:00</updated>
+  <updated>2013-04-23T17:11:22-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,98 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[LiveReload for NodeJs]]></title>
+    <link href="http://jaketrent.com/post/livereload-for-nodejs/"/>
+    <updated>2013-04-23T16:44:00-06:00</updated>
+    <id>http://jaketrent.com/post/livereload-for-nodejs</id>
+    <content type="html"><![CDATA[<p>LiveReload is a wonderful tool/strategy for being able to develop websites more quickly.  You can make a change and see it immediately shown in the browser without requiring you to manually refresh.  To do this in NodeJs with Express, you'll need just a few packages.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="grunt" /></p>
+
+<!--more-->
+
+
+<h2>LiveReload Express</h2>
+
+<p>If you're doing a website on Nodejs these days, you're probably using Express.  Express uses the Connect library for its middleware scheme.  Just grab one more middleware to handle the LiveReload.  It will add a little snippet of JavaScript to each of the html responses that is requested through this middleware.  First, install:</p>
+
+<p><code>
+npm install connect-livereload --save-dev
+</code></p>
+
+<p>Next, import:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span> <span class="s">&#39;development&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">require</span><span class="p">(</span><span class="s">&#39;connect-livereload&#39;</span><span class="p">)</span> <span class="mi">35729</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Note that we only want to import and use the middleware when in development.  This matches the fact that we are only declaring this package as in <code>devDependencies</code>.</p>
+
+<h2>LiveReload Grunt</h2>
+
+<p>Now you need to something to start a livereload server, watch files for changes, and broadcast their availability.  The rest of this will be done via Grunt.</p>
+
+<p>First, install:</p>
+
+<p><code>
+npm install grunt-cli -g
+npm install grunt grunt-regarde grunt-contrib-livereload --save-dev
+</code></p>
+
+<ul>
+<li><code>grunt-cli</code> will allow you to run the <code>grunt</code> command in the terminal.  Global puts the bin in your path.</li>
+<li><code>grunt-regarde</code> is a file watcher.  It senses changes to the filesystem.</li>
+<li><code>grunt-contrib-reload</code> will handle the pushing of new code to the browser.</li>
+</ul>
+
+
+<p>Next setup the <code>Gruntfile.coffee</code>:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(grunt) -&gt;</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nv">regarde:</span>
+</span><span class='line'>  <span class="nv">style:</span>
+</span><span class='line'>    <span class="nv">files: </span><span class="p">[</span><span class="s">&#39;app/static/css/*.css&#39;</span><span class="p">]</span>
+</span><span class='line'>    <span class="nv">tasks: </span><span class="p">[</span><span class="s">&#39;livereload&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span> <span class="s">&#39;grunt-contrib-livereload&#39;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span> <span class="s">&#39;be-lively&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s">&#39;livereload-start&#39;</span><span class="p">,</span> <span class="s">&#39;regarde&#39;</span> <span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now when you run:</p>
+
+<p><code>
+grunt be-lively
+</code></p>
+
+<p>A livereload server is going to be setup.  Then we watch for filesystem changes.  The only things we're watching are css files in our app.  You could expand the <code>files</code> array to watch more if you wish.</p>
+
+<p>Yay!</p>
+
+<h2>LiveReload all the Things</h2>
+
+<p>There are many ways to make this happen.  There are numerous Node libraries, Grunt plugins, and browser plugins.  Do what works for you.  Just make it happen fast and tend it well from the beginning to the end of your project.  Almost every solution I've found is somewhat high maintenance.  This one has proven to be the same.  What have you found to be your favorite LiveReload solution, and in what environment?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Access NodeJs App on Xip.io]]></title>
@@ -124,6 +216,43 @@ powder open --xip
   </entry>
   
   <entry>
+    <title type="html"><![CDATA[Deploy Yeoman App on Heroku]]></title>
+    <link href="http://jaketrent.com/post/yeoman-app-on-heroku/"/>
+    <updated>2013-04-23T07:12:00-06:00</updated>
+    <id>http://jaketrent.com/post/yeoman-app-on-heroku</id>
+    <content type="html"><![CDATA[<p>Yeoman is great developer tool that will help you generate a project format that is easy to get up and running quickly.  Out of the box, it only generates static sites.  But, with a few small tweaks, you can get it running on an app server, Nodejs, and up on Heroku.</p>
+
+<p><img src="http://i.imgur.com/M0kYA.jpg" alt="Yeoman" /></p>
+
+<!--more-->
+
+
+<h2>Yeoman Init</h2>
+
+<p>To install Yeoman, run:</p>
+
+<p><code>
+</code></p>
+
+<p>Now navigate to your new project directory and generate the scaffolding by running:</p>
+
+<p><code>
+yo webapp
+</code></p>
+
+<p>There are other generators, specifically for angularjs or a handful of other frameworks.  To see more options, run:</p>
+
+<p><code>
+yo --help
+</code></p>
+
+<p>[[BODY]]</p>
+
+<p>[[CLOSE-Summarize, end with question]]</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Make Jsonp Requests with AngularJs]]></title>
     <link href="http://jaketrent.com/post/make-jsonp-requests-with-angularjs/"/>
     <updated>2013-03-20T07:08:00-06:00</updated>
@@ -216,163 +345,6 @@ else
 <p>If it's not <code>https</code> already, redirect the same url on <code>https</code>.  If it is, that's what I want, and you can pass on through my middleware function.  Note that this middleware will protect <em>all</em> urls on the site with an <code>https</code> redirect.  Your middleware could be more selective.  You could even create this as a stacked middleware per route if you wanted.  We could even enhance our middleware to use inspect both the http header <em>and</em> the <code>secure</code> flag.</p>
 
 <p>Heroku threw us a for a minor, unexpected loop, but it was nothing that we couldn't easily code for.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Serve Json from Sinatra]]></title>
-    <link href="http://jaketrent.com/post/serve-json-from-sinatra/"/>
-    <updated>2013-02-26T07:18:00-07:00</updated>
-    <id>http://jaketrent.com/post/serve-json-from-sinatra</id>
-    <content type="html"><![CDATA[<p>By default, Sinatra knows how to serve up a rendered html page.  With a slight tweak, we can make it spit out Json too!</p>
-
-<p><img src="http://i.imgur.com/ZyCgi56.jpg" alt="JSON on Sinatra" /></p>
-
-<!--more-->
-
-
-<h2>Data Format of the Web</h2>
-
-<p>Json is my favorite data format for web applications.  Really, who wouldn't want their webservice to expose Json?  It's mucho useful.</p>
-
-<p>First, add a line to the <code>Gemfile</code> that makes a Json helper method available to Sinatra:</p>
-
-<p><code>ruby
-gem "sinatra-contrib"
-</code>
-Next, all you need to do is query the data that you want to return and actually return it, as in:</p>
-
-<p>```ruby
-require "sinatra/json"</p>
-
-<p>get "/my-models" do
-  json MyModel.all
-end
-```</p>
-
-<p>The <code>json</code> helper will then serialize your objects into Json, much to the delight of your clients!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Pass Values From the Page to AngularJs]]></title>
-    <link href="http://jaketrent.com/post/pass-values-from-page-to-angular/"/>
-    <updated>2013-02-22T07:10:00-07:00</updated>
-    <id>http://jaketrent.com/post/pass-values-from-page-to-angular</id>
-    <content type="html"><![CDATA[<p>There are simple mechanisms for passing data from your web page to AngularJs.  One directive is called <code>ngInit</code>.  You may well need it.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular data passing" /></p>
-
-<!--more-->
-
-
-<h2>The Use Cases</h2>
-
-<p>The use cases don't make a ton of sense without a concrete example.  There are several ways to implement even the most simple example.  If the solution doesn't seem to fit the problem, try another way.</p>
-
-<p>For our purposes, let's say that we're displaying a list of comments on the screen.</p>
-
-<h4>Angular Requests Data</h4>
-
-<p>It's easy to put data into scope for AngularJs to use if Angular is the one to request the data initially.  This often will look something like this:</p>
-
-<p>```coffeescript
-$http.get('/comments')
-  .success((comments) -></p>
-
-<pre><code>$scope.comments = comments
-</code></pre>
-
-<p>  )
-```</p>
-
-<p>Then your template will automatically have the data in scope.  And the template (<a href="http://slim-lang.org">Slim</a> syntax used below) can look like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
-</span><span class='line'><span class="n">ul</span>
-</span><span class='line'>  <span class="n">li</span> <span class="n">ng</span><span class="o">-</span><span class="n">repeat</span><span class="o">=</span><span class="s2">&quot;comment in comments&quot;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;| {{ comment }}</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Now when we add a new comment via Ajax, we can push it right into the comment collection, and the page is updated by Angular with the appropriate data.  Or if we want to perform an operation on a pre-existing comment, it's easy to do via an AJAX operation and display the result.</p>
-
-<h4>Server Renders Data Initially</h4>
-
-<p>Sometimes it'll make sense for the server to render the data.  Often this kind of data will be the main content on the page.  When the client receives the page, we want the data display to be immediate.  We don't want them to load a page with a spinner for the main content, then wait and watch it spin while the real content is requested secondarily.</p>
-
-<p>If the server was to initially print the comments, like so:</p>
-
-<p>```ruby
-h1 Comments
-ul
-  - comments.each do |comment|</p>
-
-<pre><code>li 
-  = comment
-</code></pre>
-
-<p>```</p>
-
-<p>We still might want to do AJAX'y things with a comment, such as like it.  When I like it, I don't want the browser to have to refresh, so I want to make Angular do this for me.</p>
-
-<h2>ngInit Passes Angular Server Data</h2>
-
-<p>Angular provides a nice directive, <code>ngInit</code> for passing Angular data.  It's a mechanism by which you can bootstrap your scripts with the data they need to function.  A mixture of server rendering and client-side AJAX requests on the same data will probably mean that you're going to use this directive.</p>
-
-<p>From the <code>ngInit</code> docs:</p>
-
-<blockquote><p> The ngInit directive specifies initialization tasks to be executed before the template enters execution mode during bootstrap.</p></blockquote>
-
-<p>Our server/client mixture code might look something like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
-</span><span class='line'><span class="n">ul</span>
-</span><span class='line'>  <span class="o">-</span> <span class="n">comments</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">comment</span><span class="p">,</span> <span class="n">i</span><span class="o">|&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;li ng-init=&quot;commentLikeCount[i]=</span><span class="si">#{</span><span class="n">comment</span><span class="o">.</span><span class="n">likeCount</span><span class="si">}</span><span class="sr">&quot;</span>
-</span><span class='line'><span class="sr">  = comment</span>
-</span><span class='line'><span class="sr">  | Likes for this comment: {{commentLikeCount[i]}}</span>
-</span><span class='line'><span class="sr">  a ng-click=&quot;like(commentLikeCount[i])&quot;</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>It's important to realize where data is coming from in this example.  The syntax <code>=</code> as in <code>= comment</code> and <code>#{}</code> as in <code>#{comment.likeCount}</code> are server-rendered bits.  As you know, the curlies and the ng attribute syntax is for Angular's client side rendering.</p>
-
-<p>So how has this mixture bought us anything?</p>
-
-<ol>
-<li>The server renders the comments initially.  This makes the display immediate when the browser loads the page.</li>
-<li>We init the value of <code>commentLikeCount</code>, making it available for Angular to display once the client compiles the template.</li>
-<li>Since Angular has a count of the likes, it can easily update it and redisplay without a page reload after calling <code>like()</code> to increment the count.</li>
-</ol>
-
-
-<p>Frankly, the mixture feels a little bit odd to me.  I've seen it work.  I know there are different ways to get this done.  I think there are probably better ways.  What has worked well for you in similar use cases?</p>
 ]]></content>
   </entry>
   

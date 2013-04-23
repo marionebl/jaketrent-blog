@@ -4,7 +4,7 @@
   <title><![CDATA[Category: heroku | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/heroku/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-04-23T08:10:55-06:00</updated>
+  <updated>2013-04-23T17:11:22-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Deploy Yeoman App on Heroku]]></title>
+    <link href="http://jaketrent.com/post/yeoman-app-on-heroku/"/>
+    <updated>2013-04-23T07:12:00-06:00</updated>
+    <id>http://jaketrent.com/post/yeoman-app-on-heroku</id>
+    <content type="html"><![CDATA[<p>Yeoman is great developer tool that will help you generate a project format that is easy to get up and running quickly.  Out of the box, it only generates static sites.  But, with a few small tweaks, you can get it running on an app server, Nodejs, and up on Heroku.</p>
+
+<p><img src="http://i.imgur.com/M0kYA.jpg" alt="Yeoman" /></p>
+
+<!--more-->
+
+
+<h2>Yeoman Init</h2>
+
+<p>To install Yeoman, run:</p>
+
+<p><code>
+</code></p>
+
+<p>Now navigate to your new project directory and generate the scaffolding by running:</p>
+
+<p><code>
+yo webapp
+</code></p>
+
+<p>There are other generators, specifically for angularjs or a handful of other frameworks.  To see more options, run:</p>
+
+<p><code>
+yo --help
+</code></p>
+
+<p>[[BODY]]</p>
+
+<p>[[CLOSE-Summarize, end with question]]</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Https Redirect for Node on Heroku]]></title>

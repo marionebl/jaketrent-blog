@@ -117,6 +117,10 @@
         <lastmod>2012-12-31T20:26:09-07:00</lastmod>
     </url>
     <url>
+        <loc>http://jaketrent.com/post/blog-template/</loc>
+        <lastmod>2013-01-03T18:51:03-07:00</lastmod>
+    </url>
+    <url>
         <loc>http://jaketrent.com/post/mocha-testing-angularjs-dependency-injection/</loc>
         <lastmod>2013-02-26T07:11:47-07:00</lastmod>
     </url>
@@ -201,8 +205,16 @@
         <lastmod>2013-03-20T07:26:23-06:00</lastmod>
     </url>
     <url>
+        <loc>http://jaketrent.com/post/yeoman-app-on-heroku/</loc>
+        <lastmod>2013-04-23T07:21:37-06:00</lastmod>
+    </url>
+    <url>
         <loc>http://jaketrent.com/post/nodejs-app-on-xipio/</loc>
-        <lastmod>2013-04-23T08:10:31-06:00</lastmod>
+        <lastmod>2013-04-23T16:43:53-06:00</lastmod>
+    </url>
+    <url>
+        <loc>http://jaketrent.com/post/livereload-for-nodejs/</loc>
+        <lastmod>2013-04-23T17:11:14-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/404.html</loc>
@@ -210,10 +222,10 @@
     </url>
     <url>
         <loc>http://jaketrent.com/blog/archives/</loc>
-        <lastmod>2013-04-23T08:10:31-06:00</lastmod>
+        <lastmod>2013-04-23T17:11:14-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/</loc>
-        <lastmod>2013-04-23T08:10:31-06:00</lastmod>
+        <lastmod>2013-04-23T17:11:14-06:00</lastmod>
     </url>
 </urlset>

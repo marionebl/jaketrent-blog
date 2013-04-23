@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-04-23T08:10:55-06:00</updated>
+  <updated>2013-04-23T17:11:22-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,98 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[LiveReload for NodeJs]]></title>
+    <link href="http://jaketrent.com/post/livereload-for-nodejs/"/>
+    <updated>2013-04-23T16:44:00-06:00</updated>
+    <id>http://jaketrent.com/post/livereload-for-nodejs</id>
+    <content type="html"><![CDATA[<p>LiveReload is a wonderful tool/strategy for being able to develop websites more quickly.  You can make a change and see it immediately shown in the browser without requiring you to manually refresh.  To do this in NodeJs with Express, you'll need just a few packages.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="grunt" /></p>
+
+<!--more-->
+
+
+<h2>LiveReload Express</h2>
+
+<p>If you're doing a website on Nodejs these days, you're probably using Express.  Express uses the Connect library for its middleware scheme.  Just grab one more middleware to handle the LiveReload.  It will add a little snippet of JavaScript to each of the html responses that is requested through this middleware.  First, install:</p>
+
+<p><code>
+npm install connect-livereload --save-dev
+</code></p>
+
+<p>Next, import:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span> <span class="s">&#39;development&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">require</span><span class="p">(</span><span class="s">&#39;connect-livereload&#39;</span><span class="p">)</span> <span class="mi">35729</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Note that we only want to import and use the middleware when in development.  This matches the fact that we are only declaring this package as in <code>devDependencies</code>.</p>
+
+<h2>LiveReload Grunt</h2>
+
+<p>Now you need to something to start a livereload server, watch files for changes, and broadcast their availability.  The rest of this will be done via Grunt.</p>
+
+<p>First, install:</p>
+
+<p><code>
+npm install grunt-cli -g
+npm install grunt grunt-regarde grunt-contrib-livereload --save-dev
+</code></p>
+
+<ul>
+<li><code>grunt-cli</code> will allow you to run the <code>grunt</code> command in the terminal.  Global puts the bin in your path.</li>
+<li><code>grunt-regarde</code> is a file watcher.  It senses changes to the filesystem.</li>
+<li><code>grunt-contrib-reload</code> will handle the pushing of new code to the browser.</li>
+</ul>
+
+
+<p>Next setup the <code>Gruntfile.coffee</code>:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(grunt) -&gt;</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nv">regarde:</span>
+</span><span class='line'>  <span class="nv">style:</span>
+</span><span class='line'>    <span class="nv">files: </span><span class="p">[</span><span class="s">&#39;app/static/css/*.css&#39;</span><span class="p">]</span>
+</span><span class='line'>    <span class="nv">tasks: </span><span class="p">[</span><span class="s">&#39;livereload&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span> <span class="s">&#39;grunt-contrib-livereload&#39;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span> <span class="s">&#39;be-lively&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s">&#39;livereload-start&#39;</span><span class="p">,</span> <span class="s">&#39;regarde&#39;</span> <span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now when you run:</p>
+
+<p><code>
+grunt be-lively
+</code></p>
+
+<p>A livereload server is going to be setup.  Then we watch for filesystem changes.  The only things we're watching are css files in our app.  You could expand the <code>files</code> array to watch more if you wish.</p>
+
+<p>Yay!</p>
+
+<h2>LiveReload all the Things</h2>
+
+<p>There are many ways to make this happen.  There are numerous Node libraries, Grunt plugins, and browser plugins.  Do what works for you.  Just make it happen fast and tend it well from the beginning to the end of your project.  Almost every solution I've found is somewhat high maintenance.  This one has proven to be the same.  What have you found to be your favorite LiveReload solution, and in what environment?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Access NodeJs App on Xip.io]]></title>
@@ -124,6 +216,43 @@ powder open --xip
   </entry>
   
   <entry>
+    <title type="html"><![CDATA[Deploy Yeoman App on Heroku]]></title>
+    <link href="http://jaketrent.com/post/yeoman-app-on-heroku/"/>
+    <updated>2013-04-23T07:12:00-06:00</updated>
+    <id>http://jaketrent.com/post/yeoman-app-on-heroku</id>
+    <content type="html"><![CDATA[<p>Yeoman is great developer tool that will help you generate a project format that is easy to get up and running quickly.  Out of the box, it only generates static sites.  But, with a few small tweaks, you can get it running on an app server, Nodejs, and up on Heroku.</p>
+
+<p><img src="http://i.imgur.com/M0kYA.jpg" alt="Yeoman" /></p>
+
+<!--more-->
+
+
+<h2>Yeoman Init</h2>
+
+<p>To install Yeoman, run:</p>
+
+<p><code>
+</code></p>
+
+<p>Now navigate to your new project directory and generate the scaffolding by running:</p>
+
+<p><code>
+yo webapp
+</code></p>
+
+<p>There are other generators, specifically for angularjs or a handful of other frameworks.  To see more options, run:</p>
+
+<p><code>
+yo --help
+</code></p>
+
+<p>[[BODY]]</p>
+
+<p>[[CLOSE-Summarize, end with question]]</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Https Redirect for Node on Heroku]]></title>
     <link href="http://jaketrent.com/post/https-redirect-node-heroku/"/>
     <updated>2013-02-26T07:33:00-07:00</updated>
@@ -228,227 +357,6 @@ else
 <p>The booked worked in usages of some great libraries throughout the coding examples.  As mentioned, <a href="http://socket.io/">Socket.IO</a> is a great web socket wrapper.  <a href="https://github.com/visionmedia/superagent">Superagent</a> is a great higher-level request API.  <a href="http://visionmedia.github.com/mocha/">Mocha</a> is a fantastic test framework.  And <a href="http://mongoosejs.com/">Mongoose</a> provides a nice model layer on top of the native MongoDb calls.</p>
 
 <p>So, what are you waiting for?  Go learn Node!  Use this book to help you.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[How to Make a Pinterest Webservice]]></title>
-    <link href="http://jaketrent.com/post/how-to-make-pinterest-webservice/"/>
-    <updated>2013-01-18T07:06:00-07:00</updated>
-    <id>http://jaketrent.com/post/how-to-make-pinterest-webservice</id>
-    <content type="html"><![CDATA[<p>Pinterest currently does not have an official webservice API.  It seems kind of crazy in this day and age.  They really should have one.  I can't think what the business reasons might be for not having one.</p>
-
-<p>They've not had one for long enough that it's high time we write our own.  It'll be surprisingly easy with a few choice tools</p>
-
-<p><img src="http://i.imgur.com/7cv9d.png" alt="Pinterest API" /></p>
-
-<!--more-->
-
-
-<h2>Webservice API on NodeJs</h2>
-
-<p><a href="http://nodejs.org/">NodeJs</a> is just a fun platform to write IO-heavy applications for the web.  We're going to write a quick <a href="http://en.wikipedia.org/wiki/Representational_state_transfer">RESTful</a> endpoint using the <a href="http://expressjs.com/">Express</a> library that allows us to consume real Pinterest content that's not available via a pre-existing service.</p>
-
-<h4>Screen Scrape Pinterest</h4>
-
-<p>Given no API, we're left to our own devices.  The data for Pinterest is only exposed via the UI on the website.  We're going to have our service visit that UI and grab the data that we need as a user of a web browser would see it.  This is screen scraping.  There a lot of downsides here, but we wouldn't be trying it if there was an API already.</p>
-
-<p>One down side is that our service will be brittle.  If Pinterest ever changes the layout of the page, our service won't be able to bring back the right data.  Our solution will be simple, so it'll be easy to update, but this should be a red flag not to do anything mission critical via screen scraping unless you're giving it your full attention.</p>
-
-<p>Another down side might be speed.  Screen scraping a UI is not the fastest way to get data.  We'll try and help mitigate this with the fastest tools that we have.  NodeJs is a blasted fast web server.  A library called <a href="https://github.com/MatthewMueller/cheerio">cheerio</a> is supposedly best-in-class for screen scraping (advertised as 8x faster than <a href="https://github.com/tmpvar/jsdom">jsdom</a>).</p>
-
-<h4>Caching</h4>
-
-<p>To make this retrieval even faster for repeat use, caching could be very helpful.  We could cache in our service what we get back from pinterest via some datastore or we could cache in our client.  Best practices here will be very dependent on your use case.  These kind of enhancements have been made over and over again and would only clutter the simple Pinterest interaction, so I will exclude them for now.</p>
-
-<h2>Getting Pinterest Data</h2>
-
-<p>Here's the final solution in all its glory.  This snippet only includes only the code inside the Express route.</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// request is a library for making http requests</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="c1">// cheerio is a lib for screen scraping</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">cheerio</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;cheerio&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="c1">// req and res are express vars for the request and response</span>
-</span><span class='line'><span class="nx">exports</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// this is the actual request to the pinterest page I care about</span>
-</span><span class='line'>  <span class="nx">request</span><span class="p">(</span><span class="s1">&#39;http://pinterest.com/jaketrent/pins/&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">resp</span><span class="p">,</span> <span class="nx">body</span><span class="p">){</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="c1">// get ready for scraping</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">cheerio</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">pins</span> <span class="o">=</span> <span class="p">[];</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">$pin</span><span class="p">;</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">$pins</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.pin&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// scraping only the 1st 10 pins;  you could get them all</span>
-</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="nx">i</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$pin</span> <span class="o">=</span> <span class="nx">$pins</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// Finding the bits on the page we care about based on class names</span>
-</span><span class='line'>  <span class="nx">pins</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
-</span><span class='line'>    <span class="nx">img</span><span class="o">:</span> <span class="nx">$pin</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.PinImageImg&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">),</span>
-</span><span class='line'>    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://pinterest.com&#39;</span> <span class="o">+</span> <span class="nx">$pin</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.ImgLink&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">),</span>
-</span><span class='line'>    <span class="nx">desc</span><span class="o">:</span> <span class="nx">$pin</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.description&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">()</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// respond with the final json</span>
-</span><span class='line'><span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">pins</span><span class="p">);</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>When I wrote it out for my own use, I was surprised at the brevity.  I love it.  Given, there's no handling of any errors or attempts to make this semi-robust.  This just gets us the data on a good day.</p>
-
-<p>The final json that's exposed at our chosen Express endpoint looks like it this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">[</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="s2">&quot;img&quot;</span><span class="o">:</span> <span class="s2">&quot;http://myimg.jpg&quot;</span><span class="p">,</span>
-</span><span class='line'><span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="s2">&quot;http://pinterest.com/pin/mypin&quot;</span><span class="p">,</span>
-</span><span class='line'><span class="s2">&quot;desc&quot;</span><span class="o">:</span> <span class="s2">&quot;Sweetest pin ever&quot;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">},</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// ...</span>
-</span><span class='line'><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>It's ready for use by a json-ready client.  So stinkin easy.  We're connecting the web together, and it's awesome!  Now the world will know of the baked goods and flower arrangements that we love the most.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Npm Install Local Files]]></title>
-    <link href="http://jaketrent.com/post/npm-install-local-files/"/>
-    <updated>2012-12-14T08:23:00-07:00</updated>
-    <id>http://jaketrent.com/post/npm-install-local-files</id>
-    <content type="html"><![CDATA[<p>Sometimes you'll want to use <a href="http://npmjs.org/">npm</a> to install a package that doesn't exist in the official npm registry for some reason.  Maybe you're developing the package yourself.  Maybe it's an internal use-only package. Maybe the package writer never published it.  Here are a few ways to install a local package with npm.</p>
-
-<p><img src="http://i.imgur.com/xnDMm.jpg" alt="Node Package Manager" /></p>
-
-<!--more-->
-
-
-<h2>Link the Local Node Package</h2>
-
-<p>If you're developing a package locally, you're likely making lots of changes to the source.  You don't want to publish after each change in order to install this package as a dependency elsewhere.  Npm has provided the <a href="http://npmjs.org/doc/link.html">link</a> keyword.</p>
-
-<p>This allows your put a global label on your package that tells your local npm cache about it:</p>
-
-<p><code>bash
-cd &lt;pkg_dir&gt;;
-npm link;
-</code></p>
-
-<p>And then go to the local project that you're using the package in and point to the dependency by package name:</p>
-
-<p><code>bash
-cd &lt;project_dir&gt;;
-npm link &lt;pkg_name&gt;;
-</code></p>
-
-<p>Now you have symlinked a directory called <code>&lt;pkg_name&gt;</code> in the project's node_modules directory.  Changes you make in your package will appear and be usable from within your project.</p>
-
-<h2>Tarball the Local Node Package</h2>
-
-<p>Npm can <a href="https://npmjs.org/doc/install.html">install</a> either a path or url to a local tarball.  To create a tarball that npm will like, you want to run npm <a href="https://npmjs.org/doc/pack.html">pack</a>:</p>
-
-<p><code>bash
-cd &lt;pkg_dir&gt;;
-npm pack
-</code>
-This will create a tarball a la <code>&lt;pkg_name&gt;-&lt;pkg_ver&gt;.tgz</code>.  Now just store your new tarball somewhere like a local filesystem or server that is accessible when you run npm install on your dependant project.</p>
-
-<p>You can ask for the tarball manually:</p>
-
-<p><code>bash
-npm install http://localServer/my-pkg-0.0.1.tgz
-</code></p>
-
-<p>Or put the reference in your package.json for later:</p>
-
-<p>```js
-{
-  "dependencies": {</p>
-
-<pre><code>"my-pkg": "http://localServer/my-pkg-0.0.1.tgz"
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>You probably have a node package that's only available locally for a reason.  To guarantee that it's not accidentally published to the world via the npm registry, add this beaut to your package.json:</p>
-
-<p><code>js
-{
-   "private": true
-}
-</code></p>
-
-<h2>Replicate the Npm Registry</h2>
-
-<p>If you're going all out, like creating a corporate npm registry, you always have the option of <a href="https://npmjs.org/doc/registry.html#Can-I-run-my-own-private-registry">replicating</a> the Npm registry internally.  It's CouchDb, and '<a href="http://www.imdb.com/title/tt0120029/quotes?qt=qt0192627">replication</a>' is its Chinese neighbor's middle name.  You can publish your own packages there so they're still private to your and your organization.  And you also get local references to the public packages.</p>
-
-<h2>The Glory of Npm</h2>
-
-<p>Npm is great.  The ability to install published or local packages is an example of its flexibility and usefulness.  What are the other ways that you've found to make non-public packages installable -- for instance, that package that the writer just never bothered to publish to npm?</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: grunt | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/grunt/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-04-23T08:10:55-06:00</updated>
+  <updated>2013-04-23T17:11:22-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,135 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[LiveReload for NodeJs]]></title>
+    <link href="http://jaketrent.com/post/livereload-for-nodejs/"/>
+    <updated>2013-04-23T16:44:00-06:00</updated>
+    <id>http://jaketrent.com/post/livereload-for-nodejs</id>
+    <content type="html"><![CDATA[<p>LiveReload is a wonderful tool/strategy for being able to develop websites more quickly.  You can make a change and see it immediately shown in the browser without requiring you to manually refresh.  To do this in NodeJs with Express, you'll need just a few packages.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="grunt" /></p>
+
+<!--more-->
+
+
+<h2>LiveReload Express</h2>
+
+<p>If you're doing a website on Nodejs these days, you're probably using Express.  Express uses the Connect library for its middleware scheme.  Just grab one more middleware to handle the LiveReload.  It will add a little snippet of JavaScript to each of the html responses that is requested through this middleware.  First, install:</p>
+
+<p><code>
+npm install connect-livereload --save-dev
+</code></p>
+
+<p>Next, import:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span> <span class="s">&#39;development&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">require</span><span class="p">(</span><span class="s">&#39;connect-livereload&#39;</span><span class="p">)</span> <span class="mi">35729</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Note that we only want to import and use the middleware when in development.  This matches the fact that we are only declaring this package as in <code>devDependencies</code>.</p>
+
+<h2>LiveReload Grunt</h2>
+
+<p>Now you need to something to start a livereload server, watch files for changes, and broadcast their availability.  The rest of this will be done via Grunt.</p>
+
+<p>First, install:</p>
+
+<p><code>
+npm install grunt-cli -g
+npm install grunt grunt-regarde grunt-contrib-livereload --save-dev
+</code></p>
+
+<ul>
+<li><code>grunt-cli</code> will allow you to run the <code>grunt</code> command in the terminal.  Global puts the bin in your path.</li>
+<li><code>grunt-regarde</code> is a file watcher.  It senses changes to the filesystem.</li>
+<li><code>grunt-contrib-reload</code> will handle the pushing of new code to the browser.</li>
+</ul>
+
+
+<p>Next setup the <code>Gruntfile.coffee</code>:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(grunt) -&gt;</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nv">regarde:</span>
+</span><span class='line'>  <span class="nv">style:</span>
+</span><span class='line'>    <span class="nv">files: </span><span class="p">[</span><span class="s">&#39;app/static/css/*.css&#39;</span><span class="p">]</span>
+</span><span class='line'>    <span class="nv">tasks: </span><span class="p">[</span><span class="s">&#39;livereload&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span> <span class="s">&#39;grunt-contrib-livereload&#39;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span> <span class="s">&#39;be-lively&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s">&#39;livereload-start&#39;</span><span class="p">,</span> <span class="s">&#39;regarde&#39;</span> <span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now when you run:</p>
+
+<p><code>
+grunt be-lively
+</code></p>
+
+<p>A livereload server is going to be setup.  Then we watch for filesystem changes.  The only things we're watching are css files in our app.  You could expand the <code>files</code> array to watch more if you wish.</p>
+
+<p>Yay!</p>
+
+<h2>LiveReload all the Things</h2>
+
+<p>There are many ways to make this happen.  There are numerous Node libraries, Grunt plugins, and browser plugins.  Do what works for you.  Just make it happen fast and tend it well from the beginning to the end of your project.  Almost every solution I've found is somewhat high maintenance.  This one has proven to be the same.  What have you found to be your favorite LiveReload solution, and in what environment?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Deploy Yeoman App on Heroku]]></title>
+    <link href="http://jaketrent.com/post/yeoman-app-on-heroku/"/>
+    <updated>2013-04-23T07:12:00-06:00</updated>
+    <id>http://jaketrent.com/post/yeoman-app-on-heroku</id>
+    <content type="html"><![CDATA[<p>Yeoman is great developer tool that will help you generate a project format that is easy to get up and running quickly.  Out of the box, it only generates static sites.  But, with a few small tweaks, you can get it running on an app server, Nodejs, and up on Heroku.</p>
+
+<p><img src="http://i.imgur.com/M0kYA.jpg" alt="Yeoman" /></p>
+
+<!--more-->
+
+
+<h2>Yeoman Init</h2>
+
+<p>To install Yeoman, run:</p>
+
+<p><code>
+</code></p>
+
+<p>Now navigate to your new project directory and generate the scaffolding by running:</p>
+
+<p><code>
+yo webapp
+</code></p>
+
+<p>There are other generators, specifically for angularjs or a handful of other frameworks.  To see more options, run:</p>
+
+<p><code>
+yo --help
+</code></p>
+
+<p>[[BODY]]</p>
+
+<p>[[CLOSE-Summarize, end with question]]</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Impressions of Grunt]]></title>
@@ -436,210 +565,6 @@ I logged an <a href="https://github.com/Dignifiedquire/grunt-testacular/issues/3
 <p>For environment-specific grunt builds, <a href="https://npmjs.org/package/grunt-context">grunt-context</a> is the best solution I've found so far.  It's not the best, but it usually gets the job done.  I've bent it to my will thus far.</p>
 
 <p>What have you found that works well for environment-specific JavaScript builds?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Run RequireJs with GruntJs]]></title>
-    <link href="http://jaketrent.com/post/run-requirejs-with-gruntjs/"/>
-    <updated>2012-10-28T17:02:00-06:00</updated>
-    <id>http://jaketrent.com/post/run-requirejs-with-gruntjs</id>
-    <content type="html"><![CDATA[<p>RequireJs features a fantastic optimization tool, <a href="http://requirejs.org/docs/optimization.html">r.js</a>, that utilizes <a href="https://github.com/mishoo/UglifyJS">UglifyJs</a> to minimize and concatenate your JavaScript code.  <a href="http://gruntjs.com/">Grunt</a> is a build tool that is great for standardizing your build configuration and coordinating multiple build steps -- amongst its other wonders.  Hopefully you get to use both on your project, because they'll both make your development process smoother and leave you to the funnerest stuff -- writing sweet apps.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
-
-<!--more-->
-
-
-<h2>Vanilla RequireJs</h2>
-
-<p>To use <a href="http://requirejs.org/docs/optimization.html#wholeproject">vanilla RequireJS to optimize your project</a>, you'll need to do two things:</p>
-
-<ol>
-<li><strong>Create app.build.js</strong>  - This file contains the configuration for how your want RequireJs react to your source code.  Among other things, paths to source directories and output files are specified.</li>
-<li><strong>Run the optimizer</strong> - via the command <code>node r.js -o app.build.js</code></li>
-</ol>
-
-
-<p>Grunt has essentially the same steps, but they're specified in the standard grunt config file and will integrate better with the rest of your build process steps that are in grunt.</p>
-
-<h2>Grunt RequireJs Configuration</h2>
-
-<p>An easy way to get Grunt to run your RequireJs build is to use the <a href="https://npmjs.org/package/grunt-contrib-requirejs"><code>grunt-contrib-requirejs</code></a> plugin.</p>
-
-<p>Install the plugin:</p>
-
-<pre><code>npm install grunt-contrib-requirejs
-</code></pre>
-
-<p>Add the requirejs config to your grunt.js file:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="cm">/* ... */</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// !! This is the name of the task (&#39;requirejs&#39;)</span>
-</span><span class='line'><span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">compile</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// !! You can drop your app.build.js config wholesale into &#39;options&#39;</span>
-</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">appDir</span><span class="o">:</span> <span class="s2">&quot;src/&quot;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">dir</span><span class="o">:</span> <span class="s2">&quot;target/&quot;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">optimize</span><span class="o">:</span> <span class="s1">&#39;uglify&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">mainConfigFile</span><span class="o">:</span><span class="s1">&#39;./src/main.js&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">modules</span><span class="o">:</span><span class="p">[</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>          <span class="nx">name</span><span class="o">:</span><span class="s1">&#39;MyModule&#39;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">],</span>
-</span><span class='line'>      <span class="nx">logLevel</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">findNestedDependencies</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">fileExclusionRegExp</span><span class="o">:</span> <span class="sr">/^\./</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">inlineText</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="cm">/* ... */</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! This loads the plugin into grunt</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-requirejs&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>And run the task:</p>
-
-<pre><code>grunt requirejs
-</code></pre>
-
-<p>You should get the regular RequireJs build output that you're used to seeing, and you'll be able to verify that it worked.</p>
-
-<h2>Solid Optimization</h2>
-
-<p>RequireJs does a great build.  Grunt is flexible and easy to work with.  They go well together thanks to the <a href="https://npmjs.org/package/grunt-contrib-requirejs">grunt-contrib-requirejs</a> plugin, which gives a solid performance.  You'll have your JavaScript code done up so tight; it'll be denser than lead -- which is obviously what you've always dreamed of.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[GruntJs Access to package.json]]></title>
-    <link href="http://jaketrent.com/post/gruntjs-access-to-package-dot-json/"/>
-    <updated>2012-10-25T17:02:00-06:00</updated>
-    <id>http://jaketrent.com/post/gruntjs-access-to-package-dot-json</id>
-    <content type="html"><![CDATA[<p>Have you used GruntJs to build your JavaScript project yet?  It's a great tool.  Often as a part of the build configuration, you'll want to access your package.json with grunt.  Grunt has some built-in support for this.  Some bits can be a little tricky, and some plugins have limited support.  Here are some ways around all that.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
-
-<!--more-->
-
-
-<h2>Grunt JSON Directive</h2>
-
-<p>Grunt supports a number of <a href="https://github.com/gruntjs/grunt/blob/master/docs/helpers_directives.md">directives</a> out of the box.  These are callable from within you <code>grunt.js</code> file.  The gruntfile template uses one of these directives like so:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">pkg</span><span class="o">:</span> <span class="s1">&#39;&amp;lt;json:package.json&gt;&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="err">/&lt;em&gt; ... &lt;/em&gt;/</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>This is making the contents of your <code>package.json</code> file available to your grunt config.  And this is what we wanted!  So, if I want to put the version of my app into some grunt task config, I can use it like so:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">someTask</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">options</span><span class="o">:</span> <span class="s1">&#39;doStuff &amp;lt;%= pkg.version %&gt;&#39;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>This would already be enough -- it it worked all the time!  Turns out it doesn't [tear].</p>
-
-<h2>grunt.template</h2>
-
-<p>This syntax ("&lt;%= someVar %>") is referred to as a grunt.template.  It is based on  <a href="http://underscorejs.org/#template">underscore's template</a> function.</p>
-
-<h2>Grunt Plugin Support</h2>
-
-<p>It turns out that all plugins are not created equal.  Some plugins do not support this syntax at all.  I wrestled with mainly two plugins</p>
-
-<ul>
-<li><a href="https://npmjs.org/package/grunt-exec">grunt-exec</a> - for executing scripts/commands in the shell</li>
-<li><a href="https://npmjs.org/package/grunt-jade">grunt-jade</a> - for compiling jade templates</li>
-</ul>
-
-
-<p>As far as I can tell, neither plugin supports <code>grunt.template</code>.  Lameo.  In the case of <code>grunt-jade</code>, I actually switched plugins to <a href="https://npmjs.org/package/grunt-contrib-jade"><code>grunt-contrib-jade</code></a>, which states explicit support for <code>grunt.template</code> in the docs.  Other than the docs or trying it out, I otherwise don't know how to determine support.</p>
-
-<h2>Access package.json Directly</h2>
-
-<p>Where I couldn't find a plugin that explicitly supported <code>grunt.template</code>, I needed another solution.  Guided by the power of Google, I ran across a good Stack Overflow post on <a href="http://stackoverflow.com/questions/12408535/how-to-pass-in-package-json-array-to-grunt-js">getting <code>package.json</code> values into the <code>grunt.js</code> file</a>.</p>
-
-<p>The post illuminated my dim mind:  Grunt runs in node.  Do what you would do in node.</p>
-
-<p>Thusly, I just require the <code>package.json</code> file, and it is available.  Voila.  Who needs a stinkin template directive?  And it looks like:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">pkgJson</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./package.json&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="err">/&lt;em&gt; use as desired &lt;/em&gt;/</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">version</span> <span class="o">=</span> <span class="nx">pkgJson</span><span class="p">.</span><span class="nx">version</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>My one departure from the Stack Overflow suggestion was to use a different variable name on the require statement ('package' -> 'pkgJson').  'package' is a keyword that doesn't pass linting.</p>
-
-<h2>Grunt access package.json</h2>
-
-<p>As it turns out, Grunt has not problem accessing <code>package.json</code>.  Grunt was already a venerable build tool option.  Now, it running Javascript, speaking to your Javascript project descriptor (<code>package.json</code>) is pure genius.  And genius that is easily accomplished? -- noteworthy indeed.</p>
 ]]></content>
   </entry>
   

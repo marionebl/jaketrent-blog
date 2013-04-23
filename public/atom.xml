@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-04-23T08:10:55-06:00</updated>
+  <updated>2013-04-23T17:11:22-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,99 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[LiveReload for NodeJs]]></title>
+    <link href="http://jaketrent.com/post/livereload-for-nodejs/"/>
+    <updated>2013-04-23T16:44:00-06:00</updated>
+    <id>http://jaketrent.com/post/livereload-for-nodejs</id>
+    <content type="html"><![CDATA[<p>LiveReload is a wonderful tool/strategy for being able to develop websites more quickly.  You can make a change and see it immediately shown in the browser without requiring you to manually refresh.  To do this in NodeJs with Express, you&#8217;ll need just a few packages.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="grunt" /></p>
+
+<!--more-->
+
+
+<h2>LiveReload Express</h2>
+
+<p>If you&#8217;re doing a website on Nodejs these days, you&#8217;re probably using Express.  Express uses the Connect library for its middleware scheme.  Just grab one more middleware to handle the LiveReload.  It will add a little snippet of JavaScript to each of the html responses that is requested through this middleware.  First, install:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install connect-livereload --save-dev</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, import:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span> <span class="s">&#39;development&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">require</span><span class="p">(</span><span class="s">&#39;connect-livereload&#39;</span><span class="p">)</span> <span class="mi">35729</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that we only want to import and use the middleware when in development.  This matches the fact that we are only declaring this package as in <code>devDependencies</code>.</p>
+
+<h2>LiveReload Grunt</h2>
+
+<p>Now you need to something to start a livereload server, watch files for changes, and broadcast their availability.  The rest of this will be done via Grunt.</p>
+
+<p>First, install:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install grunt-cli -g
+</span><span class='line'>npm install grunt grunt-regarde grunt-contrib-livereload --save-dev</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><code>grunt-cli</code> will allow you to run the <code>grunt</code> command in the terminal.  Global puts the bin in your path.</li>
+<li><code>grunt-regarde</code> is a file watcher.  It senses changes to the filesystem.</li>
+<li><code>grunt-contrib-reload</code> will handle the pushing of new code to the browser.</li>
+</ul>
+
+
+<p>Next setup the <code>Gruntfile.coffee</code>:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(grunt) -&gt;</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">regarde:</span>
+</span><span class='line'>      <span class="nv">style:</span>
+</span><span class='line'>        <span class="nv">files: </span><span class="p">[</span><span class="s">&#39;app/static/css/*.css&#39;</span><span class="p">]</span>
+</span><span class='line'>        <span class="nv">tasks: </span><span class="p">[</span><span class="s">&#39;livereload&#39;</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span> <span class="s">&#39;grunt-contrib-livereload&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span> <span class="s">&#39;be-lively&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s">&#39;livereload-start&#39;</span><span class="p">,</span> <span class="s">&#39;regarde&#39;</span> <span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now when you run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>grunt be-lively</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A livereload server is going to be setup.  Then we watch for filesystem changes.  The only things we&#8217;re watching are css files in our app.  You could expand the <code>files</code> array to watch more if you wish.</p>
+
+<p>Yay!</p>
+
+<h2>LiveReload all the Things</h2>
+
+<p>There are many ways to make this happen.  There are numerous Node libraries, Grunt plugins, and browser plugins.  Do what works for you.  Just make it happen fast and tend it well from the beginning to the end of your project.  Almost every solution I&#8217;ve found is somewhat high maintenance.  This one has proven to be the same.  What have you found to be your favorite LiveReload solution, and in what environment?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Access NodeJs App on Xip.io]]></title>
@@ -115,6 +208,49 @@
 <p>And copy the resulting URL into your VM web browser.</p>
 
 <p>Ah, the fusion of Node and Ruby is pretty sweet.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Deploy Yeoman App on Heroku]]></title>
+    <link href="http://jaketrent.com/post/yeoman-app-on-heroku/"/>
+    <updated>2013-04-23T07:12:00-06:00</updated>
+    <id>http://jaketrent.com/post/yeoman-app-on-heroku</id>
+    <content type="html"><![CDATA[<p>Yeoman is great developer tool that will help you generate a project format that is easy to get up and running quickly.  Out of the box, it only generates static sites.  But, with a few small tweaks, you can get it running on an app server, Nodejs, and up on Heroku.</p>
+
+<p><img src="http://i.imgur.com/M0kYA.jpg" alt="Yeoman" /></p>
+
+<!--more-->
+
+
+<h2>Yeoman Init</h2>
+
+<p>To install Yeoman, run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>```
+</span><span class='line'>
+</span><span class='line'>Now navigate to your new project directory and generate the scaffolding by running:
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>yo webapp</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>There are other generators, specifically for angularjs or a handful of other frameworks.  To see more options, run:
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>yo &#8211;help
+&#8220;`</p>
+
+<p>[[BODY]]</p>
+
+<p>[[CLOSE-Summarize, end with question]]</p>
 ]]></content>
   </entry>
   
@@ -1511,74 +1647,6 @@
 <p>In the future, perhaps there will be a more expressive way to do this that&#8217;s worked into the supertest API.  For now, this strategy is the best I&#8217;ve found.  It&#8217;s based on the method I originally found in <a href="https://github.com/visionmedia/supertest/issues/46#issuecomment-11679706">visionmedia/supertest#46</a>.</p>
 
 <p>Is there a better way that you&#8217;ve found to do this kind of authenticated test?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Why Log Your Issues]]></title>
-    <link href="http://jaketrent.com/post/why-log-you-issues/"/>
-    <updated>2013-01-10T07:06:00-07:00</updated>
-    <id>http://jaketrent.com/post/why-log-you-issues</id>
-    <content type="html"><![CDATA[<p>When you&#8217;re working on a software project, what&#8217;s the most important deliverable?  Why, the software!  It&#8217;s your eventual product.  Along the way, however, there will be some things you can do that will make it more likely you successfully ship great software. One of those is logging issues.  Here&#8217;s why you might want to do it.</p>
-
-<p><img src="http://i.imgur.com/QNf1k.jpg" alt="A github log" /></p>
-
-<!--more-->
-
-
-<h2>Just Log It</h2>
-
-<p>There are many tools.  There are many strategies.  The most important thing will be to just get your issues logged in a persistent system that everyone involved agrees upon.</p>
-
-<p>The benefits will include:</p>
-
-<ol>
-<li><strong>You&#8217;ll remember it</strong> - Software projects are complex.  You&#8217;ll run into a lot of issues.  You don&#8217;t want to keep them in your head.</li>
-<li><strong>You&#8217;ll have a historical record</strong> - Projects can take a long time to finish.  And often they aren&#8217;t done in contiguous calendar time.</li>
-<li><strong>You&#8217;ll remember past mistakes</strong></li>
-<li>Maybe it&#8217;s a bit of lemon juice on old wounds, but that&#8217;s better than reverting your software to do the same dumb things again.  By examining your once-resolved issues, you can remember not to go down certain paths again.</li>
-<li><strong>You&#8217;ll have a todo list</strong> - Today&#8217;s software projects move fast, and there&#8217;s a lot going on in the office.  To help you remember, what you need to do and in what order, look to your issues list.</li>
-<li><strong>You&#8217;ll have a clearer picture of your progress</strong> - You&#8217;ll know how much farther you have to go on your milestones.  You&#8217;ll have a finite list of exactly what is left that needs to be solved.</li>
-<li><strong>You&#8217;ll have an alert system</strong> - When things go South, and bugs pop up, you&#8217;ll have an immediate global notification system.  That is, if the team is tuned into your issue tracker this way.</li>
-<li><strong>You&#8217;ll invite others to help you</strong> - When it&#8217;s clear what needs to be done, people have a better-defined path to get started helping you out.  He sees an issue that is close to his expertise or interest, assigns it to himself, and goes!</li>
-</ol>
-
-
-<h2>Some Effort</h2>
-
-<p>Of course this takes some effort.  Try to track issues more readily and steadily, and see if you don&#8217;t feel some of these benefits for yourself.  It&#8217;s an investment into your process that should add to your capability to ship great software.</p>
-
-<h2>Some Caveats</h2>
-
-<p>This benefits mostly have some major assumptions, like: people actually care; it&#8217;s a painless process to add issues, assign issues, and resolve issues; the issue tracker has good notifications &#8211; meaningingful and to the people that matter.  Well, there are lots of ways to mess that up as well.  But try it.  Do what works for your team.</p>
-
-<p>What have you found to help your team be most successful in issue tracking?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Be True to Your Heart]]></title>
-    <link href="http://jaketrent.com/post/be-true-to-your-heart/"/>
-    <updated>2013-01-08T07:10:00-07:00</updated>
-    <id>http://jaketrent.com/post/be-true-to-your-heart</id>
-    <content type="html"><![CDATA[<p>When you&#8217;re interviewing and are asked to share what you&#8217;re most interested in.  You&#8217;d better know.  You&#8217;d better be enthused about it.  And don&#8217;t abandon it, or you&#8217;ll look insincere.</p>
-
-<p><img src="http://i.imgur.com/fYzBj.png" alt="Alt Text" /></p>
-
-<!--more-->
-
-
-<p>Recently my teammate and I had a lunch interview with a potential future teammate.  As a lunch interview, it was mostly just a test as to the seriousness of the candidate and the opportunity as well as a team fitness test.  So, pretty laid back.  No hard core technical questions.  Mostly shooting the breeze about the tech industry, current positions, and thoughts on technology.  So, there&#8217;s plenty of room for inference based on opinions shared.</p>
-
-<p>The guy we were talking to was comfortable working on the frontend and the backend.  From what we could tell, he was probably capable all around.  Then my teammate asked a great question:  What do you really enjoy?  The change in demeanor versus the preceding 40 minutes of talk was noticeable.  He lit up and exclaimed that he loved data &#8211; data relationships, data mining, and statistics.  He gave examples of things he had done recently and repeated his adoration of the subject.  I was caught up in his enthusiasm.</p>
-
-<p>Then we made it more clear that we were on the frontend team, and the things he was most interested in were definitely not frontend.  My teammate told him that he&#8217;d get him in touch with our backend team lead.</p>
-
-<p>Then he said that he could do both frontend or backend.  He&#8217;d be happy with frontend.  He loves learning new things.  &#8220;Will you interview me for a frontend position?  Just forget about my data comments.&#8221; was essentially what he was saying &#8211; or at least what I was hearing.</p>
-
-<p>Oh, man!  My heart sank.  I was really kind of sad that he had essentially abandoned what he said he found most joy in.  It was an opportunistic move, even practical.  But I was pretty disappointed.  The guy seemed smart.  If so, he could probably pick his opportunity in this wonderful software industry of ours.  So why cave and totally deny the opportunities for what you really claim to enjoy to take the opportunity you had only had a lunch chat about?</p>
-
-<p>His initial enthusiasm about his love of data was fun and contagious.  To see him deny it in the next breath made it feel like more of a play.  Perhaps it wasn&#8217;t, but when you betray your true love, it makes me wonder at your general sincerity.  If you like something in tech and you&#8217;re good at it, you should do it, hold out for it, and odds are you&#8217;ll get your opportunity.</p>
 ]]></content>
   </entry>
   
