@@ -167,6 +167,22 @@ DEBUG:   --exec 'node'
 <p>Both tools are circa 2010.  Node-supervisor is the slightly older brother (by 8 months).  Both projects seem to have slow, steady development development activity.  What is there to add to tools that do their job already?</p>
 
 <p>In general, <code>nodemon</code> has a few more options.  For example, it has explicit support for coffee-script.  I like <code>supervisor</code> more for silly reasons:  I found it first, it works fine, feels better to type, and has fewer terminal command expansion conflicts.</p>
+
+<p><em>Update</em></p>
+
+<p>Recently I have found one clear reason to use <code>supervisor</code> over <code>nodemon</code>.  <code>nodemon</code> doesn&#8217;t allow starting a process with node and monitoring coffee script files.  The conditionals in the source code rule that possibility right out.  <code>supervisor</code> does this just fine with the command:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>supervisor --extensions 'node|js|coffee' app.coffee</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Another couple observations:</p>
+
+<ul>
+<li><code>supervisor</code> doesn&#8217;t have in-terminal colors</li>
+<li><code>supervisor</code> seems to be more explicit in its logging</li>
+</ul>
+
 </div>
 
 

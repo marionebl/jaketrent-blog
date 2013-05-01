@@ -58,3 +58,16 @@ Both tools will get the job done.  Choose either.  Both can specific directories
 Both tools are circa 2010.  Node-supervisor is the slightly older brother (by 8 months).  Both projects seem to have slow, steady development development activity.  What is there to add to tools that do their job already?
 
 In general, `nodemon` has a few more options.  For example, it has explicit support for coffee-script.  I like `supervisor` more for silly reasons:  I found it first, it works fine, feels better to type, and has fewer terminal command expansion conflicts.
+
+*Update*
+
+Recently I have found one clear reason to use `supervisor` over `nodemon`.  `nodemon` doesn't allow starting a process with node and monitoring coffee script files.  The conditionals in the source code rule that possibility right out.  `supervisor` does this just fine with the command:
+
+```
+supervisor --extensions 'node|js|coffee' app.coffee
+```
+
+Another couple observations:
+
+- `supervisor` doesn't have in-terminal colors
+- `supervisor` seems to be more explicit in its logging
