@@ -77,6 +77,24 @@ Now it's time to push to Heroku.  You should have the Heroku Toolbelt installed 
 heroku create <my_project>
 ```
 
+To test your yeoman app as it will be run in production, first build it:
+
+```
+grunt build
+```
+
+Then run the grunt server:
+
+```
+grunt server:dist
+```
+
+Or if you have foreman and want to run the app using your `Procfile`, run:
+
+```
+foreman start
+```
+
 It's time.  Commit your code, especially that `dist` directory, and... deploy!
 
 ```

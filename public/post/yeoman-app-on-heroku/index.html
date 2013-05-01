@@ -184,6 +184,24 @@
 </pre></td><td class='code'><pre><code class=''><span class='line'>heroku create &lt;my_project&gt;</span></code></pre></td></tr></table></div></figure>
 
 
+<p>To test your yeoman app as it will be run in production, first build it:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>grunt build</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then run the grunt server:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>grunt server:dist</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Or if you have foreman and want to run the app using your <code>Procfile</code>, run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>foreman start</span></code></pre></td></tr></table></div></figure>
+
+
 <p>It&#8217;s time.  Commit your code, especially that <code>dist</code> directory, and&#8230; deploy!</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>

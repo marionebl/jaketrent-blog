@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-04-24T07:55:12-06:00</updated>
+  <updated>2013-05-01T07:31:18-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -293,6 +293,24 @@ web: coffee web.coffee
 
 <p><code>
 heroku create &lt;my_project&gt;
+</code></p>
+
+<p>To test your yeoman app as it will be run in production, first build it:</p>
+
+<p><code>
+grunt build
+</code></p>
+
+<p>Then run the grunt server:</p>
+
+<p><code>
+grunt server:dist
+</code></p>
+
+<p>Or if you have foreman and want to run the app using your <code>Procfile</code>, run:</p>
+
+<p><code>
+foreman start
 </code></p>
 
 <p>It's time.  Commit your code, especially that <code>dist</code> directory, and... deploy!</p>
