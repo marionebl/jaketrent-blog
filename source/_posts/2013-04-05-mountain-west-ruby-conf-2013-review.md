@@ -11,7 +11,7 @@ published: true
 
 I recently attended the Mountain West Ruby Conference.  It was my first time going.  I was pleasantly surprised by the quality of the conference.  I would recommend it.
 
-![Mountain West Ruby Conf](http://i.imgur.com/jrkIv.jpg)
+![Mountain West Ruby Conf](http://i.imgur.com/ABNr5MC.jpg)
 
 <!--more-->
 
@@ -37,11 +37,11 @@ Devops was the stated subject matter of an entire day of the conference.  This w
 
 ## Venue
 
-It was in my back yard!  I loved the lack of a hotel requirement!
+It was in my back yard!  I loved the lack of a hotel requirement!  Apparently some visitors even camped in the wilderness, Nacho style.
 
 The Salt Lake City Public Library is a great downtown location for a small conference.  In this case, with the conference being single track, the single largest room, the amphitheatre, was the only room required for all attendees.  It featured plenty of seating -- at the cost of no leg room.
 
-The wifi also held up better than it has for similar gatherings in this space.  It was announced that "the city and Xmission are working feverishly" to maintain connectivity several times over the 3 days.
+The wifi also held up better than it has for similar gatherings in this space.  It was announced that "the city and Xmission are working feverishly" to maintain connectivity several times over the 3 days.  It still didn't stay up.  This is a common tech conf occurrence.
 
 I was sorely disappointed with the lack of sugary confections meant to encourage the jollyness and attentiveness of the conference-goers.  At one point, it was necessary to slip out and find a good bakery downtown.  I was not disappointed.  I was happy to see at least the vendors' vinyl stickers come out on the last day.  We need more of that!
 
