@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-01T07:38:17-06:00</updated>
+  <updated>2013-05-01T07:57:29-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -317,6 +317,52 @@
 
 
 <p>There are quite a few steps there.  What did we miss?  Or what needs more explanation?  Perhaps we just need a <code>yo heroku</code> target.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mountain West Ruby Conf 2013 Review]]></title>
+    <link href="http://jaketrent.com/post/mountain-west-ruby-conf-2013-review/"/>
+    <updated>2013-04-05T15:23:00-06:00</updated>
+    <id>http://jaketrent.com/post/mountain-west-ruby-conf-2013-review</id>
+    <content type="html"><![CDATA[<p>I recently attended the Mountain West Ruby Conference.  It was my first time going.  I was pleasantly surprised by the quality of the conference.  I would recommend it.</p>
+
+<p><img src="http://i.imgur.com/jrkIv.jpg" alt="Mountain West Ruby Conf" /></p>
+
+<!--more-->
+
+
+<h2>Peeps</h2>
+
+<p>I&#8217;m new to the Ruby community.  I get to use it more in my current job than I ever have before.  Whenever entering a new community, it&#8217;s good to find some friends.  I was pleased to notice that everyone I encountered at the conference was very friendly and welcoming.</p>
+
+<p>About the coolest thing about the community is one of the slogans: MINSWAN, which means &#8220;Matz is nice, so we are nice.&#8221;  How cool is that?  Matz is the Ruby creator.  Wait, who am I kidding.  You already know that.</p>
+
+<p>I was very impressed with the blatant lack of trolling other communities.  This even with the live stream video cameras rolling (people can tend to do weird things when put on camera).</p>
+
+<p>The conference attracted speakers and attendees from as far away as Australia.</p>
+
+<h2>Speakers</h2>
+
+<p>I didn&#8217;t look too closely at the schedule previous to attending.  Once I got there, I was surprised at the caliber of those people and companies who were represented.  These were big names in the tech community, such as Matz, himself, Github, Heroku, and others.</p>
+
+<p>The conference is single track, so that meant I got to see everyone speak.  I mostly like that but kind of hate that.  I believe it also meant fewer speaking slots, so everyone was pretty top notch.</p>
+
+<p>I was impressed with the stage presence of most speakers.  A few were pretty droning, but in general everyone was very polished, had good slide decks, and shared engaging and useful content.</p>
+
+<p>Devops was the stated subject matter of an entire day of the conference.  This was cool.  We can use that kind of focus on the subject.  But then it bled into the next days as well.  I want some pure code, pure Ruby&#8217;ness.  I got some of that, but not as much as I would like.  I paid my devops dues the first day.  I was ready to not hear any more of it on days 2 and 3.</p>
+
+<h2>Venue</h2>
+
+<p>It was in my back yard!  I loved the lack of a hotel requirement!</p>
+
+<p>The Salt Lake City Public Library is a great downtown location for a small conference.  In this case, with the conference being single track, the single largest room, the amphitheatre, was the only room required for all attendees.  It featured plenty of seating &#8211; at the cost of no leg room.</p>
+
+<p>The wifi also held up better than it has for similar gatherings in this space.  It was announced that &#8220;the city and Xmission are working feverishly&#8221; to maintain connectivity several times over the 3 days.</p>
+
+<p>I was sorely disappointed with the lack of sugary confections meant to encourage the jollyness and attentiveness of the conference-goers.  At one point, it was necessary to slip out and find a good bakery downtown.  I was not disappointed.  I was happy to see at least the vendors&#8217; vinyl stickers come out on the last day.  We need more of that!</p>
+
+<p>In all, it was a good use of my couple days.  It wasn&#8217;t too pricey, but then, I wasn&#8217;t paying.</p>
 ]]></content>
   </entry>
   
@@ -1573,146 +1619,6 @@
 <h2>Remember to Remove</h2>
 
 <p>With the additions of the <code>.only()</code> or <code>.skip()</code> you are altering the actual code of your tests.  This is great for your local development process.  You&#8217;ll need to be careful that you don&#8217;t commit this change &#8211; at least you usually won&#8217;t want to.  Otherwise, you CI process will be running a subset of your tests, just as you are locally, which is no bueno.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Authenticated Supertest Tests]]></title>
-    <link href="http://jaketrent.com/post/authenticated-supertest-tests/"/>
-    <updated>2013-01-14T07:07:00-07:00</updated>
-    <id>http://jaketrent.com/post/authenticated-supertest-tests</id>
-    <content type="html"><![CDATA[<p>When you&#8217;re trying to test your authenticated URLs via supertest, there are just a couple things you&#8217;ll need to do that aren&#8217;t spelled out in the docs.</p>
-
-<p><img src="http://i.imgur.com/PFUGV.jpg" alt="Supertest" /></p>
-
-<!--more-->
-
-
-<h2>Supertest</h2>
-
-<p><a href="https://github.com/visionmedia/supertest">Supertest</a> is a library written by the prolific TJ Holowaychuk.  It is a companion to <a href="https://github.com/visionmedia/superagent">superagent</a>.  Superagent provides a clean API for issuing HTTP commands.  Supertest ties into superagent for allowing easy assertions on top of those HTTP requests.</p>
-
-<h2>Authenticated Requests</h2>
-
-<p>Lots of webapps have portions of their sites that require authenticated to access, so it makes sense that there&#8217;s a great need to test requests against these portions.  Yet in supertest, there&#8217;s not a totally-straightforward way to login for the sake of a test and do subsequent requests under that login.  At least there&#8217;s no explicit API for it in the current release.  But there have been <a href="https://github.com/visionmedia/supertest/issues/26">many</a> <a href="https://github.com/visionmedia/supertest/issues/46">requests</a> for it.  Who knows if it will come.  Given that we know the mechanism for session continuity between requests, cookies, we can make it happen ourselves.</p>
-
-<h2>Login for Supertest</h2>
-
-<h4>Use Superagent</h4>
-
-<p>Supertest has no cookiejar for holding cookies like the sessionid.  But, superagent does.  So, we&#8217;re going to need to import it explicitly.  A login helper could look something like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">superagent</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;superagent&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">agent</span> <span class="o">=</span> <span class="nx">superagent</span><span class="p">.</span><span class="nx">agent</span><span class="p">();</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">theAccount</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;nacho&quot;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s2">&quot;password&quot;</span><span class="o">:</span> <span class="s2">&quot;iamtheluchadore&quot;</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">exports</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">request</span>
-</span><span class='line'>    <span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">theAccount</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="nx">agent</span><span class="p">.</span><span class="nx">saveCookies</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
-</span><span class='line'>      <span class="nx">done</span><span class="p">(</span><span class="nx">agent</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">});</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>A few points:</p>
-
-<ul>
-<li><code>theAccount</code> information could come from anywhere.  You could use the same pattern from this login process to setup a newly-registered user as well.</li>
-<li>The <code>request</code> parameter to <code>login()</code> is the supertest request.</li>
-<li>After we post to &#8216;/login&#8217; and a response returns in the <code>end()</code> function, we are saving the cookies from that response (a login response should return with a &#8216;Set-cookies&#8217; header).  This superagent agent (with the login cookie) is what we send back to the caller of the login helper via <code>done()</code>.</li>
-</ul>
-
-
-<h4>Attach the Cookies to Supertest</h4>
-
-<p>Now that we&#8217;ve made login request and saved the cookies, it&#8217;s time to make our authenticated request(s).  Easy cheesy.  A simple test to see if the login worked might look like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;supertest&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">login</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./login&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;MyApp&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">agent</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">before</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">login</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">loginAgent</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">agent</span> <span class="o">=</span> <span class="nx">loginAgent</span><span class="p">;</span>
-</span><span class='line'>      <span class="nx">done</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">});</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should allow access to admin when logged in&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/admin&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nx">agent</span><span class="p">.</span><span class="nx">attachCookies</span><span class="p">(</span><span class="nx">req</span><span class="p">);</span>
-</span><span class='line'>    <span class="nx">req</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nx">done</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>More jabber about the code:</p>
-
-<ul>
-<li><code>app</code> is my Express app.  This is your webserver.</li>
-<li>We&#8217;re importing the login helper, and we&#8217;ve called it one time before all the tests in our <code>MyApp</code> spec via <code>before()</code>.  This call to <code>before()</code> is asynchronous, just like our test in this case, because we have to do a full login to setup our test.  When the <code>loginAgent</code> is returned, we save it for use in our actual tests.</li>
-<li>The test gets the best of both worlds.  When doing <code>request.get()</code>, we&#8217;re using the supertest request.  So, we can then do cool <code>expect()</code>s on it.  Right before the request goes out the door, we grab the superagent <code>agent</code> and attach its cookies to our new request.</li>
-</ul>
-
-
-<p>In the future, perhaps there will be a more expressive way to do this that&#8217;s worked into the supertest API.  For now, this strategy is the best I&#8217;ve found.  It&#8217;s based on the method I originally found in <a href="https://github.com/visionmedia/supertest/issues/46#issuecomment-11679706">visionmedia/supertest#46</a>.</p>
-
-<p>Is there a better way that you&#8217;ve found to do this kind of authenticated test?</p>
 ]]></content>
   </entry>
   

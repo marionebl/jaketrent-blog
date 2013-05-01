@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-01T07:38:17-06:00</updated>
+  <updated>2013-05-01T07:57:29-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -120,6 +120,52 @@ powder open --xip
 <p>And copy the resulting URL into your VM web browser.</p>
 
 <p>Ah, the fusion of Node and Ruby is pretty sweet.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mountain West Ruby Conf 2013 Review]]></title>
+    <link href="http://jaketrent.com/post/mountain-west-ruby-conf-2013-review/"/>
+    <updated>2013-04-05T15:23:00-06:00</updated>
+    <id>http://jaketrent.com/post/mountain-west-ruby-conf-2013-review</id>
+    <content type="html"><![CDATA[<p>I recently attended the Mountain West Ruby Conference.  It was my first time going.  I was pleasantly surprised by the quality of the conference.  I would recommend it.</p>
+
+<p><img src="http://i.imgur.com/jrkIv.jpg" alt="Mountain West Ruby Conf" /></p>
+
+<!--more-->
+
+
+<h2>Peeps</h2>
+
+<p>I'm new to the Ruby community.  I get to use it more in my current job than I ever have before.  Whenever entering a new community, it's good to find some friends.  I was pleased to notice that everyone I encountered at the conference was very friendly and welcoming.</p>
+
+<p>About the coolest thing about the community is one of the slogans: MINSWAN, which means "Matz is nice, so we are nice."  How cool is that?  Matz is the Ruby creator.  Wait, who am I kidding.  You already know that.</p>
+
+<p>I was very impressed with the blatant lack of trolling other communities.  This even with the live stream video cameras rolling (people can tend to do weird things when put on camera).</p>
+
+<p>The conference attracted speakers and attendees from as far away as Australia.</p>
+
+<h2>Speakers</h2>
+
+<p>I didn't look too closely at the schedule previous to attending.  Once I got there, I was surprised at the caliber of those people and companies who were represented.  These were big names in the tech community, such as Matz, himself, Github, Heroku, and others.</p>
+
+<p>The conference is single track, so that meant I got to see everyone speak.  I mostly like that but kind of hate that.  I believe it also meant fewer speaking slots, so everyone was pretty top notch.</p>
+
+<p>I was impressed with the stage presence of most speakers.  A few were pretty droning, but in general everyone was very polished, had good slide decks, and shared engaging and useful content.</p>
+
+<p>Devops was the stated subject matter of an entire day of the conference.  This was cool.  We can use that kind of focus on the subject.  But then it bled into the next days as well.  I want some pure code, pure Ruby'ness.  I got some of that, but not as much as I would like.  I paid my devops dues the first day.  I was ready to not hear any more of it on days 2 and 3.</p>
+
+<h2>Venue</h2>
+
+<p>It was in my back yard!  I loved the lack of a hotel requirement!</p>
+
+<p>The Salt Lake City Public Library is a great downtown location for a small conference.  In this case, with the conference being single track, the single largest room, the amphitheatre, was the only room required for all attendees.  It featured plenty of seating -- at the cost of no leg room.</p>
+
+<p>The wifi also held up better than it has for similar gatherings in this space.  It was announced that "the city and Xmission are working feverishly" to maintain connectivity several times over the 3 days.</p>
+
+<p>I was sorely disappointed with the lack of sugary confections meant to encourage the jollyness and attentiveness of the conference-goers.  At one point, it was necessary to slip out and find a good bakery downtown.  I was not disappointed.  I was happy to see at least the vendors' vinyl stickers come out on the last day.  We need more of that!</p>
+
+<p>In all, it was a good use of my couple days.  It wasn't too pricey, but then, I wasn't paying.</p>
 ]]></content>
   </entry>
   
@@ -350,62 +396,6 @@ index.html.slim
 </code></p>
 
 <p>Now the Rails are even slicker.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Jumpstart Lab Ruby Training Review]]></title>
-    <link href="http://jaketrent.com/post/jumpstartlab-ruby-training-review/"/>
-    <updated>2013-02-19T07:06:00-07:00</updated>
-    <id>http://jaketrent.com/post/jumpstartlab-ruby-training-review</id>
-    <content type="html"><![CDATA[<p><a href="http://jumpstartlab.com/">Jumpstart Lab</a> offers a <a href="http://www.jumpstartlab.com/courses/">Ruby training</a>.  I recently attended.  I had a great experience and learned a lot in my first real introduction to Ruby and Ruby on Rails.  I would highly recommend the course.  Here are a few more details on my experience.</p>
-
-<p><img src="http://i.imgur.com/DniDljD.png" alt="Jumpstart Lab" /></p>
-
-<!--more-->
-
-
-<h2>Format</h2>
-
-<h4>Length</h4>
-
-<p>Jumpstart sent a great instructor, <a href="https://twitter.com/franklinwebber">Franklin Webber</a>, to come lead us through the exercises.  The course was on site at our company.  It was 5 days in length.  Instruction went from 9am to 4pm daily, with a 1 hour break at lunch time.</p>
-
-<h4>Breaks</h4>
-
-<p>Exercises throughout the day were split up into 25 min time chunks with 5 min breaks following.  Some will recognize this usual time chunks for the <a href="http://www.pomodorotechnique.com/">Pomodoro technique</a>.  Frank, as the leader of the exercises, was more strict in his observance of the Pomodoro time slices than I'm used to seeing.  Many people I've worked with would work right through a short break, but we took breaks quite religiously.</p>
-
-<h4>Content Split</h4>
-
-<p>In our 5 day training, we spent about the first 3 days going over vanilla Ruby.  The next 2 days, we focused on the Ruby on Rails framework specifically.</p>
-
-<h2>Approach</h2>
-
-<h4>TDD</h4>
-
-<p>Probably about the coolest aspect of this training was its relying on <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a> to get stuff done.  Often training courses, especially those that introduce brand new languages and concepts, leave testing as a tack-on feature, meantioned in parting near the end of the course.  Thankfully, Jumpstart did a great job integrating this best practice into most of its instruction.</p>
-
-<p>We used <a href="https://www.relishapp.com/rspec">Rspec</a> as a test runner.  We used <a href="https://github.com/guard/guard">Guard</a> to help us go faster through our test iterations.  We discussed what to test, how to make our tests more readable, how to isolate tests using <a href="https://relishapp.com/rspec/rspec-mocks/docs">mocks</a>, and practiced doing lots of tests.</p>
-
-<p>Only the Rails portion of the course was taught using error-driven development.  This actually worked quite well, as learning to use a framework requires learning how the pieces connect and trying not to test the framework.</p>
-
-<h4>Instructor-Led</h4>
-
-<p>Frank made the class successful.  He is super knowledgeable about the subject matter.  He is fun and funny.  He is great at introducing topics that built upon each other.  He is great at letting the students figure things out for themselves and jumping in at the right moment to help clear hurdles.  It was great to meet and work with Frank, and I hope to do so again.</p>
-
-<h2>Bonuses</h2>
-
-<h4>Hack Night</h4>
-
-<p>We do a <a href="http://tannerhack.eventbrite.com/">hack night</a> every other week at work anyway.  Since Frank was here, he led the hack night.  We did a Codemash kata exercise where we created code to generate a <a href="https://github.com/jaketrent/minesweeper">Minesweeper</a> board.  We split into teams and pair-programmed our different solutions.  Everyone came up with unique solutions, we compared them, and then iterated.  I had so much fun with the exercise, I put a frontend on the game and made it <a href="http://minemopper.herokuapp.com">playable</a>.</p>
-
-<h4>Tutorial Content</h4>
-
-<p>Jumpstart printed materials for us in a booklet.  The <a href="http://tutorials.jumpstartlab.com">tutorials</a> are also available online.  Frank took a unique path through the content, and we talked through our specific approach.  As he worked, Frank also <a href="https://github.com/burtlo/training-021113">uploaded the code</a> from our instruction to Github.  I did the same for <a href="http://github.com/jaketrent/ruby-training">my code</a>.</p>
-
-<h4>Recommendation</h4>
-
-<p>I think that this training series was about the best I've attended.  I'm doing a lot more Ruby and Rails in my current job than I expected even a few weeks ago, so it was very timely and useful for me.  The content was good, but it was the instruction that made it top notch.  Thanks, Frank and Jumpstart, for the great experience!</p>
 ]]></content>
   </entry>
   
