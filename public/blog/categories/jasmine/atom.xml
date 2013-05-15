@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: jasmine | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/jasmine/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2013-05-15T08:16:15-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Test setTimeout with Jasmine]]></title>
+    <link href="http://jaketrent.com/post/test-settimeout-with-jasmine/"/>
+    <updated>2013-05-15T07:08:00-06:00</updated>
+    <id>http://jaketrent.com/post/test-settimeout-with-jasmine</id>
+    <content type="html"><![CDATA[<p>Code that utilizes <code>setTimeout</code> or <code>setInterval</code> becomes asynchronous.  Jasmine has some nice helpers to make your test synchronous again.</p>
+
+<p><img src="http://i.imgur.com/Ks3wt01.jpg" alt="Jasmine" /></p>
+
+<!--more-->
+
+
+<h2>Code Using setTimeout</h2>
+
+<p>Any Javascript code that wants to delay certain actions or give intervals between actions will use <code>setTimeout</code> or <code>setInterval</code> respectively.  There are also libraries that create some niceties for working in these situations, notably <a href="http://underscorejs.org">underscore</a>'s <code>_.throttle</code> and <code>_.debounce</code> functions.  Underneath all of these higher-level functions, they're using the native <code>setTimeout</code> construct, so the same strategies will apply.  In your source, you end up with something like this:</p>
+
+<p><code>coffeescript
+$(document).on 'keyup', '.autocomplete-field', _.debounce(autocomplete, 500)
+</code></p>
+
+<p>This code binds a keyup event listener on a contrived <code>.autocomplete-field</code>.  Of course, we don't want to do an expensive <code>autocomplete</code> lookup on every keypress.  So, we'll slow it down a bit with <code>_.debounce</code>.</p>
+
+<h2>Testing Asynchronous Code in Jasmine</h2>
+
+<p>Now we go to test it in Jasmine (failing):</p>
+
+<p>```coffeescript
+  describe 'Autocomplete Field', -></p>
+
+<pre><code>it 'calls autocomplete when typing', -&gt;
+  called = false
+  autocomplete = -&gt;
+    called = true
+
+  keyup = $.Event('keyup')
+  $('.autocomplete-field').trigger keyup
+  called.should.be.true
+</code></pre>
+
+<p>```</p>
+
+<p>In this test, or <code>autocomplete</code> spy will never be called, thus <code>called</code> will never be true.  There are a few ways to fix this.</p>
+
+<h2>Mocking the Jasmine Clock</h2>
+
+<p>One way to fix the test is to remove <code>_.debounce</code> from our source code.  That would make the test pass.  The other is to setup our Jasmine to handle the <code>setTimeout</code> used in <code>_.debounce</code>.  Let's do the latter, and raise our fists to the sky in triumph over our testing foe (winning):</p>
+
+<p>```coffeescript
+  describe 'Autocomplete Field', -></p>
+
+<pre><code>beforeEach -&gt;
+  jasmine.Clock.useMock()
+
+it 'calls autocomplete when typing', -&gt;
+  called = false
+  autocomplete = -&gt;
+    called = true
+
+  keyup = $.Event('keyup')
+  $('.autocomplete-field').trigger keyup
+  jasmine.Clock.tick 501
+  called.should.be.true
+</code></pre>
+
+<p>```</p>
+
+<p>The needed code is simple to add.  Use <code>jasmine.Clock.useMock()</code> to setup the fake ticker.  Then call <code>tick()</code> on it whenever you want your test to simulate time massage.</p>
+
+<p>The cool thing is that this does not slow down your tests.  You could set the clock tick to be 50100000 or some crazy number, and it will still execute as fast as your single JavaScript thread will let you.</p>
+
+<p>Boom.  Another testing hurdle cleared.  Sometimes it's harder to write the test than the code.</p>
+]]></content>
+  </entry>
+  
+</feed>

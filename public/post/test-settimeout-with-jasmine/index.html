@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Test setTimeout with Jasmine - Jake Trent</title>
+  <meta name="author" content="Jake Trent">
+
+  
+  <meta name="description" content="Code that utilizes setTimeout or setInterval becomes asynchronous. Jasmine has some nice helpers to make your test synchronous again.">
+  <meta name="keywords" content="javascript, settimeout, setinterval, debounce, throttle, underscore, test, jasmine, mock, clock">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/test-settimeout-with-jasmine/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1 class="title"><a href="/">Jake Trent</a></h1>
+  <div class="desc">
+    
+      <h2>Power Ballad Coding</h2>
+    
+  </div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jaketrent.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/blog/categories/code/">Code</a></li>
+  <li><a href="/blog/categories/design/">Design</a></li>
+  <li><a href="/blog/categories/productivity/">Productivity</a></li>
+  <li><a href="/blog/categories/review/">Reviews</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Test setTimeout With Jasmine</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-15T07:08:00-06:00" pubdate data-updated="true">May 15<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Code that utilizes <code>setTimeout</code> or <code>setInterval</code> becomes asynchronous.  Jasmine has some nice helpers to make your test synchronous again.</p>
+
+<p><img src="http://i.imgur.com/Ks3wt01.jpg" alt="Jasmine" /></p>
+
+<!--more-->
+
+
+<h2>Code Using setTimeout</h2>
+
+<p>Any Javascript code that wants to delay certain actions or give intervals between actions will use <code>setTimeout</code> or <code>setInterval</code> respectively.  There are also libraries that create some niceties for working in these situations, notably <a href="http://underscorejs.org">underscore</a>&#8217;s <code>_.throttle</code> and <code>_.debounce</code> functions.  Underneath all of these higher-level functions, they&#8217;re using the native <code>setTimeout</code> construct, so the same strategies will apply.  In your source, you end up with something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="kc">on</span> <span class="s">&#39;keyup&#39;</span><span class="p">,</span> <span class="s">&#39;.autocomplete-field&#39;</span><span class="p">,</span> <span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="nx">autocomplete</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This code binds a keyup event listener on a contrived <code>.autocomplete-field</code>.  Of course, we don&#8217;t want to do an expensive <code>autocomplete</code> lookup on every keypress.  So, we&#8217;ll slow it down a bit with <code>_.debounce</code>.</p>
+
+<h2>Testing Asynchronous Code in Jasmine</h2>
+
+<p>Now we go to test it in Jasmine (failing):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'>  <span class="nx">describe</span> <span class="s">&#39;Autocomplete Field&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">it</span> <span class="s">&#39;calls autocomplete when typing&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>      <span class="nv">called = </span><span class="kc">false</span>
+</span><span class='line'>      <span class="nv">autocomplete = </span><span class="o">-&gt;</span>
+</span><span class='line'>        <span class="nv">called = </span><span class="kc">true</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nv">keyup = </span><span class="nx">$</span><span class="p">.</span><span class="nx">Event</span><span class="p">(</span><span class="s">&#39;keyup&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.autocomplete-field&#39;</span><span class="p">).</span><span class="nx">trigger</span> <span class="nx">keyup</span>
+</span><span class='line'>      <span class="nx">called</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this test, or <code>autocomplete</code> spy will never be called, thus <code>called</code> will never be true.  There are a few ways to fix this.</p>
+
+<h2>Mocking the Jasmine Clock</h2>
+
+<p>One way to fix the test is to remove <code>_.debounce</code> from our source code.  That would make the test pass.  The other is to setup our Jasmine to handle the <code>setTimeout</code> used in <code>_.debounce</code>.  Let&#8217;s do the latter, and raise our fists to the sky in triumph over our testing foe (winning):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'>  <span class="nx">describe</span> <span class="s">&#39;Autocomplete Field&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">beforeEach</span> <span class="o">-&gt;</span>
+</span><span class='line'>      <span class="nx">jasmine</span><span class="p">.</span><span class="nx">Clock</span><span class="p">.</span><span class="nx">useMock</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">it</span> <span class="s">&#39;calls autocomplete when typing&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>      <span class="nv">called = </span><span class="kc">false</span>
+</span><span class='line'>      <span class="nv">autocomplete = </span><span class="o">-&gt;</span>
+</span><span class='line'>        <span class="nv">called = </span><span class="kc">true</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nv">keyup = </span><span class="nx">$</span><span class="p">.</span><span class="nx">Event</span><span class="p">(</span><span class="s">&#39;keyup&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.autocomplete-field&#39;</span><span class="p">).</span><span class="nx">trigger</span> <span class="nx">keyup</span>
+</span><span class='line'>      <span class="nx">jasmine</span><span class="p">.</span><span class="nx">Clock</span><span class="p">.</span><span class="nx">tick</span> <span class="mi">501</span>
+</span><span class='line'>      <span class="nx">called</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The needed code is simple to add.  Use <code>jasmine.Clock.useMock()</code> to setup the fake ticker.  Then call <code>tick()</code> on it whenever you want your test to simulate time massage.</p>
+
+<p>The cool thing is that this does not slow down your tests.  You could set the clock tick to be 50100000 or some crazy number, and it will still execute as fast as your single JavaScript thread will let you.</p>
+
+<p>Boom.  Another testing hurdle cleared.  Sometimes it&#8217;s harder to write the test than the code.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-15T07:08:00-06:00" pubdate data-updated="true">May 15<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/jasmine/'>jasmine</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/underscore/'>underscore</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/test-settimeout-with-jasmine/" data-via="" data-counturl="http://jaketrent.com/post/test-settimeout-with-jasmine/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/post/livereload-for-nodejs/" title="Previous Post: LiveReload for NodeJs">&laquo; LiveReload for NodeJs</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="social">
+    <li><a class="social social-github" href="http://github.com/jaketrent" title="Github" class="first">Github</a></li>
+    <li><a class="social social-twitter" href="http://twitter.com/jaketrent" title="Twitter">Twitter</a></li>
+    <li><a class="social social-linkedin" href="http://linkedin.com/in/jaketrent" title="LinkedIn">LinkedIn</a></li>
+    <li><a class="social social-googleplus" href="https://plus.google.com/115032056022257436849?rel=author" title="Google Plus">Google Plus</a></li>
+    <li><a class="social social-rss" href="/atom.xml" title="RSS">RSS</a></li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/test-settimeout-with-jasmine/">Test setTimeout with Jasmine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/livereload-for-nodejs/">LiveReload for NodeJs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/nodejs-app-on-xipio/">Access NodeJs App on Xip.io</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/yeoman-app-on-heroku/">Deploy Yeoman App on Heroku</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/mountain-west-ruby-conf-2013-review/">Mountain West Ruby Conf 2013 Review</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/115032056022257436849?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Jake Trent -
+  <a href="/blog/archives">Archives</a> -
+  <a href="/atom.xml">Feed</a> -
+  <a href="/sitemap.xml">Sitemap</a> -
+  <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/test-settimeout-with-jasmine/';
+        var disqus_url = 'http://jaketrent.com/post/test-settimeout-with-jasmine/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

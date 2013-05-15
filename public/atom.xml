@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-01T08:26:15-06:00</updated>
+  <updated>2013-05-15T08:16:15-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,101 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Test setTimeout with Jasmine]]></title>
+    <link href="http://jaketrent.com/post/test-settimeout-with-jasmine/"/>
+    <updated>2013-05-15T07:08:00-06:00</updated>
+    <id>http://jaketrent.com/post/test-settimeout-with-jasmine</id>
+    <content type="html"><![CDATA[<p>Code that utilizes <code>setTimeout</code> or <code>setInterval</code> becomes asynchronous.  Jasmine has some nice helpers to make your test synchronous again.</p>
+
+<p><img src="http://i.imgur.com/Ks3wt01.jpg" alt="Jasmine" /></p>
+
+<!--more-->
+
+
+<h2>Code Using setTimeout</h2>
+
+<p>Any Javascript code that wants to delay certain actions or give intervals between actions will use <code>setTimeout</code> or <code>setInterval</code> respectively.  There are also libraries that create some niceties for working in these situations, notably <a href="http://underscorejs.org">underscore</a>&#8217;s <code>_.throttle</code> and <code>_.debounce</code> functions.  Underneath all of these higher-level functions, they&#8217;re using the native <code>setTimeout</code> construct, so the same strategies will apply.  In your source, you end up with something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="kc">on</span> <span class="s">&#39;keyup&#39;</span><span class="p">,</span> <span class="s">&#39;.autocomplete-field&#39;</span><span class="p">,</span> <span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="nx">autocomplete</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This code binds a keyup event listener on a contrived <code>.autocomplete-field</code>.  Of course, we don&#8217;t want to do an expensive <code>autocomplete</code> lookup on every keypress.  So, we&#8217;ll slow it down a bit with <code>_.debounce</code>.</p>
+
+<h2>Testing Asynchronous Code in Jasmine</h2>
+
+<p>Now we go to test it in Jasmine (failing):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'>  <span class="nx">describe</span> <span class="s">&#39;Autocomplete Field&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">it</span> <span class="s">&#39;calls autocomplete when typing&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>      <span class="nv">called = </span><span class="kc">false</span>
+</span><span class='line'>      <span class="nv">autocomplete = </span><span class="o">-&gt;</span>
+</span><span class='line'>        <span class="nv">called = </span><span class="kc">true</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nv">keyup = </span><span class="nx">$</span><span class="p">.</span><span class="nx">Event</span><span class="p">(</span><span class="s">&#39;keyup&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.autocomplete-field&#39;</span><span class="p">).</span><span class="nx">trigger</span> <span class="nx">keyup</span>
+</span><span class='line'>      <span class="nx">called</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this test, or <code>autocomplete</code> spy will never be called, thus <code>called</code> will never be true.  There are a few ways to fix this.</p>
+
+<h2>Mocking the Jasmine Clock</h2>
+
+<p>One way to fix the test is to remove <code>_.debounce</code> from our source code.  That would make the test pass.  The other is to setup our Jasmine to handle the <code>setTimeout</code> used in <code>_.debounce</code>.  Let&#8217;s do the latter, and raise our fists to the sky in triumph over our testing foe (winning):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'>  <span class="nx">describe</span> <span class="s">&#39;Autocomplete Field&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">beforeEach</span> <span class="o">-&gt;</span>
+</span><span class='line'>      <span class="nx">jasmine</span><span class="p">.</span><span class="nx">Clock</span><span class="p">.</span><span class="nx">useMock</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">it</span> <span class="s">&#39;calls autocomplete when typing&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>      <span class="nv">called = </span><span class="kc">false</span>
+</span><span class='line'>      <span class="nv">autocomplete = </span><span class="o">-&gt;</span>
+</span><span class='line'>        <span class="nv">called = </span><span class="kc">true</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nv">keyup = </span><span class="nx">$</span><span class="p">.</span><span class="nx">Event</span><span class="p">(</span><span class="s">&#39;keyup&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.autocomplete-field&#39;</span><span class="p">).</span><span class="nx">trigger</span> <span class="nx">keyup</span>
+</span><span class='line'>      <span class="nx">jasmine</span><span class="p">.</span><span class="nx">Clock</span><span class="p">.</span><span class="nx">tick</span> <span class="mi">501</span>
+</span><span class='line'>      <span class="nx">called</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The needed code is simple to add.  Use <code>jasmine.Clock.useMock()</code> to setup the fake ticker.  Then call <code>tick()</code> on it whenever you want your test to simulate time massage.</p>
+
+<p>The cool thing is that this does not slow down your tests.  You could set the clock tick to be 50100000 or some crazy number, and it will still execute as fast as your single JavaScript thread will let you.</p>
+
+<p>Boom.  Another testing hurdle cleared.  Sometimes it&#8217;s harder to write the test than the code.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[LiveReload for NodeJs]]></title>
@@ -1539,86 +1634,6 @@
 <p>And wouldn&#8217;t this be awesome if everyone did this, including all the people that wrote some of those favorite libraries that you use but that you have occassion to debug through?</p>
 
 <p>What other benefits do you see that might come from naming your anonymous functions?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Run a Single Mocha Test]]></title>
-    <link href="http://jaketrent.com/post/run-single-mocha-test/"/>
-    <updated>2013-01-16T07:07:00-07:00</updated>
-    <id>http://jaketrent.com/post/run-single-mocha-test</id>
-    <content type="html"><![CDATA[<p>When working inside your test suite, it&#8217;s often the case that you don&#8217;t want to run all of your tests.  Mocha has a great mechanism that allows you to easily specify what exactly you want run.  This can help make your processes such as TDD faster and more focused.</p>
-
-<p><img src="http://i.imgur.com/hbcnU.png" alt="Mocha" /></p>
-
-<!--more-->
-
-
-<h2>Run a Single Test File</h2>
-
-<p>Using the mocha cli, you can easily specify an exact or wildcarded pattern that you want to run.  This is accomplished with the <code>grep</code> option when running the <code>mocha</code> command.</p>
-
-<p>If you wanted to run only the login-failure.js suite, the command would look like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ mocha --grep login-failiure.js</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you happen to have multiple suites that match a filename pattern that you wanted to run, exclusive to all others, you would run:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ mocha --grep login-*.js</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Run a Single Spec</h2>
-
-<p>Often we&#8217;re in the test code making changes, and it&#8217;s easy to make adjustments to what subset of tests you run from here as well.  If I want to run a single <code>describe()</code> function, I can add a <code>.only()</code> to the function call, like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// these tests will be skipped</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">describe</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// these tests will run </span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You can stick the <code>.only()</code> on any <code>describe</code>, no matter if it&#8217;s first or last in the list of specs.</p>
-
-<h2>Run a Single Test</h2>
-
-<p>Just as you can with <code>describe</code>, the tests can be specified to exclusively run if you attach <code>.only()</code> to the function call.</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">it</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// this test will run</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">it</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// this test will be skipped</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Note!</strong> that by putting the <code>.only()</code> on a test, all other functions in the spec are skipped.  This means that your <code>before</code>, <code>beforeEach</code>, <code>after</code>, and <code>afterEach</code> functions are <em>not</em> called.  Sometimes it&#8217;s hard to remember when that matters, so I usually end up running single specs instead of single tests.</p>
-
-<h2>Skip Something</h2>
-
-<p>If you want to run all the specs/tests that you have minus some subset, effectively commenting out these tests, you can add <code>.skip()</code> to either <code>describe</code> or <code>it</code> function calls.</p>
-
-<h2>Remember to Remove</h2>
-
-<p>With the additions of the <code>.only()</code> or <code>.skip()</code> you are altering the actual code of your tests.  This is great for your local development process.  You&#8217;ll need to be careful that you don&#8217;t commit this change &#8211; at least you usually won&#8217;t want to.  Otherwise, you CI process will be running a subset of your tests, just as you are locally, which is no bueno.</p>
 ]]></content>
   </entry>
   
