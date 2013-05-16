@@ -4,7 +4,7 @@ title: "Run a Pow Server on a VM"
 date: 2013-01-31 16:14
 comments: true
 categories: [Code, rails, ruby]
-description: Pow creates an easy way to run Rails server locally.  Running them on a Windows VM is just as easy. 
+description: Pow creates an easy way to run Rails server locally.  Running them on a Windows VM is just as easy.
 keywords: pow, vm, rails, windows, virtualbox, powder, ruby
 published: true
 ---
@@ -52,7 +52,7 @@ There are a few different VM options.  My favorite is [VirtualBox](http://virtua
 
 ## Install Internet Explorer
 
-There really wasn't another reason that you wanted a Windows VM was there?  
+There really wasn't another reason that you wanted a Windows VM was there?
 
 I've had good success with 	the project [xdissent/ievms](https://github.com/xdissent/ievms).  To download the IE-ready images, the README invites us to run this script in our shell:
 
@@ -70,7 +70,7 @@ Either way, this download takes quite a while to complete, but the shell script 
 
 ## Access Pow via VirtualBox
 
-Accessing Pow in the VM isn't bad at all.  Pow makes use of [xip.io](http://xip.io), which provides a wildcard DNS entry used by Pow and thus your app.  
+Accessing Pow in the VM isn't bad at all.  Pow makes use of [xip.io](http://xip.io), which provides a wildcard DNS entry used by Pow and thus your app.
 
 For the [next step](http://pow.cx/manual.html#section_2.1.5), take note of your IP by running `ifconfig`.  Then from IE inside of VirtualBox, point your browser at:
 

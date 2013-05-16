@@ -15,6 +15,16 @@ Xip.io is a DNS wildcard domain that was initially created for use on Ruby proje
 
 <!--more-->
 
+## Update: Proxying is Built Into Pow
+
+After having a handful of problems with these home-grown proxies, my search eventually led me to know that Pow 0.4.0+ includes proxying as a built-in feature.  So, you don't need your own `config.ru` any more.  Once you install pow, choose the port that your app will run on and at what pow address you want to access your app, and run one command in your terminal:
+
+```
+echo 3000 > ~/.pow/myapp
+```
+
+Then you'll access your app, running in the background on port 3000 via the web browser at `http://myapp.dev`.  Way better.  Skip the rest of this article.
+
 ## Install Pow and Powder
 
 Pow is a development server that uses Xip.io.  Powder is a cli that makes working with Pow even easier.  To start, make sure that [Ruby](http://www.ruby-lang.org/en/downloads/) is setup with [Rubygems](http://rubygems.org) in your environment.  Then install Pow.  They have a short little install script you can run, as [referenced on the Pow site](http://pow.cx/).

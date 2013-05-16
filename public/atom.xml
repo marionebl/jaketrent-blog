@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-15T08:16:15-06:00</updated>
+  <updated>2013-05-16T07:22:38-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -212,6 +212,16 @@
 
 <!--more-->
 
+
+<h2>Update: Proxying is Built Into Pow</h2>
+
+<p>After having a handful of problems with these home-grown proxies, my search eventually led me to know that Pow 0.4.0+ includes proxying as a built-in feature.  So, you don&#8217;t need your own <code>config.ru</code> any more.  Once you install pow, choose the port that your app will run on and at what pow address you want to access your app, and run one command in your terminal:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>echo 3000 &gt; ~/.pow/myapp</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then you&#8217;ll access your app, running in the background on port 3000 via the web browser at <code>http://myapp.dev</code>.  Way better.  Skip the rest of this article.</p>
 
 <h2>Install Pow and Powder</h2>
 
