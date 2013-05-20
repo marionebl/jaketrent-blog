@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-16T07:22:38-06:00</updated>
+  <updated>2013-05-20T08:24:16-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[UtahJS Conf 2013 Review]]></title>
+    <link href="http://jaketrent.com/post/utahjs-conf-2013-review/"/>
+    <updated>2013-05-20T06:59:00-06:00</updated>
+    <id>http://jaketrent.com/post/utahjs-conf-2013-review</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/G3BBShC.png" alt="UtahJS" /></p>
+
+<!--more-->
+
+
+<h2>The Schedule</h2>
+
+<p>The conference covered a single day.  Keynote in the morning by Tom Dale, co-creator of Emberjs.  3 tracks thereafter with 5 talks each.  There was a specialized track, all focused on Angular, which was nice for anyone that wanted to focus on that framework.  There was less Node focus overall compared to last year, which was disappointing.  There were 3 talks focused on testing.  We need more good testing talks.</p>
+
+<p>My impression on the talks overall was that they were well done and that the speakers were generally engaging.  The topics focused a little much on browser-side MV* frameworks, but I guess that&#8217;s hot right now.  Every talk I went to was meant for beginners at a very introductory level.  That was disappointing.  Of the topics presented, I found myself surprisingly most interested in Emberjs.  I have been tinkering with it since then and need to build something with it.</p>
+
+<h2>The Food</h2>
+
+<p>There was a plentitude of simple carbohydrates ready to serve to all learners at all times.  That was awesome.  Pastries appeared for breakfast, un-advertised.  They didn&#8217;t do a boxed lunch this year.  Some didn&#8217;t cry.  I almost did.  But I was pointed to a great gryo at a nearby Greek eatery instead.  Apparently the host venue, the Salt Lake City Public Library, didn&#8217;t approve of serving food.  This, I don&#8217;t understand, given that there was plenty of food floating around.  Apparenly pastries are ok, and sandwiches are not.</p>
+
+<h2>The People</h2>
+
+<p>Always a fun flavor to a conference, the attendees were great to mingle with.  The JavaScript community is a fun group to be with.  In Utah, we&#8217;re a fairly small, tight group.  It was fun to have Tom Dale show up.  It was even said by some that the Ember folks were &#8220;actually nice&#8221; as opposed to what was thought to be observed by some on Twitter.  Haha.  I smiled quite a bit when I heard that.</p>
+
+<h2>The Afterparty</h2>
+
+<p>The party was put on by O.C. Tanner and Domo.  O.C. Tanner is my current home base.  We were in charge of prepping the space.  It was like a classic text adventure trying to guide party-comers through the labyrinth of the O.C. Tanner building to the eventual pot of gold that was the party.</p>
+
+<p>The food never stopped coming, even after my stomach had taken on its full capacity.  Marvelous Catering (gotta love that name) provided a delicious &#8220;luau pork dinner&#8221;.  I heard &#8220;luau&#8221; and assumed pineapple, of which there was none, which disappointed me just a little.  The owner of Fongo Bongo, a local game shop supplied a great collection of board and card games.  We had a couple Xboxen humming whilst TVs blasted fighting games to which I knew no combos.  We had a great time.</p>
+
+<h2>Next Year</h2>
+
+<p>I&#8217;m glad that this event has shown some perpetuity.  I hope it continues next year.  I think they have a good formula.  The price, the locale, the speaker lineup, and the associated activities make for a good one-day experience each Spring.  I would focus on improving one bit next year: the website.  It was the least well-done part of the conference.  I find that extremely ironic given the target market for the event.</p>
+
+<p>So next Spring, come to Utah and attend the JsConf.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Test setTimeout with Jasmine]]></title>
@@ -1529,121 +1567,6 @@
 
 
 <p>It&#8217;s ready for use by a json-ready client.  So stinkin easy.  We&#8217;re connecting the web together, and it&#8217;s awesome!  Now the world will know of the baked goods and flower arrangements that we love the most.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Naming Anonymous JavaScript Functions]]></title>
-    <link href="http://jaketrent.com/post/naming-anonymous-javascript-functions/"/>
-    <updated>2013-01-17T07:10:00-07:00</updated>
-    <id>http://jaketrent.com/post/naming-anonymous-javascript-functions</id>
-    <content type="html"><![CDATA[<p>In JavaScript, functions can be defined and used in the same statement.  This makes creation quick, and the functions are considered anonymous because of their inline use and lack of assignment to a local variable.  But, there are a couple reasons you might want to label them.</p>
-
-<p><img src="http://i.imgur.com/uH7E2.jpg" alt="JavaScript Anonymous Functions" /></p>
-
-<!--more-->
-
-
-<h2>Readability</h2>
-
-<p>A great thing about functions in general is that they will tell you what they&#8217;re used for.  If I call a function called <code>calculatePi()</code>, I expect it to do just that.  It&#8217;s a great abstraction.  We can look at the name of the function without having to learn exactly how it does its stated task.</p>
-
-<p>The performance of anonymous functions can often be determined from the calling context, but why not just name it for what it does like all other functions?  Did you know that you can?  Piece of pi.  Where you would normally write this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">doStuff</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;reporting…&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Additionally label your callback:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">doStuff</span><span class="p">(</span><span class="kd">function</span> <span class="nx">reportResults</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;reporting…&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Easier Stack Traces</h2>
-
-<p>To make this code actually run, let&#8217;s add a little bit and stick in a thrown error that should provide us a stack trace:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">doStuff</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>   <span class="nx">callback</span><span class="p">();</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">doStuff</span><span class="p">(</span><span class="kd">function</span> <span class="nx">reportResults</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;problem&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Another difference between labeled and non-labeled anonymous functions is what they print in a stack trace. Without a label, you are getting line numbers, but the stack trace itself is harder to follow without bring up the source in order to interpret it.</p>
-
-<p>Without named function:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="err">/.../error.js:10</span>
-</span><span class='line'>  <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;problem&#39;</span><span class="p">);</span>
-</span><span class='line'>        <span class="o">^</span>
-</span><span class='line'><span class="nb">Error</span><span class="o">:</span> <span class="nx">problem</span>
-</span><span class='line'>    <span class="nx">at</span> <span class="o">/</span><span class="p">...</span><span class="o">/</span><span class="nx">error</span><span class="p">.</span><span class="nx">js</span><span class="o">:</span><span class="mi">10</span><span class="o">:</span><span class="mi">8</span>
-</span><span class='line'>    <span class="nx">at</span> <span class="nx">doStuff</span> <span class="p">(</span><span class="err">/.../error.js:5:4)</span>
-</span><span class='line'>    <span class="nx">at</span> <span class="nb">Object</span><span class="p">.</span><span class="o">&lt;</span><span class="nx">anonymous</span><span class="o">&gt;</span> <span class="p">(</span><span class="err">/.../error.js:8:1)</span>
-</span><span class='line'>    <span class="nx">at</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">_compile</span> <span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">js</span><span class="o">:</span><span class="mi">449</span><span class="o">:</span><span class="mi">26</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="err">/.../error.js:8</span>
-</span><span class='line'>  <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;problem&#39;</span><span class="p">);</span>
-</span><span class='line'>        <span class="o">^</span>
-</span><span class='line'><span class="nb">Error</span><span class="o">:</span> <span class="nx">problem</span>
-</span><span class='line'>    <span class="nx">at</span> <span class="nx">reportResults</span> <span class="p">(</span><span class="err">/.../error.js:8:8)</span>
-</span><span class='line'>    <span class="nx">at</span> <span class="nx">doStuff</span> <span class="p">(</span><span class="err">/.../error.js:4:4)</span>
-</span><span class='line'>    <span class="nx">at</span> <span class="nb">Object</span><span class="p">.</span><span class="o">&lt;</span><span class="nx">anonymous</span><span class="o">&gt;</span> <span class="p">(</span><span class="err">/.../error.js:7:1)</span>
-</span><span class='line'>    <span class="nx">at</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">_compile</span> <span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">js</span><span class="o">:</span><span class="mi">449</span><span class="o">:</span><span class="mi">26</span><span class="p">)</span>
-</span><span class='line'>    <span class="err">…</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Notice that every frame of the stack is now clearly displaying its name.</p>
-
-<p>And wouldn&#8217;t this be awesome if everyone did this, including all the people that wrote some of those favorite libraries that you use but that you have occassion to debug through?</p>
-
-<p>What other benefits do you see that might come from naming your anonymous functions?</p>
 ]]></content>
   </entry>
   

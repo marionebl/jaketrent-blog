@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Review | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/review/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-16T07:22:38-06:00</updated>
+  <updated>2013-05-20T08:24:16-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[UtahJS Conf 2013 Review]]></title>
+    <link href="http://jaketrent.com/post/utahjs-conf-2013-review/"/>
+    <updated>2013-05-20T06:59:00-06:00</updated>
+    <id>http://jaketrent.com/post/utahjs-conf-2013-review</id>
+    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/G3BBShC.png" alt="UtahJS" /></p>
+
+<!--more-->
+
+
+<h2>The Schedule</h2>
+
+<p>The conference covered a single day.  Keynote in the morning by Tom Dale, co-creator of Emberjs.  3 tracks thereafter with 5 talks each.  There was a specialized track, all focused on Angular, which was nice for anyone that wanted to focus on that framework.  There was less Node focus overall compared to last year, which was disappointing.  There were 3 talks focused on testing.  We need more good testing talks.</p>
+
+<p>My impression on the talks overall was that they were well done and that the speakers were generally engaging.  The topics focused a little much on browser-side MV* frameworks, but I guess that's hot right now.  Every talk I went to was meant for beginners at a very introductory level.  That was disappointing.  Of the topics presented, I found myself surprisingly most interested in Emberjs.  I have been tinkering with it since then and need to build something with it.</p>
+
+<h2>The Food</h2>
+
+<p>There was a plentitude of simple carbohydrates ready to serve to all learners at all times.  That was awesome.  Pastries appeared for breakfast, un-advertised.  They didn't do a boxed lunch this year.  Some didn't cry.  I almost did.  But I was pointed to a great gryo at a nearby Greek eatery instead.  Apparently the host venue, the Salt Lake City Public Library, didn't approve of serving food.  This, I don't understand, given that there was plenty of food floating around.  Apparenly pastries are ok, and sandwiches are not.</p>
+
+<h2>The People</h2>
+
+<p>Always a fun flavor to a conference, the attendees were great to mingle with.  The JavaScript community is a fun group to be with.  In Utah, we're a fairly small, tight group.  It was fun to have Tom Dale show up.  It was even said by some that the Ember folks were "actually nice" as opposed to what was thought to be observed by some on Twitter.  Haha.  I smiled quite a bit when I heard that.</p>
+
+<h2>The Afterparty</h2>
+
+<p>The party was put on by O.C. Tanner and Domo.  O.C. Tanner is my current home base.  We were in charge of prepping the space.  It was like a classic text adventure trying to guide party-comers through the labyrinth of the O.C. Tanner building to the eventual pot of gold that was the party.</p>
+
+<p>The food never stopped coming, even after my stomach had taken on its full capacity.  Marvelous Catering (gotta love that name) provided a delicious "luau pork dinner".  I heard "luau" and assumed pineapple, of which there was none, which disappointed me just a little.  The owner of Fongo Bongo, a local game shop supplied a great collection of board and card games.  We had a couple Xboxen humming whilst TVs blasted fighting games to which I knew no combos.  We had a great time.</p>
+
+<h2>Next Year</h2>
+
+<p>I'm glad that this event has shown some perpetuity.  I hope it continues next year.  I think they have a good formula.  The price, the locale, the speaker lineup, and the associated activities make for a good one-day experience each Spring.  I would focus on improving one bit next year: the website.  It was the least well-done part of the conference.  I find that extremely ironic given the target market for the event.</p>
+
+<p>So next Spring, come to Utah and attend the JsConf.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mountain West Ruby Conf 2013 Review]]></title>
@@ -212,64 +250,6 @@
 <p>I was unprepared for how much I would laugh while reading Jon's book.  Business self-help books are not expected to be very comical or entertaining.  Jon gave the book a fun voice.  It was easy to read out loud to my wife -- you know, for getting on the same dream page.  Jon doesn't take himself to seriously, and that's refreshing.</p>
 
 <p>It's a short read.  It's a fun read.  The information is from the heart, and I think it's worth learning from Jon's experience.  If you're considering ever starting your own business or if you're not in your dream job yet and want to get there, I recommend this book on the subject.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[IntelliJ 12 Review]]></title>
-    <link href="http://jaketrent.com/post/intellij-12-review/"/>
-    <updated>2012-12-12T15:33:00-07:00</updated>
-    <id>http://jaketrent.com/post/intellij-12-review</id>
-    <content type="html"><![CDATA[<p>I've used IntelliJ since version 6.  Now we're version 12.  It's just gotten better.  Version 12 is definitely an incremental release.  There's nothing too whiz bang here that I care about, but the quality overall is increased.</p>
-
-<p><img src="http://i.imgur.com/RM3Q1.jpg" alt="IntelliJ 12" /></p>
-
-<!--more-->
-
-
-<h2>IntelliJ 12 New Core Features</h2>
-
-<p>The highlights of the <a href="http://www.jetbrains.com/idea/whatsnew/index.html">"What's New"</a> list include Java 8 support, Spring tools update, Play 2.0 support, and Android UI designer.  All positives, but not really things I care very deeply about and will probably never use.  There's a bit more on the list, but there's nothing that is a huge, "Now IntelliJ can do ______" item.</p>
-
-<h2>IntelliJ 12 Quality of Life</h2>
-
-<p>During my evaluation, however, I have been very pleased with the quality of life it has afforded me.  IntelliJ has always treated me very well in comparison to the competition.  IntelliJ 12 just makes that good experience a little bit sweeter.</p>
-
-<h4>Darkula Theme</h4>
-
-<p>This has to be inspired by the rise of <a href="http://www.sublimetext.com/">Sublime Text</a>, which has a dark theme as its default.  More and more devs I know are using Sublime extensively.  Overall, I like the look of the Darkula theme.  It's a bit easier on the eyes.  The icons got a fun, retro overhaul.  In some cases, I've noticed things that my eyes have grown so accustomed to that they have ignored for some time.  It's also taken a bit to get used to it and start to expect things and see them faster.  I find it interesting that soooo much of this release has been focused on this UI theme.</p>
-
-<h4>Popup Dialogs are Faster</h4>
-
-<p>It seems that when a non-main window is told to appear that it does so a bit quicker now.  Intellisense seems a bit more snappy, and the "recent files" switcher doesn't lag as it seemed to in the past sometimes.  It's fun, and it lets me go faster.</p>
-
-<h4>Better OSX Shortcuts</h4>
-
-<p>When I switched to OSX from Linux, I was immediately disappointed by the lack of keyboard shortcuts in comparison to Linux.  The most egregious omission was the lack of alt-* combos to press buttons in the UI via the keyboard.  Alt-p to engage the 'push' button in the Git push dialog has been a long time coming.</p>
-
-<p><img src="http://i.imgur.com/FYe1O.jpg" alt="P for Push" /></p>
-
-<h4>Git Integration is better</h4>
-
-<p>For performance and UI reasons, I would often just use Git on the command line instead of from within IntelliJ.  Now the Git integration is better than ever.  It seems waaaay fast.  I'm a little puzzled at <em>how</em> the git push could be so much faster in comparison to the previous version.</p>
-
-<h4>Project Type Support</h4>
-
-<p>Small thing, but I like the new "New Project" dialog.  It's simplified and easier to navigate.  It is fast and simple.  It doesn't take you through options that don't apply.  I'm in that dialog a lot, and I like the change.</p>
-
-<h2>The Right Direction</h2>
-
-<p>Really, there's not a ton new here.  It's such a solid tool to start.  It's where I spend most of my day though, so even incremental quality improvement is welcome.</p>
-
-<p>Let's see, what's not there that I wish for?:</p>
-
-<ul>
-<li>Live debug the JavaScript running in Chrome (not just Firefox)</li>
-<li>Run and debug Grunt and other Node-based cli apps</li>
-</ul>
-
-
-<p>Does IntelliJ already do those things?  Probably, and I just don't yet know how to bend it to my will.</p>
 ]]></content>
   </entry>
   
