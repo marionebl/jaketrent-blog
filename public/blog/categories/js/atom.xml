@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-20T08:24:16-06:00</updated>
+  <updated>2013-05-21T09:12:21-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,135 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Precompile Ember Templates]]></title>
+    <link href="http://jaketrent.com/post/precompile-ember-templates/"/>
+    <updated>2013-05-21T07:54:00-06:00</updated>
+    <id>http://jaketrent.com/post/precompile-ember-templates</id>
+    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a> makes use of the wonderful <a href="http://handlebarsjs.com">Handlebars</a> templates.  These templates, in order to be performant, must be precompiled.  Based on the Ember docs, it's not abundantly clear how this is to happen.  Here's a solution that works well.</p>
+
+<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
+
+<!--more-->
+
+
+<h2>Grunt</h2>
+
+<p>We'd love for this precompilation to happen previous to the running of your app.  Again, this is in hopes of increased performance.  <a href="http://gruntjs.com">Grunt</a> is a great little Nodejs-based tool for build-level tasks.</p>
+
+<h2>Emblem</h2>
+
+<p>Grunt comes with a variety of plugins.  We're going to use one called <a href="https://github.com/wordofchristian/grunt-emblem/">grunt-emblem</a>.  <a href="http://emblemjs.com/">Emblem</a> is a fantastic templating syntax layered on top of Handlebars (still a dependency).  Its syntax looks very similar to Haml or Ruby Slim or Jade.  It may well be the most flexible of all of them, and it simplifies some Ember helper syntax very nicely.</p>
+
+<h2>Versions Matching</h2>
+
+<p>As I've said before, <a href="/post/match-ember-handlebars-version/">matching Ember dependency version can be a pain</a>.  With precompilation, you have one more dependency to match.  Now not only do you care about the version of Handlebars that Ember uses at runtime, but you care about the version of Handlebars that is used to precompile your templates.  If the precompile Handlebars version doesn't match the runtime Handlebars version, your app will die at runtime.  <code>grunt-emblem</code> helps immensely with this.</p>
+
+<h2>grunt-emblem</h2>
+
+<p>I haven't found another Handlebars precompile plugin that helps as much as <code>grunt-emblem</code>.  It solves the precompile version problem by letting you utilize the actual runtime Handlebars as the precompile Handlebars script.</p>
+
+<p>It is also nice in that it puts the precompiled templates into the collection that Ember expects to find templates in, namely <code>Ember.TEMPLATES</code>.  As you can find on the <a href="https://github.com/wordofchristian/grunt-emblem/"><code>grunt-emblem</code> Github page</a>, your grunt config will look something like the following:</p>
+
+<p>```coffeescript
+matchdep = require 'matchdep'</p>
+
+<p>module.exports = (grunt) ->
+  grunt.initConfig</p>
+
+<pre><code>watch:
+  ember_templates:
+    files: ['app/views/templates/**/*.emblem']
+    tasks: ['emblem', 'livereload']
+
+emblem:
+  compile:
+    files:
+      "app/static/templates/ember_templates.js": ["app/views/templates/**/*.emblem"]
+    options:
+      root: "app/views/templates/"
+      dependencies:
+        jquery: "app/static/js/components/jquery/jquery.js"
+        ember: "app/static/js/components/ember/ember.js"
+        emblem: "app/static/js/components/emblem/dist/emblem.js"
+        handlebars: "app/static/js/components/handlebars/handlebars.js"
+</code></pre>
+
+<p>  matchdep.filterDev('grunt-*').forEach grunt.loadNpmTasks</p>
+
+<p>  grunt.renameTask 'regarde', 'watch'</p>
+
+<p>  grunt.registerTask 'dev', [ 'livereload-start', 'watch' ]</p>
+
+<p>```</p>
+
+<p>This particular config has a couple other niceties.  Let me enumerate the awesome:</p>
+
+<ul>
+<li>Line 6 - Not only can we precompile the templates, but we'll precompile on the fly, whenever <code>.emblem</code> files are change in the specified directories.</li>
+<li>Line 8 and 14 - We're precompiling <code>.emblem</code> templates, but this plugin can do regular Handlebars syntax as well</li>
+<li>Line 16 - <code>root</code> is the substring that will be stripped out of your template name.  For instance, you don't want your template to be called <code>app/views/templates/home</code>.  Your home route in Ember will want your template called <code>home</code>.  <code>root</code> to the rescue -- bam!</li>
+<li>Line 17 - These <code>dependencies</code> are the libraries that you use at runtime and that Handlebars needs at compile time.  As I said, this plugin simply rocks because of the ability to specify your own Handlebars script.</li>
+<li>Line 23 - Remember how you used to have a whole list of npm tasks registered.  This little beaut will load all <code>grunt-*</code> dependencies.</li>
+<li>Line 25 - <code>regarde</code> is a cool name, but I understand what <code>watch</code> means a bit better. Rename it.</li>
+</ul>
+
+
+<p>This setup requires the following dependencies:</p>
+
+<p><code>
+npm install matchdep grunt grunt-regarde grunt-contrib-livereload grunt-emblem --save-dev
+</code></p>
+
+<p>So now, seriously, go write some Emblem templates.  So fun, so precompiled.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Match Ember and Handlebars Versions]]></title>
+    <link href="http://jaketrent.com/post/match-ember-handlebars-version/"/>
+    <updated>2013-05-21T07:38:00-06:00</updated>
+    <id>http://jaketrent.com/post/match-ember-handlebars-version</id>
+    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a> is very specific about what version of <a href="http://handlebarsjs.com">Handlebars</a> it requires.  This is probably good, but it's also a pain to work with as different versions of the two libraries are released independently.  There are a few good tools to help us out.</p>
+
+<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
+
+<!--more-->
+
+
+<h2>Released Independently</h2>
+
+<p>In a prime example, recently there was a new version of Handlebars released: <code>1.0.0-rc.4</code>.  Ember happens to be on version <code>1.0.0-rc.3</code>.  That version has a hard dependency on Handlebars <code>1.0.0-rc.3</code>.  In other words, the latest Ember code relies on an older version of Handlebars.</p>
+
+<h2>Bower</h2>
+
+<p>If you include these 3rd party libraries in your source code under a <code>lib</code> directory or something of that nature, you <em>always</em> have plenty of work to do.  Naturally, you just copy in the exact versions of the scripts that are needed.</p>
+
+<p>Hopefully you're trying to make use of a mostly awesome tool, <a href="http://bower.io">Bower</a>.  It helps you manage these 3rd party libraries in a way similar to npm.  You provide a descriptor of your project's dependencies, <code>component.json</code>.  And you install things similarly via the <code>bower</code> cli.</p>
+
+<h2>Specify a Bower Version</h2>
+
+<p>If I run:</p>
+
+<p><code>
+bower install handlebars --save
+</code></p>
+
+<p>It saves a dependency in my <code>components.json</code> for Handlebars for the latest version it could find.  This won't do for us.  We need to specify the versions.</p>
+
+<p>Our strategy will be: take the latest version of Ember and then specifically match the Handlbars version.  Finally, we should type:</p>
+
+<p><code>
+bower install ember --save
+bower install handlebars#1.0.0-rc.3
+</code></p>
+
+<p>As of this writing, that is the version of handlebars that is required.  Bower will recognize any semver git tag name or branch name after the hash <code>#</code> sign.</p>
+
+<p>I like our version strategy for a project that is under active development in that it keeps us on the latest Ember.  But, if you're on a project that's been built to an Ember version and not deployed for a long time, you may want to make a very specific dependency out of Ember as well, so the two are guaranteed in sync for future deploys.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[UtahJS Conf 2013 Review]]></title>
@@ -214,234 +343,6 @@ grunt be-lively
 <h2>LiveReload all the Things</h2>
 
 <p>There are many ways to make this happen.  There are numerous Node libraries, Grunt plugins, and browser plugins.  Do what works for you.  Just make it happen fast and tend it well from the beginning to the end of your project.  Almost every solution I've found is somewhat high maintenance.  This one has proven to be the same.  What have you found to be your favorite LiveReload solution, and in what environment?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Access NodeJs App on Xip.io]]></title>
-    <link href="http://jaketrent.com/post/nodejs-app-on-xipio/"/>
-    <updated>2013-04-23T07:22:00-06:00</updated>
-    <id>http://jaketrent.com/post/nodejs-app-on-xipio</id>
-    <content type="html"><![CDATA[<p>Xip.io is a DNS wildcard domain that was initially created for use on Ruby projects.  But its application is desirable across platforms.  Recently, I wanted to use Xip.io on a NodeJs project.  It was easy to make happen.</p>
-
-<p><img src="http://i.imgur.com/PJTnZmM.jpg" alt="xip.io" /></p>
-
-<!--more-->
-
-
-<h2>Update: Proxying is Built Into Pow</h2>
-
-<p>After having a handful of problems with these home-grown proxies, my search eventually led me to know that Pow 0.4.0+ includes proxying as a built-in feature.  So, you don't need your own <code>config.ru</code> any more.  Once you install pow, choose the port that your app will run on and at what pow address you want to access your app, and run one command in your terminal:</p>
-
-<p><code>
-echo 3000 &gt; ~/.pow/myapp
-</code></p>
-
-<p>Then you'll access your app, running in the background on port 3000 via the web browser at <code>http://myapp.dev</code>.  Way better.  Skip the rest of this article.</p>
-
-<h2>Install Pow and Powder</h2>
-
-<p>Pow is a development server that uses Xip.io.  Powder is a cli that makes working with Pow even easier.  To start, make sure that <a href="http://www.ruby-lang.org/en/downloads/">Ruby</a> is setup with <a href="http://rubygems.org">Rubygems</a> in your environment.  Then install Pow.  They have a short little install script you can run, as <a href="http://pow.cx/">referenced on the Pow site</a>.</p>
-
-<p>Then install Powder:</p>
-
-<p><code>
-gem install powder
-</code></p>
-
-<h2>Proxy your NodeJs app</h2>
-
-<p>Pow only knows how to handle Rack apps, so we have to create one to be loaded into Pow.  Since we're writing the guts of our app on another platform -- in this case, Node -- we'll just create a proxy Rack app.</p>
-
-<p>I found a bit of <a href="https://github.com/linjunpop/node-with-pow">proxy app code</a>, which you should save in your project root as <code>config.ru</code>, and which I paste here:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;net/http&quot;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;class ProxyApp</span>
-</span><span class='line'><span class="sr">  def call(env)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">begin</span>
-</span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Request</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span class='line'>  <span class="n">env</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
-</span><span class='line'>    <span class="k">if</span> <span class="n">key</span> <span class="o">=~</span> <span class="sr">/^http_(.*)/i</span>
-</span><span class='line'>      <span class="n">headers</span><span class="o">[</span><span class="vg">$1</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>  <span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">3000</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">http</span><span class="o">.</span><span class="n">start</span> <span class="k">do</span> <span class="o">|</span><span class="n">http</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">send_request</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">request_method</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">fullpath</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">read</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
-</span><span class='line'>    <span class="o">[</span><span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">to_hash</span><span class="p">,</span> <span class="o">[</span><span class="n">response</span><span class="o">.</span><span class="n">body</span><span class="o">]]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">rescue</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ECONNREFUSED</span>
-</span><span class='line'>  <span class="o">[</span><span class="mi">500</span><span class="p">,</span> <span class="p">{},</span> <span class="o">[</span><span class="s2">&quot;Server is down, try $npm start&quot;</span><span class="o">]]</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="n">run</span> <span class="no">ProxyApp</span><span class="o">.</span><span class="n">new</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>The only change you might have to make is the port number for your app (line 13).  In this case, I'm using port 3000 for my NodeJs app.</p>
-
-<h2>Link Your App</h2>
-
-<p>Now all we have to do is link our app to Pow.  Powder helps us do this easily.  Go to your project root directory and type:</p>
-
-<p><code>
-powder link &lt;project_name&gt;
-</code></p>
-
-<p>Now run your app with whatever command starts NodeJs.  It's probably something like this:</p>
-
-<p><code>
-node app.js
-</code></p>
-
-<p>Now you should be able to access your app via your web browser at <code>http://&lt;project_name&gt;.dev</code>.  One of the great things about Xip.io is that it makes running your local app <a href="http://jaketrent.com/post/run-pow-server-on-vm/">extremely easy from a local Virtual machine</a> as well.  To get the address of your app to use in your VM, type this from your native terminal:</p>
-
-<p><code>
-powder open --xip
-</code></p>
-
-<p>And copy the resulting URL into your VM web browser.</p>
-
-<p>Ah, the fusion of Node and Ruby is pretty sweet.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Deploy Yeoman App on Heroku]]></title>
-    <link href="http://jaketrent.com/post/yeoman-app-on-heroku/"/>
-    <updated>2013-04-23T07:12:00-06:00</updated>
-    <id>http://jaketrent.com/post/yeoman-app-on-heroku</id>
-    <content type="html"><![CDATA[<p>Yeoman is great developer tool that will help you generate a project format that is easy to get up and running quickly.  Out of the box, Yeoman only generates static sites.  But, with a few small tweaks, you can get it running on an app server, Nodejs, and up on Heroku.</p>
-
-<p><img src="http://i.imgur.com/1Mc2kXh.jpg" alt="Yeoman" /></p>
-
-<!--more-->
-
-
-<h2>New Project With Yeoman</h2>
-
-<p>To install Yeoman, run:</p>
-
-<p><code>
-npm install -g yo
-</code></p>
-
-<p>Now navigate to your new project directory and generate the scaffolding by running:</p>
-
-<p><code>
-yo webapp
-</code></p>
-
-<p>There are other generators, specifically for angularjs or a handful of other frameworks.  To see more options, run:</p>
-
-<p><code>
-yo --help
-</code></p>
-
-<h2>Add Node for Heroku</h2>
-
-<p>Since Yeoman creates a static site, it should be read to serve out of any old web server.  But Heroku specifically wants an app server.  Node is one of the options, and it's a great option for a lightweight app server.</p>
-
-<p>To get the node dependencies you need, create a <code>package.json</code> via:</p>
-
-<p><code>
-npm init
-</code></p>
-
-<p>Then pull down the dependencies you'll need:</p>
-
-<p><code>
-npm install gzippo express coffee-script --save
-</code></p>
-
-<p>Now create your app server, <code>web.coffee</code>.  It's about as light as they come:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">gzippo = </span><span class="nx">require</span> <span class="s">&#39;gzippo&#39;</span>
-</span><span class='line'><span class="nv">express = </span><span class="nx">require</span> <span class="s">&#39;express&#39;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">app = </span><span class="nx">express</span><span class="p">()</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">logger</span> <span class="s">&#39;dev&#39;</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">gzippo</span><span class="p">.</span><span class="nx">staticGzip</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">__dirname</span><span class="si">}</span><span class="s">/dist&quot;</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span> <span class="o">||</span> <span class="mi">5000</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>It's going to be serving the static resources that you build w/ Yeoman/Grunt that end up in the <code>dist</code> directory.  In order for code to get to Heroku, it needs to be commited to your git repo.  Thus, you need to remove the "dist" line from your <code>.gitignore</code> file, and don't forget to add and commit the files to git as you build them.  You may also have to add more tasks to the <code>Gruntfile.js</code> to copy over any other assets to <code>dist</code> that your app needs to run.</p>
-
-<p>Finally create a <code>Procfile</code> file for Heroku in the root of your project that points to the <code>web.coffee</code> server:</p>
-
-<p><code>
-web: coffee web.coffee
-</code></p>
-
-<p>Now it's time to push to Heroku.  You should have the Heroku Toolbelt installed and create a heroku url by running:</p>
-
-<p><code>
-heroku create &lt;my_project&gt;
-</code></p>
-
-<p>To test your yeoman app as it will be run in production, first build it:</p>
-
-<p><code>
-grunt build
-</code></p>
-
-<p>Then run the grunt server:</p>
-
-<p><code>
-grunt server:dist
-</code></p>
-
-<p>Or if you have foreman and want to run the app using your <code>Procfile</code>, run:</p>
-
-<p><code>
-foreman start
-</code></p>
-
-<p>It's time.  Commit your code, especially that <code>dist</code> directory, and... deploy!</p>
-
-<p><code>
-git push heroku master
-</code></p>
-
-<p>There are quite a few steps there.  What did we miss?  Or what needs more explanation?  Perhaps we just need a <code>yo heroku</code> target.</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: grunt | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/grunt/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-20T08:24:16-06:00</updated>
+  <updated>2013-05-21T09:12:21-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,90 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Precompile Ember Templates]]></title>
+    <link href="http://jaketrent.com/post/precompile-ember-templates/"/>
+    <updated>2013-05-21T07:54:00-06:00</updated>
+    <id>http://jaketrent.com/post/precompile-ember-templates</id>
+    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a> makes use of the wonderful <a href="http://handlebarsjs.com">Handlebars</a> templates.  These templates, in order to be performant, must be precompiled.  Based on the Ember docs, it's not abundantly clear how this is to happen.  Here's a solution that works well.</p>
+
+<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
+
+<!--more-->
+
+
+<h2>Grunt</h2>
+
+<p>We'd love for this precompilation to happen previous to the running of your app.  Again, this is in hopes of increased performance.  <a href="http://gruntjs.com">Grunt</a> is a great little Nodejs-based tool for build-level tasks.</p>
+
+<h2>Emblem</h2>
+
+<p>Grunt comes with a variety of plugins.  We're going to use one called <a href="https://github.com/wordofchristian/grunt-emblem/">grunt-emblem</a>.  <a href="http://emblemjs.com/">Emblem</a> is a fantastic templating syntax layered on top of Handlebars (still a dependency).  Its syntax looks very similar to Haml or Ruby Slim or Jade.  It may well be the most flexible of all of them, and it simplifies some Ember helper syntax very nicely.</p>
+
+<h2>Versions Matching</h2>
+
+<p>As I've said before, <a href="/post/match-ember-handlebars-version/">matching Ember dependency version can be a pain</a>.  With precompilation, you have one more dependency to match.  Now not only do you care about the version of Handlebars that Ember uses at runtime, but you care about the version of Handlebars that is used to precompile your templates.  If the precompile Handlebars version doesn't match the runtime Handlebars version, your app will die at runtime.  <code>grunt-emblem</code> helps immensely with this.</p>
+
+<h2>grunt-emblem</h2>
+
+<p>I haven't found another Handlebars precompile plugin that helps as much as <code>grunt-emblem</code>.  It solves the precompile version problem by letting you utilize the actual runtime Handlebars as the precompile Handlebars script.</p>
+
+<p>It is also nice in that it puts the precompiled templates into the collection that Ember expects to find templates in, namely <code>Ember.TEMPLATES</code>.  As you can find on the <a href="https://github.com/wordofchristian/grunt-emblem/"><code>grunt-emblem</code> Github page</a>, your grunt config will look something like the following:</p>
+
+<p>```coffeescript
+matchdep = require 'matchdep'</p>
+
+<p>module.exports = (grunt) ->
+  grunt.initConfig</p>
+
+<pre><code>watch:
+  ember_templates:
+    files: ['app/views/templates/**/*.emblem']
+    tasks: ['emblem', 'livereload']
+
+emblem:
+  compile:
+    files:
+      "app/static/templates/ember_templates.js": ["app/views/templates/**/*.emblem"]
+    options:
+      root: "app/views/templates/"
+      dependencies:
+        jquery: "app/static/js/components/jquery/jquery.js"
+        ember: "app/static/js/components/ember/ember.js"
+        emblem: "app/static/js/components/emblem/dist/emblem.js"
+        handlebars: "app/static/js/components/handlebars/handlebars.js"
+</code></pre>
+
+<p>  matchdep.filterDev('grunt-*').forEach grunt.loadNpmTasks</p>
+
+<p>  grunt.renameTask 'regarde', 'watch'</p>
+
+<p>  grunt.registerTask 'dev', [ 'livereload-start', 'watch' ]</p>
+
+<p>```</p>
+
+<p>This particular config has a couple other niceties.  Let me enumerate the awesome:</p>
+
+<ul>
+<li>Line 6 - Not only can we precompile the templates, but we'll precompile on the fly, whenever <code>.emblem</code> files are change in the specified directories.</li>
+<li>Line 8 and 14 - We're precompiling <code>.emblem</code> templates, but this plugin can do regular Handlebars syntax as well</li>
+<li>Line 16 - <code>root</code> is the substring that will be stripped out of your template name.  For instance, you don't want your template to be called <code>app/views/templates/home</code>.  Your home route in Ember will want your template called <code>home</code>.  <code>root</code> to the rescue -- bam!</li>
+<li>Line 17 - These <code>dependencies</code> are the libraries that you use at runtime and that Handlebars needs at compile time.  As I said, this plugin simply rocks because of the ability to specify your own Handlebars script.</li>
+<li>Line 23 - Remember how you used to have a whole list of npm tasks registered.  This little beaut will load all <code>grunt-*</code> dependencies.</li>
+<li>Line 25 - <code>regarde</code> is a cool name, but I understand what <code>watch</code> means a bit better. Rename it.</li>
+</ul>
+
+
+<p>This setup requires the following dependencies:</p>
+
+<p><code>
+npm install matchdep grunt grunt-regarde grunt-contrib-livereload grunt-emblem --save-dev
+</code></p>
+
+<p>So now, seriously, go write some Emblem templates.  So fun, so precompiled.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[LiveReload for NodeJs]]></title>
@@ -487,155 +571,6 @@ I logged an <a href="https://github.com/Dignifiedquire/grunt-testacular/issues/3
 <h2>Integrated Testing</h2>
 
 <p>Process and product maturity are increased as tests are integrated into the build process.  Grunt and Testacular make integrating your browser tests a snap.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[An Environment-specific Grunt Build]]></title>
-    <link href="http://jaketrent.com/post/an-environment-specific-grunt-build/"/>
-    <updated>2012-10-28T17:03:00-06:00</updated>
-    <id>http://jaketrent.com/post/an-environment-specific-grunt-build</id>
-    <content type="html"><![CDATA[<p>Does your project use GruntJs as a build tool?  Have you ever to customize your build to the environment you're deploying to?  It's handy to be able to specify certain commands to run or keep from running.  It's likely essential to be able to change environment-specific variables via Grunt.  It's not bad.  Most of the leg-work has been done by earlier generations -- that is, if Grunt is old enough to have earlier generations yet.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt JS" /></p>
-
-<!--more-->
-
-
-<h2>Grunt-context Plugin</h2>
-
-<p>Jonathan Barnett has created a nice little grunt plugin that called <a href="https://npmjs.org/package/grunt-context">grunt-context</a>.  With grunt-context, you can easily specify environment-specific overrides to your grunt tasks.  The <a href="https://github.com/indieisaconcept/grunt-context">github page for grunt-context</a> can provide you with the basics on how to configure your grunt build.</p>
-
-<p>Let's try a concrete config.  Let's say that I want to run the <a href="http://jaketrent.com/post/run-requirejs-with-gruntjs/">RequireJs optimizer</a> only when I deploy to my test environment or to production but not for my local build.</p>
-
-<p>First, install the plugin:</p>
-
-<pre><code>npm install grunt-context
-</code></pre>
-
-<p>Second, fix up your grunt.js file to include:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="cm">/* ... */</span>
-</span><span class='line'><span class="c1">// &#39;requirejs&#39; task REQUIRED to be listed first at root level config</span>
-</span><span class='line'><span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">compile</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// !! all app.build.js standard requirejs options here</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">},</span>
-</span><span class='line'><span class="nx">context</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// !! list each of your desired environments/contexts here</span>
-</span><span class='line'>  <span class="nx">local</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">tasks</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// !! &#39;requirejs&#39; task left out</span>
-</span><span class='line'>      <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;lint test&#39;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="nx">test</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">tasks</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="c1">// !! put &#39;requirejs&#39; in default task list</span>
-</span><span class='line'>      <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;requirejs lint test&#39;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="nx">prod</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">//  !! re-list the &#39;requirejs&#39; task to override its behavior for this context</span>
-</span><span class='line'>    <span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">compile</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>          <span class="c1">// !! override the standard requirejs options for something</span>
-</span><span class='line'>          <span class="c1">// special in prod build only</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">},</span>
-</span><span class='line'>    <span class="nx">tasks</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;requirejs lint test&#39;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! load the plugin</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-context&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Finally, run the grunt build and target a specific context.  If you want to build locally and not have requirejs run, type:</p>
-
-<pre><code>grunt context:local
-</code></pre>
-
-<p>If you want to build for test, where requirejs will optimize, type:</p>
-
-<pre><code>grunt context:test
-</code></pre>
-
-<p>Notice in the 'prod' context that I also can override the actual variables for running the requirejs build.  So, it will not only run things or not run things, but you can run tasks in specific ways per environment.</p>
-
-<h2>The Cons</h2>
-
-<p>The plugin works well most of the time, but I haven't had a stellar performance in all cases.  It could be that I'm unknowingly using it wrong.  I've tried many different methods to try and work out some of my issues with it.</p>
-
-<p>For instance, I cannot get it to override functions set to the <a href="https://npmjs.org/package/grunt-exec">grunt-exec</a> <code>command</code> attribute.  It will override string commands just fine, but it has problems with functions.  This could be because it has to assemble task lists for execution within a context and calculate overrides.  My guess is that the implementation may just be lacking in this area.</p>
-
-<h2>Best Option So Far</h2>
-
-<p>For environment-specific grunt builds, <a href="https://npmjs.org/package/grunt-context">grunt-context</a> is the best solution I've found so far.  It's not the best, but it usually gets the job done.  I've bent it to my will thus far.</p>
-
-<p>What have you found that works well for environment-specific JavaScript builds?</p>
 ]]></content>
   </entry>
   

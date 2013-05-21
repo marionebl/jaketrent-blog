@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-20T08:24:16-06:00</updated>
+  <updated>2013-05-21T09:12:21-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,135 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Precompile Ember Templates]]></title>
+    <link href="http://jaketrent.com/post/precompile-ember-templates/"/>
+    <updated>2013-05-21T07:54:00-06:00</updated>
+    <id>http://jaketrent.com/post/precompile-ember-templates</id>
+    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a> makes use of the wonderful <a href="http://handlebarsjs.com">Handlebars</a> templates.  These templates, in order to be performant, must be precompiled.  Based on the Ember docs, it's not abundantly clear how this is to happen.  Here's a solution that works well.</p>
+
+<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
+
+<!--more-->
+
+
+<h2>Grunt</h2>
+
+<p>We'd love for this precompilation to happen previous to the running of your app.  Again, this is in hopes of increased performance.  <a href="http://gruntjs.com">Grunt</a> is a great little Nodejs-based tool for build-level tasks.</p>
+
+<h2>Emblem</h2>
+
+<p>Grunt comes with a variety of plugins.  We're going to use one called <a href="https://github.com/wordofchristian/grunt-emblem/">grunt-emblem</a>.  <a href="http://emblemjs.com/">Emblem</a> is a fantastic templating syntax layered on top of Handlebars (still a dependency).  Its syntax looks very similar to Haml or Ruby Slim or Jade.  It may well be the most flexible of all of them, and it simplifies some Ember helper syntax very nicely.</p>
+
+<h2>Versions Matching</h2>
+
+<p>As I've said before, <a href="/post/match-ember-handlebars-version/">matching Ember dependency version can be a pain</a>.  With precompilation, you have one more dependency to match.  Now not only do you care about the version of Handlebars that Ember uses at runtime, but you care about the version of Handlebars that is used to precompile your templates.  If the precompile Handlebars version doesn't match the runtime Handlebars version, your app will die at runtime.  <code>grunt-emblem</code> helps immensely with this.</p>
+
+<h2>grunt-emblem</h2>
+
+<p>I haven't found another Handlebars precompile plugin that helps as much as <code>grunt-emblem</code>.  It solves the precompile version problem by letting you utilize the actual runtime Handlebars as the precompile Handlebars script.</p>
+
+<p>It is also nice in that it puts the precompiled templates into the collection that Ember expects to find templates in, namely <code>Ember.TEMPLATES</code>.  As you can find on the <a href="https://github.com/wordofchristian/grunt-emblem/"><code>grunt-emblem</code> Github page</a>, your grunt config will look something like the following:</p>
+
+<p>```coffeescript
+matchdep = require 'matchdep'</p>
+
+<p>module.exports = (grunt) ->
+  grunt.initConfig</p>
+
+<pre><code>watch:
+  ember_templates:
+    files: ['app/views/templates/**/*.emblem']
+    tasks: ['emblem', 'livereload']
+
+emblem:
+  compile:
+    files:
+      "app/static/templates/ember_templates.js": ["app/views/templates/**/*.emblem"]
+    options:
+      root: "app/views/templates/"
+      dependencies:
+        jquery: "app/static/js/components/jquery/jquery.js"
+        ember: "app/static/js/components/ember/ember.js"
+        emblem: "app/static/js/components/emblem/dist/emblem.js"
+        handlebars: "app/static/js/components/handlebars/handlebars.js"
+</code></pre>
+
+<p>  matchdep.filterDev('grunt-*').forEach grunt.loadNpmTasks</p>
+
+<p>  grunt.renameTask 'regarde', 'watch'</p>
+
+<p>  grunt.registerTask 'dev', [ 'livereload-start', 'watch' ]</p>
+
+<p>```</p>
+
+<p>This particular config has a couple other niceties.  Let me enumerate the awesome:</p>
+
+<ul>
+<li>Line 6 - Not only can we precompile the templates, but we'll precompile on the fly, whenever <code>.emblem</code> files are change in the specified directories.</li>
+<li>Line 8 and 14 - We're precompiling <code>.emblem</code> templates, but this plugin can do regular Handlebars syntax as well</li>
+<li>Line 16 - <code>root</code> is the substring that will be stripped out of your template name.  For instance, you don't want your template to be called <code>app/views/templates/home</code>.  Your home route in Ember will want your template called <code>home</code>.  <code>root</code> to the rescue -- bam!</li>
+<li>Line 17 - These <code>dependencies</code> are the libraries that you use at runtime and that Handlebars needs at compile time.  As I said, this plugin simply rocks because of the ability to specify your own Handlebars script.</li>
+<li>Line 23 - Remember how you used to have a whole list of npm tasks registered.  This little beaut will load all <code>grunt-*</code> dependencies.</li>
+<li>Line 25 - <code>regarde</code> is a cool name, but I understand what <code>watch</code> means a bit better. Rename it.</li>
+</ul>
+
+
+<p>This setup requires the following dependencies:</p>
+
+<p><code>
+npm install matchdep grunt grunt-regarde grunt-contrib-livereload grunt-emblem --save-dev
+</code></p>
+
+<p>So now, seriously, go write some Emblem templates.  So fun, so precompiled.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Match Ember and Handlebars Versions]]></title>
+    <link href="http://jaketrent.com/post/match-ember-handlebars-version/"/>
+    <updated>2013-05-21T07:38:00-06:00</updated>
+    <id>http://jaketrent.com/post/match-ember-handlebars-version</id>
+    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a> is very specific about what version of <a href="http://handlebarsjs.com">Handlebars</a> it requires.  This is probably good, but it's also a pain to work with as different versions of the two libraries are released independently.  There are a few good tools to help us out.</p>
+
+<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
+
+<!--more-->
+
+
+<h2>Released Independently</h2>
+
+<p>In a prime example, recently there was a new version of Handlebars released: <code>1.0.0-rc.4</code>.  Ember happens to be on version <code>1.0.0-rc.3</code>.  That version has a hard dependency on Handlebars <code>1.0.0-rc.3</code>.  In other words, the latest Ember code relies on an older version of Handlebars.</p>
+
+<h2>Bower</h2>
+
+<p>If you include these 3rd party libraries in your source code under a <code>lib</code> directory or something of that nature, you <em>always</em> have plenty of work to do.  Naturally, you just copy in the exact versions of the scripts that are needed.</p>
+
+<p>Hopefully you're trying to make use of a mostly awesome tool, <a href="http://bower.io">Bower</a>.  It helps you manage these 3rd party libraries in a way similar to npm.  You provide a descriptor of your project's dependencies, <code>component.json</code>.  And you install things similarly via the <code>bower</code> cli.</p>
+
+<h2>Specify a Bower Version</h2>
+
+<p>If I run:</p>
+
+<p><code>
+bower install handlebars --save
+</code></p>
+
+<p>It saves a dependency in my <code>components.json</code> for Handlebars for the latest version it could find.  This won't do for us.  We need to specify the versions.</p>
+
+<p>Our strategy will be: take the latest version of Ember and then specifically match the Handlbars version.  Finally, we should type:</p>
+
+<p><code>
+bower install ember --save
+bower install handlebars#1.0.0-rc.3
+</code></p>
+
+<p>As of this writing, that is the version of handlebars that is required.  Bower will recognize any semver git tag name or branch name after the hash <code>#</code> sign.</p>
+
+<p>I like our version strategy for a project that is under active development in that it keeps us on the latest Ember.  But, if you're on a project that's been built to an Ember version and not deployed for a long time, you may want to make a very specific dependency out of Ember as well, so the two are guaranteed in sync for future deploys.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Test setTimeout with Jasmine]]></title>
@@ -296,160 +425,6 @@ powder open --xip
 <p>And copy the resulting URL into your VM web browser.</p>
 
 <p>Ah, the fusion of Node and Ruby is pretty sweet.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Deploy Yeoman App on Heroku]]></title>
-    <link href="http://jaketrent.com/post/yeoman-app-on-heroku/"/>
-    <updated>2013-04-23T07:12:00-06:00</updated>
-    <id>http://jaketrent.com/post/yeoman-app-on-heroku</id>
-    <content type="html"><![CDATA[<p>Yeoman is great developer tool that will help you generate a project format that is easy to get up and running quickly.  Out of the box, Yeoman only generates static sites.  But, with a few small tweaks, you can get it running on an app server, Nodejs, and up on Heroku.</p>
-
-<p><img src="http://i.imgur.com/1Mc2kXh.jpg" alt="Yeoman" /></p>
-
-<!--more-->
-
-
-<h2>New Project With Yeoman</h2>
-
-<p>To install Yeoman, run:</p>
-
-<p><code>
-npm install -g yo
-</code></p>
-
-<p>Now navigate to your new project directory and generate the scaffolding by running:</p>
-
-<p><code>
-yo webapp
-</code></p>
-
-<p>There are other generators, specifically for angularjs or a handful of other frameworks.  To see more options, run:</p>
-
-<p><code>
-yo --help
-</code></p>
-
-<h2>Add Node for Heroku</h2>
-
-<p>Since Yeoman creates a static site, it should be read to serve out of any old web server.  But Heroku specifically wants an app server.  Node is one of the options, and it's a great option for a lightweight app server.</p>
-
-<p>To get the node dependencies you need, create a <code>package.json</code> via:</p>
-
-<p><code>
-npm init
-</code></p>
-
-<p>Then pull down the dependencies you'll need:</p>
-
-<p><code>
-npm install gzippo express coffee-script --save
-</code></p>
-
-<p>Now create your app server, <code>web.coffee</code>.  It's about as light as they come:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">gzippo = </span><span class="nx">require</span> <span class="s">&#39;gzippo&#39;</span>
-</span><span class='line'><span class="nv">express = </span><span class="nx">require</span> <span class="s">&#39;express&#39;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">app = </span><span class="nx">express</span><span class="p">()</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">logger</span> <span class="s">&#39;dev&#39;</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">gzippo</span><span class="p">.</span><span class="nx">staticGzip</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">__dirname</span><span class="si">}</span><span class="s">/dist&quot;</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span> <span class="o">||</span> <span class="mi">5000</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>It's going to be serving the static resources that you build w/ Yeoman/Grunt that end up in the <code>dist</code> directory.  In order for code to get to Heroku, it needs to be commited to your git repo.  Thus, you need to remove the "dist" line from your <code>.gitignore</code> file, and don't forget to add and commit the files to git as you build them.  You may also have to add more tasks to the <code>Gruntfile.js</code> to copy over any other assets to <code>dist</code> that your app needs to run.</p>
-
-<p>Finally create a <code>Procfile</code> file for Heroku in the root of your project that points to the <code>web.coffee</code> server:</p>
-
-<p><code>
-web: coffee web.coffee
-</code></p>
-
-<p>Now it's time to push to Heroku.  You should have the Heroku Toolbelt installed and create a heroku url by running:</p>
-
-<p><code>
-heroku create &lt;my_project&gt;
-</code></p>
-
-<p>To test your yeoman app as it will be run in production, first build it:</p>
-
-<p><code>
-grunt build
-</code></p>
-
-<p>Then run the grunt server:</p>
-
-<p><code>
-grunt server:dist
-</code></p>
-
-<p>Or if you have foreman and want to run the app using your <code>Procfile</code>, run:</p>
-
-<p><code>
-foreman start
-</code></p>
-
-<p>It's time.  Commit your code, especially that <code>dist</code> directory, and... deploy!</p>
-
-<p><code>
-git push heroku master
-</code></p>
-
-<p>There are quite a few steps there.  What did we miss?  Or what needs more explanation?  Perhaps we just need a <code>yo heroku</code> target.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Make Jsonp Requests with AngularJs]]></title>
-    <link href="http://jaketrent.com/post/make-jsonp-requests-with-angularjs/"/>
-    <updated>2013-03-20T07:08:00-06:00</updated>
-    <id>http://jaketrent.com/post/make-jsonp-requests-with-angularjs</id>
-    <content type="html"><![CDATA[<p>There are a couple ways to make cross domain requests from a client browser.  One method is called Jsonp or Json with padding.  The AngularJs library makes this really simple.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs Jsonp" /></p>
-
-<!--more-->
-
-
-<h2>Web Server Support</h2>
-
-<p>First of all, your Jsonp request will be worth nothing if the server you're requesting data from does not support it.  Jsonp requests require explicit support on the server side.  This is because the data that's returned is formatted differently.  The 'p' in Jsonp stands for padding.</p>
-
-<p>But that's kind of a weird name.  Maybe Jsonf would be more analogous to reality.  This is because the Json data that you seek is really wrapped in a Javascript function.  This function is then evaluated as a script, passing the data into a callback to be saved by your client program.</p>
-
-<p>This essentially is a browser hack to get around the security constraint of browsers not being able to request non-script items from different domains.  But since we request Javascript this way all the time, we'll just make our data look like Javascript.</p>
-
-<h2>Angular Jsonp</h2>
-
-<p>You're probably already used to using the <code>$http</code> service.  It provides the normal <code>get</code>, <code>post</code> and other functions mapped to http methods.  It also provides the function that we'll need: <code>jsonp</code>.</p>
-
-<p>The client script also requires that we specify the callback to send data to.  AngularJs has its own callback pattern, so it would follow that it has a pattern to handle Jsonp callbacks.  It does.  The callback is always called <code>JSON_CALLBACK</code>.  What parameter that it's assigned to in the query string depends on the design of the web service you're calling.  Take a look at the documentation on what's required there.</p>
-
-<p>All that jibber jabber for this simple example of a script asking for <a href="http://colorwheelie.tumblr.com">Tumblr</a> data:</p>
-
-<p>```coffeescript
-$http.jsonp 'http://api.tumblr.com/v2/blog/colorwheelie.tumblr.com/posts/photo?api_key=<mykey>&amp;callback=JSON_CALLBACK'
-  .success (data) -></p>
-
-<pre><code> $scope.colorwheelies = data.response.posts;
-</code></pre>
-
-<p>  .error (data) -></p>
-
-<pre><code> console.log('ERROR');
-</code></pre>
-
-<p>```</p>
-
-<p>The interesting line is line one.  We call the <code>jsonp</code> function.  We assign our callback like this: <code>callback=JSON_CALLBACK</code>.  And in our success callback, we can consume our data variable like it was pure Json.</p>
 ]]></content>
   </entry>
   

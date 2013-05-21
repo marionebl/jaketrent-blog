@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-20T08:24:16-06:00</updated>
+  <updated>2013-05-21T09:12:21-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,162 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Precompile Ember Templates]]></title>
+    <link href="http://jaketrent.com/post/precompile-ember-templates/"/>
+    <updated>2013-05-21T07:54:00-06:00</updated>
+    <id>http://jaketrent.com/post/precompile-ember-templates</id>
+    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a> makes use of the wonderful <a href="http://handlebarsjs.com">Handlebars</a> templates.  These templates, in order to be performant, must be precompiled.  Based on the Ember docs, it&#8217;s not abundantly clear how this is to happen.  Here&#8217;s a solution that works well.</p>
+
+<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
+
+<!--more-->
+
+
+<h2>Grunt</h2>
+
+<p>We&#8217;d love for this precompilation to happen previous to the running of your app.  Again, this is in hopes of increased performance.  <a href="http://gruntjs.com">Grunt</a> is a great little Nodejs-based tool for build-level tasks.</p>
+
+<h2>Emblem</h2>
+
+<p>Grunt comes with a variety of plugins.  We&#8217;re going to use one called <a href="https://github.com/wordofchristian/grunt-emblem/">grunt-emblem</a>.  <a href="http://emblemjs.com/">Emblem</a> is a fantastic templating syntax layered on top of Handlebars (still a dependency).  Its syntax looks very similar to Haml or Ruby Slim or Jade.  It may well be the most flexible of all of them, and it simplifies some Ember helper syntax very nicely.</p>
+
+<h2>Versions Matching</h2>
+
+<p>As I&#8217;ve said before, <a href="http://jaketrent.com/post/match-ember-handlebars-version/">matching Ember dependency version can be a pain</a>.  With precompilation, you have one more dependency to match.  Now not only do you care about the version of Handlebars that Ember uses at runtime, but you care about the version of Handlebars that is used to precompile your templates.  If the precompile Handlebars version doesn&#8217;t match the runtime Handlebars version, your app will die at runtime.  <code>grunt-emblem</code> helps immensely with this.</p>
+
+<h2>grunt-emblem</h2>
+
+<p>I haven&#8217;t found another Handlebars precompile plugin that helps as much as <code>grunt-emblem</code>.  It solves the precompile version problem by letting you utilize the actual runtime Handlebars as the precompile Handlebars script.</p>
+
+<p>It is also nice in that it puts the precompiled templates into the collection that Ember expects to find templates in, namely <code>Ember.TEMPLATES</code>.  As you can find on the <a href="https://github.com/wordofchristian/grunt-emblem/"><code>grunt-emblem</code> Github page</a>, your grunt config will look something like the following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">matchdep = </span><span class="nx">require</span> <span class="s">&#39;matchdep&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">module.exports = </span><span class="nf">(grunt) -&gt;</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">watch:</span>
+</span><span class='line'>      <span class="nv">ember_templates:</span>
+</span><span class='line'>        <span class="nv">files: </span><span class="p">[</span><span class="s">&#39;app/views/templates/**/*.emblem&#39;</span><span class="p">]</span>
+</span><span class='line'>        <span class="nv">tasks: </span><span class="p">[</span><span class="s">&#39;emblem&#39;</span><span class="p">,</span> <span class="s">&#39;livereload&#39;</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">emblem:</span>
+</span><span class='line'>      <span class="nv">compile:</span>
+</span><span class='line'>        <span class="nv">files:</span>
+</span><span class='line'>          <span class="s">&quot;app/static/templates/ember_templates.js&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s">&quot;app/views/templates/**/*.emblem&quot;</span><span class="p">]</span>
+</span><span class='line'>        <span class="nv">options:</span>
+</span><span class='line'>          <span class="nv">root: </span><span class="s">&quot;app/views/templates/&quot;</span>
+</span><span class='line'>          <span class="nv">dependencies:</span>
+</span><span class='line'>            <span class="nv">jquery: </span><span class="s">&quot;app/static/js/components/jquery/jquery.js&quot;</span>
+</span><span class='line'>            <span class="nv">ember: </span><span class="s">&quot;app/static/js/components/ember/ember.js&quot;</span>
+</span><span class='line'>            <span class="nv">emblem: </span><span class="s">&quot;app/static/js/components/emblem/dist/emblem.js&quot;</span>
+</span><span class='line'>            <span class="nv">handlebars: </span><span class="s">&quot;app/static/js/components/handlebars/handlebars.js&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">matchdep</span><span class="p">.</span><span class="nx">filterDev</span><span class="p">(</span><span class="s">&#39;grunt-*&#39;</span><span class="p">).</span><span class="nx">forEach</span> <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">renameTask</span> <span class="s">&#39;regarde&#39;</span><span class="p">,</span> <span class="s">&#39;watch&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span> <span class="s">&#39;dev&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s">&#39;livereload-start&#39;</span><span class="p">,</span> <span class="s">&#39;watch&#39;</span> <span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This particular config has a couple other niceties.  Let me enumerate the awesome:</p>
+
+<ul>
+<li>Line 6 - Not only can we precompile the templates, but we&#8217;ll precompile on the fly, whenever <code>.emblem</code> files are change in the specified directories.</li>
+<li>Line 8 and 14 - We&#8217;re precompiling <code>.emblem</code> templates, but this plugin can do regular Handlebars syntax as well</li>
+<li>Line 16 - <code>root</code> is the substring that will be stripped out of your template name.  For instance, you don&#8217;t want your template to be called <code>app/views/templates/home</code>.  Your home route in Ember will want your template called <code>home</code>.  <code>root</code> to the rescue &#8211; bam!</li>
+<li>Line 17 - These <code>dependencies</code> are the libraries that you use at runtime and that Handlebars needs at compile time.  As I said, this plugin simply rocks because of the ability to specify your own Handlebars script.</li>
+<li>Line 23 - Remember how you used to have a whole list of npm tasks registered.  This little beaut will load all <code>grunt-*</code> dependencies.</li>
+<li>Line 25 - <code>regarde</code> is a cool name, but I understand what <code>watch</code> means a bit better. Rename it.</li>
+</ul>
+
+
+<p>This setup requires the following dependencies:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">matchdep</span> <span class="nx">grunt</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">regarde</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">livereload</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">emblem</span> <span class="o">--</span><span class="nx">save</span><span class="o">-</span><span class="nx">dev</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So now, seriously, go write some Emblem templates.  So fun, so precompiled.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Match Ember and Handlebars Versions]]></title>
+    <link href="http://jaketrent.com/post/match-ember-handlebars-version/"/>
+    <updated>2013-05-21T07:38:00-06:00</updated>
+    <id>http://jaketrent.com/post/match-ember-handlebars-version</id>
+    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a> is very specific about what version of <a href="http://handlebarsjs.com">Handlebars</a> it requires.  This is probably good, but it&#8217;s also a pain to work with as different versions of the two libraries are released independently.  There are a few good tools to help us out.</p>
+
+<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
+
+<!--more-->
+
+
+<h2>Released Independently</h2>
+
+<p>In a prime example, recently there was a new version of Handlebars released: <code>1.0.0-rc.4</code>.  Ember happens to be on version <code>1.0.0-rc.3</code>.  That version has a hard dependency on Handlebars <code>1.0.0-rc.3</code>.  In other words, the latest Ember code relies on an older version of Handlebars.</p>
+
+<h2>Bower</h2>
+
+<p>If you include these 3rd party libraries in your source code under a <code>lib</code> directory or something of that nature, you <em>always</em> have plenty of work to do.  Naturally, you just copy in the exact versions of the scripts that are needed.</p>
+
+<p>Hopefully you&#8217;re trying to make use of a mostly awesome tool, <a href="http://bower.io">Bower</a>.  It helps you manage these 3rd party libraries in a way similar to npm.  You provide a descriptor of your project&#8217;s dependencies, <code>component.json</code>.  And you install things similarly via the <code>bower</code> cli.</p>
+
+<h2>Specify a Bower Version</h2>
+
+<p>If I run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bower install handlebars --save</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It saves a dependency in my <code>components.json</code> for Handlebars for the latest version it could find.  This won&#8217;t do for us.  We need to specify the versions.</p>
+
+<p>Our strategy will be: take the latest version of Ember and then specifically match the Handlbars version.  Finally, we should type:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bower install ember --save
+</span><span class='line'>bower install handlebars#1.0.0-rc.3</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As of this writing, that is the version of handlebars that is required.  Bower will recognize any semver git tag name or branch name after the hash <code>#</code> sign.</p>
+
+<p>I like our version strategy for a project that is under active development in that it keeps us on the latest Ember.  But, if you&#8217;re on a project that&#8217;s been built to an Ember version and not deployed for a long time, you may want to make a very specific dependency out of Ember as well, so the two are guaranteed in sync for future deploys.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[UtahJS Conf 2013 Review]]></title>
@@ -1375,198 +1531,6 @@
 
 
 <p>And you should see your project running in the VM just as you do from your better, native OS.  Pow!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Smashing Node Review]]></title>
-    <link href="http://jaketrent.com/post/smashing-node-review/"/>
-    <updated>2013-01-29T16:51:00-07:00</updated>
-    <id>http://jaketrent.com/post/smashing-node-review</id>
-    <content type="html"><![CDATA[<p>Node.js is everywhere.  There&#8217;s a lot of room for people to learn and get into it.  A good starter book is <a href="http://amzn.to/14ttetp">Smashing Node by Guillermo Rauch</a>.  Here&#8217;s what I thought and what I learned while reading it.</p>
-
-<p><img src="http://i.imgur.com/hQTBeAF.jpg" alt="Smashing Node" /></p>
-
-<!--more-->
-
-
-<h2>Overall</h2>
-
-<p>Overall, I would call Smashing Node an introduction to Node book.  This is a good thing.  It does a nice job of building on itself.  It starts with the JavaScript that everyone knows and advances to the new places that Node allows you to go.  The chapters are incremental.</p>
-
-<p>It&#8217;s a good length.  This is not a tome that you might pick up in a level 3 dungeon in order to boost your fire magic.  You can read a couple chapters a day and be done in a week.  Thankfully, it&#8217;s in consumable-sized bits.  Maybe you&#8217;ll end up boosting your fire magic a bit too.</p>
-
-<p>The book boasts a fair breadth of subjects.  It introduces purely syntax subjects.  It also expands into working examples dealing with real network protocols and database apis.</p>
-
-<h2>Style</h2>
-
-<p>Guirremo has a very easy-to-read, conversational style.  I value this more and more in books &#8211; perhaps even especially in technical books.  It helps me engage.  It helps me read faster and more.  I can read API docs when I need them.  A book should not read like an API doc.</p>
-
-<p>Most subjects in the book were chosen well.  I enjoyed almost all of them.  There always is a bottom of the list, however, and mine ended with the MySQL, HTTP, and TCP chapters.  Knowledge on those subjects is probably good to have, but I had to slog through these chapters.</p>
-
-<p>The code examples were enjoyable because they eventually turned into functional prototypes.  We built a Twitter client, an IRC chat, a social DJ program, and more.  That&#8217;s pretty cool.  The downside was that the code examples could get a little long.  And with the entire working example, complete with all the npm commands and boilerplate code, sometimes the meaningful bits got a little obscured.  I read the book as a <a href="http://amzn.to/14ttetp">Kindle book</a> on a phone, so the long code snippets probably seemed even longer than they were.</p>
-
-<h2>Highlight Subjects</h2>
-
-<h4>Express Features</h4>
-
-<p>I use <a href="http://expressjs.com/">Express</a> more than any other library in Node.  It&#8217;s a great HTTP request/response wrapper that makes creating web servers fun and easy.  Even so, this book introduced a number of features of the library that I was previously unaware of.  Generally, I think it helped illuminate for me a lot of the bits of Connect, which functions underneath Express.  Specifically, did you know that you can modify the Express logger to log specific request tokens of your choosing?</p>
-
-<h4>Redis</h4>
-
-<p>There was a great section that took a look at <a href="http://www.mongodb.org/">Mongo</a>, <a href="http://www.mysql.com/">MySQL</a>, and <a href="http://redis.io/">Redis</a>.  I enjoyed the chapter on Redis the most.  This is probaby somewhat because I have the most to learn in Redis and have used it the least.  I was also impressed at the ease with which Guirremo layed out a simple social graph using the Redis API.  The chosen tools, Node and Redis, made it simple, short, and elegant.</p>
-
-<p>Try writing many of the code examples in this book in Java and printing them on dead trees.  You&#8217;ll need a bigger backpack.</p>
-
-<h4>Testing</h4>
-
-<p>I enjoyed the fact that testing was even mentioned.  A few testing styles and frameworks were introduced.  It was enjoyable but very light.  It would be cool to see a more thorough treatment, perhaps with applicable tests worked into the examples throughout the book.</p>
-
-<p>In this same vein, I think the book did an ok job at addressing the subject of error handling.  I think this book and other Node resources and educators should focus more on this issue.  It is, after all, more important in Node&#8217;s single-threaded environment than on most platforms.</p>
-
-<h4>Web Sockets</h4>
-
-<p>I had only previously done web sockets via <a href="http://socket.io/">Socket.IO</a>, a web socket wrapper written by the author of the book.  It was good to see vanilla web sockets in action so I could better understand the technology, its limitations, and be grateful for the great libraries that help it be more useful and easy to use.</p>
-
-<h4>Great Libraries</h4>
-
-<p>The booked worked in usages of some great libraries throughout the coding examples.  As mentioned, <a href="http://socket.io/">Socket.IO</a> is a great web socket wrapper.  <a href="https://github.com/visionmedia/superagent">Superagent</a> is a great higher-level request API.  <a href="http://visionmedia.github.com/mocha/">Mocha</a> is a fantastic test framework.  And <a href="http://mongoosejs.com/">Mongoose</a> provides a nice model layer on top of the native MongoDb calls.</p>
-
-<p>So, what are you waiting for?  Go learn Node!  Use this book to help you.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[How to Make a Pinterest Webservice]]></title>
-    <link href="http://jaketrent.com/post/how-to-make-pinterest-webservice/"/>
-    <updated>2013-01-18T07:06:00-07:00</updated>
-    <id>http://jaketrent.com/post/how-to-make-pinterest-webservice</id>
-    <content type="html"><![CDATA[<p>Pinterest currently does not have an official webservice API.  It seems kind of crazy in this day and age.  They really should have one.  I can&#8217;t think what the business reasons might be for not having one.</p>
-
-<p>They&#8217;ve not had one for long enough that it&#8217;s high time we write our own.  It&#8217;ll be surprisingly easy with a few choice tools</p>
-
-<p><img src="http://i.imgur.com/7cv9d.png" alt="Pinterest API" /></p>
-
-<!--more-->
-
-
-<h2>Webservice API on NodeJs</h2>
-
-<p><a href="http://nodejs.org/">NodeJs</a> is just a fun platform to write IO-heavy applications for the web.  We&#8217;re going to write a quick <a href="http://en.wikipedia.org/wiki/Representational_state_transfer">RESTful</a> endpoint using the <a href="http://expressjs.com/">Express</a> library that allows us to consume real Pinterest content that&#8217;s not available via a pre-existing service.</p>
-
-<h4>Screen Scrape Pinterest</h4>
-
-<p>Given no API, we&#8217;re left to our own devices.  The data for Pinterest is only exposed via the UI on the website.  We&#8217;re going to have our service visit that UI and grab the data that we need as a user of a web browser would see it.  This is screen scraping.  There a lot of downsides here, but we wouldn&#8217;t be trying it if there was an API already.</p>
-
-<p>One down side is that our service will be brittle.  If Pinterest ever changes the layout of the page, our service won&#8217;t be able to bring back the right data.  Our solution will be simple, so it&#8217;ll be easy to update, but this should be a red flag not to do anything mission critical via screen scraping unless you&#8217;re giving it your full attention.</p>
-
-<p>Another down side might be speed.  Screen scraping a UI is not the fastest way to get data.  We&#8217;ll try and help mitigate this with the fastest tools that we have.  NodeJs is a blasted fast web server.  A library called <a href="https://github.com/MatthewMueller/cheerio">cheerio</a> is supposedly best-in-class for screen scraping (advertised as 8x faster than <a href="https://github.com/tmpvar/jsdom">jsdom</a>).</p>
-
-<h4>Caching</h4>
-
-<p>To make this retrieval even faster for repeat use, caching could be very helpful.  We could cache in our service what we get back from pinterest via some datastore or we could cache in our client.  Best practices here will be very dependent on your use case.  These kind of enhancements have been made over and over again and would only clutter the simple Pinterest interaction, so I will exclude them for now.</p>
-
-<h2>Getting Pinterest Data</h2>
-
-<p>Here&#8217;s the final solution in all its glory.  This snippet only includes only the code inside the Express route.</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// request is a library for making http requests</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// cheerio is a lib for screen scraping</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">cheerio</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;cheerio&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// req and res are express vars for the request and response</span>
-</span><span class='line'><span class="nx">exports</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// this is the actual request to the pinterest page I care about</span>
-</span><span class='line'>  <span class="nx">request</span><span class="p">(</span><span class="s1">&#39;http://pinterest.com/jaketrent/pins/&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">resp</span><span class="p">,</span> <span class="nx">body</span><span class="p">){</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// get ready for scraping</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">cheerio</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">pins</span> <span class="o">=</span> <span class="p">[];</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">$pin</span><span class="p">;</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">$pins</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.pin&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// scraping only the 1st 10 pins;  you could get them all</span>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">$pin</span> <span class="o">=</span> <span class="nx">$pins</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="c1">// Finding the bits on the page we care about based on class names</span>
-</span><span class='line'>      <span class="nx">pins</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
-</span><span class='line'>        <span class="nx">img</span><span class="o">:</span> <span class="nx">$pin</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.PinImageImg&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">),</span>
-</span><span class='line'>        <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://pinterest.com&#39;</span> <span class="o">+</span> <span class="nx">$pin</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.ImgLink&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">),</span>
-</span><span class='line'>        <span class="nx">desc</span><span class="o">:</span> <span class="nx">$pin</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.description&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">()</span>
-</span><span class='line'>      <span class="p">});</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// respond with the final json</span>
-</span><span class='line'>    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">pins</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>When I wrote it out for my own use, I was surprised at the brevity.  I love it.  Given, there&#8217;s no handling of any errors or attempts to make this semi-robust.  This just gets us the data on a good day.</p>
-
-<p>The final json that&#8217;s exposed at our chosen Express endpoint looks like it this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">[</span> <span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;img&quot;</span><span class="o">:</span> <span class="s2">&quot;http://myimg.jpg&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="s2">&quot;http://pinterest.com/pin/mypin&quot;</span><span class="p">,</span>
-</span><span class='line'>    <span class="s2">&quot;desc&quot;</span><span class="o">:</span> <span class="s2">&quot;Sweetest pin ever&quot;</span>
-</span><span class='line'>  <span class="p">},</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// ...</span>
-</span><span class='line'><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It&#8217;s ready for use by a json-ready client.  So stinkin easy.  We&#8217;re connecting the web together, and it&#8217;s awesome!  Now the world will know of the baked goods and flower arrangements that we love the most.</p>
 ]]></content>
   </entry>
   
