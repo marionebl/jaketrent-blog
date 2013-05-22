@@ -15,6 +15,14 @@ published: true
 
 <!--more-->
 
+## Ember Docs for Precompilation
+
+Every official Ember doc will put templates in a `script` tag with the `type="text/x-handlebars"`.  But this is never how you'd write any serious (-ly awesome) app in production.  [The docs](http://emberjs.com/guides/templates/handlebars-basics/) say:
+
+> "If you are using build tools to manage your application's assets, most will know how to precompile Handlebars templates and make them available to Ember.js."
+
+Which tools?  Why would I want to precompile?  How *are* they made available to Ember?  Read, Ember journeyman, read on...
+
 ## Grunt
 
 We'd love for this precompilation to happen previous to the running of your app.  Again, this is in hopes of increased performance.  [Grunt](http://gruntjs.com) is a great little Nodejs-based tool for build-level tasks.

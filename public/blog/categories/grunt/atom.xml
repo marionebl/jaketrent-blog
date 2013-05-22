@@ -4,7 +4,7 @@
   <title><![CDATA[Category: grunt | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/grunt/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-21T09:12:21-06:00</updated>
+  <updated>2013-05-21T16:18:42-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -24,6 +24,14 @@
 
 <!--more-->
 
+
+<h2>Ember Docs for Precompilation</h2>
+
+<p>Every official Ember doc will put templates in a <code>script</code> tag with the <code>type="text/x-handlebars"</code>.  But this is never how you'd write any serious (-ly awesome) app in production.  <a href="http://emberjs.com/guides/templates/handlebars-basics/">The docs</a> say:</p>
+
+<blockquote><p>"If you are using build tools to manage your application's assets, most will know how to precompile Handlebars templates and make them available to Ember.js."</p></blockquote>
+
+<p>Which tools?  Why would I want to precompile?  How <em>are</em> they made available to Ember?  Read, Ember journeyman, read on...</p>
 
 <h2>Grunt</h2>
 
