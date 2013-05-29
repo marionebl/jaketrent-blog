@@ -97,8 +97,6 @@ Create all parents in your template chain, from the application template to the 
 
 Most of the time, Ember will try to be helpful and give you a console warning:
 
-```
-WARNING: The immediate parent route ('a') did not render into the main outlet and the default 'into' option ('p') may not be expected
-```
+> WARNING: The immediate parent route ('a') did not render into the main outlet and the default 'into' option ('p') may not be expected
 
 In other words: You're trying to render a child template that either doesn't have a parent template it needs or the parent template does not specify a main outlet.

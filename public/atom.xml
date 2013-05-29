@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-29T07:37:01-06:00</updated>
+  <updated>2013-05-29T08:15:20-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -128,10 +128,7 @@
 
 <p>Most of the time, Ember will try to be helpful and give you a console warning:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='jade'><span class='line'><span class="nt">WARNING:</span> The immediate parent route (&#39;a&#39;) did not render into the main outlet and the default &#39;into&#39; option (&#39;p&#39;) may not be expected
-</span></code></pre></td></tr></table></div></figure>
-
+<blockquote><p>WARNING: The immediate parent route (&#8216;a&#8217;) did not render into the main outlet and the default &#8216;into&#8217; option (&#8216;p&#8217;) may not be expected</p></blockquote>
 
 <p>In other words: You&#8217;re trying to render a child template that either doesn&#8217;t have a parent template it needs or the parent template does not specify a main outlet.</p>
 ]]></content>

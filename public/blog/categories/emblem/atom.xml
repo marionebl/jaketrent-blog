@@ -4,7 +4,7 @@
   <title><![CDATA[Category: emblem | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/emblem/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-29T07:37:01-06:00</updated>
+  <updated>2013-05-29T08:15:20-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -119,9 +119,7 @@ application.emblem &gt; league.emblem &gt; league/new.emblem
 
 <p>Most of the time, Ember will try to be helpful and give you a console warning:</p>
 
-<p><code>
-WARNING: The immediate parent route ('a') did not render into the main outlet and the default 'into' option ('p') may not be expected
-</code></p>
+<blockquote><p>WARNING: The immediate parent route ('a') did not render into the main outlet and the default 'into' option ('p') may not be expected</p></blockquote>
 
 <p>In other words: You're trying to render a child template that either doesn't have a parent template it needs or the parent template does not specify a main outlet.</p>
 ]]></content>
