@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-29T08:15:20-06:00</updated>
+  <updated>2013-05-29T08:16:43-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -105,11 +105,7 @@ linkTo 'league.new' | New League
 == outlet
 </code></p>
 
-<p>So the final template hierarchy for <code>league.new</code>, for example, is:</p>
-
-<p><code>
-application.emblem &gt; league.emblem &gt; league/new.emblem
-</code></p>
+<p>So the final template hierarchy for <code>league.new</code>, for example, is <code>application.emblem &gt; league.emblem &gt; league/new.emblem</code>.</p>
 
 <p>There is a bit of a chatter on the Githubs about whether the root resource template is good form or not.  As in, why would you create a file that contains nothing but an empty outlet?  Couldn't the framework infer that if it was missing?</p>
 

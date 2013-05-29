@@ -83,11 +83,7 @@ And now as far as templates, there is *one more* that we're missing.  There is a
 == outlet
 ```
 
-So the final template hierarchy for `league.new`, for example, is:
-
-```
-application.emblem > league.emblem > league/new.emblem
-```
+So the final template hierarchy for `league.new`, for example, is `application.emblem > league.emblem > league/new.emblem`.
 
 There is a bit of a chatter on the Githubs about whether the root resource template is good form or not.  As in, why would you create a file that contains nothing but an empty outlet?  Couldn't the framework infer that if it was missing?
 

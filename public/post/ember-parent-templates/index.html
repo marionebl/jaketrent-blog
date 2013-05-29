@@ -203,12 +203,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>So the final template hierarchy for <code>league.new</code>, for example, is:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='jade'><span class='line'><span class="nt">application</span><span class="nc">.emblem</span> &gt; league.emblem &gt; league/new.emblem
-</span></code></pre></td></tr></table></div></figure>
-
+<p>So the final template hierarchy for <code>league.new</code>, for example, is <code>application.emblem &gt; league.emblem &gt; league/new.emblem</code>.</p>
 
 <p>There is a bit of a chatter on the Githubs about whether the root resource template is good form or not.  As in, why would you create a file that contains nothing but an empty outlet?  Couldn&#8217;t the framework infer that if it was missing?</p>
 
