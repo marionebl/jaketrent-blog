@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-21T16:18:42-06:00</updated>
+  <updated>2013-05-29T07:37:01-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ember Parent Templates]]></title>
+    <link href="http://jaketrent.com/post/ember-parent-templates/"/>
+    <updated>2013-05-29T07:02:00-06:00</updated>
+    <id>http://jaketrent.com/post/ember-parent-templates</id>
+    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a>'s convention of template hierarchy is very specific.  Learn it once, and you'll know it every time.</p>
+
+<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
+
+<!--more-->
+
+
+<p><strong>Note:</strong> Code examples use <a href="http://emblemjs.com/">Emblem</a> templates and <a href="http://coffeescript.org">CoffeeScript</a>.  Vanilla Handlebars and JavaScript would work just as well.</p>
+
+<h2>Outlets</h2>
+
+<p>Ember templates make use of a special helper called <code>outlet</code>.  You can have one main, unnamed outlet or many named outlets.  The main thing to remember is that a child template will always render inside its parent's outlet -- so always put outlets in templates that have children.</p>
+
+<h2>Application Template</h2>
+
+<p>There is a top-most template that all of your templates will render inside of.  This is called the application template.  It is specified in one of two ways.  If you are including your templates as script tags, simply create a script tag that doesn't have a <code>data-template-name</code> or <code>id</code> attribute, a la:</p>
+
+<p>```html</p>
+
+<script type="x-emblem">
+  h1 My Application
+  == outlet
+</script>
+
+
+<p>```</p>
+
+<p>If you are <a href="/post/precompile-ember-templates">precompiling your Ember templates</a>, which you should, you have a directory for templates.  You will put your file, called <code>application.emblem</code> in the root of that directory.  The contents of <code>templates/application.emblem</code> would be the same:</p>
+
+<p><code>jade
+h1 My Application
+== outlet
+</code></p>
+
+<h2>Route Templates</h2>
+
+<p>If you have a top-level route, it will have a top-level template.  Your route's template will have only the application template as its parent.  So, your about route:</p>
+
+<p><code>coffeescript
+App.Router.map -&gt;
+  @route 'about'
+</code></p>
+
+<p>Will have an about template at <code>templates/about.emblem</code> and you could define a route as <code>AboutRoute</code>.  It will render inside of <code>application.emblem</code>'s outlet.</p>
+
+<h2>Resource Templates</h2>
+
+<p>Resources are interesting because you can nest other routes inside them.  Nesting routes will also result in nesting templates.  If I defined a <code>league</code> resource with a nested route for creating new leagues, it might look something like this:</p>
+
+<p>```coffeescript
+App.Router.map ->
+  @resouce 'league', -></p>
+
+<pre><code>@route 'new'
+</code></pre>
+
+<p>```</p>
+
+<p>There are two leaf routes (and thus templates) that are created here:</p>
+
+<ul>
+<li><code>LeagueIndexRoute</code>, which uses <code>templates/league/index.emblem</code></li>
+<li><code>LeagueNewRoute</code>, which uses <code>templates/league/new.emblem</code></li>
+</ul>
+
+
+<p>Note that you create a <code>league</code> directory inside your <code>templates</code> directory for nesting these templates.  Precompiled templates will be created at:</p>
+
+<ul>
+<li><code>Ember.TEMPLATES["league/index"]</code></li>
+<li><code>Ember.TEMPLATES["league/new"]</code></li>
+</ul>
+
+
+<p>If you wanted to use the <code>linkTo</code> helper in a template to link to these routes, you would use this syntax:</p>
+
+<p><code>jade
+linkTo 'league.index' | List Leagues
+linkTo 'league.new' | New League
+</code></p>
+
+<p>And now as far as templates, there is <em>one more</em> that we're missing.  There is a root league template that these two league leaf templates render inside of.  It should live at <code>templates/league.emblem</code>.  This template would be useful for showing UI elements that are common to all league resource things.  In the case where there is no such need, this template will probably only contain a single outlet:</p>
+
+<p><code>jade
+== outlet
+</code></p>
+
+<p>So the final template hierarchy for <code>league.new</code>, for example, is:</p>
+
+<p><code>
+application.emblem &gt; league.emblem &gt; league/new.emblem
+</code></p>
+
+<p>There is a bit of a chatter on the Githubs about whether the root resource template is good form or not.  As in, why would you create a file that contains nothing but an empty outlet?  Couldn't the framework infer that if it was missing?</p>
+
+<h2>Children Need All Parents</h2>
+
+<p>Create all parents in your template chain, from the application template to the leaves.  The worst thing that can happen if you don't is that nothing will render at all, and no error messages will be displayed (pretty bad and unhelpful).</p>
+
+<p>Most of the time, Ember will try to be helpful and give you a console warning:</p>
+
+<p><code>
+WARNING: The immediate parent route ('a') did not render into the main outlet and the default 'into' option ('p') may not be expected
+</code></p>
+
+<p>In other words: You're trying to render a child template that either doesn't have a parent template it needs or the parent template does not specify a main outlet.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Precompile Ember Templates]]></title>
@@ -313,126 +427,6 @@ grunt be-lively
 <h2>LiveReload all the Things</h2>
 
 <p>There are many ways to make this happen.  There are numerous Node libraries, Grunt plugins, and browser plugins.  Do what works for you.  Just make it happen fast and tend it well from the beginning to the end of your project.  Almost every solution I've found is somewhat high maintenance.  This one has proven to be the same.  What have you found to be your favorite LiveReload solution, and in what environment?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Access NodeJs App on Xip.io]]></title>
-    <link href="http://jaketrent.com/post/nodejs-app-on-xipio/"/>
-    <updated>2013-04-23T07:22:00-06:00</updated>
-    <id>http://jaketrent.com/post/nodejs-app-on-xipio</id>
-    <content type="html"><![CDATA[<p>Xip.io is a DNS wildcard domain that was initially created for use on Ruby projects.  But its application is desirable across platforms.  Recently, I wanted to use Xip.io on a NodeJs project.  It was easy to make happen.</p>
-
-<p><img src="http://i.imgur.com/PJTnZmM.jpg" alt="xip.io" /></p>
-
-<!--more-->
-
-
-<h2>Update: Proxying is Built Into Pow</h2>
-
-<p>After having a handful of problems with these home-grown proxies, my search eventually led me to know that Pow 0.4.0+ includes proxying as a built-in feature.  So, you don't need your own <code>config.ru</code> any more.  Once you install pow, choose the port that your app will run on and at what pow address you want to access your app, and run one command in your terminal:</p>
-
-<p><code>
-echo 3000 &gt; ~/.pow/myapp
-</code></p>
-
-<p>Then you'll access your app, running in the background on port 3000 via the web browser at <code>http://myapp.dev</code>.  Way better.  Skip the rest of this article.</p>
-
-<h2>Install Pow and Powder</h2>
-
-<p>Pow is a development server that uses Xip.io.  Powder is a cli that makes working with Pow even easier.  To start, make sure that <a href="http://www.ruby-lang.org/en/downloads/">Ruby</a> is setup with <a href="http://rubygems.org">Rubygems</a> in your environment.  Then install Pow.  They have a short little install script you can run, as <a href="http://pow.cx/">referenced on the Pow site</a>.</p>
-
-<p>Then install Powder:</p>
-
-<p><code>
-gem install powder
-</code></p>
-
-<h2>Proxy your NodeJs app</h2>
-
-<p>Pow only knows how to handle Rack apps, so we have to create one to be loaded into Pow.  Since we're writing the guts of our app on another platform -- in this case, Node -- we'll just create a proxy Rack app.</p>
-
-<p>I found a bit of <a href="https://github.com/linjunpop/node-with-pow">proxy app code</a>, which you should save in your project root as <code>config.ru</code>, and which I paste here:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;net/http&quot;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;class ProxyApp</span>
-</span><span class='line'><span class="sr">  def call(env)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">begin</span>
-</span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Request</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span class='line'>  <span class="n">env</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
-</span><span class='line'>    <span class="k">if</span> <span class="n">key</span> <span class="o">=~</span> <span class="sr">/^http_(.*)/i</span>
-</span><span class='line'>      <span class="n">headers</span><span class="o">[</span><span class="vg">$1</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>  <span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">3000</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">http</span><span class="o">.</span><span class="n">start</span> <span class="k">do</span> <span class="o">|</span><span class="n">http</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">send_request</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">request_method</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">fullpath</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">read</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
-</span><span class='line'>    <span class="o">[</span><span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">to_hash</span><span class="p">,</span> <span class="o">[</span><span class="n">response</span><span class="o">.</span><span class="n">body</span><span class="o">]]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">rescue</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ECONNREFUSED</span>
-</span><span class='line'>  <span class="o">[</span><span class="mi">500</span><span class="p">,</span> <span class="p">{},</span> <span class="o">[</span><span class="s2">&quot;Server is down, try $npm start&quot;</span><span class="o">]]</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'><span class="n">run</span> <span class="no">ProxyApp</span><span class="o">.</span><span class="n">new</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>The only change you might have to make is the port number for your app (line 13).  In this case, I'm using port 3000 for my NodeJs app.</p>
-
-<h2>Link Your App</h2>
-
-<p>Now all we have to do is link our app to Pow.  Powder helps us do this easily.  Go to your project root directory and type:</p>
-
-<p><code>
-powder link &lt;project_name&gt;
-</code></p>
-
-<p>Now run your app with whatever command starts NodeJs.  It's probably something like this:</p>
-
-<p><code>
-node app.js
-</code></p>
-
-<p>Now you should be able to access your app via your web browser at <code>http://&lt;project_name&gt;.dev</code>.  One of the great things about Xip.io is that it makes running your local app <a href="http://jaketrent.com/post/run-pow-server-on-vm/">extremely easy from a local Virtual machine</a> as well.  To get the address of your app to use in your VM, type this from your native terminal:</p>
-
-<p><code>
-powder open --xip
-</code></p>
-
-<p>And copy the resulting URL into your VM web browser.</p>
-
-<p>Ah, the fusion of Node and Ruby is pretty sweet.</p>
 ]]></content>
   </entry>
   

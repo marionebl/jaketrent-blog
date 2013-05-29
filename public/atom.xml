@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-21T16:18:42-06:00</updated>
+  <updated>2013-05-29T07:37:01-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,130 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ember Parent Templates]]></title>
+    <link href="http://jaketrent.com/post/ember-parent-templates/"/>
+    <updated>2013-05-29T07:02:00-06:00</updated>
+    <id>http://jaketrent.com/post/ember-parent-templates</id>
+    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a>&#8217;s convention of template hierarchy is very specific.  Learn it once, and you&#8217;ll know it every time.</p>
+
+<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
+
+<!--more-->
+
+
+<p><strong>Note:</strong> Code examples use <a href="http://emblemjs.com/">Emblem</a> templates and <a href="http://coffeescript.org">CoffeeScript</a>.  Vanilla Handlebars and JavaScript would work just as well.</p>
+
+<h2>Outlets</h2>
+
+<p>Ember templates make use of a special helper called <code>outlet</code>.  You can have one main, unnamed outlet or many named outlets.  The main thing to remember is that a child template will always render inside its parent&#8217;s outlet &#8211; so always put outlets in templates that have children.</p>
+
+<h2>Application Template</h2>
+
+<p>There is a top-most template that all of your templates will render inside of.  This is called the application template.  It is specified in one of two ways.  If you are including your templates as script tags, simply create a script tag that doesn&#8217;t have a <code>data-template-name</code> or <code>id</code> attribute, a la:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;x-emblem&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nx">h1</span> <span class="nx">My</span> <span class="nx">Application</span>
+</span><span class='line'>  <span class="o">==</span> <span class="nx">outlet</span>
+</span><span class='line'><span class="nt">&lt;/script&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you are <a href="http://jaketrent.com/post/precompile-ember-templates">precompiling your Ember templates</a>, which you should, you have a directory for templates.  You will put your file, called <code>application.emblem</code> in the root of that directory.  The contents of <code>templates/application.emblem</code> would be the same:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='jade'><span class='line'><span class="nt">h1</span> My Application
+</span><span class='line'><span class="err">== </span><span class="nt">outlet</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Route Templates</h2>
+
+<p>If you have a top-level route, it will have a top-level template.  Your route&#8217;s template will have only the application template as its parent.  So, your about route:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nx">@route</span> <span class="s">&#39;about&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Will have an about template at <code>templates/about.emblem</code> and you could define a route as <code>AboutRoute</code>.  It will render inside of <code>application.emblem</code>&#8217;s outlet.</p>
+
+<h2>Resource Templates</h2>
+
+<p>Resources are interesting because you can nest other routes inside them.  Nesting routes will also result in nesting templates.  If I defined a <code>league</code> resource with a nested route for creating new leagues, it might look something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nx">@resouce</span> <span class="s">&#39;league&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">@route</span> <span class="s">&#39;new&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are two leaf routes (and thus templates) that are created here:</p>
+
+<ul>
+<li><code>LeagueIndexRoute</code>, which uses <code>templates/league/index.emblem</code></li>
+<li><code>LeagueNewRoute</code>, which uses <code>templates/league/new.emblem</code></li>
+</ul>
+
+
+<p>Note that you create a <code>league</code> directory inside your <code>templates</code> directory for nesting these templates.  Precompiled templates will be created at:</p>
+
+<ul>
+<li><code>Ember.TEMPLATES["league/index"]</code></li>
+<li><code>Ember.TEMPLATES["league/new"]</code></li>
+</ul>
+
+
+<p>If you wanted to use the <code>linkTo</code> helper in a template to link to these routes, you would use this syntax:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='jade'><span class='line'><span class="nt">linkTo</span> &#39;league.index&#39; | List Leagues
+</span><span class='line'><span class="nt">linkTo</span> &#39;league.new&#39; | New League
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And now as far as templates, there is <em>one more</em> that we&#8217;re missing.  There is a root league template that these two league leaf templates render inside of.  It should live at <code>templates/league.emblem</code>.  This template would be useful for showing UI elements that are common to all league resource things.  In the case where there is no such need, this template will probably only contain a single outlet:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='jade'><span class='line'><span class="err">== </span><span class="nt">outlet</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So the final template hierarchy for <code>league.new</code>, for example, is:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='jade'><span class='line'><span class="nt">application</span><span class="nc">.emblem</span> &gt; league.emblem &gt; league/new.emblem
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There is a bit of a chatter on the Githubs about whether the root resource template is good form or not.  As in, why would you create a file that contains nothing but an empty outlet?  Couldn&#8217;t the framework infer that if it was missing?</p>
+
+<h2>Children Need All Parents</h2>
+
+<p>Create all parents in your template chain, from the application template to the leaves.  The worst thing that can happen if you don&#8217;t is that nothing will render at all, and no error messages will be displayed (pretty bad and unhelpful).</p>
+
+<p>Most of the time, Ember will try to be helpful and give you a console warning:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='jade'><span class='line'><span class="nt">WARNING:</span> The immediate parent route (&#39;a&#39;) did not render into the main outlet and the default &#39;into&#39; option (&#39;p&#39;) may not be expected
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In other words: You&#8217;re trying to render a child template that either doesn&#8217;t have a parent template it needs or the parent template does not specify a main outlet.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Precompile Ember Templates]]></title>
@@ -1459,86 +1583,6 @@
 <p>It&#8217;s that easy.  It&#8217;s too bad you have to wait until the app runs to discover this is a problem.  But now you&#8217;re ready.</p>
 
 <p>Now if we could only customize the directory structure under <code>app/assets</code>.  I would much rather use the path <code>js/</code> instead of <code>javascripts/</code>.  Does anyone know how?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Run a Pow Server on a VM]]></title>
-    <link href="http://jaketrent.com/post/run-pow-server-on-vm/"/>
-    <updated>2013-01-31T16:14:00-07:00</updated>
-    <id>http://jaketrent.com/post/run-pow-server-on-vm</id>
-    <content type="html"><![CDATA[<p>It&#8217;s really pretty cool how easy <a href="http://pow.cx/">Pow</a> makes running a Rails server.  <a href="https://github.com/rodreegez/powder">Powder</a> makes it even easier.  Here&#8217;s how to run your Rails server via Pow on a VM in order to test IE.</p>
-
-<p><img src="http://i.imgur.com/XdExdtS.jpg" alt="Pow Server" /></p>
-
-<!--more-->
-
-
-<h2>Install Pow</h2>
-
-<p>Get your Ruby environment otherwise setup for Rails dev. Then install <a href="http://pow.cx/">Pow</a>.  It&#8217;s a nice little utility created by the folks at 37 Signals.  They have a short little install script you can run, as <a href="http://pow.cx/">referenced on the Pow site</a>.  Or, you can use a utility created to make it <em>even easier</em> &#8211; <a href="https://github.com/rodreegez/powder">powder</a>.</p>
-
-<p>To install, you&#8217;ll need <a href="http://rubygems.org">Rubygems</a> installed, and run:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ gem install powder</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then link your project to Pow via the command:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ cd &lt;my_proj_dir&gt;
-</span><span class='line'>$ powder link</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Make sure Pow is running:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ powder up</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And access your Pow-powered site by going to your project&#8217;s address in your browser:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>http://&lt;my_project_dir&gt;.dev</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There are other options in the <code>powder link</code> step.  For instance, if you want to access your site through an http address different than <code>&lt;my_proj_dir&gt;</code> you can specify that.</p>
-
-<h2>Install your VM</h2>
-
-<p>There are a few different VM options.  My favorite is <a href="http://virtualbox.org">VirtualBox</a>.  It does hurt a bit seeing the &#8220;Oracle&#8221; moniker on it, but I&#8217;ve found it to be as responsive as a VM can be and generally stable.</p>
-
-<h2>Install Internet Explorer</h2>
-
-<p>There really wasn&#8217;t another reason that you wanted a Windows VM was there?</p>
-
-<p>I&#8217;ve had good success with  the project <a href="https://github.com/xdissent/ievms">xdissent/ievms</a>.  To download the IE-ready images, the README invites us to run this script in our shell:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>curl -s https://raw.github.com/xdissent/ievms/master/ievms.sh | bash</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It will download multiple parts of several Windows/IE VM images into <code>~/.ievms</code> and install them so they&#8217;re ready to roll with VirtualBox.  Run this way, images for Internet Explorer 6, 7, 8, and 9 are all downloaded.  If you wanted to just download IE 9, you could run:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>curl -s https://raw.github.com/xdissent/ievms/master/ievms.sh | IEVMS_VERSIONS="9" bash</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Either way, this download takes quite a while to complete, but the shell script that&#8217;s running it takes pretty good care of you, restarting on the last incomplete download part.</p>
-
-<h2>Access Pow via VirtualBox</h2>
-
-<p>Accessing Pow in the VM isn&#8217;t bad at all.  Pow makes use of <a href="http://xip.io">xip.io</a>, which provides a wildcard DNS entry used by Pow and thus your app.</p>
-
-<p>For the <a href="http://pow.cx/manual.html#section_2.1.5">next step</a>, take note of your IP by running <code>ifconfig</code>.  Then from IE inside of VirtualBox, point your browser at:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>http://&lt;my_proj_dir&gt;.&lt;my_ip&gt;.xip.io</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And you should see your project running in the VM just as you do from your better, native OS.  Pow!</p>
 ]]></content>
   </entry>
   

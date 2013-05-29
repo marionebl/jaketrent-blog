@@ -4,7 +4,7 @@
   <title><![CDATA[Category: emblem | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/emblem/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-21T16:18:42-06:00</updated>
+  <updated>2013-05-29T07:37:01-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ember Parent Templates]]></title>
+    <link href="http://jaketrent.com/post/ember-parent-templates/"/>
+    <updated>2013-05-29T07:02:00-06:00</updated>
+    <id>http://jaketrent.com/post/ember-parent-templates</id>
+    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a>'s convention of template hierarchy is very specific.  Learn it once, and you'll know it every time.</p>
+
+<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
+
+<!--more-->
+
+
+<p><strong>Note:</strong> Code examples use <a href="http://emblemjs.com/">Emblem</a> templates and <a href="http://coffeescript.org">CoffeeScript</a>.  Vanilla Handlebars and JavaScript would work just as well.</p>
+
+<h2>Outlets</h2>
+
+<p>Ember templates make use of a special helper called <code>outlet</code>.  You can have one main, unnamed outlet or many named outlets.  The main thing to remember is that a child template will always render inside its parent's outlet -- so always put outlets in templates that have children.</p>
+
+<h2>Application Template</h2>
+
+<p>There is a top-most template that all of your templates will render inside of.  This is called the application template.  It is specified in one of two ways.  If you are including your templates as script tags, simply create a script tag that doesn't have a <code>data-template-name</code> or <code>id</code> attribute, a la:</p>
+
+<p>```html</p>
+
+<script type="x-emblem">
+  h1 My Application
+  == outlet
+</script>
+
+
+<p>```</p>
+
+<p>If you are <a href="/post/precompile-ember-templates">precompiling your Ember templates</a>, which you should, you have a directory for templates.  You will put your file, called <code>application.emblem</code> in the root of that directory.  The contents of <code>templates/application.emblem</code> would be the same:</p>
+
+<p><code>jade
+h1 My Application
+== outlet
+</code></p>
+
+<h2>Route Templates</h2>
+
+<p>If you have a top-level route, it will have a top-level template.  Your route's template will have only the application template as its parent.  So, your about route:</p>
+
+<p><code>coffeescript
+App.Router.map -&gt;
+  @route 'about'
+</code></p>
+
+<p>Will have an about template at <code>templates/about.emblem</code> and you could define a route as <code>AboutRoute</code>.  It will render inside of <code>application.emblem</code>'s outlet.</p>
+
+<h2>Resource Templates</h2>
+
+<p>Resources are interesting because you can nest other routes inside them.  Nesting routes will also result in nesting templates.  If I defined a <code>league</code> resource with a nested route for creating new leagues, it might look something like this:</p>
+
+<p>```coffeescript
+App.Router.map ->
+  @resouce 'league', -></p>
+
+<pre><code>@route 'new'
+</code></pre>
+
+<p>```</p>
+
+<p>There are two leaf routes (and thus templates) that are created here:</p>
+
+<ul>
+<li><code>LeagueIndexRoute</code>, which uses <code>templates/league/index.emblem</code></li>
+<li><code>LeagueNewRoute</code>, which uses <code>templates/league/new.emblem</code></li>
+</ul>
+
+
+<p>Note that you create a <code>league</code> directory inside your <code>templates</code> directory for nesting these templates.  Precompiled templates will be created at:</p>
+
+<ul>
+<li><code>Ember.TEMPLATES["league/index"]</code></li>
+<li><code>Ember.TEMPLATES["league/new"]</code></li>
+</ul>
+
+
+<p>If you wanted to use the <code>linkTo</code> helper in a template to link to these routes, you would use this syntax:</p>
+
+<p><code>jade
+linkTo 'league.index' | List Leagues
+linkTo 'league.new' | New League
+</code></p>
+
+<p>And now as far as templates, there is <em>one more</em> that we're missing.  There is a root league template that these two league leaf templates render inside of.  It should live at <code>templates/league.emblem</code>.  This template would be useful for showing UI elements that are common to all league resource things.  In the case where there is no such need, this template will probably only contain a single outlet:</p>
+
+<p><code>jade
+== outlet
+</code></p>
+
+<p>So the final template hierarchy for <code>league.new</code>, for example, is:</p>
+
+<p><code>
+application.emblem &gt; league.emblem &gt; league/new.emblem
+</code></p>
+
+<p>There is a bit of a chatter on the Githubs about whether the root resource template is good form or not.  As in, why would you create a file that contains nothing but an empty outlet?  Couldn't the framework infer that if it was missing?</p>
+
+<h2>Children Need All Parents</h2>
+
+<p>Create all parents in your template chain, from the application template to the leaves.  The worst thing that can happen if you don't is that nothing will render at all, and no error messages will be displayed (pretty bad and unhelpful).</p>
+
+<p>Most of the time, Ember will try to be helpful and give you a console warning:</p>
+
+<p><code>
+WARNING: The immediate parent route ('a') did not render into the main outlet and the default 'into' option ('p') may not be expected
+</code></p>
+
+<p>In other words: You're trying to render a child template that either doesn't have a parent template it needs or the parent template does not specify a main outlet.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Precompile Ember Templates]]></title>

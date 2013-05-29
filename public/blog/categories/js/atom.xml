@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-21T16:18:42-06:00</updated>
+  <updated>2013-05-29T07:37:01-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ember Parent Templates]]></title>
+    <link href="http://jaketrent.com/post/ember-parent-templates/"/>
+    <updated>2013-05-29T07:02:00-06:00</updated>
+    <id>http://jaketrent.com/post/ember-parent-templates</id>
+    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a>'s convention of template hierarchy is very specific.  Learn it once, and you'll know it every time.</p>
+
+<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
+
+<!--more-->
+
+
+<p><strong>Note:</strong> Code examples use <a href="http://emblemjs.com/">Emblem</a> templates and <a href="http://coffeescript.org">CoffeeScript</a>.  Vanilla Handlebars and JavaScript would work just as well.</p>
+
+<h2>Outlets</h2>
+
+<p>Ember templates make use of a special helper called <code>outlet</code>.  You can have one main, unnamed outlet or many named outlets.  The main thing to remember is that a child template will always render inside its parent's outlet -- so always put outlets in templates that have children.</p>
+
+<h2>Application Template</h2>
+
+<p>There is a top-most template that all of your templates will render inside of.  This is called the application template.  It is specified in one of two ways.  If you are including your templates as script tags, simply create a script tag that doesn't have a <code>data-template-name</code> or <code>id</code> attribute, a la:</p>
+
+<p>```html</p>
+
+<script type="x-emblem">
+  h1 My Application
+  == outlet
+</script>
+
+
+<p>```</p>
+
+<p>If you are <a href="/post/precompile-ember-templates">precompiling your Ember templates</a>, which you should, you have a directory for templates.  You will put your file, called <code>application.emblem</code> in the root of that directory.  The contents of <code>templates/application.emblem</code> would be the same:</p>
+
+<p><code>jade
+h1 My Application
+== outlet
+</code></p>
+
+<h2>Route Templates</h2>
+
+<p>If you have a top-level route, it will have a top-level template.  Your route's template will have only the application template as its parent.  So, your about route:</p>
+
+<p><code>coffeescript
+App.Router.map -&gt;
+  @route 'about'
+</code></p>
+
+<p>Will have an about template at <code>templates/about.emblem</code> and you could define a route as <code>AboutRoute</code>.  It will render inside of <code>application.emblem</code>'s outlet.</p>
+
+<h2>Resource Templates</h2>
+
+<p>Resources are interesting because you can nest other routes inside them.  Nesting routes will also result in nesting templates.  If I defined a <code>league</code> resource with a nested route for creating new leagues, it might look something like this:</p>
+
+<p>```coffeescript
+App.Router.map ->
+  @resouce 'league', -></p>
+
+<pre><code>@route 'new'
+</code></pre>
+
+<p>```</p>
+
+<p>There are two leaf routes (and thus templates) that are created here:</p>
+
+<ul>
+<li><code>LeagueIndexRoute</code>, which uses <code>templates/league/index.emblem</code></li>
+<li><code>LeagueNewRoute</code>, which uses <code>templates/league/new.emblem</code></li>
+</ul>
+
+
+<p>Note that you create a <code>league</code> directory inside your <code>templates</code> directory for nesting these templates.  Precompiled templates will be created at:</p>
+
+<ul>
+<li><code>Ember.TEMPLATES["league/index"]</code></li>
+<li><code>Ember.TEMPLATES["league/new"]</code></li>
+</ul>
+
+
+<p>If you wanted to use the <code>linkTo</code> helper in a template to link to these routes, you would use this syntax:</p>
+
+<p><code>jade
+linkTo 'league.index' | List Leagues
+linkTo 'league.new' | New League
+</code></p>
+
+<p>And now as far as templates, there is <em>one more</em> that we're missing.  There is a root league template that these two league leaf templates render inside of.  It should live at <code>templates/league.emblem</code>.  This template would be useful for showing UI elements that are common to all league resource things.  In the case where there is no such need, this template will probably only contain a single outlet:</p>
+
+<p><code>jade
+== outlet
+</code></p>
+
+<p>So the final template hierarchy for <code>league.new</code>, for example, is:</p>
+
+<p><code>
+application.emblem &gt; league.emblem &gt; league/new.emblem
+</code></p>
+
+<p>There is a bit of a chatter on the Githubs about whether the root resource template is good form or not.  As in, why would you create a file that contains nothing but an empty outlet?  Couldn't the framework infer that if it was missing?</p>
+
+<h2>Children Need All Parents</h2>
+
+<p>Create all parents in your template chain, from the application template to the leaves.  The worst thing that can happen if you don't is that nothing will render at all, and no error messages will be displayed (pretty bad and unhelpful).</p>
+
+<p>Most of the time, Ember will try to be helpful and give you a console warning:</p>
+
+<p><code>
+WARNING: The immediate parent route ('a') did not render into the main outlet and the default 'into' option ('p') may not be expected
+</code></p>
+
+<p>In other words: You're trying to render a child template that either doesn't have a parent template it needs or the parent template does not specify a main outlet.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Precompile Ember Templates]]></title>
@@ -259,98 +373,6 @@ it 'calls autocomplete when typing', -&gt;
 <p>The cool thing is that this does not slow down your tests.  You could set the clock tick to be 50100000 or some crazy number, and it will still execute as fast as your single JavaScript thread will let you.</p>
 
 <p>Boom.  Another testing hurdle cleared.  Sometimes it's harder to write the test than the code.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[LiveReload for NodeJs]]></title>
-    <link href="http://jaketrent.com/post/livereload-for-nodejs/"/>
-    <updated>2013-04-23T16:44:00-06:00</updated>
-    <id>http://jaketrent.com/post/livereload-for-nodejs</id>
-    <content type="html"><![CDATA[<p>LiveReload is a wonderful tool/strategy for being able to develop websites more quickly.  You can make a change and see it immediately shown in the browser without requiring you to manually refresh.  To do this in NodeJs with Express, you'll need just a few packages.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="grunt" /></p>
-
-<!--more-->
-
-
-<h2>LiveReload Express</h2>
-
-<p>If you're doing a website on Nodejs these days, you're probably using Express.  Express uses the Connect library for its middleware scheme.  Just grab one more middleware to handle the LiveReload.  It will add a little snippet of JavaScript to each of the html responses that is requested through this middleware.  First, install:</p>
-
-<p><code>
-npm install connect-livereload --save-dev
-</code></p>
-
-<p>Next, import:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span> <span class="s">&#39;development&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">require</span><span class="p">(</span><span class="s">&#39;connect-livereload&#39;</span><span class="p">)</span> <span class="mi">35729</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Note that we only want to import and use the middleware when in development.  This matches the fact that we are only declaring this package as in <code>devDependencies</code>.</p>
-
-<h2>LiveReload Grunt</h2>
-
-<p>Now you need to something to start a livereload server, watch files for changes, and broadcast their availability.  The rest of this will be done via Grunt.</p>
-
-<p>First, install:</p>
-
-<p><code>
-npm install grunt-cli -g
-npm install grunt grunt-regarde grunt-contrib-livereload --save-dev
-</code></p>
-
-<ul>
-<li><code>grunt-cli</code> will allow you to run the <code>grunt</code> command in the terminal.  Global puts the bin in your path.</li>
-<li><code>grunt-regarde</code> is a file watcher.  It senses changes to the filesystem.</li>
-<li><code>grunt-contrib-reload</code> will handle the pushing of new code to the browser.</li>
-</ul>
-
-
-<p>Next setup the <code>Gruntfile.coffee</code>:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(grunt) -&gt;</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nv">regarde:</span>
-</span><span class='line'>  <span class="nv">style:</span>
-</span><span class='line'>    <span class="nv">files: </span><span class="p">[</span><span class="s">&#39;app/static/css/*.css&#39;</span><span class="p">]</span>
-</span><span class='line'>    <span class="nv">tasks: </span><span class="p">[</span><span class="s">&#39;livereload&#39;</span><span class="p">]</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span> <span class="s">&#39;grunt-contrib-livereload&#39;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span> <span class="s">&#39;be-lively&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s">&#39;livereload-start&#39;</span><span class="p">,</span> <span class="s">&#39;regarde&#39;</span> <span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Now when you run:</p>
-
-<p><code>
-grunt be-lively
-</code></p>
-
-<p>A livereload server is going to be setup.  Then we watch for filesystem changes.  The only things we're watching are css files in our app.  You could expand the <code>files</code> array to watch more if you wish.</p>
-
-<p>Yay!</p>
-
-<h2>LiveReload all the Things</h2>
-
-<p>There are many ways to make this happen.  There are numerous Node libraries, Grunt plugins, and browser plugins.  Do what works for you.  Just make it happen fast and tend it well from the beginning to the end of your project.  Almost every solution I've found is somewhat high maintenance.  This one has proven to be the same.  What have you found to be your favorite LiveReload solution, and in what environment?</p>
 ]]></content>
   </entry>
   
