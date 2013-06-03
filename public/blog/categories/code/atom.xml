@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-05-29T08:16:43-06:00</updated>
+  <updated>2013-06-03T08:43:12-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,77 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CSS Vertical Height of Text]]></title>
+    <link href="http://jaketrent.com/post/css-text-vertical-height/"/>
+    <updated>2013-06-03T07:36:00-06:00</updated>
+    <id>http://jaketrent.com/post/css-text-vertical-height</id>
+    <content type="html"><![CDATA[<p>Setting text elements on a page to be a specific height is usually straight forward.  Here are the specs for a couple textual situations you'll encounter.</p>
+
+<p><img src="http://i.imgur.com/hxw13Yp.png" alt="CSS height" /></p>
+
+<!--more-->
+
+
+<p><strong>Note:</strong> Experiments were done in Chrome 27, but this should be pretty consistent over browsers</p>
+
+<h2>Text in a Div</h2>
+
+<p>Text is likely most common just plastered across your site.  Lucky for us all, this is the most straightforward way to calculate and guarantee a vertical height.</p>
+
+<p><img src="http://i.imgur.com/cy3HTWW.png" alt="Text height css" /></p>
+
+<p>The formula is simple.  Here, vertical height is calculated by:</p>
+
+<blockquote><p>vertical height = margin + border + padding + (line-height || height)</p></blockquote>
+
+<p><code>line-height</code> or <code>height</code> will determine the height of the main body of the text container, such as a <code>div</code>.  Either one will do.</p>
+
+<p>I will guess that most of the time you'll want your text centered vertically in the container.  But for those times you want it hugging the top or bottom, add a line-height that's either smaller or larger than the height, respectively, to move the text vertically within the container.</p>
+
+<h2>Text in an Input</h2>
+
+<p>Text appearing within an input field is much more tricky and has a quite a few more caveats.  There are two main different modes that vertical height will be determined by: without a <code>height</code> or with a <code>height</code> specified:</p>
+
+<p><img src="http://i.imgur.com/4UdHhF4.png" alt="Input height css" /></p>
+
+<h3>No Height Specified</h3>
+
+<p>If the <code>height</code> is not set, traditional attributes, combined, create the total vertical height.  This formula becomes:</p>
+
+<blockquote><p>height = margin + border + padding + (line-height || font-size)</p></blockquote>
+
+<p>Some observations and caveats:</p>
+
+<ul>
+<li><code>font-size</code> only affects vertical height as it approaches or exceeds the <code>line-height</code>.</li>
+<li><code>padding</code>, <code>border</code>, and <code>margin</code> always affect the vertical height, no matter their value.</li>
+<li>If <code>font-size</code> is small enough to not affect <code>line-height</code>, <code>line-height</code> can be used for an exact vertical height sum.</li>
+<li>If <code>font-size</code>, instead of <code>line-height</code> is affecting the vertical height, the px value of the <code>font-size</code> will not be usable to guarantee height.  Each font has different heights.  A per-font calculation will have to be made.</li>
+</ul>
+
+
+<h3>Height Specified</h3>
+
+<p>If <code>height</code> is set, the input's vertical height formula will always</p>
+
+<blockquote><p>vertical height = height + margin</p></blockquote>
+
+<p>Some observations and caveats:</p>
+
+<ul>
+<li>If <code>margin</code>, <code>border</code>, and <code>padding</code> add up to be greater than <code>height</code>, then that becomes new height.</li>
+<li><code>line-height</code> and <code>font-size</code> don't contribute the vertical height, no matter the <code>height</code> attribute.</li>
+<li><code>margin</code>, <code>border</code>, and <code>padding</code> attributes don't contribute at all to the vertical height if their sum height is less than the actual <code>height</code> attribute.</li>
+<li>Once <code>line-height</code> exceeds <code>height</code>, the text in the input moves vertically downward, eventually becoming hidden.</li>
+<li>As <code>font-size</code> approaches <code>height</code>, the text will eventually become hidden.</li>
+<li><code>border</code> will not affect vertical height, but it will still affect horizontal width.</li>
+<li><code>vertical-align</code>, as in most things, does nothing.</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ember Parent Templates]]></title>
@@ -329,98 +400,6 @@ it 'calls autocomplete when typing', -&gt;
 <p>The cool thing is that this does not slow down your tests.  You could set the clock tick to be 50100000 or some crazy number, and it will still execute as fast as your single JavaScript thread will let you.</p>
 
 <p>Boom.  Another testing hurdle cleared.  Sometimes it's harder to write the test than the code.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[LiveReload for NodeJs]]></title>
-    <link href="http://jaketrent.com/post/livereload-for-nodejs/"/>
-    <updated>2013-04-23T16:44:00-06:00</updated>
-    <id>http://jaketrent.com/post/livereload-for-nodejs</id>
-    <content type="html"><![CDATA[<p>LiveReload is a wonderful tool/strategy for being able to develop websites more quickly.  You can make a change and see it immediately shown in the browser without requiring you to manually refresh.  To do this in NodeJs with Express, you'll need just a few packages.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="grunt" /></p>
-
-<!--more-->
-
-
-<h2>LiveReload Express</h2>
-
-<p>If you're doing a website on Nodejs these days, you're probably using Express.  Express uses the Connect library for its middleware scheme.  Just grab one more middleware to handle the LiveReload.  It will add a little snippet of JavaScript to each of the html responses that is requested through this middleware.  First, install:</p>
-
-<p><code>
-npm install connect-livereload --save-dev
-</code></p>
-
-<p>Next, import:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span> <span class="s">&#39;development&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">require</span><span class="p">(</span><span class="s">&#39;connect-livereload&#39;</span><span class="p">)</span> <span class="mi">35729</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Note that we only want to import and use the middleware when in development.  This matches the fact that we are only declaring this package as in <code>devDependencies</code>.</p>
-
-<h2>LiveReload Grunt</h2>
-
-<p>Now you need to something to start a livereload server, watch files for changes, and broadcast their availability.  The rest of this will be done via Grunt.</p>
-
-<p>First, install:</p>
-
-<p><code>
-npm install grunt-cli -g
-npm install grunt grunt-regarde grunt-contrib-livereload --save-dev
-</code></p>
-
-<ul>
-<li><code>grunt-cli</code> will allow you to run the <code>grunt</code> command in the terminal.  Global puts the bin in your path.</li>
-<li><code>grunt-regarde</code> is a file watcher.  It senses changes to the filesystem.</li>
-<li><code>grunt-contrib-reload</code> will handle the pushing of new code to the browser.</li>
-</ul>
-
-
-<p>Next setup the <code>Gruntfile.coffee</code>:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(grunt) -&gt;</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nv">regarde:</span>
-</span><span class='line'>  <span class="nv">style:</span>
-</span><span class='line'>    <span class="nv">files: </span><span class="p">[</span><span class="s">&#39;app/static/css/*.css&#39;</span><span class="p">]</span>
-</span><span class='line'>    <span class="nv">tasks: </span><span class="p">[</span><span class="s">&#39;livereload&#39;</span><span class="p">]</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span> <span class="s">&#39;grunt-contrib-livereload&#39;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span> <span class="s">&#39;be-lively&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s">&#39;livereload-start&#39;</span><span class="p">,</span> <span class="s">&#39;regarde&#39;</span> <span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Now when you run:</p>
-
-<p><code>
-grunt be-lively
-</code></p>
-
-<p>A livereload server is going to be setup.  Then we watch for filesystem changes.  The only things we're watching are css files in our app.  You could expand the <code>files</code> array to watch more if you wish.</p>
-
-<p>Yay!</p>
-
-<h2>LiveReload all the Things</h2>
-
-<p>There are many ways to make this happen.  There are numerous Node libraries, Grunt plugins, and browser plugins.  Do what works for you.  Just make it happen fast and tend it well from the beginning to the end of your project.  Almost every solution I've found is somewhat high maintenance.  This one has proven to be the same.  What have you found to be your favorite LiveReload solution, and in what environment?</p>
 ]]></content>
   </entry>
   
