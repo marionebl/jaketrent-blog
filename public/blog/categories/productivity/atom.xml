@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Productivity | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/productivity/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-06-03T08:43:12-06:00</updated>
+  <updated>2013-06-10T08:16:00-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Learn to Procrastinate]]></title>
+    <link href="http://jaketrent.com/post/learn-to-procrastinate/"/>
+    <updated>2013-06-10T06:57:00-06:00</updated>
+    <id>http://jaketrent.com/post/learn-to-procrastinate</id>
+    <content type="html"><![CDATA[<p>When making software, sometimes we want everything we can imagine at once.  We want the software to be perfect -- then we'll ship it.  Learn to procrastintate.  You might ship more, and you might like the the eventual outcome better.</p>
+
+<p><img src="http://i.imgur.com/cXx17co.png" alt="Focus on shipping" /></p>
+
+<!--more-->
+
+
+<h2>Worthless Software</h2>
+
+<p>Software that sits inside of your git repo, unreleased, is worthless software.  You're not going to get paid for it.  You're not going to make someone's life better.  You're not going to attract any new business.  It provides no utility.</p>
+
+<p>When does software return any value?  At the very soonest, software provides value when it ships -- when it's released to the public or your customers.</p>
+
+<p>So why do we wait so long to ship?</p>
+
+<h2>Excuses for Not Shipping</h2>
+
+<h3>It Must Do More</h3>
+
+<p>Software has a fair bit of built-in or essential complexity.  Making software is challenging.  Sometimes we make it worse and introduce our own accidental complexity.  How?  We don't ship.</p>
+
+<p>We iterate on unreleased software, expand it, and pretend to fully understand what we're trying to solve.  The software gets bigger and more complex.  We want our (unshipped) software to somehow solve even <em>more</em> problems before it's solved any.  And any problem we attempt to solve without actually testing it (in production), is still just a guess at how to solve it.</p>
+
+<h3>It's Not Awesome Yet</h3>
+
+<p>Sometimes in an attempt to create a (hopefully) great initial impression, we wait to release anything.  This makes sense to some degree, but it can easily be taken to a less useful extreme.  Once we have a feature set that we judge is sufficiently awesome to blow a potential client's socks off, we'll release it in a big bang.  Boom!  Now the world can see my software in all the glory I have bequeathed it.</p>
+
+<p>Just as we have been guessing as to how may problems the software will solve, we have been guessing as to how warm people will be to the idea of actually using what we've created.</p>
+
+<h2>What to Procrastinate</h2>
+
+<p>So obviously there are problems with procrastinating.  There are definitely things that you <em>don't</em> want to procrastintate: working, shipping, asking for payment.  What <em>should</em> you procrastinate?</p>
+
+<h3>Little Things that are Hard</h3>
+
+<p>At first glance, this just looks like a cop out.  You <em>should</em> do the important things that are hard.  Even the small things can add a nice touch.  But in an effort to ship, these are often the little things that don't add too much but take an inordinate amount of time to figure out or complete.  Skip these things and come back to them later to add the polish.</p>
+
+<h3>Things that are not Core Functionality</h3>
+
+<p>You're trying to ship a small, cohesive feature set as fast as you can.  There will be many features on the perephery that you'll be tempted to work in as well.  Fight the temptation.  Get used to cutting out good features in order to ship the ones you <em>need</em>.  In this way, you'll help ensure that all of your valuable time is used creating the most value for your customers.</p>
+
+<h3>Things that Create Little Tech Debt</h3>
+
+<p>When you start skipping things, this can create problems for you later.  This can be technical debt.  If you want your product to evolve and grow over time, you can't afford large amounts of technical debt.  But watch out!  You can use very large lengths of time doing things that add little value in the name of avoiding technical debt.  Be willing to take on some tech debt.  Do this on a case-by-case basis, because this trade-off requires thinking.</p>
+
+<h2>Why You'll Like Procrastinating</h2>
+
+<p>Your satisfaction will sky-rocket when you feel like shipping is within reach.  Break down the barriers to getting there.</p>
+
+<p>Focus on the most valuable features, and you'll feel like you add maximum value every day -- because you are!</p>
+
+<p>You'll be able to move faster because you aren't getting bogged down in munitia.  By not taking tangents, your flow time will increase.  You won't need to context switch to solve small, hard problems.  You can focus on the important, hard problems for contiguous lengths of time.</p>
+
+<p>You'll have something to show a lot faster.  You'll have a vertical of working features that are fun to use and are useful -- when shipped, that is.</p>
+
+<h2>Different Paths Converge at Shipping</h2>
+
+<p>Of course there are as many different ways to make software as there are types of software and types of software teams.  That's one of the things that makes software creation insanely fun and rewarding.  Find what works for you, and ship lots and lots of awesome software.</p>
+
+<p>In the end, shipping should be a common goal, and we shouldn't procrastinate that.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Have More Fun]]></title>
@@ -156,50 +224,6 @@ Considerate of customer, business, and technology needs rather than biased towar
 <p>It's amazing how much depends on solid design.  The design will define the users' experience with the software.  It will never not matter.  To a great design in a software product is a difficult thing.  Good people in the design discipline who are fully engaged in adapting to the changing landscape of software creation are invaluable.  Agile designers rock.  Find one and figure out how to get him on your project.</p>
 
 <p>What have your best designers done to make great software on your teams?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Developer Relations for Internal Developers]]></title>
-    <link href="http://jaketrent.com/post/developer-relations-for-internal-developers/"/>
-    <updated>2012-09-26T16:50:00-06:00</updated>
-    <id>http://jaketrent.com/post/developer-relations-for-internal-developers</id>
-    <content type="html"><![CDATA[<p>When a company has a platform or API that it wants outside developers to create cool stuff on, it will sometimes create a developer relations group. This group will help developers get what they need. What about custom dev shops that already have a host of developers? Who's watching these developers' backs?</p>
-
-<p><img src="http://i.imgur.com/QAxW5.jpg" alt="Love note" />
-http://flic.kr/p/5iwNAG</p>
-
-<!--more-->
-
-
-<h2>A new level of developer relations</h2>
-
-<p>RIM developer relation needs being what they are, they've gone this far to promote their BlackBerry 10 SDK:</p>
-
-<iframe width="560" height="315" src="http://www.youtube.com/embed/WlsahuZ_4oM" frameborder="0" allowfullscreen></iframe>
-
-
-<p>It's awesome. Maybe "desperate"? It shows a definite effort (high notes) to attract and accommodate developers.</p>
-
-<h2>Essential vitamins and minerals</h2>
-
-<p>Once developers are in a company, what are the elements of developer relations that are needful there. What does a company need to retain top coding talent? I offer:</p>
-
-<ol>
-<li><p><strong>Engaging Responsibilities</strong> - Smart guys are not going to sit around in your company doing the same thing for 10 years. In tech, probably not even for a couple. This might also be stated as "Career Path". I think this requirement is similar to what <a href="http://www.businessinsider.com/why-young-employees-quit-their-jobs-2012-9">Business Insider observed young workers</a> as needing: "Multiple studies find that today’s younger workers have absolutely no intention of sticking around if they don’t feel like they’re learning, growing and being valued in a job."</p></li>
-<li><p><strong>Learning Opportunities</strong> - Learning is an inherent part of every developer job description. It must be kosher to spend time to sharpen the saw. This is building capactiy. No one will ever propose solutions that they don't understand. If your company wants to broaden its offering, developers will need to broaden themselves.</p></li>
-<li><p><strong>Budget for Engineering</strong> - Build money into project budgets. Build time into the timelines. Good developers will quickly lose morale if there is never time to do it right. If you don't give time to cleanup technical debt, developers will not feel satisfied in what they create.</p></li>
-<li><p><strong>Always Have an Advocate</strong> - Every company will get it wrong sometimes. Especially in large, specialized organizations, everyone has their own functional slice that they're focused on, sometimes at the expense of all else. Developers need someone who speaks for them. They need someone who has a voice in the bureaucracy and can represent them well where they don't personally have a voice.</p></li>
-</ol>
-
-
-<h2>Everyone needs a coder, especially a good one</h2>
-
-<p>If developer relations are not upkept with care, good coders are likely to head for the door. Alternately, if just certain elements are occassionally missing, good developers know how to fill in the gaps and provide for themselves.</p>
-
-<p>Just as an API/platform creator attract talent to build cool stuff for them, organizations with their own internal dev force need to take developer relations seriously. Good organizations and good leaders take good care of all their people.  I work at such an organization with such people.  We need more.</p>
-
-<p>What else might be an essential ingredient in maintaining favorable developer relationships?</p>
 ]]></content>
   </entry>
   

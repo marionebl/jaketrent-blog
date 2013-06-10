@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-06-03T08:43:12-06:00</updated>
+  <updated>2013-06-10T08:16:00-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -93,17 +93,23 @@ $http.get('/comments')
 
 <p>Then your template will automatically have the data in scope.  And the template (<a href="http://slim-lang.org">Slim</a> syntax used below) can look like this:</p>
 
-<p>{% codeblock lang:ruby %}
-{% raw %}
-h1 Comments
-ul
-  li ng-repeat="comment in comments"</p>
-
-<pre><code>| {{ comment }}
-</code></pre>
-
-<p>{% endraw %}
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
+</span><span class='line'><span class="n">ul</span>
+</span><span class='line'>  <span class="n">li</span> <span class="n">ng</span><span class="o">-</span><span class="n">repeat</span><span class="o">=</span><span class="s2">&quot;comment in comments&quot;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;| {{ comment }}</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Now when we add a new comment via Ajax, we can push it right into the comment collection, and the page is updated by Angular with the appropriate data.  Or if we want to perform an operation on a pre-existing comment, it's easy to do via an AJAX operation and display the result.</p>
 
@@ -136,20 +142,29 @@ ul
 
 <p>Our server/client mixture code might look something like this:</p>
 
-<p>{% codeblock lang:ruby %}
-{% raw %}
-h1 Comments
-ul
-  - comments.each_with_index do |comment, i|</p>
-
-<pre><code>li ng-init="commentLikeCount[i]=#{comment.likeCount}"
-  = comment
-  | Likes for this comment: {{commentLikeCount[i]}}
-  a ng-click="like(commentLikeCount[i])"
-</code></pre>
-
-<p>{% endraw %}
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
+</span><span class='line'><span class="n">ul</span>
+</span><span class='line'>  <span class="o">-</span> <span class="n">comments</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">comment</span><span class="p">,</span> <span class="n">i</span><span class="o">|&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;li ng-init=&quot;commentLikeCount[i]=</span><span class="si">#{</span><span class="n">comment</span><span class="o">.</span><span class="n">likeCount</span><span class="si">}</span><span class="sr">&quot;</span>
+</span><span class='line'><span class="sr">  = comment</span>
+</span><span class='line'><span class="sr">  | Likes for this comment: {{commentLikeCount[i]}}</span>
+</span><span class='line'><span class="sr">  a ng-click=&quot;like(commentLikeCount[i])&quot;</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>It's important to realize where data is coming from in this example.  The syntax <code>=</code> as in <code>= comment</code> and <code>#{}</code> as in <code>#{comment.likeCount}</code> are server-rendered bits.  As you know, the curlies and the ng attribute syntax is for Angular's client side rendering.</p>
 
@@ -254,24 +269,39 @@ $('.element-to-find', $element)
 
 <p>The final Mocha code to test our simple controller should look something like this:</p>
 
-<p>{% codeblock lang:javascript %}
-  var assert = chai.assert,</p>
-
-<pre><code>expect = chai.expect,
-should = chai.should();
-</code></pre>
-
-<p>  it('should be available', inject(function($rootScope, $controller) {</p>
-
-<pre><code>var scope = $rootScope.$new();
-var ctrl = $controller(MyController, {
-  $scope: scope
-});
-expect(ctrl).to.not.be.undefined;
-</code></pre>
-
-<p>  }));
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">assert</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">expect</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">expect</span><span class="p">,</span>
+</span><span class='line'><span class="nx">should</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">should</span><span class="p">();</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be available&#39;</span><span class="p">,</span> <span class="nx">inject</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$rootScope</span><span class="p">,</span> <span class="nx">$controller</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">scope</span> <span class="o">=</span> <span class="nx">$rootScope</span><span class="p">.</span><span class="nx">$new</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">ctrl</span> <span class="o">=</span> <span class="nx">$controller</span><span class="p">(</span><span class="nx">MyController</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$scope</span><span class="o">:</span> <span class="nx">scope</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">expect</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">undefined</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}));</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>A couple of points:</p>
 
@@ -291,28 +321,41 @@ expect(ctrl).to.not.be.undefined;
 
 <p>My controller looked somewhat like this:</p>
 
-<p>{% codeblock lang:javascript %}
-function MyController($scope) {
-  $scope.$on('$viewContentLoaded', function () {</p>
-
-<pre><code>// ... stuff when dom in the controller is ready
-</code></pre>
-
-<p>  });
-}
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">MyController</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">$on</span><span class="p">(</span><span class="s1">&#39;$viewContentLoaded&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="c1">// ... stuff when dom in the controller is ready</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>And this was the start of my test:</p>
 
-<p>{% codeblock lang:javascript %}
-  it('should be available', function() {</p>
-
-<pre><code>var ctrl = new MyController();
-// ... assertions
-</code></pre>
-
-<p>  });
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be available&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">ctrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyController</span><span class="p">();</span>
+</span><span class='line'><span class="c1">// ... assertions</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Ths <code>$scope.$on()</code> line couldn't run because <code>$scope</code> was simply not injected and undefined.
 blah - scope is not there</p>
@@ -321,12 +364,19 @@ blah - scope is not there</p>
 
 <p>In Mocha, you'll need to import an assertion library of your choice.  Otherwise, <code>expect()</code> and other assertions will not be available to use.  I prefer Chai for its should-style assertions.  They read as a sentence really well:</p>
 
-<p>{% codeblock lang:javascript %}</p>
-
-<pre><code>expect(ctrl).to.not.be.undefined;
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">expect</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">undefined</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   
@@ -356,19 +406,23 @@ Uncaught Error: Unknown provider: e from myModule
 
 <p>In my local environment, my code looked like this and worked fine:</p>
 
-<p>{% codeblock lang:"js" %}
-angular.module('myModule', [], function ($interpolateProvider) {
-  // interpolate stuff
-});
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>lang:"js" </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>angular.module('myModule', [], function ($interpolateProvider) {
+</span><span class='line'>  // interpolate stuff
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>After my build process and mangled local variables, it looked like this:</p>
 
-<p>{% codeblock lang:"js" %}
-angular.module('myModule', [], function (e) {
-  // interpolate stuff
-});
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>lang:"js" </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>angular.module('myModule', [], function (e) {
+</span><span class='line'>  // interpolate stuff
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Oh boy.  A few StackOverflow articles later, and I was led to the <a href="http://docs.angularjs.org/guide/di">dependency injection guide</a> that's a part of the Angular docs.  It revealed that my pattern of dependency injection wasn't gonna cut it:</p>
 
@@ -380,21 +434,25 @@ angular.module('myModule', [], function (e) {
 
 <h4>Reliable Style #1: "Controller Style"</h4>
 
-<p>{% codeblock lang:javascript %}
-var MyController = function ($scope) {
-};
-MyController.$inject = ['$scope'];
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">MyController</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'><span class="nx">MyController</span><span class="p">.</span><span class="nx">$inject</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;$scope&#39;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>The <code>$scope</code> parameter in the function is soon to be renamed once minified, so save a list of the parameter names as strings in the <code>$inject</code> array.  Make sure the order and length of these two lists match.</p>
 
 <h4>Reliable Style #2: "Module Style"</h4>
 
-<p>{% codeblock lang:javascript %}
-angular.module('myModule', [])
-  .config(['$interpolateProvider', function ($interpolateProvider) {
-  }]);
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;myModule&#39;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">config</span><span class="p">([</span><span class="s1">&#39;$interpolateProvider&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$interpolateProvider</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">}]);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>The idea is the exact same.  Note the placement of the square brackets;  It's a bit different.</p>
 

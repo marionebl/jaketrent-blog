@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-06-03T08:43:12-06:00</updated>
+  <updated>2013-06-10T08:16:00-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -51,34 +51,59 @@ gem install powder
 
 <p>I found a bit of <a href="https://github.com/linjunpop/node-with-pow">proxy app code</a>, which you should save in your project root as <code>config.ru</code>, and which I paste here:</p>
 
-<p>{% codeblock lang:ruby %}
-require "net/http"</p>
-
-<p>class ProxyApp
-  def call(env)</p>
-
-<pre><code>begin
-  request = Rack::Request.new(env)
-  headers = {}
-  env.each do |key, value|
-    if key =~ /^http_(.*)/i
-      headers[$1] = value
-    end
-  end
-  http = Net::HTTP.new("localhost", 3000)
-  http.start do |http|
-    response = http.send_request(request.request_method, request.fullpath, request.body.read, headers)
-    [response.code, response.to_hash, [response.body]]
-  end
-rescue Errno::ECONNREFUSED
-  [500, {}, ["Server is down, try $npm start"]]
-end
-</code></pre>
-
-<p>  end
-end
-run ProxyApp.new
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;net/http&quot;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;class ProxyApp</span>
+</span><span class='line'><span class="sr">  def call(env)&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">begin</span>
+</span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Request</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>  <span class="n">env</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">key</span> <span class="o">=~</span> <span class="sr">/^http_(.*)/i</span>
+</span><span class='line'>      <span class="n">headers</span><span class="o">[</span><span class="vg">$1</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">3000</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">http</span><span class="o">.</span><span class="n">start</span> <span class="k">do</span> <span class="o">|</span><span class="n">http</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">send_request</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">request_method</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">fullpath</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">read</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">[</span><span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">to_hash</span><span class="p">,</span> <span class="o">[</span><span class="n">response</span><span class="o">.</span><span class="n">body</span><span class="o">]]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">rescue</span> <span class="no">Errno</span><span class="o">::</span><span class="no">ECONNREFUSED</span>
+</span><span class='line'>  <span class="o">[</span><span class="mi">500</span><span class="p">,</span> <span class="p">{},</span> <span class="o">[</span><span class="s2">&quot;Server is down, try $npm start&quot;</span><span class="o">]]</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="n">run</span> <span class="no">ProxyApp</span><span class="o">.</span><span class="n">new</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>The only change you might have to make is the port number for your app (line 13).  In this case, I'm using port 3000 for my NodeJs app.</p>
 

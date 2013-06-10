@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Match Ember and Handlebars Versions - Jake Trent</title>
+  <title>Learn to Procrastinate - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="Specific versions of Ember require specific versions of Handlebars. Here's a way to help them match.">
-  <meta name="keywords" content="js, coffeescript, javascript, ember, handlebars, version">
+  <meta name="description" content="Sometimes we want everything we could imagine in our software at once. Learn to procrastinate what is less important.">
+  
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/match-ember-handlebars-version/">
+  <link rel="canonical" href="http://jaketrent.com/post/learn-to-procrastinate/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Match Ember and Handlebars Versions</h1>
+      <h1 class="entry-title">Learn to Procrastinate</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2013-05-21T07:38:00-06:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
+<time datetime="2013-06-10T06:57:00-06:00" pubdate data-updated="true">Jun 10<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,44 +108,66 @@
   </header>
 
 
-<div class="entry-content"><p><a href="http://emberjs.com">Ember</a> is very specific about what version of <a href="http://handlebarsjs.com">Handlebars</a> it requires.  This is probably good, but it&#8217;s also a pain to work with as different versions of the two libraries are released independently.  There are a few good tools to help us out.</p>
+<div class="entry-content"><p>When making software, sometimes we want everything we can imagine at once.  We want the software to be perfect &#8211; then we&#8217;ll ship it.  Learn to procrastintate.  You might ship more, and you might like the the eventual outcome better.</p>
 
-<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
+<p><img src="http://i.imgur.com/cXx17co.png" alt="Focus on shipping" /></p>
 
 <!--more-->
 
 
-<h2>Released Independently</h2>
+<h2>Worthless Software</h2>
 
-<p>In a prime example, recently there was a new version of Handlebars released: <code>1.0.0-rc.4</code>.  Ember happens to be on version <code>1.0.0-rc.3</code>.  That version has a hard dependency on Handlebars <code>1.0.0-rc.3</code>.  In other words, the latest Ember code relies on an older version of Handlebars.</p>
+<p>Software that sits inside of your git repo, unreleased, is worthless software.  You&#8217;re not going to get paid for it.  You&#8217;re not going to make someone&#8217;s life better.  You&#8217;re not going to attract any new business.  It provides no utility.</p>
 
-<h2>Bower</h2>
+<p>When does software return any value?  At the very soonest, software provides value when it ships &#8211; when it&#8217;s released to the public or your customers.</p>
 
-<p>If you include these 3rd party libraries in your source code under a <code>lib</code> directory or something of that nature, you <em>always</em> have plenty of work to do.  Naturally, you just copy in the exact versions of the scripts that are needed.</p>
+<p>So why do we wait so long to ship?</p>
 
-<p>Hopefully you&#8217;re trying to make use of a mostly awesome tool, <a href="http://bower.io">Bower</a>.  It helps you manage these 3rd party libraries in a way similar to npm.  You provide a descriptor of your project&#8217;s dependencies, <code>component.json</code>.  And you install things similarly via the <code>bower</code> cli.</p>
+<h2>Excuses for Not Shipping</h2>
 
-<h2>Specify a Bower Version</h2>
+<h3>It Must Do More</h3>
 
-<p>If I run:</p>
+<p>Software has a fair bit of built-in or essential complexity.  Making software is challenging.  Sometimes we make it worse and introduce our own accidental complexity.  How?  We don&#8217;t ship.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bower install handlebars --save</span></code></pre></td></tr></table></div></figure>
+<p>We iterate on unreleased software, expand it, and pretend to fully understand what we&#8217;re trying to solve.  The software gets bigger and more complex.  We want our (unshipped) software to somehow solve even <em>more</em> problems before it&#8217;s solved any.  And any problem we attempt to solve without actually testing it (in production), is still just a guess at how to solve it.</p>
 
+<h3>It&#8217;s Not Awesome Yet</h3>
 
-<p>It saves a dependency in my <code>components.json</code> for Handlebars for the latest version it could find.  This won&#8217;t do for us.  We need to specify the versions.</p>
+<p>Sometimes in an attempt to create a (hopefully) great initial impression, we wait to release anything.  This makes sense to some degree, but it can easily be taken to a less useful extreme.  Once we have a feature set that we judge is sufficiently awesome to blow a potential client&#8217;s socks off, we&#8217;ll release it in a big bang.  Boom!  Now the world can see my software in all the glory I have bequeathed it.</p>
 
-<p>Our strategy will be: take the latest version of Ember and then specifically match the Handlbars version.  Finally, we should type:</p>
+<p>Just as we have been guessing as to how may problems the software will solve, we have been guessing as to how warm people will be to the idea of actually using what we&#8217;ve created.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bower install ember --save
-</span><span class='line'>bower install handlebars#1.0.0-rc.3</span></code></pre></td></tr></table></div></figure>
+<h2>What to Procrastinate</h2>
 
+<p>So obviously there are problems with procrastinating.  There are definitely things that you <em>don&#8217;t</em> want to procrastintate: working, shipping, asking for payment.  What <em>should</em> you procrastinate?</p>
 
-<p>As of this writing, that is the version of handlebars that is required.  Bower will recognize any semver git tag name or branch name after the hash <code>#</code> sign.</p>
+<h3>Little Things that are Hard</h3>
 
-<p>I like our version strategy for a project that is under active development in that it keeps us on the latest Ember.  But, if you&#8217;re on a project that&#8217;s been built to an Ember version and not deployed for a long time, you may want to make a very specific dependency out of Ember as well, so the two are guaranteed in sync for future deploys.</p>
+<p>At first glance, this just looks like a cop out.  You <em>should</em> do the important things that are hard.  Even the small things can add a nice touch.  But in an effort to ship, these are often the little things that don&#8217;t add too much but take an inordinate amount of time to figure out or complete.  Skip these things and come back to them later to add the polish.</p>
+
+<h3>Things that are not Core Functionality</h3>
+
+<p>You&#8217;re trying to ship a small, cohesive feature set as fast as you can.  There will be many features on the perephery that you&#8217;ll be tempted to work in as well.  Fight the temptation.  Get used to cutting out good features in order to ship the ones you <em>need</em>.  In this way, you&#8217;ll help ensure that all of your valuable time is used creating the most value for your customers.</p>
+
+<h3>Things that Create Little Tech Debt</h3>
+
+<p>When you start skipping things, this can create problems for you later.  This can be technical debt.  If you want your product to evolve and grow over time, you can&#8217;t afford large amounts of technical debt.  But watch out!  You can use very large lengths of time doing things that add little value in the name of avoiding technical debt.  Be willing to take on some tech debt.  Do this on a case-by-case basis, because this trade-off requires thinking.</p>
+
+<h2>Why You&#8217;ll Like Procrastinating</h2>
+
+<p>Your satisfaction will sky-rocket when you feel like shipping is within reach.  Break down the barriers to getting there.</p>
+
+<p>Focus on the most valuable features, and you&#8217;ll feel like you add maximum value every day &#8211; because you are!</p>
+
+<p>You&#8217;ll be able to move faster because you aren&#8217;t getting bogged down in munitia.  By not taking tangents, your flow time will increase.  You won&#8217;t need to context switch to solve small, hard problems.  You can focus on the important, hard problems for contiguous lengths of time.</p>
+
+<p>You&#8217;ll have something to show a lot faster.  You&#8217;ll have a vertical of working features that are fun to use and are useful &#8211; when shipped, that is.</p>
+
+<h2>Different Paths Converge at Shipping</h2>
+
+<p>Of course there are as many different ways to make software as there are types of software and types of software teams.  That&#8217;s one of the things that makes software creation insanely fun and rewarding.  Find what works for you, and ship lots and lots of awesome software.</p>
+
+<p>In the end, shipping should be a common goal, and we shouldn&#8217;t procrastinate that.</p>
 </div>
 
 
@@ -168,12 +190,12 @@
   
 
 
-<time datetime="2013-05-21T07:38:00-06:00" pubdate data-updated="true">May 21<span>st</span>, 2013</time>
+<time datetime="2013-06-10T06:57:00-06:00" pubdate data-updated="true">Jun 10<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/ember/'>ember</a>, <a class='category' href='/blog/categories/handlebars/'>handlebars</a>, <a class='category' href='/blog/categories/js/'>js</a>
+    <a class='category' href='/blog/categories/productivity/'>Productivity</a>
   
 </span>
 
@@ -182,7 +204,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/match-ember-handlebars-version/" data-via="" data-counturl="http://jaketrent.com/post/match-ember-handlebars-version/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/learn-to-procrastinate/" data-via="" data-counturl="http://jaketrent.com/post/learn-to-procrastinate/" >Tweet</a>
   
   
   
@@ -191,10 +213,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/utahjs-conf-2013-review/" title="Previous Post: UtahJS Conf 2013 Review">&laquo; UtahJS Conf 2013 Review</a>
+        <a class="basic-alignment left" href="/post/css-text-vertical-height/" title="Previous Post: CSS Vertical Height of Text">&laquo; CSS Vertical Height of Text</a>
       
-      
-        <a class="basic-alignment right" href="/post/precompile-ember-templates/" title="Next Post: Precompile Ember Templates">Precompile Ember Templates &raquo;</a>
       
     </p>
   </footer>
@@ -283,8 +303,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/match-ember-handlebars-version/';
-        var disqus_url = 'http://jaketrent.com/post/match-ember-handlebars-version/';
+        var disqus_identifier = 'http://jaketrent.com/post/learn-to-procrastinate/';
+        var disqus_url = 'http://jaketrent.com/post/learn-to-procrastinate/';
         var disqus_script = 'embed.js';
       
     (function () {
