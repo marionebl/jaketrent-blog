@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-06-10T08:16:00-06:00</updated>
+  <updated>2013-06-19T08:18:07-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,218 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Mongoose Population]]></title>
+    <link href="http://jaketrent.com/post/mongoose-population/"/>
+    <updated>2013-06-18T07:39:00-06:00</updated>
+    <id>http://jaketrent.com/post/mongoose-population</id>
+    <content type="html"><![CDATA[<p><a href="http://mongoosejs.com">Mongoose</a> is an object modeler for <a href="http://mongodb.org">MongoDb</a>.  It has a particularly great feature, called <a href="http://mongoosejs.com/docs/populate.html">population</a>.  Population allows you to include other objects in a specified object.  It makes the process a lot easier and more automatic.</p>
+
+<p><img src="http://i.imgur.com/pezEyw7.jpg" alt="Mongoose" /></p>
+
+<!--more-->
+
+
+<h2>Document Design</h2>
+
+<p>Document databases provide a lot of flexibility in how data is modeled.  Just as the name suggests, data will often mimic real-world documents.  MongoDb isn&#8217;t a document database per se, but it has enough flexibility to be treated as one.  Mongoose population can help.</p>
+
+<p>A document is often optimized for reads.  All the data is included, such as it would be on a real-world piece of paper.</p>
+
+<p>In Mongo, data is divided into collections.  Mongoose helps define discrete schemas for data in each.  This separates and makes data fields explicit.  This helps with data organization, storage, and writing.  Population helps bring data from different collections back together again easily.  From the <a href="http://mongoosejs.com/docs/populate.html">docs</a>:</p>
+
+<blockquote><p>Population is the process of automatically replacing the specified paths in the document with document(s) from other collection(s).</p></blockquote>
+
+<p>So, let&#8217;s try it out with a couple examples.</p>
+
+<h2>Data Definition</h2>
+
+<p>Mongo will add a primary surrogate key to each object, called <a href="http://docs.mongodb.org/manual/reference/object-id/">ObjectId</a>, referenced as <code>_id</code> in the data.  This will be the key used to refer to objects in other collections.  If I wanted to model players in leagues &#8211; foosball leagues of course &#8211;  I might create schemas like this:</p>
+
+<figure class='code'><figcaption><span>player.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">mongoose = </span><span class="nx">require</span> <span class="s">&#39;mongoose&#39;</span>
+</span><span class='line'><span class="nv">Schema = </span><span class="nx">mongoose</span><span class="p">.</span><span class="nx">Schema</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">playerSchema = </span><span class="k">new</span> <span class="nx">mongoose</span><span class="p">.</span><span class="nx">Schema</span>
+</span><span class='line'>  <span class="nv">display_name: </span><span class="nb">String</span>
+</span><span class='line'>  <span class="nv">leagues: </span><span class="p">[</span>
+</span><span class='line'>    <span class="nv">type: </span><span class="nx">Schema</span><span class="p">.</span><span class="nx">Types</span><span class="p">.</span><span class="nx">ObjectId</span>
+</span><span class='line'>    <span class="nv">ref: </span><span class="s">&#39;League&#39;</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">Player = </span><span class="nx">mongoose</span><span class="p">.</span><span class="nx">model</span> <span class="s">&#39;Player&#39;</span><span class="p">,</span> <span class="nx">playerSchema</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>league.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">mongoose = </span><span class="nx">require</span> <span class="s">&#39;mongoose&#39;</span>
+</span><span class='line'><span class="nv">Schema = </span><span class="nx">mongoose</span><span class="p">.</span><span class="nx">Schema</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">leagueSchema = </span><span class="k">new</span> <span class="nx">mongoose</span><span class="p">.</span><span class="nx">Schema</span>
+</span><span class='line'>  <span class="nv">display_name: </span><span class="nb">String</span>
+</span><span class='line'>  <span class="nv">created_by:</span>
+</span><span class='line'>    <span class="nv">type: </span><span class="nx">Schema</span><span class="p">.</span><span class="nx">Types</span><span class="p">.</span><span class="nx">ObjectId</span>
+</span><span class='line'>    <span class="nv">ref: </span><span class="s">&#39;Player&#39;</span>
+</span><span class='line'>  <span class="nv">players: </span><span class="p">[</span>
+</span><span class='line'>    <span class="nv">type: </span><span class="nx">Schema</span><span class="p">.</span><span class="nx">Types</span><span class="p">.</span><span class="nx">ObjectId</span>
+</span><span class='line'>    <span class="nv">ref: </span><span class="s">&#39;Player&#39;</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">League = </span><span class="nx">mongoose</span><span class="p">.</span><span class="nx">model</span> <span class="s">&#39;League&#39;</span><span class="p">,</span> <span class="nx">leagueSchema</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A few points of interest:</p>
+
+<ul>
+<li>Since we are using <code>_id</code> to refer to other objects, we use the <code>ObjectId</code> type in the Mongoose definition.  You can use other fields.  Just make sure the type matches.</li>
+<li>The <code>ref</code> attribute must match <em>exactly</em> the model name in your model definition.  Otherwise you&#8217;ll get something like this little beauty: <code>MissingSchemaError: Schema hasn't been registered for model "Player".</code>.</li>
+<li>Note that <code>League.players</code> is an array.  Just surround the field definition in square brackets to get this functionality.</li>
+</ul>
+
+
+<h2>Data Read</h2>
+
+<p>Reading data is where Mongoose population really shines.  This is the magic that makes reads of documents very straightforward, easy, and fast.  The magic is in the <code>populate()</code> function.</p>
+
+<h3>Populate One Field</h3>
+
+<p>If I want to populate a single field in the query for an object, I specify the name of that field in a string to the <code>populate</code> function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">Player</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="nv">_id: </span><span class="s">&#39;abc123&#39;</span> <span class="p">})</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">populate</span><span class="p">(</span><span class="s">&#39;leagues&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">exec</span> <span class="nf">(err, player) -&gt;</span> <span class="c1">#...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>leagues</code> will be populated with an array of full <code>League</code> objects when the resulting json returned, just like magic.</p>
+
+<h3>Populate Multiple Fields</h3>
+
+<p>Populating multiple referenced objects is similarly easy:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">League</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">find</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">populate</span><span class="p">(</span><span class="s">&#39;created_by players&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">exec</span> <span class="nf">(err, league) -&gt;</span> <span class="c1">#...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Just separate the field names in your <code>populate</code> parameter with spaces.  This query will return an array of <code>League</code> with the <code>created_by</code> and <code>player</code> fields populated with the associated <code>Player</code> objects.</p>
+
+<h3>Populate Partial Objects</h3>
+
+<p>Populating objects like this can quickly bloat your payload size.  To limit included objects to only a subset of fields, you can specify exactly what parts you want populated.  For instance, if my client UI only needed to show a list of leagues that a player belongs to, I could ask for just the <code>display_name</code> of the included <code>League</code> object by using a 2nd parameter:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">Player</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="nv">_id: </span><span class="s">&#39;abc123&#39;</span> <span class="p">})</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">populate</span><span class="p">(</span><span class="s">&#39;leagues&#39;</span><span class="p">,</span> <span class="s">&#39;display_name&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">exec</span> <span class="nf">(err, player) -&gt;</span> <span class="c1">#...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For listing multiple parts, separate the attribute names with spaces.</p>
+
+<h3>Forget to Populate</h3>
+
+<p>You might get so used to having objects populated for some of your queries that you might wonder why they&#8217;re not populated in your latest query.  You probably just forgot to call <code>populate()</code> in your query.  You must do this explicitly to get the inclusions you desire.</p>
+
+<h2>Data Write</h2>
+
+<p>When you go to read the data, it&#8217;s quick, easy, and automatic.  But that&#8217;s because some work was done previously to reference the correct objects and make sure these references are saved.  Therefore, the naturally more work-intensive part of the population story is the data writing.</p>
+
+<p>When we write to our example models, we need to save the proper references.  For instance, when a new <code>League</code> is created, let&#8217;s say it automatically needs a <code>created_by</code> <code>Player</code> reference saved and the creating <code>Player</code> will automatically join the league:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">league =</span>
+</span><span class='line'>  <span class="nv">display_name: </span><span class="nx">myLeagueName</span>
+</span><span class='line'>  <span class="nv">created_by: </span><span class="nx">currentPlayer</span><span class="p">.</span><span class="nx">_id</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">League</span><span class="p">.</span><span class="nx">create</span> <span class="nx">league</span><span class="p">,</span> <span class="nf">(err, league) -&gt;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">err</span><span class="o">?</span>
+</span><span class='line'>    <span class="c1"># ... do smart things that are never shown in a tutorial</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">Player</span><span class="p">.</span><span class="nx">update</span> <span class="p">{</span> <span class="nv">_id: </span><span class="nx">currentPlayer</span><span class="p">.</span><span class="nx">_id</span> <span class="p">},</span>
+</span><span class='line'>      <span class="nv">$push:</span>
+</span><span class='line'>        <span class="nv">leagues: </span><span class="nx">league</span><span class="p">.</span><span class="nx">_id</span>
+</span><span class='line'>    <span class="p">,</span> <span class="nf">(err, numberAffected, raw) -&gt;</span>
+</span><span class='line'>      <span class="k">if</span> <span class="nx">err</span><span class="o">?</span>
+</span><span class='line'>        <span class="c1"># you know...</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>        <span class="nx">res</span><span class="p">.</span><span class="nx">json</span> <span class="nx">league</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A few points of interest:</p>
+
+<ul>
+<li>Lowercase <code>league</code> is just the json to populate a <code>League</code> model.  <code>league</code> is also the shadowed variable name in the <code>League.create</code> callback.</li>
+<li><code>currentPlayer</code> is just an imagined <code>Player</code> reference that has an <code>_id</code> that you will use to associate <code>Player</code> to this <code>League</code>.</li>
+<li><a href="http://docs.mongodb.org/manual/reference/operator/push/"><code>$push</code></a> is a special <code>update</code> attribute that appends new elements to a model&#8217;s array.</li>
+</ul>
+
+
+<p>Depending on how complex your model relationships become, you may opt for a difference code strategy besides nesting callbacks.  Don&#8217;t like your pyramid of doom?  Try the awesome <a href="https://github.com/caolan/async">async.js</a>.</p>
+
+<p>I don&#8217;t know if Mongoose population is going to change your life, but I was very happy when I found this feature.  I had been doing junk like this manually.  What are some other great use cases that you&#8217;ve found?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Learn to Procrastinate]]></title>
@@ -1508,62 +1720,6 @@
 
 
 <p>Now the Rails are even slicker.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Jumpstart Lab Ruby Training Review]]></title>
-    <link href="http://jaketrent.com/post/jumpstartlab-ruby-training-review/"/>
-    <updated>2013-02-19T07:06:00-07:00</updated>
-    <id>http://jaketrent.com/post/jumpstartlab-ruby-training-review</id>
-    <content type="html"><![CDATA[<p><a href="http://jumpstartlab.com/">Jumpstart Lab</a> offers a <a href="http://www.jumpstartlab.com/courses/">Ruby training</a>.  I recently attended.  I had a great experience and learned a lot in my first real introduction to Ruby and Ruby on Rails.  I would highly recommend the course.  Here are a few more details on my experience.</p>
-
-<p><img src="http://i.imgur.com/DniDljD.png" alt="Jumpstart Lab" /></p>
-
-<!--more-->
-
-
-<h2>Format</h2>
-
-<h4>Length</h4>
-
-<p>Jumpstart sent a great instructor, <a href="https://twitter.com/franklinwebber">Franklin Webber</a>, to come lead us through the exercises.  The course was on site at our company.  It was 5 days in length.  Instruction went from 9am to 4pm daily, with a 1 hour break at lunch time.</p>
-
-<h4>Breaks</h4>
-
-<p>Exercises throughout the day were split up into 25 min time chunks with 5 min breaks following.  Some will recognize this usual time chunks for the <a href="http://www.pomodorotechnique.com/">Pomodoro technique</a>.  Frank, as the leader of the exercises, was more strict in his observance of the Pomodoro time slices than I&#8217;m used to seeing.  Many people I&#8217;ve worked with would work right through a short break, but we took breaks quite religiously.</p>
-
-<h4>Content Split</h4>
-
-<p>In our 5 day training, we spent about the first 3 days going over vanilla Ruby.  The next 2 days, we focused on the Ruby on Rails framework specifically.</p>
-
-<h2>Approach</h2>
-
-<h4>TDD</h4>
-
-<p>Probably about the coolest aspect of this training was its relying on <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a> to get stuff done.  Often training courses, especially those that introduce brand new languages and concepts, leave testing as a tack-on feature, meantioned in parting near the end of the course.  Thankfully, Jumpstart did a great job integrating this best practice into most of its instruction.</p>
-
-<p>We used <a href="https://www.relishapp.com/rspec">Rspec</a> as a test runner.  We used <a href="https://github.com/guard/guard">Guard</a> to help us go faster through our test iterations.  We discussed what to test, how to make our tests more readable, how to isolate tests using <a href="https://relishapp.com/rspec/rspec-mocks/docs">mocks</a>, and practiced doing lots of tests.</p>
-
-<p>Only the Rails portion of the course was taught using error-driven development.  This actually worked quite well, as learning to use a framework requires learning how the pieces connect and trying not to test the framework.</p>
-
-<h4>Instructor-Led</h4>
-
-<p>Frank made the class successful.  He is super knowledgeable about the subject matter.  He is fun and funny.  He is great at introducing topics that built upon each other.  He is great at letting the students figure things out for themselves and jumping in at the right moment to help clear hurdles.  It was great to meet and work with Frank, and I hope to do so again.</p>
-
-<h2>Bonuses</h2>
-
-<h4>Hack Night</h4>
-
-<p>We do a <a href="http://tannerhack.eventbrite.com/">hack night</a> every other week at work anyway.  Since Frank was here, he led the hack night.  We did a Codemash kata exercise where we created code to generate a <a href="https://github.com/jaketrent/minesweeper">Minesweeper</a> board.  We split into teams and pair-programmed our different solutions.  Everyone came up with unique solutions, we compared them, and then iterated.  I had so much fun with the exercise, I put a frontend on the game and made it <a href="http://minemopper.herokuapp.com">playable</a>.</p>
-
-<h4>Tutorial Content</h4>
-
-<p>Jumpstart printed materials for us in a booklet.  The <a href="http://tutorials.jumpstartlab.com">tutorials</a> are also available online.  Frank took a unique path through the content, and we talked through our specific approach.  As he worked, Frank also <a href="https://github.com/burtlo/training-021113">uploaded the code</a> from our instruction to Github.  I did the same for <a href="http://github.com/jaketrent/ruby-training">my code</a>.</p>
-
-<h4>Recommendation</h4>
-
-<p>I think that this training series was about the best I&#8217;ve attended.  I&#8217;m doing a lot more Ruby and Rails in my current job than I expected even a few weeks ago, so it was very timely and useful for me.  The content was good, but it was the instruction that made it top notch.  Thanks, Frank and Jumpstart, for the great experience!</p>
 ]]></content>
   </entry>
   

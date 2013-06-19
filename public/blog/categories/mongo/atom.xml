@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: mongo | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/mongo/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2013-06-19T08:18:07-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Mongoose Population]]></title>
+    <link href="http://jaketrent.com/post/mongoose-population/"/>
+    <updated>2013-06-18T07:39:00-06:00</updated>
+    <id>http://jaketrent.com/post/mongoose-population</id>
+    <content type="html"><![CDATA[<p><a href="http://mongoosejs.com">Mongoose</a> is an object modeler for <a href="http://mongodb.org">MongoDb</a>.  It has a particularly great feature, called <a href="http://mongoosejs.com/docs/populate.html">population</a>.  Population allows you to include other objects in a specified object.  It makes the process a lot easier and more automatic.</p>
+
+<p><img src="http://i.imgur.com/pezEyw7.jpg" alt="Mongoose" /></p>
+
+<!--more-->
+
+
+<h2>Document Design</h2>
+
+<p>Document databases provide a lot of flexibility in how data is modeled.  Just as the name suggests, data will often mimic real-world documents.  MongoDb isn't a document database per se, but it has enough flexibility to be treated as one.  Mongoose population can help.</p>
+
+<p>A document is often optimized for reads.  All the data is included, such as it would be on a real-world piece of paper.</p>
+
+<p>In Mongo, data is divided into collections.  Mongoose helps define discrete schemas for data in each.  This separates and makes data fields explicit.  This helps with data organization, storage, and writing.  Population helps bring data from different collections back together again easily.  From the <a href="http://mongoosejs.com/docs/populate.html">docs</a>:</p>
+
+<blockquote><p>Population is the process of automatically replacing the specified paths in the document with document(s) from other collection(s).</p></blockquote>
+
+<p>So, let's try it out with a couple examples.</p>
+
+<h2>Data Definition</h2>
+
+<p>Mongo will add a primary surrogate key to each object, called <a href="http://docs.mongodb.org/manual/reference/object-id/">ObjectId</a>, referenced as <code>_id</code> in the data.  This will be the key used to refer to objects in other collections.  If I wanted to model players in leagues -- foosball leagues of course --  I might create schemas like this:</p>
+
+<p>```coffeescript player.coffee
+mongoose = require 'mongoose'
+Schema = mongoose.Schema</p>
+
+<p>playerSchema = new mongoose.Schema
+  display_name: String
+  leagues: [</p>
+
+<pre><code>type: Schema.Types.ObjectId
+ref: 'League'
+</code></pre>
+
+<p>  ]</p>
+
+<p>Player = mongoose.model 'Player', playerSchema
+```</p>
+
+<p>```coffeescript league.coffee
+mongoose = require 'mongoose'
+Schema = mongoose.Schema</p>
+
+<p>leagueSchema = new mongoose.Schema
+  display_name: String
+  created_by:</p>
+
+<pre><code>type: Schema.Types.ObjectId
+ref: 'Player'
+</code></pre>
+
+<p>  players: [</p>
+
+<pre><code>type: Schema.Types.ObjectId
+ref: 'Player'
+</code></pre>
+
+<p>  ]</p>
+
+<p>League = mongoose.model 'League', leagueSchema
+```</p>
+
+<p>A few points of interest:</p>
+
+<ul>
+<li>Since we are using <code>_id</code> to refer to other objects, we use the <code>ObjectId</code> type in the Mongoose definition.  You can use other fields.  Just make sure the type matches.</li>
+<li>The <code>ref</code> attribute must match <em>exactly</em> the model name in your model definition.  Otherwise you'll get something like this little beauty: <code>MissingSchemaError: Schema hasn't been registered for model "Player".</code>.</li>
+<li>Note that <code>League.players</code> is an array.  Just surround the field definition in square brackets to get this functionality.</li>
+</ul>
+
+
+<h2>Data Read</h2>
+
+<p>Reading data is where Mongoose population really shines.  This is the magic that makes reads of documents very straightforward, easy, and fast.  The magic is in the <code>populate()</code> function.</p>
+
+<h3>Populate One Field</h3>
+
+<p>If I want to populate a single field in the query for an object, I specify the name of that field in a string to the <code>populate</code> function:</p>
+
+<p><code>coffeescript
+Player
+  .findOne({ _id: 'abc123' })
+  .populate('leagues')
+  .exec (err, player) -&gt; #...
+</code></p>
+
+<p><code>leagues</code> will be populated with an array of full <code>League</code> objects when the resulting json returned, just like magic.</p>
+
+<h3>Populate Multiple Fields</h3>
+
+<p>Populating multiple referenced objects is similarly easy:</p>
+
+<p><code>coffeescript
+League
+  .find()
+  .populate('created_by players')
+  .exec (err, league) -&gt; #...
+</code></p>
+
+<p>Just separate the field names in your <code>populate</code> parameter with spaces.  This query will return an array of <code>League</code> with the <code>created_by</code> and <code>player</code> fields populated with the associated <code>Player</code> objects.</p>
+
+<h3>Populate Partial Objects</h3>
+
+<p>Populating objects like this can quickly bloat your payload size.  To limit included objects to only a subset of fields, you can specify exactly what parts you want populated.  For instance, if my client UI only needed to show a list of leagues that a player belongs to, I could ask for just the <code>display_name</code> of the included <code>League</code> object by using a 2nd parameter:</p>
+
+<p><code>coffeescript
+Player
+  .findOne({ _id: 'abc123' })
+  .populate('leagues', 'display_name')
+  .exec (err, player) -&gt; #...
+</code></p>
+
+<p>For listing multiple parts, separate the attribute names with spaces.</p>
+
+<h3>Forget to Populate</h3>
+
+<p>You might get so used to having objects populated for some of your queries that you might wonder why they're not populated in your latest query.  You probably just forgot to call <code>populate()</code> in your query.  You must do this explicitly to get the inclusions you desire.</p>
+
+<h2>Data Write</h2>
+
+<p>When you go to read the data, it's quick, easy, and automatic.  But that's because some work was done previously to reference the correct objects and make sure these references are saved.  Therefore, the naturally more work-intensive part of the population story is the data writing.</p>
+
+<p>When we write to our example models, we need to save the proper references.  For instance, when a new <code>League</code> is created, let's say it automatically needs a <code>created_by</code> <code>Player</code> reference saved and the creating <code>Player</code> will automatically join the league:</p>
+
+<p>```coffeescript
+league =
+  display_name: myLeagueName
+  created_by: currentPlayer._id</p>
+
+<p>League.create league, (err, league) ->
+  if err?</p>
+
+<pre><code># ... do smart things that are never shown in a tutorial
+</code></pre>
+
+<p>  else</p>
+
+<pre><code>Player.update { _id: currentPlayer._id },
+  $push:
+    leagues: league._id
+, (err, numberAffected, raw) -&gt;
+  if err?
+    # you know...
+  else
+    res.json league
+</code></pre>
+
+<p>```</p>
+
+<p>A few points of interest:</p>
+
+<ul>
+<li>Lowercase <code>league</code> is just the json to populate a <code>League</code> model.  <code>league</code> is also the shadowed variable name in the <code>League.create</code> callback.</li>
+<li><code>currentPlayer</code> is just an imagined <code>Player</code> reference that has an <code>_id</code> that you will use to associate <code>Player</code> to this <code>League</code>.</li>
+<li><a href="http://docs.mongodb.org/manual/reference/operator/push/"><code>$push</code></a> is a special <code>update</code> attribute that appends new elements to a model's array.</li>
+</ul>
+
+
+<p>Depending on how complex your model relationships become, you may opt for a difference code strategy besides nesting callbacks.  Don't like your pyramid of doom?  Try the awesome <a href="https://github.com/caolan/async">async.js</a>.</p>
+
+<p>I don't know if Mongoose population is going to change your life, but I was very happy when I found this feature.  I had been doing junk like this manually.  What are some other great use cases that you've found?</p>
+]]></content>
+  </entry>
+  
+</feed>

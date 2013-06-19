@@ -1,0 +1,482 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Mongoose Population - Jake Trent</title>
+  <meta name="author" content="Jake Trent">
+
+  
+  <meta name="description" content="Mongoose is an object modeler for MongoDb in Node.js. It has a great feature, population, for including references to other Mongoose models.">
+  <meta name="keywords" content="nodejs, js, javascript, mongo, mongodb, mongoose, join, include objects">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/mongoose-population/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1 class="title"><a href="/">Jake Trent</a></h1>
+  <div class="desc">
+    
+      <h2>Power Ballad Coding</h2>
+    
+  </div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jaketrent.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/blog/categories/code/">Code</a></li>
+  <li><a href="/blog/categories/design/">Design</a></li>
+  <li><a href="/blog/categories/productivity/">Productivity</a></li>
+  <li><a href="/blog/categories/review/">Reviews</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Mongoose Population</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-18T07:39:00-06:00" pubdate data-updated="true">Jun 18<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="http://mongoosejs.com">Mongoose</a> is an object modeler for <a href="http://mongodb.org">MongoDb</a>.  It has a particularly great feature, called <a href="http://mongoosejs.com/docs/populate.html">population</a>.  Population allows you to include other objects in a specified object.  It makes the process a lot easier and more automatic.</p>
+
+<p><img src="http://i.imgur.com/pezEyw7.jpg" alt="Mongoose" /></p>
+
+<!--more-->
+
+
+<h2>Document Design</h2>
+
+<p>Document databases provide a lot of flexibility in how data is modeled.  Just as the name suggests, data will often mimic real-world documents.  MongoDb isn&#8217;t a document database per se, but it has enough flexibility to be treated as one.  Mongoose population can help.</p>
+
+<p>A document is often optimized for reads.  All the data is included, such as it would be on a real-world piece of paper.</p>
+
+<p>In Mongo, data is divided into collections.  Mongoose helps define discrete schemas for data in each.  This separates and makes data fields explicit.  This helps with data organization, storage, and writing.  Population helps bring data from different collections back together again easily.  From the <a href="http://mongoosejs.com/docs/populate.html">docs</a>:</p>
+
+<blockquote><p>Population is the process of automatically replacing the specified paths in the document with document(s) from other collection(s).</p></blockquote>
+
+<p>So, let&#8217;s try it out with a couple examples.</p>
+
+<h2>Data Definition</h2>
+
+<p>Mongo will add a primary surrogate key to each object, called <a href="http://docs.mongodb.org/manual/reference/object-id/">ObjectId</a>, referenced as <code>_id</code> in the data.  This will be the key used to refer to objects in other collections.  If I wanted to model players in leagues &#8211; foosball leagues of course &#8211;  I might create schemas like this:</p>
+
+<figure class='code'><figcaption><span>player.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">mongoose = </span><span class="nx">require</span> <span class="s">&#39;mongoose&#39;</span>
+</span><span class='line'><span class="nv">Schema = </span><span class="nx">mongoose</span><span class="p">.</span><span class="nx">Schema</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">playerSchema = </span><span class="k">new</span> <span class="nx">mongoose</span><span class="p">.</span><span class="nx">Schema</span>
+</span><span class='line'>  <span class="nv">display_name: </span><span class="nb">String</span>
+</span><span class='line'>  <span class="nv">leagues: </span><span class="p">[</span>
+</span><span class='line'>    <span class="nv">type: </span><span class="nx">Schema</span><span class="p">.</span><span class="nx">Types</span><span class="p">.</span><span class="nx">ObjectId</span>
+</span><span class='line'>    <span class="nv">ref: </span><span class="s">&#39;League&#39;</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">Player = </span><span class="nx">mongoose</span><span class="p">.</span><span class="nx">model</span> <span class="s">&#39;Player&#39;</span><span class="p">,</span> <span class="nx">playerSchema</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>league.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">mongoose = </span><span class="nx">require</span> <span class="s">&#39;mongoose&#39;</span>
+</span><span class='line'><span class="nv">Schema = </span><span class="nx">mongoose</span><span class="p">.</span><span class="nx">Schema</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">leagueSchema = </span><span class="k">new</span> <span class="nx">mongoose</span><span class="p">.</span><span class="nx">Schema</span>
+</span><span class='line'>  <span class="nv">display_name: </span><span class="nb">String</span>
+</span><span class='line'>  <span class="nv">created_by:</span>
+</span><span class='line'>    <span class="nv">type: </span><span class="nx">Schema</span><span class="p">.</span><span class="nx">Types</span><span class="p">.</span><span class="nx">ObjectId</span>
+</span><span class='line'>    <span class="nv">ref: </span><span class="s">&#39;Player&#39;</span>
+</span><span class='line'>  <span class="nv">players: </span><span class="p">[</span>
+</span><span class='line'>    <span class="nv">type: </span><span class="nx">Schema</span><span class="p">.</span><span class="nx">Types</span><span class="p">.</span><span class="nx">ObjectId</span>
+</span><span class='line'>    <span class="nv">ref: </span><span class="s">&#39;Player&#39;</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">League = </span><span class="nx">mongoose</span><span class="p">.</span><span class="nx">model</span> <span class="s">&#39;League&#39;</span><span class="p">,</span> <span class="nx">leagueSchema</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A few points of interest:</p>
+
+<ul>
+<li>Since we are using <code>_id</code> to refer to other objects, we use the <code>ObjectId</code> type in the Mongoose definition.  You can use other fields.  Just make sure the type matches.</li>
+<li>The <code>ref</code> attribute must match <em>exactly</em> the model name in your model definition.  Otherwise you&#8217;ll get something like this little beauty: <code>MissingSchemaError: Schema hasn't been registered for model "Player".</code>.</li>
+<li>Note that <code>League.players</code> is an array.  Just surround the field definition in square brackets to get this functionality.</li>
+</ul>
+
+
+<h2>Data Read</h2>
+
+<p>Reading data is where Mongoose population really shines.  This is the magic that makes reads of documents very straightforward, easy, and fast.  The magic is in the <code>populate()</code> function.</p>
+
+<h3>Populate One Field</h3>
+
+<p>If I want to populate a single field in the query for an object, I specify the name of that field in a string to the <code>populate</code> function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">Player</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="nv">_id: </span><span class="s">&#39;abc123&#39;</span> <span class="p">})</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">populate</span><span class="p">(</span><span class="s">&#39;leagues&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">exec</span> <span class="nf">(err, player) -&gt;</span> <span class="c1">#...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>leagues</code> will be populated with an array of full <code>League</code> objects when the resulting json returned, just like magic.</p>
+
+<h3>Populate Multiple Fields</h3>
+
+<p>Populating multiple referenced objects is similarly easy:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">League</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">find</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">populate</span><span class="p">(</span><span class="s">&#39;created_by players&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">exec</span> <span class="nf">(err, league) -&gt;</span> <span class="c1">#...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Just separate the field names in your <code>populate</code> parameter with spaces.  This query will return an array of <code>League</code> with the <code>created_by</code> and <code>player</code> fields populated with the associated <code>Player</code> objects.</p>
+
+<h3>Populate Partial Objects</h3>
+
+<p>Populating objects like this can quickly bloat your payload size.  To limit included objects to only a subset of fields, you can specify exactly what parts you want populated.  For instance, if my client UI only needed to show a list of leagues that a player belongs to, I could ask for just the <code>display_name</code> of the included <code>League</code> object by using a 2nd parameter:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">Player</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="nv">_id: </span><span class="s">&#39;abc123&#39;</span> <span class="p">})</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">populate</span><span class="p">(</span><span class="s">&#39;leagues&#39;</span><span class="p">,</span> <span class="s">&#39;display_name&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">exec</span> <span class="nf">(err, player) -&gt;</span> <span class="c1">#...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For listing multiple parts, separate the attribute names with spaces.</p>
+
+<h3>Forget to Populate</h3>
+
+<p>You might get so used to having objects populated for some of your queries that you might wonder why they&#8217;re not populated in your latest query.  You probably just forgot to call <code>populate()</code> in your query.  You must do this explicitly to get the inclusions you desire.</p>
+
+<h2>Data Write</h2>
+
+<p>When you go to read the data, it&#8217;s quick, easy, and automatic.  But that&#8217;s because some work was done previously to reference the correct objects and make sure these references are saved.  Therefore, the naturally more work-intensive part of the population story is the data writing.</p>
+
+<p>When we write to our example models, we need to save the proper references.  For instance, when a new <code>League</code> is created, let&#8217;s say it automatically needs a <code>created_by</code> <code>Player</code> reference saved and the creating <code>Player</code> will automatically join the league:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">league =</span>
+</span><span class='line'>  <span class="nv">display_name: </span><span class="nx">myLeagueName</span>
+</span><span class='line'>  <span class="nv">created_by: </span><span class="nx">currentPlayer</span><span class="p">.</span><span class="nx">_id</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">League</span><span class="p">.</span><span class="nx">create</span> <span class="nx">league</span><span class="p">,</span> <span class="nf">(err, league) -&gt;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">err</span><span class="o">?</span>
+</span><span class='line'>    <span class="c1"># ... do smart things that are never shown in a tutorial</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">Player</span><span class="p">.</span><span class="nx">update</span> <span class="p">{</span> <span class="nv">_id: </span><span class="nx">currentPlayer</span><span class="p">.</span><span class="nx">_id</span> <span class="p">},</span>
+</span><span class='line'>      <span class="nv">$push:</span>
+</span><span class='line'>        <span class="nv">leagues: </span><span class="nx">league</span><span class="p">.</span><span class="nx">_id</span>
+</span><span class='line'>    <span class="p">,</span> <span class="nf">(err, numberAffected, raw) -&gt;</span>
+</span><span class='line'>      <span class="k">if</span> <span class="nx">err</span><span class="o">?</span>
+</span><span class='line'>        <span class="c1"># you know...</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>        <span class="nx">res</span><span class="p">.</span><span class="nx">json</span> <span class="nx">league</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A few points of interest:</p>
+
+<ul>
+<li>Lowercase <code>league</code> is just the json to populate a <code>League</code> model.  <code>league</code> is also the shadowed variable name in the <code>League.create</code> callback.</li>
+<li><code>currentPlayer</code> is just an imagined <code>Player</code> reference that has an <code>_id</code> that you will use to associate <code>Player</code> to this <code>League</code>.</li>
+<li><a href="http://docs.mongodb.org/manual/reference/operator/push/"><code>$push</code></a> is a special <code>update</code> attribute that appends new elements to a model&#8217;s array.</li>
+</ul>
+
+
+<p>Depending on how complex your model relationships become, you may opt for a difference code strategy besides nesting callbacks.  Don&#8217;t like your pyramid of doom?  Try the awesome <a href="https://github.com/caolan/async">async.js</a>.</p>
+
+<p>I don&#8217;t know if Mongoose population is going to change your life, but I was very happy when I found this feature.  I had been doing junk like this manually.  What are some other great use cases that you&#8217;ve found?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-18T07:39:00-06:00" pubdate data-updated="true">Jun 18<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/mongo/'>mongo</a>, <a class='category' href='/blog/categories/mongoose/'>mongoose</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/mongoose-population/" data-via="" data-counturl="http://jaketrent.com/post/mongoose-population/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/post/learn-to-procrastinate/" title="Previous Post: Learn to Procrastinate">&laquo; Learn to Procrastinate</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="social">
+    <li><a class="social social-github" href="http://github.com/jaketrent" title="Github" class="first">Github</a></li>
+    <li><a class="social social-twitter" href="http://twitter.com/jaketrent" title="Twitter">Twitter</a></li>
+    <li><a class="social social-linkedin" href="http://linkedin.com/in/jaketrent" title="LinkedIn">LinkedIn</a></li>
+    <li><a class="social social-googleplus" href="https://plus.google.com/115032056022257436849?rel=author" title="Google Plus">Google Plus</a></li>
+    <li><a class="social social-rss" href="/atom.xml" title="RSS">RSS</a></li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/mongoose-population/">Mongoose Population</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/learn-to-procrastinate/">Learn to Procrastinate</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/css-text-vertical-height/">CSS Vertical Height of Text</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/ember-parent-templates/">Ember Parent Templates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/precompile-ember-templates/">Precompile Ember Templates</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/115032056022257436849?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Jake Trent -
+  <a href="/blog/archives">Archives</a> -
+  <a href="/atom.xml">Feed</a> -
+  <a href="/sitemap.xml">Sitemap</a> -
+  <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/mongoose-population/';
+        var disqus_url = 'http://jaketrent.com/post/mongoose-population/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
