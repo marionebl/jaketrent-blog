@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-06-19T08:18:07-06:00</updated>
+  <updated>2013-06-19T20:23:54-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,88 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ngStyle Background]]></title>
+    <link href="http://jaketrent.com/post/ngstyle-background/"/>
+    <updated>2013-06-19T07:08:00-06:00</updated>
+    <id>http://jaketrent.com/post/ngstyle-background</id>
+    <content type="html"><![CDATA[<p><code>ngStyle</code> is the directive used to set inline style attributes with AngularJs.  Most of the time, it's straightforward to use.  <code>background</code> css attributes can be just slightly trickier.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs" /></p>
+
+<!--more-->
+
+
+<h2>ngStyle Objects</h2>
+
+<p>The <code>ngStyle</code> directive requires an object for input.  The object key is the css attribute name.  The resultant value for the key is the value of the css attribute.</p>
+
+<p><code>ngStyle</code> is obviously used to set dynamic styles, because static styles are more easily and efficient set using the standard html <code>style</code> attribute.</p>
+
+<h2>A Dynamic Style Example</h2>
+
+<p>So let's setup a controller that sets a dynamic color based on something as useful as the time.  Useful, right?</p>
+
+<p>```coffeescript colorCtrl.coffee
+angular.module('colorly').controller 'colorCtrl', ($scope) ->
+  $scope.getColor = -></p>
+
+<pre><code>if new Date().getTime() % 2 is 0 then "red" else "blue"
+</code></pre>
+
+<p>```</p>
+
+<p>We could use this <code>getColor</code> function in our app:</p>
+
+<p>```haml app.jade
+html(ng-app="colorly")
+  head</p>
+
+<pre><code>//- ... include Angular, etc
+</code></pre>
+
+<p>  body(ng-controller="colorly")</p>
+
+<pre><code>p(ng-style="{ color: getColor() }")
+  | The text will be one of two colors
+</code></pre>
+
+<p>```</p>
+
+<h2>A Background Example</h2>
+
+<p>If we have a dynamic value that needs to go in a css <code>background</code> or <code>background-image</code> attribute, it can be just a bit more tricky to specify.</p>
+
+<p>Let's say we have a <code>getImage()</code> function in our controller.  This function returns a string formatted similar to this: <code>url(icons/pen.png)</code>.  If we do, the <code>ngStyle</code> declaration is specified the exact same way as before:</p>
+
+<p><code>haml
+ng-style="{ 'background-image': getImage() }"
+</code></p>
+
+<p>Make sure to put quotes around the <code>background-image</code> key name.  Remember, this must be formatted as a valid Javascript object key.</p>
+
+<h2>Another Background Example</h2>
+
+<p>That example was easy.  Often, however, you don't have data stored in your models that's formatted like <code>url(icons/pen.png)</code>.  Instead you often have a field that represents the image path only.  In this case, you must do some JavaScript inside your <code>ngStyle</code> declaration:</p>
+
+<p>```coffeescript colorCtrl.coffee
+angular.module('colorly').controller 'colorCtrl', ($scope) ->
+  $scope.tool =</p>
+
+<pre><code>name: 'Pen'
+icon: 'icons/pen.png'
+</code></pre>
+
+<p>```</p>
+
+<p><code>haml
+ng-style="{ 'background-image': 'url(' + tool.icon + ')' }"
+</code></p>
+
+<p>Remember that it's just Javascript, and you'll setup the string concatenation to work just fine.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mongoose Population]]></title>
@@ -451,51 +533,6 @@ npm install matchdep grunt grunt-regarde grunt-contrib-livereload grunt-emblem -
 </code></p>
 
 <p>So now, seriously, go write some Emblem templates.  So fun, so precompiled.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Match Ember and Handlebars Versions]]></title>
-    <link href="http://jaketrent.com/post/match-ember-handlebars-version/"/>
-    <updated>2013-05-21T07:38:00-06:00</updated>
-    <id>http://jaketrent.com/post/match-ember-handlebars-version</id>
-    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a> is very specific about what version of <a href="http://handlebarsjs.com">Handlebars</a> it requires.  This is probably good, but it's also a pain to work with as different versions of the two libraries are released independently.  There are a few good tools to help us out.</p>
-
-<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
-
-<!--more-->
-
-
-<h2>Released Independently</h2>
-
-<p>In a prime example, recently there was a new version of Handlebars released: <code>1.0.0-rc.4</code>.  Ember happens to be on version <code>1.0.0-rc.3</code>.  That version has a hard dependency on Handlebars <code>1.0.0-rc.3</code>.  In other words, the latest Ember code relies on an older version of Handlebars.</p>
-
-<h2>Bower</h2>
-
-<p>If you include these 3rd party libraries in your source code under a <code>lib</code> directory or something of that nature, you <em>always</em> have plenty of work to do.  Naturally, you just copy in the exact versions of the scripts that are needed.</p>
-
-<p>Hopefully you're trying to make use of a mostly awesome tool, <a href="http://bower.io">Bower</a>.  It helps you manage these 3rd party libraries in a way similar to npm.  You provide a descriptor of your project's dependencies, <code>component.json</code>.  And you install things similarly via the <code>bower</code> cli.</p>
-
-<h2>Specify a Bower Version</h2>
-
-<p>If I run:</p>
-
-<p><code>
-bower install handlebars --save
-</code></p>
-
-<p>It saves a dependency in my <code>components.json</code> for Handlebars for the latest version it could find.  This won't do for us.  We need to specify the versions.</p>
-
-<p>Our strategy will be: take the latest version of Ember and then specifically match the Handlbars version.  Finally, we should type:</p>
-
-<p><code>
-bower install ember --save
-bower install handlebars#1.0.0-rc.3
-</code></p>
-
-<p>As of this writing, that is the version of handlebars that is required.  Bower will recognize any semver git tag name or branch name after the hash <code>#</code> sign.</p>
-
-<p>I like our version strategy for a project that is under active development in that it keeps us on the latest Ember.  But, if you're on a project that's been built to an Ember version and not deployed for a long time, you may want to make a very specific dependency out of Ember as well, so the two are guaranteed in sync for future deploys.</p>
 ]]></content>
   </entry>
   

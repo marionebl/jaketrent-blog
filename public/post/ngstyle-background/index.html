@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Serve CoffeeScript from Sinatra - Jake Trent</title>
+  <title>ngStyle Background - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="CoffeeScript is nice. Sinatra is nice. Get Sinatra to serve your nice CoffeeScript.">
-  <meta name="keywords" content="sinatra, coffeescript, ruby">
+  <meta name="description" content="ngStyle is used to set inline style attributes with AngularJs. Using the background style is slightly tricky here.">
+  <meta name="keywords" content="angular, angularjs, background, background-image, ngstyle, ng-style">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/serve-coffeescript-with-sinatra/">
+  <link rel="canonical" href="http://jaketrent.com/post/ngstyle-background/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Serve CoffeeScript From Sinatra</h1>
+      <h1 class="entry-title">ngStyle Background</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2013-02-20T16:39:00-07:00" pubdate data-updated="true">Feb 20<span>th</span>, 2013</time>
+<time datetime="2013-06-19T07:08:00-06:00" pubdate data-updated="true">Jun 19<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,74 +108,85 @@
   </header>
 
 
-<div class="entry-content"><p>Sinatra is nice because it&#8217;s super lightweight.  This will allow you to make it do exactly what you want, nothing more.  This is the opposite of Ruby on Rail&#8217;s convention.  Likewise, it takes just a bit more configuration to make Sinatra serve CoffeeScript as compared to Rails.</p>
+<div class="entry-content"><p><code>ngStyle</code> is the directive used to set inline style attributes with AngularJs.  Most of the time, it&#8217;s straightforward to use.  <code>background</code> css attributes can be just slightly trickier.</p>
 
-<p><img src="http://i.imgur.com/Ta27Zd4.jpg" alt="Sintra and CoffeeScripting" /></p>
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs" /></p>
 
 <!--more-->
 
 
-<h2>Sinatra and CoffeeScript</h2>
+<h2>ngStyle Objects</h2>
 
-<p>Surprisingly, there are no fantastic gems, at least that I could churn up in a few Google searches, that make serving CoffeeScript bone head easy.  I found a few, such as the Sinatra Assetpack.  It looked like serious overkill, and my Sinatra app is very small, so I wanted a quick and easy way to serve the static goods.</p>
+<p>The <code>ngStyle</code> directive requires an object for input.  The object key is the css attribute name.  The resultant value for the key is the value of the css attribute.</p>
 
-<h4>CoffeeScript Gem</h4>
+<p><code>ngStyle</code> is obviously used to set dynamic styles, because static styles are more easily and efficient set using the standard html <code>style</code> attribute.</p>
 
-<p>Sinatra needs a Gem to compile the CoffeeScript.  Put this line in your <code>Gemfile</code>:</p>
+<h2>A Dynamic Style Example</h2>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>gem "coffee-script"</span></code></pre></td></tr></table></div></figure>
+<p>So let&#8217;s setup a controller that sets a dynamic color based on something as useful as the time.  Useful, right?</p>
 
-
-<p>And run a:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ bundle install</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Public Directory</h4>
-
-<p>In my app, <code>web.rb</code> is the main controller file.  Next to that file, I have a directory structure like this:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>colorCtrl.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>public/
-</span><span class='line'>  js/
-</span><span class='line'>  coffee/
-</span><span class='line'>web.rb</span></code></pre></td></tr></table></div></figure>
-
-
-<p>By default, Sinatra will serve static assets out of this <code>public</code> directory.</p>
-
-<h4>CoffeeScript Handler</h4>
-
-<p>I created the <code>coffee</code> directory separate from the <code>js</code> directory so that I could write this little handler in <code>web.rb</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">get</span> <span class="s2">&quot;/coffee/*.js&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">filename</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:splat</span><span class="o">].</span><span class="n">first</span>
-</span><span class='line'>  <span class="n">coffee</span> <span class="s2">&quot;../public/coffee/</span><span class="si">#{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">to_sym</span>
-</span><span class='line'><span class="k">end</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;colorly&#39;</span><span class="p">).</span><span class="nx">controller</span> <span class="s">&#39;colorCtrl&#39;</span><span class="p">,</span> <span class="nf">($scope) -&gt;</span>
+</span><span class='line'>  <span class="nv">$scope.getColor = </span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">is</span> <span class="mi">0</span> <span class="k">then</span> <span class="s">&quot;red&quot;</span> <span class="k">else</span> <span class="s">&quot;blue&quot;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>This handler will pick up requests that match &#8220;/coffee/*.js&#8221;, find the associated <code>.coffee</code> file, compile it to JavaScript and serve it.  I kept the file extension as <code>.js</code> to help avoid handling any potential mime-type setting requirements.  Obviously, this handler is simple and won&#8217;t handle complicated cases.  But that is also a plus.</p>
+<p>We could use this <code>getColor</code> function in our app:</p>
 
-<h4>CoffeeScript in Templates</h4>
-
-<p>In my <a href="http://">Slim</a> template, if I wanted to get the compiled contents of the file named <code>myscripts.coffee</code>, I would write a script tag like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">script</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;/coffee/myscripts.js&quot;</span>
+<figure class='code'><figcaption><span>app.jade</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='haml'><span class='line'>html(ng-app=&quot;colorly&quot;)
+</span><span class='line'>  head
+</span><span class='line'>    <span class="c">//- ... include Angular, etc</span>
+</span><span class='line'>  body(ng-controller=&quot;colorly&quot;)
+</span><span class='line'>    p(ng-style=&quot;{ color: getColor() }&quot;)
+</span><span class='line'>      | The text will be one of two colors
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Sinatra.  Coffee.  Bam.</p>
+<h2>A Background Example</h2>
+
+<p>If we have a dynamic value that needs to go in a css <code>background</code> or <code>background-image</code> attribute, it can be just a bit more tricky to specify.</p>
+
+<p>Let&#8217;s say we have a <code>getImage()</code> function in our controller.  This function returns a string formatted similar to this: <code>url(icons/pen.png)</code>.  If we do, the <code>ngStyle</code> declaration is specified the exact same way as before:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='haml'><span class='line'>ng-style=&quot;{ &#39;background-image&#39;: getImage() }&quot;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Make sure to put quotes around the <code>background-image</code> key name.  Remember, this must be formatted as a valid Javascript object key.</p>
+
+<h2>Another Background Example</h2>
+
+<p>That example was easy.  Often, however, you don&#8217;t have data stored in your models that&#8217;s formatted like <code>url(icons/pen.png)</code>.  Instead you often have a field that represents the image path only.  In this case, you must do some JavaScript inside your <code>ngStyle</code> declaration:</p>
+
+<figure class='code'><figcaption><span>colorCtrl.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;colorly&#39;</span><span class="p">).</span><span class="nx">controller</span> <span class="s">&#39;colorCtrl&#39;</span><span class="p">,</span> <span class="nf">($scope) -&gt;</span>
+</span><span class='line'>  <span class="nv">$scope.tool =</span>
+</span><span class='line'>    <span class="nv">name: </span><span class="s">&#39;Pen&#39;</span>
+</span><span class='line'>    <span class="nv">icon: </span><span class="s">&#39;icons/pen.png&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='haml'><span class='line'>ng-style=&quot;{ &#39;background-image&#39;: &#39;url(&#39; + tool.icon + &#39;)&#39; }&quot;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Remember that it&#8217;s just Javascript, and you&#8217;ll setup the string concatenation to work just fine.</p>
 </div>
 
 
@@ -198,12 +209,12 @@
   
 
 
-<time datetime="2013-02-20T16:39:00-07:00" pubdate data-updated="true">Feb 20<span>th</span>, 2013</time>
+<time datetime="2013-06-19T07:08:00-06:00" pubdate data-updated="true">Jun 19<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/coffeescript/'>coffeescript</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/sinatra/'>sinatra</a>
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/angularjs/'>angularjs</a>, <a class='category' href='/blog/categories/css/'>css</a>, <a class='category' href='/blog/categories/js/'>js</a>
   
 </span>
 
@@ -212,7 +223,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/serve-coffeescript-with-sinatra/" data-via="" data-counturl="http://jaketrent.com/post/serve-coffeescript-with-sinatra/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/ngstyle-background/" data-via="" data-counturl="http://jaketrent.com/post/ngstyle-background/" >Tweet</a>
   
   
   
@@ -221,10 +232,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/setup-slim-on-sinatra/" title="Previous Post: Setup Slim on Sinatra">&laquo; Setup Slim on Sinatra</a>
+        <a class="basic-alignment left" href="/post/mongoose-population/" title="Previous Post: Mongoose Population">&laquo; Mongoose Population</a>
       
-      
-        <a class="basic-alignment right" href="/post/angularjs-find-element-in-context/" title="Next Post: AngularJs Find Element in Context">AngularJs Find Element in Context &raquo;</a>
       
     </p>
   </footer>
@@ -313,8 +322,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/serve-coffeescript-with-sinatra/';
-        var disqus_url = 'http://jaketrent.com/post/serve-coffeescript-with-sinatra/';
+        var disqus_identifier = 'http://jaketrent.com/post/ngstyle-background/';
+        var disqus_url = 'http://jaketrent.com/post/ngstyle-background/';
         var disqus_script = 'embed.js';
       
     (function () {
