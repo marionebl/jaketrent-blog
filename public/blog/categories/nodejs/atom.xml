@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-06-20T07:59:40-06:00</updated>
+  <updated>2013-06-20T08:05:37-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -136,6 +136,19 @@ Player
 <h3>Forget to Populate</h3>
 
 <p>You might get so used to having objects populated for some of your queries that you might wonder why they're not populated in your latest query.  You probably just forgot to call <code>populate()</code> in your query.  You must do this explicitly to get the inclusions you desire.  Otherwise, you the data you query will just include the <code>_id</code> values.</p>
+
+<h3>Explicitly Exclude Field</h3>
+
+<p>It might not be that you forgot to populate, but that on some queries you don't want to populate.  In these cases, you might not want to be sending around unneeded <code>_id</code> values, especially if they make up a large portion of your data size.  You can explicitly exclude such fields.  For instance, if you wanted all <code>Player</code> models but weren't going to populate <code>leagues</code>, you might query:</p>
+
+<p><code>coffeescript
+Player
+  .find()
+  .select('-leagues')
+  .exect (err, players) -&gt; #...
+</code></p>
+
+<p>Note the <code>-</code> sign in the <code>select</code> clause.  This removes the field from the results.</p>
 
 <h2>Data Write</h2>
 

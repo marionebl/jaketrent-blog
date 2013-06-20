@@ -115,6 +115,19 @@ For listing multiple parts, separate the attribute names with spaces.
 
 You might get so used to having objects populated for some of your queries that you might wonder why they're not populated in your latest query.  You probably just forgot to call `populate()` in your query.  You must do this explicitly to get the inclusions you desire.  Otherwise, you the data you query will just include the `_id` values.
 
+### Explicitly Exclude Field
+
+It might not be that you forgot to populate, but that on some queries you don't want to populate.  In these cases, you might not want to be sending around unneeded `_id` values, especially if they make up a large portion of your data size.  You can explicitly exclude such fields.  For instance, if you wanted all `Player` models but weren't going to populate `leagues`, you might query:
+
+```coffeescript
+Player
+  .find()
+  .select('-leagues')
+  .exect (err, players) -> #...
+```
+
+Note the `-` sign in the `select` clause.  This removes the field from the results.
+
 ## Data Write
 
 When you go to read the data, it's quick, easy, and automatic.  But that's because some work was done previously to reference the correct objects and make sure these references are saved.  Therefore, the naturally more work-intensive part of the population story is the data writing.

@@ -257,6 +257,23 @@
 
 <p>You might get so used to having objects populated for some of your queries that you might wonder why they&#8217;re not populated in your latest query.  You probably just forgot to call <code>populate()</code> in your query.  You must do this explicitly to get the inclusions you desire.  Otherwise, you the data you query will just include the <code>_id</code> values.</p>
 
+<h3>Explicitly Exclude Field</h3>
+
+<p>It might not be that you forgot to populate, but that on some queries you don&#8217;t want to populate.  In these cases, you might not want to be sending around unneeded <code>_id</code> values, especially if they make up a large portion of your data size.  You can explicitly exclude such fields.  For instance, if you wanted all <code>Player</code> models but weren&#8217;t going to populate <code>leagues</code>, you might query:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">Player</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">find</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s">&#39;-leagues&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">exect</span> <span class="nf">(err, players) -&gt;</span> <span class="c1">#...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note the <code>-</code> sign in the <code>select</code> clause.  This removes the field from the results.</p>
+
 <h2>Data Write</h2>
 
 <p>When you go to read the data, it&#8217;s quick, easy, and automatic.  But that&#8217;s because some work was done previously to reference the correct objects and make sure these references are saved.  Therefore, the naturally more work-intensive part of the population story is the data writing.</p>
