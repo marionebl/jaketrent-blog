@@ -113,7 +113,7 @@ For listing multiple parts, separate the attribute names with spaces.
 
 ### Forget to Populate
 
-You might get so used to having objects populated for some of your queries that you might wonder why they're not populated in your latest query.  You probably just forgot to call `populate()` in your query.  You must do this explicitly to get the inclusions you desire.
+You might get so used to having objects populated for some of your queries that you might wonder why they're not populated in your latest query.  You probably just forgot to call `populate()` in your query.  You must do this explicitly to get the inclusions you desire.  Otherwise, you the data you query will just include the `_id` values.
 
 ## Data Write
 
