@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-06-20T08:05:37-06:00</updated>
+  <updated>2013-06-24T08:43:59-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,58 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Remove Mobile Safari Click Delay]]></title>
+    <link href="http://jaketrent.com/post/remove-mobile-safari-click-delay/"/>
+    <updated>2013-06-24T08:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/remove-mobile-safari-click-delay</id>
+    <content type="html"><![CDATA[<p>Did you know that Mobile Safari and other mobile browsers are delaying your click events?  If you&#8217;ve been testing your mobile site, and it feels sluggish in Mobile Safari, this could be one of the reasons.  Disable the click delay and rejoice at a bit more snappy response.</p>
+
+<p><img src="http://i.imgur.com/PH8Zosr.png" alt="mobile browser delay" /></p>
+
+<!--more-->
+
+
+<h2>Sandbagging?</h2>
+
+<p>Why would a browser vendor build in this &#8220;functionality&#8221;?  Are they purposefully sandbagging their web experience so consumers will be more drawn to a device-specific app instead?  As if that could ever happen.</p>
+
+<p>Google, as with most things, has an answer.  From a <a href="https://developers.google.com/mobile/articles/fast_buttons?hl=de-DE.">Google Developer article</a>:</p>
+
+<blockquote><p>The reason for [the 300ms delay] is that the browser is waiting to see if you are actually performing a double tap.</p></blockquote>
+
+<p>As with the apps Google was developing, the buttons that we&#8217;re designing don&#8217;t really need this check for double taps.  We really just want fast buttons.</p>
+
+<h2>FastClick</h2>
+
+<p>Really, most of the work for this problem is figuring out where the slowness is coming from.  I spent days and days trying to optimize a single-page web app that had a bunch of buttons with click events that seemed slow for some reason.  I came up with all sorts of theories and wasted a lot of time.</p>
+
+<p>Now that you know what your problem is, just download and use a library to solve it.  Of the most fantastic, <a href="https://github.com/ftlabs/fastclick">FastClick</a>.  It&#8217;s easy to use.</p>
+
+<p><strong>Step 1</strong>
+Include the script in the <code>head</code> tag:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;fastclick.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Step 2</strong>
+Attach FastClick to all links on the page (or subset if you wish):</p>
+
+<figure class='code'><figcaption><span>a-whole-new-world.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span> <span class="s">&#39;load&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nx">FastClick</span><span class="p">.</span><span class="nx">attach</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span>
+</span><span class='line'><span class="p">,</span> <span class="kc">false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Just like that, you&#8217;ll see marked improvements.  Thank you Apple.  Thank you FastClick.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ngStyle Background]]></title>
@@ -1597,82 +1649,6 @@
 <p>This method uses jQuery to fill in for something it seems Angular can&#8217;t do yet.  And it uses Angular where possible, since it has access to these dom references already.</p>
 
 <p>What do you think?  Is there a more &#8220;Angular way&#8221; to do this?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Serve CoffeeScript from Sinatra]]></title>
-    <link href="http://jaketrent.com/post/serve-coffeescript-with-sinatra/"/>
-    <updated>2013-02-20T16:39:00-07:00</updated>
-    <id>http://jaketrent.com/post/serve-coffeescript-with-sinatra</id>
-    <content type="html"><![CDATA[<p>Sinatra is nice because it&#8217;s super lightweight.  This will allow you to make it do exactly what you want, nothing more.  This is the opposite of Ruby on Rail&#8217;s convention.  Likewise, it takes just a bit more configuration to make Sinatra serve CoffeeScript as compared to Rails.</p>
-
-<p><img src="http://i.imgur.com/Ta27Zd4.jpg" alt="Sintra and CoffeeScripting" /></p>
-
-<!--more-->
-
-
-<h2>Sinatra and CoffeeScript</h2>
-
-<p>Surprisingly, there are no fantastic gems, at least that I could churn up in a few Google searches, that make serving CoffeeScript bone head easy.  I found a few, such as the Sinatra Assetpack.  It looked like serious overkill, and my Sinatra app is very small, so I wanted a quick and easy way to serve the static goods.</p>
-
-<h4>CoffeeScript Gem</h4>
-
-<p>Sinatra needs a Gem to compile the CoffeeScript.  Put this line in your <code>Gemfile</code>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>gem "coffee-script"</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And run a:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ bundle install</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Public Directory</h4>
-
-<p>In my app, <code>web.rb</code> is the main controller file.  Next to that file, I have a directory structure like this:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>public/
-</span><span class='line'>  js/
-</span><span class='line'>  coffee/
-</span><span class='line'>web.rb</span></code></pre></td></tr></table></div></figure>
-
-
-<p>By default, Sinatra will serve static assets out of this <code>public</code> directory.</p>
-
-<h4>CoffeeScript Handler</h4>
-
-<p>I created the <code>coffee</code> directory separate from the <code>js</code> directory so that I could write this little handler in <code>web.rb</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">get</span> <span class="s2">&quot;/coffee/*.js&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">filename</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:splat</span><span class="o">].</span><span class="n">first</span>
-</span><span class='line'>  <span class="n">coffee</span> <span class="s2">&quot;../public/coffee/</span><span class="si">#{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">to_sym</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This handler will pick up requests that match &#8220;/coffee/*.js&#8221;, find the associated <code>.coffee</code> file, compile it to JavaScript and serve it.  I kept the file extension as <code>.js</code> to help avoid handling any potential mime-type setting requirements.  Obviously, this handler is simple and won&#8217;t handle complicated cases.  But that is also a plus.</p>
-
-<h4>CoffeeScript in Templates</h4>
-
-<p>In my <a href="http://">Slim</a> template, if I wanted to get the compiled contents of the file named <code>myscripts.coffee</code>, I would write a script tag like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">script</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;/coffee/myscripts.js&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Sinatra.  Coffee.  Bam.</p>
 ]]></content>
   </entry>
   

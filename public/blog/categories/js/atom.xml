@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-06-20T08:05:37-06:00</updated>
+  <updated>2013-06-24T08:43:59-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,57 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Remove Mobile Safari Click Delay]]></title>
+    <link href="http://jaketrent.com/post/remove-mobile-safari-click-delay/"/>
+    <updated>2013-06-24T08:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/remove-mobile-safari-click-delay</id>
+    <content type="html"><![CDATA[<p>Did you know that Mobile Safari and other mobile browsers are delaying your click events?  If you've been testing your mobile site, and it feels sluggish in Mobile Safari, this could be one of the reasons.  Disable the click delay and rejoice at a bit more snappy response.</p>
+
+<p><img src="http://i.imgur.com/PH8Zosr.png" alt="mobile browser delay" /></p>
+
+<!--more-->
+
+
+<h2>Sandbagging?</h2>
+
+<p>Why would a browser vendor build in this "functionality"?  Are they purposefully sandbagging their web experience so consumers will be more drawn to a device-specific app instead?  As if that could ever happen.</p>
+
+<p>Google, as with most things, has an answer.  From a <a href="https://developers.google.com/mobile/articles/fast_buttons?hl=de-DE.">Google Developer article</a>:</p>
+
+<blockquote><p>The reason for [the 300ms delay] is that the browser is waiting to see if you are actually performing a double tap.</p></blockquote>
+
+<p>As with the apps Google was developing, the buttons that we're designing don't really need this check for double taps.  We really just want fast buttons.</p>
+
+<h2>FastClick</h2>
+
+<p>Really, most of the work for this problem is figuring out where the slowness is coming from.  I spent days and days trying to optimize a single-page web app that had a bunch of buttons with click events that seemed slow for some reason.  I came up with all sorts of theories and wasted a lot of time.</p>
+
+<p>Now that you know what your problem is, just download and use a library to solve it.  Of the most fantastic, <a href="https://github.com/ftlabs/fastclick">FastClick</a>.  It's easy to use.</p>
+
+<p><strong>Step 1</strong>
+Include the script in the <code>head</code> tag:</p>
+
+<p>```html</p>
+
+<script type="text/javascript" src="fastclick.js"></script>
+
+
+<p>```</p>
+
+<p><strong>Step 2</strong>
+Attach FastClick to all links on the page (or subset if you wish):</p>
+
+<p><code>coffeescript a-whole-new-world.coffee
+window.addEventListener 'load', -&gt;
+  FastClick.attach document.body
+, false
+</code></p>
+
+<p>Just like that, you'll see marked improvements.  Thank you Apple.  Thank you FastClick.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ngStyle Background]]></title>
@@ -475,51 +526,6 @@ npm install matchdep grunt grunt-regarde grunt-contrib-livereload grunt-emblem -
 </code></p>
 
 <p>So now, seriously, go write some Emblem templates.  So fun, so precompiled.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Match Ember and Handlebars Versions]]></title>
-    <link href="http://jaketrent.com/post/match-ember-handlebars-version/"/>
-    <updated>2013-05-21T07:38:00-06:00</updated>
-    <id>http://jaketrent.com/post/match-ember-handlebars-version</id>
-    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a> is very specific about what version of <a href="http://handlebarsjs.com">Handlebars</a> it requires.  This is probably good, but it's also a pain to work with as different versions of the two libraries are released independently.  There are a few good tools to help us out.</p>
-
-<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
-
-<!--more-->
-
-
-<h2>Released Independently</h2>
-
-<p>In a prime example, recently there was a new version of Handlebars released: <code>1.0.0-rc.4</code>.  Ember happens to be on version <code>1.0.0-rc.3</code>.  That version has a hard dependency on Handlebars <code>1.0.0-rc.3</code>.  In other words, the latest Ember code relies on an older version of Handlebars.</p>
-
-<h2>Bower</h2>
-
-<p>If you include these 3rd party libraries in your source code under a <code>lib</code> directory or something of that nature, you <em>always</em> have plenty of work to do.  Naturally, you just copy in the exact versions of the scripts that are needed.</p>
-
-<p>Hopefully you're trying to make use of a mostly awesome tool, <a href="http://bower.io">Bower</a>.  It helps you manage these 3rd party libraries in a way similar to npm.  You provide a descriptor of your project's dependencies, <code>component.json</code>.  And you install things similarly via the <code>bower</code> cli.</p>
-
-<h2>Specify a Bower Version</h2>
-
-<p>If I run:</p>
-
-<p><code>
-bower install handlebars --save
-</code></p>
-
-<p>It saves a dependency in my <code>components.json</code> for Handlebars for the latest version it could find.  This won't do for us.  We need to specify the versions.</p>
-
-<p>Our strategy will be: take the latest version of Ember and then specifically match the Handlbars version.  Finally, we should type:</p>
-
-<p><code>
-bower install ember --save
-bower install handlebars#1.0.0-rc.3
-</code></p>
-
-<p>As of this writing, that is the version of handlebars that is required.  Bower will recognize any semver git tag name or branch name after the hash <code>#</code> sign.</p>
-
-<p>I like our version strategy for a project that is under active development in that it keeps us on the latest Ember.  But, if you're on a project that's been built to an Ember version and not deployed for a long time, you may want to make a very specific dependency out of Ember as well, so the two are guaranteed in sync for future deploys.</p>
 ]]></content>
   </entry>
   
