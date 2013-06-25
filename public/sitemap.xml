@@ -210,7 +210,7 @@
     </url>
     <url>
         <loc>http://jaketrent.com/post/nodejs-app-on-xipio/</loc>
-        <lastmod>2013-05-16T07:22:23-06:00</lastmod>
+        <lastmod>2013-06-24T17:03:25-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/post/livereload-for-nodejs/</loc>
@@ -257,15 +257,19 @@
         <lastmod>2013-06-24T08:43:54-06:00</lastmod>
     </url>
     <url>
+        <loc>http://jaketrent.com/post/when-to-use-curlies-in-angular-directives/</loc>
+        <lastmod>2013-06-25T08:18:55-06:00</lastmod>
+    </url>
+    <url>
         <loc>http://jaketrent.com/404.html</loc>
         <lastmod>2012-12-24T10:24:35-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/blog/archives/</loc>
-        <lastmod>2013-06-24T08:43:54-06:00</lastmod>
+        <lastmod>2013-06-25T08:18:55-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/</loc>
-        <lastmod>2013-06-24T08:43:54-06:00</lastmod>
+        <lastmod>2013-06-25T08:18:55-06:00</lastmod>
     </url>
 </urlset>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-06-24T08:43:59-06:00</updated>
+  <updated>2013-06-25T08:19:50-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,70 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[When to Use Curlies in Angular Directives]]></title>
+    <link href="http://jaketrent.com/post/when-to-use-curlies-in-angular-directives/"/>
+    <updated>2013-06-24T17:03:00-06:00</updated>
+    <id>http://jaketrent.com/post/when-to-use-curlies-in-angular-directives</id>
+    <content type="html"><![CDATA[<p>Angularjs has some sweet built-in directives.  Sometimes it can be confusing when to use the curly braces around expressions in directive attributes and when not to.  Here are a couple rules.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular directive curlies" /></p>
+
+<!--more-->
+
+
+<h2>Curlies</h2>
+
+<p>By "curlies", I mean curly braces.  The difference of when to use or not use them looks like the following.</p>
+
+<p>Use them:
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;{{valWithCurlies}}&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Or despise them:
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;valWithNone&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Two Rules of Thumb</h2>
+
+<p>Here are two rules that will serve you well when deciding whether or not to use curlies.</p>
+
+<ol>
+<li>Assume no curlies in Angular directive attribute values.  Most directives don't use them.</li>
+<li>If you would conceivably want to mix strings with Javascript code in the attribute, use curlies.</li>
+</ol>
+
+
+<h2>Two Examples with Curlies</h2>
+
+<p>There are only a few examples of directives using curlies in their attributes.  These examples are both relating to pathing.  Apparently that's a common use case for mixing strings with JavaScript-borne values.</p>
+
+<h3>ngSrc</h3>
+
+<p>As in the source of an image, such as:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;img</span> <span class="na">ng-src=</span><span class="s">&quot;/images/{{tool.icon_name}}.png&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>ngHref</h3>
+
+<p>As in a link to an html page, such as:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;a</span> <span class="na">ng-href=</span><span class="s">&quot;http://google.com?q={{query}}&quot;</span><span class="nt">&gt;</span>See Google Results<span class="nt">&lt;/a&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>Something more Precise?</h2>
+
+<p>Is there something more precise than these two rules of thumb?  Why does Angular make an exception for these two cases, thus causing us to try to remember our rules of thumb?</p>
+
+<p>As I surmised above, I can only guess that because the pathing use case often wants to mix strings with JavaScript values, the exception was made.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ngStyle Background]]></title>
@@ -326,139 +390,6 @@ $('.element-to-find', $element)
 <p>This method uses jQuery to fill in for something it seems Angular can't do yet.  And it uses Angular where possible, since it has access to these dom references already.</p>
 
 <p>What do you think?  Is there a more "Angular way" to do this?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mocha Testing AngularJs Dependency Injection]]></title>
-    <link href="http://jaketrent.com/post/mocha-testing-angularjs-dependency-injection/"/>
-    <updated>2013-01-02T16:48:00-07:00</updated>
-    <id>http://jaketrent.com/post/mocha-testing-angularjs-dependency-injection</id>
-    <content type="html"><![CDATA[<p>When you test your AngularJs code, you need to explicitly inject the services that your controllers and modules require.  It has its own special syntax.  It requires mocking.  You'll see a slightly different syntax than you may have expected.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs" /></p>
-
-<!--more-->
-
-
-<h2>The Solution: Mocking AngularJs Injections</h2>
-
-<p>Angular is simple and quick on many things.  On some things, it's not as simple as we are be led to believe from simple examples.  From the <a href="http://docs.angularjs.org/tutorial/step_05">Angular tutorial</a>:</p>
-
-<blockquote><p>Because we started using dependency injection and our controller has dependencies, constructing the controller in our tests is a bit more complicated.</p></blockquote>
-
-<p>And really, who doesn't use dependency injection in any of their Angular code?  But don't worry, it's not much worse.  And really, it makes sense that things would be this way.</p>
-
-<p>The final Mocha code to test our simple controller should look something like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">assert</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">expect</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">expect</span><span class="p">,</span>
-</span><span class='line'><span class="nx">should</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">should</span><span class="p">();</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be available&#39;</span><span class="p">,</span> <span class="nx">inject</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$rootScope</span><span class="p">,</span> <span class="nx">$controller</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">scope</span> <span class="o">=</span> <span class="nx">$rootScope</span><span class="p">.</span><span class="nx">$new</span><span class="p">();</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">ctrl</span> <span class="o">=</span> <span class="nx">$controller</span><span class="p">(</span><span class="nx">MyController</span><span class="p">,</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="o">:</span> <span class="nx">scope</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">expect</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">undefined</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}));</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>A couple of points:</p>
-
-<ul>
-<li><a href="http://chaijs.com/api/bdd/"><code>chai</code> is an assertion library</a> that makes a great bdd/should-style assertion available in browser tests.</li>
-<li><code>inject()</code> is made available through the <a href="https://github.com/angular/angular-seed/blob/master/test/lib/angular/angular-mocks.js"><code>angular-mocks.js</code> file</a>.  This is available automagically in Jasmine, but in Mocha, you have to include this extra file to get the function.</li>
-<li><code>$rootScope</code> is a scope available to all controllers, so it's not dependent on <code>ng-controller</code> references which are in your src, but not your test environment.  From this scope, we create a new scope.</li>
-<li>Initializing <code>MyController</code> with the <code>$controller</code> function allows us to mock the value of <code>$scope</code> in the controller.</li>
-</ul>
-
-
-<h2>Potential Errors</h2>
-
-<p>If you look at the solution above, it should give you the working test of DI that you want.  Here are a few things I worked through when testing my Angular controller...</p>
-
-<h4>TypeError: 'undefined' is not an object</h4>
-
-<p>My controller looked somewhat like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">MyController</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">$on</span><span class="p">(</span><span class="s1">&#39;$viewContentLoaded&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="c1">// ... stuff when dom in the controller is ready</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>And this was the start of my test:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be available&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">ctrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyController</span><span class="p">();</span>
-</span><span class='line'><span class="c1">// ... assertions</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Ths <code>$scope.$on()</code> line couldn't run because <code>$scope</code> was simply not injected and undefined.
-blah - scope is not there</p>
-
-<h4>ReferenceError: Can't find variable: expect</h4>
-
-<p>In Mocha, you'll need to import an assertion library of your choice.  Otherwise, <code>expect()</code> and other assertions will not be available to use.  I prefer Chai for its should-style assertions.  They read as a sentence really well:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">expect</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">undefined</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   
