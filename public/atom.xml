@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-06-25T08:19:50-06:00</updated>
+  <updated>2013-07-02T07:23:20-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,104 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Access Model in Ember View]]></title>
+    <link href="http://jaketrent.com/post/access-model-in-ember-view/"/>
+    <updated>2013-07-01T07:39:00-06:00</updated>
+    <id>http://jaketrent.com/post/access-model-in-ember-view</id>
+    <content type="html"><![CDATA[<p>Ember Views are used for event handling and creating reusable web components.  To make them useful and interesting, model data needs to make it into and out of the view.  Here is an example of how this works.</p>
+
+<p><img src="http://i.imgur.com/RGKiJ0n.jpg" alt="Access model data in Ember View" /></p>
+
+<!--more-->
+
+
+<h2>Define Your View</h2>
+
+<p>In our example, I&#8217;m making a simple dice rolling game.  I want to use a view to represent the die on the screen and to handle the roll event.  Your custom view must simply extend <code>Ember.View</code>:</p>
+
+<figure class='code'><figcaption><span>die-view.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.DieView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">templateName: </span><span class="s">&#39;die&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is about the simplest view definition we could make.  We&#8217;ll make it a bit cooler later.  For now, the view just knows where to get its markup.  The <code>die</code> template can be any valid template.  Ember, by default, uses Handlebars templates.  I prefer <a href="http://emblemjs.com/">Emblem</a> templates:</p>
+
+<figure class='code'><figcaption><span>die.emblem</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='haml'><span class='line'>li.die = die
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This template will simply print the <code>die</code> object in an <code>li</code> with class of <code>die</code>.  (There are an unusual number of &#8216;die&#8217; references are in this example.  This is for purely entertainment reasons, nothing more nefarious. :)</p>
+
+<h2>Render Data in Ember View Template</h2>
+
+<p>Next, you need to get your Ember View referenced in your template markup.  In <a href="http://emblemjs.com/syntax/">Emblem</a>, to reference a view, start the line with a capital letter, specifically the name of your view.  In this view, I list the dice in my game controller <code>rolling</code> array and render each die in the <code>DieView</code></p>
+
+<figure class='code'><figcaption><span>dice.emblem</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='haml'><span class='line'>ul.dice
+</span><span class='line'>  each die in this.rolling
+</span><span class='line'>    App.DieView
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Using this code, the parent template <code>dice.emblem</code> passes the <code>die</code> variable to the <code>DieView</code>, where its child template, <code>die.emblem</code> renders <code>die</code> data.</p>
+
+<h2>Pass Data Into Ember View</h2>
+
+<p>To pass the <code>die</code> data from <code>dice.emblem</code> into the <code>DieView</code> to be used programatically, however, you need an extra attribute.  Change <code>dice.emblem</code>, adding <code>contentBinding</code>:</p>
+
+<figure class='code'><figcaption><span>dice.emblem</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='haml'><span class='line'>ul.dice
+</span><span class='line'>  each die in this.rolling
+</span><span class='line'>    App.DieView contentBinding=&quot;die&quot;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can access the <code>die</code> data via a special Ember View variable named <code>content</code>.  Why might you want to get to this data programatically in the view code?&#8230;</p>
+
+<h2>Passing Data from Ember View to Controller</h2>
+
+<p>You might want to pass it somewhere else.  Remember, Ember Views are meant to take primitive UI events and translate them into semantic events, meaningful to your application.  For example, our view might want to translate a die element <code>click</code> on the DOM into a <code>roll</code> event in the application.  We made the modification to <code>dice.emblem</code> to pass the data in.  Now, let&#8217;s send it to the controller like this:</p>
+
+<figure class='code'><figcaption><span>die-view.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.DieView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">templateName: </span><span class="s">&#39;die&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">click: </span><span class="nf">(evt) -&gt;</span>
+</span><span class='line'>    <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;controller&#39;</span><span class="p">).</span><span class="nx">send</span> <span class="s">&#39;roll&#39;</span><span class="p">,</span> <span class="nx">@get</span> <span class="s">&#39;content&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We retrieve the <code>content</code> variable (holding the <code>die</code>), and send it to the controller in scope as a roll event.  The controller now must implement a <code>roll</code> function.  Let&#8217;s say we have a game controller.  That code might look like this:</p>
+
+<figure class='code'><figcaption><span>game-ctrl.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.GameController = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">ObjectController</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">roll: </span><span class="nf">(die) -&gt;</span>
+</span><span class='line'>    <span class="c1"># roll die and advance game accordingly</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If the controller doesn&#8217;t implement this function, the current Ember Route may implement it in its <code>events</code> object.  If neither the controller or the route implement it, an exception is thrown.</p>
+
+<p>In this way, Ember Views show their worth in collecting events and translating them to meaningful verbs that we can act upon in our application.  They become reusable, allowing us to bind different content to them on different occassions.  Do Ember Views help you in this way?  Is there a better way?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[When to Use Curlies in Angular Directives]]></title>
@@ -1536,117 +1634,6 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
 
 
 <p>The <code>json</code> helper will then serialize your objects into Json, much to the delight of your clients!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Pass Values From the Page to AngularJs]]></title>
-    <link href="http://jaketrent.com/post/pass-values-from-page-to-angular/"/>
-    <updated>2013-02-22T07:10:00-07:00</updated>
-    <id>http://jaketrent.com/post/pass-values-from-page-to-angular</id>
-    <content type="html"><![CDATA[<p>There are simple mechanisms for passing data from your web page to AngularJs.  One directive is called <code>ngInit</code>.  You may well need it.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular data passing" /></p>
-
-<!--more-->
-
-
-<h2>The Use Cases</h2>
-
-<p>The use cases don&#8217;t make a ton of sense without a concrete example.  There are several ways to implement even the most simple example.  If the solution doesn&#8217;t seem to fit the problem, try another way.</p>
-
-<p>For our purposes, let&#8217;s say that we&#8217;re displaying a list of comments on the screen.</p>
-
-<h4>Angular Requests Data</h4>
-
-<p>It&#8217;s easy to put data into scope for AngularJs to use if Angular is the one to request the data initially.  This often will look something like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">&#39;/comments&#39;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="nf">(comments) -&gt;</span>
-</span><span class='line'>    <span class="nv">$scope.comments = </span><span class="nx">comments</span>
-</span><span class='line'>  <span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then your template will automatically have the data in scope.  And the template (<a href="http://slim-lang.org">Slim</a> syntax used below) can look like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
-</span><span class='line'><span class="n">ul</span>
-</span><span class='line'>  <span class="n">li</span> <span class="n">ng</span><span class="o">-</span><span class="n">repeat</span><span class="o">=</span><span class="s2">&quot;comment in comments&quot;</span>
-</span><span class='line'>    <span class="o">|</span> <span class="p">{{</span> <span class="n">comment</span> <span class="p">}}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now when we add a new comment via Ajax, we can push it right into the comment collection, and the page is updated by Angular with the appropriate data.  Or if we want to perform an operation on a pre-existing comment, it&#8217;s easy to do via an AJAX operation and display the result.</p>
-
-<h4>Server Renders Data Initially</h4>
-
-<p>Sometimes it&#8217;ll make sense for the server to render the data.  Often this kind of data will be the main content on the page.  When the client receives the page, we want the data display to be immediate.  We don&#8217;t want them to load a page with a spinner for the main content, then wait and watch it spin while the real content is requested secondarily.</p>
-
-<p>If the server was to initially print the comments, like so:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
-</span><span class='line'><span class="n">ul</span>
-</span><span class='line'>  <span class="o">-</span> <span class="n">comments</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">comment</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">li</span>
-</span><span class='line'>      <span class="o">=</span> <span class="n">comment</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We still might want to do AJAX&#8217;y things with a comment, such as like it.  When I like it, I don&#8217;t want the browser to have to refresh, so I want to make Angular do this for me.</p>
-
-<h2>ngInit Passes Angular Server Data</h2>
-
-<p>Angular provides a nice directive, <code>ngInit</code> for passing Angular data.  It&#8217;s a mechanism by which you can bootstrap your scripts with the data they need to function.  A mixture of server rendering and client-side AJAX requests on the same data will probably mean that you&#8217;re going to use this directive.</p>
-
-<p>From the <code>ngInit</code> docs:</p>
-
-<blockquote><p> The ngInit directive specifies initialization tasks to be executed before the template enters execution mode during bootstrap.</p></blockquote>
-
-<p>Our server/client mixture code might look something like this:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
-</span><span class='line'><span class="n">ul</span>
-</span><span class='line'>  <span class="o">-</span> <span class="n">comments</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">comment</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">li</span> <span class="n">ng</span><span class="o">-</span><span class="n">init</span><span class="o">=</span><span class="s2">&quot;commentLikeCount[i]=</span><span class="si">#{</span><span class="n">comment</span><span class="o">.</span><span class="n">likeCount</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span class='line'>      <span class="o">=</span> <span class="n">comment</span>
-</span><span class='line'>      <span class="o">|</span> <span class="no">Likes</span> <span class="k">for</span> <span class="n">this</span> <span class="n">comment</span><span class="p">:</span> <span class="p">{{</span><span class="n">commentLikeCount</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">}}</span>
-</span><span class='line'>      <span class="n">a</span> <span class="n">ng</span><span class="o">-</span><span class="n">click</span><span class="o">=</span><span class="s2">&quot;like(commentLikeCount[i])&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It&#8217;s important to realize where data is coming from in this example.  The syntax <code>=</code> as in <code>= comment</code> and <code>#{}</code> as in <code>#{comment.likeCount}</code> are server-rendered bits.  As you know, the curlies and the ng attribute syntax is for Angular&#8217;s client side rendering.</p>
-
-<p>So how has this mixture bought us anything?</p>
-
-<ol>
-<li>The server renders the comments initially.  This makes the display immediate when the browser loads the page.</li>
-<li>We init the value of <code>commentLikeCount</code>, making it available for Angular to display once the client compiles the template.</li>
-<li>Since Angular has a count of the likes, it can easily update it and redisplay without a page reload after calling <code>like()</code> to increment the count.</li>
-</ol>
-
-
-<p>Frankly, the mixture feels a little bit odd to me.  I&#8217;ve seen it work.  I know there are different ways to get this done.  I think there are probably better ways.  What has worked well for you in similar use cases?</p>
 ]]></content>
   </entry>
   

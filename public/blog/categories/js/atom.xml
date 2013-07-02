@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-06-25T08:19:50-06:00</updated>
+  <updated>2013-07-02T07:23:20-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,98 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Access Model in Ember View]]></title>
+    <link href="http://jaketrent.com/post/access-model-in-ember-view/"/>
+    <updated>2013-07-01T07:39:00-06:00</updated>
+    <id>http://jaketrent.com/post/access-model-in-ember-view</id>
+    <content type="html"><![CDATA[<p>Ember Views are used for event handling and creating reusable web components.  To make them useful and interesting, model data needs to make it into and out of the view.  Here is an example of how this works.</p>
+
+<p><img src="http://i.imgur.com/RGKiJ0n.jpg" alt="Access model data in Ember View" /></p>
+
+<!--more-->
+
+
+<h2>Define Your View</h2>
+
+<p>In our example, I'm making a simple dice rolling game.  I want to use a view to represent the die on the screen and to handle the roll event.  Your custom view must simply extend <code>Ember.View</code>:</p>
+
+<p><code>coffeescript die-view.coffee
+App.DieView = Ember.View.extend
+  templateName: 'die'
+</code></p>
+
+<p>This is about the simplest view definition we could make.  We'll make it a bit cooler later.  For now, the view just knows where to get its markup.  The <code>die</code> template can be any valid template.  Ember, by default, uses Handlebars templates.  I prefer <a href="http://emblemjs.com/">Emblem</a> templates:</p>
+
+<p><code>haml die.emblem
+li.die = die
+</code></p>
+
+<p>This template will simply print the <code>die</code> object in an <code>li</code> with class of <code>die</code>.  (There are an unusual number of 'die' references are in this example.  This is for purely entertainment reasons, nothing more nefarious. :)</p>
+
+<h2>Render Data in Ember View Template</h2>
+
+<p>Next, you need to get your Ember View referenced in your template markup.  In <a href="http://emblemjs.com/syntax/">Emblem</a>, to reference a view, start the line with a capital letter, specifically the name of your view.  In this view, I list the dice in my game controller <code>rolling</code> array and render each die in the <code>DieView</code></p>
+
+<p>```haml dice.emblem
+ul.dice
+  each die in this.rolling</p>
+
+<pre><code>App.DieView
+</code></pre>
+
+<p>```</p>
+
+<p>Using this code, the parent template <code>dice.emblem</code> passes the <code>die</code> variable to the <code>DieView</code>, where its child template, <code>die.emblem</code> renders <code>die</code> data.</p>
+
+<h2>Pass Data Into Ember View</h2>
+
+<p>To pass the <code>die</code> data from <code>dice.emblem</code> into the <code>DieView</code> to be used programatically, however, you need an extra attribute.  Change <code>dice.emblem</code>, adding <code>contentBinding</code>:</p>
+
+<p>```haml dice.emblem
+ul.dice
+  each die in this.rolling</p>
+
+<pre><code>App.DieView contentBinding="die"
+</code></pre>
+
+<p>```</p>
+
+<p>Now you can access the <code>die</code> data via a special Ember View variable named <code>content</code>.  Why might you want to get to this data programatically in the view code?...</p>
+
+<h2>Passing Data from Ember View to Controller</h2>
+
+<p>You might want to pass it somewhere else.  Remember, Ember Views are meant to take primitive UI events and translate them into semantic events, meaningful to your application.  For example, our view might want to translate a die element <code>click</code> on the DOM into a <code>roll</code> event in the application.  We made the modification to <code>dice.emblem</code> to pass the data in.  Now, let's send it to the controller like this:</p>
+
+<p>```coffeescript die-view.coffee
+App.DieView = Ember.View.extend
+  templateName: 'die'</p>
+
+<p>  click: (evt) -></p>
+
+<pre><code>@get('controller').send 'roll', @get 'content'
+</code></pre>
+
+<p>```</p>
+
+<p>We retrieve the <code>content</code> variable (holding the <code>die</code>), and send it to the controller in scope as a roll event.  The controller now must implement a <code>roll</code> function.  Let's say we have a game controller.  That code might look like this:</p>
+
+<p>```coffeescript game-ctrl.coffee
+App.GameController = Ember.ObjectController.extend</p>
+
+<p>  roll: (die) -></p>
+
+<pre><code># roll die and advance game accordingly
+</code></pre>
+
+<p>```</p>
+
+<p>If the controller doesn't implement this function, the current Ember Route may implement it in its <code>events</code> object.  If neither the controller or the route implement it, an exception is thrown.</p>
+
+<p>In this way, Ember Views show their worth in collecting events and translating them to meaningful verbs that we can act upon in our application.  They become reusable, allowing us to bind different content to them on different occassions.  Do Ember Views help you in this way?  Is there a better way?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[When to Use Curlies in Angular Directives]]></title>
@@ -390,114 +482,6 @@ league =
 <p>Depending on how complex your model relationships become, you may opt for a difference code strategy besides nesting callbacks.  Don't like your pyramid of doom?  Try the awesome <a href="https://github.com/caolan/async">async.js</a>.</p>
 
 <p>I don't know if Mongoose population is going to change your life, but I was very happy when I found this feature.  I had been doing junk like this manually.  What are some other great use cases that you've found?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ember Parent Templates]]></title>
-    <link href="http://jaketrent.com/post/ember-parent-templates/"/>
-    <updated>2013-05-29T07:02:00-06:00</updated>
-    <id>http://jaketrent.com/post/ember-parent-templates</id>
-    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a>'s convention of template hierarchy is very specific.  Learn it once, and you'll know it every time.</p>
-
-<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
-
-<!--more-->
-
-
-<p><strong>Note:</strong> Code examples use <a href="http://emblemjs.com/">Emblem</a> templates and <a href="http://coffeescript.org">CoffeeScript</a>.  Vanilla Handlebars and JavaScript would work just as well.</p>
-
-<h2>Outlets</h2>
-
-<p>Ember templates make use of a special helper called <code>outlet</code>.  You can have one main, unnamed outlet or many named outlets.  The main thing to remember is that a child template will always render inside its parent's outlet -- so always put outlets in templates that have children.</p>
-
-<h2>Application Template</h2>
-
-<p>There is a top-most template that all of your templates will render inside of.  This is called the application template.  It is specified in one of two ways.  If you are including your templates as script tags, simply create a script tag that doesn't have a <code>data-template-name</code> or <code>id</code> attribute, a la:</p>
-
-<p>```html</p>
-
-<script type="x-emblem">
-  h1 My Application
-  == outlet
-</script>
-
-
-<p>```</p>
-
-<p>If you are <a href="/post/precompile-ember-templates">precompiling your Ember templates</a>, which you should, you have a directory for templates.  You will put your file, called <code>application.emblem</code> in the root of that directory.  The contents of <code>templates/application.emblem</code> would be the same:</p>
-
-<p><code>jade
-h1 My Application
-== outlet
-</code></p>
-
-<h2>Route Templates</h2>
-
-<p>If you have a top-level route, it will have a top-level template.  Your route's template will have only the application template as its parent.  So, your about route:</p>
-
-<p><code>coffeescript
-App.Router.map -&gt;
-  @route 'about'
-</code></p>
-
-<p>Will have an about template at <code>templates/about.emblem</code> and you could define a route as <code>AboutRoute</code>.  It will render inside of <code>application.emblem</code>'s outlet.</p>
-
-<h2>Resource Templates</h2>
-
-<p>Resources are interesting because you can nest other routes inside them.  Nesting routes will also result in nesting templates.  If I defined a <code>league</code> resource with a nested route for creating new leagues, it might look something like this:</p>
-
-<p>```coffeescript
-App.Router.map ->
-  @resouce 'league', -></p>
-
-<pre><code>@route 'new'
-</code></pre>
-
-<p>```</p>
-
-<p>There are two leaf routes (and thus templates) that are created here:</p>
-
-<ul>
-<li><code>LeagueIndexRoute</code>, which uses <code>templates/league/index.emblem</code></li>
-<li><code>LeagueNewRoute</code>, which uses <code>templates/league/new.emblem</code></li>
-</ul>
-
-
-<p>Note that you create a <code>league</code> directory inside your <code>templates</code> directory for nesting these templates.  Precompiled templates will be created at:</p>
-
-<ul>
-<li><code>Ember.TEMPLATES["league/index"]</code></li>
-<li><code>Ember.TEMPLATES["league/new"]</code></li>
-</ul>
-
-
-<p>If you wanted to use the <code>linkTo</code> helper in a template to link to these routes, you would use this syntax:</p>
-
-<p><code>jade
-linkTo 'league.index' | List Leagues
-linkTo 'league.new' | New League
-</code></p>
-
-<p>And now as far as templates, there is <em>one more</em> that we're missing.  There is a root league template that these two league leaf templates render inside of.  It should live at <code>templates/league.emblem</code>.  This template would be useful for showing UI elements that are common to all league resource things.  In the case where there is no such need, this template will probably only contain a single outlet:</p>
-
-<p><code>jade
-== outlet
-</code></p>
-
-<p>So the final template hierarchy for <code>league.new</code>, for example, is <code>application.emblem &gt; league.emblem &gt; league/new.emblem</code>.</p>
-
-<p>There is a bit of a chatter on the Githubs about whether the root resource template is good form or not.  As in, why would you create a file that contains nothing but an empty outlet?  Couldn't the framework infer that if it was missing?</p>
-
-<h2>Children Need All Parents</h2>
-
-<p>Create all parents in your template chain, from the application template to the leaves.  The worst thing that can happen if you don't is that nothing will render at all, and no error messages will be displayed (pretty bad and unhelpful).</p>
-
-<p>Most of the time, Ember will try to be helpful and give you a console warning:</p>
-
-<blockquote><p>WARNING: The immediate parent route ('a') did not render into the main outlet and the default 'into' option ('p') may not be expected</p></blockquote>
-
-<p>In other words: You're trying to render a child template that either doesn't have a parent template it needs or the parent template does not specify a main outlet.</p>
 ]]></content>
   </entry>
   
