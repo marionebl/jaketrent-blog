@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ember | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ember/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-07-02T07:23:20-06:00</updated>
+  <updated>2013-07-03T08:41:57-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,215 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Behavior of CoffeeScript Fat Arrow]]></title>
+    <link href="http://jaketrent.com/post/behavior-of-coffeescript-fat-arrow/"/>
+    <updated>2013-07-01T07:39:00-06:00</updated>
+    <id>http://jaketrent.com/post/behavior-of-coffeescript-fat-arrow</id>
+    <content type="html"><![CDATA[<p>In CoffeeScript there are two different types of arrows for defining functions:  arrow (<code>-&gt;</code>) and fat arrow or hash rocket (<code>=&gt;</code>).  Usually, you'll use the regular arrow.  But sometimes you'll want the special behavior of the fat arrow.</p>
+
+<p><img src="http://i.imgur.com/nGd04zX.jpg" alt="CoffeeScript fat arrow" /></p>
+
+<!--more-->
+
+
+<h2>Function Binding</h2>
+
+<p>In JavaScript, the keyword <code>this</code> within a function refers to the thing that the function is attached to.  Since functions can be invoked in various ways in an average application, what <code>this</code> actually references will change.</p>
+
+<p>For instance, if a function is invoked as a callback in an event handler, <code>this</code> within that handler will likely reference <code>window</code> in JavaScript running within a web browser.  Often, this is not the desired reference.</p>
+
+<p>The solution in vanilla JavaScript is to save a reference to the context the function is defined within and then use that reference in lieu of the <code>this</code> keyword.  My favorite name to save the <code>this</code> reference into is called <code>self</code>.  In JavaScript, that might look like:</p>
+
+<p><code>javascript manual-reference.js
+this.myVal = "my val"
+var self = this
+var myFn = function () {
+  console.log(self.myVal); // will print "my val"
+}
+</code></p>
+
+<h2>CoffeeScript Function Binding</h2>
+
+<p>CoffeeScript understands this basic need and makes the reference saving even easier.  When you use the fat arrow, or hash rocket, it will perform function binding.  It uses a variable called <code>_this</code> automatically.</p>
+
+<h3>CoffeeScript Binding Rules</h3>
+
+<ol>
+<li>When a fat arrow is used to bind a function, a <code>_this</code> reference is saved in the same context as the function that was declared.</li>
+<li>When properties of <code>this</code> are accessed inside the bound function, they will use the saved <code>_this</code> reference (e.g., <code>@myVal</code> would compile to <code>_this.myVal</code>).</li>
+<li>When fat arrows are used to bind functions nested within bound functions, the <code>_this</code> reference from the top-level bound function context is used in the nested bound functions.</li>
+<li>The deepest non-bound function context will be used to save a <code>_this</code> reference when a bound function is declared.</li>
+</ol>
+
+
+<h2>When to use Fat Arrow</h2>
+
+<p>Given that, here are the every day rules on when to use the fat arrow:</p>
+
+<ol>
+<li>If the context of <code>this</code> in you function could change based on how it was invoked but properties of <code>this</code> need to always reference the context where the function was created, declare the function with a fat arrow.</li>
+<li>If nested functions exhibit the same need as in rule #1, declare them with the fat arrow.</li>
+<li>Don't bind, then not bind, then bind again in nested functions.  The inner binding will clobber the <code>_this</code> reference and will likely not be what you expect in the outer context (see the last example below).</li>
+</ol>
+
+
+<h2>A Swirl of Examples</h2>
+
+<p>Here are a bunch of examples of bound and non-bound functions.  The first code snippet is the CoffeeScript source.  The second code snippet is the compiled JavaScript.</p>
+
+<h3>No Bound Functions</h3>
+
+<p>Just regular CoffeeScript function declarations.</p>
+
+<p><code>coffeescript non-bound.coffee
+myVal: 'my val'
+myNonBoundFn: -&gt;
+  console.log @myVal
+</code></p>
+
+<p>```javascript non-bound.js
+({
+  myVal: 'my val',
+  myNonBoundFn: function() {</p>
+
+<pre><code>return console.log(this.myVal);
+</code></pre>
+
+<p>  }
+});
+```</p>
+
+<h3>Bound Function</h3>
+
+<p>Introduced the fat arrow</p>
+
+<p><code>coffeescript bound.coffee
+myVal: 'my val'
+myBoundFn: =&gt;
+  console.log @myVal
+</code></p>
+
+<p>```javascript bound.js
+var _this = this;
+({
+  myVal: 'my val',
+  myBoundFn: function() {</p>
+
+<pre><code>return console.log(_this.myVal);
+</code></pre>
+
+<p>  }
+});
+```</p>
+
+<h3>Bound, Non-bound Inner Function</h3>
+
+<p>Notice the inner function is not bound, and defaults back to just referencing <code>this</code>.</p>
+
+<p>```coffeescript non-bound-inner.coffee
+myVal: 'my val'
+myBoundFn: =>
+  myInnerNonBoundFn = -></p>
+
+<pre><code>console.log @myVal
+</code></pre>
+
+<p>```</p>
+
+<p>```javascript non-bound-inner.js
+var _this = this;
+({
+  myVal: 'my val',
+  myBoundFn: function() {</p>
+
+<pre><code>var myInnerNonBoundFn;
+return myInnerNonBoundFn = function() {
+  return console.log(this.myVal);
+};
+</code></pre>
+
+<p>  }
+});
+```</p>
+
+<h3>Bound Within Bound Functions</h3>
+
+<p>Inner bound function uses top-level <code>_this</code>.</p>
+
+<p>```coffeescript bound-in-bound.coffee
+myVal: 'my val'
+myBoundFn: =>
+  myInnerBoundFn = =></p>
+
+<pre><code>console.log @myVal
+</code></pre>
+
+<p>```</p>
+
+<p>```javascript bound-in-bound.js
+var _this = this;
+({
+  myVal: 'my val',
+  myBoundFn: function() {</p>
+
+<pre><code>var myInnerBoundFn;
+return myInnerBoundFn = function() {
+  return console.log(_this.myVal);
+};
+</code></pre>
+
+<p>  }
+});
+```</p>
+
+<h3>Bound, Non-bound, then Bound Functions</h3>
+
+<p>When <code>myVeryInnerBoundFn</code> uses the fat arrow inside of <code>myInnerNonBoundFn</code>, which does not, <code>_this = this</code> is generated again.  And when <code>myOtherBoundFn</code> is called, the <code>@what</code> property will be <code>undefined</code>.</p>
+
+<p>```coffeescript clobber-this.coffee
+myVal: 'my val'
+what: 'is this?'
+myBoundFn: =>
+  myInnerNonBoundFn = -></p>
+
+<pre><code>myVeryInnerBoundFn = =&gt;
+  console.log @myVal
+</code></pre>
+
+<p>myOtherBoundFn: =>
+  console.log @what
+```</p>
+
+<p>```javascript clobber-this.js
+var _this = this;
+({
+  myVal: 'my val',
+  what: 'is this?',
+  myBoundFn: function() {</p>
+
+<pre><code>var myInnerNonBoundFn;
+return myInnerNonBoundFn = function() {
+  var myVeryInnerBoundFn,
+    _this = this;
+  return myVeryInnerBoundFn = function() {
+    return console.log(_this.myVal);
+  };
+};
+</code></pre>
+
+<p>  },
+  myOtherBoundFn: function() {</p>
+
+<pre><code>return console.log(_this.what);
+</code></pre>
+
+<p>  }
+});
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Access Model in Ember View]]></title>
