@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-07-03T08:41:57-06:00</updated>
+  <updated>2013-07-10T18:41:09-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,97 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Namespacing Angular Controller Attributes]]></title>
+    <link href="http://jaketrent.com/post/namespacing-angular-controller-attributes/"/>
+    <updated>2013-07-10T18:17:00-06:00</updated>
+    <id>http://jaketrent.com/post/namespacing-angular-controller-attributes</id>
+    <content type="html"><![CDATA[<p>Usually attributes of your Angular controllers are not namespaced.  But you can namespace them.  But you might not want to.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs controller namespacing" /></p>
+
+<!--more-->
+
+
+<h2>Angular Controllers Usually Attach Attributes to Scope</h2>
+
+<p>Usually attributes in an Angular controller, such as functions and variables, are attached to the <code>$scope</code> object.  That looks like this:</p>
+
+<p>```coffeescript my-ctrl.coffee
+angular.module('myapp').controller 'MyCtrl', ($scope) ->
+  $scope.myVar = 'myVal'
+  $scope.myFn = -></p>
+
+<pre><code>console.log 'does stuff'
+</code></pre>
+
+<p>```</p>
+
+<p>Then in my template I don't know, nor do I need to know, where the attribute comes from.  I just reference it:</p>
+
+<p>```haml my-app.jade
+html(ng-app="myapp")
+  body(ng-controller="MyCtrl")</p>
+
+<pre><code>h1 My Var: 
+button(ng-click="myFun()") Does Stuff
+</code></pre>
+
+<p>```</p>
+
+<h2>Namespaced Angular Controller Attributes</h2>
+
+<p>In this simple example, this is no big deal.  But as your app grows in complexity with many, nested controllers and templates, it can become difficult to read the code.  If you have common function names, it might be hard to tell which controller's function is referenced in your templates.  To make this less of a problem and the code more clear, you might namespace your controller attributes in the template.</p>
+
+<p>To do this, you can write your controllers to attach attributes to the controller instead of scope and then put the controller itself on scope.  That looks like this:</p>
+
+<p>```coffeescript my-ctrl.coffee
+angular.module('myapp').controller 'MyCtrl', ($scope) ->
+  @myVar = 'myVal'
+  @myFn = -></p>
+
+<pre><code>console.log 'does stuff'
+</code></pre>
+
+<p>  $scope.MyCtrl = @
+```</p>
+
+<p>Then your template changes to look like this:</p>
+
+<p>```haml my-app.jade
+html(ng-app="myapp")
+  body(ng-controller="MyCtrl")</p>
+
+<pre><code>h1 My Var: 
+button(ng-click="MyCtrl.myFun()") Does Stuff
+</code></pre>
+
+<p>```</p>
+
+<p>It's kind of nice for the reasons stated above.  I saw this strategy referenced on the Interwebs at one point and thought it seemed like a good idea.</p>
+
+<h2>Why You Might Avoid This</h2>
+
+<p>Maybe you love the idea.  Maybe you don't.  I thought I did.  I have been writing controllers this way for a while.  Now I don't.  Here's why:</p>
+
+<h3>1. It Makes Templates Less Reusable</h3>
+
+<p>It's quite probable that I'll have templates that I don't want permanently attached to a specific controller.  An example I ran into recently was on a profile page.  I had two pages to show profiles: one for my profile and one for an arbitrary person in the system.  They looked the same in the UI.  They had the same basic functions.  But the source of data for the variables and the implementation of the functions was different in the two scenarios.  Thus, I had to refactor to remove the namespacing to be able to reuse the template across pages.</p>
+
+<h3>2. It's More Typing</h3>
+
+<p>It's silly.  It adds up.  The less superfluous typing I can do, the more I consider that solution.</p>
+
+<h3>3. The Creators Don't Do It</h3>
+
+<p>I haven't seen this strategy featured in official tutorials, guides, or API examples.  Not that the Angular d00ds have all the ideas or do everything right -- it just isn't a pattern I see widely accepted or used.</p>
+
+<p>These days, I don't namespace my controller attributes, and I don't recommend it.</p>
+
+<p>So what do you think?  Do you write your controllers this way?  Good idea?  Bad idea?  What are some alternative methods you've found to balance template reuse with readability?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Behavior of CoffeeScript Fat Arrow]]></title>
@@ -426,88 +517,6 @@ window.addEventListener 'load', -&gt;
 </code></p>
 
 <p>Just like that, you'll see marked improvements.  Thank you Apple.  Thank you FastClick.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ngStyle Background]]></title>
-    <link href="http://jaketrent.com/post/ngstyle-background/"/>
-    <updated>2013-06-19T07:08:00-06:00</updated>
-    <id>http://jaketrent.com/post/ngstyle-background</id>
-    <content type="html"><![CDATA[<p><code>ngStyle</code> is the directive used to set inline style attributes with AngularJs.  Most of the time, it's straightforward to use.  <code>background</code> css attributes can be just slightly trickier.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs" /></p>
-
-<!--more-->
-
-
-<h2>ngStyle Objects</h2>
-
-<p>The <code>ngStyle</code> directive requires an object for input.  The object key is the css attribute name.  The resultant value for the key is the value of the css attribute.</p>
-
-<p><code>ngStyle</code> is obviously used to set dynamic styles, because static styles are more easily and efficient set using the standard html <code>style</code> attribute.</p>
-
-<h2>A Dynamic Style Example</h2>
-
-<p>So let's setup a controller that sets a dynamic color based on something as useful as the time.  Useful, right?</p>
-
-<p>```coffeescript colorCtrl.coffee
-angular.module('colorly').controller 'colorCtrl', ($scope) ->
-  $scope.getColor = -></p>
-
-<pre><code>if new Date().getTime() % 2 is 0 then "red" else "blue"
-</code></pre>
-
-<p>```</p>
-
-<p>We could use this <code>getColor</code> function in our app:</p>
-
-<p>```haml app.jade
-html(ng-app="colorly")
-  head</p>
-
-<pre><code>//- ... include Angular, etc
-</code></pre>
-
-<p>  body(ng-controller="colorly")</p>
-
-<pre><code>p(ng-style="{ color: getColor() }")
-  | The text will be one of two colors
-</code></pre>
-
-<p>```</p>
-
-<h2>A Background Example</h2>
-
-<p>If we have a dynamic value that needs to go in a css <code>background</code> or <code>background-image</code> attribute, it can be just a bit more tricky to specify.</p>
-
-<p>Let's say we have a <code>getImage()</code> function in our controller.  This function returns a string formatted similar to this: <code>url(icons/pen.png)</code>.  If we do, the <code>ngStyle</code> declaration is specified the exact same way as before:</p>
-
-<p><code>haml
-ng-style="{ 'background-image': getImage() }"
-</code></p>
-
-<p>Make sure to put quotes around the <code>background-image</code> key name.  Remember, this must be formatted as a valid Javascript object key.</p>
-
-<h2>Another Background Example</h2>
-
-<p>That example was easy.  Often, however, you don't have data stored in your models that's formatted like <code>url(icons/pen.png)</code>.  Instead you often have a field that represents the image path only.  In this case, you must do some JavaScript inside your <code>ngStyle</code> declaration:</p>
-
-<p>```coffeescript colorCtrl.coffee
-angular.module('colorly').controller 'colorCtrl', ($scope) ->
-  $scope.tool =</p>
-
-<pre><code>name: 'Pen'
-icon: 'icons/pen.png'
-</code></pre>
-
-<p>```</p>
-
-<p><code>haml
-ng-style="{ 'background-image': 'url(' + tool.icon + ')' }"
-</code></p>
-
-<p>Remember that it's just Javascript, and you'll setup the string concatenation to work just fine.</p>
 ]]></content>
   </entry>
   

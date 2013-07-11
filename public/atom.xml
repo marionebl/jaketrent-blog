@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-07-03T08:41:57-06:00</updated>
+  <updated>2013-07-10T18:41:09-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,102 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Namespacing Angular Controller Attributes]]></title>
+    <link href="http://jaketrent.com/post/namespacing-angular-controller-attributes/"/>
+    <updated>2013-07-10T18:17:00-06:00</updated>
+    <id>http://jaketrent.com/post/namespacing-angular-controller-attributes</id>
+    <content type="html"><![CDATA[<p>Usually attributes of your Angular controllers are not namespaced.  But you can namespace them.  But you might not want to.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs controller namespacing" /></p>
+
+<!--more-->
+
+
+<h2>Angular Controllers Usually Attach Attributes to Scope</h2>
+
+<p>Usually attributes in an Angular controller, such as functions and variables, are attached to the <code>$scope</code> object.  That looks like this:</p>
+
+<figure class='code'><figcaption><span>my-ctrl.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;myapp&#39;</span><span class="p">).</span><span class="nx">controller</span> <span class="s">&#39;MyCtrl&#39;</span><span class="p">,</span> <span class="nf">($scope) -&gt;</span>
+</span><span class='line'>  <span class="nv">$scope.myVar = </span><span class="s">&#39;myVal&#39;</span>
+</span><span class='line'>  <span class="nv">$scope.myFn = </span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;does stuff&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then in my template I don&#8217;t know, nor do I need to know, where the attribute comes from.  I just reference it:</p>
+
+<figure class='code'><figcaption><span>my-app.jade</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='haml'><span class='line'>html(ng-app=&quot;myapp&quot;)
+</span><span class='line'>  body(ng-controller=&quot;MyCtrl&quot;)
+</span><span class='line'>    h1 My Var: 
+</span><span class='line'>    button(ng-click=&quot;myFun()&quot;) Does Stuff
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Namespaced Angular Controller Attributes</h2>
+
+<p>In this simple example, this is no big deal.  But as your app grows in complexity with many, nested controllers and templates, it can become difficult to read the code.  If you have common function names, it might be hard to tell which controller&#8217;s function is referenced in your templates.  To make this less of a problem and the code more clear, you might namespace your controller attributes in the template.</p>
+
+<p>To do this, you can write your controllers to attach attributes to the controller instead of scope and then put the controller itself on scope.  That looks like this:</p>
+
+<figure class='code'><figcaption><span>my-ctrl.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;myapp&#39;</span><span class="p">).</span><span class="nx">controller</span> <span class="s">&#39;MyCtrl&#39;</span><span class="p">,</span> <span class="nf">($scope) -&gt;</span>
+</span><span class='line'>  <span class="vi">@myVar = </span><span class="s">&#39;myVal&#39;</span>
+</span><span class='line'>  <span class="vi">@myFn = </span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;does stuff&#39;</span>
+</span><span class='line'>  <span class="nv">$scope.MyCtrl = </span><span class="nx">@</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then your template changes to look like this:</p>
+
+<figure class='code'><figcaption><span>my-app.jade</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='haml'><span class='line'>html(ng-app=&quot;myapp&quot;)
+</span><span class='line'>  body(ng-controller=&quot;MyCtrl&quot;)
+</span><span class='line'>    h1 My Var: 
+</span><span class='line'>    button(ng-click=&quot;MyCtrl.myFun()&quot;) Does Stuff
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s kind of nice for the reasons stated above.  I saw this strategy referenced on the Interwebs at one point and thought it seemed like a good idea.</p>
+
+<h2>Why You Might Avoid This</h2>
+
+<p>Maybe you love the idea.  Maybe you don&#8217;t.  I thought I did.  I have been writing controllers this way for a while.  Now I don&#8217;t.  Here&#8217;s why:</p>
+
+<h3>1. It Makes Templates Less Reusable</h3>
+
+<p>It&#8217;s quite probable that I&#8217;ll have templates that I don&#8217;t want permanently attached to a specific controller.  An example I ran into recently was on a profile page.  I had two pages to show profiles: one for my profile and one for an arbitrary person in the system.  They looked the same in the UI.  They had the same basic functions.  But the source of data for the variables and the implementation of the functions was different in the two scenarios.  Thus, I had to refactor to remove the namespacing to be able to reuse the template across pages.</p>
+
+<h3>2. It&#8217;s More Typing</h3>
+
+<p>It&#8217;s silly.  It adds up.  The less superfluous typing I can do, the more I consider that solution.</p>
+
+<h3>3. The Creators Don&#8217;t Do It</h3>
+
+<p>I haven&#8217;t seen this strategy featured in official tutorials, guides, or API examples.  Not that the Angular d00ds have all the ideas or do everything right &#8211; it just isn&#8217;t a pattern I see widely accepted or used.</p>
+
+<p>These days, I don&#8217;t namespace my controller attributes, and I don&#8217;t recommend it.</p>
+
+<p>So what do you think?  Do you write your controllers this way?  Good idea?  Bad idea?  What are some alternative methods you&#8217;ve found to balance template reuse with readability?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Behavior of CoffeeScript Fat Arrow]]></title>
@@ -1808,60 +1904,6 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
 <p>In the end, many work simply to pay the bills that never cease to appear.  This is in itself and worthy reason for working hard.  It is essential.  However, just the focus on and stress over bill payment is probably enough to poison your joy for work.  Two things will help.  Live well within your means so the bills don&#8217;t loom so large.  And hone your skills and do so well that you find the joy of work.</p>
 
 <p>Simply put, work will consume a large portion of your life.  Would it not be better to smile and have fun during all that time?  Gratefully I&#8217;ve had both fantastic opportunities for work and the will to have fun.  Each of us have the opportunity to make it so.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Https Redirect for Node on Heroku]]></title>
-    <link href="http://jaketrent.com/post/https-redirect-node-heroku/"/>
-    <updated>2013-02-26T07:33:00-07:00</updated>
-    <id>http://jaketrent.com/post/https-redirect-node-heroku</id>
-    <content type="html"><![CDATA[<p>When your app requires users to be using the <code>https</code> protocol to make requests and get responses, it&#8217;s helpful to have an automatic redirect so the user is always in the right place.  Here&#8217;s how to do that for a Node Express app on Heroku.</p>
-
-<p><img src="http://i.imgur.com/5rZ8H.png" alt="NodeJs Https Redirect" /></p>
-
-<!--more-->
-
-
-<h2>Secure Express Requests</h2>
-
-<p>The <a href="http://expressjs.com">Express</a> request object has a bunch of great information.  One of its attributes is <code>secure</code>.  It&#8217;s a boolean.  Usually, <code>secure == true</code> will mean that you&#8217;re on <code>https</code>.  When that is not true, you&#8217;re ready for a redirect.</p>
-
-<p>Unfortunately for apps hosted on Heroku, <code>request.secure</code> will always be false.  The way that Heroku routing works, it will just never be set.</p>
-
-<h2>Heroku Https Header</h2>
-
-<p>Instead, Heroku forwards an http header that allows us to do the same &#8220;is secure&#8221; test.  On Heroku, <code>request.header('x-forwarded-proto')</code> will contain the actual protocol string (eg, &#8216;http&#8217; or &#8216;https&#8217;).</p>
-
-<h2>Express Middleware SSL Redirect</h2>
-
-<p>If you&#8217;re using the Express framework on Node, then you have it easy.  There&#8217;s already a great middleware mechanism for you to send any or all requests through.  If you set your Express app (v3) up like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">app = </span><span class="nx">express</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then you can use the <code>app.use</code> functionality to specify a middleware.  Since I only have certificates and want the redirect to happen in the production environment, I will likewise wrap this middleware inside <code>app.configure</code> for prod (it inspects <code>NODE_ENV</code> for you).  This redirect will be pretty rudimentary, but it&#8217;s just that simple, so here it goes:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span> <span class="s">&#39;production&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">forceSsl</span><span class="nf">(req, res, next) -&gt;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="nx">req</span><span class="p">.</span><span class="nx">header</span> <span class="s">&#39;x-forwarded-proto&#39;</span> <span class="o">!=</span> <span class="s">&#39;https&#39;</span>
-</span><span class='line'>      <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span> <span class="s">&quot;https://</span><span class="si">#{</span><span class="nx">req</span><span class="p">.</span><span class="nx">header</span> <span class="s">&#39;host&#39;</span><span class="si">}#{</span><span class="nx">req</span><span class="p">.</span><span class="nx">url</span><span class="si">}</span><span class="s">&quot;</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="nx">next</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If it&#8217;s not <code>https</code> already, redirect the same url on <code>https</code>.  If it is, that&#8217;s what I want, and you can pass on through my middleware function.  Note that this middleware will protect <em>all</em> urls on the site with an <code>https</code> redirect.  Your middleware could be more selective.  You could even create this as a stacked middleware per route if you wanted.  We could even enhance our middleware to use inspect both the http header <em>and</em> the <code>secure</code> flag.</p>
-
-<p>Heroku threw us a for a minor, unexpected loop, but it was nothing that we couldn&#8217;t easily code for.</p>
 ]]></content>
   </entry>
   

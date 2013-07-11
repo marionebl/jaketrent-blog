@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-07-03T08:41:57-06:00</updated>
+  <updated>2013-07-10T18:41:09-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,97 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Namespacing Angular Controller Attributes]]></title>
+    <link href="http://jaketrent.com/post/namespacing-angular-controller-attributes/"/>
+    <updated>2013-07-10T18:17:00-06:00</updated>
+    <id>http://jaketrent.com/post/namespacing-angular-controller-attributes</id>
+    <content type="html"><![CDATA[<p>Usually attributes of your Angular controllers are not namespaced.  But you can namespace them.  But you might not want to.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs controller namespacing" /></p>
+
+<!--more-->
+
+
+<h2>Angular Controllers Usually Attach Attributes to Scope</h2>
+
+<p>Usually attributes in an Angular controller, such as functions and variables, are attached to the <code>$scope</code> object.  That looks like this:</p>
+
+<p>```coffeescript my-ctrl.coffee
+angular.module('myapp').controller 'MyCtrl', ($scope) ->
+  $scope.myVar = 'myVal'
+  $scope.myFn = -></p>
+
+<pre><code>console.log 'does stuff'
+</code></pre>
+
+<p>```</p>
+
+<p>Then in my template I don't know, nor do I need to know, where the attribute comes from.  I just reference it:</p>
+
+<p>```haml my-app.jade
+html(ng-app="myapp")
+  body(ng-controller="MyCtrl")</p>
+
+<pre><code>h1 My Var: 
+button(ng-click="myFun()") Does Stuff
+</code></pre>
+
+<p>```</p>
+
+<h2>Namespaced Angular Controller Attributes</h2>
+
+<p>In this simple example, this is no big deal.  But as your app grows in complexity with many, nested controllers and templates, it can become difficult to read the code.  If you have common function names, it might be hard to tell which controller's function is referenced in your templates.  To make this less of a problem and the code more clear, you might namespace your controller attributes in the template.</p>
+
+<p>To do this, you can write your controllers to attach attributes to the controller instead of scope and then put the controller itself on scope.  That looks like this:</p>
+
+<p>```coffeescript my-ctrl.coffee
+angular.module('myapp').controller 'MyCtrl', ($scope) ->
+  @myVar = 'myVal'
+  @myFn = -></p>
+
+<pre><code>console.log 'does stuff'
+</code></pre>
+
+<p>  $scope.MyCtrl = @
+```</p>
+
+<p>Then your template changes to look like this:</p>
+
+<p>```haml my-app.jade
+html(ng-app="myapp")
+  body(ng-controller="MyCtrl")</p>
+
+<pre><code>h1 My Var: 
+button(ng-click="MyCtrl.myFun()") Does Stuff
+</code></pre>
+
+<p>```</p>
+
+<p>It's kind of nice for the reasons stated above.  I saw this strategy referenced on the Interwebs at one point and thought it seemed like a good idea.</p>
+
+<h2>Why You Might Avoid This</h2>
+
+<p>Maybe you love the idea.  Maybe you don't.  I thought I did.  I have been writing controllers this way for a while.  Now I don't.  Here's why:</p>
+
+<h3>1. It Makes Templates Less Reusable</h3>
+
+<p>It's quite probable that I'll have templates that I don't want permanently attached to a specific controller.  An example I ran into recently was on a profile page.  I had two pages to show profiles: one for my profile and one for an arbitrary person in the system.  They looked the same in the UI.  They had the same basic functions.  But the source of data for the variables and the implementation of the functions was different in the two scenarios.  Thus, I had to refactor to remove the namespacing to be able to reuse the template across pages.</p>
+
+<h3>2. It's More Typing</h3>
+
+<p>It's silly.  It adds up.  The less superfluous typing I can do, the more I consider that solution.</p>
+
+<h3>3. The Creators Don't Do It</h3>
+
+<p>I haven't seen this strategy featured in official tutorials, guides, or API examples.  Not that the Angular d00ds have all the ideas or do everything right -- it just isn't a pattern I see widely accepted or used.</p>
+
+<p>These days, I don't namespace my controller attributes, and I don't recommend it.</p>
+
+<p>So what do you think?  Do you write your controllers this way?  Good idea?  Bad idea?  What are some alternative methods you've found to balance template reuse with readability?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[When to Use Curlies in Angular Directives]]></title>
@@ -324,72 +415,6 @@ ul
 
 
 <p>Frankly, the mixture feels a little bit odd to me.  I've seen it work.  I know there are different ways to get this done.  I think there are probably better ways.  What has worked well for you in similar use cases?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[AngularJs Find Element in Context]]></title>
-    <link href="http://jaketrent.com/post/angularjs-find-element-in-context/"/>
-    <updated>2013-02-21T17:35:00-07:00</updated>
-    <id>http://jaketrent.com/post/angularjs-find-element-in-context</id>
-    <content type="html"><![CDATA[<p>Finding an element in context means that I can select a node from the dom within a certain range -- specifically either a node or any of its children nodes.  Is there an "Angular way" to do this?</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs find in context" /></p>
-
-<!--more-->
-
-
-<h2>Angular's Element() API</h2>
-
-<p>Angular provides jqLite for doing basic CSS selections.  As far as I can tell, it does not give you the ability to specify a context node.  Sure, you can specify a more specific selector, but you can't pass a context programmatically.  The best you could do would look something like:</p>
-
-<p><code>js
-angular.element('.my-preknown-context .element-to-find')
-</code></p>
-
-<p>If that's sufficient for your use case, this would be the most "Angular way" to make an element selection.</p>
-
-<h2>jQuery's API</h2>
-
-<p>If you need to make CSS selections within a given context, you'll need to use jQuery.  jQuery's selector will be used in place of jqLite if it is loaded previous to the <code>DOMContentLoaded</code> event firing.  In other words, import jQuery in the <code>head</code> tag.</p>
-
-<p>With jQuery, you can do things like this:</p>
-
-<p><code>js
-$('.element-to-find', $('.my-preknown-context'))
-</code></p>
-
-<p>But we could already do that with the above <code>angular.element</code> function.  If a constraint of our use case is that we don't yet know the selector of the context, then we need to  use this same jQuery API to do what we couldn't before.  For instance, if we want to find a child element of an element that was clicked, the inside of the click handler might look like this:</p>
-
-<p><code>js
-$('.element-to-find', $(event.currentTarget))
-</code></p>
-
-<p>We could also write it like this:</p>
-
-<p><code>js
-$(event.currentTarget).find('.element-to-find')
-</code></p>
-
-<p>Well, why not use <code>angular.element().find()</code>?  Because it is limited to querying children by tagName only.  Oh boy.  That's not all that useful.  Interesting/weird constraint.  Oh well, maybe someday.</p>
-
-<h2>jQuery, Meet Angular</h2>
-
-<p>So, using full jQuery is probably not the most "Angular way".  So, what's the best you can do?  Use Angular to get the context reference.  In a click handler, use the <code>$event</code> service which references the event object:</p>
-
-<p><code>js
-$('.element-to-find', $event.currentTarget)
-</code></p>
-
-<p>In a controller, use the <code>$element</code> service which references the dom node the controller is attached to:</p>
-
-<p><code>js
-$('.element-to-find', $element)
-</code></p>
-
-<p>This method uses jQuery to fill in for something it seems Angular can't do yet.  And it uses Angular where possible, since it has access to these dom references already.</p>
-
-<p>What do you think?  Is there a more "Angular way" to do this?</p>
 ]]></content>
   </entry>
   
