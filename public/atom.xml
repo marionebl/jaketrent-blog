@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-07-10T18:41:09-06:00</updated>
+  <updated>2013-07-17T23:32:21-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,54 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[So Good They Can't Ignore You]]></title>
+    <link href="http://jaketrent.com/post/so-good-they-cant-ignore-you/"/>
+    <updated>2013-07-17T22:35:00-06:00</updated>
+    <id>http://jaketrent.com/post/so-good-they-cant-ignore-you</id>
+    <content type="html"><![CDATA[<p>&#8220;So Good They Can&#8217;t Ignore You&#8221; is written by Cal Newport.  He rejects the idea of following your passion in order to find the work you love.  Instead, he suggests the accumulation of career capital.</p>
+
+<p><img src="http://i.imgur.com/VWjzM2c.jpg" alt="So good" /></p>
+
+<!--more-->
+
+
+<p>What follows are the main sections or rules of the book with a few of my takeaways each.  The man is obviously steeped in science.  The book reads like laws of physics.  Well, not quite that dry, but just as precise and well organized.  I love reading him say, &#8220;In which I argue&#8230;&#8221;  Sounds very professorish.</p>
+
+<h2>The Passion Hypothesis</h2>
+
+<p>Isn&#8217;t it true that when someone is trying to determine a career path or job, we often ask questions like, &#8220;Well, what do you want to do?&#8221; And give advice like, &#8220;Do something you&#8217;re passionate about.&#8221;  The author gives a few individual profiles of people who followed this advice without key ingredients and were, in the end, disappointed by the result.  He also points out a whole class of lifestyle designers who, in their delusion, <a href="http://jaketrent.com/post/quitter-review/">quit their day job</a> to live on their yet-to-be-created passive Internet income and aren&#8217;t able to make it.</p>
+
+<h2>Career Capital</h2>
+
+<p>(In which) Newport argues that &#8220;working right trumps finding the right work.&#8221;  Essentially, you worry more about what you are producing and the value you&#8217;re giving (craftsman mindset) instead of whether or not it fits some passion you&#8217;re predisposed to.</p>
+
+<p>Career capital is essentially the collection of rare and valuable skills that you possess that the market is willing to pay for.  Without this, you will likely not enjoy your work.  With this, your ability to define and magnify your work is much greater.</p>
+
+<p>The title of the book comes from Steve Martin, who remarked in an interview that aspiring comics didn&#8217;t like his advice.  They wanted quick fix answers like, &#8220;How do I get an audition?&#8221;  But he would always advise, &#8220;Be so good they can&#8217;t ignore you.&#8221;  And most likely, judging by your name recognition of Monseiur Martin, he has worked himself to that level.</p>
+
+<h2>Autonomy</h2>
+
+<p>It is autonomy, not passion, that is most likely to help you love your work.  The amount of control you have in a job is likely to influence your liking it.  The more control, the better.  But, it doesn&#8217;t come immediately.  If you don&#8217;t have the career capital, you can&#8217;t purchase it.  And if you&#8217;re offered it, while you know you probably don&#8217;t have the capital, it&#8217;s probably a mirage.  But if you&#8217;re so good they can&#8217;t ignore you, your ability to set terms and influence your environment is real.</p>
+
+<h2>Importance of a Mission</h2>
+
+<p>&#8220;So good they can&#8217;t ignore you&#8221; hardly sounds like your average work.  Instead it&#8217;s likely that you&#8217;re attached to a catchy mission.  You have a vision that people want to share.  You do work that people like to talk about.  Your name is known by peers and leaders in your industry.  You have made it to the edge of your field.  You are pushing boundaries, and are creating new fields, often mixtures of those you have expertise within.</p>
+
+<p>These stages of achievement that push your career and humanity forward are significant.  Little steps or bets need to be made strategically and intentionally in order to create a habit of advancing your knowledge and skill.  The sheer investment required to get to these levels is immense.</p>
+
+<h2>Conclusions</h2>
+
+<p>Newport&#8217;s book was worth the read.  In fact, I recommend it to anyone about to enter college, desiring to start in a new field, wanting to scratch an entrepreneurial itch, or thinking of changing jobs.</p>
+
+<p>His advice is solid.  It&#8217;s more grounded and nuanced than the &#8220;follow your passion&#8221;, feel good propaganda.</p>
+
+<p>The writing is a little dry.  It&#8217;s a short book at just over 200 small pages.  Still, it took me a bit to get through.  I wasn&#8217;t exactly glued to the pages.  But I do believe the advice is invaluable if it influences one to throw all their potential ability behind producing their best work and becoming their best worker.  It reads well, but sometimes feels like a textbook.  Perfect for all that intentional learning we all want to do, right?</p>
+
+<p>Most importantly, it inspired me to be so good they can&#8217;t ignore me.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Namespacing Angular Controller Attributes]]></title>
@@ -1872,38 +1920,6 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
 
 
 <p>The interesting line is line one.  We call the <code>jsonp</code> function.  We assign our callback like this: <code>callback=JSON_CALLBACK</code>.  And in our success callback, we can consume our data variable like it was pure Json.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Have More Fun]]></title>
-    <link href="http://jaketrent.com/post/have-more-fun/"/>
-    <updated>2013-03-19T07:18:00-06:00</updated>
-    <id>http://jaketrent.com/post/have-more-fun</id>
-    <content type="html"><![CDATA[<p>You enjoy your work more when you&#8217;re having fun, right?  I wouuld think that much would be obvious to us all.  And yet, we need reminded now and again what really makes us tick.  Whether our endeavor is serious or purely for entertainment;  Whether the cause means a lot to us or we are just trying to pay the bills;  We will do better and be happier in every case if we inject a whole lot of fun into our work.</p>
-
-<p><img src="http://i.imgur.com/YdZuWS2.jpg" alt="I love to laugh" /></p>
-
-<!--more-->
-
-
-<h2>Serious</h2>
-
-<p>Serious work still needs a bit of a lilt to really work well.  This is especially true in creative work.  How many of us can be creative on demand?  It just seems to turn off the juice.  The motivation to continue doing something will come from a certain enjoyment and mental reward.</p>
-
-<h2>Entertainment</h2>
-
-<p>Even if the work you do is meant for others to consume purely as entertainment, it can easily be less than entertaining for those working on it.  It has to be enjoyable for you too.  There are so many types and tastes of entertainment; find something that is personally appealing.  Your personal engagement will be much higher.</p>
-
-<h2>A Cause</h2>
-
-<p>Working on a cause for which you have great feeling is probably one of the easiest things to find great inner motivation in doing.  But you can even burn out there.  Most of our jobs are done day after day.  There is a nature of monotony even in the best work simply because of repetition.  What can help counteract the daily march of work?  A bit of fun and excitement!  It&#8217;ll mean you&#8217;re simply jazzed to do what you feel is worthy of your time and effort.</p>
-
-<h2>Pay Bills</h2>
-
-<p>In the end, many work simply to pay the bills that never cease to appear.  This is in itself and worthy reason for working hard.  It is essential.  However, just the focus on and stress over bill payment is probably enough to poison your joy for work.  Two things will help.  Live well within your means so the bills don&#8217;t loom so large.  And hone your skills and do so well that you find the joy of work.</p>
-
-<p>Simply put, work will consume a large portion of your life.  Would it not be better to smile and have fun during all that time?  Gratefully I&#8217;ve had both fantastic opportunities for work and the will to have fun.  Each of us have the opportunity to make it so.</p>
 ]]></content>
   </entry>
   

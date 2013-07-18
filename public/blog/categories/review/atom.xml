@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Review | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/review/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-07-10T18:41:09-06:00</updated>
+  <updated>2013-07-17T23:32:21-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,54 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[So Good They Can't Ignore You]]></title>
+    <link href="http://jaketrent.com/post/so-good-they-cant-ignore-you/"/>
+    <updated>2013-07-17T22:35:00-06:00</updated>
+    <id>http://jaketrent.com/post/so-good-they-cant-ignore-you</id>
+    <content type="html"><![CDATA[<p>"So Good They Can't Ignore You" is written by Cal Newport.  He rejects the idea of following your passion in order to find the work you love.  Instead, he suggests the accumulation of career capital.</p>
+
+<p><img src="http://i.imgur.com/VWjzM2c.jpg" alt="So good" /></p>
+
+<!--more-->
+
+
+<p>What follows are the main sections or rules of the book with a few of my takeaways each.  The man is obviously steeped in science.  The book reads like laws of physics.  Well, not quite that dry, but just as precise and well organized.  I love reading him say, "In which I argue..."  Sounds very professorish.</p>
+
+<h2>The Passion Hypothesis</h2>
+
+<p>Isn't it true that when someone is trying to determine a career path or job, we often ask questions like, "Well, what do you want to do?" And give advice like, "Do something you're passionate about."  The author gives a few individual profiles of people who followed this advice without key ingredients and were, in the end, disappointed by the result.  He also points out a whole class of lifestyle designers who, in their delusion, <a href="http://jaketrent.com/post/quitter-review/">quit their day job</a> to live on their yet-to-be-created passive Internet income and aren't able to make it.</p>
+
+<h2>Career Capital</h2>
+
+<p>(In which) Newport argues that "working right trumps finding the right work."  Essentially, you worry more about what you are producing and the value you're giving (craftsman mindset) instead of whether or not it fits some passion you're predisposed to.</p>
+
+<p>Career capital is essentially the collection of rare and valuable skills that you possess that the market is willing to pay for.  Without this, you will likely not enjoy your work.  With this, your ability to define and magnify your work is much greater.</p>
+
+<p>The title of the book comes from Steve Martin, who remarked in an interview that aspiring comics didn't like his advice.  They wanted quick fix answers like, "How do I get an audition?"  But he would always advise, "Be so good they can't ignore you."  And most likely, judging by your name recognition of Monseiur Martin, he has worked himself to that level.</p>
+
+<h2>Autonomy</h2>
+
+<p>It is autonomy, not passion, that is most likely to help you love your work.  The amount of control you have in a job is likely to influence your liking it.  The more control, the better.  But, it doesn't come immediately.  If you don't have the career capital, you can't purchase it.  And if you're offered it, while you know you probably don't have the capital, it's probably a mirage.  But if you're so good they can't ignore you, your ability to set terms and influence your environment is real.</p>
+
+<h2>Importance of a Mission</h2>
+
+<p>"So good they can't ignore you" hardly sounds like your average work.  Instead it's likely that you're attached to a catchy mission.  You have a vision that people want to share.  You do work that people like to talk about.  Your name is known by peers and leaders in your industry.  You have made it to the edge of your field.  You are pushing boundaries, and are creating new fields, often mixtures of those you have expertise within.</p>
+
+<p>These stages of achievement that push your career and humanity forward are significant.  Little steps or bets need to be made strategically and intentionally in order to create a habit of advancing your knowledge and skill.  The sheer investment required to get to these levels is immense.</p>
+
+<h2>Conclusions</h2>
+
+<p>Newport's book was worth the read.  In fact, I recommend it to anyone about to enter college, desiring to start in a new field, wanting to scratch an entrepreneurial itch, or thinking of changing jobs.</p>
+
+<p>His advice is solid.  It's more grounded and nuanced than the "follow your passion", feel good propaganda.</p>
+
+<p>The writing is a little dry.  It's a short book at just over 200 small pages.  Still, it took me a bit to get through.  I wasn't exactly glued to the pages.  But I do believe the advice is invaluable if it influences one to throw all their potential ability behind producing their best work and becoming their best worker.  It reads well, but sometimes feels like a textbook.  Perfect for all that intentional learning we all want to do, right?</p>
+
+<p>Most importantly, it inspired me to be so good they can't ignore me.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[UtahJS Conf 2013 Review]]></title>
@@ -208,48 +256,6 @@
 <p>The booked worked in usages of some great libraries throughout the coding examples.  As mentioned, <a href="http://socket.io/">Socket.IO</a> is a great web socket wrapper.  <a href="https://github.com/visionmedia/superagent">Superagent</a> is a great higher-level request API.  <a href="http://visionmedia.github.com/mocha/">Mocha</a> is a fantastic test framework.  And <a href="http://mongoosejs.com/">Mongoose</a> provides a nice model layer on top of the native MongoDb calls.</p>
 
 <p>So, what are you waiting for?  Go learn Node!  Use this book to help you.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Quitter Review]]></title>
-    <link href="http://jaketrent.com/post/quitter-review/"/>
-    <updated>2013-01-03T07:26:00-07:00</updated>
-    <id>http://jaketrent.com/post/quitter-review</id>
-    <content type="html"><![CDATA[<p>When you feel you're ready to quit your day job to pursue your dream job, think twice, and read this book.</p>
-
-<p><img src="http://i.imgur.com/mEsJW.png" alt="Quitter Book" /></p>
-
-<!--more-->
-
-
-<h2>The Gist</h2>
-
-<p>Overall, the book was not what I expected.  Jon Acuff, in his book, Quitter, describes his past self as a serial quitter.  Thus, he has plenty of quitting experience to speak from.  He essentially says that he did it the wrong way.  Then, he tries to share some tips on how to quit the right way.  Essentially, his point is to keep your day job, and use it to prepare patiently for making your dream job a reality.</p>
-
-<h2>Great Points</h2>
-
-<p>Given that his book is based on his real life experiences, it should be no surprise that he brought up some insightful points.  Here are some I found most enlightening:</p>
-
-<h4>The Value of Invisilibity</h4>
-
-<p>Invisibility has value.  When we haven't set ourselves up as the biggest professional around, we have a shorter distance to fall.  We all still fail at times, so the combo is a plus.  You can dream big in this mode because when you fail big, no one cares.  And you can do this over and over again.</p>
-
-<p>The safest or most conservative person in the world will be the person with the most visibility.  Why?  Because they have a reputation and a performance record to keep up.  If you don't have to maintain that, you'll probably take interesting risks more readily.  When we see people at the height of their success, we don't have visibility into the long years that came before when they were building it.</p>
-
-<h4>Quantity is Essential in Starting a Dream</h4>
-
-<p>We need to practice our dream.  We can see ourself successful in our minds, but interesting work requires serious skill.  Moreover, going straight to the pinnacle of our eventual quality standard will paralyze us in the short term.  We will find ourselves unable to produce.  In Jon Acuff's case, he realized that he gave away 1 million blog words before he was ever good enough or had a following enough to publish and sell 50 thousand words.</p>
-
-<h4>Perils of Business Ownership</h4>
-
-<p>Being an entreprenuer is a special job.  But, that life is not for the faint of heart.  It's great.  If you're sitting in a day job you don't particularly like, you're probably fantasizing about the potential of ultimate freedom entreprenuership might bring.  It does, and it doesn't.  The beast must be tamed.  Jon takes plenty of time to mention the pitfalls to avoid and the preparations to make in his book.  For instance, he explains what he and close associates have experienced:  That bills will become your new boss.  Your ability to create revenue on your own -- every day! -- will become the new stress.  That is, unless you're able to prepare adequately and time your jump well.</p>
-
-<h2>Jon's Style</h2>
-
-<p>I was unprepared for how much I would laugh while reading Jon's book.  Business self-help books are not expected to be very comical or entertaining.  Jon gave the book a fun voice.  It was easy to read out loud to my wife -- you know, for getting on the same dream page.  Jon doesn't take himself to seriously, and that's refreshing.</p>
-
-<p>It's a short read.  It's a fun read.  The information is from the heart, and I think it's worth learning from Jon's experience.  If you're considering ever starting your own business or if you're not in your dream job yet and want to get there, I recommend this book on the subject.</p>
 ]]></content>
   </entry>
   

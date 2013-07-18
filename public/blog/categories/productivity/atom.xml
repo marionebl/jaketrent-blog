@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Productivity | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/productivity/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-07-10T18:41:09-06:00</updated>
+  <updated>2013-07-17T23:32:21-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,54 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[So Good They Can't Ignore You]]></title>
+    <link href="http://jaketrent.com/post/so-good-they-cant-ignore-you/"/>
+    <updated>2013-07-17T22:35:00-06:00</updated>
+    <id>http://jaketrent.com/post/so-good-they-cant-ignore-you</id>
+    <content type="html"><![CDATA[<p>"So Good They Can't Ignore You" is written by Cal Newport.  He rejects the idea of following your passion in order to find the work you love.  Instead, he suggests the accumulation of career capital.</p>
+
+<p><img src="http://i.imgur.com/VWjzM2c.jpg" alt="So good" /></p>
+
+<!--more-->
+
+
+<p>What follows are the main sections or rules of the book with a few of my takeaways each.  The man is obviously steeped in science.  The book reads like laws of physics.  Well, not quite that dry, but just as precise and well organized.  I love reading him say, "In which I argue..."  Sounds very professorish.</p>
+
+<h2>The Passion Hypothesis</h2>
+
+<p>Isn't it true that when someone is trying to determine a career path or job, we often ask questions like, "Well, what do you want to do?" And give advice like, "Do something you're passionate about."  The author gives a few individual profiles of people who followed this advice without key ingredients and were, in the end, disappointed by the result.  He also points out a whole class of lifestyle designers who, in their delusion, <a href="http://jaketrent.com/post/quitter-review/">quit their day job</a> to live on their yet-to-be-created passive Internet income and aren't able to make it.</p>
+
+<h2>Career Capital</h2>
+
+<p>(In which) Newport argues that "working right trumps finding the right work."  Essentially, you worry more about what you are producing and the value you're giving (craftsman mindset) instead of whether or not it fits some passion you're predisposed to.</p>
+
+<p>Career capital is essentially the collection of rare and valuable skills that you possess that the market is willing to pay for.  Without this, you will likely not enjoy your work.  With this, your ability to define and magnify your work is much greater.</p>
+
+<p>The title of the book comes from Steve Martin, who remarked in an interview that aspiring comics didn't like his advice.  They wanted quick fix answers like, "How do I get an audition?"  But he would always advise, "Be so good they can't ignore you."  And most likely, judging by your name recognition of Monseiur Martin, he has worked himself to that level.</p>
+
+<h2>Autonomy</h2>
+
+<p>It is autonomy, not passion, that is most likely to help you love your work.  The amount of control you have in a job is likely to influence your liking it.  The more control, the better.  But, it doesn't come immediately.  If you don't have the career capital, you can't purchase it.  And if you're offered it, while you know you probably don't have the capital, it's probably a mirage.  But if you're so good they can't ignore you, your ability to set terms and influence your environment is real.</p>
+
+<h2>Importance of a Mission</h2>
+
+<p>"So good they can't ignore you" hardly sounds like your average work.  Instead it's likely that you're attached to a catchy mission.  You have a vision that people want to share.  You do work that people like to talk about.  Your name is known by peers and leaders in your industry.  You have made it to the edge of your field.  You are pushing boundaries, and are creating new fields, often mixtures of those you have expertise within.</p>
+
+<p>These stages of achievement that push your career and humanity forward are significant.  Little steps or bets need to be made strategically and intentionally in order to create a habit of advancing your knowledge and skill.  The sheer investment required to get to these levels is immense.</p>
+
+<h2>Conclusions</h2>
+
+<p>Newport's book was worth the read.  In fact, I recommend it to anyone about to enter college, desiring to start in a new field, wanting to scratch an entrepreneurial itch, or thinking of changing jobs.</p>
+
+<p>His advice is solid.  It's more grounded and nuanced than the "follow your passion", feel good propaganda.</p>
+
+<p>The writing is a little dry.  It's a short book at just over 200 small pages.  Still, it took me a bit to get through.  I wasn't exactly glued to the pages.  But I do believe the advice is invaluable if it influences one to throw all their potential ability behind producing their best work and becoming their best worker.  It reads well, but sometimes feels like a textbook.  Perfect for all that intentional learning we all want to do, right?</p>
+
+<p>Most importantly, it inspired me to be so good they can't ignore me.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Learn to Procrastinate]]></title>
@@ -178,52 +226,6 @@
 <p>Oh, man!  My heart sank.  I was really kind of sad that he had essentially abandoned what he said he found most joy in.  It was an opportunistic move, even practical.  But I was pretty disappointed.  The guy seemed smart.  If so, he could probably pick his opportunity in this wonderful software industry of ours.  So why cave and totally deny the opportunities for what you really claim to enjoy to take the opportunity you had only had a lunch chat about?</p>
 
 <p>His initial enthusiasm about his love of data was fun and contagious.  To see him deny it in the next breath made it feel like more of a play.  Perhaps it wasn't, but when you betray your true love, it makes me wonder at your general sincerity.  If you like something in tech and you're good at it, you should do it, hold out for it, and odds are you'll get your opportunity.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Agile Designers]]></title>
-    <link href="http://jaketrent.com/post/agile-designers/"/>
-    <updated>2012-10-15T17:00:00-06:00</updated>
-    <id>http://jaketrent.com/post/agile-designers</id>
-    <content type="html"><![CDATA[<p>The Agile method of software creation contains many principles of development that will help create good software.  Some of my most successful projects have had as a key feature an agile designer.  As Jobs said, design <em>is</em> how it works, and that means that to really deliver well in an agile environment, design <em>and</em> development have to be on the agile train together.</p>
-
-<p><img src="http://i.imgur.com/GOXzL.jpg" alt="Blueprint design" />
-http://flic.kr/p/bpV8UA</p>
-
-<!--more-->
-
-
-<h2>K-man Keeps it Alive</h2>
-
-<p>I work with a fantastic designer, the one and only <a href="http://www.composition3.com/">Kendall Chadwick</a>.  He has many great qualities of an agile designer:</p>
-
-<ol>
-<li><strong>He's available</strong> - He lives with the cross-functional team.  He is there to participate in discussions.  It's not hard to get a hold of him, so answers to questions flow more freely.</li>
-<li><strong>He listens</strong> - He asks a lot of questions.  He's not stuffy about his design sense.  He realizes that many needs are represented in a project and product.  He attends discussion meetings not necessarily focused on design but on the details of the product or process.</li>
-<li><strong>He's fully engaged</strong> - He knows his task doesn't end when he clicks save in Photoshop.  He owns his designs and ideas all the way through the project, helping evolve them as we go. One of the most important things a software team member can do is remain fully engaged right up until the product ships.</li>
-</ol>
-
-
-<h2>Agile Experience Design</h2>
-
-<p>I just finished a book called "<a href="http://www.amazon.com/Agile-Experience-Design-Designers-Continuous/dp/0321804813">Agile Experience Design</a>" by Lindsay Ratcliffe and Marc McNeill.  I've read a fair bit on agile methods and currently live in a quasi-agile (hehe, let's actually call it mini-waterfalls) shop.  This book was intriguing as its authors are speaking to designers as they try to integrate better in an agile environment.</p>
-
-<p>Of note was their Agile Design Manifesto:</p>
-
-<p>Agile experience design is
-Inclusive rather than elitist
-Emergent with direction rather than up front
-Integrated and collborative rather than handed over the fence
-Considerate of customer, business, and technology needs rather than biased toward a single factor.</p>
-
-<p>As a passing review:  The book won't provide too much that is new to someone familiar with agile.  It speaks in terms that I suppose are probably more well related to by designers.  It's a somewhat lengthy and dense book.  At times, it was hard to maintain reading momentum.  The book is beautiful -- perhaps it had some real designers laying it out?</p>
-
-<h2>The Power of Design</h2>
-
-<p>It's amazing how much depends on solid design.  The design will define the users' experience with the software.  It will never not matter.  To a great design in a software product is a difficult thing.  Good people in the design discipline who are fully engaged in adapting to the changing landscape of software creation are invaluable.  Agile designers rock.  Find one and figure out how to get him on your project.</p>
-
-<p>What have your best designers done to make great software on your teams?</p>
 ]]></content>
   </entry>
   
