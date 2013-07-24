@@ -4,7 +4,7 @@
   <title><![CDATA[Category: css | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/css/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-07-17T23:39:04-06:00</updated>
+  <updated>2013-07-24T13:56:47-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,73 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Style File Input]]></title>
+    <link href="http://jaketrent.com/post/style-file-input/"/>
+    <updated>2013-07-23T16:44:00-06:00</updated>
+    <id>http://jaketrent.com/post/style-file-input</id>
+    <content type="html"><![CDATA[<p>File input fields are notoriously painful to style.  Here are a few quick tips to that will save you some dead ends.</p>
+
+<p><img src="http://i.imgur.com/sm1b2ok.jpg" alt="File input" /></p>
+
+<!--more-->
+
+
+<h2>The Problem with File Inputs</h2>
+
+<p>File inputs are inconsistent to start with.  They differ even in their native form across all browsers.  They also have internal elements that are not individually accessible, such as the "Browse" button.  They are also subject to more browser-imposed security constraints than input fields of other types.</p>
+
+<p>Given these inherent problems/constraints, try to follow two basic rules:</p>
+
+<ol>
+<li>Don't expect to make your file input look exactly like you'd like</li>
+<li>Don't trigger clicks on the file input</li>
+</ol>
+
+
+<h2>Styling the File Input</h2>
+
+<p>Why is file input rule reasonable?  Shouldn't you be able to match the UI design you desire?  Yes, on both counts.</p>
+
+<p>Don't style the file input to make it look like a photo upload button (or whatever you're marking).  Instead, <strong>hide it</strong>.  And after you hide it, position it <strong>over</strong> another another element, such as a <code>div</code>, that you can style much more easily to look like the UI you envision.</p>
+
+<p>Here is some example css on how you might accomplish this:</p>
+
+<p><code>haml fileinput.jade
+.file-wrapper
+  .file-input(type="file")
+</code></p>
+
+<p>```sass fileinput.styl
+.file-wrapper
+  position: relative
+  overflow: hidden
+  cursor: pointer</p>
+
+<p>.file-input
+  position: absolute
+  top: 0
+  right: 0
+  z-index: 2
+  opacity: 0.01
+  height: 100%
+  font-size: 150px
+```</p>
+
+<p>The add additional styles to <code>.file-wrapper</code> to make it look as you wish.  Remember any vendor prefixes you may/not need for <code>opacity</code>, etc.</p>
+
+<h2>Handling Double Clicks in IE</h2>
+
+<p>It's important to position the <code>.file-input</code> as <code>right: 0</code>.  Otherwise, in IE the file input field will not activate on a single click.  Instead it'll need a double click.  This is because in IE clicking on the text box portion of the file input requires a double click.  Clicking on the browse button requires just a single click.  And the browse button is on the right side of the file input field in IE.  Finally, make the <code>font-size</code> big enough that you're guaranteed to cover the <code>.file-wrapper</code> area.</p>
+
+<h2>Handling Clicks</h2>
+
+<p>Now you don't need to have JavaScript to trigger click events on the file input field.  You will just be relying on direct user interaction to click the native file input field.  This will make <a href="http://stackoverflow.com/questions/210643/in-javascript-can-i-make-a-click-event-fire-programmatically-for-a-file-input">some browsers</a>, like Chrome and Firefox, happy.  This is because these browsers won't hold file values given to the input programmatically as a security precaution.  Oddly, IE, which sometimes balks more about innane security constraints like this, is ok.</p>
+
+<p>So, what do you think?  Does this work for you?  Anything else to make the solution more solid?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ngStyle Background]]></title>

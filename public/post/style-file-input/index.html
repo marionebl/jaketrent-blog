@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Remove Mobile Safari Click Delay - Jake Trent</title>
+  <title>Style File Input - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="Mobile Safari, by default, delays click events. To make your site more responsive, remove this delay.">
-  <meta name="keywords" content="js, mobile safari, click event, delay, slow, mobile browser delay, click delay">
+  <meta name="description" content="File input fields are notoriously painful to style. Here are a few quick tips to that will save you some dead ends.">
+  <meta name="keywords" content="style file input, css, double click file input in ie, trigger click on file input">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/remove-mobile-safari-click-delay/">
+  <link rel="canonical" href="http://jaketrent.com/post/style-file-input/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Remove Mobile Safari Click Delay</h1>
+      <h1 class="entry-title">Style File Input</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2013-06-24T08:04:00-06:00" pubdate data-updated="true">Jun 24<span>th</span>, 2013</time>
+<time datetime="2013-07-23T16:44:00-06:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,50 +108,82 @@
   </header>
 
 
-<div class="entry-content"><p>Did you know that Mobile Safari and other mobile browsers are delaying your click events?  If you&#8217;ve been testing your mobile site, and it feels sluggish in Mobile Safari, this could be one of the reasons.  Disable the click delay and rejoice at a bit more snappy response.</p>
+<div class="entry-content"><p>File input fields are notoriously painful to style.  Here are a few quick tips to that will save you some dead ends.</p>
 
-<p><img src="http://i.imgur.com/PH8Zosr.png" alt="mobile browser delay" /></p>
+<p><img src="http://i.imgur.com/sm1b2ok.jpg" alt="File input" /></p>
 
 <!--more-->
 
 
-<h2>Sandbagging?</h2>
+<h2>The Problem with File Inputs</h2>
 
-<p>Why would a browser vendor build in this &#8220;functionality&#8221;?  Are they purposefully sandbagging their web experience so consumers will be more drawn to a device-specific app instead?  As if that could ever happen.</p>
+<p>File inputs are inconsistent to start with.  They differ even in their native form across all browsers.  They also have internal elements that are not individually accessible, such as the &#8220;Browse&#8221; button.  They are also subject to more browser-imposed security constraints than input fields of other types.</p>
 
-<p>Google, as with most things, has an answer.  From a <a href="https://developers.google.com/mobile/articles/fast_buttons?hl=de-DE.">Google Developer article</a>:</p>
+<p>Given these inherent problems/constraints, try to follow two basic rules:</p>
 
-<blockquote><p>The reason for [the 300ms delay] is that the browser is waiting to see if you are actually performing a double tap.</p></blockquote>
+<ol>
+<li>Don&#8217;t expect to make your file input look exactly like you&#8217;d like</li>
+<li>Don&#8217;t trigger clicks on the file input</li>
+</ol>
 
-<p>As with the apps Google was developing, the buttons that we&#8217;re designing don&#8217;t really need this check for double taps.  We really just want fast buttons.</p>
 
-<h2>FastClick</h2>
+<h2>Styling the File Input</h2>
 
-<p>Really, most of the work for this problem is figuring out where the slowness is coming from.  I spent days and days trying to optimize a single-page web app that had a bunch of buttons with click events that seemed slow for some reason.  I came up with all sorts of theories and wasted a lot of time.</p>
+<p>Why is file input rule reasonable?  Shouldn&#8217;t you be able to match the UI design you desire?  Yes, on both counts.</p>
 
-<p>Now that you know what your problem is, just download and use a library to solve it.  Of the most fantastic, <a href="https://github.com/ftlabs/fastclick">FastClick</a>.  It&#8217;s easy to use.</p>
+<p>Don&#8217;t style the file input to make it look like a photo upload button (or whatever you&#8217;re marking).  Instead, <strong>hide it</strong>.  And after you hide it, position it <strong>over</strong> another another element, such as a <code>div</code>, that you can style much more easily to look like the UI you envision.</p>
 
-<p><strong>Step 1</strong>
-Include the script in the <code>head</code> tag:</p>
+<p>Here is some example css on how you might accomplish this:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;fastclick.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<figure class='code'><figcaption><span>fileinput.jade</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='haml'><span class='line'><span class="nc">.file-wrapper</span>
+</span><span class='line'>  <span class="nc">.file-input</span>(<span class="na">type=</span><span class="s">&quot;file&quot;</span>)
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><strong>Step 2</strong>
-Attach FastClick to all links on the page (or subset if you wish):</p>
 
-<figure class='code'><figcaption><span>a-whole-new-world.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+
+<figure class='code'><figcaption><span>fileinput.styl</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span> <span class="s">&#39;load&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">FastClick</span><span class="p">.</span><span class="nx">attach</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span>
-</span><span class='line'><span class="p">,</span> <span class="kc">false</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='sass'><span class='line'><span class="nc">.file-wrapper</span>
+</span><span class='line'>  <span class="na">position</span><span class="o">:</span> <span class="no">relative</span>
+</span><span class='line'>  <span class="na">overflow</span><span class="o">:</span> <span class="no">hidden</span>
+</span><span class='line'>  <span class="na">cursor</span><span class="o">:</span> <span class="no">pointer</span>
+</span><span class='line'>
+</span><span class='line'><span class="nc">.file-input</span>
+</span><span class='line'>  <span class="na">position</span><span class="o">:</span> <span class="no">absolute</span>
+</span><span class='line'>  <span class="na">top</span><span class="o">:</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="na">right</span><span class="o">:</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="na">z-index</span><span class="o">:</span> <span class="mi">2</span>
+</span><span class='line'>  <span class="na">opacity</span><span class="o">:</span> <span class="mi">0</span><span class="mf">.01</span>
+</span><span class='line'>  <span class="na">height</span><span class="o">:</span> <span class="mi">100</span><span class="kt">%</span>
+</span><span class='line'>  <span class="na">font-size</span><span class="o">:</span> <span class="mi">150</span><span class="kt">px</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Just like that, you&#8217;ll see marked improvements.  Thank you Apple.  Thank you FastClick.</p>
+<p>The add additional styles to <code>.file-wrapper</code> to make it look as you wish.  Remember any vendor prefixes you may/not need for <code>opacity</code>, etc.</p>
+
+<h2>Handling Double Clicks in IE</h2>
+
+<p>It&#8217;s important to position the <code>.file-input</code> as <code>right: 0</code>.  Otherwise, in IE the file input field will not activate on a single click.  Instead it&#8217;ll need a double click.  This is because in IE clicking on the text box portion of the file input requires a double click.  Clicking on the browse button requires just a single click.  And the browse button is on the right side of the file input field in IE.  Finally, make the <code>font-size</code> big enough that you&#8217;re guaranteed to cover the <code>.file-wrapper</code> area.</p>
+
+<h2>Handling Clicks</h2>
+
+<p>Now you don&#8217;t need to have JavaScript to trigger click events on the file input field.  You will just be relying on direct user interaction to click the native file input field.  This will make <a href="http://stackoverflow.com/questions/210643/in-javascript-can-i-make-a-click-event-fire-programmatically-for-a-file-input">some browsers</a>, like Chrome and Firefox, happy.  This is because these browsers won&#8217;t hold file values given to the input programmatically as a security precaution.  Oddly, IE, which sometimes balks more about innane security constraints like this, is ok.</p>
+
+<p>So, what do you think?  Does this work for you?  Anything else to make the solution more solid?</p>
 </div>
 
 
@@ -174,12 +206,12 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
   
 
 
-<time datetime="2013-06-24T08:04:00-06:00" pubdate data-updated="true">Jun 24<span>th</span>, 2013</time>
+<time datetime="2013-07-23T16:44:00-06:00" pubdate data-updated="true">Jul 23<span>rd</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/css/'>css</a>
   
 </span>
 
@@ -188,7 +220,7 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/remove-mobile-safari-click-delay/" data-via="" data-counturl="http://jaketrent.com/post/remove-mobile-safari-click-delay/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/style-file-input/" data-via="" data-counturl="http://jaketrent.com/post/style-file-input/" >Tweet</a>
   
   
   
@@ -197,10 +229,8 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/ngstyle-background/" title="Previous Post: ngStyle Background">&laquo; ngStyle Background</a>
+        <a class="basic-alignment left" href="/post/so-good-they-cant-ignore-you/" title="Previous Post: So Good They Can't Ignore You">&laquo; So Good They Can't Ignore You</a>
       
-      
-        <a class="basic-alignment right" href="/post/when-to-use-curlies-in-angular-directives/" title="Next Post: When to Use Curlies in Angular Directives">When to Use Curlies in Angular Directives &raquo;</a>
       
     </p>
   </footer>
@@ -289,8 +319,8 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/remove-mobile-safari-click-delay/';
-        var disqus_url = 'http://jaketrent.com/post/remove-mobile-safari-click-delay/';
+        var disqus_identifier = 'http://jaketrent.com/post/style-file-input/';
+        var disqus_url = 'http://jaketrent.com/post/style-file-input/';
         var disqus_script = 'embed.js';
       
     (function () {
