@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-07-24T13:56:47-06:00</updated>
+  <updated>2013-08-02T13:24:58-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,63 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ember Dynamic Classes]]></title>
+    <link href="http://jaketrent.com/post/ember-dynamic-classes/"/>
+    <updated>2013-08-02T13:02:00-06:00</updated>
+    <id>http://jaketrent.com/post/ember-dynamic-classes</id>
+    <content type="html"><![CDATA[<p>In Ember, your state is separated from the UI inside models.  But, often you want the state of your models to be represented visually in the UI via dynamic class names.  Make it happen with <code>Ember.View</code>s.</p>
+
+<p><img src="http://i.imgur.com/85v8PQP.png" alt="Dynamic Classes with Ember Views" /></p>
+
+<!--more-->
+
+
+<h2>Use an Ember.View</h2>
+
+<p>A view will function as the translation layer between the state of your models and the DOM.  It will provide the logic to observe the properties within your model and expose it as a class name on the associated DOM element.</p>
+
+<p>If I have a model with state:</p>
+
+<p><code>coffeescript my-model.coffee
+App.MyModel = App.Model.extend
+  hasSomeState: true
+</code></p>
+
+<h2>Use classNameBindings</h2>
+
+<p>Based on that state, I want to add a <code>has-some-state</code> class to the UI if it's true, and remove the class if it's false.  The view might look like:</p>
+
+<p>```coffeescript my-model-view.coffee
+App.MyModelView = Ember.View.extend
+  # ...
+  classNameBindings: ['hasSomeState']
+  hasSomeState: (-></p>
+
+<pre><code>@get('content').get('hasSomeState')
+</code></pre>
+
+<p>  ).property('content.hasSomeState')
+```</p>
+
+<p>The <code>hasSomeState</code> function will return a boolean has to whether or not the <code>has-some-state</code> class should be added to the element.</p>
+
+<h2>Bind to Model Properties</h2>
+
+<p>Now use the view in the template, being careful to match the binding of <code>content</code> so the property watching works:</p>
+
+<p><code>haml template-fragment.jade
+App.MyModelView contentBinding="this.myModelInstance"
+</code></p>
+
+<p>In the example, make sure <code>myModelInstance</code> is available in the scope of your route/controller.</p>
+
+<p>As your model's <code>hasSomeState</code> value is changed internally with the <code>@set</code> function, the view will be notified that it needs to re-run the <code>hasSomeState</code> function, and the UI will update if needed.</p>
+
+<p>What other methods do you utilize in Ember to get dynamic classes?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Style File Input]]></title>
@@ -469,70 +526,6 @@ App.GameController = Ember.ObjectController.extend</p>
 <p>If the controller doesn't implement this function, the current Ember Route may implement it in its <code>events</code> object.  If neither the controller or the route implement it, an exception is thrown.</p>
 
 <p>In this way, Ember Views show their worth in collecting events and translating them to meaningful verbs that we can act upon in our application.  They become reusable, allowing us to bind different content to them on different occassions.  Do Ember Views help you in this way?  Is there a better way?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[When to Use Curlies in Angular Directives]]></title>
-    <link href="http://jaketrent.com/post/when-to-use-curlies-in-angular-directives/"/>
-    <updated>2013-06-24T17:03:00-06:00</updated>
-    <id>http://jaketrent.com/post/when-to-use-curlies-in-angular-directives</id>
-    <content type="html"><![CDATA[<p>Angularjs has some sweet built-in directives.  Sometimes it can be confusing when to use the curly braces around expressions in directive attributes and when not to.  Here are a couple rules.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular directive curlies" /></p>
-
-<!--more-->
-
-
-<h2>Curlies</h2>
-
-<p>By "curlies", I mean curly braces.  The difference of when to use or not use them looks like the following.</p>
-
-<p>Use them:
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;{{valWithCurlies}}&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Or despise them:
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;valWithNone&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h2>Two Rules of Thumb</h2>
-
-<p>Here are two rules that will serve you well when deciding whether or not to use curlies.</p>
-
-<ol>
-<li>Assume no curlies in Angular directive attribute values.  Most directives don't use them.</li>
-<li>If you would conceivably want to mix strings with Javascript code in the attribute, use curlies.</li>
-</ol>
-
-
-<h2>Two Examples with Curlies</h2>
-
-<p>There are only a few examples of directives using curlies in their attributes.  These examples are both relating to pathing.  Apparently that's a common use case for mixing strings with JavaScript-borne values.</p>
-
-<h3>ngSrc</h3>
-
-<p>As in the source of an image, such as:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;img</span> <span class="na">ng-src=</span><span class="s">&quot;/images/{{tool.icon_name}}.png&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h3>ngHref</h3>
-
-<p>As in a link to an html page, such as:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;a</span> <span class="na">ng-href=</span><span class="s">&quot;http://google.com?q={{query}}&quot;</span><span class="nt">&gt;</span>See Google Results<span class="nt">&lt;/a&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h2>Something more Precise?</h2>
-
-<p>Is there something more precise than these two rules of thumb?  Why does Angular make an exception for these two cases, thus causing us to try to remember our rules of thumb?</p>
-
-<p>As I surmised above, I can only guess that because the pathing use case often wants to mix strings with JavaScript values, the exception was made.</p>
 ]]></content>
   </entry>
   

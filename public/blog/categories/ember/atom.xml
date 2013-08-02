@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ember | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ember/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-07-24T13:56:47-06:00</updated>
+  <updated>2013-08-02T13:24:58-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,63 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ember Dynamic Classes]]></title>
+    <link href="http://jaketrent.com/post/ember-dynamic-classes/"/>
+    <updated>2013-08-02T13:02:00-06:00</updated>
+    <id>http://jaketrent.com/post/ember-dynamic-classes</id>
+    <content type="html"><![CDATA[<p>In Ember, your state is separated from the UI inside models.  But, often you want the state of your models to be represented visually in the UI via dynamic class names.  Make it happen with <code>Ember.View</code>s.</p>
+
+<p><img src="http://i.imgur.com/85v8PQP.png" alt="Dynamic Classes with Ember Views" /></p>
+
+<!--more-->
+
+
+<h2>Use an Ember.View</h2>
+
+<p>A view will function as the translation layer between the state of your models and the DOM.  It will provide the logic to observe the properties within your model and expose it as a class name on the associated DOM element.</p>
+
+<p>If I have a model with state:</p>
+
+<p><code>coffeescript my-model.coffee
+App.MyModel = App.Model.extend
+  hasSomeState: true
+</code></p>
+
+<h2>Use classNameBindings</h2>
+
+<p>Based on that state, I want to add a <code>has-some-state</code> class to the UI if it's true, and remove the class if it's false.  The view might look like:</p>
+
+<p>```coffeescript my-model-view.coffee
+App.MyModelView = Ember.View.extend
+  # ...
+  classNameBindings: ['hasSomeState']
+  hasSomeState: (-></p>
+
+<pre><code>@get('content').get('hasSomeState')
+</code></pre>
+
+<p>  ).property('content.hasSomeState')
+```</p>
+
+<p>The <code>hasSomeState</code> function will return a boolean has to whether or not the <code>has-some-state</code> class should be added to the element.</p>
+
+<h2>Bind to Model Properties</h2>
+
+<p>Now use the view in the template, being careful to match the binding of <code>content</code> so the property watching works:</p>
+
+<p><code>haml template-fragment.jade
+App.MyModelView contentBinding="this.myModelInstance"
+</code></p>
+
+<p>In the example, make sure <code>myModelInstance</code> is available in the scope of your route/controller.</p>
+
+<p>As your model's <code>hasSomeState</code> value is changed internally with the <code>@set</code> function, the view will be notified that it needs to re-run the <code>hasSomeState</code> function, and the UI will update if needed.</p>
+
+<p>What other methods do you utilize in Ember to get dynamic classes?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Behavior of CoffeeScript Fat Arrow]]></title>
@@ -511,51 +568,6 @@ npm install matchdep grunt grunt-regarde grunt-contrib-livereload grunt-emblem -
 </code></p>
 
 <p>So now, seriously, go write some Emblem templates.  So fun, so precompiled.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Match Ember and Handlebars Versions]]></title>
-    <link href="http://jaketrent.com/post/match-ember-handlebars-version/"/>
-    <updated>2013-05-21T07:38:00-06:00</updated>
-    <id>http://jaketrent.com/post/match-ember-handlebars-version</id>
-    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a> is very specific about what version of <a href="http://handlebarsjs.com">Handlebars</a> it requires.  This is probably good, but it's also a pain to work with as different versions of the two libraries are released independently.  There are a few good tools to help us out.</p>
-
-<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
-
-<!--more-->
-
-
-<h2>Released Independently</h2>
-
-<p>In a prime example, recently there was a new version of Handlebars released: <code>1.0.0-rc.4</code>.  Ember happens to be on version <code>1.0.0-rc.3</code>.  That version has a hard dependency on Handlebars <code>1.0.0-rc.3</code>.  In other words, the latest Ember code relies on an older version of Handlebars.</p>
-
-<h2>Bower</h2>
-
-<p>If you include these 3rd party libraries in your source code under a <code>lib</code> directory or something of that nature, you <em>always</em> have plenty of work to do.  Naturally, you just copy in the exact versions of the scripts that are needed.</p>
-
-<p>Hopefully you're trying to make use of a mostly awesome tool, <a href="http://bower.io">Bower</a>.  It helps you manage these 3rd party libraries in a way similar to npm.  You provide a descriptor of your project's dependencies, <code>component.json</code>.  And you install things similarly via the <code>bower</code> cli.</p>
-
-<h2>Specify a Bower Version</h2>
-
-<p>If I run:</p>
-
-<p><code>
-bower install handlebars --save
-</code></p>
-
-<p>It saves a dependency in my <code>components.json</code> for Handlebars for the latest version it could find.  This won't do for us.  We need to specify the versions.</p>
-
-<p>Our strategy will be: take the latest version of Ember and then specifically match the Handlbars version.  Finally, we should type:</p>
-
-<p><code>
-bower install ember --save
-bower install handlebars#1.0.0-rc.3
-</code></p>
-
-<p>As of this writing, that is the version of handlebars that is required.  Bower will recognize any semver git tag name or branch name after the hash <code>#</code> sign.</p>
-
-<p>I like our version strategy for a project that is under active development in that it keeps us on the latest Ember.  But, if you're on a project that's been built to an Ember version and not deployed for a long time, you may want to make a very specific dependency out of Ember as well, so the two are guaranteed in sync for future deploys.</p>
 ]]></content>
   </entry>
   

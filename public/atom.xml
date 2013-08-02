@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-07-24T13:56:47-06:00</updated>
+  <updated>2013-08-02T13:24:58-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,69 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ember Dynamic Classes]]></title>
+    <link href="http://jaketrent.com/post/ember-dynamic-classes/"/>
+    <updated>2013-08-02T13:02:00-06:00</updated>
+    <id>http://jaketrent.com/post/ember-dynamic-classes</id>
+    <content type="html"><![CDATA[<p>In Ember, your state is separated from the UI inside models.  But, often you want the state of your models to be represented visually in the UI via dynamic class names.  Make it happen with <code>Ember.View</code>s.</p>
+
+<p><img src="http://i.imgur.com/85v8PQP.png" alt="Dynamic Classes with Ember Views" /></p>
+
+<!--more-->
+
+
+<h2>Use an Ember.View</h2>
+
+<p>A view will function as the translation layer between the state of your models and the DOM.  It will provide the logic to observe the properties within your model and expose it as a class name on the associated DOM element.</p>
+
+<p>If I have a model with state:</p>
+
+<figure class='code'><figcaption><span>my-model.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.MyModel = </span><span class="nx">App</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">hasSomeState: </span><span class="kc">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Use classNameBindings</h2>
+
+<p>Based on that state, I want to add a <code>has-some-state</code> class to the UI if it&#8217;s true, and remove the class if it&#8217;s false.  The view might look like:</p>
+
+<figure class='code'><figcaption><span>my-model-view.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.MyModelView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="c1"># ...</span>
+</span><span class='line'>  <span class="nv">classNameBindings: </span><span class="p">[</span><span class="s">&#39;hasSomeState&#39;</span><span class="p">]</span>
+</span><span class='line'>  <span class="nv">hasSomeState: </span><span class="p">(</span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;content&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s">&#39;hasSomeState&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">).</span><span class="nx">property</span><span class="p">(</span><span class="s">&#39;content.hasSomeState&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>hasSomeState</code> function will return a boolean has to whether or not the <code>has-some-state</code> class should be added to the element.</p>
+
+<h2>Bind to Model Properties</h2>
+
+<p>Now use the view in the template, being careful to match the binding of <code>content</code> so the property watching works:</p>
+
+<figure class='code'><figcaption><span>template-fragment.jade</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='haml'><span class='line'>App.MyModelView contentBinding=&quot;this.myModelInstance&quot;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the example, make sure <code>myModelInstance</code> is available in the scope of your route/controller.</p>
+
+<p>As your model&#8217;s <code>hasSomeState</code> value is changed internally with the <code>@set</code> function, the view will be notified that it needs to re-run the <code>hasSomeState</code> function, and the UI will update if needed.</p>
+
+<p>What other methods do you utilize in Ember to get dynamic classes?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Style File Input]]></title>
@@ -1913,52 +1976,6 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
 
 
 <p>There are quite a few steps there.  What did we miss?  Or what needs more explanation?  Perhaps we just need a <code>yo heroku</code> target.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mountain West Ruby Conf 2013 Review]]></title>
-    <link href="http://jaketrent.com/post/mountain-west-ruby-conf-2013-review/"/>
-    <updated>2013-04-05T15:23:00-06:00</updated>
-    <id>http://jaketrent.com/post/mountain-west-ruby-conf-2013-review</id>
-    <content type="html"><![CDATA[<p>I recently attended the Mountain West Ruby Conference.  It was my first time going.  I was pleasantly surprised by the quality of the conference.  I would recommend it.</p>
-
-<p><img src="http://i.imgur.com/ABNr5MC.jpg" alt="Mountain West Ruby Conf" /></p>
-
-<!--more-->
-
-
-<h2>Peeps</h2>
-
-<p>I&#8217;m new to the Ruby community.  I get to use it more in my current job than I ever have before.  Whenever entering a new community, it&#8217;s good to find some friends.  I was pleased to notice that everyone I encountered at the conference was very friendly and welcoming.</p>
-
-<p>About the coolest thing about the community is one of the slogans: MINSWAN, which means &#8220;Matz is nice, so we are nice.&#8221;  How cool is that?  Matz is the Ruby creator.  Wait, who am I kidding.  You already know that.</p>
-
-<p>I was very impressed with the blatant lack of trolling other communities.  This even with the live stream video cameras rolling (people can tend to do weird things when put on camera).</p>
-
-<p>The conference attracted speakers and attendees from as far away as Australia.</p>
-
-<h2>Speakers</h2>
-
-<p>I didn&#8217;t look too closely at the schedule previous to attending.  Once I got there, I was surprised at the caliber of those people and companies who were represented.  These were big names in the tech community, such as Matz, himself, Github, Heroku, and others.</p>
-
-<p>The conference is single track, so that meant I got to see everyone speak.  I mostly like that but kind of hate that.  I believe it also meant fewer speaking slots, so everyone was pretty top notch.</p>
-
-<p>I was impressed with the stage presence of most speakers.  A few were pretty droning, but in general everyone was very polished, had good slide decks, and shared engaging and useful content.</p>
-
-<p>Devops was the stated subject matter of an entire day of the conference.  This was cool.  We can use that kind of focus on the subject.  But then it bled into the next days as well.  I want some pure code, pure Ruby&#8217;ness.  I got some of that, but not as much as I would like.  I paid my devops dues the first day.  I was ready to not hear any more of it on days 2 and 3.</p>
-
-<h2>Venue</h2>
-
-<p>It was in my back yard!  I loved the lack of a hotel requirement!  Apparently some visitors even camped in the wilderness, Nacho style.</p>
-
-<p>The Salt Lake City Public Library is a great downtown location for a small conference.  In this case, with the conference being single track, the single largest room, the amphitheatre, was the only room required for all attendees.  It featured plenty of seating &#8211; at the cost of no leg room.</p>
-
-<p>The wifi also held up better than it has for similar gatherings in this space.  It was announced that &#8220;the city and Xmission are working feverishly&#8221; to maintain connectivity several times over the 3 days.  It still didn&#8217;t stay up.  This is a common tech conf occurrence.</p>
-
-<p>I was sorely disappointed with the lack of sugary confections meant to encourage the jollyness and attentiveness of the conference-goers.  At one point, it was necessary to slip out and find a good bakery downtown.  I was not disappointed.  I was happy to see at least the vendors&#8217; vinyl stickers come out on the last day.  We need more of that!</p>
-
-<p>In all, it was a good use of my couple days.  It wasn&#8217;t too pricey, but then, I wasn&#8217;t paying.</p>
 ]]></content>
   </entry>
   
