@@ -46,7 +46,7 @@ body > header {
   background: #333 url('/images/socialsprite.png') no-repeat;
 }
 .social:hover {
-  background: #ff9f0a url('/images/socialsprite.png') no-repeat;
+  background-color: #ff9f0a;
 }
 
 .social.first,
@@ -55,27 +55,16 @@ body > header {
 }
 
 .social-email { background-position: -0px -0px; width: 32px; height: 32px; }
-.social-email:hover { background-position: -0px -0px; width: 32px; height: 32px; }
 .social-googleplus { background-position: -32px -0px; width: 32px; height: 32px; }
-.social-googleplus:hover { background-position: -32px -0px; width: 32px; height: 32px; }
 .social-dribbble { background-position: -64px -0px; width: 32px; height: 32px; }
-.social-dribbble:hover { background-position: -64px -0px; width: 32px; height: 32px; }
 .social-rss { background-position: -0px -32px; width: 32px; height: 32px; }
-.social-rss:hover { background-position: -0px -32px; width: 32px; height: 32px; }
 .social-stumbleupon { background-position: -32px -32px; width: 32px; height: 32px; }
-.social-stumbleupon:hover { background-position: -32px -32px; width: 32px; height: 32px; }
 .social-pinterest { background-position: -64px -32px; width: 32px; height: 32px; }
-.social-pinterest:hover { background-position: -64px -32px; width: 32px; height: 32px; }
 .social-twitter { background-position: -0px -64px; width: 32px; height: 32px; }
-.social-twitter:hover { background-position: -0px -64px; width: 32px; height: 32px; }
 .social-github { background-position: -32px -64px; width: 32px; height: 32px; }
-.social-github:hover { background-position: -32px -64px; width: 32px; height: 32px; }
 .social-linkedin { background-position: -64px -64px; width: 32px; height: 32px; }
-.social-linkedin:hover { background-position: -64px -64px; width: 32px; height: 32px; }
 .social-facebook { background-position: -0px -96px; width: 32px; height: 32px; }
-.social-facebook:hover { background-position: -0px -96px; width: 32px; height: 32px; }
 .social-youtube { background-position: -32px -96px; width: 32px; height: 32px; }
-.social-youtube:hover { background-position: -32px -96px; width: 32px; height: 32px; }
 
 
 @media only screen and (min-width: 300px) {

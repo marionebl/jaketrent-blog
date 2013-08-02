@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-02T13:24:58-06:00</updated>
+  <updated>2013-08-02T13:29:20-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -102,7 +102,7 @@ angular.module('myapp').controller 'MyCtrl', ($scope) ->
 html(ng-app="myapp")
   body(ng-controller="MyCtrl")</p>
 
-<pre><code>h1 My Var: 
+<pre><code>h1 My Var: {{myVar}}
 button(ng-click="myFun()") Does Stuff
 </code></pre>
 
@@ -131,7 +131,7 @@ angular.module('myapp').controller 'MyCtrl', ($scope) ->
 html(ng-app="myapp")
   body(ng-controller="MyCtrl")</p>
 
-<pre><code>h1 My Var: 
+<pre><code>h1 My Var: {{MyCtrl.myVar}}
 button(ng-click="MyCtrl.myFun()") Does Stuff
 </code></pre>
 
@@ -479,14 +479,18 @@ App.GameController = Ember.ObjectController.extend</p>
 <p>By "curlies", I mean curly braces.  The difference of when to use or not use them looks like the following.</p>
 
 <p>Use them:
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;{{valWithCurlies}}&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+{%codeblock lang:html%}
+{%raw%}
+<element ng-attribute="{{valWithCurlies}}" />
+{%endraw%}
+{%endcodeblock%}</p>
 
 <p>Or despise them:
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;valWithNone&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+{%codeblock lang:html%}
+{%raw%}
+<element ng-attribute="valWithNone" />
+{%endraw%}
+{%endcodeblock%}</p>
 
 <h2>Two Rules of Thumb</h2>
 
@@ -506,17 +510,21 @@ App.GameController = Ember.ObjectController.extend</p>
 
 <p>As in the source of an image, such as:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;img</span> <span class="na">ng-src=</span><span class="s">&quot;/images/{{tool.icon_name}}.png&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{%codeblock lang:html%}
+{%raw%}
+<img ng-src="/images/{{tool.icon_name}}.png" />
+{%endraw%}
+{%endcodeblock%}</p>
 
 <h3>ngHref</h3>
 
 <p>As in a link to an html page, such as:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;a</span> <span class="na">ng-href=</span><span class="s">&quot;http://google.com?q={{query}}&quot;</span><span class="nt">&gt;</span>See Google Results<span class="nt">&lt;/a&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{%codeblock lang:html%}
+{%raw%}
+<a ng-href="http://google.com?q={{query}}">See Google Results</a>
+{%endraw%}
+{%endcodeblock%}</p>
 
 <h2>Something more Precise?</h2>
 
