@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-02T13:29:20-06:00</updated>
+  <updated>2013-08-12T08:18:34-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -45,7 +45,7 @@ angular.module('myapp').controller 'MyCtrl', ($scope) ->
 html(ng-app="myapp")
   body(ng-controller="MyCtrl")</p>
 
-<pre><code>h1 My Var: {{myVar}}
+<pre><code>h1 My Var: 
 button(ng-click="myFun()") Does Stuff
 </code></pre>
 
@@ -74,7 +74,7 @@ angular.module('myapp').controller 'MyCtrl', ($scope) ->
 html(ng-app="myapp")
   body(ng-controller="MyCtrl")</p>
 
-<pre><code>h1 My Var: {{MyCtrl.myVar}}
+<pre><code>h1 My Var: 
 button(ng-click="MyCtrl.myFun()") Does Stuff
 </code></pre>
 
@@ -121,18 +121,14 @@ button(ng-click="MyCtrl.myFun()") Does Stuff
 <p>By "curlies", I mean curly braces.  The difference of when to use or not use them looks like the following.</p>
 
 <p>Use them:
-{%codeblock lang:html%}
-{%raw%}
-<element ng-attribute="{{valWithCurlies}}" />
-{%endraw%}
-{%endcodeblock%}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;{{valWithCurlies}}&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Or despise them:
-{%codeblock lang:html%}
-{%raw%}
-<element ng-attribute="valWithNone" />
-{%endraw%}
-{%endcodeblock%}</p>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;valWithNone&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>Two Rules of Thumb</h2>
 
@@ -152,21 +148,17 @@ button(ng-click="MyCtrl.myFun()") Does Stuff
 
 <p>As in the source of an image, such as:</p>
 
-<p>{%codeblock lang:html%}
-{%raw%}
-<img ng-src="/images/{{tool.icon_name}}.png" />
-{%endraw%}
-{%endcodeblock%}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;img</span> <span class="na">ng-src=</span><span class="s">&quot;/images/{{tool.icon_name}}.png&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3>ngHref</h3>
 
 <p>As in a link to an html page, such as:</p>
 
-<p>{%codeblock lang:html%}
-{%raw%}
-<a ng-href="http://google.com?q={{query}}">See Google Results</a>
-{%endraw%}
-{%endcodeblock%}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;a</span> <span class="na">ng-href=</span><span class="s">&quot;http://google.com?q={{query}}&quot;</span><span class="nt">&gt;</span>See Google Results<span class="nt">&lt;/a&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>Something more Precise?</h2>
 
@@ -338,17 +330,23 @@ $http.get('/comments')
 
 <p>Then your template will automatically have the data in scope.  And the template (<a href="http://slim-lang.org">Slim</a> syntax used below) can look like this:</p>
 
-<p>{% codeblock lang:ruby %}
-{% raw %}
-h1 Comments
-ul
-  li ng-repeat="comment in comments"</p>
-
-<pre><code>| {{ comment }}
-</code></pre>
-
-<p>{% endraw %}
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
+</span><span class='line'><span class="n">ul</span>
+</span><span class='line'>  <span class="n">li</span> <span class="n">ng</span><span class="o">-</span><span class="n">repeat</span><span class="o">=</span><span class="s2">&quot;comment in comments&quot;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;| {{ comment }}</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Now when we add a new comment via Ajax, we can push it right into the comment collection, and the page is updated by Angular with the appropriate data.  Or if we want to perform an operation on a pre-existing comment, it's easy to do via an AJAX operation and display the result.</p>
 
@@ -381,20 +379,29 @@ ul
 
 <p>Our server/client mixture code might look something like this:</p>
 
-<p>{% codeblock lang:ruby %}
-{% raw %}
-h1 Comments
-ul
-  - comments.each_with_index do |comment, i|</p>
-
-<pre><code>li ng-init="commentLikeCount[i]=#{comment.likeCount}"
-  = comment
-  | Likes for this comment: {{commentLikeCount[i]}}
-  a ng-click="like(commentLikeCount[i])"
-</code></pre>
-
-<p>{% endraw %}
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
+</span><span class='line'><span class="n">ul</span>
+</span><span class='line'>  <span class="o">-</span> <span class="n">comments</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">comment</span><span class="p">,</span> <span class="n">i</span><span class="o">|&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;li ng-init=&quot;commentLikeCount[i]=</span><span class="si">#{</span><span class="n">comment</span><span class="o">.</span><span class="n">likeCount</span><span class="si">}</span><span class="sr">&quot;</span>
+</span><span class='line'><span class="sr">  = comment</span>
+</span><span class='line'><span class="sr">  | Likes for this comment: {{commentLikeCount[i]}}</span>
+</span><span class='line'><span class="sr">  a ng-click=&quot;like(commentLikeCount[i])&quot;</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>It's important to realize where data is coming from in this example.  The syntax <code>=</code> as in <code>= comment</code> and <code>#{}</code> as in <code>#{comment.likeCount}</code> are server-rendered bits.  As you know, the curlies and the ng attribute syntax is for Angular's client side rendering.</p>
 

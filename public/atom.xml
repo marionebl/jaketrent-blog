@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-02T13:28:56-06:00</updated>
+  <updated>2013-08-12T08:18:34-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,62 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How MarkLogic Made Me a Better Programmer]]></title>
+    <link href="http://jaketrent.com/post/how-marklogic-made-me-better-programmer/"/>
+    <updated>2013-08-08T09:01:00-06:00</updated>
+    <id>http://jaketrent.com/post/how-marklogic-made-me-better-programmer</id>
+    <content type="html"><![CDATA[<p>I started programming on the <a href="http://www.marklogic.com/">MarkLogic</a> platform in 2010.  It was a very new experience for me.  I don&#8217;t program in it these days, but I still think back on the experiences I had with MarkLogic and in general believe that they made me a better programmer.  Here&#8217;s how.</p>
+
+<p><img src="http://i.imgur.com/32OKIUH.png" alt="MarkLogic" /></p>
+
+<!--more-->
+
+
+<h2>First Functional Language</h2>
+
+<p>MarkLogic is a proprietary platform that uses the XQuery language.  This is MarkLogic-flavor XQuery, augmenting the vanilla.  There are first-level functions.  There are sequences.  There are no side effects.  There is no state outside of function scope.</p>
+
+<p>This language proved to require a new way of thinking.  I came from coding Java at the time.  I was without my <code>StringBuilder</code> class.  I remember the first time I tried to build up a string dynamically in code.  There is no such thing as throwing substrings in a builder or a buffer and building it up (no side effects).  Of course, there is a way to build a dynamic string; it is just different.  I became a lot more comfortable with recursive methods for solving problems.</p>
+
+<p>As a side note, the language isn&#8217;t 100% functional.  For instance, there actually are side effects.  For example, the <a href="https://docs.marklogic.com/map"><code>map</code></a> api sets values on preexisting maps and returns the same map.  And the terrible <a href="https://docs.marklogic.com/xdmp:set"><code>xmdp:set</code></a> will bypass all of the functional sauce and set whatever whenever and is to be avoided.</p>
+
+<h2>First NoSql Store</h2>
+
+<p>MarkLogic has its own database built in.  It&#8217;s a document store.  It was the first place I implemented real NoSQL work and pushed it to production.  Here, I learned document design.  I practiced optimizing for reads or writes depending on the use case.  The experience helped me think beyond well-formed tables and embrace the messier data that is more true to life.  I was thinking more in terms of search engines and less in terms of spreadsheets.</p>
+
+<p>Coding in MarkLogic utilizes XQuery which encompasses XPath.  Given that much X technology, the data format was almost assuredly going to be XML.  And so it is.  Every document stored in MarkLogic is XML.  I became a lot better at tree traversal as a result.</p>
+
+<h2>Lack of Libraries</h2>
+
+<p>The MarkLogic ecosystem at the time was really lacking.  I don&#8217;t follow its current state, but it&#8217;s probably safe to say that there is less going on here than in the world of Node or Ruby.  You won&#8217;t find a MarkLogic package manager a la <code>npm</code> or <code>gem</code>.  You probably won&#8217;t even find a library to reuse.  There are literally just a handful of libraries that are shared widely in my experience, and these are lower-level utility libraries of the flavor of UnderscoreJs.</p>
+
+<p>This meant that if I needed code, I was going to write it.  So, I wrote a lot of code.  I learned to produce everything I needed and not rely on any 3rd party code.</p>
+
+<p>This was the same when it came to utilities on the platform.  For instance, there was not a unit test library at the time I started into XQuery.  There was a framework that was written in Java that would exercise XQuery code, but that didn&#8217;t fit my environment needs very well and felt odd, so we wrote our own unit testing framework a la Junit or Jasmine, called <a href="https://github.com/irinc/xqtest">XqTest</a>.  We finally open sourced it (also rare for the MarkLogic ecosystem), but by then several similar frameworks had been created.</p>
+
+<h2>Lack of Help</h2>
+
+<p>MarkLogic is a proprietary system.  There aren&#8217;t many people using it, but those that do license it from the MarkLogic company.  They also pay for support.  Most of the expertise I encountered in MarkLogic was either a visiting consultant from MarkLogic, an engineer I met at the one MarkLogic conference, MarkLogic world, or a fellow in-house engineer.</p>
+
+<p>This means that when you go to StackOverflow, there is a woeful lack of good solutions for common problems.  So, I learned to do a lot of debugging by myself and just keep on keeping on until I figured out the problem.  We had to write almost all of our code, so I was mostly reading my own code, which is easier.  Google wasn&#8217;t a lot of help, and that&#8217;s pretty odd in this age of programming.  Upside was that once I wrote the web article about the subject, I was the first-page <a href="http://rockycode.com/blog/tech/marklogic/">result</a>.</p>
+
+<h2>Playing Ops</h2>
+
+<p>MarkLogic has its own web server as well, built into the monolith MarkLogic server product.  It was a new beast for the ops guys I worked with.  I was as new to it as them, thus I got to play ops a lot more than I would have on our older, more traditional systems.  I got to help keep the thing running.</p>
+
+<p>I also got to help keep the apps tuned.  It turns out that MarkLogic can be either really performant or really <em>not</em> performant.  Often, I wrote the &#8220;not&#8221; way, and I had to help optimize (of course, via our in-house performance monitoring tools).</p>
+
+<h2>The Experience</h2>
+
+<p>I was excited to learn MarkLogic at the time.  It was something new.  I enjoy that.  New code, new team, new thinking.  It was a high-profile product.  It was really a good experience.</p>
+
+<p>I felt like I became very productive on the platform and was able to produce quality and quantity code.  In the end, I chose to not do more more MarkLogic.  I was doing more heavy client-side apps.  The XML just became a stumbling block where Json is king.  The functional paradigm is cool.  I really like it.  But I really don&#8217;t like the XQuery language.  Its api is not very expressive, and its syntax requires a ton of typing.  MarkLogic is growing in its acceptance and use, but not at a huge pace.  It still seems like a niche product, used mostly in the publishing and defense industries.  It didn&#8217;t seem like a great investment to keep spending my golden dev years on the platform.</p>
+
+<p> But for all the pros and cons of the platform and all the ups and downs of the experience, I feel like one of the net effects was that I became a better programmer in new, interesting ways.  For that, I&#8217;m grateful.  I&#8217;m glad I did it, and I&#8217;m glad to move on.  There are, after all, soooo many cool things to try in this age of software development.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ember Dynamic Classes]]></title>
@@ -1867,115 +1923,6 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
 <p>And copy the resulting URL into your VM web browser.</p>
 
 <p>Ah, the fusion of Node and Ruby is pretty sweet.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Deploy Yeoman App on Heroku]]></title>
-    <link href="http://jaketrent.com/post/yeoman-app-on-heroku/"/>
-    <updated>2013-04-23T07:12:00-06:00</updated>
-    <id>http://jaketrent.com/post/yeoman-app-on-heroku</id>
-    <content type="html"><![CDATA[<p>Yeoman is great developer tool that will help you generate a project format that is easy to get up and running quickly.  Out of the box, Yeoman only generates static sites.  But, with a few small tweaks, you can get it running on an app server, Nodejs, and up on Heroku.</p>
-
-<p><img src="http://i.imgur.com/1Mc2kXh.jpg" alt="Yeoman" /></p>
-
-<!--more-->
-
-
-<h2>New Project With Yeoman</h2>
-
-<p>To install Yeoman, run:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>npm install -g yo</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now navigate to your new project directory and generate the scaffolding by running:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yo webapp</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There are other generators, specifically for angularjs or a handful of other frameworks.  To see more options, run:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yo --help</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Add Node for Heroku</h2>
-
-<p>Since Yeoman creates a static site, it should be read to serve out of any old web server.  But Heroku specifically wants an app server.  Node is one of the options, and it&#8217;s a great option for a lightweight app server.</p>
-
-<p>To get the node dependencies you need, create a <code>package.json</code> via:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>npm init</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then pull down the dependencies you&#8217;ll need:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>npm install gzippo express coffee-script --save</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now create your app server, <code>web.coffee</code>.  It&#8217;s about as light as they come:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">gzippo = </span><span class="nx">require</span> <span class="s">&#39;gzippo&#39;</span>
-</span><span class='line'><span class="nv">express = </span><span class="nx">require</span> <span class="s">&#39;express&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">app = </span><span class="nx">express</span><span class="p">()</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">logger</span> <span class="s">&#39;dev&#39;</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">gzippo</span><span class="p">.</span><span class="nx">staticGzip</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">__dirname</span><span class="si">}</span><span class="s">/dist&quot;</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span> <span class="o">||</span> <span class="mi">5000</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It&#8217;s going to be serving the static resources that you build w/ Yeoman/Grunt that end up in the <code>dist</code> directory.  In order for code to get to Heroku, it needs to be commited to your git repo.  Thus, you need to remove the &#8220;dist&#8221; line from your <code>.gitignore</code> file, and don&#8217;t forget to add and commit the files to git as you build them.  You may also have to add more tasks to the <code>Gruntfile.js</code> to copy over any other assets to <code>dist</code> that your app needs to run.</p>
-
-<p>Finally create a <code>Procfile</code> file for Heroku in the root of your project that points to the <code>web.coffee</code> server:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>web: coffee web.coffee</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now it&#8217;s time to push to Heroku.  You should have the Heroku Toolbelt installed and create a heroku url by running:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>heroku create &lt;my_project&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To test your yeoman app as it will be run in production, first build it:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>grunt build</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then run the grunt server:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>grunt server:dist</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Or if you have foreman and want to run the app using your <code>Procfile</code>, run:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>foreman start</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It&#8217;s time.  Commit your code, especially that <code>dist</code> directory, and&#8230; deploy!</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git push heroku master</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There are quite a few steps there.  What did we miss?  Or what needs more explanation?  Perhaps we just need a <code>yo heroku</code> target.</p>
 ]]></content>
   </entry>
   
