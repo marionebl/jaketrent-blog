@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-13T20:39:03-06:00</updated>
+  <updated>2013-08-14T16:18:51-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,92 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Disable ngClick]]></title>
+    <link href="http://jaketrent.com/post/disable-ng-click/"/>
+    <updated>2013-08-14T07:53:00-06:00</updated>
+    <id>http://jaketrent.com/post/disable-ng-click</id>
+    <content type="html"><![CDATA[<p>Angular&#8217;s ngClicks can be attached to anything.  This makes it easy to add interactivity to elements on the DOM.  Your program might require that these click callbacks be disabled at certain points, such as during form processing.  ngClick doesn&#8217;t have a toggle built in.  Let&#8217;s build one that might help.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angularjs" /></p>
+
+<!--more-->
+
+
+<p>In our app we&#8217;re going to track the state of the UI via various events that get passed in scope.  We slap our directive as an attribute on an element and it will respond by disabling or enabling on certain events.  Here&#8217;s the directive:</p>
+
+<figure class='code'><figcaption><span>disable-toggle.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app.directives&#39;</span><span class="p">).</span><span class="nx">directive</span> <span class="s">&#39;disableToggle&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nv">restrict: </span><span class="s">&#39;A&#39;</span>
+</span><span class='line'>  <span class="nv">replace: </span><span class="kc">false</span>
+</span><span class='line'>  <span class="nv">link: </span><span class="nf">(scope, element, attrs) -&gt;</span>
+</span><span class='line'>    <span class="nv">defaultDisableEvt = </span><span class="s">&#39;click:disable&#39;</span>
+</span><span class='line'>    <span class="nv">defaultEnableEvt = </span><span class="s">&#39;click:enable&#39;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">disableEvt = </span><span class="nx">attrs</span><span class="p">.</span><span class="nx">disableEvt</span> <span class="o">||</span> <span class="nx">defaultDisableEvt</span>
+</span><span class='line'>    <span class="nv">enableEvt = </span><span class="nx">attrs</span><span class="p">.</span><span class="nx">enableEvt</span> <span class="o">||</span> <span class="nx">defaultEnableEvt</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">disableEvts = </span><span class="nx">disableEvt</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sr">/\ *?,\ *?/</span><span class="p">)</span>
+</span><span class='line'>    <span class="nv">enableEvts = </span><span class="nx">enableEvt</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sr">/\ *?,\ *?/</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="nx">evt</span> <span class="k">in</span> <span class="nx">disableEvts</span>
+</span><span class='line'>      <span class="nx">scope</span><span class="p">.</span><span class="nx">$on</span> <span class="nx">evt</span><span class="p">,</span> <span class="nf">(evt) -&gt;</span>
+</span><span class='line'>        <span class="nx">element</span><span class="p">.</span><span class="nx">attr</span> <span class="s">&#39;disabled&#39;</span><span class="p">,</span> <span class="s">&#39;disabled&#39;</span>
+</span><span class='line'>        <span class="nx">element</span><span class="p">.</span><span class="nx">addClass</span> <span class="s">&#39;is-disabled&#39;</span>
+</span><span class='line'>        <span class="nv">scope.disabledToggled = </span><span class="kc">true</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="nx">evt</span> <span class="k">in</span> <span class="nx">enableEvts</span>
+</span><span class='line'>      <span class="nx">scope</span><span class="p">.</span><span class="nx">$on</span> <span class="nx">evt</span><span class="p">,</span> <span class="nf">(evt) -&gt;</span>
+</span><span class='line'>        <span class="nx">element</span><span class="p">.</span><span class="nx">removeAttr</span> <span class="s">&#39;disabled&#39;</span>
+</span><span class='line'>        <span class="nx">element</span><span class="p">.</span><span class="nx">removeClass</span> <span class="s">&#39;is-disabled&#39;</span>
+</span><span class='line'>        <span class="nv">scope.disabledToggled = </span><span class="kc">false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The directive allows for listening on multiple events.  This is useful if your button should be disabled/enabled via multiple events.  Just separate your event list with commas.  If you don&#8217;t want to specify any events, the directive uses two default events, &#8216;click:disable&#8217; and &#8216;click:enable&#8217;.</p>
+
+<p>The directive sets the <code>disabled</code> attribute, commonly used in form fields.  It also sets the <code>is-disabled</code> class so your app can style this state consistently in the UI.</p>
+
+<p>Lastly, the directive also sets a <code>scope.disabledToggled</code> variable on the scope of the element.  This will be useful for elements which are not form elements and which do not prevent clicking just because their <code>disabled</code> attribute is set to <code>disabled</code>.  Instead, we&#8217;ll use this value to short-circuit the <code>ng-click</code> event itself.</p>
+
+<p>So here it is in action on the template:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>  <span class="nt">&lt;button</span> <span class="na">ng-click=</span><span class="s">&quot;disabledToggled || doClickyThings()&quot;</span>
+</span><span class='line'>          <span class="na">disable-toggle</span> <span class="na">enable-evt=</span><span class="s">&quot;click:enable,photo:clear&quot;</span> <span class="na">disable-evt=</span><span class="s">&quot;photo:add&quot;</span><span class="nt">&gt;</span>Click Me<span class="nt">&lt;/button&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here, we&#8217;re setting custom events for disabling and enabling the button.  And note the <code>ng-click</code> value.  The <code>doClickyThings()</code> function will not get called if <code>disabledToggled</code> is true.</p>
+
+<p>So, what do you think.  Is there an easier way to get this kind of functionality?  What could we do to make it better?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Preload Route Data in Angular]]></title>
@@ -1867,99 +1953,6 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
 <p>The cool thing is that this does not slow down your tests.  You could set the clock tick to be 50100000 or some crazy number, and it will still execute as fast as your single JavaScript thread will let you.</p>
 
 <p>Boom.  Another testing hurdle cleared.  Sometimes it&#8217;s harder to write the test than the code.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[LiveReload for NodeJs]]></title>
-    <link href="http://jaketrent.com/post/livereload-for-nodejs/"/>
-    <updated>2013-04-23T16:44:00-06:00</updated>
-    <id>http://jaketrent.com/post/livereload-for-nodejs</id>
-    <content type="html"><![CDATA[<p>LiveReload is a wonderful tool/strategy for being able to develop websites more quickly.  You can make a change and see it immediately shown in the browser without requiring you to manually refresh.  To do this in NodeJs with Express, you&#8217;ll need just a few packages.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="grunt" /></p>
-
-<!--more-->
-
-
-<h2>LiveReload Express</h2>
-
-<p>If you&#8217;re doing a website on Nodejs these days, you&#8217;re probably using Express.  Express uses the Connect library for its middleware scheme.  Just grab one more middleware to handle the LiveReload.  It will add a little snippet of JavaScript to each of the html responses that is requested through this middleware.  First, install:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>npm install connect-livereload --save-dev</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Next, import:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span> <span class="s">&#39;development&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">require</span><span class="p">(</span><span class="s">&#39;connect-livereload&#39;</span><span class="p">)</span> <span class="mi">35729</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Note that we only want to import and use the middleware when in development.  This matches the fact that we are only declaring this package as in <code>devDependencies</code>.</p>
-
-<h2>LiveReload Grunt</h2>
-
-<p>Now you need to something to start a livereload server, watch files for changes, and broadcast their availability.  The rest of this will be done via Grunt.</p>
-
-<p>First, install:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>npm install grunt-cli -g
-</span><span class='line'>npm install grunt grunt-regarde grunt-contrib-livereload --save-dev</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><code>grunt-cli</code> will allow you to run the <code>grunt</code> command in the terminal.  Global puts the bin in your path.</li>
-<li><code>grunt-regarde</code> is a file watcher.  It senses changes to the filesystem.</li>
-<li><code>grunt-contrib-reload</code> will handle the pushing of new code to the browser.</li>
-</ul>
-
-
-<p>Next setup the <code>Gruntfile.coffee</code>:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(grunt) -&gt;</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nv">regarde:</span>
-</span><span class='line'>      <span class="nv">style:</span>
-</span><span class='line'>        <span class="nv">files: </span><span class="p">[</span><span class="s">&#39;app/static/css/*.css&#39;</span><span class="p">]</span>
-</span><span class='line'>        <span class="nv">tasks: </span><span class="p">[</span><span class="s">&#39;livereload&#39;</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span> <span class="s">&#39;grunt-contrib-livereload&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span> <span class="s">&#39;be-lively&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s">&#39;livereload-start&#39;</span><span class="p">,</span> <span class="s">&#39;regarde&#39;</span> <span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now when you run:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>grunt be-lively</span></code></pre></td></tr></table></div></figure>
-
-
-<p>A livereload server is going to be setup.  Then we watch for filesystem changes.  The only things we&#8217;re watching are css files in our app.  You could expand the <code>files</code> array to watch more if you wish.</p>
-
-<p>Yay!</p>
-
-<h2>LiveReload all the Things</h2>
-
-<p>There are many ways to make this happen.  There are numerous Node libraries, Grunt plugins, and browser plugins.  Do what works for you.  Just make it happen fast and tend it well from the beginning to the end of your project.  Almost every solution I&#8217;ve found is somewhat high maintenance.  This one has proven to be the same.  What have you found to be your favorite LiveReload solution, and in what environment?</p>
 ]]></content>
   </entry>
   

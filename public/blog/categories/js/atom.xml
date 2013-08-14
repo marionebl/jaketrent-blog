@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-13T20:39:03-06:00</updated>
+  <updated>2013-08-14T16:18:51-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,72 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Disable ngClick]]></title>
+    <link href="http://jaketrent.com/post/disable-ng-click/"/>
+    <updated>2013-08-14T07:53:00-06:00</updated>
+    <id>http://jaketrent.com/post/disable-ng-click</id>
+    <content type="html"><![CDATA[<p>Angular's ngClicks can be attached to anything.  This makes it easy to add interactivity to elements on the DOM.  Your program might require that these click callbacks be disabled at certain points, such as during form processing.  ngClick doesn't have a toggle built in.  Let's build one that might help.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angularjs" /></p>
+
+<!--more-->
+
+
+<p>In our app we're going to track the state of the UI via various events that get passed in scope.  We slap our directive as an attribute on an element and it will respond by disabling or enabling on certain events.  Here's the directive:</p>
+
+<p>```coffeescript disable-toggle.coffee
+angular.module('app.directives').directive 'disableToggle', ->
+  restrict: 'A'
+  replace: false
+  link: (scope, element, attrs) -></p>
+
+<pre><code>defaultDisableEvt = 'click:disable'
+defaultEnableEvt = 'click:enable'
+
+disableEvt = attrs.disableEvt || defaultDisableEvt
+enableEvt = attrs.enableEvt || defaultEnableEvt
+
+disableEvts = disableEvt.split(/\ *?,\ *?/)
+enableEvts = enableEvt.split(/\ *?,\ *?/)
+
+for evt in disableEvts
+  scope.$on evt, (evt) -&gt;
+    element.attr 'disabled', 'disabled'
+    element.addClass 'is-disabled'
+    scope.disabledToggled = true
+
+for evt in enableEvts
+  scope.$on evt, (evt) -&gt;
+    element.removeAttr 'disabled'
+    element.removeClass 'is-disabled'
+    scope.disabledToggled = false
+</code></pre>
+
+<p>```</p>
+
+<p>The directive allows for listening on multiple events.  This is useful if your button should be disabled/enabled via multiple events.  Just separate your event list with commas.  If you don't want to specify any events, the directive uses two default events, 'click:disable' and 'click:enable'.</p>
+
+<p>The directive sets the <code>disabled</code> attribute, commonly used in form fields.  It also sets the <code>is-disabled</code> class so your app can style this state consistently in the UI.</p>
+
+<p>Lastly, the directive also sets a <code>scope.disabledToggled</code> variable on the scope of the element.  This will be useful for elements which are not form elements and which do not prevent clicking just because their <code>disabled</code> attribute is set to <code>disabled</code>.  Instead, we'll use this value to short-circuit the <code>ng-click</code> event itself.</p>
+
+<p>So here it is in action on the template:</p>
+
+<p>```html
+  &lt;button ng-click="disabledToggled || doClickyThings()"</p>
+
+<pre><code>      disable-toggle enable-evt="click:enable,photo:clear" disable-evt="photo:add"&gt;Click Me&lt;/button&gt;
+</code></pre>
+
+<p>```</p>
+
+<p>Here, we're setting custom events for disabling and enabling the button.  And note the <code>ng-click</code> value.  The <code>doClickyThings()</code> function will not get called if <code>disabledToggled</code> is true.</p>
+
+<p>So, what do you think.  Is there an easier way to get this kind of functionality?  What could we do to make it better?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Preload Route Data in Angular]]></title>
@@ -486,98 +552,6 @@ return myInnerNonBoundFn = function() {
 <p>  }
 });
 ```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Access Model in Ember View]]></title>
-    <link href="http://jaketrent.com/post/access-model-in-ember-view/"/>
-    <updated>2013-07-01T07:39:00-06:00</updated>
-    <id>http://jaketrent.com/post/access-model-in-ember-view</id>
-    <content type="html"><![CDATA[<p>Ember Views are used for event handling and creating reusable web components.  To make them useful and interesting, model data needs to make it into and out of the view.  Here is an example of how this works.</p>
-
-<p><img src="http://i.imgur.com/RGKiJ0n.jpg" alt="Access model data in Ember View" /></p>
-
-<!--more-->
-
-
-<h2>Define Your View</h2>
-
-<p>In our example, I'm making a simple dice rolling game.  I want to use a view to represent the die on the screen and to handle the roll event.  Your custom view must simply extend <code>Ember.View</code>:</p>
-
-<p><code>coffeescript die-view.coffee
-App.DieView = Ember.View.extend
-  templateName: 'die'
-</code></p>
-
-<p>This is about the simplest view definition we could make.  We'll make it a bit cooler later.  For now, the view just knows where to get its markup.  The <code>die</code> template can be any valid template.  Ember, by default, uses Handlebars templates.  I prefer <a href="http://emblemjs.com/">Emblem</a> templates:</p>
-
-<p><code>haml die.emblem
-li.die = die
-</code></p>
-
-<p>This template will simply print the <code>die</code> object in an <code>li</code> with class of <code>die</code>.  (There are an unusual number of 'die' references are in this example.  This is for purely entertainment reasons, nothing more nefarious. :)</p>
-
-<h2>Render Data in Ember View Template</h2>
-
-<p>Next, you need to get your Ember View referenced in your template markup.  In <a href="http://emblemjs.com/syntax/">Emblem</a>, to reference a view, start the line with a capital letter, specifically the name of your view.  In this view, I list the dice in my game controller <code>rolling</code> array and render each die in the <code>DieView</code></p>
-
-<p>```haml dice.emblem
-ul.dice
-  each die in this.rolling</p>
-
-<pre><code>App.DieView
-</code></pre>
-
-<p>```</p>
-
-<p>Using this code, the parent template <code>dice.emblem</code> passes the <code>die</code> variable to the <code>DieView</code>, where its child template, <code>die.emblem</code> renders <code>die</code> data.</p>
-
-<h2>Pass Data Into Ember View</h2>
-
-<p>To pass the <code>die</code> data from <code>dice.emblem</code> into the <code>DieView</code> to be used programatically, however, you need an extra attribute.  Change <code>dice.emblem</code>, adding <code>contentBinding</code>:</p>
-
-<p>```haml dice.emblem
-ul.dice
-  each die in this.rolling</p>
-
-<pre><code>App.DieView contentBinding="die"
-</code></pre>
-
-<p>```</p>
-
-<p>Now you can access the <code>die</code> data via a special Ember View variable named <code>content</code>.  Why might you want to get to this data programatically in the view code?...</p>
-
-<h2>Passing Data from Ember View to Controller</h2>
-
-<p>You might want to pass it somewhere else.  Remember, Ember Views are meant to take primitive UI events and translate them into semantic events, meaningful to your application.  For example, our view might want to translate a die element <code>click</code> on the DOM into a <code>roll</code> event in the application.  We made the modification to <code>dice.emblem</code> to pass the data in.  Now, let's send it to the controller like this:</p>
-
-<p>```coffeescript die-view.coffee
-App.DieView = Ember.View.extend
-  templateName: 'die'</p>
-
-<p>  click: (evt) -></p>
-
-<pre><code>@get('controller').send 'roll', @get 'content'
-</code></pre>
-
-<p>```</p>
-
-<p>We retrieve the <code>content</code> variable (holding the <code>die</code>), and send it to the controller in scope as a roll event.  The controller now must implement a <code>roll</code> function.  Let's say we have a game controller.  That code might look like this:</p>
-
-<p>```coffeescript game-ctrl.coffee
-App.GameController = Ember.ObjectController.extend</p>
-
-<p>  roll: (die) -></p>
-
-<pre><code># roll die and advance game accordingly
-</code></pre>
-
-<p>```</p>
-
-<p>If the controller doesn't implement this function, the current Ember Route may implement it in its <code>events</code> object.  If neither the controller or the route implement it, an exception is thrown.</p>
-
-<p>In this way, Ember Views show their worth in collecting events and translating them to meaningful verbs that we can act upon in our application.  They become reusable, allowing us to bind different content to them on different occassions.  Do Ember Views help you in this way?  Is there a better way?</p>
 ]]></content>
   </entry>
   
