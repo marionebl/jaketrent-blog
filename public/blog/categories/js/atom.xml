@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-12T08:18:34-06:00</updated>
+  <updated>2013-08-13T20:39:03-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Preload Route Data in Angular]]></title>
+    <link href="http://jaketrent.com/post/preload-route-data-angular/"/>
+    <updated>2013-08-13T08:10:00-06:00</updated>
+    <id>http://jaketrent.com/post/preload-route-data-angular</id>
+    <content type="html"><![CDATA[<p>It's sometimes useful to be able to preload or resolve data previous to an Angular view being displayed.  Such was the case recently for our current user object.  It simplified a lot of things in the app to have the guarantee of a loaded current user previous to displaying pages.  The Angular router has a great mechanism built in to do just this sort of thing, called <code>resolve</code>.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angularjs" /></p>
+
+<!--more-->
+
+
+<h2>Current User</h2>
+
+<p>For the example, our current user object is super simple.  Just pretend that it holds all of the relevant details of a user.  These details are useful for displaying various things in the app that need the context of who the currently logged-in user is.</p>
+
+<p>```coffeescript current-user.coffee
+  angular.module('app.services').factory 'CurrentUser', ($http, User) -></p>
+
+<pre><code>class CurrentUser extends User
+  fetch: -&gt;
+    # do $http things to request user data
+  isLoaded: -&gt;
+    # true if fetched and ready to go
+
+new CurrentUser
+</code></pre>
+
+<p>```</p>
+
+<p>Note that for our app there is just one <code>CurrentUser</code> object, a singleton, because we return a single instance from our factory, not a class.</p>
+
+<h2>Router</h2>
+
+<p>The Angular router is used for client-side routing of urls.  Our angular app is called <code>app</code>.  We setup some angular submodules to hold config, services, and controllers.</p>
+
+<p>Let's say that we have a home page and a profile page for our example.</p>
+
+<p>Each route can be configured with a <code>resolve</code> object.  The key of that object is the name of a local variable and the value is a function which returns a promise.  The resolution value of the promise is the data you want before the route executes.After all the promises are resolved, the route is free to switch and execute.  Until then, each unresolved promise will block the route from executing.</p>
+
+<p>```coffeescript app.coffee
+angular.module 'app.config', []
+angular.module 'app.services', []
+angular.module 'app.controllers', []</p>
+
+<p>angular.module('app', ['app.config', 'app.services', 'app.controllers'])</p>
+
+<p>angular.module('app').config ($routeProvider, $locationProvider, resolves) ->
+  $locationProvider.html5Mode true</p>
+
+<p>  $routeProvider</p>
+
+<pre><code>.when '/',
+  controller: 'HomeCtrl'
+  templateUrl: '/templates/home.html'
+.when '/profile',
+  controller: 'ProfileCtrl'
+  templateUrl: '/templates/profile.html'
+</code></pre>
+
+<p>angular.module('app').run ($route, resolves)->
+  for r in $route.routes</p>
+
+<pre><code>r.resolve ?= {}
+r.resolve.CurrentUser = resolves.getCurrentUser
+</code></pre>
+
+<p>```</p>
+
+<p>The <code>run</code> method is essentially the Angular app's main method, starting the program.  I want to ensure the current user is loaded for each route.  In this case, instead of putting a <code>resolve</code> config on each route, I'm looping through all routes after their initial definition and adding the <code>CurrentUser: resolves.getCurrentUser</code> config.</p>
+
+<h2>Resolve Function</h2>
+
+<p>In our resolve function we setup our own promise via the <code>$q</code> service.  We check to see if our singleton <code>CurrentUser</code> is already loaded.  If it's not, we fetch it.  If it has been fetched once already, we resolve the promise with the value that's already available.</p>
+
+<p>```coffeescript resolves.coffee
+angular.module('app.config').constant 'resolves',</p>
+
+<p>  getCurrentUser: ($q, CurrentUser) -></p>
+
+<pre><code>defer = $q.defer()
+
+if not CurrentUser.isLoaded()
+  req = CurrentUser.fetch()
+  req.success -&gt; defer.resolve CurrentUser
+  req.error -&gt; defer.reject()
+else
+  defer.resolve CurrentUser
+
+defer.promise
+</code></pre>
+
+<p>```</p>
+
+<h2>Application Controller</h2>
+
+<p>Now that we have the <code>CurrentUser</code> guaranteed to be resolved (fetched and returned) by the time we enter all routes, we need to grab the value of <code>CurrentUser</code> and put it in <code>$scope</code> where our program would normally pick up and start using variables.</p>
+
+<p>```coffeescript app-ctrl.coffee
+angular.module('app.controllers').controller 'AppCtrl', ($scope) -></p>
+
+<p>  $scope.$on '$routeChangeSuccess', (next, current) -></p>
+
+<pre><code>if current.locals.CurrentUser?
+  $scope.currentUser = current.locals.CurrentUser
+</code></pre>
+
+<p>```</p>
+
+<p>We listen the Angular-provided event when a route is successfully entered: <code>$routeChangeSuccess</code>.  The value we care about is available on the <code>current</code> route's <code>locals</code> object, placed there magically by the resolve function.</p>
+
+<h2>When to Use</h2>
+
+<p>There are a few bits to piece together to make this happen.  It might be simpler than other solutions or make more sense for you in your app if you need something(s) loaded previous to executing on a route.</p>
+
+<p>I would definitely use this feature judiciously, as it seems to eat away at one of the advantages of a client-side app in the first place: asynchronous loading.  We'8re blocking the whole app from going forward when we're in the process of resolving.  That boundary used to be on the edge of the server, building up the page before it was servable to the client.  Now, on a web client, we have multiple requests that can happen in parallel and we can render bits as they're available -- important bits first and so on.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ember Dynamic Classes]]></title>
@@ -459,70 +578,6 @@ App.GameController = Ember.ObjectController.extend</p>
 <p>If the controller doesn't implement this function, the current Ember Route may implement it in its <code>events</code> object.  If neither the controller or the route implement it, an exception is thrown.</p>
 
 <p>In this way, Ember Views show their worth in collecting events and translating them to meaningful verbs that we can act upon in our application.  They become reusable, allowing us to bind different content to them on different occassions.  Do Ember Views help you in this way?  Is there a better way?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[When to Use Curlies in Angular Directives]]></title>
-    <link href="http://jaketrent.com/post/when-to-use-curlies-in-angular-directives/"/>
-    <updated>2013-06-24T17:03:00-06:00</updated>
-    <id>http://jaketrent.com/post/when-to-use-curlies-in-angular-directives</id>
-    <content type="html"><![CDATA[<p>Angularjs has some sweet built-in directives.  Sometimes it can be confusing when to use the curly braces around expressions in directive attributes and when not to.  Here are a couple rules.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular directive curlies" /></p>
-
-<!--more-->
-
-
-<h2>Curlies</h2>
-
-<p>By "curlies", I mean curly braces.  The difference of when to use or not use them looks like the following.</p>
-
-<p>Use them:
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;{{valWithCurlies}}&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Or despise them:
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;valWithNone&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h2>Two Rules of Thumb</h2>
-
-<p>Here are two rules that will serve you well when deciding whether or not to use curlies.</p>
-
-<ol>
-<li>Assume no curlies in Angular directive attribute values.  Most directives don't use them.</li>
-<li>If you would conceivably want to mix strings with Javascript code in the attribute, use curlies.</li>
-</ol>
-
-
-<h2>Two Examples with Curlies</h2>
-
-<p>There are only a few examples of directives using curlies in their attributes.  These examples are both relating to pathing.  Apparently that's a common use case for mixing strings with JavaScript-borne values.</p>
-
-<h3>ngSrc</h3>
-
-<p>As in the source of an image, such as:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;img</span> <span class="na">ng-src=</span><span class="s">&quot;/images/{{tool.icon_name}}.png&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h3>ngHref</h3>
-
-<p>As in a link to an html page, such as:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;a</span> <span class="na">ng-href=</span><span class="s">&quot;http://google.com?q={{query}}&quot;</span><span class="nt">&gt;</span>See Google Results<span class="nt">&lt;/a&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h2>Something more Precise?</h2>
-
-<p>Is there something more precise than these two rules of thumb?  Why does Angular make an exception for these two cases, thus causing us to try to remember our rules of thumb?</p>
-
-<p>As I surmised above, I can only guess that because the pathing use case often wants to mix strings with JavaScript values, the exception was made.</p>
 ]]></content>
   </entry>
   

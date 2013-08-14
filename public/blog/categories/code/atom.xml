@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-12T08:18:34-06:00</updated>
+  <updated>2013-08-13T20:39:03-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Preload Route Data in Angular]]></title>
+    <link href="http://jaketrent.com/post/preload-route-data-angular/"/>
+    <updated>2013-08-13T08:10:00-06:00</updated>
+    <id>http://jaketrent.com/post/preload-route-data-angular</id>
+    <content type="html"><![CDATA[<p>It's sometimes useful to be able to preload or resolve data previous to an Angular view being displayed.  Such was the case recently for our current user object.  It simplified a lot of things in the app to have the guarantee of a loaded current user previous to displaying pages.  The Angular router has a great mechanism built in to do just this sort of thing, called <code>resolve</code>.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angularjs" /></p>
+
+<!--more-->
+
+
+<h2>Current User</h2>
+
+<p>For the example, our current user object is super simple.  Just pretend that it holds all of the relevant details of a user.  These details are useful for displaying various things in the app that need the context of who the currently logged-in user is.</p>
+
+<p>```coffeescript current-user.coffee
+  angular.module('app.services').factory 'CurrentUser', ($http, User) -></p>
+
+<pre><code>class CurrentUser extends User
+  fetch: -&gt;
+    # do $http things to request user data
+  isLoaded: -&gt;
+    # true if fetched and ready to go
+
+new CurrentUser
+</code></pre>
+
+<p>```</p>
+
+<p>Note that for our app there is just one <code>CurrentUser</code> object, a singleton, because we return a single instance from our factory, not a class.</p>
+
+<h2>Router</h2>
+
+<p>The Angular router is used for client-side routing of urls.  Our angular app is called <code>app</code>.  We setup some angular submodules to hold config, services, and controllers.</p>
+
+<p>Let's say that we have a home page and a profile page for our example.</p>
+
+<p>Each route can be configured with a <code>resolve</code> object.  The key of that object is the name of a local variable and the value is a function which returns a promise.  The resolution value of the promise is the data you want before the route executes.After all the promises are resolved, the route is free to switch and execute.  Until then, each unresolved promise will block the route from executing.</p>
+
+<p>```coffeescript app.coffee
+angular.module 'app.config', []
+angular.module 'app.services', []
+angular.module 'app.controllers', []</p>
+
+<p>angular.module('app', ['app.config', 'app.services', 'app.controllers'])</p>
+
+<p>angular.module('app').config ($routeProvider, $locationProvider, resolves) ->
+  $locationProvider.html5Mode true</p>
+
+<p>  $routeProvider</p>
+
+<pre><code>.when '/',
+  controller: 'HomeCtrl'
+  templateUrl: '/templates/home.html'
+.when '/profile',
+  controller: 'ProfileCtrl'
+  templateUrl: '/templates/profile.html'
+</code></pre>
+
+<p>angular.module('app').run ($route, resolves)->
+  for r in $route.routes</p>
+
+<pre><code>r.resolve ?= {}
+r.resolve.CurrentUser = resolves.getCurrentUser
+</code></pre>
+
+<p>```</p>
+
+<p>The <code>run</code> method is essentially the Angular app's main method, starting the program.  I want to ensure the current user is loaded for each route.  In this case, instead of putting a <code>resolve</code> config on each route, I'm looping through all routes after their initial definition and adding the <code>CurrentUser: resolves.getCurrentUser</code> config.</p>
+
+<h2>Resolve Function</h2>
+
+<p>In our resolve function we setup our own promise via the <code>$q</code> service.  We check to see if our singleton <code>CurrentUser</code> is already loaded.  If it's not, we fetch it.  If it has been fetched once already, we resolve the promise with the value that's already available.</p>
+
+<p>```coffeescript resolves.coffee
+angular.module('app.config').constant 'resolves',</p>
+
+<p>  getCurrentUser: ($q, CurrentUser) -></p>
+
+<pre><code>defer = $q.defer()
+
+if not CurrentUser.isLoaded()
+  req = CurrentUser.fetch()
+  req.success -&gt; defer.resolve CurrentUser
+  req.error -&gt; defer.reject()
+else
+  defer.resolve CurrentUser
+
+defer.promise
+</code></pre>
+
+<p>```</p>
+
+<h2>Application Controller</h2>
+
+<p>Now that we have the <code>CurrentUser</code> guaranteed to be resolved (fetched and returned) by the time we enter all routes, we need to grab the value of <code>CurrentUser</code> and put it in <code>$scope</code> where our program would normally pick up and start using variables.</p>
+
+<p>```coffeescript app-ctrl.coffee
+angular.module('app.controllers').controller 'AppCtrl', ($scope) -></p>
+
+<p>  $scope.$on '$routeChangeSuccess', (next, current) -></p>
+
+<pre><code>if current.locals.CurrentUser?
+  $scope.currentUser = current.locals.CurrentUser
+</code></pre>
+
+<p>```</p>
+
+<p>We listen the Angular-provided event when a route is successfully entered: <code>$routeChangeSuccess</code>.  The value we care about is available on the <code>current</code> route's <code>locals</code> object, placed there magically by the resolve function.</p>
+
+<h2>When to Use</h2>
+
+<p>There are a few bits to piece together to make this happen.  It might be simpler than other solutions or make more sense for you in your app if you need something(s) loaded previous to executing on a route.</p>
+
+<p>I would definitely use this feature judiciously, as it seems to eat away at one of the advantages of a client-side app in the first place: asynchronous loading.  We'8re blocking the whole app from going forward when we're in the process of resolving.  That boundary used to be on the edge of the server, building up the page before it was servable to the client.  Now, on a web client, we have multiple requests that can happen in parallel and we can render bits as they're available -- important bits first and so on.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ember Dynamic Classes]]></title>
@@ -434,98 +553,6 @@ return myInnerNonBoundFn = function() {
 <p>  }
 });
 ```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Access Model in Ember View]]></title>
-    <link href="http://jaketrent.com/post/access-model-in-ember-view/"/>
-    <updated>2013-07-01T07:39:00-06:00</updated>
-    <id>http://jaketrent.com/post/access-model-in-ember-view</id>
-    <content type="html"><![CDATA[<p>Ember Views are used for event handling and creating reusable web components.  To make them useful and interesting, model data needs to make it into and out of the view.  Here is an example of how this works.</p>
-
-<p><img src="http://i.imgur.com/RGKiJ0n.jpg" alt="Access model data in Ember View" /></p>
-
-<!--more-->
-
-
-<h2>Define Your View</h2>
-
-<p>In our example, I'm making a simple dice rolling game.  I want to use a view to represent the die on the screen and to handle the roll event.  Your custom view must simply extend <code>Ember.View</code>:</p>
-
-<p><code>coffeescript die-view.coffee
-App.DieView = Ember.View.extend
-  templateName: 'die'
-</code></p>
-
-<p>This is about the simplest view definition we could make.  We'll make it a bit cooler later.  For now, the view just knows where to get its markup.  The <code>die</code> template can be any valid template.  Ember, by default, uses Handlebars templates.  I prefer <a href="http://emblemjs.com/">Emblem</a> templates:</p>
-
-<p><code>haml die.emblem
-li.die = die
-</code></p>
-
-<p>This template will simply print the <code>die</code> object in an <code>li</code> with class of <code>die</code>.  (There are an unusual number of 'die' references are in this example.  This is for purely entertainment reasons, nothing more nefarious. :)</p>
-
-<h2>Render Data in Ember View Template</h2>
-
-<p>Next, you need to get your Ember View referenced in your template markup.  In <a href="http://emblemjs.com/syntax/">Emblem</a>, to reference a view, start the line with a capital letter, specifically the name of your view.  In this view, I list the dice in my game controller <code>rolling</code> array and render each die in the <code>DieView</code></p>
-
-<p>```haml dice.emblem
-ul.dice
-  each die in this.rolling</p>
-
-<pre><code>App.DieView
-</code></pre>
-
-<p>```</p>
-
-<p>Using this code, the parent template <code>dice.emblem</code> passes the <code>die</code> variable to the <code>DieView</code>, where its child template, <code>die.emblem</code> renders <code>die</code> data.</p>
-
-<h2>Pass Data Into Ember View</h2>
-
-<p>To pass the <code>die</code> data from <code>dice.emblem</code> into the <code>DieView</code> to be used programatically, however, you need an extra attribute.  Change <code>dice.emblem</code>, adding <code>contentBinding</code>:</p>
-
-<p>```haml dice.emblem
-ul.dice
-  each die in this.rolling</p>
-
-<pre><code>App.DieView contentBinding="die"
-</code></pre>
-
-<p>```</p>
-
-<p>Now you can access the <code>die</code> data via a special Ember View variable named <code>content</code>.  Why might you want to get to this data programatically in the view code?...</p>
-
-<h2>Passing Data from Ember View to Controller</h2>
-
-<p>You might want to pass it somewhere else.  Remember, Ember Views are meant to take primitive UI events and translate them into semantic events, meaningful to your application.  For example, our view might want to translate a die element <code>click</code> on the DOM into a <code>roll</code> event in the application.  We made the modification to <code>dice.emblem</code> to pass the data in.  Now, let's send it to the controller like this:</p>
-
-<p>```coffeescript die-view.coffee
-App.DieView = Ember.View.extend
-  templateName: 'die'</p>
-
-<p>  click: (evt) -></p>
-
-<pre><code>@get('controller').send 'roll', @get 'content'
-</code></pre>
-
-<p>```</p>
-
-<p>We retrieve the <code>content</code> variable (holding the <code>die</code>), and send it to the controller in scope as a roll event.  The controller now must implement a <code>roll</code> function.  Let's say we have a game controller.  That code might look like this:</p>
-
-<p>```coffeescript game-ctrl.coffee
-App.GameController = Ember.ObjectController.extend</p>
-
-<p>  roll: (die) -></p>
-
-<pre><code># roll die and advance game accordingly
-</code></pre>
-
-<p>```</p>
-
-<p>If the controller doesn't implement this function, the current Ember Route may implement it in its <code>events</code> object.  If neither the controller or the route implement it, an exception is thrown.</p>
-
-<p>In this way, Ember Views show their worth in collecting events and translating them to meaningful verbs that we can act upon in our application.  They become reusable, allowing us to bind different content to them on different occassions.  Do Ember Views help you in this way?  Is there a better way?</p>
 ]]></content>
   </entry>
   

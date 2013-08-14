@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-12T08:18:34-06:00</updated>
+  <updated>2013-08-13T20:39:03-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Preload Route Data in Angular]]></title>
+    <link href="http://jaketrent.com/post/preload-route-data-angular/"/>
+    <updated>2013-08-13T08:10:00-06:00</updated>
+    <id>http://jaketrent.com/post/preload-route-data-angular</id>
+    <content type="html"><![CDATA[<p>It's sometimes useful to be able to preload or resolve data previous to an Angular view being displayed.  Such was the case recently for our current user object.  It simplified a lot of things in the app to have the guarantee of a loaded current user previous to displaying pages.  The Angular router has a great mechanism built in to do just this sort of thing, called <code>resolve</code>.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angularjs" /></p>
+
+<!--more-->
+
+
+<h2>Current User</h2>
+
+<p>For the example, our current user object is super simple.  Just pretend that it holds all of the relevant details of a user.  These details are useful for displaying various things in the app that need the context of who the currently logged-in user is.</p>
+
+<p>```coffeescript current-user.coffee
+  angular.module('app.services').factory 'CurrentUser', ($http, User) -></p>
+
+<pre><code>class CurrentUser extends User
+  fetch: -&gt;
+    # do $http things to request user data
+  isLoaded: -&gt;
+    # true if fetched and ready to go
+
+new CurrentUser
+</code></pre>
+
+<p>```</p>
+
+<p>Note that for our app there is just one <code>CurrentUser</code> object, a singleton, because we return a single instance from our factory, not a class.</p>
+
+<h2>Router</h2>
+
+<p>The Angular router is used for client-side routing of urls.  Our angular app is called <code>app</code>.  We setup some angular submodules to hold config, services, and controllers.</p>
+
+<p>Let's say that we have a home page and a profile page for our example.</p>
+
+<p>Each route can be configured with a <code>resolve</code> object.  The key of that object is the name of a local variable and the value is a function which returns a promise.  The resolution value of the promise is the data you want before the route executes.After all the promises are resolved, the route is free to switch and execute.  Until then, each unresolved promise will block the route from executing.</p>
+
+<p>```coffeescript app.coffee
+angular.module 'app.config', []
+angular.module 'app.services', []
+angular.module 'app.controllers', []</p>
+
+<p>angular.module('app', ['app.config', 'app.services', 'app.controllers'])</p>
+
+<p>angular.module('app').config ($routeProvider, $locationProvider, resolves) ->
+  $locationProvider.html5Mode true</p>
+
+<p>  $routeProvider</p>
+
+<pre><code>.when '/',
+  controller: 'HomeCtrl'
+  templateUrl: '/templates/home.html'
+.when '/profile',
+  controller: 'ProfileCtrl'
+  templateUrl: '/templates/profile.html'
+</code></pre>
+
+<p>angular.module('app').run ($route, resolves)->
+  for r in $route.routes</p>
+
+<pre><code>r.resolve ?= {}
+r.resolve.CurrentUser = resolves.getCurrentUser
+</code></pre>
+
+<p>```</p>
+
+<p>The <code>run</code> method is essentially the Angular app's main method, starting the program.  I want to ensure the current user is loaded for each route.  In this case, instead of putting a <code>resolve</code> config on each route, I'm looping through all routes after their initial definition and adding the <code>CurrentUser: resolves.getCurrentUser</code> config.</p>
+
+<h2>Resolve Function</h2>
+
+<p>In our resolve function we setup our own promise via the <code>$q</code> service.  We check to see if our singleton <code>CurrentUser</code> is already loaded.  If it's not, we fetch it.  If it has been fetched once already, we resolve the promise with the value that's already available.</p>
+
+<p>```coffeescript resolves.coffee
+angular.module('app.config').constant 'resolves',</p>
+
+<p>  getCurrentUser: ($q, CurrentUser) -></p>
+
+<pre><code>defer = $q.defer()
+
+if not CurrentUser.isLoaded()
+  req = CurrentUser.fetch()
+  req.success -&gt; defer.resolve CurrentUser
+  req.error -&gt; defer.reject()
+else
+  defer.resolve CurrentUser
+
+defer.promise
+</code></pre>
+
+<p>```</p>
+
+<h2>Application Controller</h2>
+
+<p>Now that we have the <code>CurrentUser</code> guaranteed to be resolved (fetched and returned) by the time we enter all routes, we need to grab the value of <code>CurrentUser</code> and put it in <code>$scope</code> where our program would normally pick up and start using variables.</p>
+
+<p>```coffeescript app-ctrl.coffee
+angular.module('app.controllers').controller 'AppCtrl', ($scope) -></p>
+
+<p>  $scope.$on '$routeChangeSuccess', (next, current) -></p>
+
+<pre><code>if current.locals.CurrentUser?
+  $scope.currentUser = current.locals.CurrentUser
+</code></pre>
+
+<p>```</p>
+
+<p>We listen the Angular-provided event when a route is successfully entered: <code>$routeChangeSuccess</code>.  The value we care about is available on the <code>current</code> route's <code>locals</code> object, placed there magically by the resolve function.</p>
+
+<h2>When to Use</h2>
+
+<p>There are a few bits to piece together to make this happen.  It might be simpler than other solutions or make more sense for you in your app if you need something(s) loaded previous to executing on a route.</p>
+
+<p>I would definitely use this feature judiciously, as it seems to eat away at one of the advantages of a client-side app in the first place: asynchronous loading.  We'8re blocking the whole app from going forward when we're in the process of resolving.  That boundary used to be on the edge of the server, building up the page before it was servable to the client.  Now, on a web client, we have multiple requests that can happen in parallel and we can render bits as they're available -- important bits first and so on.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Namespacing Angular Controller Attributes]]></title>
@@ -293,128 +412,6 @@ $http.jsonp 'http://api.tumblr.com/v2/blog/colorwheelie.tumblr.com/posts/photo?a
 <p>```</p>
 
 <p>The interesting line is line one.  We call the <code>jsonp</code> function.  We assign our callback like this: <code>callback=JSON_CALLBACK</code>.  And in our success callback, we can consume our data variable like it was pure Json.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Pass Values From the Page to AngularJs]]></title>
-    <link href="http://jaketrent.com/post/pass-values-from-page-to-angular/"/>
-    <updated>2013-02-22T07:10:00-07:00</updated>
-    <id>http://jaketrent.com/post/pass-values-from-page-to-angular</id>
-    <content type="html"><![CDATA[<p>There are simple mechanisms for passing data from your web page to AngularJs.  One directive is called <code>ngInit</code>.  You may well need it.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular data passing" /></p>
-
-<!--more-->
-
-
-<h2>The Use Cases</h2>
-
-<p>The use cases don't make a ton of sense without a concrete example.  There are several ways to implement even the most simple example.  If the solution doesn't seem to fit the problem, try another way.</p>
-
-<p>For our purposes, let's say that we're displaying a list of comments on the screen.</p>
-
-<h4>Angular Requests Data</h4>
-
-<p>It's easy to put data into scope for AngularJs to use if Angular is the one to request the data initially.  This often will look something like this:</p>
-
-<p>```coffeescript
-$http.get('/comments')
-  .success((comments) -></p>
-
-<pre><code>$scope.comments = comments
-</code></pre>
-
-<p>  )
-```</p>
-
-<p>Then your template will automatically have the data in scope.  And the template (<a href="http://slim-lang.org">Slim</a> syntax used below) can look like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
-</span><span class='line'><span class="n">ul</span>
-</span><span class='line'>  <span class="n">li</span> <span class="n">ng</span><span class="o">-</span><span class="n">repeat</span><span class="o">=</span><span class="s2">&quot;comment in comments&quot;</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;| {{ comment }}</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Now when we add a new comment via Ajax, we can push it right into the comment collection, and the page is updated by Angular with the appropriate data.  Or if we want to perform an operation on a pre-existing comment, it's easy to do via an AJAX operation and display the result.</p>
-
-<h4>Server Renders Data Initially</h4>
-
-<p>Sometimes it'll make sense for the server to render the data.  Often this kind of data will be the main content on the page.  When the client receives the page, we want the data display to be immediate.  We don't want them to load a page with a spinner for the main content, then wait and watch it spin while the real content is requested secondarily.</p>
-
-<p>If the server was to initially print the comments, like so:</p>
-
-<p>```ruby
-h1 Comments
-ul
-  - comments.each do |comment|</p>
-
-<pre><code>li 
-  = comment
-</code></pre>
-
-<p>```</p>
-
-<p>We still might want to do AJAX'y things with a comment, such as like it.  When I like it, I don't want the browser to have to refresh, so I want to make Angular do this for me.</p>
-
-<h2>ngInit Passes Angular Server Data</h2>
-
-<p>Angular provides a nice directive, <code>ngInit</code> for passing Angular data.  It's a mechanism by which you can bootstrap your scripts with the data they need to function.  A mixture of server rendering and client-side AJAX requests on the same data will probably mean that you're going to use this directive.</p>
-
-<p>From the <code>ngInit</code> docs:</p>
-
-<blockquote><p> The ngInit directive specifies initialization tasks to be executed before the template enters execution mode during bootstrap.</p></blockquote>
-
-<p>Our server/client mixture code might look something like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">h1</span> <span class="no">Comments</span>
-</span><span class='line'><span class="n">ul</span>
-</span><span class='line'>  <span class="o">-</span> <span class="n">comments</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">comment</span><span class="p">,</span> <span class="n">i</span><span class="o">|&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;li ng-init=&quot;commentLikeCount[i]=</span><span class="si">#{</span><span class="n">comment</span><span class="o">.</span><span class="n">likeCount</span><span class="si">}</span><span class="sr">&quot;</span>
-</span><span class='line'><span class="sr">  = comment</span>
-</span><span class='line'><span class="sr">  | Likes for this comment: {{commentLikeCount[i]}}</span>
-</span><span class='line'><span class="sr">  a ng-click=&quot;like(commentLikeCount[i])&quot;</span>
-</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>It's important to realize where data is coming from in this example.  The syntax <code>=</code> as in <code>= comment</code> and <code>#{}</code> as in <code>#{comment.likeCount}</code> are server-rendered bits.  As you know, the curlies and the ng attribute syntax is for Angular's client side rendering.</p>
-
-<p>So how has this mixture bought us anything?</p>
-
-<ol>
-<li>The server renders the comments initially.  This makes the display immediate when the browser loads the page.</li>
-<li>We init the value of <code>commentLikeCount</code>, making it available for Angular to display once the client compiles the template.</li>
-<li>Since Angular has a count of the likes, it can easily update it and redisplay without a page reload after calling <code>like()</code> to increment the count.</li>
-</ol>
-
-
-<p>Frankly, the mixture feels a little bit odd to me.  I've seen it work.  I know there are different ways to get this done.  I think there are probably better ways.  What has worked well for you in similar use cases?</p>
 ]]></content>
   </entry>
   
