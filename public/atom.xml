@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-14T16:18:51-06:00</updated>
+  <updated>2013-08-19T09:48:29-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,103 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Spies with Sinon and Chai]]></title>
+    <link href="http://jaketrent.com/post/spies-sinon-chai/"/>
+    <updated>2013-08-19T08:21:00-06:00</updated>
+    <id>http://jaketrent.com/post/spies-sinon-chai</id>
+    <content type="html"><![CDATA[<p>Spies will help you verify calls to methods without actually calling them.  <a href="http://sinonjs.org/">Sinon</a> is a library that provides spies.  <a href="http://chaijs.com/">Chai</a> will provide assertions appropriate to spying.</p>
+
+<p><img src="http://i.imgur.com/yuKcrP9.jpg" alt="Sinon-chai Spies" /></p>
+
+<!--more-->
+
+
+<h2>Install Dependencies</h2>
+
+<p>You&#8217;ll need 3 dependencies in dev mode for running your tests:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install sinon chai sinon-chai --save-dev</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now make sure that you import these testing tools into your test environment.  I&#8217;m using <a href="http://karma-runner.github.io/0.10/index.html">Karma Runner</a>, so my <code>files</code> array has these 3 lines:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="s1">&#39;node_modules/sinon/pkg/sinon.js&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="s1">&#39;node_modules/chai/chai.js&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="s1">&#39;node_modules/sinon-chai/lib/sinon-chai.js&#39;</span><span class="p">,</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Make sure that you are including the packaged version of each of these files.  For instance, the <code>sinon/lib</code> files are not built together, so you&#8217;ll likely import some subset of needed files; it won&#8217;t error out, but it won&#8217;t provide working spies like we&#8217;re wanting (so use the <code>pkg</code> directory files).</p>
+
+<h2>Spying</h2>
+
+<p>We spy because we care.  We don&#8217;t want certain methods to be called.  In this case, we&#8217;re testing Angularjs code.  We don&#8217;t want our event broadcast to actually happen because we don&#8217;t care about testing the listeners to that event.  We just want to know that the broadcast happens.  We can test listeners separately in their own unit test.</p>
+
+<p>I found that following the &#8220;Getting Started&#8221; example on the Sinonjs page didn&#8217;t lead me to create a spy that worked.  I went spelunking and found a working example on a random tech blog (a la this one).  So, here&#8217;s this advice:</p>
+
+<ul>
+<li><code>sinon.spy</code> api takes the object with the function as a 1st parameter and the string name of the function that you&#8217;re wanting to spy on as the 2nd parameter.</li>
+<li><code>sinon.spy</code> will return a reference to the spy.  You can use that reference to do assertions on or you can use the spied on function itself (ie, <code>$rootScope.$broadcast</code>)</li>
+<li>Use <a href="https://github.com/domenic/sinon-chai"><code>sinon-chai</code></a>.  It provides better assertions and works with <code>chai</code>.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>model.spec.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">assert = </span><span class="nx">chai</span><span class="p">.</span><span class="nx">assert</span>
+</span><span class='line'><span class="nv">expect = </span><span class="nx">chai</span><span class="p">.</span><span class="nx">expect</span>
+</span><span class='line'><span class="nv">should = </span><span class="nx">chai</span><span class="p">.</span><span class="nx">should</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">model = </span><span class="kc">null</span>
+</span><span class='line'><span class="nv">$rootScope = </span><span class="kc">null</span>
+</span><span class='line'><span class="nv">$httpBackend = </span><span class="kc">null</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">beforeEach</span> <span class="nx">module</span> <span class="s">&#39;app&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">beforeEach</span> <span class="nx">inject</span> <span class="nf">(_Model_, _$rootScope_, _$httpBackend_) -&gt;</span>
+</span><span class='line'>  <span class="nv">model = </span><span class="k">new</span> <span class="nx">_Model_</span>
+</span><span class='line'>  <span class="nv">$rootScope = </span><span class="nx">_$rootScope_</span>
+</span><span class='line'>  <span class="nv">$httpBackend = </span><span class="nx">_$httpBackend_</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">it</span> <span class="s">&#39;broadcasts model:fetched event w/ model&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nv">spy = </span><span class="nx">sinon</span><span class="p">.</span><span class="nx">spy</span><span class="p">(</span><span class="nx">$rootScope</span><span class="p">,</span> <span class="s">&#39;$broadcast&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">model</span><span class="p">.</span><span class="nx">fetch</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">$httpBackend</span><span class="p">.</span><span class="nx">flush</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">spy</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">been</span><span class="p">.</span><span class="nx">calledWith</span> <span class="s">&#39;model:fetched&#39;</span><span class="p">,</span> <span class="nx">model</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Most of that code is setup.  And most of that setup is related to <a href="http://angularjs.org/">Angularjs</a>.  If that doesn&#8217;t apply to you, ignore it.  It&#8217;s just there to give a more full picture of the environment.</p>
+
+<p>The interesting part is all in the final <code>it</code> function call.  The code under test is <code>model.fetch()</code>, which is called.  Internal to that function, there is a <code>$rootScope.$broadcast</code> call that we&#8217;re spying on that we&#8217;re asserting is called with 2 parameters: &#8216;model:fetched&#8217; string and the model itself.</p>
+
+<p>As with most testing environments, it&#8217;s fairly simple once you discover the pattern.  What do you think of this one?  Does it work for you?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Disable ngClick]]></title>
@@ -1858,101 +1955,6 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
 <p>I&#8217;m glad that this event has shown some perpetuity.  I hope it continues next year.  I think they have a good formula.  The price, the locale, the speaker lineup, and the associated activities make for a good one-day experience each Spring.  I would focus on improving one bit next year: the website.  It was the least well-done part of the conference.  I find that extremely ironic given the target market for the event.</p>
 
 <p>So next Spring, come to Utah and attend the JsConf.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Test setTimeout with Jasmine]]></title>
-    <link href="http://jaketrent.com/post/test-settimeout-with-jasmine/"/>
-    <updated>2013-05-15T07:08:00-06:00</updated>
-    <id>http://jaketrent.com/post/test-settimeout-with-jasmine</id>
-    <content type="html"><![CDATA[<p>Code that utilizes <code>setTimeout</code> or <code>setInterval</code> becomes asynchronous.  Jasmine has some nice helpers to make your test synchronous again.</p>
-
-<p><img src="http://i.imgur.com/Ks3wt01.jpg" alt="Jasmine" /></p>
-
-<!--more-->
-
-
-<h2>Code Using setTimeout</h2>
-
-<p>Any Javascript code that wants to delay certain actions or give intervals between actions will use <code>setTimeout</code> or <code>setInterval</code> respectively.  There are also libraries that create some niceties for working in these situations, notably <a href="http://underscorejs.org">underscore</a>&#8217;s <code>_.throttle</code> and <code>_.debounce</code> functions.  Underneath all of these higher-level functions, they&#8217;re using the native <code>setTimeout</code> construct, so the same strategies will apply.  In your source, you end up with something like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="kc">on</span> <span class="s">&#39;keyup&#39;</span><span class="p">,</span> <span class="s">&#39;.autocomplete-field&#39;</span><span class="p">,</span> <span class="nx">_</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="nx">autocomplete</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This code binds a keyup event listener on a contrived <code>.autocomplete-field</code>.  Of course, we don&#8217;t want to do an expensive <code>autocomplete</code> lookup on every keypress.  So, we&#8217;ll slow it down a bit with <code>_.debounce</code>.</p>
-
-<h2>Testing Asynchronous Code in Jasmine</h2>
-
-<p>Now we go to test it in Jasmine (failing):</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'>  <span class="nx">describe</span> <span class="s">&#39;Autocomplete Field&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">it</span> <span class="s">&#39;calls autocomplete when typing&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>      <span class="nv">called = </span><span class="kc">false</span>
-</span><span class='line'>      <span class="nv">autocomplete = </span><span class="o">-&gt;</span>
-</span><span class='line'>        <span class="nv">called = </span><span class="kc">true</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="nv">keyup = </span><span class="nx">$</span><span class="p">.</span><span class="nx">Event</span><span class="p">(</span><span class="s">&#39;keyup&#39;</span><span class="p">)</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.autocomplete-field&#39;</span><span class="p">).</span><span class="nx">trigger</span> <span class="nx">keyup</span>
-</span><span class='line'>      <span class="nx">called</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In this test, or <code>autocomplete</code> spy will never be called, thus <code>called</code> will never be true.  There are a few ways to fix this.</p>
-
-<h2>Mocking the Jasmine Clock</h2>
-
-<p>One way to fix the test is to remove <code>_.debounce</code> from our source code.  That would make the test pass.  The other is to setup our Jasmine to handle the <code>setTimeout</code> used in <code>_.debounce</code>.  Let&#8217;s do the latter, and raise our fists to the sky in triumph over our testing foe (winning):</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'>  <span class="nx">describe</span> <span class="s">&#39;Autocomplete Field&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">beforeEach</span> <span class="o">-&gt;</span>
-</span><span class='line'>      <span class="nx">jasmine</span><span class="p">.</span><span class="nx">Clock</span><span class="p">.</span><span class="nx">useMock</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">it</span> <span class="s">&#39;calls autocomplete when typing&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>      <span class="nv">called = </span><span class="kc">false</span>
-</span><span class='line'>      <span class="nv">autocomplete = </span><span class="o">-&gt;</span>
-</span><span class='line'>        <span class="nv">called = </span><span class="kc">true</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="nv">keyup = </span><span class="nx">$</span><span class="p">.</span><span class="nx">Event</span><span class="p">(</span><span class="s">&#39;keyup&#39;</span><span class="p">)</span>
-</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.autocomplete-field&#39;</span><span class="p">).</span><span class="nx">trigger</span> <span class="nx">keyup</span>
-</span><span class='line'>      <span class="nx">jasmine</span><span class="p">.</span><span class="nx">Clock</span><span class="p">.</span><span class="nx">tick</span> <span class="mi">501</span>
-</span><span class='line'>      <span class="nx">called</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The needed code is simple to add.  Use <code>jasmine.Clock.useMock()</code> to setup the fake ticker.  Then call <code>tick()</code> on it whenever you want your test to simulate time massage.</p>
-
-<p>The cool thing is that this does not slow down your tests.  You could set the clock tick to be 50100000 or some crazy number, and it will still execute as fast as your single JavaScript thread will let you.</p>
-
-<p>Boom.  Another testing hurdle cleared.  Sometimes it&#8217;s harder to write the test than the code.</p>
 ]]></content>
   </entry>
   

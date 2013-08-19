@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Spies with Sinon and Chai - Jake Trent</title>
+  <meta name="author" content="Jake Trent">
+
+  
+  <meta name="description" content="Spies will help you verify calls to methods. Sinon is a library that provides spies. Chai will provide appropriate assertions.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/spies-sinon-chai/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1 class="title"><a href="/">Jake Trent</a></h1>
+  <div class="desc">
+    
+      <h2>Power Ballad Coding</h2>
+    
+  </div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jaketrent.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/blog/categories/code/">Code</a></li>
+  <li><a href="/blog/categories/design/">Design</a></li>
+  <li><a href="/blog/categories/productivity/">Productivity</a></li>
+  <li><a href="/blog/categories/review/">Reviews</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Spies With Sinon and Chai</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-19T08:21:00-06:00" pubdate data-updated="true">Aug 19<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Spies will help you verify calls to methods without actually calling them.  <a href="http://sinonjs.org/">Sinon</a> is a library that provides spies.  <a href="http://chaijs.com/">Chai</a> will provide assertions appropriate to spying.</p>
+
+<p><img src="http://i.imgur.com/yuKcrP9.jpg" alt="Sinon-chai Spies" /></p>
+
+<!--more-->
+
+
+<h2>Install Dependencies</h2>
+
+<p>You&#8217;ll need 3 dependencies in dev mode for running your tests:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install sinon chai sinon-chai --save-dev</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now make sure that you import these testing tools into your test environment.  I&#8217;m using <a href="http://karma-runner.github.io/0.10/index.html">Karma Runner</a>, so my <code>files</code> array has these 3 lines:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="s1">&#39;node_modules/sinon/pkg/sinon.js&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="s1">&#39;node_modules/chai/chai.js&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="s1">&#39;node_modules/sinon-chai/lib/sinon-chai.js&#39;</span><span class="p">,</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Make sure that you are including the packaged version of each of these files.  For instance, the <code>sinon/lib</code> files are not built together, so you&#8217;ll likely import some subset of needed files; it won&#8217;t error out, but it won&#8217;t provide working spies like we&#8217;re wanting (so use the <code>pkg</code> directory files).</p>
+
+<h2>Spying</h2>
+
+<p>We spy because we care.  We don&#8217;t want certain methods to be called.  In this case, we&#8217;re testing Angularjs code.  We don&#8217;t want our event broadcast to actually happen because we don&#8217;t care about testing the listeners to that event.  We just want to know that the broadcast happens.  We can test listeners separately in their own unit test.</p>
+
+<p>I found that following the &#8220;Getting Started&#8221; example on the Sinonjs page didn&#8217;t lead me to create a spy that worked.  I went spelunking and found a working example on a random tech blog (a la this one).  So, here&#8217;s this advice:</p>
+
+<ul>
+<li><code>sinon.spy</code> api takes the object with the function as a 1st parameter and the string name of the function that you&#8217;re wanting to spy on as the 2nd parameter.</li>
+<li><code>sinon.spy</code> will return a reference to the spy.  You can use that reference to do assertions on or you can use the spied on function itself (ie, <code>$rootScope.$broadcast</code>)</li>
+<li>Use <a href="https://github.com/domenic/sinon-chai"><code>sinon-chai</code></a>.  It provides better assertions and works with <code>chai</code>.</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>model.spec.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">assert = </span><span class="nx">chai</span><span class="p">.</span><span class="nx">assert</span>
+</span><span class='line'><span class="nv">expect = </span><span class="nx">chai</span><span class="p">.</span><span class="nx">expect</span>
+</span><span class='line'><span class="nv">should = </span><span class="nx">chai</span><span class="p">.</span><span class="nx">should</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">model = </span><span class="kc">null</span>
+</span><span class='line'><span class="nv">$rootScope = </span><span class="kc">null</span>
+</span><span class='line'><span class="nv">$httpBackend = </span><span class="kc">null</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">beforeEach</span> <span class="nx">module</span> <span class="s">&#39;app&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">beforeEach</span> <span class="nx">inject</span> <span class="nf">(_Model_, _$rootScope_, _$httpBackend_) -&gt;</span>
+</span><span class='line'>  <span class="nv">model = </span><span class="k">new</span> <span class="nx">_Model_</span>
+</span><span class='line'>  <span class="nv">$rootScope = </span><span class="nx">_$rootScope_</span>
+</span><span class='line'>  <span class="nv">$httpBackend = </span><span class="nx">_$httpBackend_</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">it</span> <span class="s">&#39;broadcasts model:fetched event w/ model&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nv">spy = </span><span class="nx">sinon</span><span class="p">.</span><span class="nx">spy</span><span class="p">(</span><span class="nx">$rootScope</span><span class="p">,</span> <span class="s">&#39;$broadcast&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">model</span><span class="p">.</span><span class="nx">fetch</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">$httpBackend</span><span class="p">.</span><span class="nx">flush</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">spy</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">been</span><span class="p">.</span><span class="nx">calledWith</span> <span class="s">&#39;model:fetched&#39;</span><span class="p">,</span> <span class="nx">model</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Most of that code is setup.  And most of that setup is related to <a href="http://angularjs.org/">Angularjs</a>.  If that doesn&#8217;t apply to you, ignore it.  It&#8217;s just there to give a more full picture of the environment.</p>
+
+<p>The interesting part is all in the final <code>it</code> function call.  The code under test is <code>model.fetch()</code>, which is called.  Internal to that function, there is a <code>$rootScope.$broadcast</code> call that we&#8217;re spying on that we&#8217;re asserting is called with 2 parameters: &#8216;model:fetched&#8217; string and the model itself.</p>
+
+<p>As with most testing environments, it&#8217;s fairly simple once you discover the pattern.  What do you think of this one?  Does it work for you?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-19T08:21:00-06:00" pubdate data-updated="true">Aug 19<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/angularjs/'>angularjs</a>, <a class='category' href='/blog/categories/chai/'>chai</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/sinon/'>sinon</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/spies-sinon-chai/" data-via="" data-counturl="http://jaketrent.com/post/spies-sinon-chai/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/post/disable-ng-click/" title="Previous Post: Disable ngClick">&laquo; Disable ngClick</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="social">
+    <li><a class="social social-github" href="http://github.com/jaketrent" title="Github" class="first">Github</a></li>
+    <li><a class="social social-twitter" href="http://twitter.com/jaketrent" title="Twitter">Twitter</a></li>
+    <li><a class="social social-linkedin" href="http://linkedin.com/in/jaketrent" title="LinkedIn">LinkedIn</a></li>
+    <li><a class="social social-googleplus" href="https://plus.google.com/115032056022257436849?rel=author" title="Google Plus">Google Plus</a></li>
+    <li><a class="social social-rss" href="/atom.xml" title="RSS">RSS</a></li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/spies-sinon-chai/">Spies with Sinon and Chai</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/disable-ng-click/">Disable ngClick</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/preload-route-data-angular/">Preload Route Data in Angular</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/how-marklogic-made-me-better-programmer/">How MarkLogic Made Me a Better Programmer</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/ember-dynamic-classes/">Ember Dynamic Classes</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/115032056022257436849?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Jake Trent -
+  <a href="/blog/archives">Archives</a> -
+  <a href="/atom.xml">Feed</a> -
+  <a href="/sitemap.xml">Sitemap</a> -
+  <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/spies-sinon-chai/';
+        var disqus_url = 'http://jaketrent.com/post/spies-sinon-chai/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
