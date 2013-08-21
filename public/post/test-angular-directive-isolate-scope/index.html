@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>LiveReload for NodeJs - Jake Trent</title>
+  <title>Test Angular Directive With Isolate Scope - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="Livereload allows you to make code changes and see your changes in the browser without refreshing.">
-  <meta name="keywords" content="nodejs, js, grunt, grunt-livereload, connect-livereload">
+  <meta name="description" content="Directives with isolate scope do not inherit their scope from their parent. Thus, the pattern to test them is slightly different.">
+  
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/livereload-for-nodejs/">
+  <link rel="canonical" href="http://jaketrent.com/post/test-angular-directive-isolate-scope/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">LiveReload for NodeJs</h1>
+      <h1 class="entry-title">Test Angular Directive With Isolate Scope</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2013-04-23T16:44:00-06:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2013</time>
+<time datetime="2013-08-21T07:46:00-06:00" pubdate data-updated="true">Aug 21<span>st</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,54 +108,35 @@
   </header>
 
 
-<div class="entry-content"><p>LiveReload is a wonderful tool/strategy for being able to develop websites more quickly.  You can make a change and see it immediately shown in the browser without requiring you to manually refresh.  To do this in NodeJs with Express, you&#8217;ll need just a few packages.</p>
+<div class="entry-content"><p>Directives with isolate scope do not inherit their scope from their parent.  Thus, the pattern to test them is slightly different.</p>
 
-<p><img src="http://i.imgur.com/4773D.jpg" alt="grunt" /></p>
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular Isolate Scope Testing" /></p>
 
 <!--more-->
 
 
-<h2>LiveReload Express</h2>
+<p>When testing a directive, you&#8217;ll often want to setup some fixture element to attach your directive to.  This will act as the DOM that you will compile with scope.  At that point, the variables that you attached to scope will be available within the directive under test.</p>
 
-<p>If you&#8217;re doing a website on Nodejs these days, you&#8217;re probably using Express.  Express uses the Connect library for its middleware scheme.  Just grab one more middleware to handle the LiveReload.  It will add a little snippet of JavaScript to each of the html responses that is requested through this middleware.  First, install:</p>
+<p>For example, if I had a directive called <code>AccountList</code> with isolate scope:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>npm install connect-livereload --save-dev</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Next, import:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>account-list.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span> <span class="s">&#39;development&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">require</span><span class="p">(</span><span class="s">&#39;connect-livereload&#39;</span><span class="p">)</span> <span class="mi">35729</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">).</span><span class="nx">directive</span> <span class="s">&#39;AccountList&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nv">restrict: </span><span class="s">&#39;EA&#39;</span>
+</span><span class='line'>  <span class="nv">replace: </span><span class="kc">true</span>
+</span><span class='line'>  <span class="nv">scope:</span>
+</span><span class='line'>    <span class="nv">accounts: </span><span class="s">&#39;=&#39;</span>
+</span><span class='line'>  <span class="c1"># etc ...</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Note that we only want to import and use the middleware when in development.  This matches the fact that we are only declaring this package as in <code>devDependencies</code>.</p>
+<p>Then I would setup my test something like this:</p>
 
-<h2>LiveReload Grunt</h2>
-
-<p>Now you need to something to start a livereload server, watch files for changes, and broadcast their availability.  The rest of this will be done via Grunt.</p>
-
-<p>First, install:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>npm install grunt-cli -g
-</span><span class='line'>npm install grunt grunt-regarde grunt-contrib-livereload --save-dev</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><code>grunt-cli</code> will allow you to run the <code>grunt</code> command in the terminal.  Global puts the bin in your path.</li>
-<li><code>grunt-regarde</code> is a file watcher.  It senses changes to the filesystem.</li>
-<li><code>grunt-contrib-reload</code> will handle the pushing of new code to the browser.</li>
-</ul>
-
-
-<p>Next setup the <code>Gruntfile.coffee</code>:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>account-list.spec.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -166,33 +147,48 @@
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(grunt) -&gt;</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">describe</span> <span class="s">&#39;AccountList&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="nv">regarde:</span>
-</span><span class='line'>      <span class="nv">style:</span>
-</span><span class='line'>        <span class="nv">files: </span><span class="p">[</span><span class="s">&#39;app/static/css/*.css&#39;</span><span class="p">]</span>
-</span><span class='line'>        <span class="nv">tasks: </span><span class="p">[</span><span class="s">&#39;livereload&#39;</span><span class="p">]</span>
+</span><span class='line'>  <span class="nv">elm = </span><span class="kc">null</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span> <span class="s">&#39;grunt-contrib-livereload&#39;</span>
+</span><span class='line'>  <span class="nx">beforeEach</span> <span class="nx">inject</span> <span class="nf">($rootScope, $compile) -&gt;</span>
+</span><span class='line'>    <span class="nv">accounts = </span><span class="p">[]</span>
+</span><span class='line'>    <span class="k">for</span> <span class="nx">num</span> <span class="k">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">..</span><span class="mi">5</span><span class="p">]</span>
+</span><span class='line'>      <span class="nx">accounts</span><span class="p">.</span><span class="nx">push</span> <span class="nx">createFakeAccount</span><span class="p">()</span>
+</span><span class='line'>    <span class="nv">$rootScope.accounts = </span><span class="nx">accounts</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span> <span class="s">&#39;be-lively&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s">&#39;livereload-start&#39;</span><span class="p">,</span> <span class="s">&#39;regarde&#39;</span> <span class="p">]</span>
+</span><span class='line'>    <span class="nv">elm = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">element</span> <span class="s">&quot;&quot;&quot;</span>
+</span><span class='line'><span class="s">      &lt;account-list accounts=&quot;accounts&quot;&gt;&lt;/account-list&gt;</span>
+</span><span class='line'><span class="s">    &quot;&quot;&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">e = </span><span class="nx">$compile</span><span class="p">(</span><span class="nx">elm</span><span class="p">)(</span><span class="nx">$rootScope</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">e</span><span class="p">.</span><span class="nx">scope</span><span class="p">().</span><span class="nx">$digest</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># actual specs, using elm ...</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Now when you run:</p>
+<p>A few points:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>grunt be-lively</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li><code>inject()</code> comes from <code>angular-mock</code>.  It is currently only supported in Jasmine.</li>
+<li>Before each test of the <code>AccountList</code> directive, a set of 5 accounts will be put in scope so the directive, presumably, has something to display.</li>
+<li><code>$rootScope</code> is going to be the only scope that you can get to easily from your tests.  You can attach variables to it directly as above or call <code>$rootScope.$new()</code> to generate a new scope if you&#8217;d like.</li>
+<li>We initially <code>$compile</code> the fixture element, passing in <code>$rootScope</code>.</li>
+<li>To get Angular to actually act internally on the variables that we&#8217;ve passed into the directive and put them on scope, we must call the important line of code: <code>e.scope().$digest()</code>.</li>
+</ul>
 
 
-<p>A livereload server is going to be setup.  Then we watch for filesystem changes.  The only things we&#8217;re watching are css files in our app.  You could expand the <code>files</code> array to watch more if you wish.</p>
+<p>Now you should be ready to rock and roll with your tests.  Isolate scopes can be tricky.  Testing them, a bit tricky as well.</p>
 
-<p>Yay!</p>
-
-<h2>LiveReload all the Things</h2>
-
-<p>There are many ways to make this happen.  There are numerous Node libraries, Grunt plugins, and browser plugins.  Do what works for you.  Just make it happen fast and tend it well from the beginning to the end of your project.  Almost every solution I&#8217;ve found is somewhat high maintenance.  This one has proven to be the same.  What have you found to be your favorite LiveReload solution, and in what environment?</p>
+<p>Do you know a better way?</p>
 </div>
 
 
@@ -215,12 +211,12 @@
   
 
 
-<time datetime="2013-04-23T16:44:00-06:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2013</time>
+<time datetime="2013-08-21T07:46:00-06:00" pubdate data-updated="true">Aug 21<span>st</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/grunt/'>grunt</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/angularjs/'>angularjs</a>, <a class='category' href='/blog/categories/jasmine/'>jasmine</a>, <a class='category' href='/blog/categories/js/'>js</a>
   
 </span>
 
@@ -229,7 +225,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/livereload-for-nodejs/" data-via="" data-counturl="http://jaketrent.com/post/livereload-for-nodejs/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/test-angular-directive-isolate-scope/" data-via="" data-counturl="http://jaketrent.com/post/test-angular-directive-isolate-scope/" >Tweet</a>
   
   
   
@@ -238,10 +234,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/nodejs-app-on-xipio/" title="Previous Post: Access NodeJs App on Xip.io">&laquo; Access NodeJs App on Xip.io</a>
+        <a class="basic-alignment left" href="/post/spies-sinon-chai/" title="Previous Post: Spies with Sinon and Chai">&laquo; Spies with Sinon and Chai</a>
       
-      
-        <a class="basic-alignment right" href="/post/test-settimeout-with-jasmine/" title="Next Post: Test setTimeout with Jasmine">Test setTimeout with Jasmine &raquo;</a>
       
     </p>
   </footer>
@@ -330,8 +324,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/livereload-for-nodejs/';
-        var disqus_url = 'http://jaketrent.com/post/livereload-for-nodejs/';
+        var disqus_identifier = 'http://jaketrent.com/post/test-angular-directive-isolate-scope/';
+        var disqus_url = 'http://jaketrent.com/post/test-angular-directive-isolate-scope/';
         var disqus_script = 'embed.js';
       
     (function () {

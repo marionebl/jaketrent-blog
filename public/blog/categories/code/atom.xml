@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-19T09:48:29-06:00</updated>
+  <updated>2013-08-21T09:12:33-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Test Angular Directive With Isolate Scope]]></title>
+    <link href="http://jaketrent.com/post/test-angular-directive-isolate-scope/"/>
+    <updated>2013-08-21T07:46:00-06:00</updated>
+    <id>http://jaketrent.com/post/test-angular-directive-isolate-scope</id>
+    <content type="html"><![CDATA[<p>Directives with isolate scope do not inherit their scope from their parent.  Thus, the pattern to test them is slightly different.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular Isolate Scope Testing" /></p>
+
+<!--more-->
+
+
+<p>When testing a directive, you'll often want to setup some fixture element to attach your directive to.  This will act as the DOM that you will compile with scope.  At that point, the variables that you attached to scope will be available within the directive under test.</p>
+
+<p>For example, if I had a directive called <code>AccountList</code> with isolate scope:</p>
+
+<p>```coffeescript account-list.coffee
+angular.module('app').directive 'AccountList', ->
+  restrict: 'EA'
+  replace: true
+  scope:</p>
+
+<pre><code>accounts: '='
+</code></pre>
+
+<p>  # etc ...
+```</p>
+
+<p>Then I would setup my test something like this:</p>
+
+<p>```coffeescript account-list.spec.coffee
+describe 'AccountList', -></p>
+
+<p>  elm = null</p>
+
+<p>  beforeEach inject ($rootScope, $compile) -></p>
+
+<pre><code>accounts = []
+for num in [1..5]
+  accounts.push createFakeAccount()
+$rootScope.accounts = accounts
+
+elm = angular.element """
+  &lt;account-list accounts="accounts"&gt;&lt;/account-list&gt;
+"""
+
+e = $compile(elm)($rootScope)
+e.scope().$digest()
+</code></pre>
+
+<p>  # actual specs, using elm ...
+```</p>
+
+<p>A few points:</p>
+
+<ul>
+<li><code>inject()</code> comes from <code>angular-mock</code>.  It is currently only supported in Jasmine.</li>
+<li>Before each test of the <code>AccountList</code> directive, a set of 5 accounts will be put in scope so the directive, presumably, has something to display.</li>
+<li><code>$rootScope</code> is going to be the only scope that you can get to easily from your tests.  You can attach variables to it directly as above or call <code>$rootScope.$new()</code> to generate a new scope if you'd like.</li>
+<li>We initially <code>$compile</code> the fixture element, passing in <code>$rootScope</code>.</li>
+<li>To get Angular to actually act internally on the variables that we've passed into the directive and put them on scope, we must call the important line of code: <code>e.scope().$digest()</code>.</li>
+</ul>
+
+
+<p>Now you should be ready to rock and roll with your tests.  Isolate scopes can be tricky.  Testing them, a bit tricky as well.</p>
+
+<p>Do you know a better way?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Spies with Sinon and Chai]]></title>
@@ -326,73 +396,6 @@ App.MyModelView contentBinding="this.myModelInstance"
 <p>As your model's <code>hasSomeState</code> value is changed internally with the <code>@set</code> function, the view will be notified that it needs to re-run the <code>hasSomeState</code> function, and the UI will update if needed.</p>
 
 <p>What other methods do you utilize in Ember to get dynamic classes?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Style File Input]]></title>
-    <link href="http://jaketrent.com/post/style-file-input/"/>
-    <updated>2013-07-23T16:44:00-06:00</updated>
-    <id>http://jaketrent.com/post/style-file-input</id>
-    <content type="html"><![CDATA[<p>File input fields are notoriously painful to style.  Here are a few quick tips to that will save you some dead ends.</p>
-
-<p><img src="http://i.imgur.com/sm1b2ok.jpg" alt="File input" /></p>
-
-<!--more-->
-
-
-<h2>The Problem with File Inputs</h2>
-
-<p>File inputs are inconsistent to start with.  They differ even in their native form across all browsers.  They also have internal elements that are not individually accessible, such as the "Browse" button.  They are also subject to more browser-imposed security constraints than input fields of other types.</p>
-
-<p>Given these inherent problems/constraints, try to follow two basic rules:</p>
-
-<ol>
-<li>Don't expect to make your file input look exactly like you'd like</li>
-<li>Don't trigger clicks on the file input</li>
-</ol>
-
-
-<h2>Styling the File Input</h2>
-
-<p>Why is file input rule reasonable?  Shouldn't you be able to match the UI design you desire?  Yes, on both counts.</p>
-
-<p>Don't style the file input to make it look like a photo upload button (or whatever you're marking).  Instead, <strong>hide it</strong>.  And after you hide it, position it <strong>over</strong> another another element, such as a <code>div</code>, that you can style much more easily to look like the UI you envision.</p>
-
-<p>Here is some example css on how you might accomplish this:</p>
-
-<p><code>haml fileinput.jade
-.file-wrapper
-  .file-input(type="file")
-</code></p>
-
-<p>```sass fileinput.styl
-.file-wrapper
-  position: relative
-  overflow: hidden
-  cursor: pointer</p>
-
-<p>.file-input
-  position: absolute
-  top: 0
-  right: 0
-  z-index: 2
-  opacity: 0.01
-  height: 100%
-  font-size: 150px
-```</p>
-
-<p>The add additional styles to <code>.file-wrapper</code> to make it look as you wish.  Remember any vendor prefixes you may/not need for <code>opacity</code>, etc.</p>
-
-<h2>Handling Double Clicks in IE</h2>
-
-<p>It's important to position the <code>.file-input</code> as <code>right: 0</code>.  Otherwise, in IE the file input field will not activate on a single click.  Instead it'll need a double click.  This is because in IE clicking on the text box portion of the file input requires a double click.  Clicking on the browse button requires just a single click.  And the browse button is on the right side of the file input field in IE.  Finally, make the <code>font-size</code> big enough that you're guaranteed to cover the <code>.file-wrapper</code> area.</p>
-
-<h2>Handling Clicks</h2>
-
-<p>Now you don't need to have JavaScript to trigger click events on the file input field.  You will just be relying on direct user interaction to click the native file input field.  This will make <a href="http://stackoverflow.com/questions/210643/in-javascript-can-i-make-a-click-event-fire-programmatically-for-a-file-input">some browsers</a>, like Chrome and Firefox, happy.  This is because these browsers won't hold file values given to the input programmatically as a security precaution.  Oddly, IE, which sometimes balks more about innane security constraints like this, is ok.</p>
-
-<p>So, what do you think?  Does this work for you?  Anything else to make the solution more solid?</p>
 ]]></content>
   </entry>
   

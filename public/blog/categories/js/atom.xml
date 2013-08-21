@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-19T09:48:29-06:00</updated>
+  <updated>2013-08-21T09:12:33-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Test Angular Directive With Isolate Scope]]></title>
+    <link href="http://jaketrent.com/post/test-angular-directive-isolate-scope/"/>
+    <updated>2013-08-21T07:46:00-06:00</updated>
+    <id>http://jaketrent.com/post/test-angular-directive-isolate-scope</id>
+    <content type="html"><![CDATA[<p>Directives with isolate scope do not inherit their scope from their parent.  Thus, the pattern to test them is slightly different.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular Isolate Scope Testing" /></p>
+
+<!--more-->
+
+
+<p>When testing a directive, you'll often want to setup some fixture element to attach your directive to.  This will act as the DOM that you will compile with scope.  At that point, the variables that you attached to scope will be available within the directive under test.</p>
+
+<p>For example, if I had a directive called <code>AccountList</code> with isolate scope:</p>
+
+<p>```coffeescript account-list.coffee
+angular.module('app').directive 'AccountList', ->
+  restrict: 'EA'
+  replace: true
+  scope:</p>
+
+<pre><code>accounts: '='
+</code></pre>
+
+<p>  # etc ...
+```</p>
+
+<p>Then I would setup my test something like this:</p>
+
+<p>```coffeescript account-list.spec.coffee
+describe 'AccountList', -></p>
+
+<p>  elm = null</p>
+
+<p>  beforeEach inject ($rootScope, $compile) -></p>
+
+<pre><code>accounts = []
+for num in [1..5]
+  accounts.push createFakeAccount()
+$rootScope.accounts = accounts
+
+elm = angular.element """
+  &lt;account-list accounts="accounts"&gt;&lt;/account-list&gt;
+"""
+
+e = $compile(elm)($rootScope)
+e.scope().$digest()
+</code></pre>
+
+<p>  # actual specs, using elm ...
+```</p>
+
+<p>A few points:</p>
+
+<ul>
+<li><code>inject()</code> comes from <code>angular-mock</code>.  It is currently only supported in Jasmine.</li>
+<li>Before each test of the <code>AccountList</code> directive, a set of 5 accounts will be put in scope so the directive, presumably, has something to display.</li>
+<li><code>$rootScope</code> is going to be the only scope that you can get to easily from your tests.  You can attach variables to it directly as above or call <code>$rootScope.$new()</code> to generate a new scope if you'd like.</li>
+<li>We initially <code>$compile</code> the fixture element, passing in <code>$rootScope</code>.</li>
+<li>To get Angular to actually act internally on the variables that we've passed into the directive and put them on scope, we must call the important line of code: <code>e.scope().$digest()</code>.</li>
+</ul>
+
+
+<p>Now you should be ready to rock and roll with your tests.  Isolate scopes can be tricky.  Testing them, a bit tricky as well.</p>
+
+<p>Do you know a better way?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Spies with Sinon and Chai]]></title>
@@ -326,97 +396,6 @@ App.MyModelView contentBinding="this.myModelInstance"
 <p>As your model's <code>hasSomeState</code> value is changed internally with the <code>@set</code> function, the view will be notified that it needs to re-run the <code>hasSomeState</code> function, and the UI will update if needed.</p>
 
 <p>What other methods do you utilize in Ember to get dynamic classes?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Namespacing Angular Controller Attributes]]></title>
-    <link href="http://jaketrent.com/post/namespacing-angular-controller-attributes/"/>
-    <updated>2013-07-10T18:17:00-06:00</updated>
-    <id>http://jaketrent.com/post/namespacing-angular-controller-attributes</id>
-    <content type="html"><![CDATA[<p>Usually attributes of your Angular controllers are not namespaced.  But you can namespace them.  But you might not want to.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs controller namespacing" /></p>
-
-<!--more-->
-
-
-<h2>Angular Controllers Usually Attach Attributes to Scope</h2>
-
-<p>Usually attributes in an Angular controller, such as functions and variables, are attached to the <code>$scope</code> object.  That looks like this:</p>
-
-<p>```coffeescript my-ctrl.coffee
-angular.module('myapp').controller 'MyCtrl', ($scope) ->
-  $scope.myVar = 'myVal'
-  $scope.myFn = -></p>
-
-<pre><code>console.log 'does stuff'
-</code></pre>
-
-<p>```</p>
-
-<p>Then in my template I don't know, nor do I need to know, where the attribute comes from.  I just reference it:</p>
-
-<p>```haml my-app.jade
-html(ng-app="myapp")
-  body(ng-controller="MyCtrl")</p>
-
-<pre><code>h1 My Var: 
-button(ng-click="myFun()") Does Stuff
-</code></pre>
-
-<p>```</p>
-
-<h2>Namespaced Angular Controller Attributes</h2>
-
-<p>In this simple example, this is no big deal.  But as your app grows in complexity with many, nested controllers and templates, it can become difficult to read the code.  If you have common function names, it might be hard to tell which controller's function is referenced in your templates.  To make this less of a problem and the code more clear, you might namespace your controller attributes in the template.</p>
-
-<p>To do this, you can write your controllers to attach attributes to the controller instead of scope and then put the controller itself on scope.  That looks like this:</p>
-
-<p>```coffeescript my-ctrl.coffee
-angular.module('myapp').controller 'MyCtrl', ($scope) ->
-  @myVar = 'myVal'
-  @myFn = -></p>
-
-<pre><code>console.log 'does stuff'
-</code></pre>
-
-<p>  $scope.MyCtrl = @
-```</p>
-
-<p>Then your template changes to look like this:</p>
-
-<p>```haml my-app.jade
-html(ng-app="myapp")
-  body(ng-controller="MyCtrl")</p>
-
-<pre><code>h1 My Var: 
-button(ng-click="MyCtrl.myFun()") Does Stuff
-</code></pre>
-
-<p>```</p>
-
-<p>It's kind of nice for the reasons stated above.  I saw this strategy referenced on the Interwebs at one point and thought it seemed like a good idea.</p>
-
-<h2>Why You Might Avoid This</h2>
-
-<p>Maybe you love the idea.  Maybe you don't.  I thought I did.  I have been writing controllers this way for a while.  Now I don't.  Here's why:</p>
-
-<h3>1. It Makes Templates Less Reusable</h3>
-
-<p>It's quite probable that I'll have templates that I don't want permanently attached to a specific controller.  An example I ran into recently was on a profile page.  I had two pages to show profiles: one for my profile and one for an arbitrary person in the system.  They looked the same in the UI.  They had the same basic functions.  But the source of data for the variables and the implementation of the functions was different in the two scenarios.  Thus, I had to refactor to remove the namespacing to be able to reuse the template across pages.</p>
-
-<h3>2. It's More Typing</h3>
-
-<p>It's silly.  It adds up.  The less superfluous typing I can do, the more I consider that solution.</p>
-
-<h3>3. The Creators Don't Do It</h3>
-
-<p>I haven't seen this strategy featured in official tutorials, guides, or API examples.  Not that the Angular d00ds have all the ideas or do everything right -- it just isn't a pattern I see widely accepted or used.</p>
-
-<p>These days, I don't namespace my controller attributes, and I don't recommend it.</p>
-
-<p>So what do you think?  Do you write your controllers this way?  Good idea?  Bad idea?  What are some alternative methods you've found to balance template reuse with readability?</p>
 ]]></content>
   </entry>
   

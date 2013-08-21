@@ -4,7 +4,7 @@
   <title><![CDATA[Category: jasmine | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/jasmine/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-19T09:48:29-06:00</updated>
+  <updated>2013-08-21T09:12:33-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Test Angular Directive With Isolate Scope]]></title>
+    <link href="http://jaketrent.com/post/test-angular-directive-isolate-scope/"/>
+    <updated>2013-08-21T07:46:00-06:00</updated>
+    <id>http://jaketrent.com/post/test-angular-directive-isolate-scope</id>
+    <content type="html"><![CDATA[<p>Directives with isolate scope do not inherit their scope from their parent.  Thus, the pattern to test them is slightly different.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular Isolate Scope Testing" /></p>
+
+<!--more-->
+
+
+<p>When testing a directive, you'll often want to setup some fixture element to attach your directive to.  This will act as the DOM that you will compile with scope.  At that point, the variables that you attached to scope will be available within the directive under test.</p>
+
+<p>For example, if I had a directive called <code>AccountList</code> with isolate scope:</p>
+
+<p>```coffeescript account-list.coffee
+angular.module('app').directive 'AccountList', ->
+  restrict: 'EA'
+  replace: true
+  scope:</p>
+
+<pre><code>accounts: '='
+</code></pre>
+
+<p>  # etc ...
+```</p>
+
+<p>Then I would setup my test something like this:</p>
+
+<p>```coffeescript account-list.spec.coffee
+describe 'AccountList', -></p>
+
+<p>  elm = null</p>
+
+<p>  beforeEach inject ($rootScope, $compile) -></p>
+
+<pre><code>accounts = []
+for num in [1..5]
+  accounts.push createFakeAccount()
+$rootScope.accounts = accounts
+
+elm = angular.element """
+  &lt;account-list accounts="accounts"&gt;&lt;/account-list&gt;
+"""
+
+e = $compile(elm)($rootScope)
+e.scope().$digest()
+</code></pre>
+
+<p>  # actual specs, using elm ...
+```</p>
+
+<p>A few points:</p>
+
+<ul>
+<li><code>inject()</code> comes from <code>angular-mock</code>.  It is currently only supported in Jasmine.</li>
+<li>Before each test of the <code>AccountList</code> directive, a set of 5 accounts will be put in scope so the directive, presumably, has something to display.</li>
+<li><code>$rootScope</code> is going to be the only scope that you can get to easily from your tests.  You can attach variables to it directly as above or call <code>$rootScope.$new()</code> to generate a new scope if you'd like.</li>
+<li>We initially <code>$compile</code> the fixture element, passing in <code>$rootScope</code>.</li>
+<li>To get Angular to actually act internally on the variables that we've passed into the directive and put them on scope, we must call the important line of code: <code>e.scope().$digest()</code>.</li>
+</ul>
+
+
+<p>Now you should be ready to rock and roll with your tests.  Isolate scopes can be tricky.  Testing them, a bit tricky as well.</p>
+
+<p>Do you know a better way?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Test setTimeout with Jasmine]]></title>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-19T09:48:29-06:00</updated>
+  <updated>2013-08-21T09:12:33-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Test Angular Directive With Isolate Scope]]></title>
+    <link href="http://jaketrent.com/post/test-angular-directive-isolate-scope/"/>
+    <updated>2013-08-21T07:46:00-06:00</updated>
+    <id>http://jaketrent.com/post/test-angular-directive-isolate-scope</id>
+    <content type="html"><![CDATA[<p>Directives with isolate scope do not inherit their scope from their parent.  Thus, the pattern to test them is slightly different.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular Isolate Scope Testing" /></p>
+
+<!--more-->
+
+
+<p>When testing a directive, you'll often want to setup some fixture element to attach your directive to.  This will act as the DOM that you will compile with scope.  At that point, the variables that you attached to scope will be available within the directive under test.</p>
+
+<p>For example, if I had a directive called <code>AccountList</code> with isolate scope:</p>
+
+<p>```coffeescript account-list.coffee
+angular.module('app').directive 'AccountList', ->
+  restrict: 'EA'
+  replace: true
+  scope:</p>
+
+<pre><code>accounts: '='
+</code></pre>
+
+<p>  # etc ...
+```</p>
+
+<p>Then I would setup my test something like this:</p>
+
+<p>```coffeescript account-list.spec.coffee
+describe 'AccountList', -></p>
+
+<p>  elm = null</p>
+
+<p>  beforeEach inject ($rootScope, $compile) -></p>
+
+<pre><code>accounts = []
+for num in [1..5]
+  accounts.push createFakeAccount()
+$rootScope.accounts = accounts
+
+elm = angular.element """
+  &lt;account-list accounts="accounts"&gt;&lt;/account-list&gt;
+"""
+
+e = $compile(elm)($rootScope)
+e.scope().$digest()
+</code></pre>
+
+<p>  # actual specs, using elm ...
+```</p>
+
+<p>A few points:</p>
+
+<ul>
+<li><code>inject()</code> comes from <code>angular-mock</code>.  It is currently only supported in Jasmine.</li>
+<li>Before each test of the <code>AccountList</code> directive, a set of 5 accounts will be put in scope so the directive, presumably, has something to display.</li>
+<li><code>$rootScope</code> is going to be the only scope that you can get to easily from your tests.  You can attach variables to it directly as above or call <code>$rootScope.$new()</code> to generate a new scope if you'd like.</li>
+<li>We initially <code>$compile</code> the fixture element, passing in <code>$rootScope</code>.</li>
+<li>To get Angular to actually act internally on the variables that we've passed into the directive and put them on scope, we must call the important line of code: <code>e.scope().$digest()</code>.</li>
+</ul>
+
+
+<p>Now you should be ready to rock and roll with your tests.  Isolate scopes can be tricky.  Testing them, a bit tricky as well.</p>
+
+<p>Do you know a better way?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Spies with Sinon and Chai]]></title>
@@ -304,7 +374,7 @@ angular.module('myapp').controller 'MyCtrl', ($scope) ->
 html(ng-app="myapp")
   body(ng-controller="MyCtrl")</p>
 
-<pre><code>h1 My Var: 
+<pre><code>h1 My Var: {{myVar}}
 button(ng-click="myFun()") Does Stuff
 </code></pre>
 
@@ -333,7 +403,7 @@ angular.module('myapp').controller 'MyCtrl', ($scope) ->
 html(ng-app="myapp")
   body(ng-controller="MyCtrl")</p>
 
-<pre><code>h1 My Var: 
+<pre><code>h1 My Var: {{MyCtrl.myVar}}
 button(ng-click="MyCtrl.myFun()") Does Stuff
 </code></pre>
 
@@ -360,70 +430,6 @@ button(ng-click="MyCtrl.myFun()") Does Stuff
 <p>These days, I don't namespace my controller attributes, and I don't recommend it.</p>
 
 <p>So what do you think?  Do you write your controllers this way?  Good idea?  Bad idea?  What are some alternative methods you've found to balance template reuse with readability?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[When to Use Curlies in Angular Directives]]></title>
-    <link href="http://jaketrent.com/post/when-to-use-curlies-in-angular-directives/"/>
-    <updated>2013-06-24T17:03:00-06:00</updated>
-    <id>http://jaketrent.com/post/when-to-use-curlies-in-angular-directives</id>
-    <content type="html"><![CDATA[<p>Angularjs has some sweet built-in directives.  Sometimes it can be confusing when to use the curly braces around expressions in directive attributes and when not to.  Here are a couple rules.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular directive curlies" /></p>
-
-<!--more-->
-
-
-<h2>Curlies</h2>
-
-<p>By "curlies", I mean curly braces.  The difference of when to use or not use them looks like the following.</p>
-
-<p>Use them:
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;{{valWithCurlies}}&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Or despise them:
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;valWithNone&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h2>Two Rules of Thumb</h2>
-
-<p>Here are two rules that will serve you well when deciding whether or not to use curlies.</p>
-
-<ol>
-<li>Assume no curlies in Angular directive attribute values.  Most directives don't use them.</li>
-<li>If you would conceivably want to mix strings with Javascript code in the attribute, use curlies.</li>
-</ol>
-
-
-<h2>Two Examples with Curlies</h2>
-
-<p>There are only a few examples of directives using curlies in their attributes.  These examples are both relating to pathing.  Apparently that's a common use case for mixing strings with JavaScript-borne values.</p>
-
-<h3>ngSrc</h3>
-
-<p>As in the source of an image, such as:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;img</span> <span class="na">ng-src=</span><span class="s">&quot;/images/{{tool.icon_name}}.png&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h3>ngHref</h3>
-
-<p>As in a link to an html page, such as:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;a</span> <span class="na">ng-href=</span><span class="s">&quot;http://google.com?q={{query}}&quot;</span><span class="nt">&gt;</span>See Google Results<span class="nt">&lt;/a&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h2>Something more Precise?</h2>
-
-<p>Is there something more precise than these two rules of thumb?  Why does Angular make an exception for these two cases, thus causing us to try to remember our rules of thumb?</p>
-
-<p>As I surmised above, I can only guess that because the pathing use case often wants to mix strings with JavaScript values, the exception was made.</p>
 ]]></content>
   </entry>
   
