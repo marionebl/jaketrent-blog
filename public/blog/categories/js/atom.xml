@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-21T09:12:33-06:00</updated>
+  <updated>2013-09-05T07:34:27-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,79 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How to Create a Bower Package]]></title>
+    <link href="http://jaketrent.com/post/how-to-create-a-bower-package/"/>
+    <updated>2013-09-05T07:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/how-to-create-a-bower-package</id>
+    <content type="html"><![CDATA[<p>Bower is a client-side or browser package manager.  It will handle your 3rd-party packages that are registered with the service.  To make it more useful, you can package up some of your own code and create a component to install with Bower.</p>
+
+<p><img src="http://i.imgur.com/t4XxrHn.jpg" alt="Bower" /></p>
+
+<!--more-->
+
+
+<h2>Prepare your Package</h2>
+
+<p>To prepare your code to be a Bower package, you must install the Bower CLI:</p>
+
+<p><code>bash
+$ npm install -g bower
+</code></p>
+
+<p>If you haven't upgraded Bower lately, you might want to, as the basic config files have changed recently, and the CLI has improved.  This command would do the trick:</p>
+
+<p><code>bash
+npm update -g bower
+</code></p>
+
+<p>Now let's generate the basic config file, <code>bower.json</code>, by running:</p>
+
+<p><code>bash
+$ cd your_project_dir
+$ bower init
+</code></p>
+
+<p>You will be prompted to select a name, version, etc. for your project.</p>
+
+<h2>Add Your Package to the Registry</h2>
+
+<p>There is a Bower registry at <code>http://bower.herokuapp.com</code> that is used as a central lookup for the Bower components that are available.  This allows searching for packages by name, for instance:</p>
+
+<p><code>bash
+$ bower search angular-models
+</code></p>
+
+<p>Now the only step left is to add a reference to our package in the registry, for instance:</p>
+
+<p><code>bash
+$ bower register angular-models git://github.com/octanner/angular-models.git
+</code></p>
+
+<p>That's it!  It's that easy.</p>
+
+<h2>Potential Errors</h2>
+
+<p>When giving a URL to your git repo, use the <code>git</code> protocol URL specifically.  Otherwise on old versions of Bower you'll get an <a href="https://github.com/bower/bower/issues/66">error</a>:</p>
+
+<p><code>bash
+bower error Incorrect format
+</code></p>
+
+<p>The newer versions will give a much more helpful message:</p>
+
+<p><code>bash
+bower EINVFORMAT The registry only accepts URLs starting with git://
+</code></p>
+
+<p>And don't worry about name overwriting.  Bower will catch that too with an error response:</p>
+
+<p><code>bash
+bower EDUPLICATE Duplicate package
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Test Angular Directive With Isolate Scope]]></title>
@@ -339,63 +412,6 @@ angular.module('app.controllers').controller 'AppCtrl', ($scope) -></p>
 <p>There are a few bits to piece together to make this happen.  It might be simpler than other solutions or make more sense for you in your app if you need something(s) loaded previous to executing on a route.</p>
 
 <p>I would definitely use this feature judiciously, as it seems to eat away at one of the advantages of a client-side app in the first place: asynchronous loading.  We'8re blocking the whole app from going forward when we're in the process of resolving.  That boundary used to be on the edge of the server, building up the page before it was servable to the client.  Now, on a web client, we have multiple requests that can happen in parallel and we can render bits as they're available -- important bits first and so on.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ember Dynamic Classes]]></title>
-    <link href="http://jaketrent.com/post/ember-dynamic-classes/"/>
-    <updated>2013-08-02T13:02:00-06:00</updated>
-    <id>http://jaketrent.com/post/ember-dynamic-classes</id>
-    <content type="html"><![CDATA[<p>In Ember, your state is separated from the UI inside models.  But, often you want the state of your models to be represented visually in the UI via dynamic class names.  Make it happen with <code>Ember.View</code>s.</p>
-
-<p><img src="http://i.imgur.com/85v8PQP.png" alt="Dynamic Classes with Ember Views" /></p>
-
-<!--more-->
-
-
-<h2>Use an Ember.View</h2>
-
-<p>A view will function as the translation layer between the state of your models and the DOM.  It will provide the logic to observe the properties within your model and expose it as a class name on the associated DOM element.</p>
-
-<p>If I have a model with state:</p>
-
-<p><code>coffeescript my-model.coffee
-App.MyModel = App.Model.extend
-  hasSomeState: true
-</code></p>
-
-<h2>Use classNameBindings</h2>
-
-<p>Based on that state, I want to add a <code>has-some-state</code> class to the UI if it's true, and remove the class if it's false.  The view might look like:</p>
-
-<p>```coffeescript my-model-view.coffee
-App.MyModelView = Ember.View.extend
-  # ...
-  classNameBindings: ['hasSomeState']
-  hasSomeState: (-></p>
-
-<pre><code>@get('content').get('hasSomeState')
-</code></pre>
-
-<p>  ).property('content.hasSomeState')
-```</p>
-
-<p>The <code>hasSomeState</code> function will return a boolean has to whether or not the <code>has-some-state</code> class should be added to the element.</p>
-
-<h2>Bind to Model Properties</h2>
-
-<p>Now use the view in the template, being careful to match the binding of <code>content</code> so the property watching works:</p>
-
-<p><code>haml template-fragment.jade
-App.MyModelView contentBinding="this.myModelInstance"
-</code></p>
-
-<p>In the example, make sure <code>myModelInstance</code> is available in the scope of your route/controller.</p>
-
-<p>As your model's <code>hasSomeState</code> value is changed internally with the <code>@set</code> function, the view will be notified that it needs to re-run the <code>hasSomeState</code> function, and the UI will update if needed.</p>
-
-<p>What other methods do you utilize in Ember to get dynamic classes?</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-21T09:12:33-06:00</updated>
+  <updated>2013-09-05T07:34:27-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -374,7 +374,7 @@ angular.module('myapp').controller 'MyCtrl', ($scope) ->
 html(ng-app="myapp")
   body(ng-controller="MyCtrl")</p>
 
-<pre><code>h1 My Var: {{myVar}}
+<pre><code>h1 My Var: 
 button(ng-click="myFun()") Does Stuff
 </code></pre>
 
@@ -403,7 +403,7 @@ angular.module('myapp').controller 'MyCtrl', ($scope) ->
 html(ng-app="myapp")
   body(ng-controller="MyCtrl")</p>
 
-<pre><code>h1 My Var: {{MyCtrl.myVar}}
+<pre><code>h1 My Var: 
 button(ng-click="MyCtrl.myFun()") Does Stuff
 </code></pre>
 

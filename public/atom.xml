@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-08-21T09:12:13-06:00</updated>
+  <updated>2013-09-05T07:34:27-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,88 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How to Create a Bower Package]]></title>
+    <link href="http://jaketrent.com/post/how-to-create-a-bower-package/"/>
+    <updated>2013-09-05T07:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/how-to-create-a-bower-package</id>
+    <content type="html"><![CDATA[<p>Bower is a client-side or browser package manager.  It will handle your 3rd-party packages that are registered with the service.  To make it more useful, you can package up some of your own code and create a component to install with Bower.</p>
+
+<p><img src="http://i.imgur.com/t4XxrHn.jpg" alt="Bower" /></p>
+
+<!--more-->
+
+
+<h2>Prepare your Package</h2>
+
+<p>To prepare your code to be a Bower package, you must install the Bower CLI:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g bower
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you haven&#8217;t upgraded Bower lately, you might want to, as the basic config files have changed recently, and the CLI has improved.  This command would do the trick:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm update -g bower
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now let&#8217;s generate the basic config file, <code>bower.json</code>, by running:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>your_project_dir
+</span><span class='line'><span class="nv">$ </span>bower init
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You will be prompted to select a name, version, etc. for your project.</p>
+
+<h2>Add Your Package to the Registry</h2>
+
+<p>There is a Bower registry at <code>http://bower.herokuapp.com</code> that is used as a central lookup for the Bower components that are available.  This allows searching for packages by name, for instance:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bower search angular-models
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now the only step left is to add a reference to our package in the registry, for instance:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bower register angular-models git://github.com/octanner/angular-models.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s it!  It&#8217;s that easy.</p>
+
+<h2>Potential Errors</h2>
+
+<p>When giving a URL to your git repo, use the <code>git</code> protocol URL specifically.  Otherwise on old versions of Bower you&#8217;ll get an <a href="https://github.com/bower/bower/issues/66">error</a>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>bower error Incorrect format
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The newer versions will give a much more helpful message:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>bower EINVFORMAT The registry only accepts URLs starting with git://
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And don&#8217;t worry about name overwriting.  Bower will catch that too with an error response:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>bower EDUPLICATE Duplicate package
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Test Angular Directive With Isolate Scope]]></title>
@@ -1960,52 +2042,6 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
 
 
 <p>So now, seriously, go write some Emblem templates.  So fun, so precompiled.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Match Ember and Handlebars Versions]]></title>
-    <link href="http://jaketrent.com/post/match-ember-handlebars-version/"/>
-    <updated>2013-05-21T07:38:00-06:00</updated>
-    <id>http://jaketrent.com/post/match-ember-handlebars-version</id>
-    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a> is very specific about what version of <a href="http://handlebarsjs.com">Handlebars</a> it requires.  This is probably good, but it&#8217;s also a pain to work with as different versions of the two libraries are released independently.  There are a few good tools to help us out.</p>
-
-<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
-
-<!--more-->
-
-
-<h2>Released Independently</h2>
-
-<p>In a prime example, recently there was a new version of Handlebars released: <code>1.0.0-rc.4</code>.  Ember happens to be on version <code>1.0.0-rc.3</code>.  That version has a hard dependency on Handlebars <code>1.0.0-rc.3</code>.  In other words, the latest Ember code relies on an older version of Handlebars.</p>
-
-<h2>Bower</h2>
-
-<p>If you include these 3rd party libraries in your source code under a <code>lib</code> directory or something of that nature, you <em>always</em> have plenty of work to do.  Naturally, you just copy in the exact versions of the scripts that are needed.</p>
-
-<p>Hopefully you&#8217;re trying to make use of a mostly awesome tool, <a href="http://bower.io">Bower</a>.  It helps you manage these 3rd party libraries in a way similar to npm.  You provide a descriptor of your project&#8217;s dependencies, <code>component.json</code>.  And you install things similarly via the <code>bower</code> cli.</p>
-
-<h2>Specify a Bower Version</h2>
-
-<p>If I run:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bower install handlebars --save</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It saves a dependency in my <code>components.json</code> for Handlebars for the latest version it could find.  This won&#8217;t do for us.  We need to specify the versions.</p>
-
-<p>Our strategy will be: take the latest version of Ember and then specifically match the Handlbars version.  Finally, we should type:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bower install ember --save
-</span><span class='line'>bower install handlebars#1.0.0-rc.3</span></code></pre></td></tr></table></div></figure>
-
-
-<p>As of this writing, that is the version of handlebars that is required.  Bower will recognize any semver git tag name or branch name after the hash <code>#</code> sign.</p>
-
-<p>I like our version strategy for a project that is under active development in that it keeps us on the latest Ember.  But, if you&#8217;re on a project that&#8217;s been built to an Ember version and not deployed for a long time, you may want to make a very specific dependency out of Ember as well, so the two are guaranteed in sync for future deploys.</p>
 ]]></content>
   </entry>
   

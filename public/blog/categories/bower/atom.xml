@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: bower | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/bower/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2013-09-05T07:34:27-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to Create a Bower Package]]></title>
+    <link href="http://jaketrent.com/post/how-to-create-a-bower-package/"/>
+    <updated>2013-09-05T07:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/how-to-create-a-bower-package</id>
+    <content type="html"><![CDATA[<p>Bower is a client-side or browser package manager.  It will handle your 3rd-party packages that are registered with the service.  To make it more useful, you can package up some of your own code and create a component to install with Bower.</p>
+
+<p><img src="http://i.imgur.com/t4XxrHn.jpg" alt="Bower" /></p>
+
+<!--more-->
+
+
+<h2>Prepare your Package</h2>
+
+<p>To prepare your code to be a Bower package, you must install the Bower CLI:</p>
+
+<p><code>bash
+$ npm install -g bower
+</code></p>
+
+<p>If you haven't upgraded Bower lately, you might want to, as the basic config files have changed recently, and the CLI has improved.  This command would do the trick:</p>
+
+<p><code>bash
+npm update -g bower
+</code></p>
+
+<p>Now let's generate the basic config file, <code>bower.json</code>, by running:</p>
+
+<p><code>bash
+$ cd your_project_dir
+$ bower init
+</code></p>
+
+<p>You will be prompted to select a name, version, etc. for your project.</p>
+
+<h2>Add Your Package to the Registry</h2>
+
+<p>There is a Bower registry at <code>http://bower.herokuapp.com</code> that is used as a central lookup for the Bower components that are available.  This allows searching for packages by name, for instance:</p>
+
+<p><code>bash
+$ bower search angular-models
+</code></p>
+
+<p>Now the only step left is to add a reference to our package in the registry, for instance:</p>
+
+<p><code>bash
+$ bower register angular-models git://github.com/octanner/angular-models.git
+</code></p>
+
+<p>That's it!  It's that easy.</p>
+
+<h2>Potential Errors</h2>
+
+<p>When giving a URL to your git repo, use the <code>git</code> protocol URL specifically.  Otherwise on old versions of Bower you'll get an <a href="https://github.com/bower/bower/issues/66">error</a>:</p>
+
+<p><code>bash
+bower error Incorrect format
+</code></p>
+
+<p>The newer versions will give a much more helpful message:</p>
+
+<p><code>bash
+bower EINVFORMAT The registry only accepts URLs starting with git://
+</code></p>
+
+<p>And don't worry about name overwriting.  Bower will catch that too with an error response:</p>
+
+<p><code>bash
+bower EDUPLICATE Duplicate package
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>
