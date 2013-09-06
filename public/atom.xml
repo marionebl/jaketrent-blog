@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-09-05T07:34:27-06:00</updated>
+  <updated>2013-09-06T16:12:09-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[JavaScript Mixins]]></title>
+    <link href="http://jaketrent.com/post/javascript-mixins/"/>
+    <updated>2013-09-06T10:37:00-06:00</updated>
+    <id>http://jaketrent.com/post/javascript-mixins</id>
+    <content type="html"><![CDATA[<p>JavaScript makes mixins inherently easy.  Mixins are a native feature of the language without calling it that.  Here are a few methods for making this happen.</p>
+
+<p><img src="http://i.imgur.com/XemDUw8.jpg" alt="JavaScript mixins" /></p>
+
+<!--more-->
+
+
+<h2>Attach a Property</h2>
+
+<p>You can attach a property to a Javascript object at any time.  You don&#8217;t need to monkey patch it.  It doesn&#8217;t need to be packaged up in a very special format.  You just shove stuff onto the object.  Here&#8217;s an example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">MyModel</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">doOneThing</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;doing it right&#39;</span><span class="p">);</span> <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">model</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyModel</span><span class="p">();</span>
+</span><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">doItRight</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;everybody will be dancing&#39;</span><span class="p">);</span> <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">doOneThing</span><span class="p">();</span> <span class="c1">// =&gt; &#39;doing it right&#39;</span>
+</span><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">doItRight</span><span class="p">();</span>  <span class="c1">// =&gt; &#39;everybody will be dancing&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A function is defined.  It is instantiated.  Later, a new property, <code>doItRight</code> function, is added to it.  Both functions now magically work on the original model instance.  We could have attached to <code>MyModel.prototype</code> and had the <code>doItRight</code> function attached to all future instantiations of the function as well.</p>
+
+<h2>Use Extend</h2>
+
+<p>There are a couple great libraries that provide wholesale extension of object properties, just like mixins in other languages.  <a href="http://api.jquery.com/jQuery.extend/">jQuery</a> and <a href="http://underscorejs.org/#extend">Underscore</a> provide <code>$.extend</code> and <code>_.extend</code> respectively.  They are great utilities that make object extension quick and painless.  Here&#8217;s an example using Underscore:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">utilities</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">workWater</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;pay $75 for water&#39;</span><span class="p">);</span> <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">otherUtilities</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">electrifyTheCompany</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;pay $75 for electric slides&#39;</span><span class="p">);</span> <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">utilityConglomerate</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">utilities</span><span class="p">,</span> <span class="nx">otherUtilities</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">utilityConglomerate</span><span class="p">.</span><span class="nx">workWater</span><span class="p">()</span> <span class="c1">// =&gt; &#39;pay $75 for water&#39;</span>
+</span><span class='line'><span class="nx">utilityConglomerate</span><span class="p">.</span><span class="nx">electrifyTheCompany</span><span class="p">()</span> <span class="c1">// =&gt; &#39;pay $75 for electric slides&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Handle Per-instance State</h2>
+
+<p>Notice that the above methods are very good at attaching functions.  The functions in these examples have no shared state.  The scenarios that we&#8217;ve made up so far haven&#8217;t required per-instance state as specified by the mixin.  Recently I had a need for all of these things.  I was making a library called <a href="http://octanner.github.io/angular-models/">angular-models</a>.</p>
+
+<p>I wanted to be able to assign what I called <code>AttributesMixin</code> to any function (Model <code>class</code>es, written in CoffeeScript).  To simplify the story, we have a <code>set</code> API that assign values to an internal <code>_attributes</code> object and a <code>get</code> to retrieve them.  These functions were to be assigned to the prototype of the function, but the <code>_attributes</code> were to be assigned to the object instance only, clean for each new object.</p>
+
+<p>We invented our own convention, where each mixin would optionally implement its own <code>dependencies</code> function.  Each of the <code>Model</code>s knew how to extend itself with a given mixin.  This custom extend function was called <code>@include</code>.  As mixins were included, the <code>dependencies</code> function reference was saved (in an array called <code>_dependencyFns</code>) and then called in the <code>Model</code> superclass constructor.  So, each <code>Model</code> subclass is required to call the super constructor to get this functionality.</p>
+
+<p>In the case of <code>AttributesMixin</code>, it looks as simple as this:</p>
+
+<figure class='code'><figcaption><span>attributes-mixin.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">AttributesMixin =</span>
+</span><span class='line'>  <span class="nv">dependencies: </span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="vi">@_attributes = </span><span class="p">{}</span>
+</span><span class='line'>  <span class="nv">get: </span><span class="o">-&gt;</span> <span class="c1"># ...</span>
+</span><span class='line'>  <span class="nv">set: </span><span class="o">-&gt;</span> <span class="c1"># ...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>Model</code> can include like this:</p>
+
+<figure class='code'><figcaption><span>my-model.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">MyModel</span> <span class="k">extends</span> <span class="nx">Model</span>
+</span><span class='line'>  <span class="nx">@include</span> <span class="nx">AttributesMixin</span>
+</span><span class='line'>  <span class="nv">constructor: </span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="k">super</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And the <code>Model</code> constructor includes a snippet something like this:</p>
+
+<figure class='code'><figcaption><span>model.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">Model</span>
+</span><span class='line'>  <span class="nv">constructor: </span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span> <span class="nx">@</span> <span class="k">for</span> <span class="nx">fn</span> <span class="k">in</span> <span class="nx">@_dependencyFns</span> <span class="k">if</span> <span class="nx">@_dependencyFns</span><span class="o">?</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For a more accurate, in-depth look at the code, see the <a href="https://github.com/octanner/angular-models">Github repo for angular-models</a>.</p>
+
+<p>Do you use any of these methods to mixin functionality to your JavaScript objects?  What others?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to Create a Bower Package]]></title>
@@ -1924,124 +2043,6 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
 <blockquote><p>WARNING: The immediate parent route (&#8216;a&#8217;) did not render into the main outlet and the default &#8216;into&#8217; option (&#8216;p&#8217;) may not be expected</p></blockquote>
 
 <p>In other words: You&#8217;re trying to render a child template that either doesn&#8217;t have a parent template it needs or the parent template does not specify a main outlet.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Precompile Ember Templates]]></title>
-    <link href="http://jaketrent.com/post/precompile-ember-templates/"/>
-    <updated>2013-05-21T07:54:00-06:00</updated>
-    <id>http://jaketrent.com/post/precompile-ember-templates</id>
-    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a> makes use of the wonderful <a href="http://handlebarsjs.com">Handlebars</a> templates.  These templates, in order to be performant, must be precompiled.  Based on the Ember docs, it&#8217;s not abundantly clear how this is to happen.  Here&#8217;s a solution that works well.</p>
-
-<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
-
-<!--more-->
-
-
-<h2>Ember Docs for Precompilation</h2>
-
-<p>Every official Ember doc will put templates in a <code>script</code> tag with the <code>type="text/x-handlebars"</code>.  But this is never how you&#8217;d write any serious (-ly awesome) app in production.  <a href="http://emberjs.com/guides/templates/handlebars-basics/">The docs</a> say:</p>
-
-<blockquote><p>&#8220;If you are using build tools to manage your application&#8217;s assets, most will know how to precompile Handlebars templates and make them available to Ember.js.&#8221;</p></blockquote>
-
-<p>Which tools?  Why would I want to precompile?  How <em>are</em> they made available to Ember?  Read, Ember journeyman, read on&#8230;</p>
-
-<h2>Grunt</h2>
-
-<p>We&#8217;d love for this precompilation to happen previous to the running of your app.  Again, this is in hopes of increased performance.  <a href="http://gruntjs.com">Grunt</a> is a great little Nodejs-based tool for build-level tasks.</p>
-
-<h2>Emblem</h2>
-
-<p>Grunt comes with a variety of plugins.  We&#8217;re going to use one called <a href="https://github.com/wordofchristian/grunt-emblem/">grunt-emblem</a>.  <a href="http://emblemjs.com/">Emblem</a> is a fantastic templating syntax layered on top of Handlebars (still a dependency).  Its syntax looks very similar to Haml or Ruby Slim or Jade.  It may well be the most flexible of all of them, and it simplifies some Ember helper syntax very nicely.</p>
-
-<h2>Versions Matching</h2>
-
-<p>As I&#8217;ve said before, <a href="http://jaketrent.com/post/match-ember-handlebars-version/">matching Ember dependency version can be a pain</a>.  With precompilation, you have one more dependency to match.  Now not only do you care about the version of Handlebars that Ember uses at runtime, but you care about the version of Handlebars that is used to precompile your templates.  If the precompile Handlebars version doesn&#8217;t match the runtime Handlebars version, your app will die at runtime.  <code>grunt-emblem</code> helps immensely with this.</p>
-
-<h2>grunt-emblem</h2>
-
-<p>I haven&#8217;t found another Handlebars precompile plugin that helps as much as <code>grunt-emblem</code>.  It solves the precompile version problem by letting you utilize the actual runtime Handlebars as the precompile Handlebars script.</p>
-
-<p>It is also nice in that it puts the precompiled templates into the collection that Ember expects to find templates in, namely <code>Ember.TEMPLATES</code>.  As you can find on the <a href="https://github.com/wordofchristian/grunt-emblem/"><code>grunt-emblem</code> Github page</a>, your grunt config will look something like the following:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">matchdep = </span><span class="nx">require</span> <span class="s">&#39;matchdep&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">module.exports = </span><span class="nf">(grunt) -&gt;</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nv">watch:</span>
-</span><span class='line'>      <span class="nv">ember_templates:</span>
-</span><span class='line'>        <span class="nv">files: </span><span class="p">[</span><span class="s">&#39;app/views/templates/**/*.emblem&#39;</span><span class="p">]</span>
-</span><span class='line'>        <span class="nv">tasks: </span><span class="p">[</span><span class="s">&#39;emblem&#39;</span><span class="p">,</span> <span class="s">&#39;livereload&#39;</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nv">emblem:</span>
-</span><span class='line'>      <span class="nv">compile:</span>
-</span><span class='line'>        <span class="nv">files:</span>
-</span><span class='line'>          <span class="s">&quot;app/static/templates/ember_templates.js&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s">&quot;app/views/templates/**/*.emblem&quot;</span><span class="p">]</span>
-</span><span class='line'>        <span class="nv">options:</span>
-</span><span class='line'>          <span class="nv">root: </span><span class="s">&quot;app/views/templates/&quot;</span>
-</span><span class='line'>          <span class="nv">dependencies:</span>
-</span><span class='line'>            <span class="nv">jquery: </span><span class="s">&quot;app/static/js/components/jquery/jquery.js&quot;</span>
-</span><span class='line'>            <span class="nv">ember: </span><span class="s">&quot;app/static/js/components/ember/ember.js&quot;</span>
-</span><span class='line'>            <span class="nv">emblem: </span><span class="s">&quot;app/static/js/components/emblem/dist/emblem.js&quot;</span>
-</span><span class='line'>            <span class="nv">handlebars: </span><span class="s">&quot;app/static/js/components/handlebars/handlebars.js&quot;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">matchdep</span><span class="p">.</span><span class="nx">filterDev</span><span class="p">(</span><span class="s">&#39;grunt-*&#39;</span><span class="p">).</span><span class="nx">forEach</span> <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">renameTask</span> <span class="s">&#39;regarde&#39;</span><span class="p">,</span> <span class="s">&#39;watch&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span> <span class="s">&#39;dev&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s">&#39;livereload-start&#39;</span><span class="p">,</span> <span class="s">&#39;watch&#39;</span> <span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This particular config has a couple other niceties.  Let me enumerate the awesome:</p>
-
-<ul>
-<li>Line 6 - Not only can we precompile the templates, but we&#8217;ll precompile on the fly, whenever <code>.emblem</code> files are change in the specified directories.</li>
-<li>Line 8 and 14 - We&#8217;re precompiling <code>.emblem</code> templates, but this plugin can do regular Handlebars syntax as well</li>
-<li>Line 16 - <code>root</code> is the substring that will be stripped out of your template name.  For instance, you don&#8217;t want your template to be called <code>app/views/templates/home</code>.  Your home route in Ember will want your template called <code>home</code>.  <code>root</code> to the rescue &#8211; bam!</li>
-<li>Line 17 - These <code>dependencies</code> are the libraries that you use at runtime and that Handlebars needs at compile time.  As I said, this plugin simply rocks because of the ability to specify your own Handlebars script.</li>
-<li>Line 23 - Remember how you used to have a whole list of npm tasks registered.  This little beaut will load all <code>grunt-*</code> dependencies.</li>
-<li>Line 25 - <code>regarde</code> is a cool name, but I understand what <code>watch</code> means a bit better. Rename it.</li>
-</ul>
-
-
-<p>This setup requires the following dependencies:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">matchdep</span> <span class="nx">grunt</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">regarde</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">livereload</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">emblem</span> <span class="o">--</span><span class="nx">save</span><span class="o">-</span><span class="nx">dev</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So now, seriously, go write some Emblem templates.  So fun, so precompiled.</p>
 ]]></content>
   </entry>
   
