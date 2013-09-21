@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Import Erb Into Karma - Jake Trent</title>
+  <meta name="author" content="Jake Trent">
+
+  
+  <meta name="description" content="Rails asset pipeline allows you to use erb helpers in your CoffeeScript. You'll still need to bring get these files into Karma runner.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/import-erb-into-karma/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1 class="title"><a href="/">Jake Trent</a></h1>
+  <div class="desc">
+    
+      <h2>Platinum Code Productions</h2>
+    
+  </div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:jaketrent.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/blog/categories/code/">Code</a></li>
+  <li><a href="/blog/categories/design/">Design</a></li>
+  <li><a href="/blog/categories/productivity/">Productivity</a></li>
+  <li><a href="/blog/categories/review/">Reviews</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Import Erb Into Karma</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-20T16:59:00-06:00" pubdate data-updated="true">Sep 20<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Rails asset pipeline allows you to use erb helpers in your CoffeeScript.  You&#8217;ll still need to bring get these files into Karma runner.  It&#8217;s really easy.  You just need to get to know your Karma config options.</p>
+
+<p><img src="http://i.imgur.com/i5fJT6j.png" alt="erb files in Karma runner" /></p>
+
+<!--more-->
+
+
+<h2>erb in JavaScripts</h2>
+
+<p>Why in the world would you want to use erb helpers inside your script files?  You might not.  I definitely think this should be a limited practice.  In some cases, it can be very helpful.  For instance, if you use Ruby/Rails (via <a href="https://github.com/rumblelabs/asset_sync"><code>asset_sync</code></a>) to upload your static assets to an external server, such as S3, you can help your scripts know where static assets live after upload.</p>
+
+<p>So your script might use the <code>asset_path</code> helper and end up looking something like this:</p>
+
+<figure class='code'><figcaption><span>app.coffee.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">,</span> <span class="p">[]).</span><span class="nx">config</span> <span class="nf">($routeProvider) -&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$routeProvider</span>
+</span><span class='line'>    <span class="p">.</span><span class="k">when</span> <span class="s">&#39;/admin&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nv">controller: </span><span class="s">&#39;AdminIndexCtrl&#39;</span>
+</span><span class='line'>      <span class="nv">templateUrl: </span><span class="s">&quot;&lt;%= asset_path(&#39;admin/index.html&#39;) %&gt;&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Import erb Files into Karma</h2>
+
+<p>Well, now you have an <code>app.coffee.erb</code> file.  You need to get it into <a href="http://karma-runner.github.io">Karma runner</a>.  Normally <code>*.coffee</code> files will be brought straight in and compiled automatically by the runner as needed.  In this case, however, the Karma defaults won&#8217;t recognize the <code>.coffee.erb</code> file as a CoffeeScript file need compilation.</p>
+
+<p>To tell Karma to process your erb file as a CoffeeScript file, add this to your config:</p>
+
+<figure class='code'><figcaption><span>karma.conf.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(config) -&gt;</span>
+</span><span class='line'>  <span class="nx">config</span><span class="p">.</span><span class="nx">set</span>
+</span><span class='line'>    <span class="c1"># ...</span>
+</span><span class='line'>    <span class="nv">preprocessors:</span>
+</span><span class='line'>      <span class="s">&#39;**/*.coffee.erb&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s">&#39;coffee&#39;</span><span class="p">]</span>
+</span><span class='line'>      <span class="s">&#39;**/*.coffee&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s">&#39;coffee&#39;</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s it.  That&#8217;s the key to getting your Erb files processed into JavaScript and ready for Karma to use.</p>
+
+<p>Now, what are your thoughts on putting your CoffeeScripts through the erb filter of the asset pipeline at all?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-20T16:59:00-06:00" pubdate data-updated="true">Sep 20<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/coffeescript/'>coffeescript</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/karma/'>karma</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/import-erb-into-karma/" data-via="" data-counturl="http://jaketrent.com/post/import-erb-into-karma/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/post/javascript-mixins/" title="Previous Post: JavaScript Mixins">&laquo; JavaScript Mixins</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <ul id="social">
+    <li><a class="social social-github" href="http://github.com/jaketrent" title="Github" class="first">Github</a></li>
+    <li><a class="social social-twitter" href="http://twitter.com/jaketrent" title="Twitter">Twitter</a></li>
+    <li><a class="social social-linkedin" href="http://linkedin.com/in/jaketrent" title="LinkedIn">LinkedIn</a></li>
+    <li><a class="social social-googleplus" href="https://plus.google.com/115032056022257436849?rel=author" title="Google Plus">Google Plus</a></li>
+    <li><a class="social social-rss" href="/atom.xml" title="RSS">RSS</a></li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/post/import-erb-into-karma/">Import Erb Into Karma</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/javascript-mixins/">JavaScript Mixins</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/how-to-create-a-bower-package/">How to Create a Bower Package</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/test-angular-directive-isolate-scope/">Test Angular Directive With Isolate Scope</a>
+      </li>
+    
+      <li class="post">
+        <a href="/post/spies-sinon-chai/">Spies with Sinon and Chai</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/115032056022257436849?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Jake Trent -
+  <a href="/blog/archives">Archives</a> -
+  <a href="/atom.xml">Feed</a> -
+  <a href="/sitemap.xml">Sitemap</a> -
+  <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/import-erb-into-karma/';
+        var disqus_url = 'http://jaketrent.com/post/import-erb-into-karma/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

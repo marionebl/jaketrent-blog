@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-09-06T16:12:09-06:00</updated>
+  <updated>2013-09-21T11:42:29-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,60 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Import Erb Into Karma]]></title>
+    <link href="http://jaketrent.com/post/import-erb-into-karma/"/>
+    <updated>2013-09-20T16:59:00-06:00</updated>
+    <id>http://jaketrent.com/post/import-erb-into-karma</id>
+    <content type="html"><![CDATA[<p>Rails asset pipeline allows you to use erb helpers in your CoffeeScript.  You'll still need to bring get these files into Karma runner.  It's really easy.  You just need to get to know your Karma config options.</p>
+
+<p><img src="http://i.imgur.com/i5fJT6j.png" alt="erb files in Karma runner" /></p>
+
+<!--more-->
+
+
+<h2>erb in JavaScripts</h2>
+
+<p>Why in the world would you want to use erb helpers inside your script files?  You might not.  I definitely think this should be a limited practice.  In some cases, it can be very helpful.  For instance, if you use Ruby/Rails (via <a href="https://github.com/rumblelabs/asset_sync"><code>asset_sync</code></a>) to upload your static assets to an external server, such as S3, you can help your scripts know where static assets live after upload.</p>
+
+<p>So your script might use the <code>asset_path</code> helper and end up looking something like this:</p>
+
+<p>```coffeescript app.coffee.erb
+angular.module('app', []).config ($routeProvider) -></p>
+
+<p>  $routeProvider</p>
+
+<pre><code>.when '/admin',
+  controller: 'AdminIndexCtrl'
+  templateUrl: "&lt;%= asset_path('admin/index.html') %&gt;"
+</code></pre>
+
+<p>```</p>
+
+<h2>Import erb Files into Karma</h2>
+
+<p>Well, now you have an <code>app.coffee.erb</code> file.  You need to get it into <a href="http://karma-runner.github.io">Karma runner</a>.  Normally <code>*.coffee</code> files will be brought straight in and compiled automatically by the runner as needed.  In this case, however, the Karma defaults won't recognize the <code>.coffee.erb</code> file as a CoffeeScript file need compilation.</p>
+
+<p>To tell Karma to process your erb file as a CoffeeScript file, add this to your config:</p>
+
+<p>```coffeescript karma.conf.coffee
+module.exports = (config) ->
+  config.set</p>
+
+<pre><code># ...
+preprocessors:
+  '**/*.coffee.erb': ['coffee']
+  '**/*.coffee': ['coffee']
+</code></pre>
+
+<p>```</p>
+
+<p>That's it.  That's the key to getting your Erb files processed into JavaScript and ready for Karma to use.</p>
+
+<p>Now, what are your thoughts on putting your CoffeeScripts through the erb filter of the asset pipeline at all?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[JavaScript Mixins]]></title>
@@ -324,72 +378,6 @@ $httpBackend = null</p>
 <p>The interesting part is all in the final <code>it</code> function call.  The code under test is <code>model.fetch()</code>, which is called.  Internal to that function, there is a <code>$rootScope.$broadcast</code> call that we're spying on that we're asserting is called with 2 parameters: 'model:fetched' string and the model itself.</p>
 
 <p>As with most testing environments, it's fairly simple once you discover the pattern.  What do you think of this one?  Does it work for you?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Disable ngClick]]></title>
-    <link href="http://jaketrent.com/post/disable-ng-click/"/>
-    <updated>2013-08-14T07:53:00-06:00</updated>
-    <id>http://jaketrent.com/post/disable-ng-click</id>
-    <content type="html"><![CDATA[<p>Angular's ngClicks can be attached to anything.  This makes it easy to add interactivity to elements on the DOM.  Your program might require that these click callbacks be disabled at certain points, such as during form processing.  ngClick doesn't have a toggle built in.  Let's build one that might help.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angularjs" /></p>
-
-<!--more-->
-
-
-<p>In our app we're going to track the state of the UI via various events that get passed in scope.  We slap our directive as an attribute on an element and it will respond by disabling or enabling on certain events.  Here's the directive:</p>
-
-<p>```coffeescript disable-toggle.coffee
-angular.module('app.directives').directive 'disableToggle', ->
-  restrict: 'A'
-  replace: false
-  link: (scope, element, attrs) -></p>
-
-<pre><code>defaultDisableEvt = 'click:disable'
-defaultEnableEvt = 'click:enable'
-
-disableEvt = attrs.disableEvt || defaultDisableEvt
-enableEvt = attrs.enableEvt || defaultEnableEvt
-
-disableEvts = disableEvt.split(/\ *?,\ *?/)
-enableEvts = enableEvt.split(/\ *?,\ *?/)
-
-for evt in disableEvts
-  scope.$on evt, (evt) -&gt;
-    element.attr 'disabled', 'disabled'
-    element.addClass 'is-disabled'
-    scope.disabledToggled = true
-
-for evt in enableEvts
-  scope.$on evt, (evt) -&gt;
-    element.removeAttr 'disabled'
-    element.removeClass 'is-disabled'
-    scope.disabledToggled = false
-</code></pre>
-
-<p>```</p>
-
-<p>The directive allows for listening on multiple events.  This is useful if your button should be disabled/enabled via multiple events.  Just separate your event list with commas.  If you don't want to specify any events, the directive uses two default events, 'click:disable' and 'click:enable'.</p>
-
-<p>The directive sets the <code>disabled</code> attribute, commonly used in form fields.  It also sets the <code>is-disabled</code> class so your app can style this state consistently in the UI.</p>
-
-<p>Lastly, the directive also sets a <code>scope.disabledToggled</code> variable on the scope of the element.  This will be useful for elements which are not form elements and which do not prevent clicking just because their <code>disabled</code> attribute is set to <code>disabled</code>.  Instead, we'll use this value to short-circuit the <code>ng-click</code> event itself.</p>
-
-<p>So here it is in action on the template:</p>
-
-<p>```html
-  &lt;button ng-click="disabledToggled || doClickyThings()"</p>
-
-<pre><code>      disable-toggle enable-evt="click:enable,photo:clear" disable-evt="photo:add"&gt;Click Me&lt;/button&gt;
-</code></pre>
-
-<p>```</p>
-
-<p>Here, we're setting custom events for disabling and enabling the button.  And note the <code>ng-click</code> value.  The <code>doClickyThings()</code> function will not get called if <code>disabledToggled</code> is true.</p>
-
-<p>So, what do you think.  Is there an easier way to get this kind of functionality?  What could we do to make it better?</p>
 ]]></content>
   </entry>
   

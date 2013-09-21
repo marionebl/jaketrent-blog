@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-09-06T16:12:09-06:00</updated>
+  <updated>2013-09-21T11:42:29-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,66 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Import Erb Into Karma]]></title>
+    <link href="http://jaketrent.com/post/import-erb-into-karma/"/>
+    <updated>2013-09-20T16:59:00-06:00</updated>
+    <id>http://jaketrent.com/post/import-erb-into-karma</id>
+    <content type="html"><![CDATA[<p>Rails asset pipeline allows you to use erb helpers in your CoffeeScript.  You&#8217;ll still need to bring get these files into Karma runner.  It&#8217;s really easy.  You just need to get to know your Karma config options.</p>
+
+<p><img src="http://i.imgur.com/i5fJT6j.png" alt="erb files in Karma runner" /></p>
+
+<!--more-->
+
+
+<h2>erb in JavaScripts</h2>
+
+<p>Why in the world would you want to use erb helpers inside your script files?  You might not.  I definitely think this should be a limited practice.  In some cases, it can be very helpful.  For instance, if you use Ruby/Rails (via <a href="https://github.com/rumblelabs/asset_sync"><code>asset_sync</code></a>) to upload your static assets to an external server, such as S3, you can help your scripts know where static assets live after upload.</p>
+
+<p>So your script might use the <code>asset_path</code> helper and end up looking something like this:</p>
+
+<figure class='code'><figcaption><span>app.coffee.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">,</span> <span class="p">[]).</span><span class="nx">config</span> <span class="nf">($routeProvider) -&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">$routeProvider</span>
+</span><span class='line'>    <span class="p">.</span><span class="k">when</span> <span class="s">&#39;/admin&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nv">controller: </span><span class="s">&#39;AdminIndexCtrl&#39;</span>
+</span><span class='line'>      <span class="nv">templateUrl: </span><span class="s">&quot;&lt;%= asset_path(&#39;admin/index.html&#39;) %&gt;&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Import erb Files into Karma</h2>
+
+<p>Well, now you have an <code>app.coffee.erb</code> file.  You need to get it into <a href="http://karma-runner.github.io">Karma runner</a>.  Normally <code>*.coffee</code> files will be brought straight in and compiled automatically by the runner as needed.  In this case, however, the Karma defaults won&#8217;t recognize the <code>.coffee.erb</code> file as a CoffeeScript file need compilation.</p>
+
+<p>To tell Karma to process your erb file as a CoffeeScript file, add this to your config:</p>
+
+<figure class='code'><figcaption><span>karma.conf.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(config) -&gt;</span>
+</span><span class='line'>  <span class="nx">config</span><span class="p">.</span><span class="nx">set</span>
+</span><span class='line'>    <span class="c1"># ...</span>
+</span><span class='line'>    <span class="nv">preprocessors:</span>
+</span><span class='line'>      <span class="s">&#39;**/*.coffee.erb&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s">&#39;coffee&#39;</span><span class="p">]</span>
+</span><span class='line'>      <span class="s">&#39;**/*.coffee&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s">&#39;coffee&#39;</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s it.  That&#8217;s the key to getting your Erb files processed into JavaScript and ready for Karma to use.</p>
+
+<p>Now, what are your thoughts on putting your CoffeeScripts through the erb filter of the asset pipeline at all?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[JavaScript Mixins]]></title>
@@ -1927,122 +1987,6 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
 <li><code>vertical-align</code>, as in most things, does nothing.</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ember Parent Templates]]></title>
-    <link href="http://jaketrent.com/post/ember-parent-templates/"/>
-    <updated>2013-05-29T07:02:00-06:00</updated>
-    <id>http://jaketrent.com/post/ember-parent-templates</id>
-    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a>&#8217;s convention of template hierarchy is very specific.  Learn it once, and you&#8217;ll know it every time.</p>
-
-<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
-
-<!--more-->
-
-
-<p><strong>Note:</strong> Code examples use <a href="http://emblemjs.com/">Emblem</a> templates and <a href="http://coffeescript.org">CoffeeScript</a>.  Vanilla Handlebars and JavaScript would work just as well.</p>
-
-<h2>Outlets</h2>
-
-<p>Ember templates make use of a special helper called <code>outlet</code>.  You can have one main, unnamed outlet or many named outlets.  The main thing to remember is that a child template will always render inside its parent&#8217;s outlet &#8211; so always put outlets in templates that have children.</p>
-
-<h2>Application Template</h2>
-
-<p>There is a top-most template that all of your templates will render inside of.  This is called the application template.  It is specified in one of two ways.  If you are including your templates as script tags, simply create a script tag that doesn&#8217;t have a <code>data-template-name</code> or <code>id</code> attribute, a la:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;x-emblem&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nx">h1</span> <span class="nx">My</span> <span class="nx">Application</span>
-</span><span class='line'>  <span class="o">==</span> <span class="nx">outlet</span>
-</span><span class='line'><span class="nt">&lt;/script&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you are <a href="http://jaketrent.com/post/precompile-ember-templates">precompiling your Ember templates</a>, which you should, you have a directory for templates.  You will put your file, called <code>application.emblem</code> in the root of that directory.  The contents of <code>templates/application.emblem</code> would be the same:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='jade'><span class='line'><span class="nt">h1</span> My Application
-</span><span class='line'><span class="err">== </span><span class="nt">outlet</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Route Templates</h2>
-
-<p>If you have a top-level route, it will have a top-level template.  Your route&#8217;s template will have only the application template as its parent.  So, your about route:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">@route</span> <span class="s">&#39;about&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Will have an about template at <code>templates/about.emblem</code> and you could define a route as <code>AboutRoute</code>.  It will render inside of <code>application.emblem</code>&#8217;s outlet.</p>
-
-<h2>Resource Templates</h2>
-
-<p>Resources are interesting because you can nest other routes inside them.  Nesting routes will also result in nesting templates.  If I defined a <code>league</code> resource with a nested route for creating new leagues, it might look something like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">App</span><span class="p">.</span><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">@resouce</span> <span class="s">&#39;league&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">@route</span> <span class="s">&#39;new&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There are two leaf routes (and thus templates) that are created here:</p>
-
-<ul>
-<li><code>LeagueIndexRoute</code>, which uses <code>templates/league/index.emblem</code></li>
-<li><code>LeagueNewRoute</code>, which uses <code>templates/league/new.emblem</code></li>
-</ul>
-
-
-<p>Note that you create a <code>league</code> directory inside your <code>templates</code> directory for nesting these templates.  Precompiled templates will be created at:</p>
-
-<ul>
-<li><code>Ember.TEMPLATES["league/index"]</code></li>
-<li><code>Ember.TEMPLATES["league/new"]</code></li>
-</ul>
-
-
-<p>If you wanted to use the <code>linkTo</code> helper in a template to link to these routes, you would use this syntax:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='jade'><span class='line'><span class="nt">linkTo</span> &#39;league.index&#39; | List Leagues
-</span><span class='line'><span class="nt">linkTo</span> &#39;league.new&#39; | New League
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And now as far as templates, there is <em>one more</em> that we&#8217;re missing.  There is a root league template that these two league leaf templates render inside of.  It should live at <code>templates/league.emblem</code>.  This template would be useful for showing UI elements that are common to all league resource things.  In the case where there is no such need, this template will probably only contain a single outlet:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='jade'><span class='line'><span class="err">== </span><span class="nt">outlet</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So the final template hierarchy for <code>league.new</code>, for example, is <code>application.emblem &gt; league.emblem &gt; league/new.emblem</code>.</p>
-
-<p>There is a bit of a chatter on the Githubs about whether the root resource template is good form or not.  As in, why would you create a file that contains nothing but an empty outlet?  Couldn&#8217;t the framework infer that if it was missing?</p>
-
-<h2>Children Need All Parents</h2>
-
-<p>Create all parents in your template chain, from the application template to the leaves.  The worst thing that can happen if you don&#8217;t is that nothing will render at all, and no error messages will be displayed (pretty bad and unhelpful).</p>
-
-<p>Most of the time, Ember will try to be helpful and give you a console warning:</p>
-
-<blockquote><p>WARNING: The immediate parent route (&#8216;a&#8217;) did not render into the main outlet and the default &#8216;into&#8217; option (&#8216;p&#8217;) may not be expected</p></blockquote>
-
-<p>In other words: You&#8217;re trying to render a child template that either doesn&#8217;t have a parent template it needs or the parent template does not specify a main outlet.</p>
 ]]></content>
   </entry>
   
