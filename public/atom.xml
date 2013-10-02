@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-09-27T09:46:04-06:00</updated>
+  <updated>2013-10-02T08:04:48-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,64 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Start Review]]></title>
+    <link href="http://jaketrent.com/post/start-review/"/>
+    <updated>2013-10-02T07:54:00-06:00</updated>
+    <id>http://jaketrent.com/post/start-review</id>
+    <content type="html"><![CDATA[<p>Starting tends to be one of the biggest hurdles that we must jump in order to find out what awesome we really have inside of us and let it shine.  In the book <a href="http://www.amazon.com/gp/product/1937077594/ref=as_li_ss_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1937077594&amp;linkCode=as2&amp;tag=jaktre-20">Start by Jon Acuff</a>, he gives great motivation and tactical steps for starting to find our awesome.  It&#8217;s a hilarious, inspiring, and practical guide.</p>
+
+<p><img src="http://i.imgur.com/ERlkwHb.jpg" alt="Start Book" /></p>
+
+<!--more-->
+
+
+<h2>Stages of an Awesome Life</h2>
+
+<p>All of us go through 5 stages of life on our journey to find our awesome:</p>
+
+<ul>
+<li>Learning</li>
+<li>Editing</li>
+<li>Mastering</li>
+<li>Harvesting</li>
+<li>Guiding</li>
+</ul>
+
+
+<p>These stages used to be tied to age or tenure.  People used to go through them steadily, sequentially, almost a decade at a time.  Getting to your awesome will surely require significant time and investment, but now and in the future the game has changed.</p>
+
+<h2>The game has changed</h2>
+
+<ul>
+<li><strong>Retirement is dead.</strong>  The economy will recover.  The ideals of companies and individuals and governments won&#8217;t.  Don&#8217;t expect to pack it in and sit for 3+ decades.</li>
+<li><strong>Hope is boss.</strong>  For those that see themselves as wanted to add to something meaningful, the opportunities are many and they are now.  You don&#8217;t have to wait until you&#8217;re 50 and have built a non-profit empire for you to add to something fulfilling.</li>
+<li><strong>The Internet.</strong>  Opportunities are always open for anyone with access and a will to learn.  You can enter a field and expand your influence in that field incredibly quickly.</li>
+</ul>
+
+
+<h2>Be 22 Again</h2>
+
+<p>You can literally be 22 at anything.  You can decide to enter a field, begin accelerated learning, determine your focus, lay on the hours of practice, find a plentiful harvest because of your new talent, and eventually help others along the path you have chosen.  Then you can do it all again.  These days some people are doing this out of necessity as an &#8220;encore career&#8221; in the place of a retirement that will not arrive.  We can all revert to 22 in a new field of study or activity in order to expand our exposure, increase or ability, or make our lives more happy and fulfilled.</p>
+
+<p>There is a joy and a great feeling of accomplishment and purpose in the way that Jon outlines life.  What taste would life have if it were not based on learning and becoming better?  The values my parents taught me from the youngest age have been marinated in similar ideas.</p>
+
+<p>When we&#8217;re young, we literally feel like we can do anything.  And we do, to our own ability.  At some point, because of our own insecurity, we may tend to only keep going in the activities that others have told us we&#8217;re good at or that we discover some aptitude in.  There&#8217;s nothing inherently wrong in this.  In fact, we should take advantage of those things.  The feeling that we need to get rid of is fear of starting anything else.</p>
+
+<p>As we grow older, we can become more prone to pigeon-holing ourselves and our successes.  We fear failure.  We want to build on the good that we&#8217;ve already done.  We don&#8217;t want to fall from what we have built.  If we remember the pure enthusiasm and joy of learning that we felt as a child, we will open up more fulfilling doors in our lives.  We will continue to find more of what our own brand of awesome looks like.</p>
+
+<h2>Style</h2>
+
+<p>Jon knows how to write a good book.  This book, like <a href="http://jaketrent.com/post/quitter-review/">Quitter</a>, was very encouraging.  Also like his previous books, I was laughing out loud as I read it.  People on the train sharing my commute surely had moments they wondered about me as I laughed at Jon&#8217;s prose.  And I think my wife was surprised more than once by the unstoppable laughter that ensued after several especially funny bits. Jon&#8217;s book reads quickly and happily.</p>
+
+<h2>What&#8217;s Next</h2>
+
+<p>Jon gives the kind of encouragement that I need.  I don&#8217;t feel greatly handicapped by fear.  In fact, I feel quite confident in learning and making new successes in my life.  But, Jon does help uncover some of the more subtle negative messages that I can give myself that tend to hamper my progress and lessen my enthusiasm, shooting holes in my own boat.  And then he gives practical steps for getting the momentum of learning going in my life and taking advantage of those things for which I&#8217;m the trail to mastery.</p>
+
+<p>So, what&#8217;s next?  There&#8217;s only to start.  Let new adventures begin.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rotate Gauge Needle in D3]]></title>
@@ -2023,74 +2081,6 @@ Attach FastClick to all links on the page (or subset if you wish):</p>
 <p>Depending on how complex your model relationships become, you may opt for a difference code strategy besides nesting callbacks.  Don&#8217;t like your pyramid of doom?  Try the awesome <a href="https://github.com/caolan/async">async.js</a>.</p>
 
 <p>I don&#8217;t know if Mongoose population is going to change your life, but I was very happy when I found this feature.  I had been doing junk like this manually.  What are some other great use cases that you&#8217;ve found?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Learn to Procrastinate]]></title>
-    <link href="http://jaketrent.com/post/learn-to-procrastinate/"/>
-    <updated>2013-06-10T06:57:00-06:00</updated>
-    <id>http://jaketrent.com/post/learn-to-procrastinate</id>
-    <content type="html"><![CDATA[<p>When making software, sometimes we want everything we can imagine at once.  We want the software to be perfect &#8211; then we&#8217;ll ship it.  Learn to procrastintate.  You might ship more, and you might like the the eventual outcome better.</p>
-
-<p><img src="http://i.imgur.com/cXx17co.png" alt="Focus on shipping" /></p>
-
-<!--more-->
-
-
-<h2>Worthless Software</h2>
-
-<p>Software that sits inside of your git repo, unreleased, is worthless software.  You&#8217;re not going to get paid for it.  You&#8217;re not going to make someone&#8217;s life better.  You&#8217;re not going to attract any new business.  It provides no utility.</p>
-
-<p>When does software return any value?  At the very soonest, software provides value when it ships &#8211; when it&#8217;s released to the public or your customers.</p>
-
-<p>So why do we wait so long to ship?</p>
-
-<h2>Excuses for Not Shipping</h2>
-
-<h3>It Must Do More</h3>
-
-<p>Software has a fair bit of built-in or essential complexity.  Making software is challenging.  Sometimes we make it worse and introduce our own accidental complexity.  How?  We don&#8217;t ship.</p>
-
-<p>We iterate on unreleased software, expand it, and pretend to fully understand what we&#8217;re trying to solve.  The software gets bigger and more complex.  We want our (unshipped) software to somehow solve even <em>more</em> problems before it&#8217;s solved any.  And any problem we attempt to solve without actually testing it (in production), is still just a guess at how to solve it.</p>
-
-<h3>It&#8217;s Not Awesome Yet</h3>
-
-<p>Sometimes in an attempt to create a (hopefully) great initial impression, we wait to release anything.  This makes sense to some degree, but it can easily be taken to a less useful extreme.  Once we have a feature set that we judge is sufficiently awesome to blow a potential client&#8217;s socks off, we&#8217;ll release it in a big bang.  Boom!  Now the world can see my software in all the glory I have bequeathed it.</p>
-
-<p>Just as we have been guessing as to how may problems the software will solve, we have been guessing as to how warm people will be to the idea of actually using what we&#8217;ve created.</p>
-
-<h2>What to Procrastinate</h2>
-
-<p>So obviously there are problems with procrastinating.  There are definitely things that you <em>don&#8217;t</em> want to procrastintate: working, shipping, asking for payment.  What <em>should</em> you procrastinate?</p>
-
-<h3>Little Things that are Hard</h3>
-
-<p>At first glance, this just looks like a cop out.  You <em>should</em> do the important things that are hard.  Even the small things can add a nice touch.  But in an effort to ship, these are often the little things that don&#8217;t add too much but take an inordinate amount of time to figure out or complete.  Skip these things and come back to them later to add the polish.</p>
-
-<h3>Things that are not Core Functionality</h3>
-
-<p>You&#8217;re trying to ship a small, cohesive feature set as fast as you can.  There will be many features on the perephery that you&#8217;ll be tempted to work in as well.  Fight the temptation.  Get used to cutting out good features in order to ship the ones you <em>need</em>.  In this way, you&#8217;ll help ensure that all of your valuable time is used creating the most value for your customers.</p>
-
-<h3>Things that Create Little Tech Debt</h3>
-
-<p>When you start skipping things, this can create problems for you later.  This can be technical debt.  If you want your product to evolve and grow over time, you can&#8217;t afford large amounts of technical debt.  But watch out!  You can use very large lengths of time doing things that add little value in the name of avoiding technical debt.  Be willing to take on some tech debt.  Do this on a case-by-case basis, because this trade-off requires thinking.</p>
-
-<h2>Why You&#8217;ll Like Procrastinating</h2>
-
-<p>Your satisfaction will sky-rocket when you feel like shipping is within reach.  Break down the barriers to getting there.</p>
-
-<p>Focus on the most valuable features, and you&#8217;ll feel like you add maximum value every day &#8211; because you are!</p>
-
-<p>You&#8217;ll be able to move faster because you aren&#8217;t getting bogged down in munitia.  By not taking tangents, your flow time will increase.  You won&#8217;t need to context switch to solve small, hard problems.  You can focus on the important, hard problems for contiguous lengths of time.</p>
-
-<p>You&#8217;ll have something to show a lot faster.  You&#8217;ll have a vertical of working features that are fun to use and are useful &#8211; when shipped, that is.</p>
-
-<h2>Different Paths Converge at Shipping</h2>
-
-<p>Of course there are as many different ways to make software as there are types of software and types of software teams.  That&#8217;s one of the things that makes software creation insanely fun and rewarding.  Find what works for you, and ship lots and lots of awesome software.</p>
-
-<p>In the end, shipping should be a common goal, and we shouldn&#8217;t procrastinate that.</p>
 ]]></content>
   </entry>
   
