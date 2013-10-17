@@ -72,7 +72,7 @@ barOuterPad = .2
 barPad = .1
 
 x = d3.scale.ordinal()
-  .domain([0, data.map((d) -> d.letter)])
+  .domain(data.map((d) -> d.letter))
   .rangeRoundBands([0, elementWidth], barPad, barOuterPad)
 
 svg.append('rect')
