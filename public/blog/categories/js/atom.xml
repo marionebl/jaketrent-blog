@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-10-07T09:44:28-06:00</updated>
+  <updated>2013-10-17T08:37:48-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,108 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Use D3 rangeBands]]></title>
+    <link href="http://jaketrent.com/post/use-d3-rangebands/"/>
+    <updated>2013-10-17T07:47:00-06:00</updated>
+    <id>http://jaketrent.com/post/use-d3-rangebands</id>
+    <content type="html"><![CDATA[<p>When building a chart such as a bar chart in d3, you'll want an evenly divided space on your x axis.  You could divide the space up with your own manual calculations, accounting for space available, bar width, and inner and outer padding.  Or, you could have d3 do the calculation for you via a <code>rangeBand</code>.</p>
+
+<p><img src="http://i.imgur.com/JEniNrp.jpg" alt="d3 rangeBand" /></p>
+
+<!--more-->
+
+
+<h2>Scale</h2>
+
+<p>One of the great features of D3 is the ability it gives you to easily adapt your chart to the space available to you.  This is accomplished with scales.  There are a couple different scales built into D3.  Some for comparative numbers, such as <code>d3.scale.linear</code> and <code>d3.scale.log</code>; some for discrete data sets, such as <code>d3.scale.ordinal</code>.</p>
+
+<p><strong>A scale maps visual space to data space.</strong></p>
+
+<p>The visual space of a scale is the <code>range</code>.  The data space is the <code>domain</code>.  The internals of the scale will map it all for you.</p>
+
+<h2>Manual Space Management</h2>
+
+<p>Previous to realizing some of the things that d3 scales can do for you, I did a lot of space management myself.  Here's an example:</p>
+
+<p>Let's say we have a data domain of all the letters in the alphabet.  Let's say we're building a bar chart.  We'll put the letters on the x-axis, running horizontally along our chart.  We want to space out each letter's bar evenly across the visual space or range.</p>
+
+<p>If we did our own math, it might look like this:</p>
+
+<p>```coffeescript brought-to-you-by.coffee
+barOuterPad = 20
+barPad = 10</p>
+
+<p>widthForBars = elementWidth - (barOuterPad * 2)
+barWidth = widthForBars / data.length - barPad + (barPad / numBars)</p>
+
+<p>barsG = svg.append('g')
+  .attr('transform', "translate(#{barOuterPad}, 0)")</p>
+
+<p>barsG.selectAll('rect')
+  .data(data)
+  .enter().append('rect')</p>
+
+<pre><code>.attr('x', (d, i) -&gt; (barWidth * i) + (i * barPad))
+.attr('width', barWidth)
+# attrs ...
+</code></pre>
+
+<p>```</p>
+
+<p>In the code above, we have bar padding setup.  <code>barOuterPad</code> is the padding on only the far left and right of the entire chart.  <code>barPad</code> is the space between each of the bars.</p>
+
+<p>The <code>barWidth</code> calculation is especially fun.  It splits the <code>widthForBars</code> space evenly over the number of bars.  Then it subtracts the <code>barPad</code> for the space of that bar that won't be able to be used.  Then, finally, we remember that there will be 1 fewer empty pad areas between bars than there will be actual bars.  So, we take that extra <code>barPad</code> space and give a bit of it back to every bar.  Whew.</p>
+
+<p>When we go to place bars, we create a new group, <code>barG</code>, transformed in to take account of <code>barOuterPad</code>.  Then, for each bar in we make sure it's offset into the chart based on what number of bar it is in the set.</p>
+
+<p>There is an easier way.</p>
+
+<h2>d3.scale.ordinal.rangeBands</h2>
+
+<p>There is one particular function of <code>d3.scale.ordinal</code> that is particularly useful.  That is <code>rangeBands</code>.  It will evenly divide a space up for you into bands across the range.</p>
+
+<p>Here's a great graphic from the d3 wiki on <a href="https://github.com/mbostock/d3/wiki/Ordinal-Scales#wiki-ordinal_rangeBands"><code>ordinal.rangeBands</code></a>:</p>
+
+<p><img src="https://f.cloud.github.com/assets/230541/538688/46c298c0-c193-11e2-9a7e-15d9abcfab9b.png" alt="rangeBand diagram" /></p>
+
+<p>It looks like it knows how to take care of everything in our scenario.  It handles outer padding.  It handles between-bar padding.  Let's use it:</p>
+
+<p>```coffeescript made-possible-by.coffee
+barOuterPad = .2
+barPad = .1</p>
+
+<p>x = d3.scale.ordinal()
+  .domain([0, data.map((d) -> d.letter)])
+  .rangeRoundBands([0, elementWidth], barPad, barOuterPad)</p>
+
+<p>svg.append('rect')
+  .data(data)
+  .enter().append('rect')</p>
+
+<pre><code>.attr('x', (d) -&gt; x(d.letter))
+.attr('width', x.rangeBand())
+# attrs...
+</code></pre>
+
+<p>```</p>
+
+<p>Note that our <code>barOuterPad</code> and <code>barPad</code> are now fractions.  This is because d3 expects a number, usually between 0 and 1, that is described as a proportion of the eventual width of the bands.</p>
+
+<p><code>x</code> becomes our scale function, mapping the domain, which is all letters (<code>d.letter</code>), to the range.  The range is specified as bands using <code>rangeRoundBands</code>.  This is different than <code>rangeBands</code> in that all spaces are guaranteed to be integers, avoiding antialiasing on screen.  The signature is as follows:</p>
+
+<p><code>ordinal.rangeBands(interval[, padding[, outerPadding]])</code></p>
+
+<p>We avoid having to use a new <code>barG</code> group to make our math easier.</p>
+
+<p>When we set the <code>x</code> attribute on our bar, it's x offset is determined by passing the singular datum's letter to the <code>x</code> scale function.  And the width is simply the width of all bands, known by calling <code>x.rangeBand()</code>.</p>
+
+<p>So much better.  And so much more concise.</p>
+
+<p>What do you think?  Does this work for you?  What is the even-better way of doing this that I have yet to realize?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rotate Gauge Needle in D3]]></title>
@@ -358,76 +460,6 @@ bower EINVFORMAT The registry only accepts URLs starting with git://
 <p><code>bash
 bower EDUPLICATE Duplicate package
 </code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Test Angular Directive With Isolate Scope]]></title>
-    <link href="http://jaketrent.com/post/test-angular-directive-isolate-scope/"/>
-    <updated>2013-08-21T07:46:00-06:00</updated>
-    <id>http://jaketrent.com/post/test-angular-directive-isolate-scope</id>
-    <content type="html"><![CDATA[<p>Directives with isolate scope do not inherit their scope from their parent.  Thus, the pattern to test them is slightly different.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular Isolate Scope Testing" /></p>
-
-<!--more-->
-
-
-<p>When testing a directive, you'll often want to setup some fixture element to attach your directive to.  This will act as the DOM that you will compile with scope.  At that point, the variables that you attached to scope will be available within the directive under test.</p>
-
-<p>For example, if I had a directive called <code>AccountList</code> with isolate scope:</p>
-
-<p>```coffeescript account-list.coffee
-angular.module('app').directive 'AccountList', ->
-  restrict: 'EA'
-  replace: true
-  scope:</p>
-
-<pre><code>accounts: '='
-</code></pre>
-
-<p>  # etc ...
-```</p>
-
-<p>Then I would setup my test something like this:</p>
-
-<p>```coffeescript account-list.spec.coffee
-describe 'AccountList', -></p>
-
-<p>  elm = null</p>
-
-<p>  beforeEach inject ($rootScope, $compile) -></p>
-
-<pre><code>accounts = []
-for num in [1..5]
-  accounts.push createFakeAccount()
-$rootScope.accounts = accounts
-
-elm = angular.element """
-  &lt;account-list accounts="accounts"&gt;&lt;/account-list&gt;
-"""
-
-e = $compile(elm)($rootScope)
-e.scope().$digest()
-</code></pre>
-
-<p>  # actual specs, using elm ...
-```</p>
-
-<p>A few points:</p>
-
-<ul>
-<li><code>inject()</code> comes from <code>angular-mock</code>.  It is currently only supported in Jasmine.</li>
-<li>Before each test of the <code>AccountList</code> directive, a set of 5 accounts will be put in scope so the directive, presumably, has something to display.</li>
-<li><code>$rootScope</code> is going to be the only scope that you can get to easily from your tests.  You can attach variables to it directly as above or call <code>$rootScope.$new()</code> to generate a new scope if you'd like.</li>
-<li>We initially <code>$compile</code> the fixture element, passing in <code>$rootScope</code>.</li>
-<li>To get Angular to actually act internally on the variables that we've passed into the directive and put them on scope, we must call the important line of code: <code>e.scope().$digest()</code>.</li>
-</ul>
-
-
-<p>Now you should be ready to rock and roll with your tests.  Isolate scopes can be tricky.  Testing them, a bit tricky as well.</p>
-
-<p>Do you know a better way?</p>
 ]]></content>
   </entry>
   
