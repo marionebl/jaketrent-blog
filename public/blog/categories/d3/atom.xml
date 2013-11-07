@@ -4,7 +4,7 @@
   <title><![CDATA[Category: d3 | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/d3/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-10-17T08:37:48-06:00</updated>
+  <updated>2013-11-07T07:23:58-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -85,7 +85,7 @@ barOuterPad = .2
 barPad = .1</p>
 
 <p>x = d3.scale.ordinal()
-  .domain([0, data.map((d) -> d.letter)])
+  .domain(data.map((d) -> d.letter))
   .rangeRoundBands([0, elementWidth], barPad, barOuterPad)</p>
 
 <p>svg.append('rect')

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-10-17T08:37:48-06:00</updated>
+  <updated>2013-11-07T07:23:58-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,78 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Change Page Title in Angular Route]]></title>
+    <link href="http://jaketrent.com/post/change-page-title-angular-route/"/>
+    <updated>2013-11-07T07:03:00-07:00</updated>
+    <id>http://jaketrent.com/post/change-page-title-angular-route</id>
+    <content type="html"><![CDATA[<p>When you change routes in Angular, the page title doesn't change automatically, but this can be done rather simply.</p>
+
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular Router" /></p>
+
+<!--more-->
+
+
+<h2>Servers and Clients</h2>
+
+<p>Client-side routers are pretty awesome.  A new url is pushed into the browser's history to represent the particular resource that pure client code has produced and displayed.  It's pretty cool.  It's also used widely these days.  Angularjs has a nice little router built into its framework.</p>
+
+<p>Route changes from a server always have the page title set automatically in the <code>head &gt; title</code> tag.  Client-side routing doesn't have that exactly.  Nor does the Angularjs router change the page title via an automatic mechanism.  So, let's add our own.</p>
+
+<h2>Add Page Title to Angular Router</h2>
+
+<p>First, notice that you can add any arbitrary attributes to an angular route that you desire.  In the code below, notice that each route has a <code>title</code> attribute:</p>
+
+<p>```coffeescript app.coffee
+angular.module('app', []).config ($routeProvider) -></p>
+
+<p>  $routeProvider</p>
+
+<pre><code>.when '/',
+  controller: 'HomeCtrl'
+  templateUrl: "/templates/home.html"
+  title: 'Home'
+
+.when '/about',
+  controller: 'AboutCtrl'
+  templateUrl: "/templates/about.html"
+  title: 'About'
+</code></pre>
+
+<p>```</p>
+
+<p>Then in a place that exists on every route -- something like an <code>AppCtrl</code> -- you can gain access to the <code>current</code> route's <code>title</code> every time the route changes:</p>
+
+<p>```coffeescript app-ctrl.coffee
+angular.module('app').controller 'AppCtrl', ($rootScope) ->
+  $rootScope.$on '$routeChangeSuccess', (event, current, previous) =></p>
+
+<pre><code>$rootScope.pageTitle = $route.current.title
+</code></pre>
+
+<p>```</p>
+
+<p>Now we have put the route's <code>title</code> in <code>$rootScope.pageTitle</code> and can use it in our template:</p>
+
+<p>```html app.html
+<html>
+  <head></p>
+
+<pre><code>&lt;title ng-bind="pageTitle + ' | MyApp'"&gt;&lt;/title&gt;
+</code></pre>
+
+<p>  </head>
+  <!-- ... -->
+```</p>
+
+<p><code>ng-bind</code> is just like using double curlies, but also acts as if it's surrounded by an ng-cloak as well.  Notice that in the title, I'm even concatenating the <code>pageTitle</code> with my app's overall name.</p>
+
+<p>Props go to <a href="http://github.com/danethurber">@danethurber</a> for putting this title changing logic in our most recent app.</p>
+
+<p>Is this how you change your Angular app's title?  Is there a better way?  Specifically, I wonder if <code>AppCtrl</code> really is the best place to listen for <code>$routeChangeSuccess</code>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Test Angular Directive With Isolate Scope]]></title>
@@ -339,97 +411,6 @@ angular.module('app.controllers').controller 'AppCtrl', ($scope) -></p>
 <p>There are a few bits to piece together to make this happen.  It might be simpler than other solutions or make more sense for you in your app if you need something(s) loaded previous to executing on a route.</p>
 
 <p>I would definitely use this feature judiciously, as it seems to eat away at one of the advantages of a client-side app in the first place: asynchronous loading.  We'8re blocking the whole app from going forward when we're in the process of resolving.  That boundary used to be on the edge of the server, building up the page before it was servable to the client.  Now, on a web client, we have multiple requests that can happen in parallel and we can render bits as they're available -- important bits first and so on.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Namespacing Angular Controller Attributes]]></title>
-    <link href="http://jaketrent.com/post/namespacing-angular-controller-attributes/"/>
-    <updated>2013-07-10T18:17:00-06:00</updated>
-    <id>http://jaketrent.com/post/namespacing-angular-controller-attributes</id>
-    <content type="html"><![CDATA[<p>Usually attributes of your Angular controllers are not namespaced.  But you can namespace them.  But you might not want to.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="AngularJs controller namespacing" /></p>
-
-<!--more-->
-
-
-<h2>Angular Controllers Usually Attach Attributes to Scope</h2>
-
-<p>Usually attributes in an Angular controller, such as functions and variables, are attached to the <code>$scope</code> object.  That looks like this:</p>
-
-<p>```coffeescript my-ctrl.coffee
-angular.module('myapp').controller 'MyCtrl', ($scope) ->
-  $scope.myVar = 'myVal'
-  $scope.myFn = -></p>
-
-<pre><code>console.log 'does stuff'
-</code></pre>
-
-<p>```</p>
-
-<p>Then in my template I don't know, nor do I need to know, where the attribute comes from.  I just reference it:</p>
-
-<p>```haml my-app.jade
-html(ng-app="myapp")
-  body(ng-controller="MyCtrl")</p>
-
-<pre><code>h1 My Var: {{myVar}}
-button(ng-click="myFun()") Does Stuff
-</code></pre>
-
-<p>```</p>
-
-<h2>Namespaced Angular Controller Attributes</h2>
-
-<p>In this simple example, this is no big deal.  But as your app grows in complexity with many, nested controllers and templates, it can become difficult to read the code.  If you have common function names, it might be hard to tell which controller's function is referenced in your templates.  To make this less of a problem and the code more clear, you might namespace your controller attributes in the template.</p>
-
-<p>To do this, you can write your controllers to attach attributes to the controller instead of scope and then put the controller itself on scope.  That looks like this:</p>
-
-<p>```coffeescript my-ctrl.coffee
-angular.module('myapp').controller 'MyCtrl', ($scope) ->
-  @myVar = 'myVal'
-  @myFn = -></p>
-
-<pre><code>console.log 'does stuff'
-</code></pre>
-
-<p>  $scope.MyCtrl = @
-```</p>
-
-<p>Then your template changes to look like this:</p>
-
-<p>```haml my-app.jade
-html(ng-app="myapp")
-  body(ng-controller="MyCtrl")</p>
-
-<pre><code>h1 My Var: {{MyCtrl.myVar}}
-button(ng-click="MyCtrl.myFun()") Does Stuff
-</code></pre>
-
-<p>```</p>
-
-<p>It's kind of nice for the reasons stated above.  I saw this strategy referenced on the Interwebs at one point and thought it seemed like a good idea.</p>
-
-<h2>Why You Might Avoid This</h2>
-
-<p>Maybe you love the idea.  Maybe you don't.  I thought I did.  I have been writing controllers this way for a while.  Now I don't.  Here's why:</p>
-
-<h3>1. It Makes Templates Less Reusable</h3>
-
-<p>It's quite probable that I'll have templates that I don't want permanently attached to a specific controller.  An example I ran into recently was on a profile page.  I had two pages to show profiles: one for my profile and one for an arbitrary person in the system.  They looked the same in the UI.  They had the same basic functions.  But the source of data for the variables and the implementation of the functions was different in the two scenarios.  Thus, I had to refactor to remove the namespacing to be able to reuse the template across pages.</p>
-
-<h3>2. It's More Typing</h3>
-
-<p>It's silly.  It adds up.  The less superfluous typing I can do, the more I consider that solution.</p>
-
-<h3>3. The Creators Don't Do It</h3>
-
-<p>I haven't seen this strategy featured in official tutorials, guides, or API examples.  Not that the Angular d00ds have all the ideas or do everything right -- it just isn't a pattern I see widely accepted or used.</p>
-
-<p>These days, I don't namespace my controller attributes, and I don't recommend it.</p>
-
-<p>So what do you think?  Do you write your controllers this way?  Good idea?  Bad idea?  What are some alternative methods you've found to balance template reuse with readability?</p>
 ]]></content>
   </entry>
   

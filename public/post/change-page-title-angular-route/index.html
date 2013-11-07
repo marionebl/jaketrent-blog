@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Import Erb Into Karma - Jake Trent</title>
+  <title>Change Page Title in Angular Route - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="Rails asset pipeline allows you to use erb helpers in your CoffeeScript. You'll still need to bring get these files into Karma runner.">
-  
+  <meta name="description" content="When you change routes in Angular, the page title doesn't change automatically, but this can be done rather simply.">
+  <meta name="keywords" content="js, javascript, angular, angularjs, page title, title">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/import-erb-into-karma/">
+  <link rel="canonical" href="http://jaketrent.com/post/change-page-title-angular-route/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Import Erb Into Karma</h1>
+      <h1 class="entry-title">Change Page Title in Angular Route</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2013-09-20T16:59:00-06:00" pubdate data-updated="true">Sep 20<span>th</span>, 2013</time>
+<time datetime="2013-11-07T07:03:00-07:00" pubdate data-updated="true">Nov 7<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,58 +108,81 @@
   </header>
 
 
-<div class="entry-content"><p>Rails asset pipeline allows you to use erb helpers in your CoffeeScript.  You&#8217;ll still need to bring get these files into Karma runner.  It&#8217;s really easy.  You just need to get to know your Karma config options.</p>
+<div class="entry-content"><p>When you change routes in Angular, the page title doesn&#8217;t change automatically, but this can be done rather simply.</p>
 
-<p><img src="http://i.imgur.com/i5fJT6j.png" alt="erb files in Karma runner" /></p>
+<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular Router" /></p>
 
 <!--more-->
 
 
-<h2>erb in JavaScripts</h2>
+<h2>Servers and Clients</h2>
 
-<p>Why in the world would you want to use erb helpers inside your script files?  You might not.  I definitely think this should be a limited practice.  In some cases, it can be very helpful.  For instance, if you use Ruby/Rails (via <a href="https://github.com/rumblelabs/asset_sync"><code>asset_sync</code></a>) to upload your static assets to an external server, such as S3, you can help your scripts know where static assets live after upload.</p>
+<p>Client-side routers are pretty awesome.  A new url is pushed into the browser&#8217;s history to represent the particular resource that pure client code has produced and displayed.  It&#8217;s pretty cool.  It&#8217;s also used widely these days.  Angularjs has a nice little router built into its framework.</p>
 
-<p>So your script might use the <code>asset_path</code> helper and end up looking something like this:</p>
+<p>Route changes from a server always have the page title set automatically in the <code>head &gt; title</code> tag.  Client-side routing doesn&#8217;t have that exactly.  Nor does the Angularjs router change the page title via an automatic mechanism.  So, let&#8217;s add our own.</p>
 
-<figure class='code'><figcaption><span>app.coffee.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<h2>Add Page Title to Angular Router</h2>
+
+<p>First, notice that you can add any arbitrary attributes to an angular route that you desire.  In the code below, notice that each route has a <code>title</code> attribute:</p>
+
+<figure class='code'><figcaption><span>app.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
 </pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">,</span> <span class="p">[]).</span><span class="nx">config</span> <span class="nf">($routeProvider) -&gt;</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="nx">$routeProvider</span>
-</span><span class='line'>    <span class="p">.</span><span class="k">when</span> <span class="s">&#39;/admin&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nv">controller: </span><span class="s">&#39;AdminIndexCtrl&#39;</span>
-</span><span class='line'>      <span class="nv">templateUrl: </span><span class="s">&quot;&lt;%= asset_path(&#39;admin/index.html&#39;) %&gt;&quot;</span>
+</span><span class='line'>    <span class="p">.</span><span class="k">when</span> <span class="s">&#39;/&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nv">controller: </span><span class="s">&#39;HomeCtrl&#39;</span>
+</span><span class='line'>      <span class="nv">templateUrl: </span><span class="s">&quot;/templates/home.html&quot;</span>
+</span><span class='line'>      <span class="nv">title: </span><span class="s">&#39;Home&#39;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">.</span><span class="k">when</span> <span class="s">&#39;/about&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nv">controller: </span><span class="s">&#39;AboutCtrl&#39;</span>
+</span><span class='line'>      <span class="nv">templateUrl: </span><span class="s">&quot;/templates/about.html&quot;</span>
+</span><span class='line'>      <span class="nv">title: </span><span class="s">&#39;About&#39;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>Import erb Files into Karma</h2>
+<p>Then in a place that exists on every route &#8211; something like an <code>AppCtrl</code> &#8211; you can gain access to the <code>current</code> route&#8217;s <code>title</code> every time the route changes:</p>
 
-<p>Well, now you have an <code>app.coffee.erb</code> file.  You need to get it into <a href="http://karma-runner.github.io">Karma runner</a>.  Normally <code>*.coffee</code> files will be brought straight in and compiled automatically by the runner as needed.  In this case, however, the Karma defaults won&#8217;t recognize the <code>.coffee.erb</code> file as a CoffeeScript file need compilation.</p>
+<figure class='code'><figcaption><span>app-ctrl.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">).</span><span class="nx">controller</span> <span class="s">&#39;AppCtrl&#39;</span><span class="p">,</span> <span class="nf">($rootScope) -&gt;</span>
+</span><span class='line'>  <span class="nx">$rootScope</span><span class="p">.</span><span class="nx">$on</span> <span class="s">&#39;$routeChangeSuccess&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">current</span><span class="p">,</span> <span class="nx">previous</span><span class="p">)</span> <span class="o">=&gt;</span>
+</span><span class='line'>    <span class="nv">$rootScope.pageTitle = </span><span class="nx">$route</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">title</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>To tell Karma to process your erb file as a CoffeeScript file, add this to your config:</p>
 
-<figure class='code'><figcaption><span>karma.conf.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p>Now we have put the route&#8217;s <code>title</code> in <code>$rootScope.pageTitle</code> and can use it in our template:</p>
+
+<figure class='code'><figcaption><span>app.html</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(config) -&gt;</span>
-</span><span class='line'>  <span class="nx">config</span><span class="p">.</span><span class="nx">set</span>
-</span><span class='line'>    <span class="c1"># ...</span>
-</span><span class='line'>    <span class="nv">preprocessors:</span>
-</span><span class='line'>      <span class="s">&#39;**/*.coffee.erb&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s">&#39;coffee&#39;</span><span class="p">]</span>
-</span><span class='line'>      <span class="s">&#39;**/*.coffee&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s">&#39;coffee&#39;</span><span class="p">]</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;html&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;head&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;title</span> <span class="na">ng-bind=</span><span class="s">&quot;pageTitle + &#39; | MyApp&#39;&quot;</span><span class="nt">&gt;&lt;/title&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/head&gt;</span>
+</span><span class='line'>  <span class="c">&lt;!-- ... --&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>That&#8217;s it.  That&#8217;s the key to getting your Erb files processed into JavaScript and ready for Karma to use.</p>
+<p><code>ng-bind</code> is just like using double curlies, but also acts as if it&#8217;s surrounded by an ng-cloak as well.  Notice that in the title, I&#8217;m even concatenating the <code>pageTitle</code> with my app&#8217;s overall name.</p>
 
-<p>Now, what are your thoughts on putting your CoffeeScripts through the erb filter of the asset pipeline at all?</p>
+<p>Props go to <a href="http://github.com/danethurber">@danethurber</a> for putting this title changing logic in our most recent app.</p>
+
+<p>Is this how you change your Angular app&#8217;s title?  Is there a better way?  Specifically, I wonder if <code>AppCtrl</code> really is the best place to listen for <code>$routeChangeSuccess</code>.</p>
 </div>
 
 
@@ -182,12 +205,12 @@
   
 
 
-<time datetime="2013-09-20T16:59:00-06:00" pubdate data-updated="true">Sep 20<span>th</span>, 2013</time>
+<time datetime="2013-11-07T07:03:00-07:00" pubdate data-updated="true">Nov 7<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/coffeescript/'>coffeescript</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/karma/'>karma</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/angularjs/'>angularjs</a>, <a class='category' href='/blog/categories/js/'>js</a>
   
 </span>
 
@@ -196,7 +219,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/import-erb-into-karma/" data-via="" data-counturl="http://jaketrent.com/post/import-erb-into-karma/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/change-page-title-angular-route/" data-via="" data-counturl="http://jaketrent.com/post/change-page-title-angular-route/" >Tweet</a>
   
   
   
@@ -205,10 +228,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/javascript-mixins/" title="Previous Post: JavaScript Mixins">&laquo; JavaScript Mixins</a>
+        <a class="basic-alignment left" href="/post/use-d3-rangebands/" title="Previous Post: Use D3 rangeBands">&laquo; Use D3 rangeBands</a>
       
-      
-        <a class="basic-alignment right" href="/post/rotate-gauge-needle-in-d3/" title="Next Post: Rotate Gauge Needle in D3">Rotate Gauge Needle in D3 &raquo;</a>
       
     </p>
   </footer>
@@ -297,8 +318,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/import-erb-into-karma/';
-        var disqus_url = 'http://jaketrent.com/post/import-erb-into-karma/';
+        var disqus_identifier = 'http://jaketrent.com/post/change-page-title-angular-route/';
+        var disqus_url = 'http://jaketrent.com/post/change-page-title-angular-route/';
         var disqus_script = 'embed.js';
       
     (function () {

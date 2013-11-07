@@ -199,7 +199,7 @@
 </span><span class='line'><span class="nv">barPad = </span><span class="p">.</span><span class="mi">1</span>
 </span><span class='line'>
 </span><span class='line'><span class="nv">x = </span><span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">ordinal</span><span class="p">()</span>
-</span><span class='line'>  <span class="p">.</span><span class="nx">domain</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nf">(d) -&gt;</span> <span class="nx">d</span><span class="p">.</span><span class="nx">letter</span><span class="p">)])</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">domain</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nf">(d) -&gt;</span> <span class="nx">d</span><span class="p">.</span><span class="nx">letter</span><span class="p">))</span>
 </span><span class='line'>  <span class="p">.</span><span class="nx">rangeRoundBands</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="nx">elementWidth</span><span class="p">],</span> <span class="nx">barPad</span><span class="p">,</span> <span class="nx">barOuterPad</span><span class="p">)</span>
 </span><span class='line'>
 </span><span class='line'><span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s">&#39;rect&#39;</span><span class="p">)</span>
@@ -272,6 +272,8 @@
         <a class="basic-alignment left" href="/post/start-review/" title="Previous Post: Start Review">&laquo; Start Review</a>
       
       
+        <a class="basic-alignment right" href="/post/change-page-title-angular-route/" title="Next Post: Change Page Title in Angular Route">Change Page Title in Angular Route &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -300,6 +302,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/post/change-page-title-angular-route/">Change Page Title in Angular Route</a>
+      </li>
+    
+      <li class="post">
         <a href="/post/use-d3-rangebands/">Use D3 rangeBands</a>
       </li>
     
@@ -313,10 +319,6 @@
     
       <li class="post">
         <a href="/post/import-erb-into-karma/">Import Erb Into Karma</a>
-      </li>
-    
-      <li class="post">
-        <a href="/post/javascript-mixins/">JavaScript Mixins</a>
       </li>
     
   </ul>
