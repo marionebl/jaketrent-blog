@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-11-07T07:23:58-07:00</updated>
+  <updated>2013-11-14T08:04:42-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,127 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Debug Ruby and Rails]]></title>
+    <link href="http://jaketrent.com/post/debug-ruby-rails/"/>
+    <updated>2013-11-14T07:37:00-07:00</updated>
+    <id>http://jaketrent.com/post/debug-ruby-rails</id>
+    <content type="html"><![CDATA[<p>Interactive debugging can sometimes be faster and more effective in helping you code than a <code>puts</code> statement.  It&#8217;s easy to get interactive debugging in Ruby or on Rails with the help of a nice gem.</p>
+
+<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="Ruby" /></p>
+
+<!--more-->
+
+
+<h2>No IDE Required</h2>
+
+<p>There are Ruby IDEs that provide interactive debugging capabilities.  My favorite is <a href="http://www.jetbrains.com/ruby/">RubyMine by Jetbrains</a>.  But if you don&#8217;t have or don&#8217;t want an IDE, there&#8217;s still hope.</p>
+
+<h2>Debugger Gem</h2>
+
+<h4>Include the dependency</h4>
+
+<p>My new buddy George showed me a sweet gem simply named <code>debugger</code>.  To use it, I first add the <code>debugger</code> dependency to my <code>Gemfile</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>source "https://rubygems.org"
+</span><span class='line'>
+</span><span class='line'>gem 'debugger'</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Add a breakpoint</h4>
+
+<p>Next, I need to add my &#8220;breakpoint&#8221; into my code that I&#8217;m going to run.  In this case, the breakpoint is defined by calling <code>debugger</code>.  On the same line, we&#8217;ll also import the <code>debugger</code> library:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1"># ...</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">is_anagram?</span>
+</span><span class='line'>    <span class="nb">require</span> <span class="s1">&#39;debugger&#39;</span><span class="p">;</span> <span class="n">debugger</span>
+</span><span class='line'>    <span class="n">same_length?</span> <span class="ow">and</span> <span class="n">different?</span> <span class="ow">and</span> <span class="n">has_same_letters?</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Run your code</h4>
+
+<p>In this example, I&#8217;m going to break right after I call the <code>is_anagram?</code> method.  From the terminal, now I exercise the code.  In this case, I&#8217;ll run my unit tests:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ruby anagram_test.rb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Debug like a champ</h4>
+
+<p>And when execution of the script gets to the <code>debugger</code> line, execution will pause and output in my terminal will look something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sr">/Users/</span><span class="n">jake</span><span class="o">.</span><span class="n">trent</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">exercism</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">anagram</span><span class="o">/</span><span class="n">anagram</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">13</span>
+</span><span class='line'><span class="n">same_length?</span> <span class="ow">and</span> <span class="n">different?</span> <span class="ow">and</span> <span class="n">has_same_letters?</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">17</span><span class="o">]</span> <span class="k">in</span> <span class="sr">/Users/</span><span class="n">jake</span><span class="o">.</span><span class="n">trent</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">exercism</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">anagram</span><span class="o">/</span><span class="n">anagram</span><span class="o">.</span><span class="n">rb</span>
+</span><span class='line'>   <span class="mi">8</span>      <span class="vi">@letters2</span> <span class="o">=</span> <span class="vi">@word2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'>   <span class="mi">9</span>    <span class="k">end</span>
+</span><span class='line'>   <span class="mi">10</span>
+</span><span class='line'>   <span class="mi">11</span>    <span class="k">def</span> <span class="nf">is_anagram?</span>
+</span><span class='line'>   <span class="mi">12</span>      <span class="nb">require</span> <span class="s1">&#39;debugger&#39;</span><span class="p">;</span> <span class="n">debugger</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="mi">13</span>      <span class="n">same_length?</span> <span class="ow">and</span> <span class="n">different?</span> <span class="ow">and</span> <span class="n">has_same_letters?</span>
+</span><span class='line'>   <span class="mi">14</span>    <span class="k">end</span>
+</span><span class='line'>   <span class="mi">15</span>
+</span><span class='line'>   <span class="mi">16</span>    <span class="k">def</span> <span class="nf">has_same_letters?</span>
+</span><span class='line'>   <span class="mi">17</span>      <span class="n">same_letters</span> <span class="o">=</span> <span class="kp">true</span>
+</span><span class='line'><span class="p">(</span><span class="n">rdb</span><span class="p">:</span><span class="mi">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A snippet of my code is shown, an arrow points at line 13, and there&#8217;s a prompt at the bottom (labeled &#8216;rdb&#8217;) that you can type in.  <code>debugger</code> gives you a few special commands to type, such as:</p>
+
+<ul>
+<li><code>n</code> - next</li>
+<li><code>s</code> - step over</li>
+<li><code>c</code> - continue</li>
+</ul>
+
+
+<p>These commands should be familiar to almost all debuggers.  The other fabulous thing is that the prompt functions as a sort of <code>irb</code> session from the current context of your code.  So, I can type variable names to see their contents or call functions to see what they&#8217;d return.  So, in the case of this code, I could try:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">(</span>rdb:1<span class="o">)</span> has_same_letters?
+</span><span class='line'><span class="nb">true</span>
+</span><span class='line'><span class="o">(</span>rdb:1<span class="o">)</span> @letters2
+</span><span class='line'><span class="o">[</span><span class="s2">&quot;s&quot;</span>, <span class="s2">&quot;t&quot;</span>, <span class="s2">&quot;a&quot;</span>, <span class="s2">&quot;n&quot;</span>, <span class="s2">&quot;d&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pretty cool and pretty powerful all for the price of including the library and including a breakpoint in your code.</p>
+
+<p>Are there tools similar to this that you love to use for debugging?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Change Page Title in Angular Route]]></title>
@@ -1920,58 +2041,6 @@
 <p>Is there something more precise than these two rules of thumb?  Why does Angular make an exception for these two cases, thus causing us to try to remember our rules of thumb?</p>
 
 <p>As I surmised above, I can only guess that because the pathing use case often wants to mix strings with JavaScript values, the exception was made.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Remove Mobile Safari Click Delay]]></title>
-    <link href="http://jaketrent.com/post/remove-mobile-safari-click-delay/"/>
-    <updated>2013-06-24T08:04:00-06:00</updated>
-    <id>http://jaketrent.com/post/remove-mobile-safari-click-delay</id>
-    <content type="html"><![CDATA[<p>Did you know that Mobile Safari and other mobile browsers are delaying your click events?  If you&#8217;ve been testing your mobile site, and it feels sluggish in Mobile Safari, this could be one of the reasons.  Disable the click delay and rejoice at a bit more snappy response.</p>
-
-<p><img src="http://i.imgur.com/PH8Zosr.png" alt="mobile browser delay" /></p>
-
-<!--more-->
-
-
-<h2>Sandbagging?</h2>
-
-<p>Why would a browser vendor build in this &#8220;functionality&#8221;?  Are they purposefully sandbagging their web experience so consumers will be more drawn to a device-specific app instead?  As if that could ever happen.</p>
-
-<p>Google, as with most things, has an answer.  From a <a href="https://developers.google.com/mobile/articles/fast_buttons?hl=de-DE.">Google Developer article</a>:</p>
-
-<blockquote><p>The reason for [the 300ms delay] is that the browser is waiting to see if you are actually performing a double tap.</p></blockquote>
-
-<p>As with the apps Google was developing, the buttons that we&#8217;re designing don&#8217;t really need this check for double taps.  We really just want fast buttons.</p>
-
-<h2>FastClick</h2>
-
-<p>Really, most of the work for this problem is figuring out where the slowness is coming from.  I spent days and days trying to optimize a single-page web app that had a bunch of buttons with click events that seemed slow for some reason.  I came up with all sorts of theories and wasted a lot of time.</p>
-
-<p>Now that you know what your problem is, just download and use a library to solve it.  Of the most fantastic, <a href="https://github.com/ftlabs/fastclick">FastClick</a>.  It&#8217;s easy to use.</p>
-
-<p><strong>Step 1</strong>
-Include the script in the <code>head</code> tag:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;fastclick.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Step 2</strong>
-Attach FastClick to all links on the page (or subset if you wish):</p>
-
-<figure class='code'><figcaption><span>a-whole-new-world.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span> <span class="s">&#39;load&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">FastClick</span><span class="p">.</span><span class="nx">attach</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span>
-</span><span class='line'><span class="p">,</span> <span class="kc">false</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Just like that, you&#8217;ll see marked improvements.  Thank you Apple.  Thank you FastClick.</p>
 ]]></content>
   </entry>
   

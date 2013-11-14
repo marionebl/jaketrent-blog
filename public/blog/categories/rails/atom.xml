@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-11-07T07:23:58-07:00</updated>
+  <updated>2013-11-14T08:04:42-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,103 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Debug Ruby and Rails]]></title>
+    <link href="http://jaketrent.com/post/debug-ruby-rails/"/>
+    <updated>2013-11-14T07:37:00-07:00</updated>
+    <id>http://jaketrent.com/post/debug-ruby-rails</id>
+    <content type="html"><![CDATA[<p>Interactive debugging can sometimes be faster and more effective in helping you code than a <code>puts</code> statement.  It's easy to get interactive debugging in Ruby or on Rails with the help of a nice gem.</p>
+
+<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="Ruby" /></p>
+
+<!--more-->
+
+
+<h2>No IDE Required</h2>
+
+<p>There are Ruby IDEs that provide interactive debugging capabilities.  My favorite is <a href="http://www.jetbrains.com/ruby/">RubyMine by Jetbrains</a>.  But if you don't have or don't want an IDE, there's still hope.</p>
+
+<h2>Debugger Gem</h2>
+
+<h4>Include the dependency</h4>
+
+<p>My new buddy George showed me a sweet gem simply named <code>debugger</code>.  To use it, I first add the <code>debugger</code> dependency to my <code>Gemfile</code>:</p>
+
+<p>```
+source "https://rubygems.org"</p>
+
+<p>gem 'debugger'
+```</p>
+
+<h4>Add a breakpoint</h4>
+
+<p>Next, I need to add my "breakpoint" into my code that I'm going to run.  In this case, the breakpoint is defined by calling <code>debugger</code>.  On the same line, we'll also import the <code>debugger</code> library:</p>
+
+<p>```ruby
+  # ...
+  def is_anagram?</p>
+
+<pre><code>require 'debugger'; debugger
+same_length? and different? and has_same_letters?
+</code></pre>
+
+<p>  end
+```</p>
+
+<h4>Run your code</h4>
+
+<p>In this example, I'm going to break right after I call the <code>is_anagram?</code> method.  From the terminal, now I exercise the code.  In this case, I'll run my unit tests:</p>
+
+<p><code>bash
+ruby anagram_test.rb
+</code></p>
+
+<h4>Debug like a champ</h4>
+
+<p>And when execution of the script gets to the <code>debugger</code> line, execution will pause and output in my terminal will look something like this:</p>
+
+<p>```ruby
+/Users/jake.trent/dev/exercism/ruby/anagram/anagram.rb:13
+same_length? and different? and has_same_letters?</p>
+
+<p>[8, 17] in /Users/jake.trent/dev/exercism/ruby/anagram/anagram.rb
+   8      @letters2 = @word2.split('')
+   9    end
+   10
+   11    def is_anagram?
+   12      require 'debugger'; debugger
+=> 13      same_length? and different? and has_same_letters?
+   14    end
+   15
+   16    def has_same_letters?
+   17      same_letters = true
+(rdb:1)
+```</p>
+
+<p>A snippet of my code is shown, an arrow points at line 13, and there's a prompt at the bottom (labeled 'rdb') that you can type in.  <code>debugger</code> gives you a few special commands to type, such as:</p>
+
+<ul>
+<li><code>n</code> - next</li>
+<li><code>s</code> - step over</li>
+<li><code>c</code> - continue</li>
+</ul>
+
+
+<p>These commands should be familiar to almost all debuggers.  The other fabulous thing is that the prompt functions as a sort of <code>irb</code> session from the current context of your code.  So, I can type variable names to see their contents or call functions to see what they'd return.  So, in the case of this code, I could try:</p>
+
+<p><code>bash
+(rdb:1) has_same_letters?
+true
+(rdb:1) @letters2
+["s", "t", "a", "n", "d"]
+</code></p>
+
+<p>Pretty cool and pretty powerful all for the price of including the library and including a breakpoint in your code.</p>
+
+<p>Are there tools similar to this that you love to use for debugging?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Import Erb Into Karma]]></title>
@@ -293,65 +390,6 @@ index.html.slim
 <h4>Recommendation</h4>
 
 <p>I think that this training series was about the best I've attended.  I'm doing a lot more Ruby and Rails in my current job than I expected even a few weeks ago, so it was very timely and useful for me.  The content was good, but it was the instruction that made it top notch.  Thanks, Frank and Jumpstart, for the great experience!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Multiple Yields in an ERB Template]]></title>
-    <link href="http://jaketrent.com/post/multiple-yields-in-erb-template/"/>
-    <updated>2013-02-08T07:13:00-07:00</updated>
-    <id>http://jaketrent.com/post/multiple-yields-in-erb-template</id>
-    <content type="html"><![CDATA[<p>When you setup a new Rails project, you'll have a single layout file which has a single default <code>yield</code> block.  This will soon be inadequate, and you'll want another.  Here's how to setup multiple <code>yield</code> blocks per ERB template.</p>
-
-<p><img src="http://i.imgur.com/YqUKEfw.png" alt="Multiple ERB yields" /></p>
-
-<!--more-->
-
-
-<h2>Layout File</h2>
-
-<p>By default, Rails will create a file at:</p>
-
-<p><code>
-app/views/layouts/application.html.erb
-</code></p>
-
-<p>In this file, there will be a default <code>yield</code> block similar to this:</p>
-
-<p><code>ruby
-&lt;%= yield %&gt;
-</code></p>
-
-<p>It has no name.  It's just the default place for templates that use this layout file to put their content.</p>
-
-<p>We can create new <code>yield</code> blocks.  We'll have to give them a distinguishing name.  They look about the same.  If I wanted to create a new <code>yield</code> block where, for instance, alerts could be displayed if the child template had them, I could put this in my layout file:</p>
-
-<p><code>ruby
-&lt;%= yield(:alert) %&gt;
-</code></p>
-
-<p>Now I would just need something to go in it.</p>
-
-<h2>Child Templates</h2>
-
-<p>A child template that uses the <code>application.html.erb</code> layout file can just start blasting out markup that will go into the default <code>yield</code> block.  This will usually be the main content.  But in our example, there might be more focused content such as alerts that we want to display in a separate area.  Thus, our template could potentially look like this:</p>
-
-<p>```erb</p>
-
-<h1>My main content</h1>
-
-
-<p>Bacon ipsum…<p>
-
-<% content_for :alert do %>
-  <div class="alert alert-success">
-    You created multiple yield blocks!
-  </div>
-<% end %>
-```
-
-Throw down a `content_for` block, matching the name of the `yield` block in your layout file, and you're set.  Order does not matter.  Your specific `content_for` blocks can come before, after, or in the middle of your main content.  Easy as Ruby pie.
-
 ]]></content>
   </entry>
   
