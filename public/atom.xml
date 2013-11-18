@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-11-14T08:04:42-07:00</updated>
+  <updated>2013-11-18T08:31:10-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,60 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Save a Gem to Gemfile from Terminal]]></title>
+    <link href="http://jaketrent.com/post/save-gem-to-gemfile-from-terminal/"/>
+    <updated>2013-11-18T07:54:00-07:00</updated>
+    <id>http://jaketrent.com/post/save-gem-to-gemfile-from-terminal</id>
+    <content type="html"><![CDATA[<p>Have you ever wished you could save a gem to your <code>Gemfile</code> straight from the command line?  I wish Rubygems had this built in, but it&#8217;s easy to add.  After all, there&#8217;s a gem for that.</p>
+
+<p><img src="http://i.imgur.com/x2I31sl.jpg" alt="Gemrat" /></p>
+
+<!--more-->
+
+
+<h2>From npm</h2>
+
+<p>Coming from Node/Npm previous to Ruby/Rubygems, I wished I could do something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install express --save
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This would take my specified npm module and append it to the end of my <code>package.json</code> dependencies list.</p>
+
+<p>There is no equivalent for this built into Rubygems.</p>
+
+<h2>Gemrat</h2>
+
+<p>But, there is a mutant beast that skulks through the gem-lined sewers of Rubyland &#8211; and it&#8217;s name is <code>gemrat</code>!  What a great, image-provoking name.  Once you install <code>gemrat</code>, you will have the power of 20 npms at your fingertips.</p>
+
+<p>First, install it:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>gem install gemrat
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, decide what gem you want to save to your <code>Gemfile</code>.  Let&#8217;s choose a gem of a gem to try called <code>guard</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>gemrat guard
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, install the dependencies listed in your <code>Gemfile</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>bundle install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Kaboom.  You have learned the secrets of the Fire Swamp and could live there for some time.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Debug Ruby and Rails]]></title>
@@ -1971,76 +2025,6 @@
 <p>If the controller doesn&#8217;t implement this function, the current Ember Route may implement it in its <code>events</code> object.  If neither the controller or the route implement it, an exception is thrown.</p>
 
 <p>In this way, Ember Views show their worth in collecting events and translating them to meaningful verbs that we can act upon in our application.  They become reusable, allowing us to bind different content to them on different occassions.  Do Ember Views help you in this way?  Is there a better way?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[When to Use Curlies in Angular Directives]]></title>
-    <link href="http://jaketrent.com/post/when-to-use-curlies-in-angular-directives/"/>
-    <updated>2013-06-24T17:03:00-06:00</updated>
-    <id>http://jaketrent.com/post/when-to-use-curlies-in-angular-directives</id>
-    <content type="html"><![CDATA[<p>Angularjs has some sweet built-in directives.  Sometimes it can be confusing when to use the curly braces around expressions in directive attributes and when not to.  Here are a couple rules.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular directive curlies" /></p>
-
-<!--more-->
-
-
-<h2>Curlies</h2>
-
-<p>By &#8220;curlies&#8221;, I mean curly braces.  The difference of when to use or not use them looks like the following.</p>
-
-<p>Use them:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;{{valWithCurlies}}&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Or despise them:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;valWithNone&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Two Rules of Thumb</h2>
-
-<p>Here are two rules that will serve you well when deciding whether or not to use curlies.</p>
-
-<ol>
-<li>Assume no curlies in Angular directive attribute values.  Most directives don&#8217;t use them.</li>
-<li>If you would conceivably want to mix strings with Javascript code in the attribute, use curlies.</li>
-</ol>
-
-
-<h2>Two Examples with Curlies</h2>
-
-<p>There are only a few examples of directives using curlies in their attributes.  These examples are both relating to pathing.  Apparently that&#8217;s a common use case for mixing strings with JavaScript-borne values.</p>
-
-<h3>ngSrc</h3>
-
-<p>As in the source of an image, such as:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;img</span> <span class="na">ng-src=</span><span class="s">&quot;/images/{{tool.icon_name}}.png&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>ngHref</h3>
-
-<p>As in a link to an html page, such as:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;a</span> <span class="na">ng-href=</span><span class="s">&quot;http://google.com?q={{query}}&quot;</span><span class="nt">&gt;</span>See Google Results<span class="nt">&lt;/a&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Something more Precise?</h2>
-
-<p>Is there something more precise than these two rules of thumb?  Why does Angular make an exception for these two cases, thus causing us to try to remember our rules of thumb?</p>
-
-<p>As I surmised above, I can only guess that because the pathing use case often wants to mix strings with JavaScript values, the exception was made.</p>
 ]]></content>
   </entry>
   

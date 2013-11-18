@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-11-14T08:04:42-07:00</updated>
+  <updated>2013-11-18T08:31:10-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,56 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Save a Gem to Gemfile from Terminal]]></title>
+    <link href="http://jaketrent.com/post/save-gem-to-gemfile-from-terminal/"/>
+    <updated>2013-11-18T07:54:00-07:00</updated>
+    <id>http://jaketrent.com/post/save-gem-to-gemfile-from-terminal</id>
+    <content type="html"><![CDATA[<p>Have you ever wished you could save a gem to your <code>Gemfile</code> straight from the command line?  I wish Rubygems had this built in, but it's easy to add.  After all, there's a gem for that.</p>
+
+<p><img src="http://i.imgur.com/x2I31sl.jpg" alt="Gemrat" /></p>
+
+<!--more-->
+
+
+<h2>From npm</h2>
+
+<p>Coming from Node/Npm previous to Ruby/Rubygems, I wished I could do something like this:</p>
+
+<p><code>bash
+npm install express --save
+</code></p>
+
+<p>This would take my specified npm module and append it to the end of my <code>package.json</code> dependencies list.</p>
+
+<p>There is no equivalent for this built into Rubygems.</p>
+
+<h2>Gemrat</h2>
+
+<p>But, there is a mutant beast that skulks through the gem-lined sewers of Rubyland -- and it's name is <code>gemrat</code>!  What a great, image-provoking name.  Once you install <code>gemrat</code>, you will have the power of 20 npms at your fingertips.</p>
+
+<p>First, install it:</p>
+
+<p><code>bash
+gem install gemrat
+</code></p>
+
+<p>Next, decide what gem you want to save to your <code>Gemfile</code>.  Let's choose a gem of a gem to try called <code>guard</code>:</p>
+
+<p><code>bash
+gemrat guard
+</code></p>
+
+<p>Now, install the dependencies listed in your <code>Gemfile</code>:</p>
+
+<p><code>bash
+bundle install
+</code></p>
+
+<p>Kaboom.  You have learned the secrets of the Fire Swamp and could live there for some time.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Debug Ruby and Rails]]></title>
@@ -327,41 +377,6 @@ powder open --xip
 <p>I was sorely disappointed with the lack of sugary confections meant to encourage the jollyness and attentiveness of the conference-goers.  At one point, it was necessary to slip out and find a good bakery downtown.  I was not disappointed.  I was happy to see at least the vendors' vinyl stickers come out on the last day.  We need more of that!</p>
 
 <p>In all, it was a good use of my couple days.  It wasn't too pricey, but then, I wasn't paying.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Serve Json from Sinatra]]></title>
-    <link href="http://jaketrent.com/post/serve-json-from-sinatra/"/>
-    <updated>2013-02-26T07:18:00-07:00</updated>
-    <id>http://jaketrent.com/post/serve-json-from-sinatra</id>
-    <content type="html"><![CDATA[<p>By default, Sinatra knows how to serve up a rendered html page.  With a slight tweak, we can make it spit out Json too!</p>
-
-<p><img src="http://i.imgur.com/ZyCgi56.jpg" alt="JSON on Sinatra" /></p>
-
-<!--more-->
-
-
-<h2>Data Format of the Web</h2>
-
-<p>Json is my favorite data format for web applications.  Really, who wouldn't want their webservice to expose Json?  It's mucho useful.</p>
-
-<p>First, add a line to the <code>Gemfile</code> that makes a Json helper method available to Sinatra:</p>
-
-<p><code>ruby
-gem "sinatra-contrib"
-</code>
-Next, all you need to do is query the data that you want to return and actually return it, as in:</p>
-
-<p>```ruby
-require "sinatra/json"</p>
-
-<p>get "/my-models" do
-  json MyModel.all
-end
-```</p>
-
-<p>The <code>json</code> helper will then serialize your objects into Json, much to the delight of your clients!</p>
 ]]></content>
   </entry>
   

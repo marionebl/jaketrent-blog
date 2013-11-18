@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-11-14T08:04:42-07:00</updated>
+  <updated>2013-11-18T08:31:10-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,56 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Save a Gem to Gemfile from Terminal]]></title>
+    <link href="http://jaketrent.com/post/save-gem-to-gemfile-from-terminal/"/>
+    <updated>2013-11-18T07:54:00-07:00</updated>
+    <id>http://jaketrent.com/post/save-gem-to-gemfile-from-terminal</id>
+    <content type="html"><![CDATA[<p>Have you ever wished you could save a gem to your <code>Gemfile</code> straight from the command line?  I wish Rubygems had this built in, but it's easy to add.  After all, there's a gem for that.</p>
+
+<p><img src="http://i.imgur.com/x2I31sl.jpg" alt="Gemrat" /></p>
+
+<!--more-->
+
+
+<h2>From npm</h2>
+
+<p>Coming from Node/Npm previous to Ruby/Rubygems, I wished I could do something like this:</p>
+
+<p><code>bash
+npm install express --save
+</code></p>
+
+<p>This would take my specified npm module and append it to the end of my <code>package.json</code> dependencies list.</p>
+
+<p>There is no equivalent for this built into Rubygems.</p>
+
+<h2>Gemrat</h2>
+
+<p>But, there is a mutant beast that skulks through the gem-lined sewers of Rubyland -- and it's name is <code>gemrat</code>!  What a great, image-provoking name.  Once you install <code>gemrat</code>, you will have the power of 20 npms at your fingertips.</p>
+
+<p>First, install it:</p>
+
+<p><code>bash
+gem install gemrat
+</code></p>
+
+<p>Next, decide what gem you want to save to your <code>Gemfile</code>.  Let's choose a gem of a gem to try called <code>guard</code>:</p>
+
+<p><code>bash
+gemrat guard
+</code></p>
+
+<p>Now, install the dependencies listed in your <code>Gemfile</code>:</p>
+
+<p><code>bash
+bundle install
+</code></p>
+
+<p>Kaboom.  You have learned the secrets of the Fire Swamp and could live there for some time.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Debug Ruby and Rails]]></title>
@@ -405,60 +455,6 @@ rightY = centerY - needleRadius * Math.sin(thetaRad + Math.PI / 2)</p>
 <p>Note that <code>Math.PI / 2</code> is a 90 degree angle.  It's used to find the angle smaller than theta for the left triangle and find the angle larger for the right triangle.</p>
 
 <p>There you have it.  That's the magic.  For an example of this working and some more code, see this <a href="http://cdpn.io/eloGk">codepen of a d3 gauge</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Import Erb Into Karma]]></title>
-    <link href="http://jaketrent.com/post/import-erb-into-karma/"/>
-    <updated>2013-09-20T16:59:00-06:00</updated>
-    <id>http://jaketrent.com/post/import-erb-into-karma</id>
-    <content type="html"><![CDATA[<p>Rails asset pipeline allows you to use erb helpers in your CoffeeScript.  You'll still need to bring get these files into Karma runner.  It's really easy.  You just need to get to know your Karma config options.</p>
-
-<p><img src="http://i.imgur.com/i5fJT6j.png" alt="erb files in Karma runner" /></p>
-
-<!--more-->
-
-
-<h2>erb in JavaScripts</h2>
-
-<p>Why in the world would you want to use erb helpers inside your script files?  You might not.  I definitely think this should be a limited practice.  In some cases, it can be very helpful.  For instance, if you use Ruby/Rails (via <a href="https://github.com/rumblelabs/asset_sync"><code>asset_sync</code></a>) to upload your static assets to an external server, such as S3, you can help your scripts know where static assets live after upload.</p>
-
-<p>So your script might use the <code>asset_path</code> helper and end up looking something like this:</p>
-
-<p>```coffeescript app.coffee.erb
-angular.module('app', []).config ($routeProvider) -></p>
-
-<p>  $routeProvider</p>
-
-<pre><code>.when '/admin',
-  controller: 'AdminIndexCtrl'
-  templateUrl: "&lt;%= asset_path('admin/index.html') %&gt;"
-</code></pre>
-
-<p>```</p>
-
-<h2>Import erb Files into Karma</h2>
-
-<p>Well, now you have an <code>app.coffee.erb</code> file.  You need to get it into <a href="http://karma-runner.github.io">Karma runner</a>.  Normally <code>*.coffee</code> files will be brought straight in and compiled automatically by the runner as needed.  In this case, however, the Karma defaults won't recognize the <code>.coffee.erb</code> file as a CoffeeScript file need compilation.</p>
-
-<p>To tell Karma to process your erb file as a CoffeeScript file, add this to your config:</p>
-
-<p>```coffeescript karma.conf.coffee
-module.exports = (config) ->
-  config.set</p>
-
-<pre><code># ...
-preprocessors:
-  '**/*.coffee.erb': ['coffee']
-  '**/*.coffee': ['coffee']
-</code></pre>
-
-<p>```</p>
-
-<p>That's it.  That's the key to getting your Erb files processed into JavaScript and ready for Karma to use.</p>
-
-<p>Now, what are your thoughts on putting your CoffeeScripts through the erb filter of the asset pipeline at all?</p>
 ]]></content>
   </entry>
   
