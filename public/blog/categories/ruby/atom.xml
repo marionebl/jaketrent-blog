@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-11-18T08:31:10-07:00</updated>
+  <updated>2013-11-19T08:16:25-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,89 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Exercism Review]]></title>
+    <link href="http://jaketrent.com/post/exercism-review/"/>
+    <updated>2013-11-19T07:29:00-07:00</updated>
+    <id>http://jaketrent.com/post/exercism-review</id>
+    <content type="html"><![CDATA[<p>Exercism.io is a fantastic site and tool that provides a wealth of daily code exercises.  If you want to learn to be better in a language, it's a great resource to do exercises and receive feedback.</p>
+
+<p><img src="http://i.imgur.com/2oAEqBZ.jpg" alt="Exercism" /></p>
+
+<!--more-->
+
+
+<h2>Origin</h2>
+
+<p><a href="http://exercism.io">Exercism.io</a> was introduced to me by Franklin Webber of gSchool and JumpStart Labs fame.  He and his colleagues use it as a part of their instruction, and it's a great, free tool available to the public.</p>
+
+<h2>Languages</h2>
+
+<p>There is a fun array of language-learning possibilities inside Exercism.  It currently includes a varying number of exercises across these languages:</p>
+
+<ul>
+<li>clojure</li>
+<li>elixir</li>
+<li>haskell</li>
+<li>javascript</li>
+<li>objective-c</li>
+<li>python</li>
+<li>ruby</li>
+<li>scala</li>
+</ul>
+
+
+<p>I'm currently running through the Ruby exercises.</p>
+
+<h2>Starting Point</h2>
+
+<p>Based on what I've seen of the Ruby and JavaScript exercises, I don't think that Exercism's exercises are meant for an absolute beginner.  Some basic knowledge of the programming language is assumed and required.  You'll start a little deep if you know next to nothing.  These exercises are meant to expand your exposure to and understanding of language features.</p>
+
+<h2>Installation</h2>
+
+<p>Installation consists of a few things:</p>
+
+<ol>
+<li>Go to <a href="http://exercism.io">exercism.io</a> and register using your Github credentials.</li>
+<li>While on the site, download the CLI.  It's a pre-built binary that you just need to put somewhere that is tied to your system PATH.  That way you can execute it from the terminal.</li>
+<li>Setup your environment for the language you'll be learning.  Again, this information is on the site.  None of the environments are automatic in their setup, and you must follow the written steps to be ready to develop in your weapon, er language of choice.</li>
+</ol>
+
+
+<h2>Your First Exercise</h2>
+
+<p>After installation, you're ready for your first exercise.  On the terminal, type:</p>
+
+<p><code>bash
+exercism fetch
+</code></p>
+
+<p>This will download fresh exercises at the head of each of your language paths.  At first, you'll start on exercise 0 of each of the language paths.  Now, choose a language.  I chose Ruby first.  The first exercise was called <code>bob</code>.  Bob is a lackadaisical teenager who responds with smart remarks to whatever somewhat says to him.  Typical.</p>
+
+<p>Bob comes with a suite of failing tests.  All the tests are written, and it's up to use to write the code that actually makes Bob function and the tests pass.  This is literally TDD or test-driven development, and yay for us, someone has already written the tests!  In the case of Ruby, the tests are written in a MiniTest syntax.  To run them, I'm typing:</p>
+
+<p><code>bash
+ruby bob_test.rb
+</code></p>
+
+<p>This is where I think we might be able to have a bit of a better setup with the exercises.  It would be nice to have the tests automatically run on a file watch as opposed to having to run them each time manually.  For this, I personally setup <code>guard-minitest</code>.  I would recommend the same.  Of course, I can only think that Exercism doesn't do this by default in order to simplify the environment setup process.</p>
+
+<h2>Nitpicking</h2>
+
+<p>After you complete your first exercise in some form by getting all the tests to pass, you can submit it to the site for feedback.  For example:</p>
+
+<p><code>bash
+exercism submit ruby/bob/bob.rb
+</code></p>
+
+<p>The CLI will give you a link to your now-online code, and you can go there to see your submission.  Others who have completed the same exercise will also be able to see your solution.  And this is one of the coolest potentials of Exercism.  Others can give you feedback on your solution, called "nitpicks" by default.  This is a great learning opportunity.  We are ready to take feedback given from the perspective of others in their experience with the language.  We can also give feedback, training our eye to be more critical in our observation and future writing of code.  It feels like a great outcome and a great potential community.</p>
+
+<p>I have given nitpicks.  Of course, that's easier to do.  But, I am sad to say that I have never received any.  It's hard to tell how active the community really is.  I see quite a few submissions, but there are definitely fewer nitpicks than submissions.  There's quite a bit untapped community learning potential here.  To help this, I wish the system allowed you to unlock the next exercise in your language path without closing opportunity for nitpicks on submitted exercises.</p>
+
+<p>So, have you used Exercism.io before?  Do you know of similar sites?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Save a Gem to Gemfile from Terminal]]></title>
@@ -331,52 +414,6 @@ powder open --xip
 <p>And copy the resulting URL into your VM web browser.</p>
 
 <p>Ah, the fusion of Node and Ruby is pretty sweet.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mountain West Ruby Conf 2013 Review]]></title>
-    <link href="http://jaketrent.com/post/mountain-west-ruby-conf-2013-review/"/>
-    <updated>2013-04-05T15:23:00-06:00</updated>
-    <id>http://jaketrent.com/post/mountain-west-ruby-conf-2013-review</id>
-    <content type="html"><![CDATA[<p>I recently attended the Mountain West Ruby Conference.  It was my first time going.  I was pleasantly surprised by the quality of the conference.  I would recommend it.</p>
-
-<p><img src="http://i.imgur.com/ABNr5MC.jpg" alt="Mountain West Ruby Conf" /></p>
-
-<!--more-->
-
-
-<h2>Peeps</h2>
-
-<p>I'm new to the Ruby community.  I get to use it more in my current job than I ever have before.  Whenever entering a new community, it's good to find some friends.  I was pleased to notice that everyone I encountered at the conference was very friendly and welcoming.</p>
-
-<p>About the coolest thing about the community is one of the slogans: MINSWAN, which means "Matz is nice, so we are nice."  How cool is that?  Matz is the Ruby creator.  Wait, who am I kidding.  You already know that.</p>
-
-<p>I was very impressed with the blatant lack of trolling other communities.  This even with the live stream video cameras rolling (people can tend to do weird things when put on camera).</p>
-
-<p>The conference attracted speakers and attendees from as far away as Australia.</p>
-
-<h2>Speakers</h2>
-
-<p>I didn't look too closely at the schedule previous to attending.  Once I got there, I was surprised at the caliber of those people and companies who were represented.  These were big names in the tech community, such as Matz, himself, Github, Heroku, and others.</p>
-
-<p>The conference is single track, so that meant I got to see everyone speak.  I mostly like that but kind of hate that.  I believe it also meant fewer speaking slots, so everyone was pretty top notch.</p>
-
-<p>I was impressed with the stage presence of most speakers.  A few were pretty droning, but in general everyone was very polished, had good slide decks, and shared engaging and useful content.</p>
-
-<p>Devops was the stated subject matter of an entire day of the conference.  This was cool.  We can use that kind of focus on the subject.  But then it bled into the next days as well.  I want some pure code, pure Ruby'ness.  I got some of that, but not as much as I would like.  I paid my devops dues the first day.  I was ready to not hear any more of it on days 2 and 3.</p>
-
-<h2>Venue</h2>
-
-<p>It was in my back yard!  I loved the lack of a hotel requirement!  Apparently some visitors even camped in the wilderness, Nacho style.</p>
-
-<p>The Salt Lake City Public Library is a great downtown location for a small conference.  In this case, with the conference being single track, the single largest room, the amphitheatre, was the only room required for all attendees.  It featured plenty of seating -- at the cost of no leg room.</p>
-
-<p>The wifi also held up better than it has for similar gatherings in this space.  It was announced that "the city and Xmission are working feverishly" to maintain connectivity several times over the 3 days.  It still didn't stay up.  This is a common tech conf occurrence.</p>
-
-<p>I was sorely disappointed with the lack of sugary confections meant to encourage the jollyness and attentiveness of the conference-goers.  At one point, it was necessary to slip out and find a good bakery downtown.  I was not disappointed.  I was happy to see at least the vendors' vinyl stickers come out on the last day.  We need more of that!</p>
-
-<p>In all, it was a good use of my couple days.  It wasn't too pricey, but then, I wasn't paying.</p>
 ]]></content>
   </entry>
   

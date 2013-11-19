@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-11-18T08:31:10-07:00</updated>
+  <updated>2013-11-19T08:16:25-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,92 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Exercism Review]]></title>
+    <link href="http://jaketrent.com/post/exercism-review/"/>
+    <updated>2013-11-19T07:29:00-07:00</updated>
+    <id>http://jaketrent.com/post/exercism-review</id>
+    <content type="html"><![CDATA[<p>Exercism.io is a fantastic site and tool that provides a wealth of daily code exercises.  If you want to learn to be better in a language, it&#8217;s a great resource to do exercises and receive feedback.</p>
+
+<p><img src="http://i.imgur.com/2oAEqBZ.jpg" alt="Exercism" /></p>
+
+<!--more-->
+
+
+<h2>Origin</h2>
+
+<p><a href="http://exercism.io">Exercism.io</a> was introduced to me by Franklin Webber of gSchool and JumpStart Labs fame.  He and his colleagues use it as a part of their instruction, and it&#8217;s a great, free tool available to the public.</p>
+
+<h2>Languages</h2>
+
+<p>There is a fun array of language-learning possibilities inside Exercism.  It currently includes a varying number of exercises across these languages:</p>
+
+<ul>
+<li>clojure</li>
+<li>elixir</li>
+<li>haskell</li>
+<li>javascript</li>
+<li>objective-c</li>
+<li>python</li>
+<li>ruby</li>
+<li>scala</li>
+</ul>
+
+
+<p>I&#8217;m currently running through the Ruby exercises.</p>
+
+<h2>Starting Point</h2>
+
+<p>Based on what I&#8217;ve seen of the Ruby and JavaScript exercises, I don&#8217;t think that Exercism&#8217;s exercises are meant for an absolute beginner.  Some basic knowledge of the programming language is assumed and required.  You&#8217;ll start a little deep if you know next to nothing.  These exercises are meant to expand your exposure to and understanding of language features.</p>
+
+<h2>Installation</h2>
+
+<p>Installation consists of a few things:</p>
+
+<ol>
+<li>Go to <a href="http://exercism.io">exercism.io</a> and register using your Github credentials.</li>
+<li>While on the site, download the CLI.  It&#8217;s a pre-built binary that you just need to put somewhere that is tied to your system PATH.  That way you can execute it from the terminal.</li>
+<li>Setup your environment for the language you&#8217;ll be learning.  Again, this information is on the site.  None of the environments are automatic in their setup, and you must follow the written steps to be ready to develop in your weapon, er language of choice.</li>
+</ol>
+
+
+<h2>Your First Exercise</h2>
+
+<p>After installation, you&#8217;re ready for your first exercise.  On the terminal, type:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>exercism fetch
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will download fresh exercises at the head of each of your language paths.  At first, you&#8217;ll start on exercise 0 of each of the language paths.  Now, choose a language.  I chose Ruby first.  The first exercise was called <code>bob</code>.  Bob is a lackadaisical teenager who responds with smart remarks to whatever somewhat says to him.  Typical.</p>
+
+<p>Bob comes with a suite of failing tests.  All the tests are written, and it&#8217;s up to use to write the code that actually makes Bob function and the tests pass.  This is literally TDD or test-driven development, and yay for us, someone has already written the tests!  In the case of Ruby, the tests are written in a MiniTest syntax.  To run them, I&#8217;m typing:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ruby bob_test.rb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is where I think we might be able to have a bit of a better setup with the exercises.  It would be nice to have the tests automatically run on a file watch as opposed to having to run them each time manually.  For this, I personally setup <code>guard-minitest</code>.  I would recommend the same.  Of course, I can only think that Exercism doesn&#8217;t do this by default in order to simplify the environment setup process.</p>
+
+<h2>Nitpicking</h2>
+
+<p>After you complete your first exercise in some form by getting all the tests to pass, you can submit it to the site for feedback.  For example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>exercism submit ruby/bob/bob.rb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The CLI will give you a link to your now-online code, and you can go there to see your submission.  Others who have completed the same exercise will also be able to see your solution.  And this is one of the coolest potentials of Exercism.  Others can give you feedback on your solution, called &#8220;nitpicks&#8221; by default.  This is a great learning opportunity.  We are ready to take feedback given from the perspective of others in their experience with the language.  We can also give feedback, training our eye to be more critical in our observation and future writing of code.  It feels like a great outcome and a great potential community.</p>
+
+<p>I have given nitpicks.  Of course, that&#8217;s easier to do.  But, I am sad to say that I have never received any.  It&#8217;s hard to tell how active the community really is.  I see quite a few submissions, but there are definitely fewer nitpicks than submissions.  There&#8217;s quite a bit untapped community learning potential here.  To help this, I wish the system allowed you to unlock the next exercise in your language path without closing opportunity for nitpicks on submitted exercises.</p>
+
+<p>So, have you used Exercism.io before?  Do you know of similar sites?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Save a Gem to Gemfile from Terminal]]></title>
@@ -1927,104 +2013,6 @@
 </span><span class='line'><span class="p">});</span>
 </span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Access Model in Ember View]]></title>
-    <link href="http://jaketrent.com/post/access-model-in-ember-view/"/>
-    <updated>2013-07-01T07:39:00-06:00</updated>
-    <id>http://jaketrent.com/post/access-model-in-ember-view</id>
-    <content type="html"><![CDATA[<p>Ember Views are used for event handling and creating reusable web components.  To make them useful and interesting, model data needs to make it into and out of the view.  Here is an example of how this works.</p>
-
-<p><img src="http://i.imgur.com/RGKiJ0n.jpg" alt="Access model data in Ember View" /></p>
-
-<!--more-->
-
-
-<h2>Define Your View</h2>
-
-<p>In our example, I&#8217;m making a simple dice rolling game.  I want to use a view to represent the die on the screen and to handle the roll event.  Your custom view must simply extend <code>Ember.View</code>:</p>
-
-<figure class='code'><figcaption><span>die-view.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.DieView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>  <span class="nv">templateName: </span><span class="s">&#39;die&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is about the simplest view definition we could make.  We&#8217;ll make it a bit cooler later.  For now, the view just knows where to get its markup.  The <code>die</code> template can be any valid template.  Ember, by default, uses Handlebars templates.  I prefer <a href="http://emblemjs.com/">Emblem</a> templates:</p>
-
-<figure class='code'><figcaption><span>die.emblem</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='haml'><span class='line'>li.die = die
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This template will simply print the <code>die</code> object in an <code>li</code> with class of <code>die</code>.  (There are an unusual number of &#8216;die&#8217; references are in this example.  This is for purely entertainment reasons, nothing more nefarious. :)</p>
-
-<h2>Render Data in Ember View Template</h2>
-
-<p>Next, you need to get your Ember View referenced in your template markup.  In <a href="http://emblemjs.com/syntax/">Emblem</a>, to reference a view, start the line with a capital letter, specifically the name of your view.  In this view, I list the dice in my game controller <code>rolling</code> array and render each die in the <code>DieView</code></p>
-
-<figure class='code'><figcaption><span>dice.emblem</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='haml'><span class='line'>ul.dice
-</span><span class='line'>  each die in this.rolling
-</span><span class='line'>    App.DieView
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Using this code, the parent template <code>dice.emblem</code> passes the <code>die</code> variable to the <code>DieView</code>, where its child template, <code>die.emblem</code> renders <code>die</code> data.</p>
-
-<h2>Pass Data Into Ember View</h2>
-
-<p>To pass the <code>die</code> data from <code>dice.emblem</code> into the <code>DieView</code> to be used programatically, however, you need an extra attribute.  Change <code>dice.emblem</code>, adding <code>contentBinding</code>:</p>
-
-<figure class='code'><figcaption><span>dice.emblem</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='haml'><span class='line'>ul.dice
-</span><span class='line'>  each die in this.rolling
-</span><span class='line'>    App.DieView contentBinding=&quot;die&quot;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you can access the <code>die</code> data via a special Ember View variable named <code>content</code>.  Why might you want to get to this data programatically in the view code?&#8230;</p>
-
-<h2>Passing Data from Ember View to Controller</h2>
-
-<p>You might want to pass it somewhere else.  Remember, Ember Views are meant to take primitive UI events and translate them into semantic events, meaningful to your application.  For example, our view might want to translate a die element <code>click</code> on the DOM into a <code>roll</code> event in the application.  We made the modification to <code>dice.emblem</code> to pass the data in.  Now, let&#8217;s send it to the controller like this:</p>
-
-<figure class='code'><figcaption><span>die-view.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.DieView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>  <span class="nv">templateName: </span><span class="s">&#39;die&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nv">click: </span><span class="nf">(evt) -&gt;</span>
-</span><span class='line'>    <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;controller&#39;</span><span class="p">).</span><span class="nx">send</span> <span class="s">&#39;roll&#39;</span><span class="p">,</span> <span class="nx">@get</span> <span class="s">&#39;content&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We retrieve the <code>content</code> variable (holding the <code>die</code>), and send it to the controller in scope as a roll event.  The controller now must implement a <code>roll</code> function.  Let&#8217;s say we have a game controller.  That code might look like this:</p>
-
-<figure class='code'><figcaption><span>game-ctrl.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.GameController = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">ObjectController</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nv">roll: </span><span class="nf">(die) -&gt;</span>
-</span><span class='line'>    <span class="c1"># roll die and advance game accordingly</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If the controller doesn&#8217;t implement this function, the current Ember Route may implement it in its <code>events</code> object.  If neither the controller or the route implement it, an exception is thrown.</p>
-
-<p>In this way, Ember Views show their worth in collecting events and translating them to meaningful verbs that we can act upon in our application.  They become reusable, allowing us to bind different content to them on different occassions.  Do Ember Views help you in this way?  Is there a better way?</p>
 ]]></content>
   </entry>
   
