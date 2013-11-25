@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Npm Install Local Files - Jake Trent</title>
+  <title>Call Dynamic Method in Ruby - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="How do you install a package with npm that's not in the npm registry? Perhaps you're developing a package locally. A few options.">
-  <meta name="keywords" content="js, javascript, node, nodejs, npm, local install, package">
+  <meta name="description" content="Sometimes it's useful to be able to call a different method in your code at runtime depending on a parameter. Ruby easily does the job.">
+  <meta name="keywords" content="ruby, dynamic method, send, send with parameters">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/npm-install-local-files/">
+  <link rel="canonical" href="http://jaketrent.com/post/ruby-call-dynamic-method/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Npm Install Local Files</h1>
+      <h1 class="entry-title">Call Dynamic Method in Ruby</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2012-12-14T08:23:00-07:00" pubdate data-updated="true">Dec 14<span>th</span>, 2012</time>
+<time datetime="2013-11-25T07:10:00-07:00" pubdate data-updated="true">Nov 25<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,90 +108,75 @@
   </header>
 
 
-<div class="entry-content"><p>Sometimes you&#8217;ll want to use <a href="http://npmjs.org/">npm</a> to install a package that doesn&#8217;t exist in the official npm registry for some reason.  Maybe you&#8217;re developing the package yourself.  Maybe it&#8217;s an internal use-only package. Maybe the package writer never published it.  Here are a few ways to install a local package with npm.</p>
+<div class="entry-content"><p>I love Ruby&#8217;s syntax for method calls.  The syntax for calling dynamic methods is pretty nice, and it&#8217;s easily mastered.</p>
 
-<p><img src="http://i.imgur.com/xnDMm.jpg" alt="Node Package Manager" /></p>
+<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="Ruby" /></p>
 
 <!--more-->
 
 
-<h2>Link the Local Node Package</h2>
+<h2><code>send</code> method</h2>
 
-<p>If you&#8217;re developing a package locally, you&#8217;re likely making lots of changes to the source.  You don&#8217;t want to publish after each change in order to install this package as a dependency elsewhere.  Npm has provided the <a href="http://npmjs.org/doc/link.html">link</a> keyword.</p>
-
-<p>This allows your put a global label on your package that tells your local npm cache about it:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> &lt;pkg_dir&gt;;
-</span><span class='line'>npm link;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And then go to the local project that you&#8217;re using the package in and point to the dependency by package name:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> &lt;project_dir&gt;;
-</span><span class='line'>npm link &lt;pkg_name&gt;;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you have symlinked a directory called <code>&lt;pkg_name&gt;</code> in the project&#8217;s node_modules directory.  Changes you make in your package will appear and be usable from within your project.</p>
-
-<h2>Tarball the Local Node Package</h2>
-
-<p>Npm can <a href="https://npmjs.org/doc/install.html">install</a> either a path or url to a local tarball.  To create a tarball that npm will like, you want to run npm <a href="https://npmjs.org/doc/pack.html">pack</a>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> &lt;pkg_dir&gt;;
-</span><span class='line'>npm pack
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This will create a tarball a la <code>&lt;pkg_name&gt;-&lt;pkg_ver&gt;.tgz</code>.  Now just store your new tarball somewhere like a local filesystem or server that is accessible when you run npm install on your dependant project.</p>
-
-<p>You can ask for the tarball manually:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install http://localServer/my-pkg-0.0.1.tgz
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Or put the reference in your package.json for later:</p>
+<p>The <code>send</code> method is one of the best and most basic ways to call a method dynamically on your object.  Let&#8217;s say we have an object with multiple methods like this:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="s2">&quot;dependencies&quot;</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;my-pkg&quot;</span><span class="o">:</span> <span class="s2">&quot;http://localServer/my-pkg-0.0.1.tgz&quot;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Fezzik</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">show_sportsmanship</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">be_colossus_for</span><span class="p">(</span><span class="n">person_1</span><span class="p">,</span> <span class="n">person_2</span><span class="o">=</span><span class="kp">nil</span><span class="p">,</span> <span class="n">person_3</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>You probably have a node package that&#8217;s only available locally for a reason.  To guarantee that it&#8217;s not accidentally published to the world via the npm registry, add this beaut to your package.json:</p>
+<p>The method you want to call might be represented as a string or a symbol.  The <code>send</code> method can only be called with a symbol.  Just convert your string if you have it.  Your method call might look like this:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
-</span><span class='line'>   <span class="s2">&quot;private&quot;</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'><span class="p">}</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Fezzik</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:show_sportsmanship</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># or</span>
+</span><span class='line'><span class="no">Fezzik</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;show_sportsmanship&quot;</span><span class="o">.</span><span class="n">to_sym</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>Replicate the Npm Registry</h2>
+<h2>Calling <code>send</code> with parameters</h2>
 
-<p>If you&#8217;re going all out, like creating a corporate npm registry, you always have the option of <a href="https://npmjs.org/doc/registry.html#Can-I-run-my-own-private-registry">replicating</a> the Npm registry internally.  It&#8217;s CouchDb, and &#8217;<a href="http://www.imdb.com/title/tt0120029/quotes?qt=qt0192627">replication</a>&#8217; is its Chinese neighbor&#8217;s middle name.  You can publish your own packages there so they&#8217;re still private to your and your organization.  And you also get local references to the public packages.</p>
+<p>Now, some of your methods might have parameters.  How are those called?  Simply pass the argument values into the <code>send</code> call as the final argument, which is a variable length argument:</p>
 
-<h2>The Glory of Npm</h2>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">just_one_person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="no">Fezzik</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:be_colossus_for</span><span class="p">,</span> <span class="n">just_one_person</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Npm is great.  The ability to install published or local packages is an example of its flexibility and usefulness.  What are the other ways that you&#8217;ve found to make non-public packages installable &#8211; for instance, that package that the writer just never bothered to publish to npm?</p>
+
+<p>You can also pass the parameters as a splat array, such as this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">people</span> <span class="o">=</span> <span class="o">[</span><span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="o">]</span>
+</span><span class='line'><span class="no">Fezzik</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:be_colossus_for</span><span class="p">,</span> <span class="o">*</span><span class="n">people</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In Ruby, the splat operator destructures the array into parameters, so the above code essentially becomes:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">people</span> <span class="o">=</span> <span class="o">[</span><span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="o">]</span>
+</span><span class='line'><span class="no">Fezzik</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:be_colossus_for</span><span class="p">,</span> <span class="n">people</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span> <span class="n">people</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span> <span class="n">people</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So, <code>send</code> turns out to be pretty easy to deal with and really useful.  Use it, and be happy.</p>
 </div>
 
 
@@ -214,12 +199,12 @@
   
 
 
-<time datetime="2012-12-14T08:23:00-07:00" pubdate data-updated="true">Dec 14<span>th</span>, 2012</time>
+<time datetime="2013-11-25T07:10:00-07:00" pubdate data-updated="true">Nov 25<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>, <a class='category' href='/blog/categories/npm/'>npm</a>
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
   
 </span>
 
@@ -228,7 +213,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/npm-install-local-files/" data-via="" data-counturl="http://jaketrent.com/post/npm-install-local-files/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/ruby-call-dynamic-method/" data-via="" data-counturl="http://jaketrent.com/post/ruby-call-dynamic-method/" >Tweet</a>
   
   
   
@@ -237,10 +222,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/intellij-12-review/" title="Previous Post: IntelliJ 12 Review">&laquo; IntelliJ 12 Review</a>
+        <a class="basic-alignment left" href="/post/exercism-review/" title="Previous Post: Exercism Review">&laquo; Exercism Review</a>
       
-      
-        <a class="basic-alignment right" href="/post/minimized-angularjs-dependency-injection/" title="Next Post: Minimized AngularJs Dependency Injection">Minimized AngularJs Dependency Injection &raquo;</a>
       
     </p>
   </footer>
@@ -329,8 +312,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/npm-install-local-files/';
-        var disqus_url = 'http://jaketrent.com/post/npm-install-local-files/';
+        var disqus_identifier = 'http://jaketrent.com/post/ruby-call-dynamic-method/';
+        var disqus_url = 'http://jaketrent.com/post/ruby-call-dynamic-method/';
         var disqus_script = 'embed.js';
       
     (function () {

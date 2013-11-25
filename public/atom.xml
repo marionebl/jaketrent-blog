@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-11-19T08:16:25-07:00</updated>
+  <updated>2013-11-25T07:27:12-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,83 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Call Dynamic Method in Ruby]]></title>
+    <link href="http://jaketrent.com/post/ruby-call-dynamic-method/"/>
+    <updated>2013-11-25T07:10:00-07:00</updated>
+    <id>http://jaketrent.com/post/ruby-call-dynamic-method</id>
+    <content type="html"><![CDATA[<p>I love Ruby&#8217;s syntax for method calls.  The syntax for calling dynamic methods is pretty nice, and it&#8217;s easily mastered.</p>
+
+<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="Ruby" /></p>
+
+<!--more-->
+
+
+<h2><code>send</code> method</h2>
+
+<p>The <code>send</code> method is one of the best and most basic ways to call a method dynamically on your object.  Let&#8217;s say we have an object with multiple methods like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Fezzik</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">show_sportsmanship</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">be_colossus_for</span><span class="p">(</span><span class="n">person_1</span><span class="p">,</span> <span class="n">person_2</span><span class="o">=</span><span class="kp">nil</span><span class="p">,</span> <span class="n">person_3</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The method you want to call might be represented as a string or a symbol.  The <code>send</code> method can only be called with a symbol.  Just convert your string if you have it.  Your method call might look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Fezzik</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:show_sportsmanship</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># or</span>
+</span><span class='line'><span class="no">Fezzik</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;show_sportsmanship&quot;</span><span class="o">.</span><span class="n">to_sym</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Calling <code>send</code> with parameters</h2>
+
+<p>Now, some of your methods might have parameters.  How are those called?  Simply pass the argument values into the <code>send</code> call as the final argument, which is a variable length argument:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">just_one_person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="no">Fezzik</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:be_colossus_for</span><span class="p">,</span> <span class="n">just_one_person</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can also pass the parameters as a splat array, such as this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">people</span> <span class="o">=</span> <span class="o">[</span><span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="o">]</span>
+</span><span class='line'><span class="no">Fezzik</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:be_colossus_for</span><span class="p">,</span> <span class="o">*</span><span class="n">people</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In Ruby, the splat operator destructures the array into parameters, so the above code essentially becomes:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">people</span> <span class="o">=</span> <span class="o">[</span><span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span><span class="o">]</span>
+</span><span class='line'><span class="no">Fezzik</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:be_colossus_for</span><span class="p">,</span> <span class="n">people</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span> <span class="n">people</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span> <span class="n">people</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So, <code>send</code> turns out to be pretty easy to deal with and really useful.  Use it, and be happy.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Exercism Review]]></title>
@@ -1743,276 +1820,6 @@
 <p>These days, I don&#8217;t namespace my controller attributes, and I don&#8217;t recommend it.</p>
 
 <p>So what do you think?  Do you write your controllers this way?  Good idea?  Bad idea?  What are some alternative methods you&#8217;ve found to balance template reuse with readability?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Behavior of CoffeeScript Fat Arrow]]></title>
-    <link href="http://jaketrent.com/post/behavior-of-coffeescript-fat-arrow/"/>
-    <updated>2013-07-01T07:39:00-06:00</updated>
-    <id>http://jaketrent.com/post/behavior-of-coffeescript-fat-arrow</id>
-    <content type="html"><![CDATA[<p>In CoffeeScript there are two different types of arrows for defining functions:  arrow (<code>-&gt;</code>) and fat arrow or hash rocket (<code>=&gt;</code>).  Usually, you&#8217;ll use the regular arrow.  But sometimes you&#8217;ll want the special behavior of the fat arrow.</p>
-
-<p><img src="http://i.imgur.com/nGd04zX.jpg" alt="CoffeeScript fat arrow" /></p>
-
-<!--more-->
-
-
-<h2>Function Binding</h2>
-
-<p>In JavaScript, the keyword <code>this</code> within a function refers to the thing that the function is attached to.  Since functions can be invoked in various ways in an average application, what <code>this</code> actually references will change.</p>
-
-<p>For instance, if a function is invoked as a callback in an event handler, <code>this</code> within that handler will likely reference <code>window</code> in JavaScript running within a web browser.  Often, this is not the desired reference.</p>
-
-<p>The solution in vanilla JavaScript is to save a reference to the context the function is defined within and then use that reference in lieu of the <code>this</code> keyword.  My favorite name to save the <code>this</code> reference into is called <code>self</code>.  In JavaScript, that might look like:</p>
-
-<figure class='code'><figcaption><span>manual-reference.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="k">this</span><span class="p">.</span><span class="nx">myVal</span> <span class="o">=</span> <span class="s2">&quot;my val&quot;</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">myFn</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">myVal</span><span class="p">);</span> <span class="c1">// will print &quot;my val&quot;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>CoffeeScript Function Binding</h2>
-
-<p>CoffeeScript understands this basic need and makes the reference saving even easier.  When you use the fat arrow, or hash rocket, it will perform function binding.  It uses a variable called <code>_this</code> automatically.</p>
-
-<h3>CoffeeScript Binding Rules</h3>
-
-<ol>
-<li>When a fat arrow is used to bind a function, a <code>_this</code> reference is saved in the same context as the function that was declared.</li>
-<li>When properties of <code>this</code> are accessed inside the bound function, they will use the saved <code>_this</code> reference (e.g., <code>@myVal</code> would compile to <code>_this.myVal</code>).</li>
-<li>When fat arrows are used to bind functions nested within bound functions, the <code>_this</code> reference from the top-level bound function context is used in the nested bound functions.</li>
-<li>The deepest non-bound function context will be used to save a <code>_this</code> reference when a bound function is declared.</li>
-</ol>
-
-
-<h2>When to use Fat Arrow</h2>
-
-<p>Given that, here are the every day rules on when to use the fat arrow:</p>
-
-<ol>
-<li>If the context of <code>this</code> in you function could change based on how it was invoked but properties of <code>this</code> need to always reference the context where the function was created, declare the function with a fat arrow.</li>
-<li>If nested functions exhibit the same need as in rule #1, declare them with the fat arrow.</li>
-<li>Don&#8217;t bind, then not bind, then bind again in nested functions.  The inner binding will clobber the <code>_this</code> reference and will likely not be what you expect in the outer context (see the last example below).</li>
-</ol>
-
-
-<h2>A Swirl of Examples</h2>
-
-<p>Here are a bunch of examples of bound and non-bound functions.  The first code snippet is the CoffeeScript source.  The second code snippet is the compiled JavaScript.</p>
-
-<h3>No Bound Functions</h3>
-
-<p>Just regular CoffeeScript function declarations.</p>
-
-<figure class='code'><figcaption><span>non-bound.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">myVal: </span><span class="s">&#39;my val&#39;</span>
-</span><span class='line'><span class="nv">myNonBoundFn: </span><span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">@myVal</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>non-bound.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">({</span>
-</span><span class='line'>  <span class="nx">myVal</span><span class="o">:</span> <span class="s1">&#39;my val&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">myNonBoundFn</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">myVal</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Bound Function</h3>
-
-<p>Introduced the fat arrow</p>
-
-<figure class='code'><figcaption><span>bound.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">myVal: </span><span class="s">&#39;my val&#39;</span>
-</span><span class='line'><span class="nv">myBoundFn: </span><span class="o">=&gt;</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">@myVal</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>bound.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">_this</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-</span><span class='line'><span class="p">({</span>
-</span><span class='line'>  <span class="nx">myVal</span><span class="o">:</span> <span class="s1">&#39;my val&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">myBoundFn</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">_this</span><span class="p">.</span><span class="nx">myVal</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Bound, Non-bound Inner Function</h3>
-
-<p>Notice the inner function is not bound, and defaults back to just referencing <code>this</code>.</p>
-
-<figure class='code'><figcaption><span>non-bound-inner.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">myVal: </span><span class="s">&#39;my val&#39;</span>
-</span><span class='line'><span class="nv">myBoundFn: </span><span class="o">=&gt;</span>
-</span><span class='line'>  <span class="nv">myInnerNonBoundFn = </span><span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">@myVal</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>non-bound-inner.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">_this</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-</span><span class='line'><span class="p">({</span>
-</span><span class='line'>  <span class="nx">myVal</span><span class="o">:</span> <span class="s1">&#39;my val&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">myBoundFn</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">myInnerNonBoundFn</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">myInnerNonBoundFn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">myVal</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">};</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Bound Within Bound Functions</h3>
-
-<p>Inner bound function uses top-level <code>_this</code>.</p>
-
-<figure class='code'><figcaption><span>bound-in-bound.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">myVal: </span><span class="s">&#39;my val&#39;</span>
-</span><span class='line'><span class="nv">myBoundFn: </span><span class="o">=&gt;</span>
-</span><span class='line'>  <span class="nv">myInnerBoundFn = </span><span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">@myVal</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>bound-in-bound.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">_this</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-</span><span class='line'><span class="p">({</span>
-</span><span class='line'>  <span class="nx">myVal</span><span class="o">:</span> <span class="s1">&#39;my val&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">myBoundFn</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">myInnerBoundFn</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">myInnerBoundFn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">_this</span><span class="p">.</span><span class="nx">myVal</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">};</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Bound, Non-bound, then Bound Functions</h3>
-
-<p>When <code>myVeryInnerBoundFn</code> uses the fat arrow inside of <code>myInnerNonBoundFn</code>, which does not, <code>_this = this</code> is generated again.  And when <code>myOtherBoundFn</code> is called, the <code>@what</code> property will be <code>undefined</code>.</p>
-
-<figure class='code'><figcaption><span>clobber-this.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">myVal: </span><span class="s">&#39;my val&#39;</span>
-</span><span class='line'><span class="nv">what: </span><span class="s">&#39;is this?&#39;</span>
-</span><span class='line'><span class="nv">myBoundFn: </span><span class="o">=&gt;</span>
-</span><span class='line'>  <span class="nv">myInnerNonBoundFn = </span><span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nv">myVeryInnerBoundFn = </span><span class="o">=&gt;</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">@myVal</span>
-</span><span class='line'><span class="nv">myOtherBoundFn: </span><span class="o">=&gt;</span>
-</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">@what</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>clobber-this.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">_this</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-</span><span class='line'><span class="p">({</span>
-</span><span class='line'>  <span class="nx">myVal</span><span class="o">:</span> <span class="s1">&#39;my val&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">what</span><span class="o">:</span> <span class="s1">&#39;is this?&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">myBoundFn</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">myInnerNonBoundFn</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">myInnerNonBoundFn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">myVeryInnerBoundFn</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">_this</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">myVeryInnerBoundFn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">_this</span><span class="p">.</span><span class="nx">myVal</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">};</span>
-</span><span class='line'>    <span class="p">};</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="nx">myOtherBoundFn</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">_this</span><span class="p">.</span><span class="nx">what</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   
