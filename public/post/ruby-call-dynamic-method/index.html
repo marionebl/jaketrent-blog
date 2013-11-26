@@ -136,14 +136,14 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The method you want to call might be represented as a string or a symbol.  The <code>send</code> method can only be called with a symbol.  Just convert your string if you have it.  Your method call might look like this:</p>
+<p>The method you want to call might be represented as a string or a symbol.  Your method call might look like this:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Fezzik</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:show_sportsmanship</span><span class="p">)</span>
 </span><span class='line'><span class="c1"># or</span>
-</span><span class='line'><span class="no">Fezzik</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;show_sportsmanship&quot;</span><span class="o">.</span><span class="n">to_sym</span><span class="p">)</span>
+</span><span class='line'><span class="no">Fezzik</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;show_sportsmanship&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -225,6 +225,8 @@
         <a class="basic-alignment left" href="/post/exercism-review/" title="Previous Post: Exercism Review">&laquo; Exercism Review</a>
       
       
+        <a class="basic-alignment right" href="/post/define-dynamic-methods-ruby/" title="Next Post: Define Methods Dynamically in Ruby">Define Methods Dynamically in Ruby &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -253,6 +255,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/post/define-dynamic-methods-ruby/">Define Methods Dynamically in Ruby</a>
+      </li>
+    
+      <li class="post">
         <a href="/post/ruby-call-dynamic-method/">Call Dynamic Method in Ruby</a>
       </li>
     
@@ -266,10 +272,6 @@
     
       <li class="post">
         <a href="/post/debug-ruby-rails/">Debug Ruby and Rails</a>
-      </li>
-    
-      <li class="post">
-        <a href="/post/change-page-title-angular-route/">Change Page Title in Angular Route</a>
       </li>
     
   </ul>

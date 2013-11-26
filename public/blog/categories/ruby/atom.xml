@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-11-25T07:27:12-07:00</updated>
+  <updated>2013-11-26T08:00:10-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,79 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Define Methods Dynamically in Ruby]]></title>
+    <link href="http://jaketrent.com/post/define-dynamic-methods-ruby/"/>
+    <updated>2013-11-26T07:28:00-07:00</updated>
+    <id>http://jaketrent.com/post/define-dynamic-methods-ruby</id>
+    <content type="html"><![CDATA[<p>In Ruby, it's common to see new methods defined dynamically or on the fly for your class.  And who doesn't want to have a piece of that metaprogramming?</p>
+
+<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="Ruby" /></p>
+
+<!--more-->
+
+
+<h2>An Example</h2>
+
+<p>For example, I just finished an <a href="/post/exercism-review/">exercism code exercise</a> where I felt like there was a fair bit of code duplication.  I had a bunch of convenience functions that would show the conversion of a time in earth time to a time specific to a planet.  So, the API required something that looked something like this:</p>
+
+<p>```ruby
+class SpaceAge</p>
+
+<p>  def on_earth</p>
+
+<pre><code>seconds_on_planet :earth
+</code></pre>
+
+<p>  end</p>
+
+<p>  def on_mercury</p>
+
+<pre><code>seconds_on_planet :mercury
+</code></pre>
+
+<p>  end</p>
+
+<p>  def on_venus</p>
+
+<pre><code>seconds_on_planet :venus
+</code></pre>
+
+<p>  end</p>
+
+<p>  # ...
+end
+```</p>
+
+<p>Feeling that this might be an excessive number of similarly pattern methods, I considered ways that the API might stay in tact but the effort of maintenance of these many functions might be decreased.</p>
+
+<h2><code>define_method</code></h2>
+
+<p>We could collapse these methods quite a bit in the visual code by defining them dynamically, using <code>define_method</code>:</p>
+
+<p>```ruby
+class SpaceAge
+  def self.on_planets(*planets)</p>
+
+<pre><code>planets.each do |planet|
+  define_method "on_#{planet}" do
+    seconds_on_planet planet
+  end
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  on_planets :earth, :mercury, :venus, :mars, :jupiter, :saturn, :uranus, :neptune
+end
+```</p>
+
+<p>The exact same code would be generated.  It's better! But it's worse!  It's actually less readable than before.  <code>on_planets</code> as a new helper API might be nice.  But, we're not currently using this anywhere else.  The code is probably more maintainable, but it's also more stiff.  Previously, each of the methods was separate and therefore separately modifiable and customizable.  Now, there's one implementation of an "on_#{planet}" method.  This could be easier/harder to deal with, depending.  I think the readability is better because of the smaller amount of code, but the readability is worse because of the increased complexity and eye parsing required.  In the end, for my code, I stayed with the original solution for its 5-star readability.</p>
+
+<p>But the ability to define methods dynamically is super awesome.  When do you find yourself using this super power?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Call Dynamic Method in Ruby]]></title>
@@ -39,14 +112,14 @@ class Fezzik
 end
 ```</p>
 
-<p>The method you want to call might be represented as a string or a symbol.  The <code>send</code> method can only be called with a symbol.  Just convert your string if you have it.  Your method call might look like this:</p>
+<p>The method you want to call might be represented as a string or a symbol.  Your method call might look like this:</p>
 
 <p>```ruby
 Fezzik.new.send(:show_sportsmanship)</p>
 
 <h1>or</h1>
 
-<p>Fezzik.new.send("show_sportsmanship".to_sym)
+<p>Fezzik.new.send("show_sportsmanship")
 ```</p>
 
 <h2>Calling <code>send</code> with parameters</h2>
@@ -303,60 +376,6 @@ true
 <p>Pretty cool and pretty powerful all for the price of including the library and including a breakpoint in your code.</p>
 
 <p>Are there tools similar to this that you love to use for debugging?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Import Erb Into Karma]]></title>
-    <link href="http://jaketrent.com/post/import-erb-into-karma/"/>
-    <updated>2013-09-20T16:59:00-06:00</updated>
-    <id>http://jaketrent.com/post/import-erb-into-karma</id>
-    <content type="html"><![CDATA[<p>Rails asset pipeline allows you to use erb helpers in your CoffeeScript.  You'll still need to bring get these files into Karma runner.  It's really easy.  You just need to get to know your Karma config options.</p>
-
-<p><img src="http://i.imgur.com/i5fJT6j.png" alt="erb files in Karma runner" /></p>
-
-<!--more-->
-
-
-<h2>erb in JavaScripts</h2>
-
-<p>Why in the world would you want to use erb helpers inside your script files?  You might not.  I definitely think this should be a limited practice.  In some cases, it can be very helpful.  For instance, if you use Ruby/Rails (via <a href="https://github.com/rumblelabs/asset_sync"><code>asset_sync</code></a>) to upload your static assets to an external server, such as S3, you can help your scripts know where static assets live after upload.</p>
-
-<p>So your script might use the <code>asset_path</code> helper and end up looking something like this:</p>
-
-<p>```coffeescript app.coffee.erb
-angular.module('app', []).config ($routeProvider) -></p>
-
-<p>  $routeProvider</p>
-
-<pre><code>.when '/admin',
-  controller: 'AdminIndexCtrl'
-  templateUrl: "&lt;%= asset_path('admin/index.html') %&gt;"
-</code></pre>
-
-<p>```</p>
-
-<h2>Import erb Files into Karma</h2>
-
-<p>Well, now you have an <code>app.coffee.erb</code> file.  You need to get it into <a href="http://karma-runner.github.io">Karma runner</a>.  Normally <code>*.coffee</code> files will be brought straight in and compiled automatically by the runner as needed.  In this case, however, the Karma defaults won't recognize the <code>.coffee.erb</code> file as a CoffeeScript file need compilation.</p>
-
-<p>To tell Karma to process your erb file as a CoffeeScript file, add this to your config:</p>
-
-<p>```coffeescript karma.conf.coffee
-module.exports = (config) ->
-  config.set</p>
-
-<pre><code># ...
-preprocessors:
-  '**/*.coffee.erb': ['coffee']
-  '**/*.coffee': ['coffee']
-</code></pre>
-
-<p>```</p>
-
-<p>That's it.  That's the key to getting your Erb files processed into JavaScript and ready for Karma to use.</p>
-
-<p>Now, what are your thoughts on putting your CoffeeScripts through the erb filter of the asset pipeline at all?</p>
 ]]></content>
   </entry>
   
