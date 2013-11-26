@@ -29,12 +29,12 @@ class Fezzik
 end
 ```
 
-The method you want to call might be represented as a string or a symbol.  The `send` method can only be called with a symbol.  Just convert your string if you have it.  Your method call might look like this:
+The method you want to call might be represented as a string or a symbol.  Your method call might look like this:
 
 ```ruby
 Fezzik.new.send(:show_sportsmanship)
 # or
-Fezzik.new.send("show_sportsmanship".to_sym)
+Fezzik.new.send("show_sportsmanship")
 ```
 
 ## Calling `send` with parameters
