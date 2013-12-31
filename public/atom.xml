@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-11-26T08:00:10-07:00</updated>
+  <updated>2013-12-31T07:36:07-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,95 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Add Zerigo DNS to Heroku]]></title>
+    <link href="http://jaketrent.com/post/add-zerigo-dns-to-heroku/"/>
+    <updated>2013-12-31T07:03:00-07:00</updated>
+    <id>http://jaketrent.com/post/add-zerigo-dns-to-heroku</id>
+    <content type="html"><![CDATA[<p>Once upon a time, I could setup DNS super easily on Heroku using their Zerigo DNS addon.  Lately, I tried again using the same pattern and failed.  Here&#8217;s an updated step-by-step guide.</p>
+
+<p><img src="http://i.imgur.com/6DUwRKt.png" alt="Heroku and Zerigo" /></p>
+
+<!--more-->
+
+
+<h2>Back in the Day</h2>
+
+<p>It used to be that all you had to do was setup the nameservers on your domain registrar, add the Zerigo addon on Heroku&#8217;s end with a few commands, and you were rocking in minutes.  The latest DNS setup on Heroku caused me a bit more grief.  Something has changed.  But there is hope.  The new steps are almost just as brief.  You&#8217;ll just have to take care to get it just right.</p>
+
+<h2>Cedar, not Bamboo</h2>
+
+<p>These days new deployments on Heroku are going to favor using the Cedar stack as the new option.  The Bamboo stack was the original and older Ruby stack.  And so it troubled me after setting up my DNS as I used to that I got an error message (<a href="https://devcenter.heroku.com/articles/error-codes#h70-access-to-bamboo-http-endpoint-denied">h70</a>) similar to this in my logs:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>2010-10-06T21:51:07-07:00 heroku<span class="o">[</span>router<span class="o">]</span>: <span class="nv">at</span><span class="o">=</span>error <span class="nv">code</span><span class="o">=</span>H70 <span class="nv">desc</span><span class="o">=</span><span class="s2">&quot;Access to bamboo HTTP endpoint denied&quot;</span> <span class="nv">method</span><span class="o">=</span>GET <span class="nv">path</span><span class="o">=</span>/ <span class="nv">host</span><span class="o">=</span>foo.myapp.com <span class="nv">fwd</span><span class="o">=</span>17.17.17.17 <span class="nv">dyno</span><span class="o">=</span> <span class="nv">connect</span><span class="o">=</span> <span class="nv">service</span><span class="o">=</span> <span class="nv">status</span><span class="o">=</span>503 <span class="nv">bytes</span><span class="o">=</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lame, lame, lame, lame, lame.  Now, who did you contact?</p>
+
+<p>Running <code>heroku info</code> reveals that I&#8217;m indeed using the Cedar stack on this project, so what gives?  It turns out my DNS was messed up.</p>
+
+<h2>The New Zerigo/Heroku Setup</h2>
+
+<p>The <a href="https://devcenter.heroku.com/articles/zerigo_dns">Heroku devcenter docs for Zerigo</a> are pretty good, but as of this writing, they&#8217;re a little inaccurate.  Here is the step-by-step that worked for me:</p>
+
+<h4>1. Nameservers</h4>
+
+<p>Setup your domain via your registrar&#8217;s site to point to these nameservers:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>a.ns.zerigo.net
+</span><span class='line'>b.ns.zerigo.net
+</span><span class='line'>c.ns.zerigo.net
+</span><span class='line'>d.ns.zerigo.net
+</span><span class='line'>e.ns.zerigo.net
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2. Zerigo Addon</h4>
+
+<p>Add the Zerigo addon via the Heroku cli:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>heroku addons:add zerigo_dns
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>3. Zerigo Config</h4>
+
+<p>Open Zerigo addon for configuration:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>heroku addons:open zerigo_dns
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Navigate to the Zerigo site for your app and press the &#8220;Add Snippet&#8221; button.  From the snippets available, select &#8220;Heroku&#8221;.  This snippet contains a CNAME entry and a URL redirect entry.  Add the snippet.  Now, you&#8217;ll need to adjust the CNAME entry.  The <code>data</code> field probably reads <code>proxy.heroku.com</code>.  This has been deprecated.  Instead, change the CNAME entry to point to <code>yourapp.herokuapp.com</code>.</p>
+
+<p>Note also that the URL redirect entry is moving all traffic from yourapp.com to http://www.yourapp.com.  Apparently now the &#8220;www.&#8221; subdomain is required and you can&#8217;t setup a naked domain on Heroku.  If someone knows otherwise, I&#8217;d love to here about it, because I used to do this all the time.</p>
+
+<h4>4. Add Domains on Heroku</h4>
+
+<p>Via the Heroku cli, type:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>heroku domains:add www.yourapp.com
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that we do <em>not</em> want to add <code>yourapp.com</code> (no &#8220;www&#8221;) to in this manner.  If you do that, the tool adds multiple A records to Zerigo, which the Zerigo docs clearly state you don&#8217;t want.  These A records are what will activate routing through the Bamboo stack, which you want to avoid.</p>
+
+<p>This should be the point at which you can refresh your browser at &#8220;yourapp.com&#8221;.  You should see the redirect happen, moving you to &#8220;www.yourapp.com&#8221;.  The routing should be happy on Heroku&#8217;s end.  It sometimes takes more time for this to propagate, so if you don&#8217;t see results immediately, be a bit patient before your start changing your configuration, thinking it&#8217;s not working.</p>
+
+<p>Has anyone else run into this?  Is there a better way to set this up?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Define Methods Dynamically in Ruby]]></title>
@@ -1764,54 +1853,6 @@
 <p>Now you don&#8217;t need to have JavaScript to trigger click events on the file input field.  You will just be relying on direct user interaction to click the native file input field.  This will make <a href="http://stackoverflow.com/questions/210643/in-javascript-can-i-make-a-click-event-fire-programmatically-for-a-file-input">some browsers</a>, like Chrome and Firefox, happy.  This is because these browsers won&#8217;t hold file values given to the input programmatically as a security precaution.  Oddly, IE, which sometimes balks more about innane security constraints like this, is ok.</p>
 
 <p>So, what do you think?  Does this work for you?  Anything else to make the solution more solid?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[So Good They Can't Ignore You]]></title>
-    <link href="http://jaketrent.com/post/so-good-they-cant-ignore-you/"/>
-    <updated>2013-07-17T22:35:00-06:00</updated>
-    <id>http://jaketrent.com/post/so-good-they-cant-ignore-you</id>
-    <content type="html"><![CDATA[<p>&#8220;<a href="http://www.amazon.com/gp/product/1455509124/ref=as_li_ss_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1455509124&amp;linkCode=as2&amp;tag=jaktre-20">So Good They Can&#8217;t Ignore You</a>&#8221; is written by Cal Newport.  He rejects the idea of following your passion in order to find the work you love.  Instead, he suggests the accumulation of career capital.</p>
-
-<p><img src="http://i.imgur.com/VWjzM2c.jpg" alt="So good" /></p>
-
-<!--more-->
-
-
-<p>What follows are the main sections or rules of the book with a few of my takeaways each.  The man is obviously steeped in science.  The book reads like laws of physics.  Well, not quite that dry, but just as precise and well organized.  I love reading him say, &#8220;In which I argue&#8230;&#8221;  Sounds very professorish.</p>
-
-<h2>The Passion Hypothesis</h2>
-
-<p>Isn&#8217;t it true that when someone is trying to determine a career path or job, we often ask questions like, &#8220;Well, what do you want to do?&#8221; And give advice like, &#8220;Do something you&#8217;re passionate about.&#8221;  The author gives a few individual profiles of people who followed this advice without key ingredients and were, in the end, disappointed by the result.  He also points out a whole class of lifestyle designers who, in their delusion, <a href="http://jaketrent.com/post/quitter-review/">quit their day job</a> to live on their yet-to-be-created passive Internet income and aren&#8217;t able to make it.</p>
-
-<h2>Career Capital</h2>
-
-<p>(In which) Newport argues that &#8220;working right trumps finding the right work.&#8221;  Essentially, you worry more about what you are producing and the value you&#8217;re giving (craftsman mindset) instead of whether or not it fits some passion you&#8217;re predisposed to.</p>
-
-<p>Career capital is essentially the collection of rare and valuable skills that you possess that the market is willing to pay for.  Without this, you will likely not enjoy your work.  With this, your ability to define and magnify your work is much greater.</p>
-
-<p>The title of the book comes from Steve Martin, who remarked in an interview that aspiring comics didn&#8217;t like his advice.  They wanted quick fix answers like, &#8220;How do I get an audition?&#8221;  But he would always advise, &#8220;Be so good they can&#8217;t ignore you.&#8221;  And most likely, judging by your name recognition of Monseiur Martin, he has worked himself to that level.</p>
-
-<h2>Autonomy</h2>
-
-<p>It is autonomy, not passion, that is most likely to help you love your work.  The amount of control you have in a job is likely to influence your liking it.  The more control, the better.  But, it doesn&#8217;t come immediately.  If you don&#8217;t have the career capital, you can&#8217;t purchase it.  And if you&#8217;re offered it, while you know you probably don&#8217;t have the capital, it&#8217;s probably a mirage.  But if you&#8217;re so good they can&#8217;t ignore you, your ability to set terms and influence your environment is real.</p>
-
-<h2>Importance of a Mission</h2>
-
-<p>&#8220;So good they can&#8217;t ignore you&#8221; hardly sounds like your average work.  Instead it&#8217;s likely that you&#8217;re attached to a catchy mission.  You have a vision that people want to share.  You do work that people like to talk about.  Your name is known by peers and leaders in your industry.  You have made it to the edge of your field.  You are pushing boundaries, and are creating new fields, often mixtures of those you have expertise within.</p>
-
-<p>These stages of achievement that push your career and humanity forward are significant.  Little steps or bets need to be made strategically and intentionally in order to create a habit of advancing your knowledge and skill.  The sheer investment required to get to these levels is immense.</p>
-
-<h2>Conclusions</h2>
-
-<p>Newport&#8217;s book was worth the read.  In fact, I recommend it to anyone about to enter college, desiring to start in a new field, wanting to scratch an entrepreneurial itch, or thinking of changing jobs.</p>
-
-<p>His advice is solid.  It&#8217;s more grounded and nuanced than the &#8220;follow your passion&#8221;, feel good propaganda.</p>
-
-<p>The writing is a little dry.  It&#8217;s a short book at just over 200 small pages.  Still, it took me a bit to get through.  I wasn&#8217;t exactly glued to the pages.  But I do believe the advice is invaluable if it influences one to throw all their potential ability behind producing their best work and becoming their best worker.  It reads well, but sometimes feels like a textbook.  Perfect for all that intentional learning we all want to do, right?</p>
-
-<p>Most importantly, it inspired me to be so good they can&#8217;t ignore me.</p>
 ]]></content>
   </entry>
   
