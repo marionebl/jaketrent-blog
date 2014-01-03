@@ -9,7 +9,7 @@ keywords: grunt, grunt-init, exercism, jasmine_node, watch, js, javascript
 published: true
 ---
 
-[Exercism.io](http://exercism.io) has a great set of JavaScript exercises.  They could be made better by a better test setup and runner.  I've created a small grunt-init template that will help set that up.
+[Exercism.io](http://exercism.io) has a great set of JavaScript exercises.  They could be made better by a better test setup and runner.  I've created a small grunt-init template to help in that setup.
 
 ![Grunt and Exercism](http://i.imgur.com/4773D.jpg)
 
@@ -51,9 +51,9 @@ To install this tool, run:
 npm install -g grunt-init
 ```
 
-To use a grunt-init template, you need to have a local copy.  This template copy could live anywhere, but grunt-init can reference these templates purely by name if you put them in `~/grunt-init/`.
+To use a grunt-init template, you need to have a local copy.  This template copy could live anywhere, but grunt-init can reference these templates purely by name if you put them in `~/.grunt-init/`.
 
-For the Exercism template, clone it like so:
+To get the [Exercism grunt-init template](https://github.com/jaketrent/grunt-init-exercism), clone it like so:
 
 ```bash
 git clone git@github.com:jaketrent/grunt-init-exercism.git ~/.grunt-init/exercism

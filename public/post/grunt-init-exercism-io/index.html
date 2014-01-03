@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>When to Use Curlies in Angular Directives - Jake Trent</title>
+  <title>Grunt-init Exercism.io - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="Angularjs has some sweet built-in directives. Sometimes it can be confusing when to use the curly braces around expressions in directive attributes &hellip;">
-  <meta name="keywords" content="js, javascript, angular, angular directives, angular direct curlies, curly braces">
+  <meta name="description" content="Exercism.io has great JavaScript exercises that are made better by a better test runner. Use grunt-init to set up.">
+  <meta name="keywords" content="grunt, grunt-init, exercism, jasmine_node, watch, js, javascript">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/when-to-use-curlies-in-angular-directives/">
+  <link rel="canonical" href="http://jaketrent.com/post/grunt-init-exercism-io/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">When to Use Curlies in Angular Directives</h1>
+      <h1 class="entry-title">Grunt-init Exercism.io</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2013-06-24T17:03:00-06:00" pubdate data-updated="true">Jun 24<span>th</span>, 2013</time>
+<time datetime="2014-01-03T07:07:00-07:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,68 +108,84 @@
   </header>
 
 
-<div class="entry-content"><p>Angularjs has some sweet built-in directives.  Sometimes it can be confusing when to use the curly braces around expressions in directive attributes and when not to.  Here are a couple rules.</p>
+<div class="entry-content"><p><a href="http://exercism.io">Exercism.io</a> has a great set of JavaScript exercises.  They could be made better by a better test setup and runner.  I&#8217;ve created a small grunt-init template to help in that setup.</p>
 
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular directive curlies" /></p>
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt and Exercism" /></p>
 
 <!--more-->
 
 
-<h2>Curlies</h2>
+<h2>Exercism.io</h2>
 
-<p>By &#8220;curlies&#8221;, I mean curly braces.  The difference of when to use or not use them looks like the following.</p>
+<p>For those unfamiliar, <a href="http://exercism.io">Excercism.io</a> is a great tool that helps coders and potential coders learn and expand their knowledge in several programming languages.  Currently, among the 9 language choices, JavaScript is one.  The JavaScript exercises come with a pre-built <a href="https://github.com/mhevery/jasmine-node">jasmine_node</a> test suite.  The point of the exercise is to write code that will make all the corresponding tests pass.  For more on Excercism.io, see my <a href="/post/exercism-review/">review</a>.</p>
 
-<p>Use them:</p>
+<h2>Vanilla jasmine_node</h2>
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;{{valWithCurlies}}&quot;</span> <span class="nt">/&gt;</span>
+<p>As the <a href="http://exercism.io/help/setup/javascript">Exercism JavaScript docs</a> indicate, you can setup your JavaScript environment like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install -g jasmine_node
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Or despise them:</p>
+<p>And then run your tests like this:</p>
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;element</span> <span class="na">ng-attribute=</span><span class="s">&quot;valWithNone&quot;</span> <span class="nt">/&gt;</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>jasmine_node bob_test.spec.js
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>Two Rules of Thumb</h2>
+<p>This does work perfectly well.  But, we want something more.  Of course.</p>
 
-<p>Here are two rules that will serve you well when deciding whether or not to use curlies.</p>
+<h2>Grunt watch</h2>
 
-<ol>
-<li>Assume no curlies in Angular directive attribute values.  Most directives don&#8217;t use them.</li>
-<li>If you would conceivably want to mix strings with Javascript code in the attribute, use curlies.</li>
-</ol>
+<p>We want the test suite to re-run as soon as we make a change and save either our test file or our file under test.  Well, it turns out that <a href="http://gruntjs.com">Grunt</a> is a great little command-line tool that has plugins for file watching.</p>
 
+<p>Grunt needs to be told to use a plugin.  Then it needs to be told that we want to run the task that watches our files.  All of this is indicated to Grunt via a local <code>Gruntfile.js</code> or <code>Gruntfile.coffee</code> file.  You could create this file by yourself, but wouldn&#8217;t it be nice if there was a <code>Gruntfile.js</code> created somewhere for you already that worked well with Exercism?</p>
 
-<h2>Two Examples with Curlies</h2>
+<h2>Grunt-init</h2>
 
-<p>There are only a few examples of directives using curlies in their attributes.  These examples are both relating to pathing.  Apparently that&#8217;s a common use case for mixing strings with JavaScript-borne values.</p>
+<p>It turns out that there is a great, separate utility called <a href="http://gruntjs.com/project-scaffolding">grunt-init</a> that you can use to create your <code>Gruntfile.js</code> (and many other things) with a pre-built template.</p>
 
-<h3>ngSrc</h3>
+<p>To install this tool, run:</p>
 
-<p>As in the source of an image, such as:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;img</span> <span class="na">ng-src=</span><span class="s">&quot;/images/{{tool.icon_name}}.png&quot;</span> <span class="nt">/&gt;</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install -g grunt-init
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h3>ngHref</h3>
+<p>To use a grunt-init template, you need to have a local copy.  This template copy could live anywhere, but grunt-init can reference these templates purely by name if you put them in <code>~/.grunt-init/</code>.</p>
 
-<p>As in a link to an html page, such as:</p>
+<p>To get the <a href="https://github.com/jaketrent/grunt-init-exercism">Exercism grunt-init template</a>, clone it like so:</p>
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;a</span> <span class="na">ng-href=</span><span class="s">&quot;http://google.com?q={{query}}&quot;</span><span class="nt">&gt;</span>See Google Results<span class="nt">&lt;/a&gt;</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone git@github.com:jaketrent/grunt-init-exercism.git ~/.grunt-init/exercism
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>Something more Precise?</h2>
+<p>Then change into your specific Exercism directory, init your <code>Gruntfile.js</code>, and follow the other commands:</p>
 
-<p>Is there something more precise than these two rules of thumb?  Why does Angular make an exception for these two cases, thus causing us to try to remember our rules of thumb?</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~/dev/exercism/javascript/bob
+</span><span class='line'>grunt-init exercism
+</span><span class='line'>npm init
+</span><span class='line'>npm install
+</span></code></pre></td></tr></table></div></figure>
 
-<p>As I surmised above, I can only guess that because the pathing use case often wants to mix strings with JavaScript values, the exception was made.</p>
+
+<p>The <code>npm init</code> will flush out the rest of the generated <code>package.json</code>.  The <code>npm install</code> will install all dependencies that we said Grunt needed to do its job.</p>
+
+<p>Finally, activate Grunt to watch your files with:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>grunt watch
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now as you write your Exercism code to fulfill tests, you will see the tests get run automatically and become greenlit as your code increases in awesomeness.</p>
 </div>
 
 
@@ -192,12 +208,12 @@
   
 
 
-<time datetime="2013-06-24T17:03:00-06:00" pubdate data-updated="true">Jun 24<span>th</span>, 2013</time>
+<time datetime="2014-01-03T07:07:00-07:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/angularjs/'>angularjs</a>, <a class='category' href='/blog/categories/js/'>js</a>
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/grunt/'>grunt</a>, <a class='category' href='/blog/categories/js/'>js</a>
   
 </span>
 
@@ -206,7 +222,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/when-to-use-curlies-in-angular-directives/" data-via="" data-counturl="http://jaketrent.com/post/when-to-use-curlies-in-angular-directives/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/grunt-init-exercism-io/" data-via="" data-counturl="http://jaketrent.com/post/grunt-init-exercism-io/" >Tweet</a>
   
   
   
@@ -215,10 +231,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/remove-mobile-safari-click-delay/" title="Previous Post: Remove Mobile Safari Click Delay">&laquo; Remove Mobile Safari Click Delay</a>
+        <a class="basic-alignment left" href="/post/add-zerigo-dns-to-heroku/" title="Previous Post: Add Zerigo DNS to Heroku">&laquo; Add Zerigo DNS to Heroku</a>
       
-      
-        <a class="basic-alignment right" href="/post/access-model-in-ember-view/" title="Next Post: Access Model in Ember View">Access Model in Ember View &raquo;</a>
       
     </p>
   </footer>
@@ -307,8 +321,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/when-to-use-curlies-in-angular-directives/';
-        var disqus_url = 'http://jaketrent.com/post/when-to-use-curlies-in-angular-directives/';
+        var disqus_identifier = 'http://jaketrent.com/post/grunt-init-exercism-io/';
+        var disqus_url = 'http://jaketrent.com/post/grunt-init-exercism-io/';
         var disqus_script = 'embed.js';
       
     (function () {

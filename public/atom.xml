@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-12-31T07:36:07-07:00</updated>
+  <updated>2014-01-03T07:57:39-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,92 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Grunt-init Exercism.io]]></title>
+    <link href="http://jaketrent.com/post/grunt-init-exercism-io/"/>
+    <updated>2014-01-03T07:07:00-07:00</updated>
+    <id>http://jaketrent.com/post/grunt-init-exercism-io</id>
+    <content type="html"><![CDATA[<p><a href="http://exercism.io">Exercism.io</a> has a great set of JavaScript exercises.  They could be made better by a better test setup and runner.  I&#8217;ve created a small grunt-init template to help in that setup.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt and Exercism" /></p>
+
+<!--more-->
+
+
+<h2>Exercism.io</h2>
+
+<p>For those unfamiliar, <a href="http://exercism.io">Excercism.io</a> is a great tool that helps coders and potential coders learn and expand their knowledge in several programming languages.  Currently, among the 9 language choices, JavaScript is one.  The JavaScript exercises come with a pre-built <a href="https://github.com/mhevery/jasmine-node">jasmine_node</a> test suite.  The point of the exercise is to write code that will make all the corresponding tests pass.  For more on Excercism.io, see my <a href="http://jaketrent.com/post/exercism-review/">review</a>.</p>
+
+<h2>Vanilla jasmine_node</h2>
+
+<p>As the <a href="http://exercism.io/help/setup/javascript">Exercism JavaScript docs</a> indicate, you can setup your JavaScript environment like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install -g jasmine_node
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And then run your tests like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>jasmine_node bob_test.spec.js
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This does work perfectly well.  But, we want something more.  Of course.</p>
+
+<h2>Grunt watch</h2>
+
+<p>We want the test suite to re-run as soon as we make a change and save either our test file or our file under test.  Well, it turns out that <a href="http://gruntjs.com">Grunt</a> is a great little command-line tool that has plugins for file watching.</p>
+
+<p>Grunt needs to be told to use a plugin.  Then it needs to be told that we want to run the task that watches our files.  All of this is indicated to Grunt via a local <code>Gruntfile.js</code> or <code>Gruntfile.coffee</code> file.  You could create this file by yourself, but wouldn&#8217;t it be nice if there was a <code>Gruntfile.js</code> created somewhere for you already that worked well with Exercism?</p>
+
+<h2>Grunt-init</h2>
+
+<p>It turns out that there is a great, separate utility called <a href="http://gruntjs.com/project-scaffolding">grunt-init</a> that you can use to create your <code>Gruntfile.js</code> (and many other things) with a pre-built template.</p>
+
+<p>To install this tool, run:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install -g grunt-init
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To use a grunt-init template, you need to have a local copy.  This template copy could live anywhere, but grunt-init can reference these templates purely by name if you put them in <code>~/.grunt-init/</code>.</p>
+
+<p>To get the <a href="https://github.com/jaketrent/grunt-init-exercism">Exercism grunt-init template</a>, clone it like so:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone git@github.com:jaketrent/grunt-init-exercism.git ~/.grunt-init/exercism
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then change into your specific Exercism directory, init your <code>Gruntfile.js</code>, and follow the other commands:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~/dev/exercism/javascript/bob
+</span><span class='line'>grunt-init exercism
+</span><span class='line'>npm init
+</span><span class='line'>npm install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>npm init</code> will flush out the rest of the generated <code>package.json</code>.  The <code>npm install</code> will install all dependencies that we said Grunt needed to do its job.</p>
+
+<p>Finally, activate Grunt to watch your files with:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>grunt watch
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now as you write your Exercism code to fulfill tests, you will see the tests get run automatically and become greenlit as your code increases in awesomeness.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Add Zerigo DNS to Heroku]]></title>
@@ -1769,90 +1855,6 @@
 <p>As your model&#8217;s <code>hasSomeState</code> value is changed internally with the <code>@set</code> function, the view will be notified that it needs to re-run the <code>hasSomeState</code> function, and the UI will update if needed.</p>
 
 <p>What other methods do you utilize in Ember to get dynamic classes?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Style File Input]]></title>
-    <link href="http://jaketrent.com/post/style-file-input/"/>
-    <updated>2013-07-23T16:44:00-06:00</updated>
-    <id>http://jaketrent.com/post/style-file-input</id>
-    <content type="html"><![CDATA[<p>File input fields are notoriously painful to style.  Here are a few quick tips to that will save you some dead ends.</p>
-
-<p><img src="http://i.imgur.com/sm1b2ok.jpg" alt="File input" /></p>
-
-<!--more-->
-
-
-<h2>The Problem with File Inputs</h2>
-
-<p>File inputs are inconsistent to start with.  They differ even in their native form across all browsers.  They also have internal elements that are not individually accessible, such as the &#8220;Browse&#8221; button.  They are also subject to more browser-imposed security constraints than input fields of other types.</p>
-
-<p>Given these inherent problems/constraints, try to follow two basic rules:</p>
-
-<ol>
-<li>Don&#8217;t expect to make your file input look exactly like you&#8217;d like</li>
-<li>Don&#8217;t trigger clicks on the file input</li>
-</ol>
-
-
-<h2>Styling the File Input</h2>
-
-<p>Why is file input rule reasonable?  Shouldn&#8217;t you be able to match the UI design you desire?  Yes, on both counts.</p>
-
-<p>Don&#8217;t style the file input to make it look like a photo upload button (or whatever you&#8217;re marking).  Instead, <strong>hide it</strong>.  And after you hide it, position it <strong>over</strong> another another element, such as a <code>div</code>, that you can style much more easily to look like the UI you envision.</p>
-
-<p>Here is some example css on how you might accomplish this:</p>
-
-<figure class='code'><figcaption><span>fileinput.jade</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='haml'><span class='line'><span class="nc">.file-wrapper</span>
-</span><span class='line'>  <span class="nc">.file-input</span>(<span class="na">type=</span><span class="s">&quot;file&quot;</span>)
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>fileinput.styl</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='sass'><span class='line'><span class="nc">.file-wrapper</span>
-</span><span class='line'>  <span class="na">position</span><span class="o">:</span> <span class="no">relative</span>
-</span><span class='line'>  <span class="na">overflow</span><span class="o">:</span> <span class="no">hidden</span>
-</span><span class='line'>  <span class="na">cursor</span><span class="o">:</span> <span class="no">pointer</span>
-</span><span class='line'>
-</span><span class='line'><span class="nc">.file-input</span>
-</span><span class='line'>  <span class="na">position</span><span class="o">:</span> <span class="no">absolute</span>
-</span><span class='line'>  <span class="na">top</span><span class="o">:</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="na">right</span><span class="o">:</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="na">z-index</span><span class="o">:</span> <span class="mi">2</span>
-</span><span class='line'>  <span class="na">opacity</span><span class="o">:</span> <span class="mi">0</span><span class="mf">.01</span>
-</span><span class='line'>  <span class="na">height</span><span class="o">:</span> <span class="mi">100</span><span class="kt">%</span>
-</span><span class='line'>  <span class="na">font-size</span><span class="o">:</span> <span class="mi">150</span><span class="kt">px</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The add additional styles to <code>.file-wrapper</code> to make it look as you wish.  Remember any vendor prefixes you may/not need for <code>opacity</code>, etc.</p>
-
-<h2>Handling Double Clicks in IE</h2>
-
-<p>It&#8217;s important to position the <code>.file-input</code> as <code>right: 0</code>.  Otherwise, in IE the file input field will not activate on a single click.  Instead it&#8217;ll need a double click.  This is because in IE clicking on the text box portion of the file input requires a double click.  Clicking on the browse button requires just a single click.  And the browse button is on the right side of the file input field in IE.  Finally, make the <code>font-size</code> big enough that you&#8217;re guaranteed to cover the <code>.file-wrapper</code> area.</p>
-
-<h2>Handling Clicks</h2>
-
-<p>Now you don&#8217;t need to have JavaScript to trigger click events on the file input field.  You will just be relying on direct user interaction to click the native file input field.  This will make <a href="http://stackoverflow.com/questions/210643/in-javascript-can-i-make-a-click-event-fire-programmatically-for-a-file-input">some browsers</a>, like Chrome and Firefox, happy.  This is because these browsers won&#8217;t hold file values given to the input programmatically as a security precaution.  Oddly, IE, which sometimes balks more about innane security constraints like this, is ok.</p>
-
-<p>So, what do you think?  Does this work for you?  Anything else to make the solution more solid?</p>
 ]]></content>
   </entry>
   

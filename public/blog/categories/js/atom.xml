@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-12-31T07:36:07-07:00</updated>
+  <updated>2014-01-03T07:57:39-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,83 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Grunt-init Exercism.io]]></title>
+    <link href="http://jaketrent.com/post/grunt-init-exercism-io/"/>
+    <updated>2014-01-03T07:07:00-07:00</updated>
+    <id>http://jaketrent.com/post/grunt-init-exercism-io</id>
+    <content type="html"><![CDATA[<p><a href="http://exercism.io">Exercism.io</a> has a great set of JavaScript exercises.  They could be made better by a better test setup and runner.  I've created a small grunt-init template to help in that setup.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt and Exercism" /></p>
+
+<!--more-->
+
+
+<h2>Exercism.io</h2>
+
+<p>For those unfamiliar, <a href="http://exercism.io">Excercism.io</a> is a great tool that helps coders and potential coders learn and expand their knowledge in several programming languages.  Currently, among the 9 language choices, JavaScript is one.  The JavaScript exercises come with a pre-built <a href="https://github.com/mhevery/jasmine-node">jasmine_node</a> test suite.  The point of the exercise is to write code that will make all the corresponding tests pass.  For more on Excercism.io, see my <a href="/post/exercism-review/">review</a>.</p>
+
+<h2>Vanilla jasmine_node</h2>
+
+<p>As the <a href="http://exercism.io/help/setup/javascript">Exercism JavaScript docs</a> indicate, you can setup your JavaScript environment like this:</p>
+
+<p><code>bash
+npm install -g jasmine_node
+</code></p>
+
+<p>And then run your tests like this:</p>
+
+<p><code>bash
+jasmine_node bob_test.spec.js
+</code></p>
+
+<p>This does work perfectly well.  But, we want something more.  Of course.</p>
+
+<h2>Grunt watch</h2>
+
+<p>We want the test suite to re-run as soon as we make a change and save either our test file or our file under test.  Well, it turns out that <a href="http://gruntjs.com">Grunt</a> is a great little command-line tool that has plugins for file watching.</p>
+
+<p>Grunt needs to be told to use a plugin.  Then it needs to be told that we want to run the task that watches our files.  All of this is indicated to Grunt via a local <code>Gruntfile.js</code> or <code>Gruntfile.coffee</code> file.  You could create this file by yourself, but wouldn't it be nice if there was a <code>Gruntfile.js</code> created somewhere for you already that worked well with Exercism?</p>
+
+<h2>Grunt-init</h2>
+
+<p>It turns out that there is a great, separate utility called <a href="http://gruntjs.com/project-scaffolding">grunt-init</a> that you can use to create your <code>Gruntfile.js</code> (and many other things) with a pre-built template.</p>
+
+<p>To install this tool, run:</p>
+
+<p><code>bash
+npm install -g grunt-init
+</code></p>
+
+<p>To use a grunt-init template, you need to have a local copy.  This template copy could live anywhere, but grunt-init can reference these templates purely by name if you put them in <code>~/.grunt-init/</code>.</p>
+
+<p>To get the <a href="https://github.com/jaketrent/grunt-init-exercism">Exercism grunt-init template</a>, clone it like so:</p>
+
+<p><code>bash
+git clone git@github.com:jaketrent/grunt-init-exercism.git ~/.grunt-init/exercism
+</code></p>
+
+<p>Then change into your specific Exercism directory, init your <code>Gruntfile.js</code>, and follow the other commands:</p>
+
+<p><code>bash
+cd ~/dev/exercism/javascript/bob
+grunt-init exercism
+npm init
+npm install
+</code></p>
+
+<p>The <code>npm init</code> will flush out the rest of the generated <code>package.json</code>.  The <code>npm install</code> will install all dependencies that we said Grunt needed to do its job.</p>
+
+<p>Finally, activate Grunt to watch your files with:</p>
+
+<p><code>bash
+grunt watch
+</code></p>
+
+<p>Now as you write your Exercism code to fulfill tests, you will see the tests get run automatically and become greenlit as your code increases in awesomeness.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Change Page Title in Angular Route]]></title>
@@ -362,103 +439,6 @@ preprocessors:
 <p>That's it.  That's the key to getting your Erb files processed into JavaScript and ready for Karma to use.</p>
 
 <p>Now, what are your thoughts on putting your CoffeeScripts through the erb filter of the asset pipeline at all?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[JavaScript Mixins]]></title>
-    <link href="http://jaketrent.com/post/javascript-mixins/"/>
-    <updated>2013-09-06T10:37:00-06:00</updated>
-    <id>http://jaketrent.com/post/javascript-mixins</id>
-    <content type="html"><![CDATA[<p>JavaScript makes mixins inherently easy.  Mixins are a native feature of the language without calling it that.  Here are a few methods for making this happen.</p>
-
-<p><img src="http://i.imgur.com/XemDUw8.jpg" alt="JavaScript mixins" /></p>
-
-<!--more-->
-
-
-<h2>Attach a Property</h2>
-
-<p>You can attach a property to a Javascript object at any time.  You don't need to monkey patch it.  It doesn't need to be packaged up in a very special format.  You just shove stuff onto the object.  Here's an example:</p>
-
-<p>```javascript
-var MyModel = function () {
-  doOneThing: function () { console.log('doing it right'); }
-};</p>
-
-<p>var model = new MyModel();
-model.doItRight = function () { console.log('everybody will be dancing'); };</p>
-
-<p>model.doOneThing(); // => 'doing it right'
-model.doItRight();  // => 'everybody will be dancing'
-```</p>
-
-<p>A function is defined.  It is instantiated.  Later, a new property, <code>doItRight</code> function, is added to it.  Both functions now magically work on the original model instance.  We could have attached to <code>MyModel.prototype</code> and had the <code>doItRight</code> function attached to all future instantiations of the function as well.</p>
-
-<h2>Use Extend</h2>
-
-<p>There are a couple great libraries that provide wholesale extension of object properties, just like mixins in other languages.  <a href="http://api.jquery.com/jQuery.extend/">jQuery</a> and <a href="http://underscorejs.org/#extend">Underscore</a> provide <code>$.extend</code> and <code>_.extend</code> respectively.  They are great utilities that make object extension quick and painless.  Here's an example using Underscore:</p>
-
-<p>```javascript
-var utilities = {
-  workWater: function () { console.log('pay $75 for water'); }
-};
-var otherUtilities = {
-  electrifyTheCompany: function () { console.log('pay $75 for electric slides'); }
-};
-var utilityConglomerate = _.extend({}, utilities, otherUtilities)</p>
-
-<p>utilityConglomerate.workWater() // => 'pay $75 for water'
-utilityConglomerate.electrifyTheCompany() // => 'pay $75 for electric slides'
-```</p>
-
-<h2>Handle Per-instance State</h2>
-
-<p>Notice that the above methods are very good at attaching functions.  The functions in these examples have no shared state.  The scenarios that we've made up so far haven't required per-instance state as specified by the mixin.  Recently I had a need for all of these things.  I was making a library called <a href="http://octanner.github.io/angular-models/">angular-models</a>.</p>
-
-<p>I wanted to be able to assign what I called <code>AttributesMixin</code> to any function (Model <code>class</code>es, written in CoffeeScript).  To simplify the story, we have a <code>set</code> API that assign values to an internal <code>_attributes</code> object and a <code>get</code> to retrieve them.  These functions were to be assigned to the prototype of the function, but the <code>_attributes</code> were to be assigned to the object instance only, clean for each new object.</p>
-
-<p>We invented our own convention, where each mixin would optionally implement its own <code>dependencies</code> function.  Each of the <code>Model</code>s knew how to extend itself with a given mixin.  This custom extend function was called <code>@include</code>.  As mixins were included, the <code>dependencies</code> function reference was saved (in an array called <code>_dependencyFns</code>) and then called in the <code>Model</code> superclass constructor.  So, each <code>Model</code> subclass is required to call the super constructor to get this functionality.</p>
-
-<p>In the case of <code>AttributesMixin</code>, it looks as simple as this:</p>
-
-<p>```coffeescript attributes-mixin.coffee
-AttributesMixin =
-  dependencies: -></p>
-
-<pre><code>@_attributes = {}
-</code></pre>
-
-<p>  get: -> # ...
-  set: -> # ...
-```</p>
-
-<p>The <code>Model</code> can include like this:</p>
-
-<p>```coffeescript my-model.coffee
-class MyModel extends Model
-  @include AttributesMixin
-  constructor: -></p>
-
-<pre><code>super
-</code></pre>
-
-<p>```</p>
-
-<p>And the <code>Model</code> constructor includes a snippet something like this:</p>
-
-<p>```coffeescript model.coffee
-class Model
-  constructor: -></p>
-
-<pre><code>fn.apply @ for fn in @_dependencyFns if @_dependencyFns?
-</code></pre>
-
-<p>```</p>
-
-<p>For a more accurate, in-depth look at the code, see the <a href="https://github.com/octanner/angular-models">Github repo for angular-models</a>.</p>
-
-<p>Do you use any of these methods to mixin functionality to your JavaScript objects?  What others?</p>
 ]]></content>
   </entry>
   

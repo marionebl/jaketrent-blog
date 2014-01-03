@@ -4,7 +4,7 @@
   <title><![CDATA[Category: grunt | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/grunt/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2013-12-31T07:36:07-07:00</updated>
+  <updated>2014-01-03T07:57:39-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,83 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Grunt-init Exercism.io]]></title>
+    <link href="http://jaketrent.com/post/grunt-init-exercism-io/"/>
+    <updated>2014-01-03T07:07:00-07:00</updated>
+    <id>http://jaketrent.com/post/grunt-init-exercism-io</id>
+    <content type="html"><![CDATA[<p><a href="http://exercism.io">Exercism.io</a> has a great set of JavaScript exercises.  They could be made better by a better test setup and runner.  I've created a small grunt-init template to help in that setup.</p>
+
+<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt and Exercism" /></p>
+
+<!--more-->
+
+
+<h2>Exercism.io</h2>
+
+<p>For those unfamiliar, <a href="http://exercism.io">Excercism.io</a> is a great tool that helps coders and potential coders learn and expand their knowledge in several programming languages.  Currently, among the 9 language choices, JavaScript is one.  The JavaScript exercises come with a pre-built <a href="https://github.com/mhevery/jasmine-node">jasmine_node</a> test suite.  The point of the exercise is to write code that will make all the corresponding tests pass.  For more on Excercism.io, see my <a href="/post/exercism-review/">review</a>.</p>
+
+<h2>Vanilla jasmine_node</h2>
+
+<p>As the <a href="http://exercism.io/help/setup/javascript">Exercism JavaScript docs</a> indicate, you can setup your JavaScript environment like this:</p>
+
+<p><code>bash
+npm install -g jasmine_node
+</code></p>
+
+<p>And then run your tests like this:</p>
+
+<p><code>bash
+jasmine_node bob_test.spec.js
+</code></p>
+
+<p>This does work perfectly well.  But, we want something more.  Of course.</p>
+
+<h2>Grunt watch</h2>
+
+<p>We want the test suite to re-run as soon as we make a change and save either our test file or our file under test.  Well, it turns out that <a href="http://gruntjs.com">Grunt</a> is a great little command-line tool that has plugins for file watching.</p>
+
+<p>Grunt needs to be told to use a plugin.  Then it needs to be told that we want to run the task that watches our files.  All of this is indicated to Grunt via a local <code>Gruntfile.js</code> or <code>Gruntfile.coffee</code> file.  You could create this file by yourself, but wouldn't it be nice if there was a <code>Gruntfile.js</code> created somewhere for you already that worked well with Exercism?</p>
+
+<h2>Grunt-init</h2>
+
+<p>It turns out that there is a great, separate utility called <a href="http://gruntjs.com/project-scaffolding">grunt-init</a> that you can use to create your <code>Gruntfile.js</code> (and many other things) with a pre-built template.</p>
+
+<p>To install this tool, run:</p>
+
+<p><code>bash
+npm install -g grunt-init
+</code></p>
+
+<p>To use a grunt-init template, you need to have a local copy.  This template copy could live anywhere, but grunt-init can reference these templates purely by name if you put them in <code>~/.grunt-init/</code>.</p>
+
+<p>To get the <a href="https://github.com/jaketrent/grunt-init-exercism">Exercism grunt-init template</a>, clone it like so:</p>
+
+<p><code>bash
+git clone git@github.com:jaketrent/grunt-init-exercism.git ~/.grunt-init/exercism
+</code></p>
+
+<p>Then change into your specific Exercism directory, init your <code>Gruntfile.js</code>, and follow the other commands:</p>
+
+<p><code>bash
+cd ~/dev/exercism/javascript/bob
+grunt-init exercism
+npm init
+npm install
+</code></p>
+
+<p>The <code>npm init</code> will flush out the rest of the generated <code>package.json</code>.  The <code>npm install</code> will install all dependencies that we said Grunt needed to do its job.</p>
+
+<p>Finally, activate Grunt to watch your files with:</p>
+
+<p><code>bash
+grunt watch
+</code></p>
+
+<p>Now as you write your Exercism code to fulfill tests, you will see the tests get run automatically and become greenlit as your code increases in awesomeness.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Precompile Ember Templates]]></title>
@@ -386,199 +463,6 @@ git push heroku master
 <p>Yes, it's superficial, and it's even a lame reason, but I like Grunt because they have a great logo.  Wild boar for logo?  Instant win.  (That is what it is, right?)</p>
 
 <p>So, is Grunt helping you out?  What are your impressions?  Or are you using something else entirely?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Grunt and Testacular]]></title>
-    <link href="http://jaketrent.com/post/grunt-and-testacular/"/>
-    <updated>2012-11-06T17:05:00-07:00</updated>
-    <id>http://jaketrent.com/post/grunt-and-testacular</id>
-    <content type="html"><![CDATA[<p><a href="http://vojtajina.github.com/testacular/">Testacular</a> is a test runner for running browser tests.  Once you have it <a href="http://jaketrent.com/post/test-requirejs-testacular/">up and running</a>, you may want to integrate it with your <a href="http://gruntjs.com/">Grunt</a> build process.  This will allow Testacular to be started and your tests to be run from Grunt.</p>
-
-<p><img src="http://i.imgur.com/zze56.jpg" alt="Grunt and Testacular" /></p>
-
-<!--more-->
-
-
-<h2>grunt-testacular</h2>
-
-<p>Lucky for us, <a href="https://npmjs.org/package/grunt-testacular">Friedel Ziegelmayer</a> has created a nice little plugin, <a href="https://npmjs.org/package/grunt-testacular">grunt-testacular</a>.</p>
-
-<p>To install:</p>
-
-<pre><code>$ npm install grunt-testacular
-</code></pre>
-
-<p>Add the current version to your <code>package.json</code> for the future:</p>
-
-<pre><code>"grunt-testacular": "0.2.x"
-</code></pre>
-
-<p>Import the plugin in your <code>grunt.js</code> file:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-testacular&#39;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>And finally, in <code>grunt.js</code>, specify your tasks:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">testacularServer</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">unit</span><span class="o">:</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'><span class="p">},</span>
-</span><span class='line'><span class="nx">configFile</span><span class="o">:</span> <span class="s1">&#39;testacular.conf.js&#39;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}</span>
-</span><span class='line'><span class="p">},</span>
-</span><span class='line'><span class="nx">testacularRun</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">unit</span><span class="o">:</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">runnerPort</span><span class="o">:</span> <span class="mi">9100</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h4>Two Tasks</h4>
-
-<p>Grunt-testacular provides two tasks:</p>
-
-<ol>
-<li>testacularServer - starts the Testacular server (equivalent to <code>testacular start</code>)</li>
-<li>testacularRun - runs your tests against an already-started server (equivalent to <code>testacular run</code>)</li>
-</ol>
-
-
-<h4>A grunt-testacular Oddity</h4>
-
-<p>If you don't have <code>keepalive: true</code> set for grunt-testacular, the Testacular server will shutdown before it has a chance to capture browsers or run your tests.  I'm really not sure why this is even an option.  The false case behavior doesn't seem to be useful.  With the <code>singleRun</code> ability of Testacular, the plugin should just call start on the server and let the server configuration decide when it's appropriate to shut down.</p>
-
-<p><strong>Update:</strong>
-I logged an <a href="https://github.com/Dignifiedquire/grunt-testacular/issues/3#issuecomment-10234529">issue for grunt-testacular</a> that Grunt tasks listed after <code>testacularServer</code> weren't being run.  Friedal responded that <code>keepalive: true</code> was the problem.  If it is specified true, then it has to be the last task in the list.  So, if you have tasks after <code>testacularServer</code> specified, remove <code>keepalive: true</code> and add <code>watch</code> to the end of your task list.</p>
-
-<h2>Grunt and Testacular Work Flow</h2>
-
-<p>Of course, your work flow is up to you, and Grunt and Testacular give you enough flexibility to decide your own, but I think you'll run your tests in two main scenarios: development and continuous integration.</p>
-
-<h4>Development</h4>
-
-<p>For development, I like to start up the Testacular server and keep it running.  Then, I go write tests and update source code.  Testacular will notice my changes and automatically re-run my tests.</p>
-
-<p>To set this up, make sure your grunt-testacular task has this option:</p>
-
-<pre><code>keepalive: true
-</code></pre>
-
-<p>This will keep the server up even after the tests have completed.</p>
-
-<p>And make sure your <code>testacular.conf.js</code> file includes:</p>
-
-<pre><code>autoWatch = true;
-</code></pre>
-
-<p>This will force Testacular to re-run your tests if anything in your source or tests change (specifically, if anything in testacular.conf.js's <code>files</code> array changes).</p>
-
-<h4>Continuous Integration</h4>
-
-<p>For continuous integration, you just want your automated build to be able to verify the source code integrity prior to deploying.</p>
-
-<p>We don't want tests to re-run automatically based on our changes, so we turn off <code>autoWatch</code> in <code>testacular.conf.js</code>:</p>
-
-<pre><code>autoWatch = false;
-</code></pre>
-
-<p>And we set one more value in <code>testacular.conf.js</code> to:</p>
-
-<pre><code>singleRun = true;
-</code></pre>
-
-<p>This will allow the <code>testacularServer</code> task to be run once, have Testacular run all the tests, and then make the server shut down.</p>
-
-<p>Finally, remember to keep <code>keepalive: true</code> set in <code>grunt.js</code>.  Odd, right?</p>
-
-<h2>Multiple Testacular Configurations</h2>
-
-<p>To manage the options that are distinct to these two work flows, one could just create two separate <code>testacular.conf.js</code> files.  But, that would be overkill, because there'd be a lot of overlap between the two files.</p>
-
-<p>Instead, the grunt-testacular plugin gives you override ability on a per-variable basis.  To support the development and integration scenario, the grunt multiTask might look like this:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">testacularServer</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">unit</span><span class="o">:</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'><span class="p">},</span>
-</span><span class='line'><span class="nx">configFile</span><span class="o">:</span> <span class="s1">&#39;testacular.conf.js&#39;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">},</span>
-</span><span class='line'>  <span class="nx">integration</span><span class="o">:</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'><span class="p">},</span>
-</span><span class='line'><span class="nx">configFile</span><span class="o">:</span> <span class="s1">&#39;testacular.conf.js&#39;</span><span class="p">,</span>
-</span><span class='line'><span class="nx">autoWatch</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-</span><span class='line'><span class="nx">singleRun</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Following this same pattern, you could create a separate config for automated functional or end-to-end tests as well.</p>
-
-<p>Note that the <code>options</code> object is strictly for the plugin.  The other variables at that level feed straight into Testacular as overrides.</p>
-
-<h2>Integrated Testing</h2>
-
-<p>Process and product maturity are increased as tests are integrated into the build process.  Grunt and Testacular make integrating your browser tests a snap.</p>
 ]]></content>
   </entry>
   
