@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-01-03T07:57:39-07:00</updated>
+  <updated>2014-01-22T11:49:38-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Permit Array in Rails Strong Parameters]]></title>
+    <link href="http://jaketrent.com/post/permit-array-rails-strong-parameters/"/>
+    <updated>2014-01-22T11:19:00-07:00</updated>
+    <id>http://jaketrent.com/post/permit-array-rails-strong-parameters</id>
+    <content type="html"><![CDATA[<p>Rails 4 introduced the pattern of strong parameters at the controller layer.  As a best practice, you will explicitly list the parameters that an endpoint should accept in payloads.  Arrays are specified just slightly different.</p>
+
+<p><img src="http://i.imgur.com/XOUecnw.jpg" alt="Rails" /></p>
+
+<!--more-->
+
+
+<h2>Strong Parameters</h2>
+
+<p>You don&#8217;t want those blackhats to update any field they want on your poor models.  Raise the shields &#8211; strong parameters!  In ye olden days, <code>attr_accessible</code> could add some protection to your models.  Since Rails 4, it has been best practice to move this responsibility to the controller.  At that layer, you can make adjustments and allowances on a per-endpoint basis (eg, admin functionality has more power over a particular model than the layman user).</p>
+
+<p>So, create a private function in your controller where you can filter your params for your model.  It might look like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">luchador_params</span>
+</span><span class='line'>  <span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:luchador</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:favorite_move</span><span class="p">,</span> <span class="ss">:weight</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You have two main methods to use:</p>
+
+<ul>
+<li><code>require</code> - ensures that the parameter is present (as in this root <code>luchador</code> key)</li>
+<li><code>permit</code> - whitelist filters the parameters to the set specified</li>
+</ul>
+
+
+<h2>Arrays in <code>permit</code></h2>
+
+<p>The most standard use case for <code>permit</code> is to pass it a collection of :symbols.  These keys must represent scalar values (string, number, that sort) only.  But what about arrays?  They&#8217;re represented differently by an empty array:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:luchador</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:favorite_move</span><span class="p">,</span> <span class="ss">:weight</span><span class="p">,</span> <span class="n">wins</span><span class="p">:</span> <span class="o">[]</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But wait &#8211; one more problem, and I don&#8217;t like the answer here.  My client might send back a <code>nil</code> instead of an array (ie, when the luchador has no <code>wins</code>).  If this happens, cue ugly error:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>Unpermitted parameter: wins
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To fix, default to empty array:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">params</span><span class="o">[</span><span class="ss">:luchador</span><span class="o">][</span><span class="ss">:wins</span><span class="o">]</span> <span class="o">||=</span> <span class="o">[]</span>
+</span><span class='line'><span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:luchador</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:favorite_move</span><span class="p">,</span> <span class="ss">:weight</span><span class="p">,</span> <span class="n">wins</span><span class="p">:</span> <span class="o">[]</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What have you done that looks better?  Please! :)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Grunt-init Exercism.io]]></title>
@@ -1792,69 +1860,6 @@
 <p>I felt like I became very productive on the platform and was able to produce quality and quantity code.  In the end, I chose to not do more more MarkLogic.  I was doing more heavy client-side apps.  The XML just became a stumbling block where Json is king.  The functional paradigm is cool.  I really like it.  But I really don&#8217;t like the XQuery language.  Its api is not very expressive, and its syntax requires a ton of typing.  MarkLogic is growing in its acceptance and use, but not at a huge pace.  It still seems like a niche product, used mostly in the publishing and defense industries.  It didn&#8217;t seem like a great investment to keep spending my golden dev years on the platform.</p>
 
 <p> But for all the pros and cons of the platform and all the ups and downs of the experience, I feel like one of the net effects was that I became a better programmer in new, interesting ways.  For that, I&#8217;m grateful.  I&#8217;m glad I did it, and I&#8217;m glad to move on.  There are, after all, soooo many cool things to try in this age of software development.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ember Dynamic Classes]]></title>
-    <link href="http://jaketrent.com/post/ember-dynamic-classes/"/>
-    <updated>2013-08-02T13:02:00-06:00</updated>
-    <id>http://jaketrent.com/post/ember-dynamic-classes</id>
-    <content type="html"><![CDATA[<p>In Ember, your state is separated from the UI inside models.  But, often you want the state of your models to be represented visually in the UI via dynamic class names.  Make it happen with <code>Ember.View</code>s.</p>
-
-<p><img src="http://i.imgur.com/85v8PQP.png" alt="Dynamic Classes with Ember Views" /></p>
-
-<!--more-->
-
-
-<h2>Use an Ember.View</h2>
-
-<p>A view will function as the translation layer between the state of your models and the DOM.  It will provide the logic to observe the properties within your model and expose it as a class name on the associated DOM element.</p>
-
-<p>If I have a model with state:</p>
-
-<figure class='code'><figcaption><span>my-model.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.MyModel = </span><span class="nx">App</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>  <span class="nv">hasSomeState: </span><span class="kc">true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Use classNameBindings</h2>
-
-<p>Based on that state, I want to add a <code>has-some-state</code> class to the UI if it&#8217;s true, and remove the class if it&#8217;s false.  The view might look like:</p>
-
-<figure class='code'><figcaption><span>my-model-view.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.MyModelView = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>  <span class="c1"># ...</span>
-</span><span class='line'>  <span class="nv">classNameBindings: </span><span class="p">[</span><span class="s">&#39;hasSomeState&#39;</span><span class="p">]</span>
-</span><span class='line'>  <span class="nv">hasSomeState: </span><span class="p">(</span><span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;content&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s">&#39;hasSomeState&#39;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">).</span><span class="nx">property</span><span class="p">(</span><span class="s">&#39;content.hasSomeState&#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <code>hasSomeState</code> function will return a boolean has to whether or not the <code>has-some-state</code> class should be added to the element.</p>
-
-<h2>Bind to Model Properties</h2>
-
-<p>Now use the view in the template, being careful to match the binding of <code>content</code> so the property watching works:</p>
-
-<figure class='code'><figcaption><span>template-fragment.jade</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='haml'><span class='line'>App.MyModelView contentBinding=&quot;this.myModelInstance&quot;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In the example, make sure <code>myModelInstance</code> is available in the scope of your route/controller.</p>
-
-<p>As your model&#8217;s <code>hasSomeState</code> value is changed internally with the <code>@set</code> function, the view will be notified that it needs to re-run the <code>hasSomeState</code> function, and the UI will update if needed.</p>
-
-<p>What other methods do you utilize in Ember to get dynamic classes?</p>
 ]]></content>
   </entry>
   

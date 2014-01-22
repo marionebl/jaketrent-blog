@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-01-03T07:57:39-07:00</updated>
+  <updated>2014-01-22T11:49:38-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,65 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Permit Array in Rails Strong Parameters]]></title>
+    <link href="http://jaketrent.com/post/permit-array-rails-strong-parameters/"/>
+    <updated>2014-01-22T11:19:00-07:00</updated>
+    <id>http://jaketrent.com/post/permit-array-rails-strong-parameters</id>
+    <content type="html"><![CDATA[<p>Rails 4 introduced the pattern of strong parameters at the controller layer.  As a best practice, you will explicitly list the parameters that an endpoint should accept in payloads.  Arrays are specified just slightly different.</p>
+
+<p><img src="http://i.imgur.com/XOUecnw.jpg" alt="Rails" /></p>
+
+<!--more-->
+
+
+<h2>Strong Parameters</h2>
+
+<p>You don't want those blackhats to update any field they want on your poor models.  Raise the shields -- strong parameters!  In ye olden days, <code>attr_accessible</code> could add some protection to your models.  Since Rails 4, it has been best practice to move this responsibility to the controller.  At that layer, you can make adjustments and allowances on a per-endpoint basis (eg, admin functionality has more power over a particular model than the layman user).</p>
+
+<p>So, create a private function in your controller where you can filter your params for your model.  It might look like:</p>
+
+<p>```ruby
+private</p>
+
+<p>def luchador_params
+  params.require(:luchador).permit(:favorite_move, :weight)
+end
+```</p>
+
+<p>You have two main methods to use:</p>
+
+<ul>
+<li><code>require</code> - ensures that the parameter is present (as in this root <code>luchador</code> key)</li>
+<li><code>permit</code> - whitelist filters the parameters to the set specified</li>
+</ul>
+
+
+<h2>Arrays in <code>permit</code></h2>
+
+<p>The most standard use case for <code>permit</code> is to pass it a collection of :symbols.  These keys must represent scalar values (string, number, that sort) only.  But what about arrays?  They're represented differently by an empty array:</p>
+
+<p><code>ruby
+params.require(:luchador).permit(:favorite_move, :weight, wins: [])
+</code></p>
+
+<p>But wait -- one more problem, and I don't like the answer here.  My client might send back a <code>nil</code> instead of an array (ie, when the luchador has no <code>wins</code>).  If this happens, cue ugly error:</p>
+
+<p><code>text
+Unpermitted parameter: wins
+</code></p>
+
+<p>To fix, default to empty array:</p>
+
+<p><code>ruby
+params[:luchador][:wins] ||= []
+params.require(:luchador).permit(:favorite_move, :weight, wins: [])
+</code></p>
+
+<p>What have you done that looks better?  Please! :)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Debug Ruby and Rails]]></title>
@@ -334,62 +393,6 @@ index.html.slim
 </code></p>
 
 <p>Now the Rails are even slicker.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Jumpstart Lab Ruby Training Review]]></title>
-    <link href="http://jaketrent.com/post/jumpstartlab-ruby-training-review/"/>
-    <updated>2013-02-19T07:06:00-07:00</updated>
-    <id>http://jaketrent.com/post/jumpstartlab-ruby-training-review</id>
-    <content type="html"><![CDATA[<p><a href="http://jumpstartlab.com/">Jumpstart Lab</a> offers a <a href="http://www.jumpstartlab.com/courses/">Ruby training</a>.  I recently attended.  I had a great experience and learned a lot in my first real introduction to Ruby and Ruby on Rails.  I would highly recommend the course.  Here are a few more details on my experience.</p>
-
-<p><img src="http://i.imgur.com/DniDljD.png" alt="Jumpstart Lab" /></p>
-
-<!--more-->
-
-
-<h2>Format</h2>
-
-<h4>Length</h4>
-
-<p>Jumpstart sent a great instructor, <a href="https://twitter.com/franklinwebber">Franklin Webber</a>, to come lead us through the exercises.  The course was on site at our company.  It was 5 days in length.  Instruction went from 9am to 4pm daily, with a 1 hour break at lunch time.</p>
-
-<h4>Breaks</h4>
-
-<p>Exercises throughout the day were split up into 25 min time chunks with 5 min breaks following.  Some will recognize this usual time chunks for the <a href="http://www.pomodorotechnique.com/">Pomodoro technique</a>.  Frank, as the leader of the exercises, was more strict in his observance of the Pomodoro time slices than I'm used to seeing.  Many people I've worked with would work right through a short break, but we took breaks quite religiously.</p>
-
-<h4>Content Split</h4>
-
-<p>In our 5 day training, we spent about the first 3 days going over vanilla Ruby.  The next 2 days, we focused on the Ruby on Rails framework specifically.</p>
-
-<h2>Approach</h2>
-
-<h4>TDD</h4>
-
-<p>Probably about the coolest aspect of this training was its relying on <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a> to get stuff done.  Often training courses, especially those that introduce brand new languages and concepts, leave testing as a tack-on feature, meantioned in parting near the end of the course.  Thankfully, Jumpstart did a great job integrating this best practice into most of its instruction.</p>
-
-<p>We used <a href="https://www.relishapp.com/rspec">Rspec</a> as a test runner.  We used <a href="https://github.com/guard/guard">Guard</a> to help us go faster through our test iterations.  We discussed what to test, how to make our tests more readable, how to isolate tests using <a href="https://relishapp.com/rspec/rspec-mocks/docs">mocks</a>, and practiced doing lots of tests.</p>
-
-<p>Only the Rails portion of the course was taught using error-driven development.  This actually worked quite well, as learning to use a framework requires learning how the pieces connect and trying not to test the framework.</p>
-
-<h4>Instructor-Led</h4>
-
-<p>Frank made the class successful.  He is super knowledgeable about the subject matter.  He is fun and funny.  He is great at introducing topics that built upon each other.  He is great at letting the students figure things out for themselves and jumping in at the right moment to help clear hurdles.  It was great to meet and work with Frank, and I hope to do so again.</p>
-
-<h2>Bonuses</h2>
-
-<h4>Hack Night</h4>
-
-<p>We do a <a href="http://tannerhack.eventbrite.com/">hack night</a> every other week at work anyway.  Since Frank was here, he led the hack night.  We did a Codemash kata exercise where we created code to generate a <a href="https://github.com/jaketrent/minesweeper">Minesweeper</a> board.  We split into teams and pair-programmed our different solutions.  Everyone came up with unique solutions, we compared them, and then iterated.  I had so much fun with the exercise, I put a frontend on the game and made it <a href="http://minemopper.herokuapp.com">playable</a>.</p>
-
-<h4>Tutorial Content</h4>
-
-<p>Jumpstart printed materials for us in a booklet.  The <a href="http://tutorials.jumpstartlab.com">tutorials</a> are also available online.  Frank took a unique path through the content, and we talked through our specific approach.  As he worked, Frank also <a href="https://github.com/burtlo/training-021113">uploaded the code</a> from our instruction to Github.  I did the same for <a href="http://github.com/jaketrent/ruby-training">my code</a>.</p>
-
-<h4>Recommendation</h4>
-
-<p>I think that this training series was about the best I've attended.  I'm doing a lot more Ruby and Rails in my current job than I expected even a few weeks ago, so it was very timely and useful for me.  The content was good, but it was the instruction that made it top notch.  Thanks, Frank and Jumpstart, for the great experience!</p>
 ]]></content>
   </entry>
   

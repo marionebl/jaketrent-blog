@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-01-03T07:57:39-07:00</updated>
+  <updated>2014-01-22T11:49:38-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,65 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Permit Array in Rails Strong Parameters]]></title>
+    <link href="http://jaketrent.com/post/permit-array-rails-strong-parameters/"/>
+    <updated>2014-01-22T11:19:00-07:00</updated>
+    <id>http://jaketrent.com/post/permit-array-rails-strong-parameters</id>
+    <content type="html"><![CDATA[<p>Rails 4 introduced the pattern of strong parameters at the controller layer.  As a best practice, you will explicitly list the parameters that an endpoint should accept in payloads.  Arrays are specified just slightly different.</p>
+
+<p><img src="http://i.imgur.com/XOUecnw.jpg" alt="Rails" /></p>
+
+<!--more-->
+
+
+<h2>Strong Parameters</h2>
+
+<p>You don't want those blackhats to update any field they want on your poor models.  Raise the shields -- strong parameters!  In ye olden days, <code>attr_accessible</code> could add some protection to your models.  Since Rails 4, it has been best practice to move this responsibility to the controller.  At that layer, you can make adjustments and allowances on a per-endpoint basis (eg, admin functionality has more power over a particular model than the layman user).</p>
+
+<p>So, create a private function in your controller where you can filter your params for your model.  It might look like:</p>
+
+<p>```ruby
+private</p>
+
+<p>def luchador_params
+  params.require(:luchador).permit(:favorite_move, :weight)
+end
+```</p>
+
+<p>You have two main methods to use:</p>
+
+<ul>
+<li><code>require</code> - ensures that the parameter is present (as in this root <code>luchador</code> key)</li>
+<li><code>permit</code> - whitelist filters the parameters to the set specified</li>
+</ul>
+
+
+<h2>Arrays in <code>permit</code></h2>
+
+<p>The most standard use case for <code>permit</code> is to pass it a collection of :symbols.  These keys must represent scalar values (string, number, that sort) only.  But what about arrays?  They're represented differently by an empty array:</p>
+
+<p><code>ruby
+params.require(:luchador).permit(:favorite_move, :weight, wins: [])
+</code></p>
+
+<p>But wait -- one more problem, and I don't like the answer here.  My client might send back a <code>nil</code> instead of an array (ie, when the luchador has no <code>wins</code>).  If this happens, cue ugly error:</p>
+
+<p><code>text
+Unpermitted parameter: wins
+</code></p>
+
+<p>To fix, default to empty array:</p>
+
+<p><code>ruby
+params[:luchador][:wins] ||= []
+params.require(:luchador).permit(:favorite_move, :weight, wins: [])
+</code></p>
+
+<p>What have you done that looks better?  Please! :)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Grunt-init Exercism.io]]></title>
@@ -303,56 +362,6 @@ Fezzik.new.send(:be_colossus_for, people[0], people[1], people[2])
 </code></p>
 
 <p>So, <code>send</code> turns out to be pretty easy to deal with and really useful.  Use it, and be happy.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Save a Gem to Gemfile from Terminal]]></title>
-    <link href="http://jaketrent.com/post/save-gem-to-gemfile-from-terminal/"/>
-    <updated>2013-11-18T07:54:00-07:00</updated>
-    <id>http://jaketrent.com/post/save-gem-to-gemfile-from-terminal</id>
-    <content type="html"><![CDATA[<p>Have you ever wished you could save a gem to your <code>Gemfile</code> straight from the command line?  I wish Rubygems had this built in, but it's easy to add.  After all, there's a gem for that.</p>
-
-<p><img src="http://i.imgur.com/x2I31sl.jpg" alt="Gemrat" /></p>
-
-<!--more-->
-
-
-<h2>From npm</h2>
-
-<p>Coming from Node/Npm previous to Ruby/Rubygems, I wished I could do something like this:</p>
-
-<p><code>bash
-npm install express --save
-</code></p>
-
-<p>This would take my specified npm module and append it to the end of my <code>package.json</code> dependencies list.</p>
-
-<p>There is no equivalent for this built into Rubygems.</p>
-
-<h2>Gemrat</h2>
-
-<p>But, there is a mutant beast that skulks through the gem-lined sewers of Rubyland -- and it's name is <code>gemrat</code>!  What a great, image-provoking name.  Once you install <code>gemrat</code>, you will have the power of 20 npms at your fingertips.</p>
-
-<p>First, install it:</p>
-
-<p><code>bash
-gem install gemrat
-</code></p>
-
-<p>Next, decide what gem you want to save to your <code>Gemfile</code>.  Let's choose a gem of a gem to try called <code>guard</code>:</p>
-
-<p><code>bash
-gemrat guard
-</code></p>
-
-<p>Now, install the dependencies listed in your <code>Gemfile</code>:</p>
-
-<p><code>bash
-bundle install
-</code></p>
-
-<p>Kaboom.  You have learned the secrets of the Fire Swamp and could live there for some time.</p>
 ]]></content>
   </entry>
   
