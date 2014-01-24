@@ -10,12 +10,12 @@ published: true
 ---
 
 The latest book on The List at [emberwatch](http://emberwatch.com/books) is [Developing an Ember Edge](http://bleedingedgepress.com/our-books/developing-an-ember-edge/).  It's a great intro book to Ember.js.
-
+`
 ![Developing an Ember Edge](http://i.imgur.com/85v8PQP.png)
 
 <!--more-->
 
-The book is published by Bleeding Edge Press.  Pretty awesome name.  It is written by Jamie White, Matthew Beale, Christopher Sansone, Wesley Workman, and Bradley Priest, quite the host of authors.  It turns out to be a very timely read for me.  The code in the book uses ember 1.0 and ember-data 1.0 beta 3.  As of this writing, that's almost the bleeding edge.
+The book is published by Bleeding Edge Press.  Pretty awesome name.  It is written by Jamie White, Matthew Beale, Christopher Sansone, Wesley Workman, and Bradley Priest, quite the host of authors.  It turns out to be a very timely read for me.  The code in the book even uses some of ember-data 1.0 beta 3.  As of this writing, that's almost the bleeding edge.
 
 I would compare the book to the [Ember.js official guides](http://emberjs.com/guides/).  It's introductory.  It definitely favors a breadth approach.  For me, but a wee Ember babe, it brings to light some interesting details about the Ember internals or at least the approach of the framework.
 

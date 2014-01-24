@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-01-23T17:50:45-07:00</updated>
+  <updated>2014-01-23T18:19:35-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -18,14 +18,14 @@
     <link href="http://jaketrent.com/post/developing-an-ember-edge-review/"/>
     <updated>2014-01-23T11:19:00-07:00</updated>
     <id>http://jaketrent.com/post/developing-an-ember-edge-review</id>
-    <content type="html"><![CDATA[<p>The latest book on The List at <a href="http://emberwatch.com/books">emberwatch</a> is <a href="http://bleedingedgepress.com/our-books/developing-an-ember-edge/">Developing an Ember Edge</a>.  It&#8217;s a great intro book to Ember.js.</p>
-
-<p><img src="http://i.imgur.com/85v8PQP.png" alt="Developing an Ember Edge" /></p>
+    <content type="html"><![CDATA[<p>The latest book on The List at <a href="http://emberwatch.com/books">emberwatch</a> is <a href="http://bleedingedgepress.com/our-books/developing-an-ember-edge/">Developing an Ember Edge</a>.  It&#8217;s a great intro book to Ember.js.
+`
+<img src="http://i.imgur.com/85v8PQP.png" alt="Developing an Ember Edge" /></p>
 
 <!--more-->
 
 
-<p>The book is published by Bleeding Edge Press.  Pretty awesome name.  It is written by Jamie White, Matthew Beale, Christopher Sansone, Wesley Workman, and Bradley Priest, quite the host of authors.  It turns out to be a very timely read for me.  The code in the book uses ember 1.0 and ember-data 1.0 beta 3.  As of this writing, that&#8217;s almost the bleeding edge.</p>
+<p>The book is published by Bleeding Edge Press.  Pretty awesome name.  It is written by Jamie White, Matthew Beale, Christopher Sansone, Wesley Workman, and Bradley Priest, quite the host of authors.  It turns out to be a very timely read for me.  The code in the book even uses some of ember-data 1.0 beta 3.  As of this writing, that&#8217;s almost the bleeding edge.</p>
 
 <p>I would compare the book to the <a href="http://emberjs.com/guides/">Ember.js official guides</a>.  It&#8217;s introductory.  It definitely favors a breadth approach.  For me, but a wee Ember babe, it brings to light some interesting details about the Ember internals or at least the approach of the framework.</p>
 
