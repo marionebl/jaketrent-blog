@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Import Erb Into Karma - Jake Trent</title>
+  <title>Developing an Ember Edge Review - Jake Trent</title>
   <meta name="author" content="Jake Trent">
 
   
-  <meta name="description" content="Rails asset pipeline allows you to use erb helpers in your CoffeeScript. You'll still need to bring get these files into Karma runner.">
-  
+  <meta name="description" content="Exercism.io has great JavaScript exercises that are made better by a better test runner. Use grunt-init to set up.">
+  <meta name="keywords" content="grunt, grunt-init, exercism, jasmine_node, watch, js, javascript">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jaketrent.com/post/import-erb-into-karma/">
+  <link rel="canonical" href="http://jaketrent.com/post/developing-an-ember-edge-review/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -83,7 +83,7 @@
   
   <header>
     
-      <h1 class="entry-title">Import Erb Into Karma</h1>
+      <h1 class="entry-title">Developing an Ember Edge Review</h1>
     
     
       <p class="meta">
@@ -99,7 +99,7 @@
   
 
 
-<time datetime="2013-09-20T16:59:00-06:00" pubdate data-updated="true">Sep 20<span>th</span>, 2013</time>
+<time datetime="2014-01-23T11:19:00-07:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -108,58 +108,36 @@
   </header>
 
 
-<div class="entry-content"><p>Rails asset pipeline allows you to use erb helpers in your CoffeeScript.  You&#8217;ll still need to bring get these files into Karma runner.  It&#8217;s really easy.  You just need to get to know your Karma config options.</p>
+<div class="entry-content"><p>The latest book on The List at <a href="http://emberwatch.com/books">emberwatch</a> is <a href="http://bleedingedgepress.com/our-books/developing-an-ember-edge/">Developing an Ember Edge</a>.  It&#8217;s a great intro book to Ember.js.</p>
 
-<p><img src="http://i.imgur.com/i5fJT6j.png" alt="erb files in Karma runner" /></p>
+<p><img src="http://i.imgur.com/85v8PQP.png" alt="Developing an Ember Edge" /></p>
 
 <!--more-->
 
 
-<h2>erb in JavaScripts</h2>
+<p>The book is published by Bleeding Edge Press.  Pretty awesome name.  It is written by Jamie White, Matthew Beale, Christopher Sansone, Wesley Workman, and Bradley Priest, quite the host of authors.  It turns out to be a very timely read for me.  The code in the book uses ember 1.0 and ember-data 1.0 beta 3.  As of this writing, that&#8217;s almost the bleeding edge.</p>
 
-<p>Why in the world would you want to use erb helpers inside your script files?  You might not.  I definitely think this should be a limited practice.  In some cases, it can be very helpful.  For instance, if you use Ruby/Rails (via <a href="https://github.com/rumblelabs/asset_sync"><code>asset_sync</code></a>) to upload your static assets to an external server, such as S3, you can help your scripts know where static assets live after upload.</p>
+<p>I would compare the book to the <a href="http://emberjs.com/guides/">Ember.js official guides</a>.  It&#8217;s introductory.  It definitely favors a breadth approach.  For me, but a wee Ember babe, it brings to light some interesting details about the Ember internals or at least the approach of the framework.</p>
 
-<p>So your script might use the <code>asset_path</code> helper and end up looking something like this:</p>
+<h2>Format</h2>
 
-<figure class='code'><figcaption><span>app.coffee.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">,</span> <span class="p">[]).</span><span class="nx">config</span> <span class="nf">($routeProvider) -&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">$routeProvider</span>
-</span><span class='line'>    <span class="p">.</span><span class="k">when</span> <span class="s">&#39;/admin&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nv">controller: </span><span class="s">&#39;AdminIndexCtrl&#39;</span>
-</span><span class='line'>      <span class="nv">templateUrl: </span><span class="s">&quot;&lt;%= asset_path(&#39;admin/index.html&#39;) %&gt;&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
+<p>I read the book in digital form as a pdf.  I love the digitalness, but I wonder if it wouldn&#8217;t have had a bit more editorial review if printed.  Perhaps this is what Bleeding Edge Press means.  The code in the snippets was all smashed to the left, destroying most indentation reading assistance.  The code bits were also a smaller font size than the prose which made the switch between the two slightly awkward to my over-taxed eyes.  By the end of the book, I wasn&#8217;t surprised when I found a typo.  There were a lot but not too many.  For someone of lesser OCD, it probably would&#8217;ve largely gone unnoticed.  Of course, considering the engineer audience of the book, maybe that doesn&#8217;t exist.</p>
 
+<h2>The Zen of Ember</h2>
 
-<h2>Import erb Files into Karma</h2>
+<p>The book content is really good.  I felt like it helped me piece together why things are organized in Ember as they are.  I learned more of what the pieces are by themselves and how they&#8217;re meant to interact together.  The authors were also kind to point out where some of the rough edges were in terms of design (or potential misdesign by app authors) and api changes.</p>
 
-<p>Well, now you have an <code>app.coffee.erb</code> file.  You need to get it into <a href="http://karma-runner.github.io">Karma runner</a>.  Normally <code>*.coffee</code> files will be brought straight in and compiled automatically by the runner as needed.  In this case, however, the Karma defaults won&#8217;t recognize the <code>.coffee.erb</code> file as a CoffeeScript file need compilation.</p>
+<p>I liked the mostly-breadth approach to the writing.  The book was good for a newb and remained pretty short.  Perhaps that&#8217;s because there&#8217;s not too much there as a general subject without bloating this book into an API reference book. [whew]  The book struck a good balance of being technical, readable, and giving good insight into the practical use of the framework.</p>
 
-<p>To tell Karma to process your erb file as a CoffeeScript file, add this to your config:</p>
+<h2>Ember Trackr</h2>
 
-<figure class='code'><figcaption><span>karma.conf.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(config) -&gt;</span>
-</span><span class='line'>  <span class="nx">config</span><span class="p">.</span><span class="nx">set</span>
-</span><span class='line'>    <span class="c1"># ...</span>
-</span><span class='line'>    <span class="nv">preprocessors:</span>
-</span><span class='line'>      <span class="s">&#39;**/*.coffee.erb&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s">&#39;coffee&#39;</span><span class="p">]</span>
-</span><span class='line'>      <span class="s">&#39;**/*.coffee&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s">&#39;coffee&#39;</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
+<p>The first half of the book covers the concepts and layers of Ember, approaching mvc in general, objects, application, routes, handlebars, views, controllers, components, and models.  This takes 54 pages.  The other half(+) shows the development of a ticket tracking app.</p>
 
+<p>The development process shown is thorough, even including the tool install, project file layout, and ui styling.  The TDD of the app in total was awesome.  It&#8217;s really step by step.  Sometimes this was a little painful, but you definitely don&#8217;t miss anything.  The screenshots of test runners in terminals and the app in browser windows could have been cropped for easier reading with less vertical blank space.  The testing walkthrough was really great.  They even worked through a few &#8220;unexpected&#8221; errors as one might actually encounter them.</p>
 
-<p>That&#8217;s it.  That&#8217;s the key to getting your Erb files processed into JavaScript and ready for Karma to use.</p>
+<p>The app dev portion could probably have been cut short.  About the time they start into the user management screens, we probably could have called it good.  But, they do introduce some good, new concepts in the app dev section of the book.  For instance, he covers a little on containers and <code>Ember.run</code> as it relates to testing.</p>
 
-<p>Now, what are your thoughts on putting your CoffeeScripts through the erb filter of the asset pipeline at all?</p>
+<p>I&#8217;m glad I read the book.  It was helpful to my slingshot into the Ember atmosphere.  Boom!  Go get it.</p>
 </div>
 
 
@@ -182,12 +160,12 @@
   
 
 
-<time datetime="2013-09-20T16:59:00-06:00" pubdate data-updated="true">Sep 20<span>th</span>, 2013</time>
+<time datetime="2014-01-23T11:19:00-07:00" pubdate data-updated="true">Jan 23<span>rd</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/coffeescript/'>coffeescript</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/karma/'>karma</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
+    <a class='category' href='/blog/categories/review/'>Review</a>, <a class='category' href='/blog/categories/ember/'>ember</a>, <a class='category' href='/blog/categories/js/'>js</a>
   
 </span>
 
@@ -196,7 +174,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/import-erb-into-karma/" data-via="" data-counturl="http://jaketrent.com/post/import-erb-into-karma/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jaketrent.com/post/developing-an-ember-edge-review/" data-via="" data-counturl="http://jaketrent.com/post/developing-an-ember-edge-review/" >Tweet</a>
   
   
   
@@ -205,10 +183,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/post/javascript-mixins/" title="Previous Post: JavaScript Mixins">&laquo; JavaScript Mixins</a>
+        <a class="basic-alignment left" href="/post/permit-array-rails-strong-parameters/" title="Previous Post: Permit Array in Rails Strong Parameters">&laquo; Permit Array in Rails Strong Parameters</a>
       
-      
-        <a class="basic-alignment right" href="/post/rotate-gauge-needle-in-d3/" title="Next Post: Rotate Gauge Needle in D3">Rotate Gauge Needle in D3 &raquo;</a>
       
     </p>
   </footer>
@@ -297,8 +273,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jaketrent.com/post/import-erb-into-karma/';
-        var disqus_url = 'http://jaketrent.com/post/import-erb-into-karma/';
+        var disqus_identifier = 'http://jaketrent.com/post/developing-an-ember-edge-review/';
+        var disqus_url = 'http://jaketrent.com/post/developing-an-ember-edge-review/';
         var disqus_script = 'embed.js';
       
     (function () {

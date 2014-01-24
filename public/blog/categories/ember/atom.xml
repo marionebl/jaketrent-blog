@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ember | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ember/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-01-22T11:49:38-07:00</updated>
+  <updated>2014-01-23T17:50:45-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Developing an Ember Edge Review]]></title>
+    <link href="http://jaketrent.com/post/developing-an-ember-edge-review/"/>
+    <updated>2014-01-23T11:19:00-07:00</updated>
+    <id>http://jaketrent.com/post/developing-an-ember-edge-review</id>
+    <content type="html"><![CDATA[<p>The latest book on The List at <a href="http://emberwatch.com/books">emberwatch</a> is <a href="http://bleedingedgepress.com/our-books/developing-an-ember-edge/">Developing an Ember Edge</a>.  It's a great intro book to Ember.js.</p>
+
+<p><img src="http://i.imgur.com/85v8PQP.png" alt="Developing an Ember Edge" /></p>
+
+<!--more-->
+
+
+<p>The book is published by Bleeding Edge Press.  Pretty awesome name.  It is written by Jamie White, Matthew Beale, Christopher Sansone, Wesley Workman, and Bradley Priest, quite the host of authors.  It turns out to be a very timely read for me.  The code in the book uses ember 1.0 and ember-data 1.0 beta 3.  As of this writing, that's almost the bleeding edge.</p>
+
+<p>I would compare the book to the <a href="http://emberjs.com/guides/">Ember.js official guides</a>.  It's introductory.  It definitely favors a breadth approach.  For me, but a wee Ember babe, it brings to light some interesting details about the Ember internals or at least the approach of the framework.</p>
+
+<h2>Format</h2>
+
+<p>I read the book in digital form as a pdf.  I love the digitalness, but I wonder if it wouldn't have had a bit more editorial review if printed.  Perhaps this is what Bleeding Edge Press means.  The code in the snippets was all smashed to the left, destroying most indentation reading assistance.  The code bits were also a smaller font size than the prose which made the switch between the two slightly awkward to my over-taxed eyes.  By the end of the book, I wasn't surprised when I found a typo.  There were a lot but not too many.  For someone of lesser OCD, it probably would've largely gone unnoticed.  Of course, considering the engineer audience of the book, maybe that doesn't exist.</p>
+
+<h2>The Zen of Ember</h2>
+
+<p>The book content is really good.  I felt like it helped me piece together why things are organized in Ember as they are.  I learned more of what the pieces are by themselves and how they're meant to interact together.  The authors were also kind to point out where some of the rough edges were in terms of design (or potential misdesign by app authors) and api changes.</p>
+
+<p>I liked the mostly-breadth approach to the writing.  The book was good for a newb and remained pretty short.  Perhaps that's because there's not too much there as a general subject without bloating this book into an API reference book. [whew]  The book struck a good balance of being technical, readable, and giving good insight into the practical use of the framework.</p>
+
+<h2>Ember Trackr</h2>
+
+<p>The first half of the book covers the concepts and layers of Ember, approaching mvc in general, objects, application, routes, handlebars, views, controllers, components, and models.  This takes 54 pages.  The other half(+) shows the development of a ticket tracking app.</p>
+
+<p>The development process shown is thorough, even including the tool install, project file layout, and ui styling.  The TDD of the app in total was awesome.  It's really step by step.  Sometimes this was a little painful, but you definitely don't miss anything.  The screenshots of test runners in terminals and the app in browser windows could have been cropped for easier reading with less vertical blank space.  The testing walkthrough was really great.  They even worked through a few "unexpected" errors as one might actually encounter them.</p>
+
+<p>The app dev portion could probably have been cut short.  About the time they start into the user management screens, we probably could have called it good.  But, they do introduce some good, new concepts in the app dev section of the book.  For instance, he covers a little on containers and <code>Ember.run</code> as it relates to testing.</p>
+
+<p>I'm glad I read the book.  It was helpful to my slingshot into the Ember atmosphere.  Boom!  Go get it.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ember Dynamic Classes]]></title>
@@ -476,98 +514,6 @@ linkTo 'league.new' | New League
 <blockquote><p>WARNING: The immediate parent route ('a') did not render into the main outlet and the default 'into' option ('p') may not be expected</p></blockquote>
 
 <p>In other words: You're trying to render a child template that either doesn't have a parent template it needs or the parent template does not specify a main outlet.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Precompile Ember Templates]]></title>
-    <link href="http://jaketrent.com/post/precompile-ember-templates/"/>
-    <updated>2013-05-21T07:54:00-06:00</updated>
-    <id>http://jaketrent.com/post/precompile-ember-templates</id>
-    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a> makes use of the wonderful <a href="http://handlebarsjs.com">Handlebars</a> templates.  These templates, in order to be performant, must be precompiled.  Based on the Ember docs, it's not abundantly clear how this is to happen.  Here's a solution that works well.</p>
-
-<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
-
-<!--more-->
-
-
-<h2>Ember Docs for Precompilation</h2>
-
-<p>Every official Ember doc will put templates in a <code>script</code> tag with the <code>type="text/x-handlebars"</code>.  But this is never how you'd write any serious (-ly awesome) app in production.  <a href="http://emberjs.com/guides/templates/handlebars-basics/">The docs</a> say:</p>
-
-<blockquote><p>"If you are using build tools to manage your application's assets, most will know how to precompile Handlebars templates and make them available to Ember.js."</p></blockquote>
-
-<p>Which tools?  Why would I want to precompile?  How <em>are</em> they made available to Ember?  Read, Ember journeyman, read on...</p>
-
-<h2>Grunt</h2>
-
-<p>We'd love for this precompilation to happen previous to the running of your app.  Again, this is in hopes of increased performance.  <a href="http://gruntjs.com">Grunt</a> is a great little Nodejs-based tool for build-level tasks.</p>
-
-<h2>Emblem</h2>
-
-<p>Grunt comes with a variety of plugins.  We're going to use one called <a href="https://github.com/wordofchristian/grunt-emblem/">grunt-emblem</a>.  <a href="http://emblemjs.com/">Emblem</a> is a fantastic templating syntax layered on top of Handlebars (still a dependency).  Its syntax looks very similar to Haml or Ruby Slim or Jade.  It may well be the most flexible of all of them, and it simplifies some Ember helper syntax very nicely.</p>
-
-<h2>Versions Matching</h2>
-
-<p>As I've said before, <a href="/post/match-ember-handlebars-version/">matching Ember dependency version can be a pain</a>.  With precompilation, you have one more dependency to match.  Now not only do you care about the version of Handlebars that Ember uses at runtime, but you care about the version of Handlebars that is used to precompile your templates.  If the precompile Handlebars version doesn't match the runtime Handlebars version, your app will die at runtime.  <code>grunt-emblem</code> helps immensely with this.</p>
-
-<h2>grunt-emblem</h2>
-
-<p>I haven't found another Handlebars precompile plugin that helps as much as <code>grunt-emblem</code>.  It solves the precompile version problem by letting you utilize the actual runtime Handlebars as the precompile Handlebars script.</p>
-
-<p>It is also nice in that it puts the precompiled templates into the collection that Ember expects to find templates in, namely <code>Ember.TEMPLATES</code>.  As you can find on the <a href="https://github.com/wordofchristian/grunt-emblem/"><code>grunt-emblem</code> Github page</a>, your grunt config will look something like the following:</p>
-
-<p>```coffeescript
-matchdep = require 'matchdep'</p>
-
-<p>module.exports = (grunt) ->
-  grunt.initConfig</p>
-
-<pre><code>watch:
-  ember_templates:
-    files: ['app/views/templates/**/*.emblem']
-    tasks: ['emblem', 'livereload']
-
-emblem:
-  compile:
-    files:
-      "app/static/templates/ember_templates.js": ["app/views/templates/**/*.emblem"]
-    options:
-      root: "app/views/templates/"
-      dependencies:
-        jquery: "app/static/js/components/jquery/jquery.js"
-        ember: "app/static/js/components/ember/ember.js"
-        emblem: "app/static/js/components/emblem/dist/emblem.js"
-        handlebars: "app/static/js/components/handlebars/handlebars.js"
-</code></pre>
-
-<p>  matchdep.filterDev('grunt-*').forEach grunt.loadNpmTasks</p>
-
-<p>  grunt.renameTask 'regarde', 'watch'</p>
-
-<p>  grunt.registerTask 'dev', [ 'livereload-start', 'watch' ]</p>
-
-<p>```</p>
-
-<p>This particular config has a couple other niceties.  Let me enumerate the awesome:</p>
-
-<ul>
-<li>Line 6 - Not only can we precompile the templates, but we'll precompile on the fly, whenever <code>.emblem</code> files are change in the specified directories.</li>
-<li>Line 8 and 14 - We're precompiling <code>.emblem</code> templates, but this plugin can do regular Handlebars syntax as well</li>
-<li>Line 16 - <code>root</code> is the substring that will be stripped out of your template name.  For instance, you don't want your template to be called <code>app/views/templates/home</code>.  Your home route in Ember will want your template called <code>home</code>.  <code>root</code> to the rescue -- bam!</li>
-<li>Line 17 - These <code>dependencies</code> are the libraries that you use at runtime and that Handlebars needs at compile time.  As I said, this plugin simply rocks because of the ability to specify your own Handlebars script.</li>
-<li>Line 23 - Remember how you used to have a whole list of npm tasks registered.  This little beaut will load all <code>grunt-*</code> dependencies.</li>
-<li>Line 25 - <code>regarde</code> is a cool name, but I understand what <code>watch</code> means a bit better. Rename it.</li>
-</ul>
-
-
-<p>This setup requires the following dependencies:</p>
-
-<p><code>
-npm install matchdep grunt grunt-regarde grunt-contrib-livereload grunt-emblem --save-dev
-</code></p>
-
-<p>So now, seriously, go write some Emblem templates.  So fun, so precompiled.</p>
 ]]></content>
   </entry>
   

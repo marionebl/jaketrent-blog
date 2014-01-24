@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Review | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/review/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-01-22T11:49:38-07:00</updated>
+  <updated>2014-01-23T17:50:45-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Developing an Ember Edge Review]]></title>
+    <link href="http://jaketrent.com/post/developing-an-ember-edge-review/"/>
+    <updated>2014-01-23T11:19:00-07:00</updated>
+    <id>http://jaketrent.com/post/developing-an-ember-edge-review</id>
+    <content type="html"><![CDATA[<p>The latest book on The List at <a href="http://emberwatch.com/books">emberwatch</a> is <a href="http://bleedingedgepress.com/our-books/developing-an-ember-edge/">Developing an Ember Edge</a>.  It's a great intro book to Ember.js.</p>
+
+<p><img src="http://i.imgur.com/85v8PQP.png" alt="Developing an Ember Edge" /></p>
+
+<!--more-->
+
+
+<p>The book is published by Bleeding Edge Press.  Pretty awesome name.  It is written by Jamie White, Matthew Beale, Christopher Sansone, Wesley Workman, and Bradley Priest, quite the host of authors.  It turns out to be a very timely read for me.  The code in the book uses ember 1.0 and ember-data 1.0 beta 3.  As of this writing, that's almost the bleeding edge.</p>
+
+<p>I would compare the book to the <a href="http://emberjs.com/guides/">Ember.js official guides</a>.  It's introductory.  It definitely favors a breadth approach.  For me, but a wee Ember babe, it brings to light some interesting details about the Ember internals or at least the approach of the framework.</p>
+
+<h2>Format</h2>
+
+<p>I read the book in digital form as a pdf.  I love the digitalness, but I wonder if it wouldn't have had a bit more editorial review if printed.  Perhaps this is what Bleeding Edge Press means.  The code in the snippets was all smashed to the left, destroying most indentation reading assistance.  The code bits were also a smaller font size than the prose which made the switch between the two slightly awkward to my over-taxed eyes.  By the end of the book, I wasn't surprised when I found a typo.  There were a lot but not too many.  For someone of lesser OCD, it probably would've largely gone unnoticed.  Of course, considering the engineer audience of the book, maybe that doesn't exist.</p>
+
+<h2>The Zen of Ember</h2>
+
+<p>The book content is really good.  I felt like it helped me piece together why things are organized in Ember as they are.  I learned more of what the pieces are by themselves and how they're meant to interact together.  The authors were also kind to point out where some of the rough edges were in terms of design (or potential misdesign by app authors) and api changes.</p>
+
+<p>I liked the mostly-breadth approach to the writing.  The book was good for a newb and remained pretty short.  Perhaps that's because there's not too much there as a general subject without bloating this book into an API reference book. [whew]  The book struck a good balance of being technical, readable, and giving good insight into the practical use of the framework.</p>
+
+<h2>Ember Trackr</h2>
+
+<p>The first half of the book covers the concepts and layers of Ember, approaching mvc in general, objects, application, routes, handlebars, views, controllers, components, and models.  This takes 54 pages.  The other half(+) shows the development of a ticket tracking app.</p>
+
+<p>The development process shown is thorough, even including the tool install, project file layout, and ui styling.  The TDD of the app in total was awesome.  It's really step by step.  Sometimes this was a little painful, but you definitely don't miss anything.  The screenshots of test runners in terminals and the app in browser windows could have been cropped for easier reading with less vertical blank space.  The testing walkthrough was really great.  They even worked through a few "unexpected" errors as one might actually encounter them.</p>
+
+<p>The app dev portion could probably have been cut short.  About the time they start into the user management screens, we probably could have called it good.  But, they do introduce some good, new concepts in the app dev section of the book.  For instance, he covers a little on containers and <code>Ember.run</code> as it relates to testing.</p>
+
+<p>I'm glad I read the book.  It was helpful to my slingshot into the Ember atmosphere.  Boom!  Go get it.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Exercism Review]]></title>
@@ -237,52 +275,6 @@ exercism submit ruby/bob/bob.rb
 <p>I'm glad that this event has shown some perpetuity.  I hope it continues next year.  I think they have a good formula.  The price, the locale, the speaker lineup, and the associated activities make for a good one-day experience each Spring.  I would focus on improving one bit next year: the website.  It was the least well-done part of the conference.  I find that extremely ironic given the target market for the event.</p>
 
 <p>So next Spring, come to Utah and attend the JsConf.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mountain West Ruby Conf 2013 Review]]></title>
-    <link href="http://jaketrent.com/post/mountain-west-ruby-conf-2013-review/"/>
-    <updated>2013-04-05T15:23:00-06:00</updated>
-    <id>http://jaketrent.com/post/mountain-west-ruby-conf-2013-review</id>
-    <content type="html"><![CDATA[<p>I recently attended the Mountain West Ruby Conference.  It was my first time going.  I was pleasantly surprised by the quality of the conference.  I would recommend it.</p>
-
-<p><img src="http://i.imgur.com/ABNr5MC.jpg" alt="Mountain West Ruby Conf" /></p>
-
-<!--more-->
-
-
-<h2>Peeps</h2>
-
-<p>I'm new to the Ruby community.  I get to use it more in my current job than I ever have before.  Whenever entering a new community, it's good to find some friends.  I was pleased to notice that everyone I encountered at the conference was very friendly and welcoming.</p>
-
-<p>About the coolest thing about the community is one of the slogans: MINSWAN, which means "Matz is nice, so we are nice."  How cool is that?  Matz is the Ruby creator.  Wait, who am I kidding.  You already know that.</p>
-
-<p>I was very impressed with the blatant lack of trolling other communities.  This even with the live stream video cameras rolling (people can tend to do weird things when put on camera).</p>
-
-<p>The conference attracted speakers and attendees from as far away as Australia.</p>
-
-<h2>Speakers</h2>
-
-<p>I didn't look too closely at the schedule previous to attending.  Once I got there, I was surprised at the caliber of those people and companies who were represented.  These were big names in the tech community, such as Matz, himself, Github, Heroku, and others.</p>
-
-<p>The conference is single track, so that meant I got to see everyone speak.  I mostly like that but kind of hate that.  I believe it also meant fewer speaking slots, so everyone was pretty top notch.</p>
-
-<p>I was impressed with the stage presence of most speakers.  A few were pretty droning, but in general everyone was very polished, had good slide decks, and shared engaging and useful content.</p>
-
-<p>Devops was the stated subject matter of an entire day of the conference.  This was cool.  We can use that kind of focus on the subject.  But then it bled into the next days as well.  I want some pure code, pure Ruby'ness.  I got some of that, but not as much as I would like.  I paid my devops dues the first day.  I was ready to not hear any more of it on days 2 and 3.</p>
-
-<h2>Venue</h2>
-
-<p>It was in my back yard!  I loved the lack of a hotel requirement!  Apparently some visitors even camped in the wilderness, Nacho style.</p>
-
-<p>The Salt Lake City Public Library is a great downtown location for a small conference.  In this case, with the conference being single track, the single largest room, the amphitheatre, was the only room required for all attendees.  It featured plenty of seating -- at the cost of no leg room.</p>
-
-<p>The wifi also held up better than it has for similar gatherings in this space.  It was announced that "the city and Xmission are working feverishly" to maintain connectivity several times over the 3 days.  It still didn't stay up.  This is a common tech conf occurrence.</p>
-
-<p>I was sorely disappointed with the lack of sugary confections meant to encourage the jollyness and attentiveness of the conference-goers.  At one point, it was necessary to slip out and find a good bakery downtown.  I was not disappointed.  I was happy to see at least the vendors' vinyl stickers come out on the last day.  We need more of that!</p>
-
-<p>In all, it was a good use of my couple days.  It wasn't too pricey, but then, I wasn't paying.</p>
 ]]></content>
   </entry>
   
