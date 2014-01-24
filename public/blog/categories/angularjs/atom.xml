@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-01-23T18:19:35-07:00</updated>
+  <updated>2014-01-24T11:03:26-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ng-Conf Review]]></title>
+    <link href="http://jaketrent.com/post/ng-conf-review/"/>
+    <updated>2014-01-24T07:22:00-07:00</updated>
+    <id>http://jaketrent.com/post/ng-conf-review</id>
+    <content type="html"><![CDATA[<p>Ng-Conf just happened last week in Salt Lake City, Utah.  It was awesome.  Oh blast, I blew the punch line.  Anyway, here's my take.</p>
+
+<p><img src="http://i.imgur.com/4swtO6x.jpg" alt="ng-conf" /></p>
+
+<!--more-->
+
+
+<h2>Format</h2>
+
+<p>Two days.  Early 'til late.  One track.  20-40 min talks virtually back to back.  Lightning'y?  When we broke for lunch, I felt relieved.  My brain could go into some low-power mode.  Breaks between talks were mostly announced as anywhere from 30 seconds to 3 minutes, this whilst yammering off a short list of swag winners.  The format encouraged content, and there was a lot of it!</p>
+
+<h2>Line Up</h2>
+
+<p>The conference was easy to look forward to.  Looking at the speaker list, I was immediately impressed.  At one point during the event, Aaron Frost said that they hoped if the Angular team would come that they'd get more attendees.  Yes, that was a draw.  It was fun having them there.  Core.  Very core.  I believe that about each member of the team took the stage over the two days.</p>
+
+<p>The speaker list in total was very impressive.  There was a good mix of local and remote talent who came together to cover a broad array of Angular and JavaScript-related topics.</p>
+
+<h2>Talk Quality</h2>
+
+<p>Talk for talk, just numbers-wise, it was definitely one of the most high quality conferences I've attended.  Of course, there were some less-than-stellar presentations.  But, on the whole, I was more than impressed by the subject mastery and teaching ability of the speakers.  Thank you to everyone who prepared.</p>
+
+<p>There were also some definite highlights: Dave Smith on directives, Vojta Jina on DI, Brian Ford on zone.js, and Julie Ralph on Protractor.</p>
+
+<p>And one of the best parts is that each of these talks was recorded on video for a livestream and <a href="http://www.youtube.com/user/ngconfvideos">on youtube for later viewing</a>.</p>
+
+<h2>Venue</h2>
+
+<p>The conference was held at the Little America hotel in Salt Lake City.  It was a beautiful location.  The combined main ballrooms that the talks were held in were awesome.  Plenty of marble.  The food was great.  There weren't tons of snacks, but that was probably good for my health.  The air quality in Salt Lake during the conference wasn't good.  In fact, oobleck!  But, I didn't get food poisoning -- plus!</p>
+
+<h2>Smooth</h2>
+
+<p>I heard it said by multiple people during the conference that it was the best first-time conference they had attended.  Indeed, everything went Domo smooth.  The content was the star.  It was fun.  It was energetic (minus some confusing lack of screaming for all the sweet swag -- probably had something to do with the sheer amount, like clapping for the 3rd curtain call).  The AV crew did a fantastic job.  Usually, it's annoying to sit in an audience as video or audio problems plague the start of a talk.  That simply did not happen here, and it was oh, so refreshing.</p>
+
+<p>Oh yeah, and sweet jacket!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Change Page Title in Angular Route]]></title>
@@ -292,125 +334,6 @@ for evt in enableEvts
 <p>Here, we're setting custom events for disabling and enabling the button.  And note the <code>ng-click</code> value.  The <code>doClickyThings()</code> function will not get called if <code>disabledToggled</code> is true.</p>
 
 <p>So, what do you think.  Is there an easier way to get this kind of functionality?  What could we do to make it better?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Preload Route Data in Angular]]></title>
-    <link href="http://jaketrent.com/post/preload-route-data-angular/"/>
-    <updated>2013-08-13T08:10:00-06:00</updated>
-    <id>http://jaketrent.com/post/preload-route-data-angular</id>
-    <content type="html"><![CDATA[<p>It's sometimes useful to be able to preload or resolve data previous to an Angular view being displayed.  Such was the case recently for our current user object.  It simplified a lot of things in the app to have the guarantee of a loaded current user previous to displaying pages.  The Angular router has a great mechanism built in to do just this sort of thing, called <code>resolve</code>.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angularjs" /></p>
-
-<!--more-->
-
-
-<h2>Current User</h2>
-
-<p>For the example, our current user object is super simple.  Just pretend that it holds all of the relevant details of a user.  These details are useful for displaying various things in the app that need the context of who the currently logged-in user is.</p>
-
-<p>```coffeescript current-user.coffee
-  angular.module('app.services').factory 'CurrentUser', ($http, User) -></p>
-
-<pre><code>class CurrentUser extends User
-  fetch: -&gt;
-    # do $http things to request user data
-  isLoaded: -&gt;
-    # true if fetched and ready to go
-
-new CurrentUser
-</code></pre>
-
-<p>```</p>
-
-<p>Note that for our app there is just one <code>CurrentUser</code> object, a singleton, because we return a single instance from our factory, not a class.</p>
-
-<h2>Router</h2>
-
-<p>The Angular router is used for client-side routing of urls.  Our angular app is called <code>app</code>.  We setup some angular submodules to hold config, services, and controllers.</p>
-
-<p>Let's say that we have a home page and a profile page for our example.</p>
-
-<p>Each route can be configured with a <code>resolve</code> object.  The key of that object is the name of a local variable and the value is a function which returns a promise.  The resolution value of the promise is the data you want before the route executes.After all the promises are resolved, the route is free to switch and execute.  Until then, each unresolved promise will block the route from executing.</p>
-
-<p>```coffeescript app.coffee
-angular.module 'app.config', []
-angular.module 'app.services', []
-angular.module 'app.controllers', []</p>
-
-<p>angular.module('app', ['app.config', 'app.services', 'app.controllers'])</p>
-
-<p>angular.module('app').config ($routeProvider, $locationProvider, resolves) ->
-  $locationProvider.html5Mode true</p>
-
-<p>  $routeProvider</p>
-
-<pre><code>.when '/',
-  controller: 'HomeCtrl'
-  templateUrl: '/templates/home.html'
-.when '/profile',
-  controller: 'ProfileCtrl'
-  templateUrl: '/templates/profile.html'
-</code></pre>
-
-<p>angular.module('app').run ($route, resolves)->
-  for r in $route.routes</p>
-
-<pre><code>r.resolve ?= {}
-r.resolve.CurrentUser = resolves.getCurrentUser
-</code></pre>
-
-<p>```</p>
-
-<p>The <code>run</code> method is essentially the Angular app's main method, starting the program.  I want to ensure the current user is loaded for each route.  In this case, instead of putting a <code>resolve</code> config on each route, I'm looping through all routes after their initial definition and adding the <code>CurrentUser: resolves.getCurrentUser</code> config.</p>
-
-<h2>Resolve Function</h2>
-
-<p>In our resolve function we setup our own promise via the <code>$q</code> service.  We check to see if our singleton <code>CurrentUser</code> is already loaded.  If it's not, we fetch it.  If it has been fetched once already, we resolve the promise with the value that's already available.</p>
-
-<p>```coffeescript resolves.coffee
-angular.module('app.config').constant 'resolves',</p>
-
-<p>  getCurrentUser: ($q, CurrentUser) -></p>
-
-<pre><code>defer = $q.defer()
-
-if not CurrentUser.isLoaded()
-  req = CurrentUser.fetch()
-  req.success -&gt; defer.resolve CurrentUser
-  req.error -&gt; defer.reject()
-else
-  defer.resolve CurrentUser
-
-defer.promise
-</code></pre>
-
-<p>```</p>
-
-<h2>Application Controller</h2>
-
-<p>Now that we have the <code>CurrentUser</code> guaranteed to be resolved (fetched and returned) by the time we enter all routes, we need to grab the value of <code>CurrentUser</code> and put it in <code>$scope</code> where our program would normally pick up and start using variables.</p>
-
-<p>```coffeescript app-ctrl.coffee
-angular.module('app.controllers').controller 'AppCtrl', ($scope) -></p>
-
-<p>  $scope.$on '$routeChangeSuccess', (next, current) -></p>
-
-<pre><code>if current.locals.CurrentUser?
-  $scope.currentUser = current.locals.CurrentUser
-</code></pre>
-
-<p>```</p>
-
-<p>We listen the Angular-provided event when a route is successfully entered: <code>$routeChangeSuccess</code>.  The value we care about is available on the <code>current</code> route's <code>locals</code> object, placed there magically by the resolve function.</p>
-
-<h2>When to Use</h2>
-
-<p>There are a few bits to piece together to make this happen.  It might be simpler than other solutions or make more sense for you in your app if you need something(s) loaded previous to executing on a route.</p>
-
-<p>I would definitely use this feature judiciously, as it seems to eat away at one of the advantages of a client-side app in the first place: asynchronous loading.  We'8re blocking the whole app from going forward when we're in the process of resolving.  That boundary used to be on the edge of the server, building up the page before it was servable to the client.  Now, on a web client, we have multiple requests that can happen in parallel and we can render bits as they're available -- important bits first and so on.</p>
 ]]></content>
   </entry>
   

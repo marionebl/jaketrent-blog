@@ -4,8 +4,8 @@ title: "Developing an Ember Edge Review"
 date: 2014-01-23 11:19
 comments: true
 categories: [Review, js, ember]
-description: Exercism.io has great JavaScript exercises that are made better by a better test runner.  Use grunt-init to set up.
-keywords: grunt, grunt-init, exercism, jasmine_node, watch, js, javascript
+description: Developing an Ember Edge is a great, current intro to Ember.js book.  Go! Go away.  Read some books.
+keywords: ember, javascript, ember edge, book, learn ember
 published: true
 ---
 

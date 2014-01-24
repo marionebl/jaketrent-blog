@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-01-23T18:19:35-07:00</updated>
+  <updated>2014-01-24T11:03:26-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ng-Conf Review]]></title>
+    <link href="http://jaketrent.com/post/ng-conf-review/"/>
+    <updated>2014-01-24T07:22:00-07:00</updated>
+    <id>http://jaketrent.com/post/ng-conf-review</id>
+    <content type="html"><![CDATA[<p>Ng-Conf just happened last week in Salt Lake City, Utah.  It was awesome.  Oh blast, I blew the punch line.  Anyway, here&#8217;s my take.</p>
+
+<p><img src="http://i.imgur.com/4swtO6x.jpg" alt="ng-conf" /></p>
+
+<!--more-->
+
+
+<h2>Format</h2>
+
+<p>Two days.  Early &#8216;til late.  One track.  20-40 min talks virtually back to back.  Lightning&#8217;y?  When we broke for lunch, I felt relieved.  My brain could go into some low-power mode.  Breaks between talks were mostly announced as anywhere from 30 seconds to 3 minutes, this whilst yammering off a short list of swag winners.  The format encouraged content, and there was a lot of it!</p>
+
+<h2>Line Up</h2>
+
+<p>The conference was easy to look forward to.  Looking at the speaker list, I was immediately impressed.  At one point during the event, Aaron Frost said that they hoped if the Angular team would come that they&#8217;d get more attendees.  Yes, that was a draw.  It was fun having them there.  Core.  Very core.  I believe that about each member of the team took the stage over the two days.</p>
+
+<p>The speaker list in total was very impressive.  There was a good mix of local and remote talent who came together to cover a broad array of Angular and JavaScript-related topics.</p>
+
+<h2>Talk Quality</h2>
+
+<p>Talk for talk, just numbers-wise, it was definitely one of the most high quality conferences I&#8217;ve attended.  Of course, there were some less-than-stellar presentations.  But, on the whole, I was more than impressed by the subject mastery and teaching ability of the speakers.  Thank you to everyone who prepared.</p>
+
+<p>There were also some definite highlights: Dave Smith on directives, Vojta Jina on DI, Brian Ford on zone.js, and Julie Ralph on Protractor.</p>
+
+<p>And one of the best parts is that each of these talks was recorded on video for a livestream and <a href="http://www.youtube.com/user/ngconfvideos">on youtube for later viewing</a>.</p>
+
+<h2>Venue</h2>
+
+<p>The conference was held at the Little America hotel in Salt Lake City.  It was a beautiful location.  The combined main ballrooms that the talks were held in were awesome.  Plenty of marble.  The food was great.  There weren&#8217;t tons of snacks, but that was probably good for my health.  The air quality in Salt Lake during the conference wasn&#8217;t good.  In fact, oobleck!  But, I didn&#8217;t get food poisoning &#8211; plus!</p>
+
+<h2>Smooth</h2>
+
+<p>I heard it said by multiple people during the conference that it was the best first-time conference they had attended.  Indeed, everything went Domo smooth.  The content was the star.  It was fun.  It was energetic (minus some confusing lack of screaming for all the sweet swag &#8211; probably had something to do with the sheer amount, like clapping for the 3rd curtain call).  The AV crew did a fantastic job.  Usually, it&#8217;s annoying to sit in an audience as video or audio problems plague the start of a talk.  That simply did not happen here, and it was oh, so refreshing.</p>
+
+<p>Oh yeah, and sweet jacket!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Developing an Ember Edge Review]]></title>
@@ -1690,158 +1732,6 @@
 <p>Here, we&#8217;re setting custom events for disabling and enabling the button.  And note the <code>ng-click</code> value.  The <code>doClickyThings()</code> function will not get called if <code>disabledToggled</code> is true.</p>
 
 <p>So, what do you think.  Is there an easier way to get this kind of functionality?  What could we do to make it better?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Preload Route Data in Angular]]></title>
-    <link href="http://jaketrent.com/post/preload-route-data-angular/"/>
-    <updated>2013-08-13T08:10:00-06:00</updated>
-    <id>http://jaketrent.com/post/preload-route-data-angular</id>
-    <content type="html"><![CDATA[<p>It&#8217;s sometimes useful to be able to preload or resolve data previous to an Angular view being displayed.  Such was the case recently for our current user object.  It simplified a lot of things in the app to have the guarantee of a loaded current user previous to displaying pages.  The Angular router has a great mechanism built in to do just this sort of thing, called <code>resolve</code>.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angularjs" /></p>
-
-<!--more-->
-
-
-<h2>Current User</h2>
-
-<p>For the example, our current user object is super simple.  Just pretend that it holds all of the relevant details of a user.  These details are useful for displaying various things in the app that need the context of who the currently logged-in user is.</p>
-
-<figure class='code'><figcaption><span>current-user.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'>  <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app.services&#39;</span><span class="p">).</span><span class="nx">factory</span> <span class="s">&#39;CurrentUser&#39;</span><span class="p">,</span> <span class="nf">($http, User) -&gt;</span>
-</span><span class='line'>    <span class="k">class</span> <span class="nx">CurrentUser</span> <span class="k">extends</span> <span class="nx">User</span>
-</span><span class='line'>      <span class="nv">fetch: </span><span class="o">-&gt;</span>
-</span><span class='line'>        <span class="c1"># do $http things to request user data</span>
-</span><span class='line'>      <span class="nv">isLoaded: </span><span class="o">-&gt;</span>
-</span><span class='line'>        <span class="c1"># true if fetched and ready to go</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">new</span> <span class="nx">CurrentUser</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Note that for our app there is just one <code>CurrentUser</code> object, a singleton, because we return a single instance from our factory, not a class.</p>
-
-<h2>Router</h2>
-
-<p>The Angular router is used for client-side routing of urls.  Our angular app is called <code>app</code>.  We setup some angular submodules to hold config, services, and controllers.</p>
-
-<p>Let&#8217;s say that we have a home page and a profile page for our example.</p>
-
-<p>Each route can be configured with a <code>resolve</code> object.  The key of that object is the name of a local variable and the value is a function which returns a promise.  The resolution value of the promise is the data you want before the route executes.After all the promises are resolved, the route is free to switch and execute.  Until then, each unresolved promise will block the route from executing.</p>
-
-<figure class='code'><figcaption><span>app.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span> <span class="s">&#39;app.config&#39;</span><span class="p">,</span> <span class="p">[]</span>
-</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span> <span class="s">&#39;app.services&#39;</span><span class="p">,</span> <span class="p">[]</span>
-</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span> <span class="s">&#39;app.controllers&#39;</span><span class="p">,</span> <span class="p">[]</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;app.config&#39;</span><span class="p">,</span> <span class="s">&#39;app.services&#39;</span><span class="p">,</span> <span class="s">&#39;app.controllers&#39;</span><span class="p">])</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">).</span><span class="nx">config</span> <span class="nf">($routeProvider, $locationProvider, resolves) -&gt;</span>
-</span><span class='line'>  <span class="nx">$locationProvider</span><span class="p">.</span><span class="nx">html5Mode</span> <span class="kc">true</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">$routeProvider</span>
-</span><span class='line'>    <span class="p">.</span><span class="k">when</span> <span class="s">&#39;/&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nv">controller: </span><span class="s">&#39;HomeCtrl&#39;</span>
-</span><span class='line'>      <span class="nv">templateUrl: </span><span class="s">&#39;/templates/home.html&#39;</span>
-</span><span class='line'>    <span class="p">.</span><span class="k">when</span> <span class="s">&#39;/profile&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nv">controller: </span><span class="s">&#39;ProfileCtrl&#39;</span>
-</span><span class='line'>      <span class="nv">templateUrl: </span><span class="s">&#39;/templates/profile.html&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">).</span><span class="nx">run</span> <span class="nf">($route, resolves)-&gt;</span>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">r</span> <span class="k">in</span> <span class="nx">$route</span><span class="p">.</span><span class="nx">routes</span>
-</span><span class='line'>    <span class="nx">r</span><span class="p">.</span><span class="nx">resolve</span> <span class="o">?=</span> <span class="p">{}</span>
-</span><span class='line'>    <span class="nv">r.resolve.CurrentUser = </span><span class="nx">resolves</span><span class="p">.</span><span class="nx">getCurrentUser</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <code>run</code> method is essentially the Angular app&#8217;s main method, starting the program.  I want to ensure the current user is loaded for each route.  In this case, instead of putting a <code>resolve</code> config on each route, I&#8217;m looping through all routes after their initial definition and adding the <code>CurrentUser: resolves.getCurrentUser</code> config.</p>
-
-<h2>Resolve Function</h2>
-
-<p>In our resolve function we setup our own promise via the <code>$q</code> service.  We check to see if our singleton <code>CurrentUser</code> is already loaded.  If it&#8217;s not, we fetch it.  If it has been fetched once already, we resolve the promise with the value that&#8217;s already available.</p>
-
-<figure class='code'><figcaption><span>resolves.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app.config&#39;</span><span class="p">).</span><span class="nx">constant</span> <span class="s">&#39;resolves&#39;</span><span class="p">,</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nv">getCurrentUser: </span><span class="nf">($q, CurrentUser) -&gt;</span>
-</span><span class='line'>    <span class="nv">defer = </span><span class="nx">$q</span><span class="p">.</span><span class="nx">defer</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="o">not</span> <span class="nx">CurrentUser</span><span class="p">.</span><span class="nx">isLoaded</span><span class="p">()</span>
-</span><span class='line'>      <span class="nv">req = </span><span class="nx">CurrentUser</span><span class="p">.</span><span class="nx">fetch</span><span class="p">()</span>
-</span><span class='line'>      <span class="nx">req</span><span class="p">.</span><span class="nx">success</span> <span class="o">-&gt;</span> <span class="nx">defer</span><span class="p">.</span><span class="nx">resolve</span> <span class="nx">CurrentUser</span>
-</span><span class='line'>      <span class="nx">req</span><span class="p">.</span><span class="nx">error</span> <span class="o">-&gt;</span> <span class="nx">defer</span><span class="p">.</span><span class="nx">reject</span><span class="p">()</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="nx">defer</span><span class="p">.</span><span class="nx">resolve</span> <span class="nx">CurrentUser</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">defer</span><span class="p">.</span><span class="nx">promise</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Application Controller</h2>
-
-<p>Now that we have the <code>CurrentUser</code> guaranteed to be resolved (fetched and returned) by the time we enter all routes, we need to grab the value of <code>CurrentUser</code> and put it in <code>$scope</code> where our program would normally pick up and start using variables.</p>
-
-<figure class='code'><figcaption><span>app-ctrl.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app.controllers&#39;</span><span class="p">).</span><span class="nx">controller</span> <span class="s">&#39;AppCtrl&#39;</span><span class="p">,</span> <span class="nf">($scope) -&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">$on</span> <span class="s">&#39;$routeChangeSuccess&#39;</span><span class="p">,</span> <span class="nf">(next, current) -&gt;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="nx">current</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">CurrentUser</span><span class="o">?</span>
-</span><span class='line'>      <span class="nv">$scope.currentUser = </span><span class="nx">current</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">CurrentUser</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We listen the Angular-provided event when a route is successfully entered: <code>$routeChangeSuccess</code>.  The value we care about is available on the <code>current</code> route&#8217;s <code>locals</code> object, placed there magically by the resolve function.</p>
-
-<h2>When to Use</h2>
-
-<p>There are a few bits to piece together to make this happen.  It might be simpler than other solutions or make more sense for you in your app if you need something(s) loaded previous to executing on a route.</p>
-
-<p>I would definitely use this feature judiciously, as it seems to eat away at one of the advantages of a client-side app in the first place: asynchronous loading.  We&#8217;8re blocking the whole app from going forward when we&#8217;re in the process of resolving.  That boundary used to be on the edge of the server, building up the page before it was servable to the client.  Now, on a web client, we have multiple requests that can happen in parallel and we can render bits as they&#8217;re available &#8211; important bits first and so on.</p>
 ]]></content>
   </entry>
   
