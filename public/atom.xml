@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-01-24T11:03:26-07:00</updated>
+  <updated>2014-01-24T11:07:27-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -60,9 +60,9 @@
     <link href="http://jaketrent.com/post/developing-an-ember-edge-review/"/>
     <updated>2014-01-23T11:19:00-07:00</updated>
     <id>http://jaketrent.com/post/developing-an-ember-edge-review</id>
-    <content type="html"><![CDATA[<p>The latest book on The List at <a href="http://emberwatch.com/books">emberwatch</a> is <a href="http://bleedingedgepress.com/our-books/developing-an-ember-edge/">Developing an Ember Edge</a>.  It&#8217;s a great intro book to Ember.js.
-`
-<img src="http://i.imgur.com/85v8PQP.png" alt="Developing an Ember Edge" /></p>
+    <content type="html"><![CDATA[<p>The latest book on The List at <a href="http://emberwatch.com/books">emberwatch</a> is <a href="http://bleedingedgepress.com/our-books/developing-an-ember-edge/">Developing an Ember Edge</a>.  It&#8217;s a great intro book to Ember.js.</p>
+
+<p><img src="http://i.imgur.com/85v8PQP.png" alt="Developing an Ember Edge" /></p>
 
 <!--more-->
 
