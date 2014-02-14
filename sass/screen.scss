@@ -22,34 +22,52 @@ body {
 }
 
 .main-nav {
-
+  display: none;
 }
+
 .main-nav-list {
   list-style: none;
   margin-left: 0;
 }
+
 .main-nav-item {
   display: block;
 
   &:nth-of-type(1) .main-nav-link {
-    border-top: 1px solid lighten(red, 10%);
-    background: red;
-    border-bottom: 1px solid darken(red, 10%);
+    border-top: 1px solid lighten($nav-item-1-color, 10%);
+    background: $nav-item-1-color;
+    border-bottom: 1px solid darken($nav-item-1-color, 10%);
+
+    &:hover {
+      background: darken($nav-item-1-color, 5%);
+    }
   }
   &:nth-of-type(2) .main-nav-link {
-    border-top: 1px solid lighten(orangered, 10%);
-    background: orangered;
-    border-bottom: 1px solid darken(orangered, 10%);
+    border-top: 1px solid lighten($nav-item-2-color, 10%);
+    background: $nav-item-2-color;
+    border-bottom: 1px solid darken($nav-item-2-color, 10%);
+
+    &:hover {
+      background: darken($nav-item-2-color, 5%);
+    }
   }
   &:nth-of-type(3) .main-nav-link {
-    border-top: 1px solid lighten(orange, 10%);
-    background: orange;
-    border-bottom: 1px solid darken(orange, 10%);
+    border-top: 1px solid lighten($nav-item-3-color, 10%);
+    background: $nav-item-3-color;
+    border-bottom: 1px solid darken($nav-item-3-color, 10%);
+
+    &:hover {
+      background: darken($nav-item-3-color, 5%);
+    }
   }
   &:nth-of-type(4) .main-nav-link {
-    border-top: 1px solid lighten(yellow, 10%);
-    background: yellow;
-    border-bottom: 1px solid darken(yellow, 10%)
+    border-top: 1px solid lighten($nav-item-4-color, 10%);
+    background: $nav-item-4-color;
+    border-bottom: 1px solid darken($nav-item-4-color, 10%);
+
+    &:hover {
+      background: darken($nav-item-4-color, 5%);
+    }
   }
 }
 .main-nav-link {
@@ -66,6 +84,25 @@ body {
   &:hover {
     text-decoration: none
   }
+}
+
+.logo-title {
+  font-size: 20px;
+}
+
+.logo-link {
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 20px;
+  color: #fff;
+  font-size: 16px;
+  text-shadow: 1px 1px 0 #515151;
+  text-decoration: none;
+
+  border-top: 1px solid lighten($nav-item-2-color, 10%);
+  background: $nav-item-2-color;
+  border-bottom: 1px solid darken($nav-item-2-color, 10%);
 }
 
 .content {
@@ -146,11 +183,21 @@ body {
   float: right;
 }
 
+.pagination {
+  padding: 20px 0;
+  text-align: center;
+
+  & > a {
+    display: inline-block;
+    margin: 0 10px;
+  }
+}
+
 .page-title {
   font-size: 30px;
 }
 
-.category-year-title {
+.archive-year-title {
   padding: 40px 0 10px 0;
   border-bottom: 1px solid red;
   margin-bottom: 25px;
@@ -177,18 +224,19 @@ body {
 }
 
 @media screen and (min-width: $min-width-sm) {
-
-
-
-
 }
+
 @media screen and (min-width: $min-width-med) {
 
-  .main-nav {
+  .sidebar {
     position: absolute;
     top: 110px;
     left: 0;
     width: 250px;
+  }
+
+  .main-nav {
+    display: block;
     @include border-radius(0 10px 10px 0);
     @include box-shadow(10px 2px 20px rgba(0,0,0,.1), 2px 2px 2px rgba(20,0,0,.1));
   }
@@ -200,6 +248,23 @@ body {
     &:last-of-type .main-nav-link {
       @include border-bottom-right-radius(10px);
     }
+  }
+
+  .logo {
+    padding-top: 40px;
+  }
+
+  .logo-link {
+    display: block;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 20px;
+    background: none;
+    color: inherit;
+    text-shadow: none;
+
+    border: none;
+    background: none;
   }
 
   .content {
@@ -224,8 +289,12 @@ body {
   .container {
   }
 
-  .main-nav {
+  .sidebar {
     left: 50px;
+  }
+
+  .logo-link {
+    padding: 0;
   }
 
   .content {
