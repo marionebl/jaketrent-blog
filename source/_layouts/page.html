@@ -25,8 +25,8 @@ layout: default
   {% endunless %}
 </article>
 {% if site.disqus_short_name and page.comments == true %}
-  <section>
-    <h2>Comments</h2>
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
     <div id="disqus_thread" aria-live="polite">{% include post/disqus_thread.html %}</div>
   </section>
 {% endif %}

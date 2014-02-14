@@ -193,6 +193,14 @@ body {
   }
 }
 
+.comments {
+  padding-top: 25px;
+}
+
+.comments-title {
+  font-size: 24px;
+}
+
 .page-title {
   font-size: 30px;
 }
@@ -223,7 +231,18 @@ body {
 
 }
 
+.main-footer {
+  padding: 0 20px;
+}
+
+.main-footer-extras {
+  display: none;
+}
+
 @media screen and (min-width: $min-width-sm) {
+  .main-footer-extras {
+    display: inline;
+  }
 }
 
 @media screen and (min-width: $min-width-med) {
@@ -299,6 +318,10 @@ body {
 
   .content {
     margin-left: 350px;
+  }
+
+  .main-footer {
+    padding: 0 20px 0 370px;
   }
 
 }
