@@ -231,6 +231,35 @@ body {
 
 }
 
+.books-list {
+  padding-top: 22px;
+}
+
+.entry-book {
+  position: relative;
+  padding: 20px;
+
+  .entry-img {
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    width: 100px;
+  }
+  .entry-content {
+    margin-left: 110px;
+  }
+  .entry-title {
+    font-size: 22px;
+  }
+  .entry-author {
+    font-size: 16px;
+  }
+  .entry-desc {
+
+  }
+
+}
+
 .main-footer {
   padding: 0 20px;
 }
@@ -318,6 +347,20 @@ body {
 
   .content {
     margin-left: 350px;
+  }
+
+  .entry-book {
+    float: left;
+    width: 50%;
+
+    .entry-img {
+      top: 10px;
+      left: 10px;
+    }
+
+    .entry-content {
+      margin-left: 110px;
+    }
   }
 
   .main-footer {
