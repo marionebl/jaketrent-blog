@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Review | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/review/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-03-04T07:42:34-07:00</updated>
+  <updated>2014-03-04T09:10:09-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,82 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Switch: How to Change Things When Change is Hard Review]]></title>
+    <link href="http://jaketrent.com/post/switch-review/"/>
+    <updated>2014-03-04T07:51:00-07:00</updated>
+    <id>http://jaketrent.com/post/switch-review</id>
+    <content type="html"><![CDATA[<p>The book is called Switch: How to Change Things When Change is Hard.  It's by Chip Heath and Dan Heath.  It shows interesting anecdotes and good strategies on how to motivate people and situations to change.</p>
+
+<p><img src="http://i.imgur.com/zjnOrqX.jpg" alt="Switch" /></p>
+
+<!--more-->
+
+
+<h2>Who are you?</h2>
+
+<p>Did you know you are actually a combination elephant and rider?  Your rider represents your analytical thinking.  He wants to know every option.  He gets hung up in analysis paralysis.  It is likely he'll never make a decision.  Your elephant represents your emotions and your instincts on things.  It's much bigger than the rider, who is supposedly in control.  If your elephant decides it wants something, it usually gets its way.</p>
+
+<p>This analogy of our two halves is a bit silly but works quite well.  It illustrates well our internal struggle.  It helps me realize how I approach problems, seek solutions, and eventually make a choice on how to proceed.  I thought it was quite helpful.  As with most of the concepts in the book, it is revisited many times, presumably in order for us to do a better job remembering the concept.</p>
+
+<h2>Practical and Powerful</h2>
+
+<p>The 3 main thrusts of the book are focused around a strategy that the authors stated they hoped was small and simple enough to be memorable and practiced yet real and powerful enough to actually help us exact change.</p>
+
+<h3>1. Direct the Rider</h3>
+
+<p>The rider, admittedly, will not make decisions easily.  So, he needs some direction.  It can be hard to choose how to even begin to change.  The main helps stated in the book are as follows:</p>
+
+<h4>Follow the Bright Spots</h4>
+
+<p>In the problem situation or field that you are considering, there are most definitely things that <em>are</em> working.  These are the bright spots.  Why not replicate these good things in your own way for your own problem?  There are people who have faced a similar problem, whether they knew it or not, and found their way through all or part of it.  These are usually easier to discover than by starting from scratch.  And we know they'll work!</p>
+
+<h4>Script the Critical Moves</h4>
+
+<p>To ensure the rider takes action, you'll want to make it more than abundantly clear what <em>exactly</em> you want him to do.  If there is one thing that will make the biggest impact, that becomes your critical move.  Script, just as in a screenplay, exactly what actors in the program are expect to perform.</p>
+
+<h4>Point to the Destination</h4>
+
+<p>As the rider is weighing options, there will be many that appeal to him (or not).  It will be important to enumerate in an analytical way why the destination you're choosing is worth pointing toward.</p>
+
+<h3>2. Motivate the Elephant</h3>
+
+<p>The elephant, once sufficiently motivated becomes the powerhouse that ensures change will begin.  The elephant is the one to change inertia, bringing us lurching out of our standing position.</p>
+
+<h4>Find the Feeling</h4>
+
+<p>Knowledge alone will not change behavior.  This is obvious considering our clear knowledge of the ill effects of habits such as smoking.  People still smoke.  So we must additional paint an emotional picture of what a change may mean to someone, what it will feel like, and the deeper reasons for attempting it.</p>
+
+<h4>Shrink the Change</h4>
+
+<p>Large changes require a large effort and many steps.  It may look daunting, especially to start.  The elephant starts on emotion, but it will also stop by the same virtues.  Break down the change into steps that are small and readily doable.</p>
+
+<h4>Grow Your People</h4>
+
+<p>People attach themselves to causes.  Causes appeal to the inner values of people and motivate them from within.  Encourage a sense of identity with the change you're promoting.  If people can identify with the behavior as a part of who they are, they are likely to meet the change with a great dose of internal enthusiasm and excitement.</p>
+
+<h3>3. Shape the Path</h3>
+
+<p>Even with great instructions for our riders and motivation for our elephant, the friction to change may still be strong.  There is still more we can do to help.</p>
+
+<h4>Tweak the Environment</h4>
+
+<p>What looks like resistance from a person may just be that person falling into the environmental norms.  It may be the way things have always been done, and it's natural to continue doing them.  Make the change you advocate the most natural thing to do as a product of the environment.  And consider environmental change your responsibility before you blame others for not responding well to change.</p>
+
+<h4>Build Habits</h4>
+
+<p>It turns out that making decisions, especially hard decisions to change, takes energy and will power.  And we only have so much to give.  If something becomes automatic, the effort to enact the behavior will be much lower.  We'll just do it.  Determine how you can create triggers that happen automatically to regularly change behavior along the path.</p>
+
+<h4>Rally the Herd</h4>
+
+<p>Behavior is contagious.  People want to respond as others around them do.  Most people instinctively do not want to stand out, especially in negative ways, compared to the crowd around them.  To encourage change, publicize the majority behavior that is in line with what you seek.</p>
+
+<h2>Style and Read</h2>
+
+<p>Switch is a pretty short book.  The sheer amount of anecdotal and interesting examples of people chaning their lives and communities made it fun and inspiring to read.  I think I'd have to re-read it to have the strategies and tactics for change sink in deep enough to pull them out in the midst of change, but it does seems small enough to remember and powerful enough to be useful.  At the least, it's a great reference.  I'd recommend the book.  And since everyone has encountered and/or wants to change, it seems like an applicable read.  Chip and Dan have several other books I'm going to go check out now.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ng-Conf Review]]></title>
@@ -231,54 +307,6 @@ exercism submit ruby/bob/bob.rb
 <p>Jon gives the kind of encouragement that I need.  I don't feel greatly handicapped by fear.  In fact, I feel quite confident in learning and making new successes in my life.  But, Jon does help uncover some of the more subtle negative messages that I can give myself that tend to hamper my progress and lessen my enthusiasm, shooting holes in my own boat.  And then he gives practical steps for getting the momentum of learning going in my life and taking advantage of those things for which I'm the trail to mastery.</p>
 
 <p>So, what's next?  There's only to start.  Let new adventures begin.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[So Good They Can't Ignore You]]></title>
-    <link href="http://jaketrent.com/post/so-good-they-cant-ignore-you/"/>
-    <updated>2013-07-17T22:35:00-06:00</updated>
-    <id>http://jaketrent.com/post/so-good-they-cant-ignore-you</id>
-    <content type="html"><![CDATA[<p>"<a href="http://www.amazon.com/gp/product/1455509124/ref=as_li_ss_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1455509124&amp;linkCode=as2&amp;tag=jaktre-20">So Good They Can't Ignore You</a>" is written by Cal Newport.  He rejects the idea of following your passion in order to find the work you love.  Instead, he suggests the accumulation of career capital.</p>
-
-<p><img src="http://i.imgur.com/VWjzM2c.jpg" alt="So good" /></p>
-
-<!--more-->
-
-
-<p>What follows are the main sections or rules of the book with a few of my takeaways each.  The man is obviously steeped in science.  The book reads like laws of physics.  Well, not quite that dry, but just as precise and well organized.  I love reading him say, "In which I argue..."  Sounds very professorish.</p>
-
-<h2>The Passion Hypothesis</h2>
-
-<p>Isn't it true that when someone is trying to determine a career path or job, we often ask questions like, "Well, what do you want to do?" And give advice like, "Do something you're passionate about."  The author gives a few individual profiles of people who followed this advice without key ingredients and were, in the end, disappointed by the result.  He also points out a whole class of lifestyle designers who, in their delusion, <a href="http://jaketrent.com/post/quitter-review/">quit their day job</a> to live on their yet-to-be-created passive Internet income and aren't able to make it.</p>
-
-<h2>Career Capital</h2>
-
-<p>(In which) Newport argues that "working right trumps finding the right work."  Essentially, you worry more about what you are producing and the value you're giving (craftsman mindset) instead of whether or not it fits some passion you're predisposed to.</p>
-
-<p>Career capital is essentially the collection of rare and valuable skills that you possess that the market is willing to pay for.  Without this, you will likely not enjoy your work.  With this, your ability to define and magnify your work is much greater.</p>
-
-<p>The title of the book comes from Steve Martin, who remarked in an interview that aspiring comics didn't like his advice.  They wanted quick fix answers like, "How do I get an audition?"  But he would always advise, "Be so good they can't ignore you."  And most likely, judging by your name recognition of Monseiur Martin, he has worked himself to that level.</p>
-
-<h2>Autonomy</h2>
-
-<p>It is autonomy, not passion, that is most likely to help you love your work.  The amount of control you have in a job is likely to influence your liking it.  The more control, the better.  But, it doesn't come immediately.  If you don't have the career capital, you can't purchase it.  And if you're offered it, while you know you probably don't have the capital, it's probably a mirage.  But if you're so good they can't ignore you, your ability to set terms and influence your environment is real.</p>
-
-<h2>Importance of a Mission</h2>
-
-<p>"So good they can't ignore you" hardly sounds like your average work.  Instead it's likely that you're attached to a catchy mission.  You have a vision that people want to share.  You do work that people like to talk about.  Your name is known by peers and leaders in your industry.  You have made it to the edge of your field.  You are pushing boundaries, and are creating new fields, often mixtures of those you have expertise within.</p>
-
-<p>These stages of achievement that push your career and humanity forward are significant.  Little steps or bets need to be made strategically and intentionally in order to create a habit of advancing your knowledge and skill.  The sheer investment required to get to these levels is immense.</p>
-
-<h2>Conclusions</h2>
-
-<p>Newport's book was worth the read.  In fact, I recommend it to anyone about to enter college, desiring to start in a new field, wanting to scratch an entrepreneurial itch, or thinking of changing jobs.</p>
-
-<p>His advice is solid.  It's more grounded and nuanced than the "follow your passion", feel good propaganda.</p>
-
-<p>The writing is a little dry.  It's a short book at just over 200 small pages.  Still, it took me a bit to get through.  I wasn't exactly glued to the pages.  But I do believe the advice is invaluable if it influences one to throw all their potential ability behind producing their best work and becoming their best worker.  It reads well, but sometimes feels like a textbook.  Perfect for all that intentional learning we all want to do, right?</p>
-
-<p>Most importantly, it inspired me to be so good they can't ignore me.</p>
 ]]></content>
   </entry>
   
