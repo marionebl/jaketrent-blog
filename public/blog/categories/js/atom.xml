@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-03-08T09:35:56-07:00</updated>
+  <updated>2014-03-10T08:55:51-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,131 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Testing Express Validator]]></title>
+    <link href="http://jaketrent.com/post/testing-express-validator/"/>
+    <updated>2014-03-10T07:37:00-06:00</updated>
+    <id>http://jaketrent.com/post/testing-express-validator</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/ctavan/express-validator">Express-validator</a> is a <a href="http://expressjs.com/api.html#middleware">middleware for Express</a> on Node.js that can help you validate user input.  It's a lovely library.  Here's a pattern for testing code that uses it.</p>
+
+<p><img src="http://i.imgur.com/ZfK9bv4.png" alt="express-validator" /></p>
+
+<!--more-->
+
+
+<h2>Install</h2>
+
+<p>To get <code>express-validator</code> in your project, install with npm:</p>
+
+<p><code>bash
+npm install express-validator --save
+</code></p>
+
+<h2>Plug in the Middleware</h2>
+
+<p>To use the middleware in your code, crack open the part of your app that sets up Express middlewares, and add in a reference to this lil beaut:</p>
+
+<p>```coffeescript
+expressValidator = require 'express-validator'</p>
+
+<h1>...</h1>
+
+<p>app.use express.json()
+app.use expressValidator()
+```</p>
+
+<p>Note that you should insert the new <code>express-validator</code> middleware directly after the <code>json</code> middleware.  Also note that the <code>json</code> middleware, used in conjunction with <code>urlencoded</code> now <a href="http://andrewkelley.me/post/do-not-use-bodyparser-with-express-js.html">replace <code>bodyParser</code></a> to avoid deprecation warnings on startup.</p>
+
+<h2>Validate Something</h2>
+
+<p>Let's say you're writing a validator for new posts to a blog.  That code might look like this.</p>
+
+<p>```coffeescript blog-new-validator.coffee
+module.exports = (req) -></p>
+
+<p>  req.checkBody('title', 'Title is required').notEmpty()
+  req.checkBody('body', 'Body is required').notEmpty()</p>
+
+<p>  !req.validationErrors() or req.validationErrors().length is 0
+```</p>
+
+<p>It checks to see if there is a title and a body given.  If there is not, the validator will return false, and there will be a validation errors array on the <code>req</code> object.  There are many <a href="https://github.com/chriso/validator.js">other assertions (provided internally by validator.js)</a> besides <code>notEmpty</code> that you can use.</p>
+
+<h2>Validating the Validator</h2>
+
+<p>First, setup a test helper that stubs the request, <code>req</code>, for validation:</p>
+
+<p>```coffeescript req.coffee
+expressValidator = require('express-validator')()</p>
+
+<p>exports.stubForValidation = (done) ->
+  req =</p>
+
+<pre><code>query: {}
+body: {}
+params: {}
+param: (name) -&gt;
+  @params[name]
+</code></pre>
+
+<p>  expressValidator req, {}, -></p>
+
+<pre><code>done(req)
+</code></pre>
+
+<p>```</p>
+
+<p>There's nothing too incredibly special here.  It's just abstracted out of your test into a reusable helper.  The <code>req</code> object has empty objects to slap fixture data onto in your tests.  It includes a stubbed <code>param</code> function that can return params by name.  Finally, the <code>express-validator</code> middleware is called with the stubbed <code>req</code> object.</p>
+
+<p>Now, in your test, you can simply:</p>
+
+<ol>
+<li>Stub the request before each test</li>
+<li>Setup your fixture data to make the test pass (or not)</li>
+<li>Assert validation errors' existence and messages</li>
+</ol>
+
+
+<p>```coffeescript blog-new-validator.spec.coffee
+stubReq = require('req').stubForValidation
+validateNew = require 'blog-new-validator'</p>
+
+<p>describe 'blog-new-validator', -></p>
+
+<p>  req = null</p>
+
+<p>  beforeEach (done) -></p>
+
+<pre><code>stubReq (r) -&gt;
+  req = r
+  done()
+</code></pre>
+
+<p>  it 'is invalid without title', -></p>
+
+<pre><code>validateNew(req).should.be.false
+req.validationErrors(true).title.msg.should.eql 'Title is required'
+</code></pre>
+
+<p>  it 'is invalid without body', -></p>
+
+<pre><code>validateNew(req).should.be.false
+req.validationErrors(true).body.msg.should.eql 'Body is required'
+</code></pre>
+
+<p>  it 'is valid with title and body', -></p>
+
+<pre><code>req.body.title = 'New Blog Title'
+req.body.body = 'The body of the blog.'
+validateNew(req).should.be.true
+</code></pre>
+
+<p>```</p>
+
+<p>What do you think?  Is there an easier way?  A way to get better assertions?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ng-Conf Review]]></title>
@@ -239,108 +364,6 @@ angular.module('app').controller 'AppCtrl', ($rootScope) ->
 <p>Props go to <a href="http://github.com/danethurber">@danethurber</a> for putting this title changing logic in our most recent app.</p>
 
 <p>Is this how you change your Angular app's title?  Is there a better way?  Specifically, I wonder if <code>AppCtrl</code> really is the best place to listen for <code>$routeChangeSuccess</code>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Use D3 rangeBands]]></title>
-    <link href="http://jaketrent.com/post/use-d3-rangebands/"/>
-    <updated>2013-10-17T07:47:00-06:00</updated>
-    <id>http://jaketrent.com/post/use-d3-rangebands</id>
-    <content type="html"><![CDATA[<p>When building a chart such as a bar chart in d3, you'll want an evenly divided space on your x axis.  You could divide the space up with your own manual calculations, accounting for space available, bar width, and inner and outer padding.  Or, you could have d3 do the calculation for you via a <code>rangeBand</code>.</p>
-
-<p><img src="http://i.imgur.com/JEniNrp.jpg" alt="d3 rangeBand" /></p>
-
-<!--more-->
-
-
-<h2>Scale</h2>
-
-<p>One of the great features of D3 is the ability it gives you to easily adapt your chart to the space available to you.  This is accomplished with scales.  There are a couple different scales built into D3.  Some for comparative numbers, such as <code>d3.scale.linear</code> and <code>d3.scale.log</code>; some for discrete data sets, such as <code>d3.scale.ordinal</code>.</p>
-
-<p><strong>A scale maps visual space to data space.</strong></p>
-
-<p>The visual space of a scale is the <code>range</code>.  The data space is the <code>domain</code>.  The internals of the scale will map it all for you.</p>
-
-<h2>Manual Space Management</h2>
-
-<p>Previous to realizing some of the things that d3 scales can do for you, I did a lot of space management myself.  Here's an example:</p>
-
-<p>Let's say we have a data domain of all the letters in the alphabet.  Let's say we're building a bar chart.  We'll put the letters on the x-axis, running horizontally along our chart.  We want to space out each letter's bar evenly across the visual space or range.</p>
-
-<p>If we did our own math, it might look like this:</p>
-
-<p>```coffeescript brought-to-you-by.coffee
-barOuterPad = 20
-barPad = 10</p>
-
-<p>widthForBars = elementWidth - (barOuterPad * 2)
-barWidth = widthForBars / data.length - barPad + (barPad / numBars)</p>
-
-<p>barsG = svg.append('g')
-  .attr('transform', "translate(#{barOuterPad}, 0)")</p>
-
-<p>barsG.selectAll('rect')
-  .data(data)
-  .enter().append('rect')</p>
-
-<pre><code>.attr('x', (d, i) -&gt; (barWidth * i) + (i * barPad))
-.attr('width', barWidth)
-# attrs ...
-</code></pre>
-
-<p>```</p>
-
-<p>In the code above, we have bar padding setup.  <code>barOuterPad</code> is the padding on only the far left and right of the entire chart.  <code>barPad</code> is the space between each of the bars.</p>
-
-<p>The <code>barWidth</code> calculation is especially fun.  It splits the <code>widthForBars</code> space evenly over the number of bars.  Then it subtracts the <code>barPad</code> for the space of that bar that won't be able to be used.  Then, finally, we remember that there will be 1 fewer empty pad areas between bars than there will be actual bars.  So, we take that extra <code>barPad</code> space and give a bit of it back to every bar.  Whew.</p>
-
-<p>When we go to place bars, we create a new group, <code>barG</code>, transformed in to take account of <code>barOuterPad</code>.  Then, for each bar in we make sure it's offset into the chart based on what number of bar it is in the set.</p>
-
-<p>There is an easier way.</p>
-
-<h2>d3.scale.ordinal.rangeBands</h2>
-
-<p>There is one particular function of <code>d3.scale.ordinal</code> that is particularly useful.  That is <code>rangeBands</code>.  It will evenly divide a space up for you into bands across the range.</p>
-
-<p>Here's a great graphic from the d3 wiki on <a href="https://github.com/mbostock/d3/wiki/Ordinal-Scales#wiki-ordinal_rangeBands"><code>ordinal.rangeBands</code></a>:</p>
-
-<p><img src="https://f.cloud.github.com/assets/230541/538688/46c298c0-c193-11e2-9a7e-15d9abcfab9b.png" alt="rangeBand diagram" /></p>
-
-<p>It looks like it knows how to take care of everything in our scenario.  It handles outer padding.  It handles between-bar padding.  Let's use it:</p>
-
-<p>```coffeescript made-possible-by.coffee
-barOuterPad = .2
-barPad = .1</p>
-
-<p>x = d3.scale.ordinal()
-  .domain(data.map((d) -> d.letter))
-  .rangeRoundBands([0, elementWidth], barPad, barOuterPad)</p>
-
-<p>svg.append('rect')
-  .data(data)
-  .enter().append('rect')</p>
-
-<pre><code>.attr('x', (d) -&gt; x(d.letter))
-.attr('width', x.rangeBand())
-# attrs...
-</code></pre>
-
-<p>```</p>
-
-<p>Note that our <code>barOuterPad</code> and <code>barPad</code> are now fractions.  This is because d3 expects a number, usually between 0 and 1, that is described as a proportion of the eventual width of the bands.</p>
-
-<p><code>x</code> becomes our scale function, mapping the domain, which is all letters (<code>d.letter</code>), to the range.  The range is specified as bands using <code>rangeRoundBands</code>.  This is different than <code>rangeBands</code> in that all spaces are guaranteed to be integers, avoiding antialiasing on screen.  The signature is as follows:</p>
-
-<p><code>ordinal.rangeBands(interval[, padding[, outerPadding]])</code></p>
-
-<p>We avoid having to use a new <code>barG</code> group to make our math easier.</p>
-
-<p>When we set the <code>x</code> attribute on our bar, it's x offset is determined by passing the singular datum's letter to the <code>x</code> scale function.  And the width is simply the width of all bands, known by calling <code>x.rangeBand()</code>.</p>
-
-<p>So much better.  And so much more concise.</p>
-
-<p>What do you think?  Does this work for you?  What is the even-better way of doing this that I have yet to realize?</p>
 ]]></content>
   </entry>
   

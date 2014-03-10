@@ -121,6 +121,11 @@ body {
     line-height: 22px;
   }
 
+  ol {
+    list-style: decimal;
+    list-style-position: inside;
+  }
+
   img,
   video,
   .flash-video {
@@ -131,10 +136,10 @@ body {
   }
 
   h1, h2 { font-size: 24px; margin-bottom: 10px; color: #232020; }
-  h3 { font-size: 22px; margin-bottom: 8px; color: $nav-item-1-color; }
-  h4 { font-size: 20px; margin-bottom: 6px; color: $nav-item-3-color; }
-  h5 { font-size: 18px; margin-bottom: 4px; color: $nav-item-3-color;  }
-  h6 { font-size: 16px; margin-bottom: 2px; color: $nav-item-4-color;  }
+  h3 { font-size: 22px; padding-top: .5em; margin-bottom: 8px; color: $nav-item-1-color; }
+  h4 { font-size: 20px; padding-top: .25em; margin-bottom: 6px; color: $nav-item-3-color; }
+  h5 { font-size: 18px; padding-top: .25em; margin-bottom: 4px; color: $nav-item-3-color;  }
+  h6 { font-size: 16px; padding-top: .25em; margin-bottom: 2px; color: $nav-item-4-color;  }
 
   .meta,
   .entry-categories {
@@ -322,11 +327,11 @@ body {
   .entry {
 
     h1 { font-size: 50px; margin-bottom: 10px; }
-    h2 { font-size: 34px; margin-bottom: 10px; }
-    h3 { font-size: 30px; margin-bottom: 8px; }
-    h4 { font-size: 22px; margin-bottom: 6px; }
-    h5 { font-size: 18px; margin-bottom: 4px; }
-    h6 { font-size: 16px; margin-bottom: 2px; }
+    h2 { font-size: 34px; padding-top: 1em; margin-bottom: 10px; }
+    h3 { font-size: 30px; padding-top: .5em; margin-bottom: 8px; }
+    h4 { font-size: 22px; padding-top: .25em; margin-bottom: 6px; }
+    h5 { font-size: 18px; padding-top: .25em; margin-bottom: 4px; }
+    h6 { font-size: 16px; padding-top: .25em; margin-bottom: 2px; }
 
   }
 

@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Testing Express Validator - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Express-validator is a great library for validating input. Here's how you might test code that uses it.">
+  <meta name="keywords" content="js, javascript, node, nodejs, express-validator, test, unit test">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Testing Express Validator" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://i.imgur.com/ZfK9bv4.png" />
+  <meta property="og:url" content="http://jaketrent.com/post/testing-express-validator/" />
+  <meta property="og:description" content="Express-validator is a great library for validating input. Here's how you might test code that uses it." />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Testing Express Validator" />
+  <meta name="twitter:description" content="Express-validator is a great library for validating input. Here's how you might test code that uses it." />
+  <meta name="twitter:image" content="http://i.imgur.com/ZfK9bv4.png" />
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/testing-express-validator/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://builtbyjake.com/">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Testing Express Validator</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-10T07:37:00-06:00" pubdate data-updated="true">Mar 10<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="https://github.com/ctavan/express-validator">Express-validator</a> is a <a href="http://expressjs.com/api.html#middleware">middleware for Express</a> on Node.js that can help you validate user input.  It&#8217;s a lovely library.  Here&#8217;s a pattern for testing code that uses it.</p>
+
+<p><img src="http://i.imgur.com/ZfK9bv4.png" alt="express-validator" /></p>
+
+<!--more-->
+
+
+<h2>Install</h2>
+
+<p>To get <code>express-validator</code> in your project, install with npm:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install express-validator --save
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Plug in the Middleware</h2>
+
+<p>To use the middleware in your code, crack open the part of your app that sets up Express middlewares, and add in a reference to this lil beaut:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">expressValidator = </span><span class="nx">require</span> <span class="s">&#39;express-validator&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># ...</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">expressValidator</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that you should insert the new <code>express-validator</code> middleware directly after the <code>json</code> middleware.  Also note that the <code>json</code> middleware, used in conjunction with <code>urlencoded</code> now <a href="http://andrewkelley.me/post/do-not-use-bodyparser-with-express-js.html">replace <code>bodyParser</code></a> to avoid deprecation warnings on startup.</p>
+
+<h2>Validate Something</h2>
+
+<p>Let&#8217;s say you&#8217;re writing a validator for new posts to a blog.  That code might look like this.</p>
+
+<figure class='code'><figcaption><span>blog-new-validator.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(req) -&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">req</span><span class="p">.</span><span class="nx">checkBody</span><span class="p">(</span><span class="s">&#39;title&#39;</span><span class="p">,</span> <span class="s">&#39;Title is required&#39;</span><span class="p">).</span><span class="nx">notEmpty</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">req</span><span class="p">.</span><span class="nx">checkBody</span><span class="p">(</span><span class="s">&#39;body&#39;</span><span class="p">,</span> <span class="s">&#39;Body is required&#39;</span><span class="p">).</span><span class="nx">notEmpty</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">()</span> <span class="o">or</span> <span class="nx">req</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">().</span><span class="nx">length</span> <span class="o">is</span> <span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It checks to see if there is a title and a body given.  If there is not, the validator will return false, and there will be a validation errors array on the <code>req</code> object.  There are many <a href="https://github.com/chriso/validator.js">other assertions (provided internally by validator.js)</a> besides <code>notEmpty</code> that you can use.</p>
+
+<h2>Validating the Validator</h2>
+
+<p>First, setup a test helper that stubs the request, <code>req</code>, for validation:</p>
+
+<figure class='code'><figcaption><span>req.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">expressValidator = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;express-validator&#39;</span><span class="p">)()</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">exports.stubForValidation = </span><span class="nf">(done) -&gt;</span>
+</span><span class='line'>  <span class="nv">req =</span>
+</span><span class='line'>    <span class="nv">query: </span><span class="p">{}</span>
+</span><span class='line'>    <span class="nv">body: </span><span class="p">{}</span>
+</span><span class='line'>    <span class="nv">params: </span><span class="p">{}</span>
+</span><span class='line'>    <span class="nv">param: </span><span class="nf">(name) -&gt;</span>
+</span><span class='line'>      <span class="nx">@params</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">expressValidator</span> <span class="nx">req</span><span class="p">,</span> <span class="p">{},</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">done</span><span class="p">(</span><span class="nx">req</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There&#8217;s nothing too incredibly special here.  It&#8217;s just abstracted out of your test into a reusable helper.  The <code>req</code> object has empty objects to slap fixture data onto in your tests.  It includes a stubbed <code>param</code> function that can return params by name.  Finally, the <code>express-validator</code> middleware is called with the stubbed <code>req</code> object.</p>
+
+<p>Now, in your test, you can simply:</p>
+
+<ol>
+<li>Stub the request before each test</li>
+<li>Setup your fixture data to make the test pass (or not)</li>
+<li>Assert validation errors&#8217; existence and messages</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>blog-new-validator.spec.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">stubReq = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;req&#39;</span><span class="p">).</span><span class="nx">stubForValidation</span>
+</span><span class='line'><span class="nv">validateNew = </span><span class="nx">require</span> <span class="s">&#39;blog-new-validator&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">describe</span> <span class="s">&#39;blog-new-validator&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">req = </span><span class="kc">null</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">beforeEach</span> <span class="nf">(done) -&gt;</span>
+</span><span class='line'>    <span class="nx">stubReq</span> <span class="nf">(r) -&gt;</span>
+</span><span class='line'>      <span class="nv">req = </span><span class="nx">r</span>
+</span><span class='line'>      <span class="nx">done</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">it</span> <span class="s">&#39;is invalid without title&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">validateNew</span><span class="p">(</span><span class="nx">req</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">false</span>
+</span><span class='line'>    <span class="nx">req</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="nx">title</span><span class="p">.</span><span class="nx">msg</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">eql</span> <span class="s">&#39;Title is required&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">it</span> <span class="s">&#39;is invalid without body&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">validateNew</span><span class="p">(</span><span class="nx">req</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">false</span>
+</span><span class='line'>    <span class="nx">req</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="nx">body</span><span class="p">.</span><span class="nx">msg</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">eql</span> <span class="s">&#39;Body is required&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">it</span> <span class="s">&#39;is valid with title and body&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nv">req.body.title = </span><span class="s">&#39;New Blog Title&#39;</span>
+</span><span class='line'>    <span class="nv">req.body.body = </span><span class="s">&#39;The body of the blog.&#39;</span>
+</span><span class='line'>    <span class="nx">validateNew</span><span class="p">(</span><span class="nx">req</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What do you think?  Is there an easier way?  A way to get better assertions?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-10T07:37:00-06:00" pubdate data-updated="true">Mar 10<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/nodejs/'>nodejs</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/switch-review/" title="Previous Post: Switch: How to Change Things When Change is Hard Review">&laquo; Switch: How to Change Things When Change is Hard Review</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/testing-express-validator/';
+        var disqus_url = 'http://jaketrent.com/post/testing-express-validator/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

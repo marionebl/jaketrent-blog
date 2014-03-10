@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-03-08T09:35:56-07:00</updated>
+  <updated>2014-03-10T08:55:51-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,166 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Testing Express Validator]]></title>
+    <link href="http://jaketrent.com/post/testing-express-validator/"/>
+    <updated>2014-03-10T07:37:00-06:00</updated>
+    <id>http://jaketrent.com/post/testing-express-validator</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/ctavan/express-validator">Express-validator</a> is a <a href="http://expressjs.com/api.html#middleware">middleware for Express</a> on Node.js that can help you validate user input.  It&#8217;s a lovely library.  Here&#8217;s a pattern for testing code that uses it.</p>
+
+<p><img src="http://i.imgur.com/ZfK9bv4.png" alt="express-validator" /></p>
+
+<!--more-->
+
+
+<h2>Install</h2>
+
+<p>To get <code>express-validator</code> in your project, install with npm:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install express-validator --save
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Plug in the Middleware</h2>
+
+<p>To use the middleware in your code, crack open the part of your app that sets up Express middlewares, and add in a reference to this lil beaut:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">expressValidator = </span><span class="nx">require</span> <span class="s">&#39;express-validator&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># ...</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">expressValidator</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that you should insert the new <code>express-validator</code> middleware directly after the <code>json</code> middleware.  Also note that the <code>json</code> middleware, used in conjunction with <code>urlencoded</code> now <a href="http://andrewkelley.me/post/do-not-use-bodyparser-with-express-js.html">replace <code>bodyParser</code></a> to avoid deprecation warnings on startup.</p>
+
+<h2>Validate Something</h2>
+
+<p>Let&#8217;s say you&#8217;re writing a validator for new posts to a blog.  That code might look like this.</p>
+
+<figure class='code'><figcaption><span>blog-new-validator.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(req) -&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">req</span><span class="p">.</span><span class="nx">checkBody</span><span class="p">(</span><span class="s">&#39;title&#39;</span><span class="p">,</span> <span class="s">&#39;Title is required&#39;</span><span class="p">).</span><span class="nx">notEmpty</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">req</span><span class="p">.</span><span class="nx">checkBody</span><span class="p">(</span><span class="s">&#39;body&#39;</span><span class="p">,</span> <span class="s">&#39;Body is required&#39;</span><span class="p">).</span><span class="nx">notEmpty</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">()</span> <span class="o">or</span> <span class="nx">req</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">().</span><span class="nx">length</span> <span class="o">is</span> <span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It checks to see if there is a title and a body given.  If there is not, the validator will return false, and there will be a validation errors array on the <code>req</code> object.  There are many <a href="https://github.com/chriso/validator.js">other assertions (provided internally by validator.js)</a> besides <code>notEmpty</code> that you can use.</p>
+
+<h2>Validating the Validator</h2>
+
+<p>First, setup a test helper that stubs the request, <code>req</code>, for validation:</p>
+
+<figure class='code'><figcaption><span>req.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">expressValidator = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;express-validator&#39;</span><span class="p">)()</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">exports.stubForValidation = </span><span class="nf">(done) -&gt;</span>
+</span><span class='line'>  <span class="nv">req =</span>
+</span><span class='line'>    <span class="nv">query: </span><span class="p">{}</span>
+</span><span class='line'>    <span class="nv">body: </span><span class="p">{}</span>
+</span><span class='line'>    <span class="nv">params: </span><span class="p">{}</span>
+</span><span class='line'>    <span class="nv">param: </span><span class="nf">(name) -&gt;</span>
+</span><span class='line'>      <span class="nx">@params</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">expressValidator</span> <span class="nx">req</span><span class="p">,</span> <span class="p">{},</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">done</span><span class="p">(</span><span class="nx">req</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There&#8217;s nothing too incredibly special here.  It&#8217;s just abstracted out of your test into a reusable helper.  The <code>req</code> object has empty objects to slap fixture data onto in your tests.  It includes a stubbed <code>param</code> function that can return params by name.  Finally, the <code>express-validator</code> middleware is called with the stubbed <code>req</code> object.</p>
+
+<p>Now, in your test, you can simply:</p>
+
+<ol>
+<li>Stub the request before each test</li>
+<li>Setup your fixture data to make the test pass (or not)</li>
+<li>Assert validation errors&#8217; existence and messages</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>blog-new-validator.spec.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">stubReq = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;req&#39;</span><span class="p">).</span><span class="nx">stubForValidation</span>
+</span><span class='line'><span class="nv">validateNew = </span><span class="nx">require</span> <span class="s">&#39;blog-new-validator&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">describe</span> <span class="s">&#39;blog-new-validator&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nv">req = </span><span class="kc">null</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">beforeEach</span> <span class="nf">(done) -&gt;</span>
+</span><span class='line'>    <span class="nx">stubReq</span> <span class="nf">(r) -&gt;</span>
+</span><span class='line'>      <span class="nv">req = </span><span class="nx">r</span>
+</span><span class='line'>      <span class="nx">done</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">it</span> <span class="s">&#39;is invalid without title&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">validateNew</span><span class="p">(</span><span class="nx">req</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">false</span>
+</span><span class='line'>    <span class="nx">req</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="nx">title</span><span class="p">.</span><span class="nx">msg</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">eql</span> <span class="s">&#39;Title is required&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">it</span> <span class="s">&#39;is invalid without body&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">validateNew</span><span class="p">(</span><span class="nx">req</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">false</span>
+</span><span class='line'>    <span class="nx">req</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="nx">body</span><span class="p">.</span><span class="nx">msg</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">eql</span> <span class="s">&#39;Body is required&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">it</span> <span class="s">&#39;is valid with title and body&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nv">req.body.title = </span><span class="s">&#39;New Blog Title&#39;</span>
+</span><span class='line'>    <span class="nv">req.body.body = </span><span class="s">&#39;The body of the blog.&#39;</span>
+</span><span class='line'>    <span class="nx">validateNew</span><span class="p">(</span><span class="nx">req</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What do you think?  Is there an easier way?  A way to get better assertions?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Switch: How to Change Things When Change is Hard Review]]></title>
@@ -1625,103 +1785,6 @@
 <p>Now you should be ready to rock and roll with your tests.  Isolate scopes can be tricky.  Testing them, a bit tricky as well.</p>
 
 <p>Do you know a better way?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Spies with Sinon and Chai]]></title>
-    <link href="http://jaketrent.com/post/spies-sinon-chai/"/>
-    <updated>2013-08-19T08:21:00-06:00</updated>
-    <id>http://jaketrent.com/post/spies-sinon-chai</id>
-    <content type="html"><![CDATA[<p>Spies will help you verify calls to methods without actually calling them.  <a href="http://sinonjs.org/">Sinon</a> is a library that provides spies.  <a href="http://chaijs.com/">Chai</a> will provide assertions appropriate to spying.</p>
-
-<p><img src="http://i.imgur.com/yuKcrP9.jpg" alt="Sinon-chai Spies" /></p>
-
-<!--more-->
-
-
-<h2>Install Dependencies</h2>
-
-<p>You&#8217;ll need 3 dependencies in dev mode for running your tests:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>npm install sinon chai sinon-chai --save-dev</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now make sure that you import these testing tools into your test environment.  I&#8217;m using <a href="http://karma-runner.github.io/0.10/index.html">Karma Runner</a>, so my <code>files</code> array has these 3 lines:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="s1">&#39;node_modules/sinon/pkg/sinon.js&#39;</span><span class="p">,</span>
-</span><span class='line'><span class="s1">&#39;node_modules/chai/chai.js&#39;</span><span class="p">,</span>
-</span><span class='line'><span class="s1">&#39;node_modules/sinon-chai/lib/sinon-chai.js&#39;</span><span class="p">,</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Make sure that you are including the packaged version of each of these files.  For instance, the <code>sinon/lib</code> files are not built together, so you&#8217;ll likely import some subset of needed files; it won&#8217;t error out, but it won&#8217;t provide working spies like we&#8217;re wanting (so use the <code>pkg</code> directory files).</p>
-
-<h2>Spying</h2>
-
-<p>We spy because we care.  We don&#8217;t want certain methods to be called.  In this case, we&#8217;re testing Angularjs code.  We don&#8217;t want our event broadcast to actually happen because we don&#8217;t care about testing the listeners to that event.  We just want to know that the broadcast happens.  We can test listeners separately in their own unit test.</p>
-
-<p>I found that following the &#8220;Getting Started&#8221; example on the Sinonjs page didn&#8217;t lead me to create a spy that worked.  I went spelunking and found a working example on a random tech blog (a la this one).  So, here&#8217;s this advice:</p>
-
-<ul>
-<li><code>sinon.spy</code> api takes the object with the function as a 1st parameter and the string name of the function that you&#8217;re wanting to spy on as the 2nd parameter.</li>
-<li><code>sinon.spy</code> will return a reference to the spy.  You can use that reference to do assertions on or you can use the spied on function itself (ie, <code>$rootScope.$broadcast</code>)</li>
-<li>Use <a href="https://github.com/domenic/sinon-chai"><code>sinon-chai</code></a>.  It provides better assertions and works with <code>chai</code>.</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>model.spec.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">assert = </span><span class="nx">chai</span><span class="p">.</span><span class="nx">assert</span>
-</span><span class='line'><span class="nv">expect = </span><span class="nx">chai</span><span class="p">.</span><span class="nx">expect</span>
-</span><span class='line'><span class="nv">should = </span><span class="nx">chai</span><span class="p">.</span><span class="nx">should</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">model = </span><span class="kc">null</span>
-</span><span class='line'><span class="nv">$rootScope = </span><span class="kc">null</span>
-</span><span class='line'><span class="nv">$httpBackend = </span><span class="kc">null</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">beforeEach</span> <span class="nx">module</span> <span class="s">&#39;app&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">beforeEach</span> <span class="nx">inject</span> <span class="nf">(_Model_, _$rootScope_, _$httpBackend_) -&gt;</span>
-</span><span class='line'>  <span class="nv">model = </span><span class="k">new</span> <span class="nx">_Model_</span>
-</span><span class='line'>  <span class="nv">$rootScope = </span><span class="nx">_$rootScope_</span>
-</span><span class='line'>  <span class="nv">$httpBackend = </span><span class="nx">_$httpBackend_</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">it</span> <span class="s">&#39;broadcasts model:fetched event w/ model&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nv">spy = </span><span class="nx">sinon</span><span class="p">.</span><span class="nx">spy</span><span class="p">(</span><span class="nx">$rootScope</span><span class="p">,</span> <span class="s">&#39;$broadcast&#39;</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">model</span><span class="p">.</span><span class="nx">fetch</span><span class="p">()</span>
-</span><span class='line'>  <span class="nx">$httpBackend</span><span class="p">.</span><span class="nx">flush</span><span class="p">()</span>
-</span><span class='line'>  <span class="nx">spy</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">been</span><span class="p">.</span><span class="nx">calledWith</span> <span class="s">&#39;model:fetched&#39;</span><span class="p">,</span> <span class="nx">model</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Most of that code is setup.  And most of that setup is related to <a href="http://angularjs.org/">Angularjs</a>.  If that doesn&#8217;t apply to you, ignore it.  It&#8217;s just there to give a more full picture of the environment.</p>
-
-<p>The interesting part is all in the final <code>it</code> function call.  The code under test is <code>model.fetch()</code>, which is called.  Internal to that function, there is a <code>$rootScope.$broadcast</code> call that we&#8217;re spying on that we&#8217;re asserting is called with 2 parameters: &#8216;model:fetched&#8217; string and the model itself.</p>
-
-<p>As with most testing environments, it&#8217;s fairly simple once you discover the pattern.  What do you think of this one?  Does it work for you?</p>
 ]]></content>
   </entry>
   

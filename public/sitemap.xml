@@ -117,6 +117,10 @@
         <lastmod>2014-02-13T21:50:16-07:00</lastmod>
     </url>
     <url>
+        <loc>http://jaketrent.com/post/blog-template/</loc>
+        <lastmod>2014-02-13T21:50:16-07:00</lastmod>
+    </url>
+    <url>
         <loc>http://jaketrent.com/post/mocha-testing-angularjs-dependency-injection/</loc>
         <lastmod>2014-02-13T21:50:16-07:00</lastmod>
     </url>
@@ -377,19 +381,23 @@
         <lastmod>2014-03-08T09:24:37-07:00</lastmod>
     </url>
     <url>
+        <loc>http://jaketrent.com/post/testing-express-validator/</loc>
+        <lastmod>2014-03-10T08:54:53-06:00</lastmod>
+    </url>
+    <url>
         <loc>http://jaketrent.com/404.html</loc>
         <lastmod>2014-02-13T21:46:05-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/blog/archives/</loc>
-        <lastmod>2014-03-08T09:24:37-07:00</lastmod>
+        <lastmod>2014-03-10T08:54:53-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/books/</loc>
-        <lastmod>2014-03-08T09:24:37-07:00</lastmod>
+        <lastmod>2014-03-10T08:54:53-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/</loc>
-        <lastmod>2014-03-08T09:24:37-07:00</lastmod>
+        <lastmod>2014-03-10T08:54:53-06:00</lastmod>
     </url>
 </urlset>
