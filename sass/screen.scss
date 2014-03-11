@@ -265,6 +265,23 @@ body {
 
 }
 
+.work-list {
+  overflow: hidden;
+  position: relative;
+  left: -10px;
+  top: 1em;
+}
+.work-item {
+  float: left;
+  padding: 10px;
+}
+.entry-work {
+  .entry-img {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
 .main-footer {
   padding: 0 20px;
 }
@@ -335,6 +352,14 @@ body {
 
   }
 
+  .work-item {
+    width: percentage(1/2);
+  }
+
+  .main-footer {
+    padding: 0 20px 0 290px;
+  }
+
 }
 
 @media screen and (min-width: $min-width-lrg) {
@@ -366,6 +391,10 @@ body {
     .entry-content {
       margin-left: 110px;
     }
+  }
+
+  .work-item {
+    width: percentage(1/3);
   }
 
   .main-footer {
