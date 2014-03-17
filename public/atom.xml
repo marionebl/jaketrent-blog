@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-03-10T20:19:18-06:00</updated>
+  <updated>2014-03-17T08:24:37-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,62 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Detecting Window Closing in Ember]]></title>
+    <link href="http://jaketrent.com/post/ember-window-beforeunload/"/>
+    <updated>2014-03-17T08:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/ember-window-beforeunload</id>
+    <content type="html"><![CDATA[<p>In a long-running app such as you might build in Ember, it can be useful to detect when the window is closing.  This is easily detected with JavaScript, and there are easy places to put the code in your Ember app.</p>
+
+<p><img src="http://i.imgur.com/85v8PQP.png" alt="Ember beforeunload" /></p>
+
+<!--more-->
+
+
+<h2>beforeunload</h2>
+
+<p>The <code>window</code> event that you want to listen for is <code>beforeunload</code>.  You might bind to the event like so:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&#39;beforeunload&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="s">&#39;Are you sure you want to close this window?&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Return a string from the function.  This string will be displayed in a browser-native confirm-style dialogue.</p>
+
+<h2>beforeunload in Ember</h2>
+
+<p>Now, if your app is controlled by Ember, you&#8217;re likely going to want it to handle bindings such as this from within Ember.  There are several places you might want to put this code.  Your decision will depend on the needs of your app.  You can put it in a route or controller.  The scope of that route or controller should match the scope for which you want the <code>beforeunload</code> event to be caught.  In other words, if you want <code>beforeunload</code> to be caught for the entire app, put the listener in <code>ApplicationRoute</code> (or <code>ApplicationController</code>).  Or if you wanted a more limited scope, put the listener in a more specific route.</p>
+
+<p>For instance, if you wanted to save a blog post when the user closes a tab, you might implement something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.BlogEditController = </span><span class="nx">Ember</span><span class="p">.</span><span class="nx">ObjectController</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">saveBeforeClose: </span><span class="p">(</span><span class="o">-&gt;</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&#39;beforeunload&#39;</span><span class="p">,</span> <span class="o">=&gt;</span>
+</span><span class='line'>      <span class="nx">@get</span><span class="p">(</span><span class="s">&#39;model&#39;</span><span class="p">).</span><span class="nx">save</span><span class="p">()</span>
+</span><span class='line'>      <span class="s">&#39;Are you sure you want to leave unsaved work?&#39;</span>
+</span><span class='line'>  <span class="p">).</span><span class="kc">on</span> <span class="s">&#39;init&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>In Practice</h2>
+
+<p>In practice, the UX for this kind of feature can be tricky.  If someone closes a tab, odds are they meant to and don&#8217;t want to be bothered with a confirm dialogue asking them to reiterate their decision.  On the other hand, maybe the didn&#8217;t realize the implications of closing out the app, such as in the case of unsaved work, and they become very grateful for the reminder to stay and save something.</p>
+
+<p>In the case of the last example, it would be cool if we could detect the window closing, save the work automatically, and let the user close the tab as they indicated without interruption.  For asynchronous actions such as network requests, this is problematic.  The request will not finish before the browser has trashed the whole window.  In cases such as this, you will need to synchronize your requests to block before finishing execution of the <code>beforeunload</code> event callback.</p>
+
+<p>So, does this work for you?  How might you make it better?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Testing Express Validator]]></title>
@@ -1696,95 +1752,6 @@
 </pre></td><td class='code'><pre><code class='bash'><span class='line'>bower EDUPLICATE Duplicate package
 </span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Test Angular Directive With Isolate Scope]]></title>
-    <link href="http://jaketrent.com/post/test-angular-directive-isolate-scope/"/>
-    <updated>2013-08-21T07:46:00-06:00</updated>
-    <id>http://jaketrent.com/post/test-angular-directive-isolate-scope</id>
-    <content type="html"><![CDATA[<p>Directives with isolate scope do not inherit their scope from their parent.  Thus, the pattern to test them is slightly different.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular Isolate Scope Testing" /></p>
-
-<!--more-->
-
-
-<p>When testing a directive, you&#8217;ll often want to setup some fixture element to attach your directive to.  This will act as the DOM that you will compile with scope.  At that point, the variables that you attached to scope will be available within the directive under test.</p>
-
-<p>For example, if I had a directive called <code>AccountList</code> with isolate scope:</p>
-
-<figure class='code'><figcaption><span>account-list.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">).</span><span class="nx">directive</span> <span class="s">&#39;AccountList&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nv">restrict: </span><span class="s">&#39;EA&#39;</span>
-</span><span class='line'>  <span class="nv">replace: </span><span class="kc">true</span>
-</span><span class='line'>  <span class="nv">scope:</span>
-</span><span class='line'>    <span class="nv">accounts: </span><span class="s">&#39;=&#39;</span>
-</span><span class='line'>  <span class="c1"># etc ...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then I would setup my test something like this:</p>
-
-<figure class='code'><figcaption><span>account-list.spec.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">describe</span> <span class="s">&#39;AccountList&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nv">elm = </span><span class="kc">null</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">beforeEach</span> <span class="nx">inject</span> <span class="nf">($rootScope, $compile) -&gt;</span>
-</span><span class='line'>    <span class="nv">accounts = </span><span class="p">[]</span>
-</span><span class='line'>    <span class="k">for</span> <span class="nx">num</span> <span class="k">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">..</span><span class="mi">5</span><span class="p">]</span>
-</span><span class='line'>      <span class="nx">accounts</span><span class="p">.</span><span class="nx">push</span> <span class="nx">createFakeAccount</span><span class="p">()</span>
-</span><span class='line'>    <span class="nv">$rootScope.accounts = </span><span class="nx">accounts</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nv">elm = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">element</span> <span class="s">&quot;&quot;&quot;</span>
-</span><span class='line'><span class="s">      &lt;account-list accounts=&quot;accounts&quot;&gt;&lt;/account-list&gt;</span>
-</span><span class='line'><span class="s">    &quot;&quot;&quot;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nv">e = </span><span class="nx">$compile</span><span class="p">(</span><span class="nx">elm</span><span class="p">)(</span><span class="nx">$rootScope</span><span class="p">)</span>
-</span><span class='line'>    <span class="nx">e</span><span class="p">.</span><span class="nx">scope</span><span class="p">().</span><span class="nx">$digest</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># actual specs, using elm ...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>A few points:</p>
-
-<ul>
-<li><code>inject()</code> comes from <code>angular-mock</code>.  It is currently only supported in Jasmine.</li>
-<li>Before each test of the <code>AccountList</code> directive, a set of 5 accounts will be put in scope so the directive, presumably, has something to display.</li>
-<li><code>$rootScope</code> is going to be the only scope that you can get to easily from your tests.  You can attach variables to it directly as above or call <code>$rootScope.$new()</code> to generate a new scope if you&#8217;d like.</li>
-<li>We initially <code>$compile</code> the fixture element, passing in <code>$rootScope</code>.</li>
-<li>To get Angular to actually act internally on the variables that we&#8217;ve passed into the directive and put them on scope, we must call the important line of code: <code>e.scope().$digest()</code>.</li>
-</ul>
-
-
-<p>Now you should be ready to rock and roll with your tests.  Isolate scopes can be tricky.  Testing them, a bit tricky as well.</p>
-
-<p>Do you know a better way?</p>
 ]]></content>
   </entry>
   

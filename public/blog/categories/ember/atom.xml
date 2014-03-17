@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ember | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ember/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-03-10T20:25:31-06:00</updated>
+  <updated>2014-03-17T08:24:37-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,57 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Detecting Window Closing in Ember]]></title>
+    <link href="http://jaketrent.com/post/ember-window-beforeunload/"/>
+    <updated>2014-03-17T08:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/ember-window-beforeunload</id>
+    <content type="html"><![CDATA[<p>In a long-running app such as you might build in Ember, it can be useful to detect when the window is closing.  This is easily detected with JavaScript, and there are easy places to put the code in your Ember app.</p>
+
+<p><img src="http://i.imgur.com/85v8PQP.png" alt="Ember beforeunload" /></p>
+
+<!--more-->
+
+
+<h2>beforeunload</h2>
+
+<p>The <code>window</code> event that you want to listen for is <code>beforeunload</code>.  You might bind to the event like so:</p>
+
+<p><code>coffeescript
+$(window).bind 'beforeunload', -&gt;
+  'Are you sure you want to close this window?'
+</code></p>
+
+<p>Return a string from the function.  This string will be displayed in a browser-native confirm-style dialogue.</p>
+
+<h2>beforeunload in Ember</h2>
+
+<p>Now, if your app is controlled by Ember, you're likely going to want it to handle bindings such as this from within Ember.  There are several places you might want to put this code.  Your decision will depend on the needs of your app.  You can put it in a route or controller.  The scope of that route or controller should match the scope for which you want the <code>beforeunload</code> event to be caught.  In other words, if you want <code>beforeunload</code> to be caught for the entire app, put the listener in <code>ApplicationRoute</code> (or <code>ApplicationController</code>).  Or if you wanted a more limited scope, put the listener in a more specific route.</p>
+
+<p>For instance, if you wanted to save a blog post when the user closes a tab, you might implement something like this:</p>
+
+<p>```coffeescript
+App.BlogEditController = Ember.ObjectController.extend
+  saveBeforeClose: (-></p>
+
+<pre><code>$(window).bind 'beforeunload', =&gt;
+  @get('model').save()
+  'Are you sure you want to leave unsaved work?'
+</code></pre>
+
+<p>  ).on 'init'
+```</p>
+
+<h2>In Practice</h2>
+
+<p>In practice, the UX for this kind of feature can be tricky.  If someone closes a tab, odds are they meant to and don't want to be bothered with a confirm dialogue asking them to reiterate their decision.  On the other hand, maybe the didn't realize the implications of closing out the app, such as in the case of unsaved work, and they become very grateful for the reminder to stay and save something.</p>
+
+<p>In the case of the last example, it would be cool if we could detect the window closing, save the work automatically, and let the user close the tab as they indicated without interruption.  For asynchronous actions such as network requests, this is problematic.  The request will not finish before the browser has trashed the whole window.  In cases such as this, you will need to synchronize your requests to block before finishing execution of the <code>beforeunload</code> event callback.</p>
+
+<p>So, does this work for you?  How might you make it better?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Developing an Ember Edge Review]]></title>
@@ -406,114 +457,6 @@ App.GameController = Ember.ObjectController.extend</p>
 <p>If the controller doesn't implement this function, the current Ember Route may implement it in its <code>events</code> object.  If neither the controller or the route implement it, an exception is thrown.</p>
 
 <p>In this way, Ember Views show their worth in collecting events and translating them to meaningful verbs that we can act upon in our application.  They become reusable, allowing us to bind different content to them on different occassions.  Do Ember Views help you in this way?  Is there a better way?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ember Parent Templates]]></title>
-    <link href="http://jaketrent.com/post/ember-parent-templates/"/>
-    <updated>2013-05-29T07:02:00-06:00</updated>
-    <id>http://jaketrent.com/post/ember-parent-templates</id>
-    <content type="html"><![CDATA[<p><a href="http://emberjs.com">Ember</a>'s convention of template hierarchy is very specific.  Learn it once, and you'll know it every time.</p>
-
-<p><img src="http://i.imgur.com/x5HT4FN.jpg" alt="Ember and Handlebars" /></p>
-
-<!--more-->
-
-
-<p><strong>Note:</strong> Code examples use <a href="http://emblemjs.com/">Emblem</a> templates and <a href="http://coffeescript.org">CoffeeScript</a>.  Vanilla Handlebars and JavaScript would work just as well.</p>
-
-<h2>Outlets</h2>
-
-<p>Ember templates make use of a special helper called <code>outlet</code>.  You can have one main, unnamed outlet or many named outlets.  The main thing to remember is that a child template will always render inside its parent's outlet -- so always put outlets in templates that have children.</p>
-
-<h2>Application Template</h2>
-
-<p>There is a top-most template that all of your templates will render inside of.  This is called the application template.  It is specified in one of two ways.  If you are including your templates as script tags, simply create a script tag that doesn't have a <code>data-template-name</code> or <code>id</code> attribute, a la:</p>
-
-<p>```html</p>
-
-<script type="x-emblem">
-  h1 My Application
-  == outlet
-</script>
-
-
-<p>```</p>
-
-<p>If you are <a href="/post/precompile-ember-templates">precompiling your Ember templates</a>, which you should, you have a directory for templates.  You will put your file, called <code>application.emblem</code> in the root of that directory.  The contents of <code>templates/application.emblem</code> would be the same:</p>
-
-<p><code>jade
-h1 My Application
-== outlet
-</code></p>
-
-<h2>Route Templates</h2>
-
-<p>If you have a top-level route, it will have a top-level template.  Your route's template will have only the application template as its parent.  So, your about route:</p>
-
-<p><code>coffeescript
-App.Router.map -&gt;
-  @route 'about'
-</code></p>
-
-<p>Will have an about template at <code>templates/about.emblem</code> and you could define a route as <code>AboutRoute</code>.  It will render inside of <code>application.emblem</code>'s outlet.</p>
-
-<h2>Resource Templates</h2>
-
-<p>Resources are interesting because you can nest other routes inside them.  Nesting routes will also result in nesting templates.  If I defined a <code>league</code> resource with a nested route for creating new leagues, it might look something like this:</p>
-
-<p>```coffeescript
-App.Router.map ->
-  @resouce 'league', -></p>
-
-<pre><code>@route 'new'
-</code></pre>
-
-<p>```</p>
-
-<p>There are two leaf routes (and thus templates) that are created here:</p>
-
-<ul>
-<li><code>LeagueIndexRoute</code>, which uses <code>templates/league/index.emblem</code></li>
-<li><code>LeagueNewRoute</code>, which uses <code>templates/league/new.emblem</code></li>
-</ul>
-
-
-<p>Note that you create a <code>league</code> directory inside your <code>templates</code> directory for nesting these templates.  Precompiled templates will be created at:</p>
-
-<ul>
-<li><code>Ember.TEMPLATES["league/index"]</code></li>
-<li><code>Ember.TEMPLATES["league/new"]</code></li>
-</ul>
-
-
-<p>If you wanted to use the <code>linkTo</code> helper in a template to link to these routes, you would use this syntax:</p>
-
-<p><code>jade
-linkTo 'league.index' | List Leagues
-linkTo 'league.new' | New League
-</code></p>
-
-<p>And now as far as templates, there is <em>one more</em> that we're missing.  There is a root league template that these two league leaf templates render inside of.  It should live at <code>templates/league.emblem</code>.  This template would be useful for showing UI elements that are common to all league resource things.  In the case where there is no such need, this template will probably only contain a single outlet:</p>
-
-<p><code>jade
-== outlet
-</code></p>
-
-<p>So the final template hierarchy for <code>league.new</code>, for example, is <code>application.emblem &gt; league.emblem &gt; league/new.emblem</code>.</p>
-
-<p>There is a bit of a chatter on the Githubs about whether the root resource template is good form or not.  As in, why would you create a file that contains nothing but an empty outlet?  Couldn't the framework infer that if it was missing?</p>
-
-<h2>Children Need All Parents</h2>
-
-<p>Create all parents in your template chain, from the application template to the leaves.  The worst thing that can happen if you don't is that nothing will render at all, and no error messages will be displayed (pretty bad and unhelpful).</p>
-
-<p>Most of the time, Ember will try to be helpful and give you a console warning:</p>
-
-<blockquote><p>WARNING: The immediate parent route ('a') did not render into the main outlet and the default 'into' option ('p') may not be expected</p></blockquote>
-
-<p>In other words: You're trying to render a child template that either doesn't have a parent template it needs or the parent template does not specify a main outlet.</p>
 ]]></content>
   </entry>
   

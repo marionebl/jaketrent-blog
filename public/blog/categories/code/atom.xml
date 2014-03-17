@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-03-10T20:25:31-06:00</updated>
+  <updated>2014-03-17T08:24:37-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,57 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Detecting Window Closing in Ember]]></title>
+    <link href="http://jaketrent.com/post/ember-window-beforeunload/"/>
+    <updated>2014-03-17T08:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/ember-window-beforeunload</id>
+    <content type="html"><![CDATA[<p>In a long-running app such as you might build in Ember, it can be useful to detect when the window is closing.  This is easily detected with JavaScript, and there are easy places to put the code in your Ember app.</p>
+
+<p><img src="http://i.imgur.com/85v8PQP.png" alt="Ember beforeunload" /></p>
+
+<!--more-->
+
+
+<h2>beforeunload</h2>
+
+<p>The <code>window</code> event that you want to listen for is <code>beforeunload</code>.  You might bind to the event like so:</p>
+
+<p><code>coffeescript
+$(window).bind 'beforeunload', -&gt;
+  'Are you sure you want to close this window?'
+</code></p>
+
+<p>Return a string from the function.  This string will be displayed in a browser-native confirm-style dialogue.</p>
+
+<h2>beforeunload in Ember</h2>
+
+<p>Now, if your app is controlled by Ember, you're likely going to want it to handle bindings such as this from within Ember.  There are several places you might want to put this code.  Your decision will depend on the needs of your app.  You can put it in a route or controller.  The scope of that route or controller should match the scope for which you want the <code>beforeunload</code> event to be caught.  In other words, if you want <code>beforeunload</code> to be caught for the entire app, put the listener in <code>ApplicationRoute</code> (or <code>ApplicationController</code>).  Or if you wanted a more limited scope, put the listener in a more specific route.</p>
+
+<p>For instance, if you wanted to save a blog post when the user closes a tab, you might implement something like this:</p>
+
+<p>```coffeescript
+App.BlogEditController = Ember.ObjectController.extend
+  saveBeforeClose: (-></p>
+
+<pre><code>$(window).bind 'beforeunload', =&gt;
+  @get('model').save()
+  'Are you sure you want to leave unsaved work?'
+</code></pre>
+
+<p>  ).on 'init'
+```</p>
+
+<h2>In Practice</h2>
+
+<p>In practice, the UX for this kind of feature can be tricky.  If someone closes a tab, odds are they meant to and don't want to be bothered with a confirm dialogue asking them to reiterate their decision.  On the other hand, maybe the didn't realize the implications of closing out the app, such as in the case of unsaved work, and they become very grateful for the reminder to stay and save something.</p>
+
+<p>In the case of the last example, it would be cool if we could detect the window closing, save the work automatically, and let the user close the tab as they indicated without interruption.  For asynchronous actions such as network requests, this is problematic.  The request will not finish before the browser has trashed the whole window.  In cases such as this, you will need to synchronize your requests to block before finishing execution of the <code>beforeunload</code> event callback.</p>
+
+<p>So, does this work for you?  How might you make it better?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Testing Express Validator]]></title>
@@ -351,79 +402,6 @@ heroku domains:add www.yourapp.com
 <p>This should be the point at which you can refresh your browser at "yourapp.com".  You should see the redirect happen, moving you to "www.yourapp.com".  The routing should be happy on Heroku's end.  It sometimes takes more time for this to propagate, so if you don't see results immediately, be a bit patient before your start changing your configuration, thinking it's not working.</p>
 
 <p>Has anyone else run into this?  Is there a better way to set this up?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Define Methods Dynamically in Ruby]]></title>
-    <link href="http://jaketrent.com/post/define-dynamic-methods-ruby/"/>
-    <updated>2013-11-26T07:28:00-07:00</updated>
-    <id>http://jaketrent.com/post/define-dynamic-methods-ruby</id>
-    <content type="html"><![CDATA[<p>In Ruby, it's common to see new methods defined dynamically or on the fly for your class.  And who doesn't want to have a piece of that metaprogramming?</p>
-
-<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="Ruby" /></p>
-
-<!--more-->
-
-
-<h2>An Example</h2>
-
-<p>For example, I just finished an <a href="/post/exercism-review/">exercism code exercise</a> where I felt like there was a fair bit of code duplication.  I had a bunch of convenience functions that would show the conversion of a time in earth time to a time specific to a planet.  So, the API required something that looked something like this:</p>
-
-<p>```ruby
-class SpaceAge</p>
-
-<p>  def on_earth</p>
-
-<pre><code>seconds_on_planet :earth
-</code></pre>
-
-<p>  end</p>
-
-<p>  def on_mercury</p>
-
-<pre><code>seconds_on_planet :mercury
-</code></pre>
-
-<p>  end</p>
-
-<p>  def on_venus</p>
-
-<pre><code>seconds_on_planet :venus
-</code></pre>
-
-<p>  end</p>
-
-<p>  # ...
-end
-```</p>
-
-<p>Feeling that this might be an excessive number of similarly pattern methods, I considered ways that the API might stay in tact but the effort of maintenance of these many functions might be decreased.</p>
-
-<h2><code>define_method</code></h2>
-
-<p>We could collapse these methods quite a bit in the visual code by defining them dynamically, using <code>define_method</code>:</p>
-
-<p>```ruby
-class SpaceAge
-  def self.on_planets(*planets)</p>
-
-<pre><code>planets.each do |planet|
-  define_method "on_#{planet}" do
-    seconds_on_planet planet
-  end
-end
-</code></pre>
-
-<p>  end</p>
-
-<p>  on_planets :earth, :mercury, :venus, :mars, :jupiter, :saturn, :uranus, :neptune
-end
-```</p>
-
-<p>The exact same code would be generated.  It's better! But it's worse!  It's actually less readable than before.  <code>on_planets</code> as a new helper API might be nice.  But, we're not currently using this anywhere else.  The code is probably more maintainable, but it's also more stiff.  Previously, each of the methods was separate and therefore separately modifiable and customizable.  Now, there's one implementation of an "on_#{planet}" method.  This could be easier/harder to deal with, depending.  I think the readability is better because of the smaller amount of code, but the readability is worse because of the increased complexity and eye parsing required.  In the end, for my code, I stayed with the original solution for its 5-star readability.</p>
-
-<p>But the ability to define methods dynamically is super awesome.  When do you find yourself using this super power?</p>
 ]]></content>
   </entry>
   

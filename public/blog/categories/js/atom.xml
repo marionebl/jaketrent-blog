@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-03-10T20:25:31-06:00</updated>
+  <updated>2014-03-17T08:24:37-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,57 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Detecting Window Closing in Ember]]></title>
+    <link href="http://jaketrent.com/post/ember-window-beforeunload/"/>
+    <updated>2014-03-17T08:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/ember-window-beforeunload</id>
+    <content type="html"><![CDATA[<p>In a long-running app such as you might build in Ember, it can be useful to detect when the window is closing.  This is easily detected with JavaScript, and there are easy places to put the code in your Ember app.</p>
+
+<p><img src="http://i.imgur.com/85v8PQP.png" alt="Ember beforeunload" /></p>
+
+<!--more-->
+
+
+<h2>beforeunload</h2>
+
+<p>The <code>window</code> event that you want to listen for is <code>beforeunload</code>.  You might bind to the event like so:</p>
+
+<p><code>coffeescript
+$(window).bind 'beforeunload', -&gt;
+  'Are you sure you want to close this window?'
+</code></p>
+
+<p>Return a string from the function.  This string will be displayed in a browser-native confirm-style dialogue.</p>
+
+<h2>beforeunload in Ember</h2>
+
+<p>Now, if your app is controlled by Ember, you're likely going to want it to handle bindings such as this from within Ember.  There are several places you might want to put this code.  Your decision will depend on the needs of your app.  You can put it in a route or controller.  The scope of that route or controller should match the scope for which you want the <code>beforeunload</code> event to be caught.  In other words, if you want <code>beforeunload</code> to be caught for the entire app, put the listener in <code>ApplicationRoute</code> (or <code>ApplicationController</code>).  Or if you wanted a more limited scope, put the listener in a more specific route.</p>
+
+<p>For instance, if you wanted to save a blog post when the user closes a tab, you might implement something like this:</p>
+
+<p>```coffeescript
+App.BlogEditController = Ember.ObjectController.extend
+  saveBeforeClose: (-></p>
+
+<pre><code>$(window).bind 'beforeunload', =&gt;
+  @get('model').save()
+  'Are you sure you want to leave unsaved work?'
+</code></pre>
+
+<p>  ).on 'init'
+```</p>
+
+<h2>In Practice</h2>
+
+<p>In practice, the UX for this kind of feature can be tricky.  If someone closes a tab, odds are they meant to and don't want to be bothered with a confirm dialogue asking them to reiterate their decision.  On the other hand, maybe the didn't realize the implications of closing out the app, such as in the case of unsaved work, and they become very grateful for the reminder to stay and save something.</p>
+
+<p>In the case of the last example, it would be cool if we could detect the window closing, save the work automatically, and let the user close the tab as they indicated without interruption.  For asynchronous actions such as network requests, this is problematic.  The request will not finish before the browser has trashed the whole window.  In cases such as this, you will need to synchronize your requests to block before finishing execution of the <code>beforeunload</code> event callback.</p>
+
+<p>So, does this work for you?  How might you make it better?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Testing Express Validator]]></title>
@@ -292,78 +343,6 @@ grunt watch
 </code></p>
 
 <p>Now as you write your Exercism code to fulfill tests, you will see the tests get run automatically and become greenlit as your code increases in awesomeness.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Change Page Title in Angular Route]]></title>
-    <link href="http://jaketrent.com/post/change-page-title-angular-route/"/>
-    <updated>2013-11-07T07:03:00-07:00</updated>
-    <id>http://jaketrent.com/post/change-page-title-angular-route</id>
-    <content type="html"><![CDATA[<p>When you change routes in Angular, the page title doesn't change automatically, but this can be done rather simply.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular Router" /></p>
-
-<!--more-->
-
-
-<h2>Servers and Clients</h2>
-
-<p>Client-side routers are pretty awesome.  A new url is pushed into the browser's history to represent the particular resource that pure client code has produced and displayed.  It's pretty cool.  It's also used widely these days.  Angularjs has a nice little router built into its framework.</p>
-
-<p>Route changes from a server always have the page title set automatically in the <code>head &gt; title</code> tag.  Client-side routing doesn't have that exactly.  Nor does the Angularjs router change the page title via an automatic mechanism.  So, let's add our own.</p>
-
-<h2>Add Page Title to Angular Router</h2>
-
-<p>First, notice that you can add any arbitrary attributes to an angular route that you desire.  In the code below, notice that each route has a <code>title</code> attribute:</p>
-
-<p>```coffeescript app.coffee
-angular.module('app', []).config ($routeProvider) -></p>
-
-<p>  $routeProvider</p>
-
-<pre><code>.when '/',
-  controller: 'HomeCtrl'
-  templateUrl: "/templates/home.html"
-  title: 'Home'
-
-.when '/about',
-  controller: 'AboutCtrl'
-  templateUrl: "/templates/about.html"
-  title: 'About'
-</code></pre>
-
-<p>```</p>
-
-<p>Then in a place that exists on every route -- something like an <code>AppCtrl</code> -- you can gain access to the <code>current</code> route's <code>title</code> every time the route changes:</p>
-
-<p>```coffeescript app-ctrl.coffee
-angular.module('app').controller 'AppCtrl', ($rootScope) ->
-  $rootScope.$on '$routeChangeSuccess', (event, current, previous) =></p>
-
-<pre><code>$rootScope.pageTitle = $route.current.title
-</code></pre>
-
-<p>```</p>
-
-<p>Now we have put the route's <code>title</code> in <code>$rootScope.pageTitle</code> and can use it in our template:</p>
-
-<p>```html app.html
-<html>
-  <head></p>
-
-<pre><code>&lt;title ng-bind="pageTitle + ' | MyApp'"&gt;&lt;/title&gt;
-</code></pre>
-
-<p>  </head>
-  <!-- ... -->
-```</p>
-
-<p><code>ng-bind</code> is just like using double curlies, but also acts as if it's surrounded by an ng-cloak as well.  Notice that in the title, I'm even concatenating the <code>pageTitle</code> with my app's overall name.</p>
-
-<p>Props go to <a href="http://github.com/danethurber">@danethurber</a> for putting this title changing logic in our most recent app.</p>
-
-<p>Is this how you change your Angular app's title?  Is there a better way?  Specifically, I wonder if <code>AppCtrl</code> really is the best place to listen for <code>$routeChangeSuccess</code>.</p>
 ]]></content>
   </entry>
   
