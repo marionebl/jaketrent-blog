@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ember-data | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ember-data/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-03-18T09:19:32-06:00</updated>
+  <updated>2014-03-18T15:57:44-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -70,6 +70,10 @@ cp dist/modules/ember-inflector.js your_project_dir
 <h3>Change Model Definitions</h3>
 
 <p>Your models will need to change, but not by much.  <code>DS.Model</code> becomes <code>FP.Model</code>.  <code>DS.attr</code> becomes <code>FP.attr</code>.  The changes are pretty much one-to-one in requiring just a namespace change.</p>
+
+<h3>Optionally Change Finds</h3>
+
+<p>Where you use ember-data's <code>model.find</code> function, you may want to change to use Fireplace's <code>model.fetch</code>.  <code>fetch</code>, in this case will return a promise where <code>find</code> does not.</p>
 
 <h3>Change Deletes</h3>
 

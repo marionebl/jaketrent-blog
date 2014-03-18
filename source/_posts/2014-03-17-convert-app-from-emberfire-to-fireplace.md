@@ -62,6 +62,10 @@ For convenience, at the risk of being out-dated, I've uploaded the version that 
 
 Your models will need to change, but not by much.  `DS.Model` becomes `FP.Model`.  `DS.attr` becomes `FP.attr`.  The changes are pretty much one-to-one in requiring just a namespace change.
 
+### Optionally Change Finds
+
+Where you use ember-data's `model.find` function, you may want to change to use Fireplace's `model.fetch`.  `fetch`, in this case will return a promise where `find` does not.
+
 ### Change Deletes
 
 Beyond the above, only API that broke for me was ember-data's `model.destroyRecord`.  It seems on that this is the different, because `save` and `createRecord` remain the same.  But, for the delete, the API becomes simply `model.delete`.
