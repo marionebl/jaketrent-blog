@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-03-17T09:27:04-06:00</updated>
+  <updated>2014-03-18T09:19:32-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,195 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Link to Broccoli Assets on a Webpage]]></title>
+    <link href="http://jaketrent.com/post/link-broccoli-assets-on-webpage/"/>
+    <updated>2014-03-18T08:06:00-06:00</updated>
+    <id>http://jaketrent.com/post/link-broccoli-assets-on-webpage</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/joliss/broccoli">Broccoli.js</a> is good at <a href="http://www.solitr.com/blog/2014/02/broccoli-first-release/">building assets</a>.  But now that they&#8217;re built, how does one use them on a webpage?</p>
+
+<p><img src="http://i.imgur.com/oYpiHcU.jpg" alt="Broccoli" /></p>
+
+<!--more-->
+
+
+<h2>Broccoli Serve</h2>
+
+<p>Broccoli has a great feature of having assets cached at every step in a list of transforms.  This makes it quite fast.  It can selectively reprocess only the subset of assets that have changed, and it can selectively transform only what&#8217;s required.</p>
+
+<p>Broccoli provides a command, <code>serve</code> that watches for changes to the trees specified in your <code>Brocfile.js</code> and spits them out to its temporary directory.  From there, it sets up a small webserver to serve the built assets to anyone who wants them.  The intent is that you can use this server in local dev on your sites.</p>
+
+<p>Open your project and run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ broccoli serve
+</span><span class='line'>Serving on http://localhost:4200</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And you&#8217;ll get a local server defaulting on port 4200.</p>
+
+<h2>Webpage Reference</h2>
+
+<p>Now that you have this server for local assets, you need to reference it from your webpage.  Just as when you get to production, you&#8217;ll want to reference a deployed asset on a CDN, locally broccoli can serve as your asset host.</p>
+
+<p>You can accomplish this in any number of ways.  Essentially, you need two things:</p>
+
+<h3>1. Environment Detection</h3>
+
+<p>If you&#8217;re in development, you&#8217;ll want to use <code>http://localhost:4200</code> for asset host, otherwise you&#8217;ll want to use something like <code>http://mycdn.com</code>.</p>
+
+<p>Assuming less of your other infrastructure, we&#8217;ll make Broccoli accomplish this (but you could do this easily with <code>NODE_ENV</code> or something similar).  Broccoli internally uses <code>BROCCOLI_ENV</code> to switch functionality.  To detect this value easily, you can install <a href="https://github.com/joliss/broccoli-env">the plugin</a>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install broccoli-env --save-dev</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then you&#8217;ll be able to use it in your <code>Brocfile.js</code> to switch on important things:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">env</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;broccoli-env&#39;</span><span class="p">).</span><span class="nx">getEnv</span><span class="p">()</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nx">env</span> <span class="o">===</span> <span class="s1">&#39;development&#39;</span><span class="p">)</span> <span class="c1">// do stuff</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Currently, the plugin only supports <code>development</code> and <code>production</code> values.</p>
+
+<h3>2. View Compilation</h3>
+
+<p>If you have a server-side component in your project that serves UI, you likely have this built in already with the likes of <code>erb</code>, <code>jade</code>, <code>swig</code>, or something else.  If you don&#8217;t, again you can defer to Broccoli.  It&#8217;s good at building assets after all.</p>
+
+<p>As an example, there is a plugin for compiling <code>jade</code> templates, <a href="https://github.com/sindresorhus/broccoli-jade">broccoli-jade</a>.  First, install:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">broccoli</span><span class="o">-</span><span class="nx">jade</span> <span class="o">--</span><span class="nx">save</span><span class="o">-</span><span class="nx">dev</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then create a view to meet your needs.  Perhaps in part, that might look like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='jade'><span class='line'><span class="nt">doctype</span> html
+</span><span class='line'><span class="nt">html</span>
+</span><span class='line'>  <span class="nt">head</span>
+</span><span class='line'>    <span class="nt">script</span>(<span class="na">src=</span><span class="s">&quot;#{assetsHost}/main.js&quot;</span><span class="err">,</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span>)
+</span><span class='line'>    <span class="c">/ ...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here, <code>assetsHost</code> is a variable that will be replaced at compile time with the appropriate asset host value.</p>
+
+<p>Finally, in your <code>Brocfile.js</code> you can tie it all together with something like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">env</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;broccoli-env&#39;</span><span class="p">).</span><span class="nx">getEnv</span><span class="p">()</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">jade</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;broccoli-jade&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">tree</span> <span class="o">=</span> <span class="nx">broccoli</span><span class="p">.</span><span class="nx">makeTree</span><span class="p">(</span><span class="s1">&#39;my/views/path&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">tree</span> <span class="o">=</span>  <span class="nx">jade</span><span class="p">(</span><span class="nx">tree</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">assetsHost</span><span class="o">:</span> <span class="nx">env</span> <span class="o">===</span> <span class="s1">&#39;development&#39;</span> <span class="o">?</span> <span class="s1">&#39;http://localhost:4200&#39;</span> <span class="o">:</span> <span class="s1">&#39;http://mycdn.com&#39;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'><span class="k">return</span> <span class="nx">tree</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now when the <code>jade</code> template is compiled, it will have as local data the value of <code>assetHost</code> according to the env set by <code>BROCCOLI_ENV</code>.</p>
+
+<p>And since Broccoli is handling the building of your view, you can even use Broccoli to serve it.  If it&#8217;s called <code>index.jade</code> and ends up at the root directory after building with Broccoli, you could serve your whole site at <code>http://localhost:4200</code>.</p>
+
+<p>And just like that, you can dev locally referencing the assets that Broccoli is building for you.  Does it work for you?  Is the picture clear?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Convert App From EmberFire to Fireplace]]></title>
+    <link href="http://jaketrent.com/post/convert-app-from-emberfire-to-fireplace/"/>
+    <updated>2014-03-17T16:17:00-06:00</updated>
+    <id>http://jaketrent.com/post/convert-app-from-emberfire-to-fireplace</id>
+    <content type="html"><![CDATA[<p>There are a few changes required to convert your Ember app from using EmberFire to Fireplace.  Here are a few that I found to be required.  There are probably more.</p>
+
+<p><img src="http://i.imgur.com/1Jg69Pf.jpg" alt="Firebase" /></p>
+
+<!--more-->
+
+
+<h2>Your Options</h2>
+
+<p><a href="https://github.com/firebase/emberFire">EmberFire</a> and <a href="https://github.com/rlivsey/fireplace">Fireplace</a> both provide an API for you to integrate your Ember app with a <a href="https://www.firebase.com/">Firebase</a> backend.  You don&#8217;t need either library; they provide a more high-level API and help handle some of the nitty gritties of making Ember data-binding work with your socket traffic.  You can just use the <a href="https://www.firebase.com/docs/javascript/firebase/index.html">Firebase JavaScript API</a>.</p>
+
+<p>I was using EmberFire with ember-data first.  It worked pretty well.  I ran into a few hiccups where it seemed like model relationships weren&#8217;t working quite right in a couple places, but I worked around it for my simple app.  Fireplace was recommended to me as a good option instead of EmberFire.  From those that know more about this than I do, Fireplace was described as &#8220;the thing that ember-data should have been,&#8221; and way more capable than EmberFire.  As far as I can tell, they look very similar.  But, if you should want to switch, here are the basic changes:</p>
+
+<h2>Changes Required</h2>
+
+<h3>Set the Store</h3>
+
+<p>Instead of setting up an adapter for Firebase to work with Ember data, you want to define a store on your app.  That might look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.Store = </span><span class="nx">FP</span><span class="p">.</span><span class="nx">Store</span><span class="p">.</span><span class="nx">extend</span>
+</span><span class='line'>  <span class="nv">firebaseRoot: </span><span class="s">&#39;https://myfirebase.firebaseio.com&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that the store is of type <code>FP.Store</code> instead of <code>DS.Store</code>.</p>
+
+<h3>Remove ember-data</h3>
+
+<p>Now that you have another store set, you want to make sure you remove ember-data so it doesn&#8217;t try to interact with it.  If you forget, you will get an error at runtime:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">Uncaught</span> <span class="nb">Error</span><span class="o">:</span> <span class="nx">Assertion</span> <span class="nv">Failed: </span><span class="nx">The</span> <span class="nx">initializer</span> <span class="s">&#39;store&#39;</span> <span class="nx">has</span> <span class="nx">already</span> <span class="nx">been</span> <span class="nx">registered</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Add ember-inflector</h3>
+
+<p>Ember-data comes bundled with ember-inflector.  But, now that ember-data is gone, we need to fetch this library separately.  This is the library responsible for inferring types in your models based on property names.  To get it, you&#8217;ll need the <a href="https://github.com/stefanpenner/ember-inflector">ember-inflector source</a>.  You&#8217;ll notice that there isn&#8217;t a nice package built for you.  Instead, you&#8217;ll have to build it with Ruby tools.</p>
+
+<p>To make your own version from source, follow these steps:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">git</span> <span class="nx">clone</span> <span class="nx">git@github</span><span class="p">.</span><span class="nx">com</span><span class="o">:</span><span class="nx">stefanpenner</span><span class="o">/</span><span class="nx">ember</span><span class="o">-</span><span class="nx">inflector</span><span class="p">.</span><span class="nx">git</span>
+</span><span class='line'><span class="nx">rake</span> <span class="nx">bundle</span>
+</span><span class='line'><span class="nx">rake</span> <span class="nx">dist</span>
+</span><span class='line'><span class="nx">cp</span> <span class="nx">dist</span><span class="o">/</span><span class="nx">modules</span><span class="o">/</span><span class="nx">ember</span><span class="o">-</span><span class="nx">inflector</span><span class="p">.</span><span class="nx">js</span> <span class="nx">your_project_dir</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For convenience, at the risk of being out-dated, I&#8217;ve uploaded the version that I built as of 17 Mar 2014 to a <a href="https://gist.github.com/jaketrent/9621891">gist of ember-inflector at 32e30eb</a>.`</p>
+
+<h3>Change Model Definitions</h3>
+
+<p>Your models will need to change, but not by much.  <code>DS.Model</code> becomes <code>FP.Model</code>.  <code>DS.attr</code> becomes <code>FP.attr</code>.  The changes are pretty much one-to-one in requiring just a namespace change.</p>
+
+<h3>Change Deletes</h3>
+
+<p>Beyond the above, only API that broke for me was ember-data&#8217;s <code>model.destroyRecord</code>.  It seems on that this is the different, because <code>save</code> and <code>createRecord</code> remain the same.  But, for the delete, the API becomes simply <code>model.delete</code>.</p>
+
+<h3>Other Changes</h3>
+
+<p>The app I converted was quite simple, so I&#8217;m thinking that there will be other changes required.  What have you run into?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Detecting Window Closing in Ember]]></title>
@@ -1551,207 +1740,6 @@
 <p>That&#8217;s it.  That&#8217;s the key to getting your Erb files processed into JavaScript and ready for Karma to use.</p>
 
 <p>Now, what are your thoughts on putting your CoffeeScripts through the erb filter of the asset pipeline at all?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[JavaScript Mixins]]></title>
-    <link href="http://jaketrent.com/post/javascript-mixins/"/>
-    <updated>2013-09-06T10:37:00-06:00</updated>
-    <id>http://jaketrent.com/post/javascript-mixins</id>
-    <content type="html"><![CDATA[<p>JavaScript makes mixins inherently easy.  Mixins are a native feature of the language without calling it that.  Here are a few methods for making this happen.</p>
-
-<p><img src="http://i.imgur.com/XemDUw8.jpg" alt="JavaScript mixins" /></p>
-
-<!--more-->
-
-
-<h2>Attach a Property</h2>
-
-<p>You can attach a property to a Javascript object at any time.  You don&#8217;t need to monkey patch it.  It doesn&#8217;t need to be packaged up in a very special format.  You just shove stuff onto the object.  Here&#8217;s an example:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">MyModel</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">doOneThing</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;doing it right&#39;</span><span class="p">);</span> <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">model</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyModel</span><span class="p">();</span>
-</span><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">doItRight</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;everybody will be dancing&#39;</span><span class="p">);</span> <span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">doOneThing</span><span class="p">();</span> <span class="c1">// =&gt; &#39;doing it right&#39;</span>
-</span><span class='line'><span class="nx">model</span><span class="p">.</span><span class="nx">doItRight</span><span class="p">();</span>  <span class="c1">// =&gt; &#39;everybody will be dancing&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>A function is defined.  It is instantiated.  Later, a new property, <code>doItRight</code> function, is added to it.  Both functions now magically work on the original model instance.  We could have attached to <code>MyModel.prototype</code> and had the <code>doItRight</code> function attached to all future instantiations of the function as well.</p>
-
-<h2>Use Extend</h2>
-
-<p>There are a couple great libraries that provide wholesale extension of object properties, just like mixins in other languages.  <a href="http://api.jquery.com/jQuery.extend/">jQuery</a> and <a href="http://underscorejs.org/#extend">Underscore</a> provide <code>$.extend</code> and <code>_.extend</code> respectively.  They are great utilities that make object extension quick and painless.  Here&#8217;s an example using Underscore:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">utilities</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">workWater</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;pay $75 for water&#39;</span><span class="p">);</span> <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">otherUtilities</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">electrifyTheCompany</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;pay $75 for electric slides&#39;</span><span class="p">);</span> <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">utilityConglomerate</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">({},</span> <span class="nx">utilities</span><span class="p">,</span> <span class="nx">otherUtilities</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">utilityConglomerate</span><span class="p">.</span><span class="nx">workWater</span><span class="p">()</span> <span class="c1">// =&gt; &#39;pay $75 for water&#39;</span>
-</span><span class='line'><span class="nx">utilityConglomerate</span><span class="p">.</span><span class="nx">electrifyTheCompany</span><span class="p">()</span> <span class="c1">// =&gt; &#39;pay $75 for electric slides&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Handle Per-instance State</h2>
-
-<p>Notice that the above methods are very good at attaching functions.  The functions in these examples have no shared state.  The scenarios that we&#8217;ve made up so far haven&#8217;t required per-instance state as specified by the mixin.  Recently I had a need for all of these things.  I was making a library called <a href="http://octanner.github.io/angular-models/">angular-models</a>.</p>
-
-<p>I wanted to be able to assign what I called <code>AttributesMixin</code> to any function (Model <code>class</code>es, written in CoffeeScript).  To simplify the story, we have a <code>set</code> API that assign values to an internal <code>_attributes</code> object and a <code>get</code> to retrieve them.  These functions were to be assigned to the prototype of the function, but the <code>_attributes</code> were to be assigned to the object instance only, clean for each new object.</p>
-
-<p>We invented our own convention, where each mixin would optionally implement its own <code>dependencies</code> function.  Each of the <code>Model</code>s knew how to extend itself with a given mixin.  This custom extend function was called <code>@include</code>.  As mixins were included, the <code>dependencies</code> function reference was saved (in an array called <code>_dependencyFns</code>) and then called in the <code>Model</code> superclass constructor.  So, each <code>Model</code> subclass is required to call the super constructor to get this functionality.</p>
-
-<p>In the case of <code>AttributesMixin</code>, it looks as simple as this:</p>
-
-<figure class='code'><figcaption><span>attributes-mixin.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">AttributesMixin =</span>
-</span><span class='line'>  <span class="nv">dependencies: </span><span class="o">-&gt;</span>
-</span><span class='line'>    <span class="vi">@_attributes = </span><span class="p">{}</span>
-</span><span class='line'>  <span class="nv">get: </span><span class="o">-&gt;</span> <span class="c1"># ...</span>
-</span><span class='line'>  <span class="nv">set: </span><span class="o">-&gt;</span> <span class="c1"># ...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <code>Model</code> can include like this:</p>
-
-<figure class='code'><figcaption><span>my-model.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">MyModel</span> <span class="k">extends</span> <span class="nx">Model</span>
-</span><span class='line'>  <span class="nx">@include</span> <span class="nx">AttributesMixin</span>
-</span><span class='line'>  <span class="nv">constructor: </span><span class="o">-&gt;</span>
-</span><span class='line'>    <span class="k">super</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And the <code>Model</code> constructor includes a snippet something like this:</p>
-
-<figure class='code'><figcaption><span>model.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="k">class</span> <span class="nx">Model</span>
-</span><span class='line'>  <span class="nv">constructor: </span><span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span> <span class="nx">@</span> <span class="k">for</span> <span class="nx">fn</span> <span class="k">in</span> <span class="nx">@_dependencyFns</span> <span class="k">if</span> <span class="nx">@_dependencyFns</span><span class="o">?</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>For a more accurate, in-depth look at the code, see the <a href="https://github.com/octanner/angular-models">Github repo for angular-models</a>.</p>
-
-<p>Do you use any of these methods to mixin functionality to your JavaScript objects?  What others?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[How to Create a Bower Package]]></title>
-    <link href="http://jaketrent.com/post/how-to-create-a-bower-package/"/>
-    <updated>2013-09-05T07:04:00-06:00</updated>
-    <id>http://jaketrent.com/post/how-to-create-a-bower-package</id>
-    <content type="html"><![CDATA[<p>Bower is a client-side or browser package manager.  It will handle your 3rd-party packages that are registered with the service.  To make it more useful, you can package up some of your own code and create a component to install with Bower.</p>
-
-<p><img src="http://i.imgur.com/t4XxrHn.jpg" alt="Bower" /></p>
-
-<!--more-->
-
-
-<h2>Prepare your Package</h2>
-
-<p>To prepare your code to be a Bower package, you must install the Bower CLI:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>npm install -g bower
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you haven&#8217;t upgraded Bower lately, you might want to, as the basic config files have changed recently, and the CLI has improved.  This command would do the trick:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm update -g bower
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now let&#8217;s generate the basic config file, <code>bower.json</code>, by running:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>your_project_dir
-</span><span class='line'><span class="nv">$ </span>bower init
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You will be prompted to select a name, version, etc. for your project.</p>
-
-<h2>Add Your Package to the Registry</h2>
-
-<p>There is a Bower registry at <code>http://bower.herokuapp.com</code> that is used as a central lookup for the Bower components that are available.  This allows searching for packages by name, for instance:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bower search angular-models
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now the only step left is to add a reference to our package in the registry, for instance:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>bower register angular-models git://github.com/octanner/angular-models.git
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That&#8217;s it!  It&#8217;s that easy.</p>
-
-<h2>Potential Errors</h2>
-
-<p>When giving a URL to your git repo, use the <code>git</code> protocol URL specifically.  Otherwise on old versions of Bower you&#8217;ll get an <a href="https://github.com/bower/bower/issues/66">error</a>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>bower error Incorrect format
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The newer versions will give a much more helpful message:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>bower EINVFORMAT The registry only accepts URLs starting with git://
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And don&#8217;t worry about name overwriting.  Bower will catch that too with an error response:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>bower EDUPLICATE Duplicate package
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   

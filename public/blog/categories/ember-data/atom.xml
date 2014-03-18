@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ember-data | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/ember-data/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-03-18T09:19:32-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Convert App From EmberFire to Fireplace]]></title>
+    <link href="http://jaketrent.com/post/convert-app-from-emberfire-to-fireplace/"/>
+    <updated>2014-03-17T16:17:00-06:00</updated>
+    <id>http://jaketrent.com/post/convert-app-from-emberfire-to-fireplace</id>
+    <content type="html"><![CDATA[<p>There are a few changes required to convert your Ember app from using EmberFire to Fireplace.  Here are a few that I found to be required.  There are probably more.</p>
+
+<p><img src="http://i.imgur.com/1Jg69Pf.jpg" alt="Firebase" /></p>
+
+<!--more-->
+
+
+<h2>Your Options</h2>
+
+<p><a href="https://github.com/firebase/emberFire">EmberFire</a> and <a href="https://github.com/rlivsey/fireplace">Fireplace</a> both provide an API for you to integrate your Ember app with a <a href="https://www.firebase.com/">Firebase</a> backend.  You don't need either library; they provide a more high-level API and help handle some of the nitty gritties of making Ember data-binding work with your socket traffic.  You can just use the <a href="https://www.firebase.com/docs/javascript/firebase/index.html">Firebase JavaScript API</a>.</p>
+
+<p>I was using EmberFire with ember-data first.  It worked pretty well.  I ran into a few hiccups where it seemed like model relationships weren't working quite right in a couple places, but I worked around it for my simple app.  Fireplace was recommended to me as a good option instead of EmberFire.  From those that know more about this than I do, Fireplace was described as "the thing that ember-data should have been," and way more capable than EmberFire.  As far as I can tell, they look very similar.  But, if you should want to switch, here are the basic changes:</p>
+
+<h2>Changes Required</h2>
+
+<h3>Set the Store</h3>
+
+<p>Instead of setting up an adapter for Firebase to work with Ember data, you want to define a store on your app.  That might look like this:</p>
+
+<p><code>coffeescript
+App.Store = FP.Store.extend
+  firebaseRoot: 'https://myfirebase.firebaseio.com'
+</code></p>
+
+<p>Note that the store is of type <code>FP.Store</code> instead of <code>DS.Store</code>.</p>
+
+<h3>Remove ember-data</h3>
+
+<p>Now that you have another store set, you want to make sure you remove ember-data so it doesn't try to interact with it.  If you forget, you will get an error at runtime:</p>
+
+<p><code>
+Uncaught Error: Assertion Failed: The initializer 'store' has already been registered
+</code></p>
+
+<h3>Add ember-inflector</h3>
+
+<p>Ember-data comes bundled with ember-inflector.  But, now that ember-data is gone, we need to fetch this library separately.  This is the library responsible for inferring types in your models based on property names.  To get it, you'll need the <a href="https://github.com/stefanpenner/ember-inflector">ember-inflector source</a>.  You'll notice that there isn't a nice package built for you.  Instead, you'll have to build it with Ruby tools.</p>
+
+<p>To make your own version from source, follow these steps:</p>
+
+<p><code>
+git clone git@github.com:stefanpenner/ember-inflector.git
+rake bundle
+rake dist
+cp dist/modules/ember-inflector.js your_project_dir
+</code></p>
+
+<p>For convenience, at the risk of being out-dated, I've uploaded the version that I built as of 17 Mar 2014 to a <a href="https://gist.github.com/jaketrent/9621891">gist of ember-inflector at 32e30eb</a>.`</p>
+
+<h3>Change Model Definitions</h3>
+
+<p>Your models will need to change, but not by much.  <code>DS.Model</code> becomes <code>FP.Model</code>.  <code>DS.attr</code> becomes <code>FP.attr</code>.  The changes are pretty much one-to-one in requiring just a namespace change.</p>
+
+<h3>Change Deletes</h3>
+
+<p>Beyond the above, only API that broke for me was ember-data's <code>model.destroyRecord</code>.  It seems on that this is the different, because <code>save</code> and <code>createRecord</code> remain the same.  But, for the delete, the API becomes simply <code>model.delete</code>.</p>
+
+<h3>Other Changes</h3>
+
+<p>The app I converted was quite simple, so I'm thinking that there will be other changes required.  What have you run into?</p>
+]]></content>
+  </entry>
+  
+</feed>

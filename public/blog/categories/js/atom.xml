@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-03-17T09:27:04-06:00</updated>
+  <updated>2014-03-18T09:19:32-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,176 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Link to Broccoli Assets on a Webpage]]></title>
+    <link href="http://jaketrent.com/post/link-broccoli-assets-on-webpage/"/>
+    <updated>2014-03-18T08:06:00-06:00</updated>
+    <id>http://jaketrent.com/post/link-broccoli-assets-on-webpage</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/joliss/broccoli">Broccoli.js</a> is good at <a href="http://www.solitr.com/blog/2014/02/broccoli-first-release/">building assets</a>.  But now that they're built, how does one use them on a webpage?</p>
+
+<p><img src="http://i.imgur.com/oYpiHcU.jpg" alt="Broccoli" /></p>
+
+<!--more-->
+
+
+<h2>Broccoli Serve</h2>
+
+<p>Broccoli has a great feature of having assets cached at every step in a list of transforms.  This makes it quite fast.  It can selectively reprocess only the subset of assets that have changed, and it can selectively transform only what's required.</p>
+
+<p>Broccoli provides a command, <code>serve</code> that watches for changes to the trees specified in your <code>Brocfile.js</code> and spits them out to its temporary directory.  From there, it sets up a small webserver to serve the built assets to anyone who wants them.  The intent is that you can use this server in local dev on your sites.</p>
+
+<p>Open your project and run:</p>
+
+<p><code>
+$ broccoli serve
+Serving on http://localhost:4200
+</code></p>
+
+<p>And you'll get a local server defaulting on port 4200.</p>
+
+<h2>Webpage Reference</h2>
+
+<p>Now that you have this server for local assets, you need to reference it from your webpage.  Just as when you get to production, you'll want to reference a deployed asset on a CDN, locally broccoli can serve as your asset host.</p>
+
+<p>You can accomplish this in any number of ways.  Essentially, you need two things:</p>
+
+<h3>1. Environment Detection</h3>
+
+<p>If you're in development, you'll want to use <code>http://localhost:4200</code> for asset host, otherwise you'll want to use something like <code>http://mycdn.com</code>.</p>
+
+<p>Assuming less of your other infrastructure, we'll make Broccoli accomplish this (but you could do this easily with <code>NODE_ENV</code> or something similar).  Broccoli internally uses <code>BROCCOLI_ENV</code> to switch functionality.  To detect this value easily, you can install <a href="https://github.com/joliss/broccoli-env">the plugin</a>:</p>
+
+<p><code>
+npm install broccoli-env --save-dev
+</code></p>
+
+<p>Then you'll be able to use it in your <code>Brocfile.js</code> to switch on important things:</p>
+
+<p><code>javascript
+var env = require('broccoli-env').getEnv()
+if (env === 'development') // do stuff
+</code></p>
+
+<p>Currently, the plugin only supports <code>development</code> and <code>production</code> values.</p>
+
+<h3>2. View Compilation</h3>
+
+<p>If you have a server-side component in your project that serves UI, you likely have this built in already with the likes of <code>erb</code>, <code>jade</code>, <code>swig</code>, or something else.  If you don't, again you can defer to Broccoli.  It's good at building assets after all.</p>
+
+<p>As an example, there is a plugin for compiling <code>jade</code> templates, <a href="https://github.com/sindresorhus/broccoli-jade">broccoli-jade</a>.  First, install:</p>
+
+<p><code>
+npm install broccoli-jade --save-dev
+</code></p>
+
+<p>Then create a view to meet your needs.  Perhaps in part, that might look like:</p>
+
+<p>```jade
+doctype html
+html
+  head</p>
+
+<pre><code>script(src="#{assetsHost}/main.js", type="text/javascript")
+/ ...
+</code></pre>
+
+<p>```</p>
+
+<p>Here, <code>assetsHost</code> is a variable that will be replaced at compile time with the appropriate asset host value.</p>
+
+<p>Finally, in your <code>Brocfile.js</code> you can tie it all together with something like:</p>
+
+<p>```javascript
+var env = require('broccoli-env').getEnv()
+var jade = require('broccoli-jade')
+var tree = broccoli.makeTree('my/views/path')
+tree =  jade(tree, {
+  data: {</p>
+
+<pre><code>assetsHost: env === 'development' ? 'http://localhost:4200' : 'http://mycdn.com'
+</code></pre>
+
+<p>  }
+})
+return tree
+```</p>
+
+<p>Now when the <code>jade</code> template is compiled, it will have as local data the value of <code>assetHost</code> according to the env set by <code>BROCCOLI_ENV</code>.</p>
+
+<p>And since Broccoli is handling the building of your view, you can even use Broccoli to serve it.  If it's called <code>index.jade</code> and ends up at the root directory after building with Broccoli, you could serve your whole site at <code>http://localhost:4200</code>.</p>
+
+<p>And just like that, you can dev locally referencing the assets that Broccoli is building for you.  Does it work for you?  Is the picture clear?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Convert App From EmberFire to Fireplace]]></title>
+    <link href="http://jaketrent.com/post/convert-app-from-emberfire-to-fireplace/"/>
+    <updated>2014-03-17T16:17:00-06:00</updated>
+    <id>http://jaketrent.com/post/convert-app-from-emberfire-to-fireplace</id>
+    <content type="html"><![CDATA[<p>There are a few changes required to convert your Ember app from using EmberFire to Fireplace.  Here are a few that I found to be required.  There are probably more.</p>
+
+<p><img src="http://i.imgur.com/1Jg69Pf.jpg" alt="Firebase" /></p>
+
+<!--more-->
+
+
+<h2>Your Options</h2>
+
+<p><a href="https://github.com/firebase/emberFire">EmberFire</a> and <a href="https://github.com/rlivsey/fireplace">Fireplace</a> both provide an API for you to integrate your Ember app with a <a href="https://www.firebase.com/">Firebase</a> backend.  You don't need either library; they provide a more high-level API and help handle some of the nitty gritties of making Ember data-binding work with your socket traffic.  You can just use the <a href="https://www.firebase.com/docs/javascript/firebase/index.html">Firebase JavaScript API</a>.</p>
+
+<p>I was using EmberFire with ember-data first.  It worked pretty well.  I ran into a few hiccups where it seemed like model relationships weren't working quite right in a couple places, but I worked around it for my simple app.  Fireplace was recommended to me as a good option instead of EmberFire.  From those that know more about this than I do, Fireplace was described as "the thing that ember-data should have been," and way more capable than EmberFire.  As far as I can tell, they look very similar.  But, if you should want to switch, here are the basic changes:</p>
+
+<h2>Changes Required</h2>
+
+<h3>Set the Store</h3>
+
+<p>Instead of setting up an adapter for Firebase to work with Ember data, you want to define a store on your app.  That might look like this:</p>
+
+<p><code>coffeescript
+App.Store = FP.Store.extend
+  firebaseRoot: 'https://myfirebase.firebaseio.com'
+</code></p>
+
+<p>Note that the store is of type <code>FP.Store</code> instead of <code>DS.Store</code>.</p>
+
+<h3>Remove ember-data</h3>
+
+<p>Now that you have another store set, you want to make sure you remove ember-data so it doesn't try to interact with it.  If you forget, you will get an error at runtime:</p>
+
+<p><code>
+Uncaught Error: Assertion Failed: The initializer 'store' has already been registered
+</code></p>
+
+<h3>Add ember-inflector</h3>
+
+<p>Ember-data comes bundled with ember-inflector.  But, now that ember-data is gone, we need to fetch this library separately.  This is the library responsible for inferring types in your models based on property names.  To get it, you'll need the <a href="https://github.com/stefanpenner/ember-inflector">ember-inflector source</a>.  You'll notice that there isn't a nice package built for you.  Instead, you'll have to build it with Ruby tools.</p>
+
+<p>To make your own version from source, follow these steps:</p>
+
+<p><code>
+git clone git@github.com:stefanpenner/ember-inflector.git
+rake bundle
+rake dist
+cp dist/modules/ember-inflector.js your_project_dir
+</code></p>
+
+<p>For convenience, at the risk of being out-dated, I've uploaded the version that I built as of 17 Mar 2014 to a <a href="https://gist.github.com/jaketrent/9621891">gist of ember-inflector at 32e30eb</a>.`</p>
+
+<h3>Change Model Definitions</h3>
+
+<p>Your models will need to change, but not by much.  <code>DS.Model</code> becomes <code>FP.Model</code>.  <code>DS.attr</code> becomes <code>FP.attr</code>.  The changes are pretty much one-to-one in requiring just a namespace change.</p>
+
+<h3>Change Deletes</h3>
+
+<p>Beyond the above, only API that broke for me was ember-data's <code>model.destroyRecord</code>.  It seems on that this is the different, because <code>save</code> and <code>createRecord</code> remain the same.  But, for the delete, the API becomes simply <code>model.delete</code>.</p>
+
+<h3>Other Changes</h3>
+
+<p>The app I converted was quite simple, so I'm thinking that there will be other changes required.  What have you run into?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Detecting Window Closing in Ember]]></title>
@@ -228,121 +398,6 @@ validateNew(req).should.be.true
 <p>I heard it said by multiple people during the conference that it was the best first-time conference they had attended.  Indeed, everything went Domo smooth.  The content was the star.  It was fun.  It was energetic (minus some confusing lack of screaming for all the sweet swag -- probably had something to do with the sheer amount, like clapping for the 3rd curtain call).  The AV crew did a fantastic job.  Usually, it's annoying to sit in an audience as video or audio problems plague the start of a talk.  That simply did not happen here, and it was oh, so refreshing.</p>
 
 <p>Oh yeah, and sweet jacket!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Developing an Ember Edge Review]]></title>
-    <link href="http://jaketrent.com/post/developing-an-ember-edge-review/"/>
-    <updated>2014-01-23T11:19:00-07:00</updated>
-    <id>http://jaketrent.com/post/developing-an-ember-edge-review</id>
-    <content type="html"><![CDATA[<p>The latest book on The List at <a href="http://emberwatch.com/books">emberwatch</a> is <a href="http://bleedingedgepress.com/our-books/developing-an-ember-edge/">Developing an Ember Edge</a>.  It's a great intro book to Ember.js.</p>
-
-<p><img src="http://i.imgur.com/85v8PQP.png" alt="Developing an Ember Edge" /></p>
-
-<!--more-->
-
-
-<p>The book is published by Bleeding Edge Press.  Pretty awesome name.  It is written by Jamie White, Matthew Beale, Christopher Sansone, Wesley Workman, and Bradley Priest, quite the host of authors.  It turns out to be a very timely read for me.  The code in the book even uses some of ember-data 1.0 beta 3.  As of this writing, that's almost the bleeding edge.</p>
-
-<p>I would compare the book to the <a href="http://emberjs.com/guides/">Ember.js official guides</a>.  It's introductory.  It definitely favors a breadth approach.  For me, but a wee Ember babe, it brings to light some interesting details about the Ember internals or at least the approach of the framework.</p>
-
-<h2>Format</h2>
-
-<p>I read the book in digital form as a pdf.  I love the digitalness, but I wonder if it wouldn't have had a bit more editorial review if printed.  Perhaps this is what Bleeding Edge Press means.  The code in the snippets was all smashed to the left, destroying most indentation reading assistance.  The code bits were also a smaller font size than the prose which made the switch between the two slightly awkward to my over-taxed eyes.  By the end of the book, I wasn't surprised when I found a typo.  There were a lot but not too many.  For someone of lesser OCD, it probably would've largely gone unnoticed.  Of course, considering the engineer audience of the book, maybe that doesn't exist.</p>
-
-<h2>The Zen of Ember</h2>
-
-<p>The book content is really good.  I felt like it helped me piece together why things are organized in Ember as they are.  I learned more of what the pieces are by themselves and how they're meant to interact together.  The authors were also kind to point out where some of the rough edges were in terms of design (or potential misdesign by app authors) and api changes.</p>
-
-<p>I liked the mostly-breadth approach to the writing.  The book was good for a newb and remained pretty short.  Perhaps that's because there's not too much there as a general subject without bloating this book into an API reference book. [whew]  The book struck a good balance of being technical, readable, and giving good insight into the practical use of the framework.</p>
-
-<h2>Ember Trackr</h2>
-
-<p>The first half of the book covers the concepts and layers of Ember, approaching mvc in general, objects, application, routes, handlebars, views, controllers, components, and models.  This takes 54 pages.  The other half(+) shows the development of a ticket tracking app.</p>
-
-<p>The development process shown is thorough, even including the tool install, project file layout, and ui styling.  The TDD of the app in total was awesome.  It's really step by step.  Sometimes this was a little painful, but you definitely don't miss anything.  The screenshots of test runners in terminals and the app in browser windows could have been cropped for easier reading with less vertical blank space.  The testing walkthrough was really great.  They even worked through a few "unexpected" errors as one might actually encounter them.</p>
-
-<p>The app dev portion could probably have been cut short.  About the time they start into the user management screens, we probably could have called it good.  But, they do introduce some good, new concepts in the app dev section of the book.  For instance, he covers a little on containers and <code>Ember.run</code> as it relates to testing.</p>
-
-<p>I'm glad I read the book.  It was helpful to my slingshot into the Ember atmosphere.  Boom!  Go get it.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Grunt-init Exercism.io]]></title>
-    <link href="http://jaketrent.com/post/grunt-init-exercism-io/"/>
-    <updated>2014-01-03T07:07:00-07:00</updated>
-    <id>http://jaketrent.com/post/grunt-init-exercism-io</id>
-    <content type="html"><![CDATA[<p><a href="http://exercism.io">Exercism.io</a> has a great set of JavaScript exercises.  They could be made better by a better test setup and runner.  I've created a small grunt-init template to help in that setup.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt and Exercism" /></p>
-
-<!--more-->
-
-
-<h2>Exercism.io</h2>
-
-<p>For those unfamiliar, <a href="http://exercism.io">Excercism.io</a> is a great tool that helps coders and potential coders learn and expand their knowledge in several programming languages.  Currently, among the 9 language choices, JavaScript is one.  The JavaScript exercises come with a pre-built <a href="https://github.com/mhevery/jasmine-node">jasmine_node</a> test suite.  The point of the exercise is to write code that will make all the corresponding tests pass.  For more on Excercism.io, see my <a href="/post/exercism-review/">review</a>.</p>
-
-<h2>Vanilla jasmine_node</h2>
-
-<p>As the <a href="http://exercism.io/help/setup/javascript">Exercism JavaScript docs</a> indicate, you can setup your JavaScript environment like this:</p>
-
-<p><code>bash
-npm install -g jasmine_node
-</code></p>
-
-<p>And then run your tests like this:</p>
-
-<p><code>bash
-jasmine_node bob_test.spec.js
-</code></p>
-
-<p>This does work perfectly well.  But, we want something more.  Of course.</p>
-
-<h2>Grunt watch</h2>
-
-<p>We want the test suite to re-run as soon as we make a change and save either our test file or our file under test.  Well, it turns out that <a href="http://gruntjs.com">Grunt</a> is a great little command-line tool that has plugins for file watching.</p>
-
-<p>Grunt needs to be told to use a plugin.  Then it needs to be told that we want to run the task that watches our files.  All of this is indicated to Grunt via a local <code>Gruntfile.js</code> or <code>Gruntfile.coffee</code> file.  You could create this file by yourself, but wouldn't it be nice if there was a <code>Gruntfile.js</code> created somewhere for you already that worked well with Exercism?</p>
-
-<h2>Grunt-init</h2>
-
-<p>It turns out that there is a great, separate utility called <a href="http://gruntjs.com/project-scaffolding">grunt-init</a> that you can use to create your <code>Gruntfile.js</code> (and many other things) with a pre-built template.</p>
-
-<p>To install this tool, run:</p>
-
-<p><code>bash
-npm install -g grunt-init
-</code></p>
-
-<p>To use a grunt-init template, you need to have a local copy.  This template copy could live anywhere, but grunt-init can reference these templates purely by name if you put them in <code>~/.grunt-init/</code>.</p>
-
-<p>To get the <a href="https://github.com/jaketrent/grunt-init-exercism">Exercism grunt-init template</a>, clone it like so:</p>
-
-<p><code>bash
-git clone git@github.com:jaketrent/grunt-init-exercism.git ~/.grunt-init/exercism
-</code></p>
-
-<p>Then change into your specific Exercism directory, init your <code>Gruntfile.js</code>, and follow the other commands:</p>
-
-<p><code>bash
-cd ~/dev/exercism/javascript/bob
-grunt-init exercism
-npm init
-npm install
-</code></p>
-
-<p>The <code>npm init</code> will flush out the rest of the generated <code>package.json</code>.  The <code>npm install</code> will install all dependencies that we said Grunt needed to do its job.</p>
-
-<p>Finally, activate Grunt to watch your files with:</p>
-
-<p><code>bash
-grunt watch
-</code></p>
-
-<p>Now as you write your Exercism code to fulfill tests, you will see the tests get run automatically and become greenlit as your code increases in awesomeness.</p>
 ]]></content>
   </entry>
   

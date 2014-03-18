@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-03-17T09:27:04-06:00</updated>
+  <updated>2014-03-18T09:19:32-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,176 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Link to Broccoli Assets on a Webpage]]></title>
+    <link href="http://jaketrent.com/post/link-broccoli-assets-on-webpage/"/>
+    <updated>2014-03-18T08:06:00-06:00</updated>
+    <id>http://jaketrent.com/post/link-broccoli-assets-on-webpage</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/joliss/broccoli">Broccoli.js</a> is good at <a href="http://www.solitr.com/blog/2014/02/broccoli-first-release/">building assets</a>.  But now that they're built, how does one use them on a webpage?</p>
+
+<p><img src="http://i.imgur.com/oYpiHcU.jpg" alt="Broccoli" /></p>
+
+<!--more-->
+
+
+<h2>Broccoli Serve</h2>
+
+<p>Broccoli has a great feature of having assets cached at every step in a list of transforms.  This makes it quite fast.  It can selectively reprocess only the subset of assets that have changed, and it can selectively transform only what's required.</p>
+
+<p>Broccoli provides a command, <code>serve</code> that watches for changes to the trees specified in your <code>Brocfile.js</code> and spits them out to its temporary directory.  From there, it sets up a small webserver to serve the built assets to anyone who wants them.  The intent is that you can use this server in local dev on your sites.</p>
+
+<p>Open your project and run:</p>
+
+<p><code>
+$ broccoli serve
+Serving on http://localhost:4200
+</code></p>
+
+<p>And you'll get a local server defaulting on port 4200.</p>
+
+<h2>Webpage Reference</h2>
+
+<p>Now that you have this server for local assets, you need to reference it from your webpage.  Just as when you get to production, you'll want to reference a deployed asset on a CDN, locally broccoli can serve as your asset host.</p>
+
+<p>You can accomplish this in any number of ways.  Essentially, you need two things:</p>
+
+<h3>1. Environment Detection</h3>
+
+<p>If you're in development, you'll want to use <code>http://localhost:4200</code> for asset host, otherwise you'll want to use something like <code>http://mycdn.com</code>.</p>
+
+<p>Assuming less of your other infrastructure, we'll make Broccoli accomplish this (but you could do this easily with <code>NODE_ENV</code> or something similar).  Broccoli internally uses <code>BROCCOLI_ENV</code> to switch functionality.  To detect this value easily, you can install <a href="https://github.com/joliss/broccoli-env">the plugin</a>:</p>
+
+<p><code>
+npm install broccoli-env --save-dev
+</code></p>
+
+<p>Then you'll be able to use it in your <code>Brocfile.js</code> to switch on important things:</p>
+
+<p><code>javascript
+var env = require('broccoli-env').getEnv()
+if (env === 'development') // do stuff
+</code></p>
+
+<p>Currently, the plugin only supports <code>development</code> and <code>production</code> values.</p>
+
+<h3>2. View Compilation</h3>
+
+<p>If you have a server-side component in your project that serves UI, you likely have this built in already with the likes of <code>erb</code>, <code>jade</code>, <code>swig</code>, or something else.  If you don't, again you can defer to Broccoli.  It's good at building assets after all.</p>
+
+<p>As an example, there is a plugin for compiling <code>jade</code> templates, <a href="https://github.com/sindresorhus/broccoli-jade">broccoli-jade</a>.  First, install:</p>
+
+<p><code>
+npm install broccoli-jade --save-dev
+</code></p>
+
+<p>Then create a view to meet your needs.  Perhaps in part, that might look like:</p>
+
+<p>```jade
+doctype html
+html
+  head</p>
+
+<pre><code>script(src="#{assetsHost}/main.js", type="text/javascript")
+/ ...
+</code></pre>
+
+<p>```</p>
+
+<p>Here, <code>assetsHost</code> is a variable that will be replaced at compile time with the appropriate asset host value.</p>
+
+<p>Finally, in your <code>Brocfile.js</code> you can tie it all together with something like:</p>
+
+<p>```javascript
+var env = require('broccoli-env').getEnv()
+var jade = require('broccoli-jade')
+var tree = broccoli.makeTree('my/views/path')
+tree =  jade(tree, {
+  data: {</p>
+
+<pre><code>assetsHost: env === 'development' ? 'http://localhost:4200' : 'http://mycdn.com'
+</code></pre>
+
+<p>  }
+})
+return tree
+```</p>
+
+<p>Now when the <code>jade</code> template is compiled, it will have as local data the value of <code>assetHost</code> according to the env set by <code>BROCCOLI_ENV</code>.</p>
+
+<p>And since Broccoli is handling the building of your view, you can even use Broccoli to serve it.  If it's called <code>index.jade</code> and ends up at the root directory after building with Broccoli, you could serve your whole site at <code>http://localhost:4200</code>.</p>
+
+<p>And just like that, you can dev locally referencing the assets that Broccoli is building for you.  Does it work for you?  Is the picture clear?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Convert App From EmberFire to Fireplace]]></title>
+    <link href="http://jaketrent.com/post/convert-app-from-emberfire-to-fireplace/"/>
+    <updated>2014-03-17T16:17:00-06:00</updated>
+    <id>http://jaketrent.com/post/convert-app-from-emberfire-to-fireplace</id>
+    <content type="html"><![CDATA[<p>There are a few changes required to convert your Ember app from using EmberFire to Fireplace.  Here are a few that I found to be required.  There are probably more.</p>
+
+<p><img src="http://i.imgur.com/1Jg69Pf.jpg" alt="Firebase" /></p>
+
+<!--more-->
+
+
+<h2>Your Options</h2>
+
+<p><a href="https://github.com/firebase/emberFire">EmberFire</a> and <a href="https://github.com/rlivsey/fireplace">Fireplace</a> both provide an API for you to integrate your Ember app with a <a href="https://www.firebase.com/">Firebase</a> backend.  You don't need either library; they provide a more high-level API and help handle some of the nitty gritties of making Ember data-binding work with your socket traffic.  You can just use the <a href="https://www.firebase.com/docs/javascript/firebase/index.html">Firebase JavaScript API</a>.</p>
+
+<p>I was using EmberFire with ember-data first.  It worked pretty well.  I ran into a few hiccups where it seemed like model relationships weren't working quite right in a couple places, but I worked around it for my simple app.  Fireplace was recommended to me as a good option instead of EmberFire.  From those that know more about this than I do, Fireplace was described as "the thing that ember-data should have been," and way more capable than EmberFire.  As far as I can tell, they look very similar.  But, if you should want to switch, here are the basic changes:</p>
+
+<h2>Changes Required</h2>
+
+<h3>Set the Store</h3>
+
+<p>Instead of setting up an adapter for Firebase to work with Ember data, you want to define a store on your app.  That might look like this:</p>
+
+<p><code>coffeescript
+App.Store = FP.Store.extend
+  firebaseRoot: 'https://myfirebase.firebaseio.com'
+</code></p>
+
+<p>Note that the store is of type <code>FP.Store</code> instead of <code>DS.Store</code>.</p>
+
+<h3>Remove ember-data</h3>
+
+<p>Now that you have another store set, you want to make sure you remove ember-data so it doesn't try to interact with it.  If you forget, you will get an error at runtime:</p>
+
+<p><code>
+Uncaught Error: Assertion Failed: The initializer 'store' has already been registered
+</code></p>
+
+<h3>Add ember-inflector</h3>
+
+<p>Ember-data comes bundled with ember-inflector.  But, now that ember-data is gone, we need to fetch this library separately.  This is the library responsible for inferring types in your models based on property names.  To get it, you'll need the <a href="https://github.com/stefanpenner/ember-inflector">ember-inflector source</a>.  You'll notice that there isn't a nice package built for you.  Instead, you'll have to build it with Ruby tools.</p>
+
+<p>To make your own version from source, follow these steps:</p>
+
+<p><code>
+git clone git@github.com:stefanpenner/ember-inflector.git
+rake bundle
+rake dist
+cp dist/modules/ember-inflector.js your_project_dir
+</code></p>
+
+<p>For convenience, at the risk of being out-dated, I've uploaded the version that I built as of 17 Mar 2014 to a <a href="https://gist.github.com/jaketrent/9621891">gist of ember-inflector at 32e30eb</a>.`</p>
+
+<h3>Change Model Definitions</h3>
+
+<p>Your models will need to change, but not by much.  <code>DS.Model</code> becomes <code>FP.Model</code>.  <code>DS.attr</code> becomes <code>FP.attr</code>.  The changes are pretty much one-to-one in requiring just a namespace change.</p>
+
+<h3>Change Deletes</h3>
+
+<p>Beyond the above, only API that broke for me was ember-data's <code>model.destroyRecord</code>.  It seems on that this is the different, because <code>save</code> and <code>createRecord</code> remain the same.  But, for the delete, the API becomes simply <code>model.delete</code>.</p>
+
+<h3>Other Changes</h3>
+
+<p>The app I converted was quite simple, so I'm thinking that there will be other changes required.  What have you run into?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Detecting Window Closing in Ember]]></title>
@@ -245,163 +415,6 @@ params.require(:luchador).permit(:favorite_move, :weight, wins: [])
 </code></p>
 
 <p>What have you done that looks better?  Please! :)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Grunt-init Exercism.io]]></title>
-    <link href="http://jaketrent.com/post/grunt-init-exercism-io/"/>
-    <updated>2014-01-03T07:07:00-07:00</updated>
-    <id>http://jaketrent.com/post/grunt-init-exercism-io</id>
-    <content type="html"><![CDATA[<p><a href="http://exercism.io">Exercism.io</a> has a great set of JavaScript exercises.  They could be made better by a better test setup and runner.  I've created a small grunt-init template to help in that setup.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt and Exercism" /></p>
-
-<!--more-->
-
-
-<h2>Exercism.io</h2>
-
-<p>For those unfamiliar, <a href="http://exercism.io">Excercism.io</a> is a great tool that helps coders and potential coders learn and expand their knowledge in several programming languages.  Currently, among the 9 language choices, JavaScript is one.  The JavaScript exercises come with a pre-built <a href="https://github.com/mhevery/jasmine-node">jasmine_node</a> test suite.  The point of the exercise is to write code that will make all the corresponding tests pass.  For more on Excercism.io, see my <a href="/post/exercism-review/">review</a>.</p>
-
-<h2>Vanilla jasmine_node</h2>
-
-<p>As the <a href="http://exercism.io/help/setup/javascript">Exercism JavaScript docs</a> indicate, you can setup your JavaScript environment like this:</p>
-
-<p><code>bash
-npm install -g jasmine_node
-</code></p>
-
-<p>And then run your tests like this:</p>
-
-<p><code>bash
-jasmine_node bob_test.spec.js
-</code></p>
-
-<p>This does work perfectly well.  But, we want something more.  Of course.</p>
-
-<h2>Grunt watch</h2>
-
-<p>We want the test suite to re-run as soon as we make a change and save either our test file or our file under test.  Well, it turns out that <a href="http://gruntjs.com">Grunt</a> is a great little command-line tool that has plugins for file watching.</p>
-
-<p>Grunt needs to be told to use a plugin.  Then it needs to be told that we want to run the task that watches our files.  All of this is indicated to Grunt via a local <code>Gruntfile.js</code> or <code>Gruntfile.coffee</code> file.  You could create this file by yourself, but wouldn't it be nice if there was a <code>Gruntfile.js</code> created somewhere for you already that worked well with Exercism?</p>
-
-<h2>Grunt-init</h2>
-
-<p>It turns out that there is a great, separate utility called <a href="http://gruntjs.com/project-scaffolding">grunt-init</a> that you can use to create your <code>Gruntfile.js</code> (and many other things) with a pre-built template.</p>
-
-<p>To install this tool, run:</p>
-
-<p><code>bash
-npm install -g grunt-init
-</code></p>
-
-<p>To use a grunt-init template, you need to have a local copy.  This template copy could live anywhere, but grunt-init can reference these templates purely by name if you put them in <code>~/.grunt-init/</code>.</p>
-
-<p>To get the <a href="https://github.com/jaketrent/grunt-init-exercism">Exercism grunt-init template</a>, clone it like so:</p>
-
-<p><code>bash
-git clone git@github.com:jaketrent/grunt-init-exercism.git ~/.grunt-init/exercism
-</code></p>
-
-<p>Then change into your specific Exercism directory, init your <code>Gruntfile.js</code>, and follow the other commands:</p>
-
-<p><code>bash
-cd ~/dev/exercism/javascript/bob
-grunt-init exercism
-npm init
-npm install
-</code></p>
-
-<p>The <code>npm init</code> will flush out the rest of the generated <code>package.json</code>.  The <code>npm install</code> will install all dependencies that we said Grunt needed to do its job.</p>
-
-<p>Finally, activate Grunt to watch your files with:</p>
-
-<p><code>bash
-grunt watch
-</code></p>
-
-<p>Now as you write your Exercism code to fulfill tests, you will see the tests get run automatically and become greenlit as your code increases in awesomeness.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Add Zerigo DNS to Heroku]]></title>
-    <link href="http://jaketrent.com/post/add-zerigo-dns-to-heroku/"/>
-    <updated>2013-12-31T07:03:00-07:00</updated>
-    <id>http://jaketrent.com/post/add-zerigo-dns-to-heroku</id>
-    <content type="html"><![CDATA[<p>Once upon a time, I could setup DNS super easily on Heroku using their Zerigo DNS addon.  Lately, I tried again using the same pattern and failed.  Here's an updated step-by-step guide.</p>
-
-<p><img src="http://i.imgur.com/6DUwRKt.png" alt="Heroku and Zerigo" /></p>
-
-<!--more-->
-
-
-<h2>Back in the Day</h2>
-
-<p>It used to be that all you had to do was setup the nameservers on your domain registrar, add the Zerigo addon on Heroku's end with a few commands, and you were rocking in minutes.  The latest DNS setup on Heroku caused me a bit more grief.  Something has changed.  But there is hope.  The new steps are almost just as brief.  You'll just have to take care to get it just right.</p>
-
-<h2>Cedar, not Bamboo</h2>
-
-<p>These days new deployments on Heroku are going to favor using the Cedar stack as the new option.  The Bamboo stack was the original and older Ruby stack.  And so it troubled me after setting up my DNS as I used to that I got an error message (<a href="https://devcenter.heroku.com/articles/error-codes#h70-access-to-bamboo-http-endpoint-denied">h70</a>) similar to this in my logs:</p>
-
-<p><code>bash
-2010-10-06T21:51:07-07:00 heroku[router]: at=error code=H70 desc="Access to bamboo HTTP endpoint denied" method=GET path=/ host=foo.myapp.com fwd=17.17.17.17 dyno= connect= service= status=503 bytes=
-</code></p>
-
-<p>Lame, lame, lame, lame, lame.  Now, who did you contact?</p>
-
-<p>Running <code>heroku info</code> reveals that I'm indeed using the Cedar stack on this project, so what gives?  It turns out my DNS was messed up.</p>
-
-<h2>The New Zerigo/Heroku Setup</h2>
-
-<p>The <a href="https://devcenter.heroku.com/articles/zerigo_dns">Heroku devcenter docs for Zerigo</a> are pretty good, but as of this writing, they're a little inaccurate.  Here is the step-by-step that worked for me:</p>
-
-<h4>1. Nameservers</h4>
-
-<p>Setup your domain via your registrar's site to point to these nameservers:</p>
-
-<p><code>
-a.ns.zerigo.net
-b.ns.zerigo.net
-c.ns.zerigo.net
-d.ns.zerigo.net
-e.ns.zerigo.net
-</code></p>
-
-<h4>2. Zerigo Addon</h4>
-
-<p>Add the Zerigo addon via the Heroku cli:</p>
-
-<p><code>bash
-heroku addons:add zerigo_dns
-</code></p>
-
-<h4>3. Zerigo Config</h4>
-
-<p>Open Zerigo addon for configuration:</p>
-
-<p><code>bash
-heroku addons:open zerigo_dns
-</code></p>
-
-<p>Navigate to the Zerigo site for your app and press the "Add Snippet" button.  From the snippets available, select "Heroku".  This snippet contains a CNAME entry and a URL redirect entry.  Add the snippet.  Now, you'll need to adjust the CNAME entry.  The <code>data</code> field probably reads <code>proxy.heroku.com</code>.  This has been deprecated.  Instead, change the CNAME entry to point to <code>yourapp.herokuapp.com</code>.</p>
-
-<p>Note also that the URL redirect entry is moving all traffic from yourapp.com to http://www.yourapp.com.  Apparently now the "www." subdomain is required and you can't setup a naked domain on Heroku.  If someone knows otherwise, I'd love to here about it, because I used to do this all the time.</p>
-
-<h4>4. Add Domains on Heroku</h4>
-
-<p>Via the Heroku cli, type:</p>
-
-<p><code>bash
-heroku domains:add www.yourapp.com
-</code></p>
-
-<p>Note that we do <em>not</em> want to add <code>yourapp.com</code> (no "www") to in this manner.  If you do that, the tool adds multiple A records to Zerigo, which the Zerigo docs clearly state you don't want.  These A records are what will activate routing through the Bamboo stack, which you want to avoid.</p>
-
-<p>This should be the point at which you can refresh your browser at "yourapp.com".  You should see the redirect happen, moving you to "www.yourapp.com".  The routing should be happy on Heroku's end.  It sometimes takes more time for this to propagate, so if you don't see results immediately, be a bit patient before your start changing your configuration, thinking it's not working.</p>
-
-<p>Has anyone else run into this?  Is there a better way to set this up?</p>
 ]]></content>
   </entry>
   
