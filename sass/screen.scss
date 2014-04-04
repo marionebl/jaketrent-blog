@@ -69,6 +69,15 @@ body {
       background: darken($nav-item-4-color, 5%);
     }
   }
+  &:nth-of-type(5) .main-nav-link {
+    border-top: 1px solid lighten($nav-item-5-color, 10%);
+    background: $nav-item-5-color;
+    border-bottom: 1px solid darken($nav-item-5-color, 10%);
+
+    &:hover {
+      background: darken($nav-item-5-color, 5%);
+    }
+  }
 }
 .main-nav-link {
   display: block;
