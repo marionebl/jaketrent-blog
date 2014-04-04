@@ -398,12 +398,16 @@ body {
   }
 
   .entry-book {
-    float: left;
-    width: 50%;
+    margin-bottom: 30px;
 
     .entry-img {
       top: 10px;
       left: 10px;
+    }
+
+    .entry-author {
+      padding-top: .3em;
+      font-style: italic;
     }
 
     .entry-content {
