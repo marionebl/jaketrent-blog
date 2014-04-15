@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-04-03T20:52:27-06:00</updated>
+  <updated>2014-04-15T07:15:40-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -270,7 +270,7 @@ Player
 Player
   .find()
   .select('-leagues')
-  .exect (err, players) -&gt; #...
+  .exec (err, players) -&gt; #...
 </code></p>
 
 <p>Note the <code>-</code> sign in the <code>select</code> clause.  This removes the field from the results.</p>

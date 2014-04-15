@@ -123,7 +123,7 @@ It might not be that you forgot to populate, but that on some queries you don't 
 Player
   .find()
   .select('-leagues')
-  .exect (err, players) -> #...
+  .exec (err, players) -> #...
 ```
 
 Note the `-` sign in the `select` clause.  This removes the field from the results.
