@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-05-01T20:41:46-06:00</updated>
+  <updated>2014-05-29T07:39:36-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,78 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Bower Resolutions]]></title>
+    <link href="http://jaketrent.com/post/bower-resolutions/"/>
+    <updated>2014-05-29T07:18:00-06:00</updated>
+    <id>http://jaketrent.com/post/bower-resolutions</id>
+    <content type="html"><![CDATA[<p>When you specify dependencies for you app via Bower, some of the packages might rely on different versions of the same library.  You will have to resolve what version of libraries your app actually wants.  In other words, you break the tie.  But you don&#8217;t want to break it every time, so save your choice.</p>
+
+<p><img src="http://i.imgur.com/t4XxrHn.jpg" alt="Bower" /></p>
+
+<!--more-->
+
+
+<h2>bower.json Resolutions</h2>
+
+<p>When you run <code>bower install</code>, the resolution process is interactive.  When bower recognizes that there are two packages that depend on a package at different versions, it&#8217;ll list all those versions and ask:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Unable to find a suitable version for ember, please choose one:
+</span><span class='line'>    1) ember#~1.0.0 which resolved to 1.0.1 and is required by ember-data#0.0.14
+</span><span class='line'>    2) ember#1.5.1 which resolved to 1.5.1 and is required by melodrama</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this case, the library in question is ember.  I can press the number <code>2</code> and bower will install the 2nd option, <code>ember#1.5.1</code>.</p>
+
+<p>The next line in the prompt is very handy.  It reads:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Prefix the choice with ! to persist it to bower.json</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Awesome! So, if I type <code>!2</code> instead, my choice is saved in <code>bower.json</code>.  Specifically, it&#8217;ll add a <code>resolutions</code> entry:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="s2">&quot;resolutions&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;ember&quot;</span><span class="o">:</span> <span class="s2">&quot;1.5.1&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, the next time you run <code>bower install</code>, there is no interactive question of what version I want because I&#8217;ve already resolved that <code>ember</code> for my app should be version <code>1.5.1</code>.</p>
+
+<h2>Bonus: Heroku install</h2>
+
+<p>Not only do you save your brain from having to remember what version you want in your app, you save your fingers the added stress of typing numbers.  And as a bonus, you also make <code>bower install</code> possible for automated processes.  For instance, if you want to run <code>bower install</code> in a Heroku deploy of a Node app, you can add a postinstall script for npm in your <code>package.json</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;postinstall&quot;</span><span class="o">:</span> <span class="s2">&quot;./node_modules/bower/bin/bower install&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="s2">&quot;dependencies&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;bower&quot;</span><span class="o">:</span> <span class="s2">&quot;~1.3.3&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you should be able to push to heroku, have npm install, then have bower install.  Because you&#8217;ve recorded your resolutions choices, the process can work automatically on heroku without prompts.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mountain West JavaScript Review]]></title>
@@ -1732,181 +1804,6 @@
 <p>Jon gives the kind of encouragement that I need.  I don&#8217;t feel greatly handicapped by fear.  In fact, I feel quite confident in learning and making new successes in my life.  But, Jon does help uncover some of the more subtle negative messages that I can give myself that tend to hamper my progress and lessen my enthusiasm, shooting holes in my own boat.  And then he gives practical steps for getting the momentum of learning going in my life and taking advantage of those things for which I&#8217;m the trail to mastery.</p>
 
 <p>So, what&#8217;s next?  There&#8217;s only to start.  Let new adventures begin.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rotate Gauge Needle in D3]]></title>
-    <link href="http://jaketrent.com/post/rotate-gauge-needle-in-d3/"/>
-    <updated>2013-09-27T06:52:00-06:00</updated>
-    <id>http://jaketrent.com/post/rotate-gauge-needle-in-d3</id>
-    <content type="html"><![CDATA[<p>If you want to make a gauge chart in S3, you&#8217;ll need a needle on your gauge.  It&#8217;s not hard to draw a triangle, but here&#8217;s the extra work to rotate it.</p>
-
-<p><img src="http://i.imgur.com/7GSyOFd.png" alt="D3 Gauge Chart" /></p>
-
-<!--more-->
-
-
-<h2>The Gauge Chart</h2>
-
-<p>I&#8217;m not sure what you call this kind of chart, but I call it a gauge.  It pretty much looks like a speedometer or a pressure gauge.  I&#8217;m sure after seeing one, you want to make one.  I&#8217;m not going to cover the arc building.  It&#8217;s pretty easy to build a <a href="https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-arc">d3 arc</a>.</p>
-
-<h2>The Components</h2>
-
-<p>In my case, I can match the design of the needle with a triangle and a circle.  The circle is the base of the needle upon which the needle spins.  The triangle is the pointer of the needle, which will eventually sit at the angle we specify to our graph.</p>
-
-<h2>The Coordinates</h2>
-
-<p>In svg/d3, you can redefine your coordinates by using a group.  If my <code>svg</code> container is square, the default coordinate plane will start in the upper left-hand corner at <code>(0,0)</code>.  If I wanted to redefine <code>(0,0)</code> to be in the bottom center of the <code>svg</code> container, we could do so by positioning a group (<code>g</code>) so that <em>its</em> top left-hand corner is at that point.</p>
-
-<p>We might write this:</p>
-
-<figure class='code'><figcaption><span>gauge.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">height = </span><span class="c1"># ... svg height</span>
-</span><span class='line'><span class="nv">width = </span><span class="c1"># ... svg width</span>
-</span><span class='line'><span class="nv">needleG = </span><span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s">&#39;g&#39;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;transform&#39;</span><span class="p">,</span> <span class="s">&quot;translate(</span><span class="si">#{</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="si">}</span><span class="s">, </span><span class="si">#{</span><span class="nx">height</span><span class="si">}</span><span class="s">)&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Draw a Triangle</h2>
-
-<p>To draw a triangle, use an <a href="https://github.com/mbostock/d3/wiki/SVG-Shapes#path-data-generators">svg path</a>.  It needs a start point and 2 more points to draw lines to.  In the special language of svg <code>path</code>s, <code>M x y</code> is the start point and <code>L x y</code> is the point to which a straight light will be drawn from the previous point.</p>
-
-<p>Let&#8217;s say that we want our needle to 60px tall and 20px wide at the base.  First we&#8217;ll draw it pointing straight up.  Let&#8217;s draw this triangle using the <code>needleG</code> coordinates.  In the code, I&#8217;ll call the corners of the triangle <code>top</code>, <code>left</code>, and <code>right</code>.  The d3 code to draw this might look like:</p>
-
-<figure class='code'><figcaption><span>gauge.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">needleLen = </span><span class="mi">60</span>
-</span><span class='line'><span class="nv">needleRadius = </span><span class="mi">10</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">centerX = </span><span class="mi">0</span>
-</span><span class='line'><span class="nv">centerY = </span><span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">topX = </span><span class="nx">centerX</span> <span class="o">-</span> <span class="mi">0</span>
-</span><span class='line'><span class="nv">topY = </span><span class="nx">centerY</span> <span class="o">-</span> <span class="nx">needleLen</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">leftX = </span><span class="nx">centerX</span> <span class="o">-</span> <span class="nx">needleRadius</span>
-</span><span class='line'><span class="nv">leftY = </span><span class="nx">centerY</span> <span class="o">-</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">rightX = </span><span class="nx">centerX</span> <span class="o">-</span> <span class="o">-</span><span class="p">(</span><span class="nx">needleRadius</span><span class="p">)</span>
-</span><span class='line'><span class="nv">rightY = </span><span class="nx">centerY</span> <span class="o">-</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">needleG</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s">&#39;path&#39;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&#39;d&#39;</span><span class="p">,</span> <span class="s">&quot;M </span><span class="si">#{</span><span class="nx">leftX</span><span class="si">}</span><span class="s"> </span><span class="si">#{</span><span class="nx">leftY</span><span class="si">}</span><span class="s"> L </span><span class="si">#{</span><span class="nx">topX</span><span class="si">}</span><span class="s"> </span><span class="si">#{</span><span class="nx">topY</span><span class="si">}</span><span class="s"> L </span><span class="si">#{</span><span class="nx">rightX</span><span class="si">}</span><span class="s"> </span><span class="si">#{</span><span class="nx">rightY</span><span class="si">}</span><span class="s">&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Rotate the Triangle</h2>
-
-<p>Drawing a triangle pointed straight up, that is strictly parallel with the <code>x</code> and <code>y</code> access of the plane, is no problem.  But a gauge that points straight up isn&#8217;t worth that much.  It doesn&#8217;t measure anything.  So, let&#8217;s rotate the pointer/triangle of the needle to get an actual visual display of our measurement.</p>
-
-<p>Unfortunately, (but maybe you&#8217;ll have fun) you&#8217;ll have to pull out your middle school trigonometry here.  I was remembering sayings I had heard once a time to figure this out (like the mysterious &#8220;SOHCAHTOA&#8221; acronym).</p>
-
-<h3>Percentage Input</h3>
-
-<p>Your input may vary, but mine starts as a percentage.  If yours does not, you could convert it to a percentage.  And since we&#8217;re working with a half circle, we&#8217;re just going to cut in half all our input since the rotation math is based on a circle.</p>
-
-<p>Let&#8217;s say in this case our percentage is 65%.  We need to convert from percentage to radians.  Note that all the code for rotation angles will use <a href="http://en.wikipedia.org/wiki/Radian">radians</a>.  Here&#8217;s some conversion code:</p>
-
-<figure class='code'><figcaption><span>gauge.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">percToDeg = </span><span class="nf">(perc) -&gt;</span>
-</span><span class='line'>  <span class="nx">perc</span> <span class="o">*</span> <span class="mi">360</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">percToRad = </span><span class="nf">(perc) -&gt;</span>
-</span><span class='line'>  <span class="nx">degToRad</span> <span class="nx">percToDeg</span> <span class="nx">perc</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">degToRad = </span><span class="nf">(deg) -&gt;</span>
-</span><span class='line'>  <span class="nx">deg</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">180</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>SOHCAHTOA</h3>
-
-<p>We have to find the <code>top</code>, <code>left</code>, and <code>right</code> for a triangle rotated around the <code>(0,0)</code> point.  The basic SOHCAHTOA formulas will help us find the points:</p>
-
-<figure class='code'><figcaption><span>gauge.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">sin</span> <span class="k">of</span> <span class="nv">angle = </span><span class="nx">opposite</span> <span class="o">/</span> <span class="nx">hypotenuse</span>
-</span><span class='line'><span class="nx">cos</span> <span class="k">of</span> <span class="nv">angle = </span><span class="nx">adjacent</span> <span class="o">/</span> <span class="nx">hypotenuse</span>
-</span><span class='line'><span class="nx">tan</span> <span class="k">of</span> <span class="nv">angle = </span><span class="nx">opposite</span> <span class="o">/</span> <span class="nx">adjacent</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://i.imgur.com/RxoQF98.png" alt="Needle trigonometry" /></p>
-
-<p>Using these formulas, let&#8217;s update our code for finding the endpoints of the triangle:</p>
-
-<figure class='code'><figcaption><span>gauge.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">needleLen = </span><span class="mi">60</span>
-</span><span class='line'><span class="nv">needleRadius = </span><span class="mi">10</span>
-</span><span class='line'><span class="nv">percent = </span><span class="p">.</span><span class="mi">65</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">thetaRad = </span><span class="nx">percToRad</span> <span class="nx">percent</span> <span class="o">/</span> <span class="mi">2</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">centerX = </span><span class="mi">0</span>
-</span><span class='line'><span class="nv">centerY = </span><span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">topX = </span><span class="nx">centerX</span> <span class="o">-</span> <span class="nx">needleLen</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">thetaRad</span><span class="p">)</span>
-</span><span class='line'><span class="nv">topY = </span><span class="nx">centerY</span> <span class="o">-</span> <span class="nx">needleLen</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">thetaRad</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">leftX = </span><span class="nx">centerX</span> <span class="o">-</span> <span class="nx">needleRadius</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">thetaRad</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-</span><span class='line'><span class="nv">leftY = </span><span class="nx">centerY</span> <span class="o">-</span> <span class="nx">needleRadius</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">thetaRad</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">rightX = </span><span class="nx">centerX</span> <span class="o">-</span> <span class="nx">needleRadius</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">thetaRad</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-</span><span class='line'><span class="nv">rightY = </span><span class="nx">centerY</span> <span class="o">-</span> <span class="nx">needleRadius</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">thetaRad</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="s">&quot;M </span><span class="si">#{</span><span class="nx">leftX</span><span class="si">}</span><span class="s"> </span><span class="si">#{</span><span class="nx">leftY</span><span class="si">}</span><span class="s"> L </span><span class="si">#{</span><span class="nx">topX</span><span class="si">}</span><span class="s"> </span><span class="si">#{</span><span class="nx">topY</span><span class="si">}</span><span class="s"> L </span><span class="si">#{</span><span class="nx">rightX</span><span class="si">}</span><span class="s"> </span><span class="si">#{</span><span class="nx">rightY</span><span class="si">}</span><span class="s">&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Note that <code>Math.PI / 2</code> is a 90 degree angle.  It&#8217;s used to find the angle smaller than theta for the left triangle and find the angle larger for the right triangle.</p>
-
-<p>There you have it.  That&#8217;s the magic.  For an example of this working and some more code, see this <a href="http://cdpn.io/eloGk">codepen of a d3 gauge</a>.</p>
 ]]></content>
   </entry>
   

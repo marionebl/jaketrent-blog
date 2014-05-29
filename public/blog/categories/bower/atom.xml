@@ -4,7 +4,7 @@
   <title><![CDATA[Category: bower | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/bower/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-05-01T20:41:46-06:00</updated>
+  <updated>2014-05-29T07:39:36-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Bower Resolutions]]></title>
+    <link href="http://jaketrent.com/post/bower-resolutions/"/>
+    <updated>2014-05-29T07:18:00-06:00</updated>
+    <id>http://jaketrent.com/post/bower-resolutions</id>
+    <content type="html"><![CDATA[<p>When you specify dependencies for you app via Bower, some of the packages might rely on different versions of the same library.  You will have to resolve what version of libraries your app actually wants.  In other words, you break the tie.  But you don't want to break it every time, so save your choice.</p>
+
+<p><img src="http://i.imgur.com/t4XxrHn.jpg" alt="Bower" /></p>
+
+<!--more-->
+
+
+<h2>bower.json Resolutions</h2>
+
+<p>When you run <code>bower install</code>, the resolution process is interactive.  When bower recognizes that there are two packages that depend on a package at different versions, it'll list all those versions and ask:</p>
+
+<p>```
+Unable to find a suitable version for ember, please choose one:</p>
+
+<pre><code>1) ember#~1.0.0 which resolved to 1.0.1 and is required by ember-data#0.0.14
+2) ember#1.5.1 which resolved to 1.5.1 and is required by melodrama
+</code></pre>
+
+<p>```</p>
+
+<p>In this case, the library in question is ember.  I can press the number <code>2</code> and bower will install the 2nd option, <code>ember#1.5.1</code>.</p>
+
+<p>The next line in the prompt is very handy.  It reads:</p>
+
+<p><code>
+Prefix the choice with ! to persist it to bower.json
+</code></p>
+
+<p>Awesome! So, if I type <code>!2</code> instead, my choice is saved in <code>bower.json</code>.  Specifically, it'll add a <code>resolutions</code> entry:</p>
+
+<p><code>js
+"resolutions": {
+  "ember": "1.5.1"
+}
+</code></p>
+
+<p>Now, the next time you run <code>bower install</code>, there is no interactive question of what version I want because I've already resolved that <code>ember</code> for my app should be version <code>1.5.1</code>.</p>
+
+<h2>Bonus: Heroku install</h2>
+
+<p>Not only do you save your brain from having to remember what version you want in your app, you save your fingers the added stress of typing numbers.  And as a bonus, you also make <code>bower install</code> possible for automated processes.  For instance, if you want to run <code>bower install</code> in a Heroku deploy of a Node app, you can add a postinstall script for npm in your <code>package.json</code>:</p>
+
+<p>```js
+{
+  "scripts": {</p>
+
+<pre><code>"postinstall": "./node_modules/bower/bin/bower install"
+</code></pre>
+
+<p>  },
+  "dependencies": {</p>
+
+<pre><code>"bower": "~1.3.3"
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Now you should be able to push to heroku, have npm install, then have bower install.  Because you've recorded your resolutions choices, the process can work automatically on heroku without prompts.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to Create a Bower Package]]></title>

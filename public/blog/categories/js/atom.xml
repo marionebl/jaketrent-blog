@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-05-01T20:41:46-06:00</updated>
+  <updated>2014-05-29T07:39:36-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Bower Resolutions]]></title>
+    <link href="http://jaketrent.com/post/bower-resolutions/"/>
+    <updated>2014-05-29T07:18:00-06:00</updated>
+    <id>http://jaketrent.com/post/bower-resolutions</id>
+    <content type="html"><![CDATA[<p>When you specify dependencies for you app via Bower, some of the packages might rely on different versions of the same library.  You will have to resolve what version of libraries your app actually wants.  In other words, you break the tie.  But you don't want to break it every time, so save your choice.</p>
+
+<p><img src="http://i.imgur.com/t4XxrHn.jpg" alt="Bower" /></p>
+
+<!--more-->
+
+
+<h2>bower.json Resolutions</h2>
+
+<p>When you run <code>bower install</code>, the resolution process is interactive.  When bower recognizes that there are two packages that depend on a package at different versions, it'll list all those versions and ask:</p>
+
+<p>```
+Unable to find a suitable version for ember, please choose one:</p>
+
+<pre><code>1) ember#~1.0.0 which resolved to 1.0.1 and is required by ember-data#0.0.14
+2) ember#1.5.1 which resolved to 1.5.1 and is required by melodrama
+</code></pre>
+
+<p>```</p>
+
+<p>In this case, the library in question is ember.  I can press the number <code>2</code> and bower will install the 2nd option, <code>ember#1.5.1</code>.</p>
+
+<p>The next line in the prompt is very handy.  It reads:</p>
+
+<p><code>
+Prefix the choice with ! to persist it to bower.json
+</code></p>
+
+<p>Awesome! So, if I type <code>!2</code> instead, my choice is saved in <code>bower.json</code>.  Specifically, it'll add a <code>resolutions</code> entry:</p>
+
+<p><code>js
+"resolutions": {
+  "ember": "1.5.1"
+}
+</code></p>
+
+<p>Now, the next time you run <code>bower install</code>, there is no interactive question of what version I want because I've already resolved that <code>ember</code> for my app should be version <code>1.5.1</code>.</p>
+
+<h2>Bonus: Heroku install</h2>
+
+<p>Not only do you save your brain from having to remember what version you want in your app, you save your fingers the added stress of typing numbers.  And as a bonus, you also make <code>bower install</code> possible for automated processes.  For instance, if you want to run <code>bower install</code> in a Heroku deploy of a Node app, you can add a postinstall script for npm in your <code>package.json</code>:</p>
+
+<p>```js
+{
+  "scripts": {</p>
+
+<pre><code>"postinstall": "./node_modules/bower/bin/bower install"
+</code></pre>
+
+<p>  },
+  "dependencies": {</p>
+
+<pre><code>"bower": "~1.3.3"
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Now you should be able to push to heroku, have npm install, then have bower install.  Because you've recorded your resolutions choices, the process can work automatically on heroku without prompts.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mountain West JavaScript Review]]></title>
@@ -401,131 +469,6 @@ App.BlogEditController = Ember.ObjectController.extend
 <p>In the case of the last example, it would be cool if we could detect the window closing, save the work automatically, and let the user close the tab as they indicated without interruption.  For asynchronous actions such as network requests, this is problematic.  The request will not finish before the browser has trashed the whole window.  In cases such as this, you will need to synchronize your requests to block before finishing execution of the <code>beforeunload</code> event callback.</p>
 
 <p>So, does this work for you?  How might you make it better?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Testing Express Validator]]></title>
-    <link href="http://jaketrent.com/post/testing-express-validator/"/>
-    <updated>2014-03-10T07:37:00-06:00</updated>
-    <id>http://jaketrent.com/post/testing-express-validator</id>
-    <content type="html"><![CDATA[<p><a href="https://github.com/ctavan/express-validator">Express-validator</a> is a <a href="http://expressjs.com/api.html#middleware">middleware for Express</a> on Node.js that can help you validate user input.  It's a lovely library.  Here's a pattern for testing code that uses it.</p>
-
-<p><img src="http://i.imgur.com/ZfK9bv4.png" alt="express-validator" /></p>
-
-<!--more-->
-
-
-<h2>Install</h2>
-
-<p>To get <code>express-validator</code> in your project, install with npm:</p>
-
-<p><code>bash
-npm install express-validator --save
-</code></p>
-
-<h2>Plug in the Middleware</h2>
-
-<p>To use the middleware in your code, crack open the part of your app that sets up Express middlewares, and add in a reference to this lil beaut:</p>
-
-<p>```coffeescript
-expressValidator = require 'express-validator'</p>
-
-<h1>...</h1>
-
-<p>app.use express.json()
-app.use expressValidator()
-```</p>
-
-<p>Note that you should insert the new <code>express-validator</code> middleware directly after the <code>json</code> middleware.  Also note that the <code>json</code> middleware, used in conjunction with <code>urlencoded</code> now <a href="http://andrewkelley.me/post/do-not-use-bodyparser-with-express-js.html">replace <code>bodyParser</code></a> to avoid deprecation warnings on startup.</p>
-
-<h2>Validate Something</h2>
-
-<p>Let's say you're writing a validator for new posts to a blog.  That code might look like this.</p>
-
-<p>```coffeescript blog-new-validator.coffee
-module.exports = (req) -></p>
-
-<p>  req.checkBody('title', 'Title is required').notEmpty()
-  req.checkBody('body', 'Body is required').notEmpty()</p>
-
-<p>  !req.validationErrors() or req.validationErrors().length is 0
-```</p>
-
-<p>It checks to see if there is a title and a body given.  If there is not, the validator will return false, and there will be a validation errors array on the <code>req</code> object.  There are many <a href="https://github.com/chriso/validator.js">other assertions (provided internally by validator.js)</a> besides <code>notEmpty</code> that you can use.</p>
-
-<h2>Validating the Validator</h2>
-
-<p>First, setup a test helper that stubs the request, <code>req</code>, for validation:</p>
-
-<p>```coffeescript req.coffee
-expressValidator = require('express-validator')()</p>
-
-<p>exports.stubForValidation = (done) ->
-  req =</p>
-
-<pre><code>query: {}
-body: {}
-params: {}
-param: (name) -&gt;
-  @params[name]
-</code></pre>
-
-<p>  expressValidator req, {}, -></p>
-
-<pre><code>done(req)
-</code></pre>
-
-<p>```</p>
-
-<p>There's nothing too incredibly special here.  It's just abstracted out of your test into a reusable helper.  The <code>req</code> object has empty objects to slap fixture data onto in your tests.  It includes a stubbed <code>param</code> function that can return params by name.  Finally, the <code>express-validator</code> middleware is called with the stubbed <code>req</code> object.</p>
-
-<p>Now, in your test, you can simply:</p>
-
-<ol>
-<li>Stub the request before each test</li>
-<li>Setup your fixture data to make the test pass (or not)</li>
-<li>Assert validation errors' existence and messages</li>
-</ol>
-
-
-<p>```coffeescript blog-new-validator.spec.coffee
-stubReq = require('req').stubForValidation
-validateNew = require 'blog-new-validator'</p>
-
-<p>describe 'blog-new-validator', -></p>
-
-<p>  req = null</p>
-
-<p>  beforeEach (done) -></p>
-
-<pre><code>stubReq (r) -&gt;
-  req = r
-  done()
-</code></pre>
-
-<p>  it 'is invalid without title', -></p>
-
-<pre><code>validateNew(req).should.be.false
-req.validationErrors(true).title.msg.should.eql 'Title is required'
-</code></pre>
-
-<p>  it 'is invalid without body', -></p>
-
-<pre><code>validateNew(req).should.be.false
-req.validationErrors(true).body.msg.should.eql 'Body is required'
-</code></pre>
-
-<p>  it 'is valid with title and body', -></p>
-
-<pre><code>req.body.title = 'New Blog Title'
-req.body.body = 'The body of the blog.'
-validateNew(req).should.be.true
-</code></pre>
-
-<p>```</p>
-
-<p>What do you think?  Is there an easier way?  A way to get better assertions?</p>
 ]]></content>
   </entry>
   
