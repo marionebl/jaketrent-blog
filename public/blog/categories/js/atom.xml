@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-05-29T07:39:36-06:00</updated>
+  <updated>2014-05-30T07:43:21-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,86 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Broccoli Ember Emblem]]></title>
+    <link href="http://jaketrent.com/post/broccoli-ember-emblem/"/>
+    <updated>2014-05-30T07:18:00-06:00</updated>
+    <id>http://jaketrent.com/post/broccoli-ember-emblem</id>
+    <content type="html"><![CDATA[<p>Make broccoli compile your emblem templates so they're ready for your ember app.</p>
+
+<p><img src="http://i.imgur.com/85v8PQP.png" alt="Broccoli Ember Emblem" /></p>
+
+<!--more-->
+
+
+<h2>The Libraries</h2>
+
+<p><a href="https://www.npmjs.org/package/broccoli">Broccoli</a> builds your assets quickly.  It makes heavy use of caching so it only has to rebuild affected subtrees when files change.  <a href="http://emblemjs.com/">Emblem</a> is a significant whitespace version of <a href="http://handlebarsjs.com/">Handlebars</a> templates, similar in style to <a href="http://slim-lang.com/">Slim</a> or <a href="http://jade-lang.com/">Jade</a>.  <a href="http://emberjs.com/">Ember</a> is a MVC framework for building browser apps.</p>
+
+<p>Put them all together, and you have something that will help you compile your templates quickly for your browser app.  The <a href="https://github.com/jaketrent/broccoli-ember-emblem">broccoli-ember-emblem</a> plugin for Broccoli will do just that.</p>
+
+<h2>Install</h2>
+
+<p>To use the library, you'll need broccoli installed first.  Then, you'll install the plugin via npm:</p>
+
+<p><code>
+npm install --save-dev broccoli-ember-emblem
+</code></p>
+
+<h2>Usage</h2>
+
+<p>You'll setup the plugin in your app's <code>Brocfile.js</code>.  That setup might look something like this:</p>
+
+<p>```js
+var emblem = require('broccoli-ember-emblem')
+var mergeTrees = require('broccoli-merge-trees')
+var pickFiles = require('broccoli-static-compiler')</p>
+
+<p>function preprocess (tree) {
+  tree = emblem(tree, {</p>
+
+<pre><code>stripPathFromName: 'tmpl/'
+</code></pre>
+
+<p>  })
+  return tree
+}</p>
+
+<p>var tmplTree = 'client/tmpl'
+tmplTree = pickFiles(tmplTree, {
+  srcDir: '/',
+  destDir: '/tmpl'
+})
+tmplTree = preprocess(tmplTree)</p>
+
+<p>module.exports = mergeTrees([ /<em> other trees, </em>/ tmplTree ])
+```</p>
+
+<p>Note a few things:</p>
+
+<ul>
+<li>I'm using another plugin, <code>broccoli-static-compiler</code> to move files around in the broccoli build directories.  This is to be able to identify separate trees that both use similar file filters (eg, *.js for both src scripts and templates).</li>
+<li>I'm using the one option for the <code>broccoli-ember-emblem</code> plugin, <code>stripPathFromName</code>, which allows me to remove the path name from the template name in output.  For example, if I have a file at <code>tmpl/application.emblem</code>, I want the template name in ember to be <code>application</code>, not <code>tmpl/application</code>.</li>
+<li>Final output is merged into a single tree via another plugin, <code>broccoli-merge-trees</code>.</li>
+</ul>
+
+
+<h2>Output</h2>
+
+<p>Broccoli will take care of finding all of your template files.  It will use directories and filenames as the input for template names.  As a few examples, here is input and output as it might happen in the above configuration:</p>
+
+<ul>
+<li>File: <code>client/tmpl/application.emblem</code> becomes: <code>Ember.TEMPLATES['application']</code></li>
+<li>File: <code>client/tmpl/components/song.emblem</code> becomes: <code>Ember.TEMPLATES['components/song']</code></li>
+</ul>
+
+
+<p>Notice that Ember requires all templates to be registered on the <code>Ember.TEMPLATES</code> object.  Later, at app runtime, they are looked up on that object by name.</p>
+
+<p>So, use the plugin and win.  How does your template compilation for Ember/Emblem differ?  What other features do you wish were supported here?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Bower Resolutions]]></title>
@@ -418,57 +498,6 @@ cp dist/modules/ember-inflector.js your_project_dir
 <h3>Other Changes</h3>
 
 <p>The app I converted was quite simple, so I'm thinking that there will be other changes required.  What have you run into?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Detecting Window Closing in Ember]]></title>
-    <link href="http://jaketrent.com/post/ember-window-beforeunload/"/>
-    <updated>2014-03-17T08:04:00-06:00</updated>
-    <id>http://jaketrent.com/post/ember-window-beforeunload</id>
-    <content type="html"><![CDATA[<p>In a long-running app such as you might build in Ember, it can be useful to detect when the window is closing.  This is easily detected with JavaScript, and there are easy places to put the code in your Ember app.</p>
-
-<p><img src="http://i.imgur.com/85v8PQP.png" alt="Ember beforeunload" /></p>
-
-<!--more-->
-
-
-<h2>beforeunload</h2>
-
-<p>The <code>window</code> event that you want to listen for is <code>beforeunload</code>.  You might bind to the event like so:</p>
-
-<p><code>coffeescript
-$(window).bind 'beforeunload', -&gt;
-  'Are you sure you want to close this window?'
-</code></p>
-
-<p>Return a string from the function.  This string will be displayed in a browser-native confirm-style dialogue.</p>
-
-<h2>beforeunload in Ember</h2>
-
-<p>Now, if your app is controlled by Ember, you're likely going to want it to handle bindings such as this from within Ember.  There are several places you might want to put this code.  Your decision will depend on the needs of your app.  You can put it in a route or controller.  The scope of that route or controller should match the scope for which you want the <code>beforeunload</code> event to be caught.  In other words, if you want <code>beforeunload</code> to be caught for the entire app, put the listener in <code>ApplicationRoute</code> (or <code>ApplicationController</code>).  Or if you wanted a more limited scope, put the listener in a more specific route.</p>
-
-<p>For instance, if you wanted to save a blog post when the user closes a tab, you might implement something like this:</p>
-
-<p>```coffeescript
-App.BlogEditController = Ember.ObjectController.extend
-  saveBeforeClose: (-></p>
-
-<pre><code>$(window).bind 'beforeunload', =&gt;
-  @get('model').save()
-  'Are you sure you want to leave unsaved work?'
-</code></pre>
-
-<p>  ).on 'init'
-```</p>
-
-<h2>In Practice</h2>
-
-<p>In practice, the UX for this kind of feature can be tricky.  If someone closes a tab, odds are they meant to and don't want to be bothered with a confirm dialogue asking them to reiterate their decision.  On the other hand, maybe the didn't realize the implications of closing out the app, such as in the case of unsaved work, and they become very grateful for the reminder to stay and save something.</p>
-
-<p>In the case of the last example, it would be cool if we could detect the window closing, save the work automatically, and let the user close the tab as they indicated without interruption.  For asynchronous actions such as network requests, this is problematic.  The request will not finish before the browser has trashed the whole window.  In cases such as this, you will need to synchronize your requests to block before finishing execution of the <code>beforeunload</code> event callback.</p>
-
-<p>So, does this work for you?  How might you make it better?</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-05-29T07:39:36-06:00</updated>
+  <updated>2014-05-30T07:43:21-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,86 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Broccoli Ember Emblem]]></title>
+    <link href="http://jaketrent.com/post/broccoli-ember-emblem/"/>
+    <updated>2014-05-30T07:18:00-06:00</updated>
+    <id>http://jaketrent.com/post/broccoli-ember-emblem</id>
+    <content type="html"><![CDATA[<p>Make broccoli compile your emblem templates so they're ready for your ember app.</p>
+
+<p><img src="http://i.imgur.com/85v8PQP.png" alt="Broccoli Ember Emblem" /></p>
+
+<!--more-->
+
+
+<h2>The Libraries</h2>
+
+<p><a href="https://www.npmjs.org/package/broccoli">Broccoli</a> builds your assets quickly.  It makes heavy use of caching so it only has to rebuild affected subtrees when files change.  <a href="http://emblemjs.com/">Emblem</a> is a significant whitespace version of <a href="http://handlebarsjs.com/">Handlebars</a> templates, similar in style to <a href="http://slim-lang.com/">Slim</a> or <a href="http://jade-lang.com/">Jade</a>.  <a href="http://emberjs.com/">Ember</a> is a MVC framework for building browser apps.</p>
+
+<p>Put them all together, and you have something that will help you compile your templates quickly for your browser app.  The <a href="https://github.com/jaketrent/broccoli-ember-emblem">broccoli-ember-emblem</a> plugin for Broccoli will do just that.</p>
+
+<h2>Install</h2>
+
+<p>To use the library, you'll need broccoli installed first.  Then, you'll install the plugin via npm:</p>
+
+<p><code>
+npm install --save-dev broccoli-ember-emblem
+</code></p>
+
+<h2>Usage</h2>
+
+<p>You'll setup the plugin in your app's <code>Brocfile.js</code>.  That setup might look something like this:</p>
+
+<p>```js
+var emblem = require('broccoli-ember-emblem')
+var mergeTrees = require('broccoli-merge-trees')
+var pickFiles = require('broccoli-static-compiler')</p>
+
+<p>function preprocess (tree) {
+  tree = emblem(tree, {</p>
+
+<pre><code>stripPathFromName: 'tmpl/'
+</code></pre>
+
+<p>  })
+  return tree
+}</p>
+
+<p>var tmplTree = 'client/tmpl'
+tmplTree = pickFiles(tmplTree, {
+  srcDir: '/',
+  destDir: '/tmpl'
+})
+tmplTree = preprocess(tmplTree)</p>
+
+<p>module.exports = mergeTrees([ /<em> other trees, </em>/ tmplTree ])
+```</p>
+
+<p>Note a few things:</p>
+
+<ul>
+<li>I'm using another plugin, <code>broccoli-static-compiler</code> to move files around in the broccoli build directories.  This is to be able to identify separate trees that both use similar file filters (eg, *.js for both src scripts and templates).</li>
+<li>I'm using the one option for the <code>broccoli-ember-emblem</code> plugin, <code>stripPathFromName</code>, which allows me to remove the path name from the template name in output.  For example, if I have a file at <code>tmpl/application.emblem</code>, I want the template name in ember to be <code>application</code>, not <code>tmpl/application</code>.</li>
+<li>Final output is merged into a single tree via another plugin, <code>broccoli-merge-trees</code>.</li>
+</ul>
+
+
+<h2>Output</h2>
+
+<p>Broccoli will take care of finding all of your template files.  It will use directories and filenames as the input for template names.  As a few examples, here is input and output as it might happen in the above configuration:</p>
+
+<ul>
+<li>File: <code>client/tmpl/application.emblem</code> becomes: <code>Ember.TEMPLATES['application']</code></li>
+<li>File: <code>client/tmpl/components/song.emblem</code> becomes: <code>Ember.TEMPLATES['components/song']</code></li>
+</ul>
+
+
+<p>Notice that Ember requires all templates to be registered on the <code>Ember.TEMPLATES</code> object.  Later, at app runtime, they are looked up on that object by name.</p>
+
+<p>So, use the plugin and win.  How does your template compilation for Ember/Emblem differ?  What other features do you wish were supported here?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Bower Resolutions]]></title>
@@ -303,131 +383,6 @@ App.BlogEditController = Ember.ObjectController.extend
 <p>In the case of the last example, it would be cool if we could detect the window closing, save the work automatically, and let the user close the tab as they indicated without interruption.  For asynchronous actions such as network requests, this is problematic.  The request will not finish before the browser has trashed the whole window.  In cases such as this, you will need to synchronize your requests to block before finishing execution of the <code>beforeunload</code> event callback.</p>
 
 <p>So, does this work for you?  How might you make it better?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Testing Express Validator]]></title>
-    <link href="http://jaketrent.com/post/testing-express-validator/"/>
-    <updated>2014-03-10T07:37:00-06:00</updated>
-    <id>http://jaketrent.com/post/testing-express-validator</id>
-    <content type="html"><![CDATA[<p><a href="https://github.com/ctavan/express-validator">Express-validator</a> is a <a href="http://expressjs.com/api.html#middleware">middleware for Express</a> on Node.js that can help you validate user input.  It's a lovely library.  Here's a pattern for testing code that uses it.</p>
-
-<p><img src="http://i.imgur.com/ZfK9bv4.png" alt="express-validator" /></p>
-
-<!--more-->
-
-
-<h2>Install</h2>
-
-<p>To get <code>express-validator</code> in your project, install with npm:</p>
-
-<p><code>bash
-npm install express-validator --save
-</code></p>
-
-<h2>Plug in the Middleware</h2>
-
-<p>To use the middleware in your code, crack open the part of your app that sets up Express middlewares, and add in a reference to this lil beaut:</p>
-
-<p>```coffeescript
-expressValidator = require 'express-validator'</p>
-
-<h1>...</h1>
-
-<p>app.use express.json()
-app.use expressValidator()
-```</p>
-
-<p>Note that you should insert the new <code>express-validator</code> middleware directly after the <code>json</code> middleware.  Also note that the <code>json</code> middleware, used in conjunction with <code>urlencoded</code> now <a href="http://andrewkelley.me/post/do-not-use-bodyparser-with-express-js.html">replace <code>bodyParser</code></a> to avoid deprecation warnings on startup.</p>
-
-<h2>Validate Something</h2>
-
-<p>Let's say you're writing a validator for new posts to a blog.  That code might look like this.</p>
-
-<p>```coffeescript blog-new-validator.coffee
-module.exports = (req) -></p>
-
-<p>  req.checkBody('title', 'Title is required').notEmpty()
-  req.checkBody('body', 'Body is required').notEmpty()</p>
-
-<p>  !req.validationErrors() or req.validationErrors().length is 0
-```</p>
-
-<p>It checks to see if there is a title and a body given.  If there is not, the validator will return false, and there will be a validation errors array on the <code>req</code> object.  There are many <a href="https://github.com/chriso/validator.js">other assertions (provided internally by validator.js)</a> besides <code>notEmpty</code> that you can use.</p>
-
-<h2>Validating the Validator</h2>
-
-<p>First, setup a test helper that stubs the request, <code>req</code>, for validation:</p>
-
-<p>```coffeescript req.coffee
-expressValidator = require('express-validator')()</p>
-
-<p>exports.stubForValidation = (done) ->
-  req =</p>
-
-<pre><code>query: {}
-body: {}
-params: {}
-param: (name) -&gt;
-  @params[name]
-</code></pre>
-
-<p>  expressValidator req, {}, -></p>
-
-<pre><code>done(req)
-</code></pre>
-
-<p>```</p>
-
-<p>There's nothing too incredibly special here.  It's just abstracted out of your test into a reusable helper.  The <code>req</code> object has empty objects to slap fixture data onto in your tests.  It includes a stubbed <code>param</code> function that can return params by name.  Finally, the <code>express-validator</code> middleware is called with the stubbed <code>req</code> object.</p>
-
-<p>Now, in your test, you can simply:</p>
-
-<ol>
-<li>Stub the request before each test</li>
-<li>Setup your fixture data to make the test pass (or not)</li>
-<li>Assert validation errors' existence and messages</li>
-</ol>
-
-
-<p>```coffeescript blog-new-validator.spec.coffee
-stubReq = require('req').stubForValidation
-validateNew = require 'blog-new-validator'</p>
-
-<p>describe 'blog-new-validator', -></p>
-
-<p>  req = null</p>
-
-<p>  beforeEach (done) -></p>
-
-<pre><code>stubReq (r) -&gt;
-  req = r
-  done()
-</code></pre>
-
-<p>  it 'is invalid without title', -></p>
-
-<pre><code>validateNew(req).should.be.false
-req.validationErrors(true).title.msg.should.eql 'Title is required'
-</code></pre>
-
-<p>  it 'is invalid without body', -></p>
-
-<pre><code>validateNew(req).should.be.false
-req.validationErrors(true).body.msg.should.eql 'Body is required'
-</code></pre>
-
-<p>  it 'is valid with title and body', -></p>
-
-<pre><code>req.body.title = 'New Blog Title'
-req.body.body = 'The body of the blog.'
-validateNew(req).should.be.true
-</code></pre>
-
-<p>```</p>
-
-<p>What do you think?  Is there an easier way?  A way to get better assertions?</p>
 ]]></content>
   </entry>
   
