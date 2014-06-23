@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Set State in Callbacks in React - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Help your React components set state safely in callbacks">
+  <meta name="keywords" content="js, react, components, setState, componentWillUnmount, componentDidMount, unmounted">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Set State in Callbacks in React" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://i.imgur.com/DXuSNbw.png" />
+  <meta property="og:url" content="http://jaketrent.com/post/set-state-in-callbacks-in-react/" />
+  <meta property="og:description" content="Help your React components set state safely in callbacks" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Set State in Callbacks in React" />
+  <meta name="twitter:description" content="Help your React components set state safely in callbacks" />
+  <meta name="twitter:image" content="http://i.imgur.com/DXuSNbw.png" />
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/set-state-in-callbacks-in-react/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Set State in Callbacks in React</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-23T08:30:00-06:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In React, you can setup components that fetch their own data and set their own state with that data.  Because of the async nature of data fetching, you’ll have to make sure to keep things cleaned up to avoid the error of trying to set state in an unmounted component.</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="React" /></p>
+
+<!--more-->
+
+
+<h2>React Components setState</h2>
+
+<p>If a React component fetches its own data, it will usually do so in the <code>componentDidMount</code> method.  In the data request callback, it will set its own state via the <code>this.setState</code> method.  (<code>this.state</code> should be treated as immutable.)  State should only be set on mounted components, or those components that are inserted into the dom.</p>
+
+<p>If you attempt to set state on an unmounted component, you&#8217;ll get an error that looks like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Uncaught Error: Invariant Violation: replaceState(...): Can only update a mounted or mounting component. </span></code></pre></td></tr></table></div></figure>
+
+
+<p>Others have reported this variation:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Invariant Violation: replaceState(...): Cannot update while unmounting component. This usually means you called setState() on an unmounted component.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Both indicate that you&#8217;re setting state on a component that is not mounted.  How should one avoid this?  In my case, <code>setState</code> was being called in a callback that was firing after the component that initially started the request had already been unmounted from the dom.  Here are the two ways I addressed the problem&#8230;</p>
+
+<h2>Assure Component isMounted</h2>
+
+<p>If the component is mounted, <code>setState</code> is a safe bet.  If it&#8217;s not mounted, never do it.  If it&#8217;s not mounted, you probably don&#8217;t about the state at that point either.  So wrap your state setting in <code>this.isMounted()</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">componentDidMount</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">MyModel</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isMounted</span><span class="p">())</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+</span><span class='line'>          <span class="nx">goodiesFrom</span><span class="o">:</span> <span class="nx">data</span>
+</span><span class='line'>        <span class="p">})</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}).</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It feels a bit like a hack, but it makes the code safe.  Another option&#8230;</p>
+
+<h2>Abort the Request</h2>
+
+<p>My asynchronous action is a network request that, when finished, will call the callback function.  When the component unmounts, I can just throw away the request so the callback is never invoked.  To do this, we&#8217;ll take advantage of another React lifecycle hook, <code>componentWillUnmount</code>:</p>
+
+<figure class='code'><figcaption><span>my-component.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">componentDidMount</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">req</span> <span class="o">=</span> <span class="nx">MyModel</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({})</span>
+</span><span class='line'>    <span class="p">})</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">componentWillUnmount</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">req</span><span class="p">.</span><span class="nx">abort</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In my model, I&#8217;m using the <a href="https://github.com/visionmedia/superagent">superagent</a> library for network requests which provides an <a href="http://visionmedia.github.io/superagent/#aborting-requests">abort</a> method.</p>
+
+<figure class='code'><figcaption><span>my-model.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="err">‘</span><span class="nx">superagent</span><span class="err">&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">MyModel</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">find</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">request</span><span class="p">(</span><span class="err">‘</span><span class="nx">modelUrl</span><span class="err">’</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">done</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">})</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Also note that in my <code>end</code> function callback, I&#8217;m checking for the existence of data.  This is because when a request is aborted, data will come back as undefined.</p>
+
+<p>My favored method for solving the problem is the latter request abort method.  It feels cleaner that we&#8217;re relying on the lifecycle functions of the component to deal with cleanup, much like we would for <a href="http://facebook.github.io/react/tips/dom-event-listeners.html">events</a>.  How have you dealt with this problem?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-23T08:30:00-06:00" pubdate data-updated="true">Jun 23<span>rd</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/react/'>react</a>, <a class='category' href='/blog/categories/superagent/'>superagent</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/broccoli-ember-emblem/" title="Previous Post: Broccoli Ember Emblem">&laquo; Broccoli Ember Emblem</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/set-state-in-callbacks-in-react/';
+        var disqus_url = 'http://jaketrent.com/post/set-state-in-callbacks-in-react/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: react | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/react/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-23T09:05:30-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Set State in Callbacks in React]]></title>
+    <link href="http://jaketrent.com/post/set-state-in-callbacks-in-react/"/>
+    <updated>2014-06-23T08:30:00-06:00</updated>
+    <id>http://jaketrent.com/post/set-state-in-callbacks-in-react</id>
+    <content type="html"><![CDATA[<p>In React, you can setup components that fetch their own data and set their own state with that data.  Because of the async nature of data fetching, you’ll have to make sure to keep things cleaned up to avoid the error of trying to set state in an unmounted component.</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="React" /></p>
+
+<!--more-->
+
+
+<h2>React Components setState</h2>
+
+<p>If a React component fetches its own data, it will usually do so in the <code>componentDidMount</code> method.  In the data request callback, it will set its own state via the <code>this.setState</code> method.  (<code>this.state</code> should be treated as immutable.)  State should only be set on mounted components, or those components that are inserted into the dom.</p>
+
+<p>If you attempt to set state on an unmounted component, you'll get an error that looks like this:</p>
+
+<p><code>
+Uncaught Error: Invariant Violation: replaceState(...): Can only update a mounted or mounting component.
+</code></p>
+
+<p>Others have reported this variation:</p>
+
+<p><code>
+Invariant Violation: replaceState(...): Cannot update while unmounting component. This usually means you called setState() on an unmounted component.
+</code></p>
+
+<p>Both indicate that you're setting state on a component that is not mounted.  How should one avoid this?  In my case, <code>setState</code> was being called in a callback that was firing after the component that initially started the request had already been unmounted from the dom.  Here are the two ways I addressed the problem...</p>
+
+<h2>Assure Component isMounted</h2>
+
+<p>If the component is mounted, <code>setState</code> is a safe bet.  If it's not mounted, never do it.  If it's not mounted, you probably don't about the state at that point either.  So wrap your state setting in <code>this.isMounted()</code>:</p>
+
+<p>```js
+React.createClass({
+  componentDidMount: function () {</p>
+
+<pre><code>MyModel.find(function (err, data) {
+  if (this.isMounted()) {
+    this.setState({ 
+      goodiesFrom: data 
+    })
+  }
+}).bind(this)
+</code></pre>
+
+<p>  }
+  // ...
+})
+```</p>
+
+<p>It feels a bit like a hack, but it makes the code safe.  Another option...</p>
+
+<h2>Abort the Request</h2>
+
+<p>My asynchronous action is a network request that, when finished, will call the callback function.  When the component unmounts, I can just throw away the request so the callback is never invoked.  To do this, we'll take advantage of another React lifecycle hook, <code>componentWillUnmount</code>:</p>
+
+<p>```js my-component.js
+React.createClass({
+  componentDidMount: function () {</p>
+
+<pre><code>this.req = MyModel.find(function (err, data) {
+  this.setState({})
+})
+</code></pre>
+
+<p>  },
+  componentWillUnmount: function () {</p>
+
+<pre><code>this.req.abort()
+</code></pre>
+
+<p>  }
+  // ...
+})
+```</p>
+
+<p>In my model, I'm using the <a href="https://github.com/visionmedia/superagent">superagent</a> library for network requests which provides an <a href="http://visionmedia.github.io/superagent/#aborting-requests">abort</a> method.</p>
+
+<p>```js my-model.js
+var request = require(‘superagent')
+MyModel.prototype.find = function (done) {
+  return request(‘modelUrl’)</p>
+
+<pre><code>.end(function (err, data) {
+  if (data) {
+    done(err, data.body)
+  }
+})
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Also note that in my <code>end</code> function callback, I'm checking for the existence of data.  This is because when a request is aborted, data will come back as undefined.</p>
+
+<p>My favored method for solving the problem is the latter request abort method.  It feels cleaner that we're relying on the lifecycle functions of the component to deal with cleanup, much like we would for <a href="http://facebook.github.io/react/tips/dom-event-listeners.html">events</a>.  How have you dealt with this problem?</p>
+]]></content>
+  </entry>
+  
+</feed>
