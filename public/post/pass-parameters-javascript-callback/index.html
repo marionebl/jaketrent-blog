@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Pass Parameters to Javascript Callback - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Callback functions are a nice feature of Javascript. It's nice to be able to just use a function handle to show that it should be called when a &hellip;">
+  <meta name="keywords" content="javascript, jquery, souit">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Pass Parameters to Javascript Callback" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/pass-parameters-javascript-callback/" />
+  <meta property="og:description" content="Callback functions are a nice feature of Javascript. It's nice to be able to just use a function handle to show that it should be called when a &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Pass Parameters to Javascript Callback" />
+  <meta name="twitter:description" content="Callback functions are a nice feature of Javascript. It's nice to be able to just use a function handle to show that it should be called when a &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/pass-parameters-javascript-callback/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Pass Parameters to Javascript Callback</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-09T11:45:00-06:00" pubdate data-updated="true">Sep 9<span>th</span>, 2009</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Callback functions are a nice feature of Javascript.  It&#8217;s nice to be able to just use a function handle to show that it should be called when a certain something completes.  Sometimes, however, we want to do more than just specify a function handle.  We want to pass parameters.  Why?  Because sometimes the callback method cares about other data that was available before the original request.  Here&#8217;s an example:</p>
+
+<!--more-->
+
+
+<p>As a part of the same voting mechanism that I wrote about for <a href="http://rockycode.com/blog/pass-parameters-jquery-event-functions/">this article on event handler parameter passing</a>, I wanted to keep id and (vote) direction around for the callback, which was to update the UI.</p>
+
+<p>First, I made an ajax call with jquery to make vote updates to the database, and on my way to the ajax call, I would save the id and direction in a global (bad) variable.  This works, because later, I can reference it in my callback function, updateUI:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">action</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">objectid</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">vote</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">direction</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>   <span class="nx">action</span> <span class="o">=</span> <span class="nx">direction</span><span class="p">;</span>
+</span><span class='line'>   <span class="nx">objectid</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span>
+</span><span class='line'>   <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span><span class='line'>     <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+</span><span class='line'>     <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/hymn/&#39;</span> <span class="o">+</span> <span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;/vote/&#39;</span> <span class="o">+</span> <span class="nx">direction</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+</span><span class='line'>     <span class="nx">dataType</span><span class="o">:</span> <span class="s1">&#39;json&#39;</span><span class="p">,</span>
+</span><span class='line'>     <span class="nx">async</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>     <span class="nx">timeout</span><span class="o">:</span> <span class="mi">15000</span><span class="p">,</span>
+</span><span class='line'>     <span class="nx">success</span><span class="o">:</span> <span class="nx">updateUI</span>
+</span><span class='line'>   <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The next solution is a bit cleaner and makes us feel better about ourself.  Instead of the global, a closure is used, in which we decorate the response object with new state (id and direction); and since the response object is passed by default into the ajax callback function, it&#8217;s available later by calling response.id or response.objectid:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">vote</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">direction</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>   <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span><span class='line'>     <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+</span><span class='line'>     <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/hymn/&#39;</span> <span class="o">+</span> <span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;/vote/&#39;</span> <span class="o">+</span> <span class="nx">direction</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+</span><span class='line'>     <span class="nx">dataType</span><span class="o">:</span> <span class="s1">&#39;json&#39;</span><span class="p">,</span>
+</span><span class='line'>     <span class="nx">async</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>     <span class="nx">timeout</span><span class="o">:</span> <span class="mi">15000</span><span class="p">,</span>
+</span><span class='line'>     <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>           <span class="nx">response</span><span class="p">.</span><span class="nx">action</span> <span class="o">=</span> <span class="nx">direction</span>
+</span><span class='line'>           <span class="nx">response</span><span class="p">.</span><span class="nx">objectid</span> <span class="o">=</span> <span class="nx">id</span>
+</span><span class='line'>           <span class="nx">updateUI</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>   <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sweet!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-09T11:45:00-06:00" pubdate data-updated="true">Sep 9<span>th</span>, 2009</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/jquery/'>jquery</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/souit/'>souit</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/pass-parameters-jquery-event-functions/" title="Previous Post: Pass Parameters to Jquery Event Functions">&laquo; Pass Parameters to Jquery Event Functions</a>
+      
+      
+        <a class="next-article-link" href="/post/remove-whitespace-html-javascript/" title="Next Post: Remove Whitespace in Html with Javascript">Remove Whitespace in Html with Javascript &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/pass-parameters-javascript-callback/';
+        var disqus_url = 'http://jaketrent.com/post/pass-parameters-javascript-callback/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

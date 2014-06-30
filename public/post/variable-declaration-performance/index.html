@@ -1,0 +1,285 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Variable Declaration Performance - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Often when coding, we use a single local variable multiple times, overwriting the value many times. It is considered good practice to move the &hellip;">
+  <meta name="keywords" content="java, performance">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Variable Declaration Performance" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/variable-declaration-performance/" />
+  <meta property="og:description" content="Often when coding, we use a single local variable multiple times, overwriting the value many times. It is considered good practice to move the &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Variable Declaration Performance" />
+  <meta name="twitter:description" content="Often when coding, we use a single local variable multiple times, overwriting the value many times. It is considered good practice to move the &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/variable-declaration-performance/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Variable Declaration Performance</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-02T11:52:00-06:00" pubdate data-updated="true">Sep 2<span>nd</span>, 2009</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Often when coding, we use a single local variable multiple times, overwriting the value many times.  It is considered good practice to move the variable out of the looping overwrite and into the smallest scope of code that is run once.  But, this makes the code a little bit less concise.  So, how useful is it, anyway?  I wanted to run a few little tests and see if there&#8217;s really a noticable difference in performance.</p>
+
+<!--more-->
+
+
+<h3>Experiment</h3>
+
+<p>My primitive experiment was to create two different Java programs where I kept declaring the variable in one and where I declared it once and then assigned in multiple times in another.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">TestDeclareOnce</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">x</span><span class="o">;</span>
+</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">x</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">class</span> <span class="nc">TestDeclareMany</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And run like so:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>java TestDeclareOnce <span class="o">[</span>num-times-to-loop<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I wrote similar versions for java.util.List&#8217;s, trying to determine whether or not constructing and assigning a larger object would change the pattern or not.  Of course, the declaration of an object is only a reference to somewhere in the heap, so I&#8217;m not sure what I was expecting, but I tried it all the same.  Those classes were very congruent in form to the first two, differing in this form:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>One of my initial theories was that the Java compiler would optimize the difference away, making the byte code the same.  I diff&#8217;ed the resultant 2 bytecodes, however, and they are indeed different.</p>
+
+<p>So, I instead ran these a few times and tried to determine the difference in time to completion.  I used the Unix &#8216;time&#8217; function to record running time.  Who knows how accurate that is, but it was handy at the moment.</p>
+
+<h3>Results</h3>
+
+<p><a href="http://picasaweb.google.com/lh/photo/LvQyLtgitOy4XVWZYjX7LQ?feat=embedwebsite"><img src="http://lh6.ggpht.com/_5XZCKcD6--c/Sp6-v4GovRI/AAAAAAAAIWg/KlHJpd4HQsI/s400/VarDeclarationSpeedResults.png" /></a></p>
+
+<br />
+
+
+<p>I didn&#8217;t run this test many times and look for the average or mean, so there are some outliers here.  But, I think there&#8217;s a fairly obvious, if not conclusive, pattern.  Defining a variable outside the loop makes a bigger difference the more times you loop.  Even then, some of the time the results are very close or even contradict the previous statement.  Data sets used here weren&#8217;t very large either, so the difference is less drastic.</p>
+
+<p>The conclusion?  It&#8217;s not going to make a big difference whether you declare your variable inside or outside the loop when dealing with a small number of loop iterations.  Here, small has been demonstrated to be up to 100 million.  There may be some situations in which it matters more.  What has been your experience?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-02T11:52:00-06:00" pubdate data-updated="true">Sep 2<span>nd</span>, 2009</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/performance/'>performance</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/split-text-open-office-spreadsheet/" title="Previous Post: Split Text in Open Office Spreadsheet">&laquo; Split Text in Open Office Spreadsheet</a>
+      
+      
+        <a class="next-article-link" href="/post/environment-based-dependency-injection/" title="Next Post: Environment-based Dependency Injection">Environment-based Dependency Injection &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/variable-declaration-performance/';
+        var disqus_url = 'http://jaketrent.com/post/variable-declaration-performance/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

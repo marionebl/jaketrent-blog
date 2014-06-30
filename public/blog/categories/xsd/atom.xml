@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: xsd | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/xsd/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[XSD Validation in MarkLogic]]></title>
+    <link href="http://jaketrent.com/post/xsd-validation-marklogic/"/>
+    <updated>2011-01-04T13:45:00-07:00</updated>
+    <id>http://jaketrent.com/post/xsd-validation-marklogic</id>
+    <content type="html"><![CDATA[<p>Sometimes you want to ensure that your xml document matches a given schema (xsd).  Xquery on MarkLogic gives you a few tools to do this.  If you want to validate your xml against an xsd, read on fair reader.</p>
+
+<!--more-->
+
+
+<p>First of all, you need an xsd schema to show the database what you expect your data to look like.  From the w3schools xsd example , <a href="http://www.w3schools.com/schema/schema_howto.asp">here's a sweet schema</a>:</p>
+
+<p>```xml
+&lt;?xml version="1.0"?>
+&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"</p>
+
+<pre><code>targetNamespace="http://www.w3schools.com"
+xmlns="http://www.w3schools.com"
+elementFormDefault="qualified"&gt;
+
+&lt;xs:element name="note"&gt;
+  &lt;xs:complexType&gt;
+    &lt;xs:sequence&gt;
+      &lt;xs:element name="to" type="xs:string"/&gt;
+      &lt;xs:element name="from" type="xs:string"/&gt;
+      &lt;xs:element name="heading" type="xs:string"/&gt;
+      &lt;xs:element name="body" type="xs:string"/&gt;
+    &lt;/xs:sequence&gt;
+  &lt;/xs:complexType&gt;
+&lt;/xs:element&gt;
+
+&lt;/xs:schema&gt;
+</code></pre>
+
+<p>```</p>
+
+<p>First, save the xsd in the Schemas database.  If you want to webdav in, connect to port 8902 and create a directory structure that matches the xsd target namespace:</p>
+
+<p><code>
+http://  &gt;  www.w3schools.com
+</code></p>
+
+<p>And drop your schema in there.</p>
+
+<p>If you want to verify the location of your xsds, run a little cmd in CQ against the Schemas db:</p>
+
+<p>```
+fn:base-uri(/xs:schema)</p>
+
+<p>```
+Next, let's get us a document to validate (again, from w3schools' example):</p>
+
+<p><code>xml
+&lt;note&gt;
+  &lt;to&gt;April&lt;/to&gt;
+  &lt;from&gt;Jake&lt;/from&gt;
+  &lt;heading&gt;Reminder&lt;/heading&gt;
+  &lt;body&gt;Don't forget me this weekend!&lt;/body&gt;
+&lt;/note&gt;
+</code></p>
+
+<p>And finally to validate.  There are two modes, strict (default) and lax.  I've been using strict, because lax really is.  And a little more CQ action:</p>
+
+<p>```</p>
+
+<pre><code>import module namespace functx = "http://www.functx.com" at "/MarkLogic/functx/functx-1.0-nodoc-2007-01.xqy";
+let $document := 
+    &lt;note&gt;
+      &lt;to&gt;April&lt;/to&gt;
+      &lt;from&gt;Jake&lt;/from&gt;
+      &lt;heading&gt;Reminder&lt;/heading&gt;
+      &lt;body&gt;Don't forget me this weekend!&lt;/body&gt;
+    &lt;/note&gt;
+let $doc-to-validate := functx:change-element-ns-deep( $document, "http://www.w3schools.com", "awesome" )
+return validate strict { $doc-to-validate }
+</code></pre>
+
+<p>```</p>
+
+<p>To explain, we pull in our doc, we attach a namespace to it (since we didn't already specify one), and validate away.  If your doc fails validation against the schema, prepare to see the first error encountered.  In another experiment, I was getting beauties like these:</p>
+
+<ul>
+<li>validate strict { $doc-to-validate } -- Missing element declaration: Expected declaration for node ...</li>
+<li>validate strict { $doc-to-validate } -- Missing required attribute: Found () but required (@type &amp; @uuid? ...</li>
+<li>validate strict { $doc-to-validate } -- Invalid node type: @type lexical value "asdf" invalid for expected type ...</li>
+</ul>
+
+
+<p>Beauties, eh?</p>
+
+<p>The one-at-a-time error reported stinketh a bit to me.  With a function whose job it is to provide a picture of how well (or not) a document matches a schema, I think it would be more fitting to provide a report (perhaps in beautiful xml) of what all the issues are that were found.</p>
+
+<p>Cheers!  And a happy new year filled with valid documents.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Custom Exception Handling for AccessDeniedException - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Our app throws all sorts of exceptions. Well, it doesn't usually. It shouldn't normally. Er... But, when it does we want to put in some handling so &hellip;">
+  <meta name="keywords" content="java, spring, exception-handling">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Custom Exception Handling for AccessDeniedException" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/custom-exception-handling-accessdeniedexception/" />
+  <meta property="og:description" content="Our app throws all sorts of exceptions. Well, it doesn't usually. It shouldn't normally. Er... But, when it does we want to put in some handling so &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Custom Exception Handling for AccessDeniedException" />
+  <meta name="twitter:description" content="Our app throws all sorts of exceptions. Well, it doesn't usually. It shouldn't normally. Er... But, when it does we want to put in some handling so &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/custom-exception-handling-accessdeniedexception/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Custom Exception Handling for AccessDeniedException</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-06T13:20:00-07:00" pubdate data-updated="true">Jan 6<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Our app throws all sorts of exceptions.  Well, it doesn&#8217;t usually.  It shouldn&#8217;t normally.  Er&#8230; But, when it does we want to put in some handling so that the app doesn&#8217;t blow up in some unsuspecting user&#8217;s face.  And even then, sometimes we want special handling for certain exceptions and make sure others are just caught.  And that&#8217;s what we&#8217;ll do with AccessDeniedException.</p>
+
+<!--more-->
+
+
+<h2>The Simple Case</h2>
+
+<p>In the simple case, all exceptions that bubble up to the servlet container will just need to be caught and a user needs to get a nice view instead of stack trace shown to them.  There&#8217;s a nice class called <code>SimpleMappingExceptionResolver</code> that does, in fact, resolve this.  Provide it with the mappings from exception types to views that you&#8217;ve created, and as exceptions surface, the user will be shown the views instead of the exceptions.  Here&#8217;s the config:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;org.springframework.web.servlet.handler.SimpleMappingExceptionResolver&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;exceptionMappings&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;props&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;.AccessDeniedException&quot;</span><span class="nt">&gt;</span>errors/accessDenied<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;.DataAccessException&quot;</span><span class="nt">&gt;</span>errors/dataAccessFailure<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;.TypeMismatchException&quot;</span><span class="nt">&gt;</span>errors/resourceNotFound<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;.NoSuchRequestHandlingMethodException&quot;</span><span class="nt">&gt;</span>errors/resourceNotFound<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;.MissingServletRequestParameterException&quot;</span><span class="nt">&gt;</span>errors/resourceNotFound<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/props&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/property&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;defaultErrorView&quot;</span> <span class="na">value=</span><span class="s">&quot;errors/generalError&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;warnLogCategory&quot;</span> <span class="na">value=</span><span class="s">&quot;com.rockycode&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;/bean&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As it turns out, this is perfect for the simple case.  What if I want something special?  And when don&#8217;t I?!</p>
+
+<h2>Custom HandlerExceptionResolver</h2>
+
+<p>In my case, I want to catch <code>AccessDeniedException</code> just like all others, except I want to do some special checking of the user attributes who just go rejected via Spring Security.  This means I need a custom <code>HandlerExceptionResolver</code>.  And thankfully these things aren&#8217;t all that complicated.  Something custom to handle our <code>AccessDeniedException</code> might be called <code>AccessDeniedExceptionResolver</code> and looks somewhat like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AccessDeniedExceptionResolver</span> <span class="kd">implements</span> <span class="n">HandlerExceptionResolver</span><span class="o">,</span> <span class="n">Ordered</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">int</span> <span class="n">order</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">public</span> <span class="n">ModelAndView</span> <span class="nf">resolveException</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">,</span> <span class="n">Object</span> <span class="n">handler</span><span class="o">,</span> <span class="n">Exception</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">ModelAndView</span> <span class="n">view</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">ex</span> <span class="k">instanceof</span> <span class="n">AccessDeniedException</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="c1">// super special handling lives here</span>
+</span><span class='line'>      <span class="n">view</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ModelAndView</span><span class="o">(</span><span class="s">&quot;specialness&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">view</span><span class="o">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// .. getters and setters ..</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>resolveException()</code> method is where the magic goes.  I only care about a certain type of exception, so I check for it and do special stuff.  If not, the <code>view</code> is returned as null with just falls through to the next resolver in line if there is one.  And blast it, we want one.  Let&#8217;s just use our existing simple case resolver.</p>
+
+<h2>Setting up 2 ExceptionResolvers</h2>
+
+<p>In <code>AccessDeniedExceptionResolver</code>, we implemented <code>Ordered</code>.  This shows priority in a potential string of resolvers.  We&#8217;re going to setup our resolver for the specific case to be higher priority (lower number), remove the <code>AccessDeniedException</code> entry on <code>SimpleMappingExceptionResolver</code> and add an order property to it:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;org.springframework.web.servlet.handler.SimpleMappingExceptionResolver&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;exceptionMappings&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;props&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;.DataAccessException&quot;</span><span class="nt">&gt;</span>errors/dataAccessFailure<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;.TypeMismatchException&quot;</span><span class="nt">&gt;</span>errors/resourceNotFound<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;.NoSuchRequestHandlingMethodException&quot;</span><span class="nt">&gt;</span>errors/resourceNotFound<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">&quot;.MissingServletRequestParameterException&quot;</span><span class="nt">&gt;</span>errors/resourceNotFound<span class="nt">&lt;/prop&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/props&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/property&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;defaultErrorView&quot;</span> <span class="na">value=</span><span class="s">&quot;errors/generalError&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;warnLogCategory&quot;</span> <span class="na">value=</span><span class="s">&quot;com.rockycode&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;order&quot;</span> <span class="na">value=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;/bean&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;com.rockycode.AccessDeniedExceptionResolver&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;order&quot;</span> <span class="na">value=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;/bean&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Slap that config in your app context and sing for joy.  Now you can create as many custom handlers as you&#8217;d like and just string em up like clean laundry on the line.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-01-06T13:20:00-07:00" pubdate data-updated="true">Jan 6<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/exception-handling/'>exception-handling</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/spring/'>spring</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/and-spring-secured-roles/" title="Previous Post: 'And' Spring @Secured Roles">&laquo; 'And' Spring @Secured Roles</a>
+      
+      
+        <a class="next-article-link" href="/post/i18n-strings-requirejs/" title="Next Post: i18n Strings in RequireJs">i18n Strings in RequireJs &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/custom-exception-handling-accessdeniedexception/';
+        var disqus_url = 'http://jaketrent.com/post/custom-exception-handling-accessdeniedexception/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

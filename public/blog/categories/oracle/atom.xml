@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: oracle | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/oracle/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Stored Procedures in Spring Jdbc]]></title>
+    <link href="http://jaketrent.com/post/stored-procedure-spring-jdbc/"/>
+    <updated>2011-12-21T14:33:00-07:00</updated>
+    <id>http://jaketrent.com/post/stored-procedure-spring-jdbc</id>
+    <content type="html"><![CDATA[<p>In addition to some sweet Inversion of Control injection action, Spring brings flowers and baby deer.  And it brings some nice database connection help.  Spring JdbcTemplate is a vanguard of strength and ease for connecting to your favorite RDBMS.  And it so happens that the DBA I'm working with right now digs the stored procs.  So, we'll meet in the middle with some more goodness born of Spring.</p>
+
+<!--more-->
+
+
+<h2>StoredProcedure</h2>
+
+<p>Blessed Rod Johnson gives us the <code>org.springframework.jdbc.object.StoredProcedure</code>.  It's abstract, and you'll want to extend it and fully implement it in order to specify what stored proc in your database you're calling.  And here's a sample implementation:</p>
+
+<p>```java
+@Component
+public class ItemInsert extends StoredProcedure {
+  public static final String SPROC_NAME = "schema.oracle_pkg.proc_name";
+  public static final String INPUT_PARAM = "input_prm_name";
+  public static final String OUPUT_PARAM = "output_prm_name";</p>
+
+<p>  @Inject
+  public ItemInsert(DataSource ds) {</p>
+
+<pre><code>super(ds, SPROC_NAME);
+declareParameter(new SqlParameter(INPUT_PARAM, Types.VARCHAR));
+declareParameter(new SqlOutParameter(OUTPUT_PARAM, Types.NUMERIC));
+compile();
+</code></pre>
+
+<p>  }</p>
+
+<p>  public Item insert(Item item)</p>
+
+<pre><code>  throws DataAccessException {
+Map&lt;String, Object&gt; inputs = new HashMap&lt;String, Object&gt;();
+inputs.put(INPUT_PARAM, item.getSomething());
+Map&lt;String, Object&gt; output = super.execute(inputs);
+Object newId = output.get(OUTPUT_PARAM);
+if (newId != null) {
+  item.setId(Long.parseLong(newId.toString()));
+}
+return item;
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Points to consider:</p>
+
+<ul>
+<li><code>ItemInsert</code> is itself injectable as a Spring bean <code>@Component</code>.</li>
+<li>Input and output parameters are declared in the constructor</li>
+<li><code>insert()</code> is where <code>super.execute()</code> is call, which is the function that really does the magic.</li>
+</ul>
+
+
+<p>The only other interesting thing...</p>
+
+<h2>Execute()</h2>
+
+<p>From the JavaDoc:</p>
+
+<p>  Execute the stored procedure. Subclasses should define a strongly typed execute method (with a meaningful name) that invokes this method, populating the input map and extracting typed values from the output map. Subclass execute methods will often take domain objects as arguments and return values.  Alternatively, they can return void.</p>
+
+<p>Thusly, out method is called <code>insert()</code> because it's a meaningful name.  It takes our domain object, <code>Item</code> and pulls out the necessary fields inside the method, putting them into a map for the call <code>super.execute()</code>.</p>
+
+<h2>Call it from a service</h2>
+
+<p>Now the only work left is just to call your awesome procedure and use the results for something wonderful.  Eg,</p>
+
+<p>```java
+@Service
+public class ItemServiceImpl implements ItemService {</p>
+
+<p>  @Inject
+  private ItemInsert itemInsert;</p>
+
+<p>  public Item doWonderfulThingsWithItems(Item item) {</p>
+
+<pre><code>return itemInsert.insert(item);
+</code></pre>
+
+<p>  }</p>
+
+<p>}
+```</p>
+
+<p>Items are now stored procedurally and you can rest easy knowing that Oracle has all your data.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Not in vs. Outer join Performance]]></title>
+    <link href="http://jaketrent.com/post/not-vs-outer-join-performance/"/>
+    <updated>2009-09-17T12:59:00-06:00</updated>
+    <id>http://jaketrent.com/post/not-vs-outer-join-performance</id>
+    <content type="html"><![CDATA[<p>I was running an SQL query today and it was sooooo slow.  So slow, in fact, that it never returned.  I asked the DBA, Reed, who built the table what might be up, and he informed me that it was not indexed.  And proceeded to show me some cool stuff I could do to actually get my query to return.  In the end, it was a comparison between the "not in" operator and a "left join".</p>
+
+<!--more-->
+
+
+<p>My original query was thus, names changed to protect the innocent:</p>
+
+<p><code>sql
+select count(*)
+from   temp_legacy_attachments i
+where  i.person_id not in (
+  select m.legacy_person_id
+  from   new_attachment a
+  ,      person p
+  where  a.person_id = p.id);
+</code></p>
+
+<p>I was trying to query the temp_legacy_attachments to get all rows that didn't have a record in the new_attachments table.  It never returned, and so Reed told me to give this one a try:</p>
+
+<p><code>sql
+select count(*)
+from   temp_legacy_attachments i
+left join (
+  select m.legacy_person_id
+  from   new_attachment a
+  ,      person p
+  where  a.person_id = p.id) ea on ea.legacy_person_id = i.person_id
+where ea.legacy_person_id is null ;
+</code></p>
+
+<p>So, instead of using "not in" a set, I select all the legacy rows, then outer join to the new_attachment rows and filter where a column on the new attachment set is null (it's the smaller/less-available set).</p>
+
+<p>I thought it was pretty sweet.  No magic bullet, though, as Reed tells me that there is a fair amount of debate over the performance difference between the two methods.  You just have to try it and find out.  For me, in this case, the outer join was more awesome.</p>
+
+<h3>Update</h3>
+
+<p>Another savvy DBA, Bill, has graced us with another method yet:</p>
+
+<p>```sql
+select sum(cnt)
+from (
+  select p.legacy_person_id
+  ,      count(*) cnt
+  from   person p
+  join   temp_legacy_attachments i on i.person_id = p.legacy_person_id
+  where  not exists</p>
+
+<pre><code>(select null
+from   new_attachments a
+where  a.person_id = p.id
+and    a.created_by = 'LEGACY_MIGRATION')
+</code></pre>
+
+<p>  group by p.legacy_person_id)
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Count number of characters w/ SQL]]></title>
+    <link href="http://jaketrent.com/post/count-number-characters-w-sql/"/>
+    <updated>2009-04-30T07:12:00-06:00</updated>
+    <id>http://jaketrent.com/post/count-number-characters-w-sql</id>
+    <content type="html"><![CDATA[<p>There's no pre-defined method to count the number of occurrences of a certain character in a database table column using SQL.  There's a quick and dirty way to get it done however.  In my case, I wanted to figure out how many lines existed in a column that held address information, separated by line breaks.  Here's a spot of code that helped from the friendly neighborhood DBA, Reed.</p>
+
+<!--more-->
+
+
+<p><code>sql
+select addresstxt
+,      length(addresstxt)
+,      length (replace(addresstxt,chr(13),''))
+,      length(addresstxt) - length (replace(addresstxt,chr(13),''))
+from   contact_info
+where  length(addresstxt) - length (replace(addresstxt,chr(13),'')) &gt; 4
+</code></p>
+
+<p>I was actually looking for addresses that were over 4 lines long, hence the where clause.  The chr() function gets the character represented by the given ascii code.  13 is new line.  10 is line feed.  You may want to use one or the other depending on your data.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[These Aren't the Tables You're Looking For]]></title>
+    <link href="http://jaketrent.com/post/these-arent-tables-youre-looking/"/>
+    <updated>2008-10-14T14:15:00-06:00</updated>
+    <id>http://jaketrent.com/post/these-arent-tables-youre-looking</id>
+    <content type="html"><![CDATA[<p>Sometimes you have a large database schema and a lot of tables that you're not sure what they contain.  You do know, however, the nature of the data'ific needle that you're trying to find in your schema'ific schema.  Oracle provides some cool dictionary tables that might help you in your quest.</p>
+
+<!--more-->
+
+
+<p>Sometimes you have a large database schema and a lot of tables that you're not sure what they contain.  You do know, however, the nature of the data'ific needle that you're trying to find in your schema'ific schema.  Oracle provides some cool dictionary tables that might help you in your quest.</p>
+
+<p>Try to find what you're looking for by table name:</p>
+
+<p><code>sql
+select *
+from   dba_tab_cols
+where  owner = 'SCHEMA_NAME'
+and    table_name like '%SWEET%';
+</code></p>
+
+<p>Try to find what you're looking for by column name:</p>
+
+<p><code>sql
+select *
+from   dba_tab_cols
+where  owner = 'SCHEMA_NAME'
+and    column_name like '%COOLNESS%';
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: requirements | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/requirements/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Forgotten Requirements]]></title>
+    <link href="http://jaketrent.com/post/forgotten-requirements/"/>
+    <updated>2010-09-03T06:48:00-06:00</updated>
+    <id>http://jaketrent.com/post/forgotten-requirements</id>
+    <content type="html"><![CDATA[<p>Recently, I had the opportunity to look at a set of user stories on an upcoming project and apply a high level estimate to each.  These estimates were going to provide a starting point for determining project timeline and schedule.  Every time I'm presented with a request for estimation, I shiver a little because I'm so bad at it.  As I understand it, I'm not alone in this weakness.  I have found, however, that the more requirements that can be defined and the more detail that can be described for each, the more accurate a timeline can be established.</p>
+
+<!--more-->
+
+
+<p>The focus of requirements on every project is different.  This fact is influenced by many things: the type of project, the members of the team, the culture of the company, the maturity of your process, the number of specialists with eyes on your project (eg, think of the equivalent of a security Nazi in your organization), and so on.  This list is definitely not definitive or all-inclusive, but I'd call my favorite animal a liger before I'd bet that no half-awesome software type has forgotten to specify one of these requirements.  Just let your Internet-bored eyes glaze over those bullets that aren't applicable to your project.</p>
+
+<p>In no particular order, try not to forget...</p>
+
+<ul>
+<li><p>Integration with authentication system</p></li>
+<li><p>Version control repository setup</p></li>
+<li><p>Test environment setups</p></li>
+<li><p>Hardware - requirements, setup, VIPs, clustering, load balancing</p></li>
+<li><p>Uptime / Service Level Agreement (SLA) - consider lowest SLA of integrated subsystem</p></li>
+<li><p>Bug-tracking system setup</p></li>
+<li><p>Local development environment setup</p></li>
+<li><p>Unit test environment and actual unit testing</p></li>
+<li><p>Integration and automated tests</p></li>
+<li><p>Test case-tracking environment</p></li>
+<li><p>Web framework selection and setup</p></li>
+<li><p>Coding standard</p></li>
+<li><p>Targeted environment/browser, screen resolutions, capabilities, required plugins, graceful degredation, and cross-browser testing</p></li>
+<li><p>Training for new platforms/environments</p></li>
+<li><p>3rd-party library selection and integration</p></li>
+<li><p>Urls - exact paths required</p></li>
+<li><p>Errors - conditions, handling, messages, triggers</p></li>
+<li><p>Performance - response times, page sizes, http requests</p></li>
+<li><p>UI - corporate standards, validation, max lengths, empty views</p></li>
+<li><p>Timeouts - requirements/limitations of request, session, server</p></li>
+<li><p>Privacy - terms of agreement</p></li>
+<li><p>Data - backup, security</p></li>
+<li><p>Scalability - future growth model</p></li>
+<li><p>Deployment - method, schedule, automation</p></li>
+<li><p>Operations - support after launch</p></li>
+</ul>
+
+
+<p>This list is born of my experience -- both triumphs and frustrations.  What are some of the requirements that you would either add or remove?</p>
+
+<p>After listing all these potentially missed requirements/activities, I'm driven to also say that the best projects are the ones that meet the business need by delivering the simplest product for the least cash.  So, don't make it more complicated than requirements come to dictate.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Release It! Stability Review]]></title>
+    <link href="http://jaketrent.com/post/release-it-stability-review/"/>
+    <updated>2009-08-18T07:37:00-06:00</updated>
+    <id>http://jaketrent.com/post/release-it-stability-review</id>
+    <content type="html"><![CDATA[<p>I recently read Release It! by Michael Nygard.  I became interested in this book when the NFJS 2008 panel cited it as their #1 suggested read.  In my view, the essence of Nygard's expose boils down to two points:</p>
+
+<ol>
+<li>One can build software that passes QA with flying colors and still fails miserably in real environments.</li>
+<li>Problem in production are unavoidable. Good software will be able to navigate them as gracefully as possible.</li>
+</ol>
+
+
+<p>That said, the book was mostly conceptual, offering real-world examples of how antipatterns in software development made problems that were encountered even worse.  Then, he counters with patterns in stability, capacity, general design, and operations.  The principles discussed are those that most developers have at least some exposure to, but those that we don't necessarily consider every day.  These consist mostly of non-functional requirements that do not often enjoy QA scrutiny.  The set of antipatterns and patterns is one that I think all developers, QA, and project managers would do well to consider within the scope of their current and future projects.</p>
+
+<p>Overall, it was a thoughtful book.  I particularly enjoyed the sections on capactiy and stability that seemed more immediately applicable to my everday life in code.  I found the operations section to be the driest, but giving me opportunity to consider the plight of sys admins.  I would agree with the NFJS panel and highly recommend the read.</p>
+
+<p>I have included a short slide deck on the stability section with some highlights on what one might consider and what is explained in much clearer detail in the book.</p>
+
+<!--more-->
+
+
+
+
+<iframe src="http://docs.google.com/present/embed?id=dcsq834g_58hp4kx2gx&size=m" frameborder="0" width="555" height="451"></iframe>
+
+
+
+]]></content>
+  </entry>
+  
+</feed>

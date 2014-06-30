@@ -4,7 +4,7 @@
   <title><![CDATA[Category: php | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-06-23T09:05:30-06:00</updated>
+  <updated>2014-06-29T22:38:24-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -99,6 +99,64 @@ http://flic.kr/p/6FFZMy</p>
 <p>At the point I was getting the blog looking nice and doing what I wanted, did I care that the thing was written in PHP? No. I saw it just once when setting up my DB connection. I did cringe slightly upon seeing some <a href="http://php.net/manual/en/language.variables.superglobals.php">super globals</a> again (<code>$_SERVER</code>), but I hastily committed the change and deployed the app.</p>
 
 <p>We'll see if I continue to love it, but so far, so good. My fellow coders, I ask: Is my reasoning sound?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Running Php in Apache on Linux]]></title>
+    <link href="http://jaketrent.com/post/running-php-apache-linux/"/>
+    <updated>2008-10-15T14:15:00-06:00</updated>
+    <id>http://jaketrent.com/post/running-php-apache-linux</id>
+    <content type="html"><![CDATA[<p>I haven't done php for a while, but at work our prototypes are in html/php.  So, I needed to get Apache webserver downloaded and working on my Linux box with php.  Here's how it all went down.</p>
+
+<!--more-->
+
+
+<p>I haven't done php for a while, but at work our prototypes are in html/php.  So, I needed to get Apache webserver downloaded and working on my Linux box with php.  Here's how it all went down:</p>
+
+<p>Install apache2 and the php handler:</p>
+
+<p><code>bash
+sudo apt-get install apache2 libapache2-mod-php5
+</code></p>
+
+<p>Find the DocumentRoot:</p>
+
+<p><code>bash
+sudo emacs /etc/apache2/sites-available/default
+</code></p>
+
+<p>Mine defaulted to /var/www/.  I have a limited number of my projects on this box right now, so I decided to setup sym links to the project directories:</p>
+
+<p><code>bash
+cd /var/www/;  ln -s ~/dev/records-proto/ proto
+</code></p>
+
+<p>Now I need to tell apache that I want my .html files treated as php files too (because that's how our designer did it).  I did a grep on 'AddType':</p>
+
+<p><code>bash
+cd /etc/apache2/; grep AddType * -r
+</code></p>
+
+<p>That turned up the file that you need to edit:
+<code>bash
+sudo emacs mods-enabled/php.conf &amp;
+</code></p>
+
+<p>I made the php handler line look like this (added the .html on the end):
+<code>xml
+AddType application/x-httpd-php .php .phtml .php3 .html
+</code></p>
+
+<p>Now the server's going to need a restart:
+<code>bash
+sudo /etc/init.d/apache2 restart
+</code></p>
+
+<p>Now, I point my favorite web browser to this address (using the sym-link), and I'm good to go:
+<code>bash
+firefox http://localhost/proto &amp;
+</code></p>
 ]]></content>
   </entry>
   

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: png | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/png/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[PNG Gamma Correction Woes]]></title>
+    <link href="http://jaketrent.com/post/png-gamma-correction-woes/"/>
+    <updated>2010-06-21T09:59:00-06:00</updated>
+    <id>http://jaketrent.com/post/png-gamma-correction-woes</id>
+    <content type="html"><![CDATA[<p>PNG was a file format that, among the original reasons for conception, was created to show the same color over different computers, with different OS's, and browsers.  To this end, gamma, or lighting, correction was added.  While solving the original problem, a new, bigger, badder problem was created.  Now, there was the potential for color inconsistencies on the SAME web page.  For example, the color of certain items rendered on the page with the same hex value will display differently than PNGs rendered on the page painted with the same hex value.</p>
+
+<!--more-->
+
+
+<p>It seems improbable that such a disgusting problem would have been conceived in a fairly new image file format.  But, the story is well-known:</p>
+
+<ul>
+<li>Chronicled in the <a href="http://hsivonen.iki.fi/png-gamma/">The Sad Story of PNG Gamma 'Correction'</a></li>
+<li>Gamma channel vs. browser <a href="http://morris-photographics.com/photoshop/articles/png-gamma.html">comparison</a></li>
+<li>Gamma correction <a href="http://www.libpng.org/pub/png/png-gammatest.html">test page</a></li>
+</ul>
+
+
+<p>In my personal experience, I have been bitten by this little bugger.  As I was creating new graphics for my blog, I created a couple different images and saved them as PNGs.  Like any good web developer, I dev'ed this in Firefox and look at nothing else.  :)  My dad, one of the 4 people who frequent my blog reported some oddities in the look and feel, and sure enough, there they were:</p>
+
+<p>Firefox 3.6</p>
+
+<p><img src="http://lh3.ggpht.com/_5XZCKcD6--c/TB-aAhshi0I/AAAAAAAAM1s/XCrVWdh1Gsw/s400/aj4-ff.jpg" alt="image" /></p>
+
+<p>Internet Explorer 8</p>
+
+<p><img src="http://lh3.ggpht.com/_5XZCKcD6--c/TB-aAiB55JI/AAAAAAAAM1w/dxNlbywz5m0/s400/aj4-ie8.jpg" alt="image" /></p>
+
+<p>After stumbling across the above Morris Photographics link, I tried the referenced <a href="http://pmt.sourceforge.net/pngcrush/">pngcrush</a> utility, which was easily available via aptitude:</p>
+
+<p><code>bash
+sudo apt-get install pngcrush
+</code></p>
+
+<p>From "The Sad Story", supposedly "There is no way of making PNG images that match CSS colors in all  PNG-supporting browsers."  But, when looking at the Morris Photographics comparison chart, it seemed that when the gAMA chunk was removed, all listed browsers correctly displayed the PNG.  I tried a:</p>
+
+<p><code>bash
+pngcrush -rem gAMA infile.png outfile.png
+</code></p>
+
+<p>And it worked like a dream.  Now, my parents can see the blog in its splendor, free from discolored boxes.  Bam!  Now think about that.</p>
+]]></content>
+  </entry>
+  
+</feed>

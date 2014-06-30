@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: project-management | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/project-management/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Software Dev is Hard -- Don't Be Negative About It]]></title>
+    <link href="http://jaketrent.com/post/software-dev-hard-dont-be-negative-about-it/"/>
+    <updated>2011-08-27T12:40:00-06:00</updated>
+    <id>http://jaketrent.com/post/software-dev-hard-dont-be-negative-about-it</id>
+    <content type="html"><![CDATA[<p>Is negativism between developers the norm?  Probably not, but it's common.  Do developers ever compliment each other?  Yes, but it sometimes seems rare.  When I step back, it does in fact seem that there is sometimes a noticeable wealth of negativism and a noticeable lack of complimenting.  The nature of software and its developers may contribute.  But we can overcome our challenges.</p>
+
+<!--more-->
+
+
+<p>I realized this the other night when I read <a href="http://twitter.com/#!/jennymesserly/status/107197662192865280">this tweet</a>:</p>
+
+<blockquote><p>I rarely hear developers compliment each other. It's usually negativity about how someone else "did it wrong." #sad</p></blockquote>
+
+<p>I agree with the sentiment.  I think it's too often true.  And that <em>is</em> sad.</p>
+
+<p>So why do we developers often lack in our compliments?  I'm sure the reasons are varied.  Here are some of my thoughts about the nature of software development, the people who develop it, and how these factors might contribute:</p>
+
+<h2>Software is Hard to Write</h2>
+
+<p>Number one, software is just generally hard to write.  Tons of it is produced daily, but a very small slice of the pie would probably be considered truly spectacular by anyone.  But if this is really true, that means that we very often kid ourselves into thinking that what we could do is any better.  (It would be us now trying to solve the same hard problem.)</p>
+
+<h2>Infinitely Malleable Medium</h2>
+
+<p>Software, because it's virtual and does not conform to many physical laws, can be bended and twisted into just about anything you can imagine.  There are so many ways to get from point A to point B.  And whatever the end goal is could be infinitely improved upon.  We only stop because we run out of time, money, or interest.</p>
+
+<h2>Code as Art</h2>
+
+<p>Related to its malleability, creating software, in my mind, is absolutely an art form.  So much of a solution will be shaped by the person or people that create it -- their combined biases, tendencies, heuristics, and styles.  This is what makes software fun to write for the creative person -- you can put yourself into it.  Often it is probably the case that others don't appreciate some bit of code mostly based on its style, just as not everyone enjoys the same flavored food (even though it might give you the same energy and nutrients when you eat it) or just as not everyone likes the same paintings (even though they might depict the same landscape or portrait subject).</p>
+
+<h2>We're Too Protective</h2>
+
+<p>Software, because it is hard to write and because your own style is so embedded in the product, is often seen as some brain child of the creating developer.  And of course, which mother doesn't believe her baby the cutest?  We are often blinded by this instinct.</p>
+
+<h2>Inherent Complexity</h2>
+
+<p>Software is often used to solve or make simpler many of the complex problems or questions that we face in just about any field.  Thus, related to software malleability and difficulty of development, software can balloon in complexity quite quickly.  Now, sometimes we as developers introduce a fair sum of our own accidental complexity, but of the problems software solves, there is a great potential for huge inherent complexity.</p>
+
+<h2>Alternate Use</h2>
+
+<p>Often times sotware that is written for one purpose is put into applications never imagined when the software was originally conceived.  This can easily create situations where the software is not looking very elegant as a square pegged hammered into a round hole.</p>
+
+<h2>(Out of) Timelines</h2>
+
+<p>It is all too often that software is developed under crazy, unrealistic timelines.  Unrealistic only if you want your hard problem solved correctly, in an elegant, maintainable, stable manner.  The reality that we often buy with our crazy timeline is code that barely works for the stated business case but code that needs rewritten or cannibalized as soon as the situation or people change.</p>
+
+<h2>Cave Dwellers</h2>
+
+<p>Developers that I've met are generally bright people that are doing their best to complete the challenging tasks they're given.  But we're usually not the most socially-enabled bunch.  We're often content grumbling and mumbling -- gollum! -- at our desks (or prone to breaking out into song, depending on who you are).  I don't think this defines us as a species (Developus Sapiens), but our constant machine interaction, I think, tends to wear on our interpersonal skills.  We might tend toward more passive-aggressive behavior, or just lack in much communication at all.  Another reason for lack of inter-developer compliments?  Most of us are men -- notoriously competitive.  And since we've now programmed farm machinery to allow many to do something besides hunting and gathering, we need another field of competition.</p>
+
+<h2>Thank You</h2>
+
+<p>There are many bright exceptions to these aforementioned observations of software that pains our eyes, fingers, and psyches and exceptions to our less-desirable developer attributes.</p>
+
+<p>Thank you to the developer that takes complexity and truly innovates, creating the simplest possible solution.</p>
+
+<p>Thank you to the language creators who make languages that expressive, fluid, and guide us toward elegant techniques.</p>
+
+<p>Thank you to the developers that push back aginst horrendous timelines and avoid false heroism.</p>
+
+<p>Thank you to the patient customers and project managers who realize that good software is a gem that is rare and polished over time.</p>
+
+<p>Thank you to the developers that refactor smelly code when they see it.</p>
+
+<p>Thank you to the customers that have paid me even though my code was probably not "done right" at times.</p>
+
+<p>Thank you to the team lead who is willing to try new things or better ways while still learning from his experiences.</p>
+
+<p>Thank you to the corporate management that hires creative people and lets them do creative work without standardizing them into cookie-cutter solutions.</p>
+
+<p>Thank you to the mentor developer who patiently explains to another how code works and why he chose to make it that way.</p>
+
+<p>Thank you to the marketing developer who is willing to stand up in front of his peers and explain why he feels certain software choices are the best.</p>
+
+<p>Thank you to the developer that, while he might create inelegant code, crafts good test suites around it to ensure I don't break it.</p>
+
+<h2>The Bottom Line</h2>
+
+<p>There really is no such thing as perfect developers or perfect software.  Neither exist.  We're all developing in our capacities across a spectrum -- one that evolves at a rapid pace.  One where the definition of "good" and "right" code is changing constantly.  One where the bar is constantly being raised.  We're in an exciting field.  The jobs are many.  The problems are interesting.  The technology is just getting more amazing all the time.</p>
+
+<p>Let's help each other out along the way.  If it is hard to make software that is sometimes brain-drainingly complex and we live in plain, gray caves, then I'm sure we all need a good word now and then.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Thoughts on Customization and Convention]]></title>
+    <link href="http://jaketrent.com/post/thoughts-customization-and-convention/"/>
+    <updated>2011-03-11T10:16:00-07:00</updated>
+    <id>http://jaketrent.com/post/thoughts-customization-and-convention</id>
+    <content type="html"><![CDATA[<p>There is an epic balancing act in software today, fought between customization and convention.  When to build, when to buy?  When to create new solutions or reuse those already created?  What are the pros and cons to either?  I don't think that there is a quick answer that is going to always be true for any of these questions?  Each situation brings with it too many diverse aspects.  But, here are some of my observations.</p>
+
+<!--more-->
+
+
+<ul>
+<li><p>If you buy instead of build, expect to change your business processes to match the purchased product or expect to build onto what you have bought.</p></li>
+<li><p>Early standardization stifles innovation.</p></li>
+<li><p>Software comes in generations.  In the beginning phase of a generation, it's the wild west because nothing is established.  Somewhere in the middle, reuse is desired, best practices are assembled, and products become de facto standards.  Toward the end of a generation, software developers begin to decide the standard is insufficient.   A new generation begins when a large enough mass of mind share decides to again make the jump into the unknown of innovation.</p></li>
+<li><p>Customized solutions encourage innovation and project ownership.</p></li>
+<li><p>Convention can move you miles ahead, often much faster than starting ground-up, which can feel just as satisfying as a possibly more creative solution.</p></li>
+<li><p>Custom solutions and standard solutions both have bugs.</p></li>
+<li><p>Standard solutions, if the product of increased time and contributors, can be more thoroughly proven and solid.</p></li>
+<li><p>Build it and solve technical problems or buy it and solve political problems.</p></li>
+<li><p>Customized solutions incur greater risk because they ideas are often new and untested.  Reward potentials are similar.</p></li>
+<li><p>It is easier to quantify costs of custom development -- it's x number of people working x hours on a product.  It is hard to quantify the costs of buying a product -- support wait time, consultation time, business inefficiencies because of mismatched product.</p></li>
+<li><p>The best solutions are born from solving a specific, practical problem in real life as opposed to theoretical, invented problems for which a solution can be built and marketed.</p></li>
+<li><p>Priorities influence the build or buy decision.  For instance, what's the value of R&amp;D compared with business consolidation?</p></li>
+<li><p>Standard solutions tend to be standard, addressing a general need.  Custom solutions can answer your problem as directly as you can make it.</p></li>
+<li><p>You own the destiny of your own custom solutions -- most of the time.</p></li>
+</ul>
+
+
+<p>Well, there are some thoughts from my swirling cerebral cortex.  It's not an easy problem.  I have no answers.  Being a creative person, an independent person, and a curious person I sometimes favor custom solutions.  Being a practical, conservative,  or tired person I sometimes favor a standard out-of-the box solution.  Take my mutterings for what they're worth.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Breaking Down Knowledge Silos]]></title>
+    <link href="http://jaketrent.com/post/breaking-down-knowledge-silos/"/>
+    <updated>2010-09-30T08:47:00-06:00</updated>
+    <id>http://jaketrent.com/post/breaking-down-knowledge-silos</id>
+    <content type="html"><![CDATA[<p>Barriers are created all the time on software projects (by organization layout, role definition, project management, or indiscriminately) that keep developer knowledge separate.  Sometimes these barriers are referred to as silos.  We can create better teams and products for our organizations if we can break down these silos -- or if particularly scrappy, blow them up.</p>
+
+<!--more-->
+
+
+
+
+<div style="width:425px" id="__ss_5324753"><strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/rockycode/breaking-down-knowledge-silos" title="Breaking Down Knowledge Silos">Breaking Down Knowledge Silos</a></strong><object id="__sse5324753" width="425" height="355"><param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=breakingdownknowledgesilos-100930104326-phpapp02&rel=0&stripped_title=breaking-down-knowledge-silos&userName=rockycode" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed name="__sse5324753" src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=breakingdownknowledgesilos-100930104326-phpapp02&rel=0&stripped_title=breaking-down-knowledge-silos&userName=rockycode" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object><div style="padding:5px 0 12px">View more <a href="http://www.slideshare.net/">presentations</a> from <a href="http://www.slideshare.net/rockycode">rockycode</a>.</div></div>
+
+
+<p>This presentation was given to our group of developers at an offsite.  I worked with many of these developers on relatively closely related projects.  The catalyst for this presentation was my observation that team dynamics on my current project plus at least the previous four had somehow or another encourage some amount of knowledge siloing.  This fact has at various times become inconvenient for me personally and by extension my current and previous projects.</p>
+
+<h2>Some silos from my past</h2>
+
+
+
+
+<ul>
+<li>I knew something that no one else knew (at least at one point) and was approached about it months later and asked to explain it to a new developer.  There was no one left close to the project to help this person come up to speed.  If I had imparted this knowledge in closer time proximity to the original construction of the code, the likelihood of a maintenance developer sharing my knowledge would possibly be higher.</li>
+
+<li>I came onto a project that was about 3/4 complete.  I was tasked to implement various new features that spanned the application.  For specific portions of the app, there were often very specific, singular persons that I sought out in order to get a feel for the code more quickly.  If these people were unavailable or over-burdened, as was often the case, I was left to do the detective work that necessarily was more inefficient and took more time.  Perhaps if more people were educated on various portions of the app, more fellow developers would have sufficient knowledge to give assistance.</li>
+
+<li>A developer on a project that I recently rolled off of was on an extended vacation.  He had worked on a complicated portion of the app that I had been less-than-eager to touch (and possible trigger massive explosions).  While he was gone, there was an issue and I was asked to consult on the solution.  My inexperience with this portion of the software was weighed with what turned out to be a low level of urgency, and we decided to wait until the original developer returned to face this issue.  Perhaps if I had dug into this code earlier in the presence of the original developer, the issue would have been dispatched more quickly when it arose amongst limited resources.</li>
+
+<li>I recently completed the point-0 version release of a software project.  This project was on an aggressive schedule that the developers responded to by each scrambling to get features of the software complete, often in isolation from other developers.  The result ended up to be ok.  The product shipped complete, but the innards of the software were often inconsistent in their style, how they flowed and handled problems, and the DRY principle was broken several times through recreated business logic.  Perhaps if the developers had spent more time in communication about their solutions to separate features, a more consistent, stable, safe, non-repetitive product would have been created.</li>
+
+<li>I was recently on a project where, and I've done this several times myself, one person had (fantastically) tackled numerous hard portions of the development by himself.  These pieces were so complicated, in fact, that they were bug-prone.  On several occasions, when there were problems with these modules, this one developer was always called upon, sometimes late at night or on the weekend, to resolve them.  This led to a burn(-ing, then -nt out) developer.  Perhaps if more fellow developers had been pulled in to assist with those modules, more people would have been able to share the load troubleshooting more easily.</li>
+</ul>
+
+
+<p>Well, these are some of my experiences.  I feel that knowledge siloing probably negatively affected each of these scenarios in some degree.  I feel that each challenge was, in the end, overcome.  I think that speaks to the caliber of individual developers that I've worked with being able to adapt to their ever-changing, imperfect environments that they are asked to work in.  At the same time, I feel that we can often make situations a little easier on ourselves if we're introspective enough to ask the right questions to help guide ourselves out of knowledge silos.  Here are some potentials:</p>
+
+<h2>How to choose your pair</h2>
+
+
+
+
+<ul>
+<li>What don't I know about?</li>
+<li>What's high risk?</li>
+<li>What's highest priority?</li>
+<li>What's the hardest/easiest? Why?</li>
+<li>What has the least/most bugs? Why?</li>
+<li>What's behind/ahead of schedule?  Why?</li>
+</ul>
+
+
+<p>Once we ask those questions, let's use the answers to help us:</p>
+
+<h2>Silos in our future</h2>
+
+
+
+
+<ul>
+<li>Consider how you can open knowledge silos you've been privy to</li>
+<li>Consider what silos you don't but should probably know something about</li>
+<li>Consider how you'll influence the organization to form fewer silos</li>
+</ul>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Iteration Planning]]></title>
+    <link href="http://jaketrent.com/post/iteration-planning/"/>
+    <updated>2010-09-10T09:52:00-06:00</updated>
+    <id>http://jaketrent.com/post/iteration-planning</id>
+    <content type="html"><![CDATA[<p>In Agile software development, an iteration is a time period of work, where the full software dev cycle is completed.  Iterations are iterative, done over and over again.  And yet, many project teams find making the most of each iteration challenging.  On my current project, I feel like an important part of making each iteration solid and progressive is the iteration planning, which I feel is done very well.  Iteration planning, done well, relies upon project management and each team member.  Here are some of my observations.</p>
+
+<!--more-->
+
+
+<h2>Iteration Planning Process Characteristics</h2>
+
+<ul>
+<li>Done for EVERY iteration on the first day of the iteration.</li>
+<li>Established system for tracking user stories.  Ours includes a solid issue-tracking system, Jira.  Each story is ranked, so priority is always known.</li>
+<li>Well-defined story workflow statuses (eg, in work, resolved, closed) -- What they mean and when they change is clear to all.</li>
+<li>Previous to planning meeting, select stories to work and estimate them -- encourage talk with other team members to avoid overlap/battling.</li>
+<li>Days available are established for each individual team member.</li>
+<li>Whole team is involved;  Customer is not.</li>
+<li>Each subteam/dev pair are given opportunity, in order, to pick up a higher-priority story for the iteration.  Repeat, until all days available are filled.</li>
+<li>Requires an organized project manager and responsible dev/qa team</li>
+<li>Stretch goals are made -- limits down time at end of iteration; a padding for inaccurate estimates</li>
+</ul>
+
+
+<h2>Proper Planning Outcomes</h2>
+
+<ul>
+<li>The whole team knows the tracking of project.  Many, small adjustments can be made more often.</li>
+<li>Realistic work loads are given to every team member.</li>
+<li>Vacation/admin time are taken into account.</li>
+<li>The focus remains on small, 2-wk work chunks</li>
+<li>QA effort gets face time</li>
+<li>Team works to final product together</li>
+<li>Scope can grow and the project can handle it on time and budget</li>
+<li>You work only what you signed up for in the iteration.  For hardening periods, there is no new work assigned, and this solidifies the idea of hardening the app.</li>
+<li>Peer accountability is heightened.</li>
+</ul>
+
+
+<p>What has your experience been with iterations and iteration planning?  Are they effective at driving project completion or do you feel they're just arbitrary time cuts?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Forgotten Requirements]]></title>
+    <link href="http://jaketrent.com/post/forgotten-requirements/"/>
+    <updated>2010-09-03T06:48:00-06:00</updated>
+    <id>http://jaketrent.com/post/forgotten-requirements</id>
+    <content type="html"><![CDATA[<p>Recently, I had the opportunity to look at a set of user stories on an upcoming project and apply a high level estimate to each.  These estimates were going to provide a starting point for determining project timeline and schedule.  Every time I'm presented with a request for estimation, I shiver a little because I'm so bad at it.  As I understand it, I'm not alone in this weakness.  I have found, however, that the more requirements that can be defined and the more detail that can be described for each, the more accurate a timeline can be established.</p>
+
+<!--more-->
+
+
+<p>The focus of requirements on every project is different.  This fact is influenced by many things: the type of project, the members of the team, the culture of the company, the maturity of your process, the number of specialists with eyes on your project (eg, think of the equivalent of a security Nazi in your organization), and so on.  This list is definitely not definitive or all-inclusive, but I'd call my favorite animal a liger before I'd bet that no half-awesome software type has forgotten to specify one of these requirements.  Just let your Internet-bored eyes glaze over those bullets that aren't applicable to your project.</p>
+
+<p>In no particular order, try not to forget...</p>
+
+<ul>
+<li><p>Integration with authentication system</p></li>
+<li><p>Version control repository setup</p></li>
+<li><p>Test environment setups</p></li>
+<li><p>Hardware - requirements, setup, VIPs, clustering, load balancing</p></li>
+<li><p>Uptime / Service Level Agreement (SLA) - consider lowest SLA of integrated subsystem</p></li>
+<li><p>Bug-tracking system setup</p></li>
+<li><p>Local development environment setup</p></li>
+<li><p>Unit test environment and actual unit testing</p></li>
+<li><p>Integration and automated tests</p></li>
+<li><p>Test case-tracking environment</p></li>
+<li><p>Web framework selection and setup</p></li>
+<li><p>Coding standard</p></li>
+<li><p>Targeted environment/browser, screen resolutions, capabilities, required plugins, graceful degredation, and cross-browser testing</p></li>
+<li><p>Training for new platforms/environments</p></li>
+<li><p>3rd-party library selection and integration</p></li>
+<li><p>Urls - exact paths required</p></li>
+<li><p>Errors - conditions, handling, messages, triggers</p></li>
+<li><p>Performance - response times, page sizes, http requests</p></li>
+<li><p>UI - corporate standards, validation, max lengths, empty views</p></li>
+<li><p>Timeouts - requirements/limitations of request, session, server</p></li>
+<li><p>Privacy - terms of agreement</p></li>
+<li><p>Data - backup, security</p></li>
+<li><p>Scalability - future growth model</p></li>
+<li><p>Deployment - method, schedule, automation</p></li>
+<li><p>Operations - support after launch</p></li>
+</ul>
+
+
+<p>This list is born of my experience -- both triumphs and frustrations.  What are some of the requirements that you would either add or remove?</p>
+
+<p>After listing all these potentially missed requirements/activities, I'm driven to also say that the best projects are the ones that meet the business need by delivering the simplest product for the least cash.  So, don't make it more complicated than requirements come to dictate.</p>
+]]></content>
+  </entry>
+  
+</feed>

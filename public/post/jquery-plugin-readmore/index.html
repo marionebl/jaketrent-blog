@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Jquery Plugin: readmore - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Jquery plugins are a joy to use, and they are surprisingly easy to write. Everyone that writes lots of Jquery code should seek to take potentially- &hellip;">
+  <meta name="keywords" content="javascript, jquery, plugins">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Jquery Plugin: readmore" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/jquery-plugin-readmore/" />
+  <meta property="og:description" content="Jquery plugins are a joy to use, and they are surprisingly easy to write. Everyone that writes lots of Jquery code should seek to take potentially- &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Jquery Plugin: readmore" />
+  <meta name="twitter:description" content="Jquery plugins are a joy to use, and they are surprisingly easy to write. Everyone that writes lots of Jquery code should seek to take potentially- &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/jquery-plugin-readmore/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Jquery Plugin: Readmore</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-28T12:46:00-06:00" pubdate data-updated="true">Jun 28<span>th</span>, 2010</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Jquery plugins are a joy to use, and they are surprisingly easy to write.  Everyone that writes lots of Jquery code should seek to take potentially-resuable functionalities of code and put them into a nice, compact plugin.  In the app I&#8217;ve been working on, we have a lot of user-generated content that we don&#8217;t limit the length on, so it can grow very large.  To combat this, there is the UI pattern on the site that there is a &#8220;read more&#8221; link available to show the remaining text for the long-winded texts, while just showing a snippet otherwise.  This exists everywhere, for lots of different content; hence, the &#8220;readmore&#8221; plugin was born.</p>
+
+<!--more-->
+
+
+<p>So, let&#8217;s use it.  If I have a bunch of answers to an online question submitted, looking like this on the page:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;answer&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  Imagine this is super long and goes on forever.
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In your document ready area, you&#8217;d apply the readmore plugin:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.answer&quot;</span><span class="p">).</span><span class="nx">readmore</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is going to go through your class answer div&#8217;s and apply two things:</p>
+
+<ol>
+<li>Abridge the shown text length (default is 500)</li>
+<li>Setup the &#8220;read more&#8221; click event</li>
+</ol>
+
+
+<p>So, you&#8217;re dom will now look something like this (except the shown length is much less than 500 chars here):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;answer&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  Imagine this is super long...
+</span><span class='line'>  <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;readm-continue&quot;</span><span class="nt">&gt;</span><span class="ni">&amp;#8230;</span><span class="nt">&lt;/span&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;readm-hidden&quot;</span> <span class="na">style=</span><span class="s">&quot;display:none;&quot;</span><span class="nt">&gt;</span> and goes on forever.<span class="nt">&lt;/span&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;readm-more&quot;</span><span class="nt">&gt;</span>Read More<span class="nt">&lt;/a&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see even though the <code>readm-hidden</code> class is applied to the overflow/hidden text, the plugin still gives it an explicit <code>display: none</code> style so that the plugin functions for visibility toggling.</p>
+
+<p>The <code>readm-more</code> class is only used internally in the plugin for the click event.</p>
+
+<p>If you want to, you can modify the defaults per-invocation:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.answer&quot;</span><span class="p">).</span><span class="nx">readmore</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">substr_len</span><span class="o">:</span> <span class="mi">250</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s simple; it&#8217;s powerful; it&#8217;s jQuery.  Kachow!</p>
+
+<p>Download the plugin at the <a href="https://github.com/jtsnake/jquery-readmore">Github repo</a>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-06-28T12:46:00-06:00" pubdate data-updated="true">Jun 28<span>th</span>, 2010</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/jquery/'>jquery</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/plugins/'>plugins</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/png-gamma-correction-woes/" title="Previous Post: PNG Gamma Correction Woes">&laquo; PNG Gamma Correction Woes</a>
+      
+      
+        <a class="next-article-link" href="/post/jquery-plugin-safesubmit/" title="Next Post: Jquery Plugin: safesubmit">Jquery Plugin: safesubmit &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/jquery-plugin-readmore/';
+        var disqus_url = 'http://jaketrent.com/post/jquery-plugin-readmore/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

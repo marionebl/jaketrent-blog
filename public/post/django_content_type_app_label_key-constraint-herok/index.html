@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>django_content_type_app_label_key Constraint on Heroku - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Django comes with some awesome CLI tools. Manage.py is a beast of magic and lore. And it loves the fantastical kingdom of Heroku, where is romps with &hellip;">
+  <meta name="keywords" content="django, python, heroku, postgres">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="django_content_type_app_label_key Constraint on Heroku" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/django_content_type_app_label_key-constraint-herok/" />
+  <meta property="og:description" content="Django comes with some awesome CLI tools. Manage.py is a beast of magic and lore. And it loves the fantastical kingdom of Heroku, where is romps with &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="django_content_type_app_label_key Constraint on Heroku" />
+  <meta name="twitter:description" content="Django comes with some awesome CLI tools. Manage.py is a beast of magic and lore. And it loves the fantastical kingdom of Heroku, where is romps with &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/django_content_type_app_label_key-constraint-herok/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Django_content_type_app_label_key Constraint on Heroku</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-30T13:30:00-07:00" pubdate data-updated="true">Dec 30<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Django comes with some awesome CLI tools.  Manage.py is a beast of magic and lore.  And it loves the fantastical kingdom of Heroku, where is romps with merry measure twixt the ether.  But, when I&#8217;ve tried to go through a dumpdata of a previous site, syncdb on a migration to Heroku, and loaddata for moving the data, I&#8217;ve run into a snag on django_content_type_app_label_key more than once.  Here are some resolutions.</p>
+
+<!--more-->
+
+
+<h2>The Error Stack</h2>
+
+<p>Specifically, when I do a sync of the database:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>heroku run python manage.py syncdb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It works like a charm.  And then a loading of the data:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>heroku run python manage.py loaddata data.json
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It runs for a bit then spews this small hiccup:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Running python manage.py loaddata data.json attached to terminal... up, run.2
+</span><span class='line'>Problem installing fixture <span class="s1">&#39;data.json&#39;</span>: Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
+</span><span class='line'>  File <span class="s2">&quot;/app/lib/python2.7/site-packages/django/core/management/commands/loaddata.py&quot;</span>, line 174, in handle
+</span><span class='line'>    obj.save<span class="o">(</span><span class="nv">using</span><span class="o">=</span>using<span class="o">)</span>
+</span><span class='line'>  <span class="c"># ...more stack trace...</span>
+</span><span class='line'>  File <span class="s2">&quot;/app/lib/python2.7/site-packages/django/db/backends/postgresql_psycopg2/base.py&quot;</span>, line 44, in execute
+</span><span class='line'>    <span class="k">return </span>self.cursor.execute<span class="o">(</span>query, args<span class="o">)</span>
+</span><span class='line'>IntegrityError: duplicate key value violates unique constraint <span class="s2">&quot;django_content_type_app_label_key&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lovely.</p>
+
+<p>It turns out that <code>syncdb</code>, in addition to running the DDLs for your table creation also populates the <code>django_content_type</code> table.  And then when you loaddata it tries to repopulate the table, violating the unique constraint on the content type name.</p>
+
+<h2>Make the Magic Live Again</h2>
+
+<p>There are a couple ways around this:</p>
+
+<h3>Dump Something Specific</h3>
+
+<p>When you dumpdata, only <a href="https://docs.djangoproject.com/en/dev/ref/django-admin/#dumpdata-appname-appname-appname-model">dump specific apps</a> instead of the whole project.  For example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>python manage.py dumpdata myApp
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Django 1.3 Exclude</h3>
+
+<p>If you&#8217;re on Django 1.3 or above, you get a nice new option with dumpdata to <a href="https://docs.djangoproject.com/en/dev/ref/django-admin/#django-admin-option---exclude">exclude certain apps</a>.  So you could run:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>python manage.py dumpdata --exclude contenttypes
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Try in Vain to Reset</h3>
+
+<p>Another one I tried (but didn&#8217;t work) was:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>heroku run python aprilandjake/manage.py reset contenttypes
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Sql Truncate</h3>
+
+<p>Or, if you&#8217;re still trying to dumpdata on your whole project, you could <code>syncdb</code> on Heroku and then truncate the data out of <code>django_content_type</code> like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>heroku run python aprilandjake/manage.py dbshell
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And then <a href="http://swik.net/django/Django+Community+Aggregator?page=2">truncate</a> (inside the dbshell):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>truncate django_content_type cascade;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Problem for me is that didn&#8217;t work either.  I am on the super cheap in Heroku, so I get this lovely denial:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Running python manage.py dbshell attached to terminal... up, run.5
+</span><span class='line'>Error: You appear not to have the <span class="s1">&#39;psql&#39;</span> program installed or on your path.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(It&#8217;s not available in a <a href="http://devcenter.heroku.com/articles/heroku-postgresql">shared database</a>):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>heroku pg:psql
+</span><span class='line'>!  Cannot ingress to a shared database
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Delete via Admin UI</h3>
+
+<p>And finally, if you want to get rid of the data via the admin UI, set it up to appear as editable.  In an <a href="https://docs.djangoproject.com/en/dev/ref/contrib/admin/#modeladmin-objects"><code>admin.py</code></a> in your project, try something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">django.contrib.contenttypes.models</span> <span class="kn">import</span> <span class="n">ContentType</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">ContentTypeAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">list_display</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;app_label&#39;</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">fieldsets</span> <span class="o">=</span> <span class="p">(</span>
+</span><span class='line'>    <span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>      <span class="s">&#39;classes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,),</span>
+</span><span class='line'>      <span class="s">&#39;fields&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;app_label&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">}),</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ContentType</span><span class="p">,</span> <span class="n">ContentTypeAdmin</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you should be able to loaddata and feel the Django wind in your hair and the Heroku grass beneath your feet again.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-30T13:30:00-07:00" pubdate data-updated="true">Dec 30<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/django/'>django</a>, <a class='category' href='/blog/categories/heroku/'>heroku</a>, <a class='category' href='/blog/categories/postgres/'>postgres</a>, <a class='category' href='/blog/categories/python/'>python</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/backbone-views-dynamic-dom/" title="Previous Post: Backbone Views in a Dynamic DOM">&laquo; Backbone Views in a Dynamic DOM</a>
+      
+      
+        <a class="next-article-link" href="/post/calling-webservices-java/" title="Next Post: Calling Webservices in Java">Calling Webservices in Java &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/django_content_type_app_label_key-constraint-herok/';
+        var disqus_url = 'http://jaketrent.com/post/django_content_type_app_label_key-constraint-herok/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

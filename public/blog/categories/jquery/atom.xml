@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: jquery | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/jquery/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Intro to BackboneJs]]></title>
+    <link href="http://jaketrent.com/post/intro-backbonejs/"/>
+    <updated>2012-03-30T09:32:00-06:00</updated>
+    <id>http://jaketrent.com/post/intro-backbonejs</id>
+    <content type="html"><![CDATA[<p>BackboneJs is a great resource for creating rich UIs.  Rich means interactive.  Interactivity grows when the client can do more of the work of an application itself, becoming more reactive and dynamic to user feedback, able to be more event-driven, and hopefully more quick and responsive.  Here's a short history of how we've been creating rich UIs and a simple example of a rich UI in backbonejs</p>
+
+<!--more-->
+
+
+<p>The background:</p>
+
+<div style="width:510px" id="__ss_12224939"> <strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/rockycode/rich-uis-with-backbonejs" title="Rich UIs with BackboneJs" target="_blank">Rich UIs with BackboneJs</a></strong> <iframe src="http://www.slideshare.net/slideshow/embed_code/12224939?rel=0" width="510" height="426" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe> <div style="padding:5px 0 12px"> View more <a href="http://www.slideshare.net/" target="_blank">presentations</a> from <a href="http://www.slideshare.net/rockycode" target="_blank">rockycode</a> </div> </div>
+
+
+<p>The code:</p>
+
+<p><a href="https://github.com/jtsnake/backbone-intro">backbone-intro on github</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Backbone Views in a Dynamic DOM]]></title>
+    <link href="http://jaketrent.com/post/backbone-views-dynamic-dom/"/>
+    <updated>2011-12-29T15:58:00-07:00</updated>
+    <id>http://jaketrent.com/post/backbone-views-dynamic-dom</id>
+    <content type="html"><![CDATA[<p>When you start writing applications with BackboneJS, that means that you're dealing with some dynamic UI.  There are elements being pushed into and pulled out of the DOM.  I was having problems trying to reference DOM elements that were dynamically inserted into the DOM by other Backbone views.  The fix was simple but not immediately obvious without cracking open Backbone.</p>
+
+<!--more-->
+
+
+<h2>Backbone View Element</h2>
+
+<p>The <a href="http://documentcloud.github.com/backbone/#View-el"><code>el</code></a> property of a <code>Backbone.View</code> is the dom element within which your view contents will be displayed.  By default it's an empty div, otherwise it can be specified by a combination of <code>tagName</code>, <code>className</code>, and <code>id</code> properties.  For these options, Backbone assumes that your DOM element isn't living within the document; rather, it will be created in memory and then inserted where you later specify.</p>
+
+<p>If you want to specify a pre-existing DOM element within which to insert your Backbone view contents, you set the <code>el</code> property of your view directly.  This is where I ran into problems.</p>
+
+<h2>Shifting Plates of the DOM</h2>
+
+<p>Backbone views assume the <code>$</code> alias is either <a href="http://docs.jquery.com/Main_Page">jQuery</a>or <a href="http://zeptojs.com/">Zepto</a>.  They do the same thing, just use css-like selectors to get references to DOM elements.  So, I would have a view and set the <code>el</code> property to a DOM element selected by jQuery (note: examples use <a href="http://requirejs.org/docs/whyamd.html">RequireJS to manage dependencies</a>), such as <code>MountainView.js</code>:</p>
+
+<p>```javascript
+define(function () {
+  return Backbone.View.extend({</p>
+
+<pre><code>el: $('#mountains'),
+render: function () {
+  $(this.el).html(makePrettyMountains());
+  return this;
+}
+</code></pre>
+
+<p>  });    <br/>
+});
+```</p>
+
+<p>Problem is that earlier in the code, another view was being relied upon to insert the <code>#mountains</code> element into the DOM.  Let's say <code>SceneryStarterView.js</code> looked something like this:</p>
+
+<p>```javascript
+define(['MountainView'], function (MountainView) {
+  return Backbone.View.extend({</p>
+
+<pre><code>initialize: function () {
+  $('body').html(makePlaceForMountains());
+  var mountain = new MountainView();
+  mountain.render().el;
+}
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>It was importing (via <a href="http://requirejs.org/docs/whyamd.html">RequireJS</a>) <code>MountainView.js</code>.  At import time, <code>$('#mountains')</code> was evaluated but nothing was found, because <code>makePlaceForMountains()</code> hadn't been called yet.  It was looking for <code>#mountains</code> too early!  How import the needed view, let it specify somewhere on the DOM that doesn't exist <em>yet</em> but <em>will</em> by the time it's instantiated and then rendered?  Backbone has a mechanism for this...</p>
+
+<h2>Into the <a href="http://en.wikipedia.org/wiki/Asthenosphere">Asthenosphere</a></h2>
+
+<p>To find the answer, I had to peel back the Backbone crust and do a little dumpster diving.  When my <code>MountainView</code> is new'ed up, the constructor for <code>Backbone.View</code> is hit.  It calls a function called <code>_ensureElement()</code>:</p>
+
+<p><code>``javascript
+// Ensure that the View has a DOM element to render into.
+// If</code>this.el<code>is a string, pass it through</code>$()<code>, take the first
+// matching element, and re-assign it to</code>el<code>. Otherwise, create
+// an element from the</code>id<code>,</code>className<code>and</code>tagName` proeprties.
+_ensureElement : function() {
+  if (!this.el) {</p>
+
+<pre><code>var attrs = this.attributes || {};
+if (this.id) attrs.id = this.id;
+if (this.className) attrs['class'] = this.className;
+this.el = this.make(this.tagName, attrs);
+</code></pre>
+
+<p>  } else if (_.isString(this.el)) {</p>
+
+<pre><code>this.el = $(this.el).get(0);
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Hmmmm...  If there isn't an <code>el</code> field, grab <code>id</code>, <code>className</code>, and <code>tagName</code> and create an in-memory element with <code>document.createElement()</code>.  And it's the <code>else if</code> that gives us the option we need.  <em>If the <code>el</code> property is a string, <em>now</em> try and select it with jQuery</em>.  Perfect!  If we change our code for <code>MountainView.js</code> to reflect that one change:</p>
+
+<p>```javascript
+define(function () {
+  return Backbone.View.extend({</p>
+
+<pre><code>el: '#mountains',
+// render, etc
+</code></pre>
+
+<p>  });    <br/>
+});
+```</p>
+
+<p>It works like a charm.  Why?  Now the order of events is:</p>
+
+<ul>
+<li><code>SceneryStartView</code> is instantiated somewhere</li>
+<li>It imports <code>MountainView</code> as a dependency</li>
+<li><code>SceneryStartView</code> inserts the <code>#mountians</code> DOM element</li>
+<li>Then it news up <code>MountainView</code></li>
+<li>In the constructor for <code>Backbone.View</code>, jQuery selects my string value for <code>el</code></li>
+<li>One more round of hallelujah is sung!</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[jQuery Mobile Selector Context]]></title>
+    <link href="http://jaketrent.com/post/jquery-mobile-selector-context/"/>
+    <updated>2011-09-01T12:58:00-06:00</updated>
+    <id>http://jaketrent.com/post/jquery-mobile-selector-context</id>
+    <content type="html"><![CDATA[<p>As web developers we're used to being able to write a jQuery selector and easily get the DOM elements back on the page that we're looking for.  In the case of jQuery Mobile, it's slightly more complicated because a "page" is a different beast.</p>
+
+<!--more-->
+
+
+<h2>First Page Loads the Head</h2>
+
+<p>You can actually have multipe <a href="http://jquerymobile.com/demos/1.0b2/#/demos/1.0b2/docs/pages/page-anatomy.html">pages on the DOM</a> at a time.  This is required for the slide animation, helps with page caching for the back button, and helps make things feel snappier.  When you request a brand new page from the server, that page's <code>&lt;body /&gt;</code> is ajax'ed onto the DOM and the <code>&lt;title /&gt;</code> is updated.</p>
+
+<p>This means that the first page that you load that initializes requests the jQuery mobile script and initializes it is the one that loads the <code>&lt;head /&gt;</code> tag is loaded.  From the <a href="http://jquerymobile.com/demos/1.0b2/#/demos/1.0b2/docs/pages/page-scripting.html">docs</a>:</p>
+
+<p>When you click a link in jQuery Mobile, the Ajax navigation system uses the link's href to formulate an Ajax request. Although the full page is loaded with Ajax, the framework only pulls in the contents of the page, and ignores anything in the head except for title tag contents.</p>
+
+<p>In other words, on subsequent pages, you better have already imported the scripts and styles in the head that you need for subsequent page loads.</p>
+
+<h2>Expanded Context</h2>
+
+<p>Now, if multiple "pages" are all on the DOM, when you craft a selector in jQuery, you have the potential of picking up lots of other elements than you were expecting.  We're used to our context being defined as a the single page served up from the server, so we can write a selector like this:</p>
+
+<p><code>javascript
+$(".media-carousel li")
+</code></p>
+
+<p>And only get back the <code>&lt;li /&gt;</code>s that are on the page.  But now, if I nav to multiple pages with media carousels on them, on the 2nd one, when I execute this code, I'll select all <code>&lt;li /&gt;</code> s from the 2nd <em>and</em> the 1st.  This quickly produces bugs that we don't have to watch out for in our normal server-assisted MVC architecture.</p>
+
+<h2>Constrain to Page Context</h2>
+
+<p>The fix for jQuery Mobile, however, is super simple.  Per the <a href="http://api.jquery.com/jQuery/">jQuery docs</a>:</p>
+
+<p>  By default, selectors perform their searches within the DOM starting at the document root. However, an alternate context can be given for the search by using the optional second parameter to the $() function.</p>
+
+<p>In other words, we want to provide the currently-operating page in jQuery mobile as the context for the selector.  Here's a snippet of the what the multimedia carousel selection might look like:</p>
+
+<p>```javascript
+function carouselStuff($page) {
+  $(".media-carousel li", $page).doStuff();
+}</p>
+
+<p>$('div').live('pageshow', function  (e, ui) {
+  carouselStuff($(this));
+});
+```</p>
+
+<p>When a <code>pageshow</code> event is triggered, that means the containing page (<code>&lt;div class="ui-page"/&gt;</code>) has been displayed with the newly ajax-requested content.  So, now our selections, bindings, and other jQuery goodness will only affect the current "page" context.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Writing Jquery Plugins]]></title>
+    <link href="http://jaketrent.com/post/writing-jquery-plugins/"/>
+    <updated>2010-10-12T05:54:00-06:00</updated>
+    <id>http://jaketrent.com/post/writing-jquery-plugins</id>
+    <content type="html"><![CDATA[<p>Jquery has made developing javascript fun and enjoyable.  It is a fantastic library that essentially allows the creation of library extensions on top of it via plugins.  Jquery plugins are surprisingly easy to write and elegant to read and use.  Here are a few tips on where to find good plugin candidates, design principles for plugins, and an outline of the basic structure that I have found most useful when writing plugins.</p>
+
+<!--more-->
+
+
+
+
+<div style="width:425px" id="__ss_5423499"><strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/rockycode/jake-trent-writingjqueryplugins-5423499" title="Writing Jquery Plugins">Writing Jquery Plugins</a></strong><object id="__sse5423499" width="425" height="355"><param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=jaketrentwritingjqueryplugins-101012075852-phpapp02&rel=0&stripped_title=jake-trent-writingjqueryplugins-5423499&userName=rockycode" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed name="__sse5423499" src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=jaketrentwritingjqueryplugins-101012075852-phpapp02&rel=0&stripped_title=jake-trent-writingjqueryplugins-5423499&userName=rockycode" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object><div style="padding:5px 0 12px">View more <a href="http://www.slideshare.net/">presentations</a> from <a href="http://www.slideshare.net/rockycode">rockycode</a>.</div></div>
+
+
+<p>Plugins aren't magical or anything.  In fact, any code that you can produce that's delivered as a plugin can be written without a plugin.  Jquery itself is just a bunch of javascript code written in a way that is packaged nicely, ready for distribution, and has a cleaned up API.  That's one of the things that makes it a joy to use.  Compare that with seeing a .js file full of line after line of function() { ... } and either choosing to copy paste bits and pieces or having to sift through it to determine which methods you should or want to call.  Plugins provide an elegant way to create cohesive code and then distribute the idea so that others will be able to pick it up and use it more easily.</p>
+
+<p>For the demo used in conjunction with this presentation, visit the <a href="http://bitbucket.org/jtsnake/jquery-photopeek">Bitbucket Jquery Photopeek</a> repo (hg).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Jquery Plugin: safesubmit]]></title>
+    <link href="http://jaketrent.com/post/jquery-plugin-safesubmit/"/>
+    <updated>2010-06-28T14:07:00-06:00</updated>
+    <id>http://jaketrent.com/post/jquery-plugin-safesubmit</id>
+    <content type="html"><![CDATA[<p>Jquery gives a great, easy-to-use mechanism for extending its API and creating your own plugins.  For stuff that looks like it could be useful generally, you should really try to put it into a nice little plugin package.  For submit buttons, there is a general thought that they shouldn't be clicked twice (especially for functions such as financial transactions), so I created a plugin that fits an app that I have been working on recently, where there are many, many submit buttons, saving very granual pieces of content through ajax requests.</p>
+
+<!--more-->
+
+
+<p>The "safesubmit" plugin is going to disable submit buttons when clicked and, in most cases, re-enable them when the ajax request has completed.  On your app, if you had a class called "safe" on all the submit buttons that you wanted to exhibit this behavior, you could enable the plugin functionality with one line:</p>
+
+<p><code>javascript
+$(".safe").safesubmit();
+</code></p>
+
+<p>And that's it.  It's simple and powerful.  It's likely, however, because this happened on my project as well that the client code is going to have more complicated business rules.  In our case, someone added extra form validation where the length of the submitted field was checked -- if it passed, it was submitted; otherwise, it was not.  In that case, the plugin never re-enabled the button to be again pressable.  So, I exposed the functions of the plugin to be public, allowing you to shortcircuit the normal flow, essentially notifying the plugin to the submit failure.  For example, here's a submit's onclick event snippet:</p>
+
+<p><code>javascript
+if (valid()) {
+  $.ajax ({ ... });
+} else {
+  $.fn.safesubmit.failsubmit($(this));
+}
+</code></p>
+
+<p>If you need, the "safe" and "unsafe" methods are also made public.  You can call them whenever needed.  "safe" is the state of having the click disabled.  "unsafe" means you can click the button.</p>
+
+<p>You can also change default settings.  For instance, by default when you put the button in "safe" mode, it adds disabled="disabled" attribute to the button and adds a class of "disabled".  You have the option of changing all 3 opts.  For instance, maybe you have a different class:</p>
+
+<p><code>css
+.dead {
+  background-color: #ababab;
+}
+</code></p>
+
+<p>and want to apply that class instead.  Try this:</p>
+
+<p><code>javascript
+$.fn.safesubmit.defaults.disabled_class = "dead";
+$(".safe").safesubmit();
+</code></p>
+
+<p>Download the script on <a href="https://github.com/jtsnake/jquery-safesubmit">Github</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>

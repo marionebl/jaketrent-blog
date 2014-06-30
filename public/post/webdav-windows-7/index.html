@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>WebDAV on Windows 7 - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="The spectre of webdav has again appeared before me. This time's it's on Windows. My last experience on webdav was in the dojo of Linux. Now, my &hellip;">
+  <meta name="keywords" content="marklogic, webdav, windows7">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="WebDAV on Windows 7" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/webdav-windows-7/" />
+  <meta property="og:description" content="The spectre of webdav has again appeared before me. This time's it's on Windows. My last experience on webdav was in the dojo of Linux. Now, my &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="WebDAV on Windows 7" />
+  <meta name="twitter:description" content="The spectre of webdav has again appeared before me. This time's it's on Windows. My last experience on webdav was in the dojo of Linux. Now, my &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/webdav-windows-7/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">WebDAV on Windows 7</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-05T11:58:00-06:00" pubdate data-updated="true">Oct 5<span>th</span>, 2010</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The spectre of webdav has again appeared before me.  This time&#8217;s it&#8217;s on Windows.  My last experience on webdav was in the dojo of Linux.  Now, my Linuxy nun chucks aren&#8217;t quite as deadly.  I must tame this beast.  Here&#8217;s a Windows-webdav must.</p>
+
+<!--more-->
+
+
+<h2>Disable Internet Exporer 8&#8217;s automatic proxy</h2>
+
+<p>If you don&#8217;t do this, you will find that webdav on Windows 7 is extremely slow.  So slow, in fact, that it crashed Windows Explorer several times as I tried connecting to webdav and got the dreaded &#8220;(Not Responding)&#8221; text multiple times.</p>
+
+<p>To disable, open up IE, and pull this action:</p>
+
+<ol>
+<li><p>Tools menu > Internet Options > Connections tab > LAN Settings button</p></li>
+<li><p>Uncheck &#8220;Automatically detect settings&#8221; box</p></li>
+</ol>
+
+
+<p>This should noticeably improve your speed.</p>
+
+<h2>Other Troubled-shots</h2>
+
+<p>I tried a few other things that may/not help you in your quest for webdav&#8217;ery on Windows:</p>
+
+<ul>
+<li><p>Allow for <a href="http://support.microsoft.com/kb/841215">basic authentication via webdav</a>.</p></li>
+<li><p>Use the <a href="http://www.oxygenxml.com/download.html">Oxygen</a> webdav interface.  It&#8217;s faster that the Windows Explorer method (with auto proxy still enabled), but limited in its function.  You can&#8217;t copy folders of things out of or into webdav.</p></li>
+</ul>
+
+
+<h2>Make a webdav connection</h2>
+
+<p>Now that you hopefully have your enemies to progress subdued, it&#8217;s time to just make the connection.  The favored Windows 7 method is adding a network place:</p>
+
+<ol>
+<li><p>Start menu > Computer</p></li>
+<li><p>Right click in main window area > Add a network location</p></li>
+<li><p>Next > Next > Enter URL > Enter descriptive name > [enter credentials] > Finish</p></li>
+</ol>
+
+
+<p>Now your connection should be saved for the next time you log into your computer and are ready to face the perils of webdav once more.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-10-05T11:58:00-06:00" pubdate data-updated="true">Oct 5<span>th</span>, 2010</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/marklogic/'>marklogic</a>, <a class='category' href='/blog/categories/webdav/'>webdav</a>, <a class='category' href='/blog/categories/windows7/'>windows7</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/breaking-down-knowledge-silos/" title="Previous Post: Breaking Down Knowledge Silos">&laquo; Breaking Down Knowledge Silos</a>
+      
+      
+        <a class="next-article-link" href="/post/writing-jquery-plugins/" title="Next Post: Writing Jquery Plugins">Writing Jquery Plugins &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/webdav-windows-7/';
+        var disqus_url = 'http://jaketrent.com/post/webdav-windows-7/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: generics | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/generics/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Generic Interfaces Arabian Magic]]></title>
+    <link href="http://jaketrent.com/post/generic-interfaces-arabian-magic/"/>
+    <updated>2010-08-06T12:47:00-06:00</updated>
+    <id>http://jaketrent.com/post/generic-interfaces-arabian-magic</id>
+    <content type="html"><![CDATA[<p>[flash bang!]  Say words like generics, enums, or interfaces, and you've immediately transported to the realm of conjured whirlwind sandstorms and curved-sword-weilding assasins.  Well, I guess we're going there, because I think this is pretty cool.  Plus, undocumented, or at least un-reiterated to myself, and later I'll look at it and think it's just pretty complicated.  Prepare for angle brackets in the amount of parens in lisp.</p>
+
+<!--more-->
+
+
+<p>Interfaces allow you to immediately apply a new adjective to an object.  In this case, we're dealing with enums specifically.  We've got a pile of enums in a codebase that I worked on recently that correspond with a lookup table of values in the database.  The lookup values are essentially static, but still in the database so we can make the appropriate associations between data bits.  Take this contrived example:  Here's our enum with an associated PK on the database side specified for each:</p>
+
+<p>```java
+public enum MagicalItem {
+  LAMP(1L),
+  SWORD(2L),
+  SMOKE_BOMB(3L);</p>
+
+<p>  private final Long id;</p>
+
+<p>  MagicalItem(Long id) { this.id = id; }</p>
+
+<p>  public Long getId() { return id; }
+}
+```</p>
+
+<p>In business logic, we're generally wanting to use the enum value for its safety, ease of reading, etc.  But in going back and forth from DB data to data in the app layer, we're going to have to be able to translate between the two.  We could simply add a method to the enum to allow a translation to MagicItems from their associated ids:</p>
+
+<p>```java
+  public enum MagicalItem {</p>
+
+<pre><code>LAMP(1L),
+SWORD(2L),
+SMOKE_BOMB(3L);
+
+private final Long id;
+
+MagicalItem(Long id) { this.id = id; }  
+
+public Long getId() { return id; }
+
+public MagicalItem getItemById(Long itemId) {
+  MagicalItem retval = null;
+  for (MagicalItem item : MagicalItems.values() {
+    if (item.getId().equals(itemId)) {
+      retval = item;
+      break;
+    }
+  }
+  return retval;
+}
+</code></pre>
+
+<p>  }
+```</p>
+
+<p>But, then if we ever had an enum of WishesToMakeOfAGenie (as if that could ever be enumerated), then we'd be writing (or cut and pasting) essentially the same code.  "I wish to be able to use interfaces correctly every time!"  Let's try an interface.  It's something simple that merely translates from an input to an output.  We know at least the output type will change, and we have no confidence that the outputs will ever be related datatypes.  Well, now we're wishing that we know how to use generics.  Here's a pass at an interface:</p>
+
+<p>```java
+  public interface MatchableEnum&lt;E, T extends Enum<T>> {</p>
+
+<pre><code>  public E getMatchElement();
+</code></pre>
+
+<p>  }
+```</p>
+
+<p>This interface's only method will simply identify for us what element of data in the enum will be the field we try to match/translate on.  To explain (or, as it is, sum up):</p>
+
+<ul>
+<li>E and T - the names for the generic types that I chose.  That was arbitrary.</li>
+<li>T extends Enum&lt;T&gt; - this interface can only be used on enums</li>
+</ul>
+
+
+<p>For MagicalItem, the implementation might look like this:</p>
+
+<p>```java
+  public enum MagicalItem implements MatchableEnum&lt;Long, MagicalItem> {</p>
+
+<pre><code>LAMP(1L),
+SWORD(2L),
+SMOKE_BOMB(3L);
+
+private final Long id;
+
+MagicalItem(Long id) { this.id = id; }  
+
+public Long getId() { return id; }
+
+public Long getMatchElement() {
+  return id;
+}
+</code></pre>
+
+<p>  }
+```</p>
+
+<p>And what about the code to consume this?  The code that we didn't want to write over and over for the specific case.  Well, this type of functional code is going to go in some sort of util class as a static method, like so:</p>
+
+<p>```java
+  public static &lt;E, T extends Enum<T>> T matchEnumByElement(Class&lt;? extends MatchableEnum> clzz, E element) {</p>
+
+<pre><code>T retval = null;
+for (MatchableEnum elem : clzz.getEnumConstants()) {
+  if (elem.getMatchElement().equals(element)) {
+    retval = (T) elem;
+    break;
+  }
+}
+return retval;
+</code></pre>
+
+<p>  }
+```</p>
+
+<p>Again, to sum up:</p>
+
+<ul>
+<li>The method is genericized (&lt;, T extends Enum&lt;T&gt;&gt;) -- you'd think the JVM would be able to infer and not require that given the input</li>
+<li>T is the return type (our enum)</li>
+<li>It consumes MatchableEnums and subtypes (see param1)</li>
+<li>And also needs the element you're trying to match on -- in this case, our Long (see param2)</li>
+<li>Within the method we can use special methods on the class, because we know it's an enum (clzz.getEnumConstants()), and the getMatchElement() method from the interface is the only other thing we need.</li>
+</ul>
+
+
+<p>Then, when you want to use it, you can do something like this:</p>
+
+<p><code>java
+  Long id = 3L;
+  MagicalItem item = EnumUtil.&lt;Long,MagicalItem&gt;matchEnumByElement(MagicalItem.class, id);
+  // item should be MagicalItem.SMOKE_BOMB from our example above
+</code>
+It's a beautiful thing.  It's bought this codebase a lot of mileage, and it's a handy tool to have around.</p>
+
+<p>For the longest time, the 2nd param was simply a Long, because, as you see in this example, that was the common case.  Making that parameter also a generic allowed for more varied uses -- for instance, when you get an enum like this:</p>
+
+<p>```java
+  public enum FileType implements MatchableEnum&lt;String, FileType> {</p>
+
+<pre><code>JPG("image/jpeg"),
+PNG("image/png"),
+/* ... */
+
+private final String mime;
+
+FileType(String m) { mime = m; }
+
+public String getMime() { return mime; }
+
+public String getMatchElement() { return mime; }
+</code></pre>
+
+<p>  }
+```</p>
+
+<p>So, enjoy the magic: generics, enums, and interfaces.  See through the cloud of smoke to the ninja in front of you.  Attack with sure confidence and cunning.  The drawback is that you might get stuck with a stray Chinese throwing angle bracket when using generics like this.  I guess know your first aid as well. :)</p>
+]]></content>
+  </entry>
+  
+</feed>

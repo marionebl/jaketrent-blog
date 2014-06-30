@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Windows 7 Dev Environment - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="I recently rebuilt my dev box into a Windows 7 environment, coming from Ubuntu 10.04 Lucid Lynx. The reasons were varied, and most weren't very &hellip;">
+  <meta name="keywords" content="windows7">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Windows 7 Dev Environment" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/windows-7-dev-environment/" />
+  <meta property="og:description" content="I recently rebuilt my dev box into a Windows 7 environment, coming from Ubuntu 10.04 Lucid Lynx. The reasons were varied, and most weren't very &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Windows 7 Dev Environment" />
+  <meta name="twitter:description" content="I recently rebuilt my dev box into a Windows 7 environment, coming from Ubuntu 10.04 Lucid Lynx. The reasons were varied, and most weren't very &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/windows-7-dev-environment/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Windows 7 Dev Environment</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-01T10:45:00-06:00" pubdate data-updated="true">Nov 1<span>st</span>, 2010</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I recently rebuilt my dev box into a Windows 7 environment, coming from Ubuntu 10.04 Lucid Lynx.  The reasons were varied, and most weren&#8217;t very significant at all.  Perhaps I just needed another beast to tame.  And an OS can be quite a beast.  But, since I&#8217;ve switched to daily dev on Windows 7, I&#8217;ve been mostly happy in a number of ways.</p>
+
+<!--more-->
+
+
+<h2>The good things</h2>
+
+<ul>
+<li><p><strong>No Synergy</strong> - Synergy can be a really great tool, but the reason I was using it was because I never really chose to get rid of Windows.  The reasons are mostly app-related: Outlook, Powerpoint, and Photoshop.  Now, because I don&#8217;t use Synergy, I don&#8217;t have to log off two computers, I don&#8217;t need as many monitors, I have sound for all my running apps, I don&#8217;t have to use the cloud to transfer files between apps (though Dropbox is great) and I take all my tools with me on my dev laptop.  I don&#8217;t need two machines.</p></li>
+<li><p><strong>No VMs</strong> - This good thing is closely tied to &#8220;no Synergy&#8221;.  I have used VMware and VirtualBox for essentially the same purpose: running apps that weren&#8217;t available to me on Linux &#8211; most notably here, Internet Explorer.  My main beef with VMs has been performance &#8211; they&#8217;re generally resource hogs and slow.</p></li>
+<li><p><strong>Photoshop</strong> - This is a wonderful tool that I am way more adept at using, especially compared the Linux &#8220;equivalent&#8221;, Gimp.</p></li>
+<li><p><strong>Outlook</strong> - I am not forced into the Outlook web client any more, which is dumbed down for the browser and supremely dumbed down for anything except Internet Explorer.  I can easily sync my mail, contacts, and calendar with the rest of the organization.  This is huge.</p></li>
+<li><p><strong>Fast startup</strong> - When I used to boot both my Windows and Lucid Lynx machines, they would get to login at almost the exact same time.</p></li>
+<li><p><strong>Sleep works</strong> - This is closely tied to the fast startup reason &#8211; I have fewer shutdowns and startups during the day because sleep actually works.</p></li>
+<li><p><strong>Symlinks</strong> - I remember one of my main reasons for going to Linux in the first place was symlinks.  Seriously.  Now, since Vista, the Windows mklink command gives us the same power.  This is fantastic and makes me smile broadly.</p></li>
+<li><p><strong>Pleasing UI</strong> - The Windows 7 UI is very smooth and nice-looking.  The taskbar and startbar pinning of apps is way convenient.  The flyout menus for docs opened with said apps makes recent documents very reachable.  The window grouping and previews keep piles of windows sectioned off well.  There are a couple things that I miss that from the Compiz Fusion windows manager enhancements, such as tiling the windows so they&#8217;re all visible, ala Mac, and multiple desktops.</p></li>
+<li><p><strong>Windows Search works</strong> - Ok, not as good as grep or find, nor is it from the command line, but it has vastly improved.  It sits right on the Windows Explorer window, so it&#8217;s immediately contextual, and it&#8217;s fairly speedy.</p></li>
+<li><p><strong>Internet Explorer</strong> - This browser is no good to anyone, unless you get a cut of all the OEM install $$.  But, if you are forced under threat of job loss to code to support it, it&#8217;s way nice to be able to boot it for some cross-browser testing and not require a VM.</p></li>
+<li><p><strong>Audio Volume</strong> - I think this must be a driver support issue, but I can crank out so much more volume on my laptop speakers using Windows compared to Ubuntu.</p></li>
+<li><p><strong>Plug and Play</strong> - I get a seamless experience in docking and undocking &#8211; although, I&#8217;ve had it freeze up on me a few times to.  I automatically get external displays and projectors detected.  The resolution is correct.  This is a huge plus around the office when I take my lappy from my desk docking station to a mtg and then quickly present something on a projector.</p></li>
+<li><p><strong>Num Pad</strong> - This was a joke in Ubuntu.  In Windows 7, I can at least rely on my number pad always working.</p></li>
+<li><p><strong>WebDAV is a little better</strong> - WebDAV stinks in my experience with MarkLogic, but at least in Windows the experience is a little bit better from a stability, read, copy, and UI experience.</p></li>
+<li><p><strong>Steam</strong> - After a good day of dev, and if the eyes aren&#8217;t yet too strained, it&#8217;s time for some Monkey Island remakes on Steam.  When is this coming to Linux?! :)</p></li>
+</ul>
+
+
+<h2>The bad things</h2>
+
+<ul>
+<li><p><strong>Michael Jackson</strong> - or Weird Al.  Oh, wait, that&#8217;s Fat.</p></li>
+<li><p><strong>Filesystem speed</strong> - Yeah, NTFS shows its age.  Filesystem reads and writes seem quite a bit slower.  I also spend a lot of time in IntelliJ, where file opening and tab switching is also noticably slower.</p></li>
+<li><p><strong>Mouse time</strong> - I&#8217;m handling the mouse a LOT more.  My superuser status is threatened with the lack of keyboard koolness here.</p></li>
+<li><p><strong>Terminal</strong> - Er, command line.  And PowerShell?  Not worthy of the name.  In fact, it&#8217;s sometimes less powerful than vanilla cmd at times.</p></li>
+<li><p><strong>Home directory layout</strong> - Deep in the directory structure.  And spaces &#8211; Ick!</p></li>
+<li><p><strong>Backslashes</strong> - Eeeegggh&#8230;</p></li>
+<li><p><strong>Social acceptance</strong> - I got thrown out of a few geek clubs.  But, on the bright side, I can communicate and debug and get support from more users around the office because most of them use Windows as well.</p></li>
+<li><p><strong>No gnome-do</strong> - I love this app.  The others that are available aren&#8217;t nearly as elegant.  Start menu app search isn&#8217;t bad, but it doesn&#8217;t have all the other plugins of gnome-do.</p></li>
+<li><p><strong>Price</strong> - I can&#8217;t get the latest release for free.</p></li>
+<li><p><strong>File printing</strong> - Print to PDF not built in</p></li>
+<li><p><strong>No sudo</strong> - Super user process contains more annoying dialogs and is harder to get to w/out re-opening applications like cmd.</p></li>
+</ul>
+
+
+<h2>It&#8217;s a tie</h2>
+
+<ul>
+<li><strong>Wireless</strong> - Wireless networking setup is about as streamlined in each.  I like the UI a bit better in Windows.  I have full control over how I join networks in Ubuntu, but then again I don&#8217;t have to specify everything everytime on Windows.  Of course, now I&#8217;m having a problem when trying to connect to a wireless network on a different domain on my Windows box, and it&#8217;s giving me severe headaches.  It&#8217;s like software is built of twine or something.</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-11-01T10:45:00-06:00" pubdate data-updated="true">Nov 1<span>st</span>, 2010</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/windows7/'>windows7</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/writing-jquery-plugins/" title="Previous Post: Writing Jquery Plugins">&laquo; Writing Jquery Plugins</a>
+      
+      
+        <a class="next-article-link" href="/post/growing-a-whole-new-mind/" title="Next Post: Growing a Whole New Mind">Growing a Whole New Mind &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/windows-7-dev-environment/';
+        var disqus_url = 'http://jaketrent.com/post/windows-7-dev-environment/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

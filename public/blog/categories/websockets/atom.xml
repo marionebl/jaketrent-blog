@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: websockets | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/websockets/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Pipe stdout to SocketIO]]></title>
+    <link href="http://jaketrent.com/post/pipe-stdout-socketio/"/>
+    <updated>2012-07-20T13:32:00-06:00</updated>
+    <id>http://jaketrent.com/post/pipe-stdout-socketio</id>
+    <content type="html"><![CDATA[<p>When you run a shell script or some other process from NodeJs and want to get the output in a stream to a client, you can redirect or pipe the output from the process that originally outputs to stdout into your socketio stream.</p>
+
+<!--more-->
+
+
+<p>First, setup socketio on your server as you normally would:</p>
+
+<p><code>js
+var io = require('socket.io').listen(80);
+</code></p>
+
+<pre><code>io.sockets.on('connection', function (socket) {
+  runMyProcess(socket);
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
+</code></pre>
+
+<p>Second, setup your process to run <a href="http://rockycode.com/blog/run-shell-script-nodejs/">using spawn</a>.  For instance:</p>
+
+<p><code>js
+var spawn = require('child_process').spawn;
+var myProcess = spawn('sh', [ 'myShellScript.sh' ]);
+</code></p>
+
+<p>And setup your <code>myProcess</code> variable with the needed callbacks.  The 'data' callback is called whenever there is output from the process.  So, if you want to catch data from <code>stdout</code> and <code>stderr</code>, catch those and emit the data into your socketio stream, a la:</p>
+
+<p><code>js
+myProcess.stdout.setEncoding('utf-8');
+myProcess.stdout.on('data', function (data) {
+  socket.emit('process_data', data);
+});
+myProcess.stderr.setEncoding('utf-8');
+myProcess.stderr.on('data', function (data) {
+  socket.emit('process_data', data);
+});
+</code></p>
+
+<p>An important note from <a href="http://nodejs.org/api/stream.html#stream_event_data">the docs</a> is that:</p>
+
+<blockquote><p>The 'data' event emits either a Buffer (by default) or a string if setEncoding() was used.</p></blockquote>
+
+<p>If I didn't set the encoding so strings were returned, they did not transfer well over socketio.  Well, there you have it.  You can now get output from child processes to stream through socketio.  In my case, I was wanting to show realtime output in a web client.  It's a fun combination of abilities that should produce interesting applications.  Have fun!</p>
+]]></content>
+  </entry>
+  
+</feed>

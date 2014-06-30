@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: networking | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/networking/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Setup Public/Private Key]]></title>
+    <link href="http://jaketrent.com/post/setup-publicprivate-key/"/>
+    <updated>2012-07-19T14:14:00-06:00</updated>
+    <id>http://jaketrent.com/post/setup-publicprivate-key</id>
+    <content type="html"><![CDATA[<p>When you connect to a remote server, you're connecting over ssh or scp or a similar protocol.  In each case, you may have to provide some authentication credentials to prove you are who you say you are.  This can come in the form of a user/password combo, but if you're connecting a lot or if you're trying to setup a non-interactive connection, this can become either really monotonous or really problematic.  Public/private keys will come to our rescue, and we'll never need to enter our password again.</p>
+
+<!--more-->
+
+
+<p>```bash</p>
+
+<blockquote><p>ssh-keygen
+```</p></blockquote>
+
+<p>You can, but don't need to protect your private key with a passphrase.  It is private, after all.  The default names are:</p>
+
+<ul>
+<li>Private: id_rsa</li>
+<li>Public: id_rsa.pub</li>
+</ul>
+
+
+<p>Now you need to share your public key with the remote server:</p>
+
+<p>```bash</p>
+
+<blockquote><p>scp ~/.ssh/id_rsa.pub myUsername@remoteServer:
+```</p></blockquote>
+
+<p>The trailing colon will separate your hostname from the destination path and drop it in your default/home directory on the server.  Now, get into the remote server for the last time using that antiquated password of yours:</p>
+
+<p>```bash</p>
+
+<blockquote><p>ssh myUsername@remoteServer
+```</p></blockquote>
+
+<p>Once here, we need to put the public key in a file that will be used for incoming connections:</p>
+
+<p>```bash</p>
+
+<blockquote><p>mkdir ~/.ssh
+mv ~/id_rsa.pub ~/.ssh/authorized_keys
+```</p></blockquote>
+
+<p>And make sure that the permissions are locked down for security reasons:</p>
+
+<p>```bash</p>
+
+<blockquote><p>cd ~/.ssh
+chmod 700 .
+chmod 600 id_rsa.pub
+```</p></blockquote>
+
+<p>Jump back to your local box and prep your private key for your next ssh/scp connection:</p>
+
+<p>```bash</p>
+
+<blockquote><p>eval <code>ssh-agent</code>
+ssh-add ~/.ssh/id_rsa
+```</p></blockquote>
+
+<p>Note that we're adding our private key only.  If you had a passphrase on your private key, you'll be prompted for it at this point.  Voila!  You're next connection to that remote server should not require a password.  Try it!:</p>
+
+<p>```bash</p>
+
+<blockquote><p>ssh myUsername@remoteServer
+```</p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Change hostname on Ubuntu]]></title>
+    <link href="http://jaketrent.com/post/change-hostname-ubuntu/"/>
+    <updated>2010-01-04T08:49:00-07:00</updated>
+    <id>http://jaketrent.com/post/change-hostname-ubuntu</id>
+    <content type="html"><![CDATA[<p>When you setup your computer at the time of your initial Ubuntu installation, you assign your computer a hostname.  In my case, I gave it a hostname and then later wanted to change it to something else.  This is accomplished in two easy steps.</p>
+
+<!--more-->
+
+
+<p>First,</p>
+
+<p><code>bash
+sudo emacs /etc/hostname
+</code></p>
+
+<p>, and overwrite the hostname with the new hostname.  This will make it so the correct name is show when running the hostname command. Second,</p>
+
+<p><code>bash
+sudo emacs /etc/hosts
+</code></p>
+
+<p>, and overwrite the hostname here.  This will allow you to use sudo successfully and network applications to run.  This was done on Ubuntu 9.10 (Karmic).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Find network hosts with nmap]]></title>
+    <link href="http://jaketrent.com/post/find-network-hosts-nmap/"/>
+    <updated>2009-09-30T13:05:00-06:00</updated>
+    <id>http://jaketrent.com/post/find-network-hosts-nmap</id>
+    <content type="html"><![CDATA[<p>I had some fun this morning when the headless box that I'm ssh'ing into to do test app runs randomly changed IP address.  My goal was to find it on the network from my local box.  To my rescue: a cool tool called nmap.</p>
+
+<!--more-->
+
+
+<p>nmap, according to the man page, is a network exploration tool and security/port scanner.  Basically, I only ran it in a few forms.  But, on the man page, there are many, many options listed.</p>
+
+<p>To use a ping broadcast and find the hosts on the subnet:</p>
+
+<p>```bash</p>
+
+<h1>determine local box IP address and assuming subnet mask 255.255.255.0:</h1>
+
+<p>ifconfig</p>
+
+<h1>ping all hosts in range (* = 1-255)</h1>
+
+<p>nmap -sP 10.109.16.*</p>
+
+<h1>output will look like this:</h1>
+
+<p>Host 10.109.16.141 appears to be up.
+...
+Nmap done: 256 IP addresses (12 hosts up) scanned in 0.93 seconds
+```</p>
+
+<p>For some reason, and if someone knows how to enable this please let me know, my remote box wasn't advertising its hostname, so I wanted to look specifically at the ssh port to see if it was open.  To do this, I used a new option and had to run as root:</p>
+
+<p>```bash</p>
+
+<h1>IP protocol scan, looking at port 22 (default ssh)</h1>
+
+<p>sudo nmap -sO 10.109.16.* -p22
+```</p>
+
+<p>Note that if you don't include the -p option, this could take some time.  Also, the -sO option is a capital "oh", not a zero.</p>
+
+<p>So, sweet stuff, eh.  Now you can see who else on your network has unsecured ports. :)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mount Samba FS on Linux]]></title>
+    <link href="http://jaketrent.com/post/mount-samba-fs-linux/"/>
+    <updated>2009-09-21T09:34:00-06:00</updated>
+    <id>http://jaketrent.com/post/mount-samba-fs-linux</id>
+    <content type="html"><![CDATA[<p>Have you ever wanted to map to a remote drive or mount a samba share on Linux?  The commands a really easy, and they're chronicled here.</p>
+
+<!--more-->
+
+
+<p>First, grab Samba:</p>
+
+<p><code>bash
+sudo apt-get install smbfs
+</code></p>
+
+<p>Then use smbmount</p>
+
+<p><code>bash
+sudo smbmount //remote/path/ /local/mount/path/ -o username=[user]
+</code></p>
+
+<p>Behind -o, you can specify a number of comma-separated options.  To connect to the remote FS that I desired, I just needed the username specified.  Once you execute the smbmount, you may get a "Password:" prompt.  Make sure that you're not hopelessly entering your sudo password, as this is probably the password for the FS.</p>
+
+<p>A good resource for this whole process is <a href="http://www.stevens.edu/itwiki/cgi-bin/wiki/index.php/Linux_Map_a_Network_Drive">on this wiki</a>, or you can do a</p>
+
+<p><code>bash
+/sbin/mount.cifs --help
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Monitor Network Traffic with EtherApe]]></title>
+    <link href="http://jaketrent.com/post/monitor-network-traffic-etherape/"/>
+    <updated>2009-01-05T14:25:00-07:00</updated>
+    <id>http://jaketrent.com/post/monitor-network-traffic-etherape</id>
+    <content type="html"><![CDATA[<p>I wanted to count packets coming back and forth while telnet'ing to test out some different email protocols on our mail server and found this nifty little utility: it's called EtherApe.  Supposedly it's a clone of Etherman, which, if it has clones, probably costs money.</p>
+
+<p><a href="http://picasaweb.google.com/lh/photo/jNWdHI8V5W1IIMh1W1NKYw?feat=embedwebsite"><img src="http://lh6.ggpht.com/_5XZCKcD6--c/SWKJm2hw0wI/AAAAAAAAFzU/F-nxmHF9gvk/s800/Screenshot-EtherApe-1.png" style="width:100%;" /></a></p>
+
+<!--more-->
+
+
+<p>EtherApe will regularly update (every few seconds) the cloud of endpoints on what I assume is the subnet.  You can see the number of packets in the different protocols that go across the network.  The more packets, the thicker the line.  It was fun to leave up all day.</p>
+
+<p>To get it, do a:</p>
+
+<p><code>bash
+sudo apt-get install etherape
+</code></p>
+
+<p>There will be a few libraries that are dependencies, but I forget which they are.</p>
+]]></content>
+  </entry>
+  
+</feed>

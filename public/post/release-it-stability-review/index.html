@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Release It! Stability Review - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="I recently read Release It! by Michael Nygard. I became interested in this book when the NFJS 2008 panel cited it as their">
+  <meta name="keywords" content="functional-testing, requirements">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Release It! Stability Review" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/release-it-stability-review/" />
+  <meta property="og:description" content="I recently read Release It! by Michael Nygard. I became interested in this book when the NFJS 2008 panel cited it as their" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Release It! Stability Review" />
+  <meta name="twitter:description" content="I recently read Release It! by Michael Nygard. I became interested in this book when the NFJS 2008 panel cited it as their" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/release-it-stability-review/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Release It! Stability Review</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-18T07:37:00-06:00" pubdate data-updated="true">Aug 18<span>th</span>, 2009</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I recently read Release It! by Michael Nygard.  I became interested in this book when the NFJS 2008 panel cited it as their #1 suggested read.  In my view, the essence of Nygard&#8217;s expose boils down to two points:</p>
+
+<ol>
+<li>One can build software that passes QA with flying colors and still fails miserably in real environments.</li>
+<li>Problem in production are unavoidable. Good software will be able to navigate them as gracefully as possible.</li>
+</ol>
+
+
+<p>That said, the book was mostly conceptual, offering real-world examples of how antipatterns in software development made problems that were encountered even worse.  Then, he counters with patterns in stability, capacity, general design, and operations.  The principles discussed are those that most developers have at least some exposure to, but those that we don&#8217;t necessarily consider every day.  These consist mostly of non-functional requirements that do not often enjoy QA scrutiny.  The set of antipatterns and patterns is one that I think all developers, QA, and project managers would do well to consider within the scope of their current and future projects.</p>
+
+<p>Overall, it was a thoughtful book.  I particularly enjoyed the sections on capactiy and stability that seemed more immediately applicable to my everday life in code.  I found the operations section to be the driest, but giving me opportunity to consider the plight of sys admins.  I would agree with the NFJS panel and highly recommend the read.</p>
+
+<p>I have included a short slide deck on the stability section with some highlights on what one might consider and what is explained in much clearer detail in the book.</p>
+
+<!--more-->
+
+
+
+
+<iframe src="http://docs.google.com/present/embed?id=dcsq834g_58hp4kx2gx&size=m" frameborder="0" width="555" height="451"></iframe>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-18T07:37:00-06:00" pubdate data-updated="true">Aug 18<span>th</span>, 2009</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/review/'>Review</a>, <a class='category' href='/blog/categories/functional-testing/'>functional-testing</a>, <a class='category' href='/blog/categories/requirements/'>requirements</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/easymock-cause-effect-exception-mapping/" title="Previous Post: EasyMock Cause-Effect Exception Mapping">&laquo; EasyMock Cause-Effect Exception Mapping</a>
+      
+      
+        <a class="next-article-link" href="/post/hibernate-bind-variable-orderby-clause/" title="Next Post: Hibernate Bind Variable in OrderBy Clause">Hibernate Bind Variable in OrderBy Clause &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/release-it-stability-review/';
+        var disqus_url = 'http://jaketrent.com/post/release-it-stability-review/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

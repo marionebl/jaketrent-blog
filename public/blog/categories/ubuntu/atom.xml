@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ubuntu | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/ubuntu/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Create an IntelliJ Launcher in Ubuntu]]></title>
+    <link href="http://jaketrent.com/post/create-intellij-launcher-ubuntu/"/>
+    <updated>2011-06-20T13:26:00-06:00</updated>
+    <id>http://jaketrent.com/post/create-intellij-launcher-ubuntu</id>
+    <content type="html"><![CDATA[<p>IntelliJ IDEA is a great development environment.  I enjoy it very much.  It complements the OS of pleasure, Linux.  I mostly the Ubuntu distro or a derivative.  Here's a easy way to get yourself an IntelliJ launcher so you don't have to run the bin/idea.sh file if you don't want to.</p>
+
+<!--more-->
+
+
+<p>As a note:  I'm still using IntelliJ 10.0.3 on my Linux machine.  I was having some issues with 10.5 gobbling 100% CPU.  Bad juju.</p>
+
+<p>Once you download the tar, open 'er up, and place it in your favorite spot for sweet IDEs on the filesystem, create a launcher.  If you're lucky enough to still be using Gnome and not Unity, right click on your version of the menu and select edit (pictured, Linux Mint, hence all the green):</p>
+
+<p><img src="https://lh6.googleusercontent.com/-8Ls7ZWxGS3A/Tf-sKSQReUI/AAAAAAAAADw/PSBzRjJXNb4/s800/1-EditMenu.jpg" alt="image" /></p>
+
+<p>The navigate to the Programming-related area, and select New Item:</p>
+
+<p>Create your item:</p>
+
+<p><img src="https://lh3.googleusercontent.com/-xRk91_xLdFY/Tf-sKmaxkaI/AAAAAAAAAD4/bE6JKGofBVE/s640/3-EnterItem.jpg" alt="image" /></p>
+
+<p>The point here is to run the idea.sh file, but export JDK_HOME at the same time.  IntelliJ requires this to run.  It should also be noted that even at version 10.5 of IntelliJ, it still doesn't seem to like OpenJdk.  Hopefully that'll change soon, but for now, download Java 6.  Linux Mint nicely includes this in its PPAs, but you may not have that with other <code>Ubuntu derivatives &lt;http://rockycode.com/blog/install-java-5-karmic-koala/#comment-51263136&gt;</code>_.</p>
+
+<p>My launcher looks like this:</p>
+
+<p><code>bash
+/bin/sh -c "export JDK_HOME=/usr/lib/jvm/java-6-sun&amp;&amp;/usr/progs/idea10/bin/idea.sh"
+</code></p>
+
+<p>Make sure to reference the 128-pixel IDEA logo in the <idea>/bin directory so your Gnome-Do will look large and crisp:</p>
+
+<p><img src="https://lh5.googleusercontent.com/-ndkYKjiHNTI/Tf-sKmEfj-I/AAAAAAAAAD8/_zacFXJyyXM/s800/4-GnomeDo.jpg" alt="image" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Synergy on Ubuntu]]></title>
+    <link href="http://jaketrent.com/post/synergy-ubuntu/"/>
+    <updated>2010-01-04T10:01:00-07:00</updated>
+    <id>http://jaketrent.com/post/synergy-ubuntu</id>
+    <content type="html"><![CDATA[<p><a href="http://synergy2.sourceforge.net/" target="_blank">Synergy</a> is a fantastic project that allows you to share a single set of input devices (keyboard and mouse) over multiple machines.  Clipboard sharing is also supported.  It's remarkably easy to set up, and it works across multiple platforms.</p>
+
+<!--more-->
+
+
+<p>For my personal setup, I wanted to link my Linux box (lds-lap-3) and my Windows (sidekick) box.  I wanted the Linux box to be the server and the Windows box to be the client.  I also want both to work on login.  Here are are the steps:</p>
+
+<p>First, install the Windows executable after downloading it from the <a href="http://sourceforge.net/projects/synergy2/files/">Sourceforge</a> site.  For the Linux side, take advantage of the glorious network updates:</p>
+
+<p><code>bash
+sudo apt-get install synergy
+</code></p>
+
+<p>On the Ubuntu server, create a file called synergy.conf.  For the complete explanation, refer to the <a href="http://synergy2.sourceforge.net/running.html">Synergy docs</a>.  Here's my example file:</p>
+
+<p>```text
+section: screens</p>
+
+<pre><code> lds-lap-3:
+ sidekick:
+</code></pre>
+
+<p>end
+section: links</p>
+
+<pre><code>lds-lap-3:
+    left = sidekick
+    sidekick:
+    right = lds-lap-3
+</code></pre>
+
+<p>end
+```</p>
+
+<p>In the above configuration, lds-lap-3 is to the right of sidekick.  Now, setup the Synergy server to start when I log into my Ubuntu box (running gnome):</p>
+
+<p>```bash
+sudo emacs /etc/gdm/Xsession</p>
+
+<h1>add these lines:</h1>
+
+<p>/usr/bin/killall synergys
+sleep 1
+/usr/bin/synergys --config /your/path/to/synergy.conf
+```</p>
+
+<p>For a more comprehensive take on autostarting, check out the <a href="http://synergy2.sourceforge.net/autostart.html">Synergy docs</a>.  On the Windows box, start the Synergy GUI and select the option to "Use another computer's shared keyboard and mouse (client)".  Then, enter the other computer's host name.  In my case, this is "lds-lap-3".</p>
+
+<p>If you want the client to connect on login or start up for the Windows box, you'll find that under the "Options" section, click the "Autostart..." button.</p>
+
+<p>Now, I restart the Ubuntu box and log in.  To check to see if Synergy auto-started, run a:</p>
+
+<p><code>bash
+ps ax | grep synergys
+</code></p>
+
+<p>You should see the command run by the loading of the Xsession script.  Now, you can restart your Windows box.  Or, if you want to test that later, just click "Start" to get your client going.</p>
+
+<p>In my case, using Synergy 1.3.1, the client couldn't find the server this time.  I received this in the Synergy log: "WARNING: failed to connect to server: address not found for: lds-lap-3".  Well!  I'm not sure how I got this working before, but a Jaunty install with the same Windows install, I know this worked.  So, maybe it's a Karmic thing, I'm not sure.  I've also changed the physical location of my network plugin, so who knows.  In this <a href="http://www.linein.org/blog/2007/06/25/synergy-131-warning-failed-to-connect-to-server-time-out/">post</a>, they suggested pointing the client to the actual IP of the server.  This did work, though it's not as fun or automatic and gives me little spasms in my left eyebrow.  But, hey, it's working now.  If I find something more definitive, I'll post.</p>
+
+<p>Enjoy the awesomeness of Synergy, for which there is also no charge, and enjoy finding your mouse pointer in the sea of screen that you are about to enjoy.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Change hostname on Ubuntu]]></title>
+    <link href="http://jaketrent.com/post/change-hostname-ubuntu/"/>
+    <updated>2010-01-04T08:49:00-07:00</updated>
+    <id>http://jaketrent.com/post/change-hostname-ubuntu</id>
+    <content type="html"><![CDATA[<p>When you setup your computer at the time of your initial Ubuntu installation, you assign your computer a hostname.  In my case, I gave it a hostname and then later wanted to change it to something else.  This is accomplished in two easy steps.</p>
+
+<!--more-->
+
+
+<p>First,</p>
+
+<p><code>bash
+sudo emacs /etc/hostname
+</code></p>
+
+<p>, and overwrite the hostname with the new hostname.  This will make it so the correct name is show when running the hostname command. Second,</p>
+
+<p><code>bash
+sudo emacs /etc/hosts
+</code></p>
+
+<p>, and overwrite the hostname here.  This will allow you to use sudo successfully and network applications to run.  This was done on Ubuntu 9.10 (Karmic).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[InstallCert for Java Security Certificate]]></title>
+    <link href="http://jaketrent.com/post/installcert-java-security-certificate/"/>
+    <updated>2009-09-16T09:39:00-06:00</updated>
+    <id>http://jaketrent.com/post/installcert-java-security-certificate</id>
+    <content type="html"><![CDATA[<p>Sometimes you need to install a security certificate for authentication to work for certain services -- services that are accessed by your java application that requirement a secure connection.  For instance, needing to authenticate against an LDAP server from one of our apps, we had to run a little InstallCert.java on all JDKs used to run the app.</p>
+
+<!--more-->
+
+
+<p>Interesting to me, the <a href="http://blogs.sun.com/andreas/resource/InstallCert.java">InstallCert.java</a> code is found mostly on Sun blogs.  But, there you have it.  If you have much trouble with the manual process of installing these certificates, there's a good <a href="http://stufftohelpyouout.blogspot.com/2008/10/unable-to-find-valid-certification-path.html">blog post</a> to help you figure it out.</p>
+
+<p>After multiple updates to my JDK, my biggest problem was not so much that I couldn't figure out how to do it, but more that I had to do it again and again because the certs were being blown away.</p>
+
+<p>So, here's a quick python script to help make the process a little more automatic:</p>
+
+<p>```python</p>
+
+<h1>!/bin/python</h1>
+
+<p>import sys
+import subprocess
+import os</p>
+
+<p>CURR_DIR = os.getcwd()
+SECURITY_SUBDIR = os.path.join("jre", "lib", "security")
+JAVA_ARGS = "your-cert-host" # host:port passphrase
+JDK_HOMES = [] # path to desired JDKs</p>
+
+<p>if <strong>name</strong> == "<strong>main</strong>":</p>
+
+<pre><code>if os.path.isfile(os.path.join(CURR_DIR, "InstallCert.java")) == 0:
+    raise Exception("Must have InstallCert.java in current directory")
+
+if len(sys.argv) &lt; 2:
+    if len(JDK_HOMES) &gt; 0:
+        paths = JDK_HOMES
+    else:
+        raise Exception("Must specify JDK paths args or JDK_HOMES var")
+else:
+    paths = sys.argv[1:]
+
+for javapath in paths:
+    secpath = os.path.join(javapath, SECURITY_SUBDIR)
+    cmds = [
+        "cd %s" % CURR_DIR,
+        "cp InstallCert.java %s" % (secpath),
+        "javac %s" % (os.path.join(secpath, "InstallCert.java")),
+        "cd %s &amp;&amp; java %s %s" % (secpath, "InstallCert", JAVA_ARGS)
+        ]
+
+    for cmd in cmds:
+        print cmd
+        subprocess.call(cmd, shell=True)
+</code></pre>
+
+<p>```</p>
+
+<p>I have only run/tested this in Linux.  Make sure that you run this script with the proper user/permissions to write all the needed files.  For instance, I have to sudo this because my JDKs are in /usr/lib/...</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Remapping Ctrl Key in Ubuntu]]></title>
+    <link href="http://jaketrent.com/post/remapping-ctrl-key-ubuntu/"/>
+    <updated>2009-08-26T06:39:00-06:00</updated>
+    <id>http://jaketrent.com/post/remapping-ctrl-key-ubuntu</id>
+    <content type="html"><![CDATA[<p>On a Sun keyboard, the ctrl key is actually in the space that the caps lock key occupies on a standard qwerty keyboard nowadays.  In a program where the ctrl key is often used, this positioning can be helpful as no Vulcan figure stretches are required for common key patterns.  So, why not change caps lock to be a control key.</p>
+
+<!--more-->
+
+
+<p>In Linux, this change is much, much easier than the corresponding procedure on a Windows machine, there consisting of registry hacks.  But, on Ubuntu, it's even easier.  There's actually a GUI dialog to accomplish just the thing:</p>
+
+<p>Check out:
+System->Preferences->Keyboard->Layouts->Layout Options->Ctrl key behavior</p>
+
+<p><img src="http://lh5.ggpht.com/_5XZCKcD6--c/SpU8MJd7aAI/AAAAAAAAISY/-TbYr10RY80/s800/keyboard-preferences.png" alt="Keyboard Prefs" /></p>
+
+<p><img src="http://lh3.ggpht.com/_5XZCKcD6--c/SpU8L_C2obI/AAAAAAAAISU/4jXwduIfBoQ/s800/keyboard-layout-options.png" alt="Keyboard Layouts" /></p>
+
+<p>So, not only do you have ready-made options to switch caps lock and ctrl, but you can duplicate ctrl onto caps lock, etc.  Sweetness!</p>
+]]></content>
+  </entry>
+  
+</feed>

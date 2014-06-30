@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Context Processors Put Content On Multiple Pages - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Make your django context processors dry.">
+  <meta name="keywords" content="django, python">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Context Processors Put Content On Multiple Pages" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/context-processors-put-content-multiple-pages/" />
+  <meta property="og:description" content="Make your django context processors dry." />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Context Processors Put Content On Multiple Pages" />
+  <meta name="twitter:description" content="Make your django context processors dry." />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/context-processors-put-content-multiple-pages/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Context Processors Put Content on Multiple Pages</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-28T14:55:00-07:00" pubdate data-updated="true">Feb 28<span>th</span>, 2009</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In software development, be <a href="http://en.wikipedia.org/wiki/Don%27t_repeat_yourself">dry</a>, and define data once.  But, what if that data needs to be used in many places?  This is the case with parts of a web page, for instance, that are common to many different pages.  Django has a great mechanism for this: it is context processors.</p>
+
+<!--more-->
+
+
+<p>You can define a context processor, containing within in the things that you would like to be present and available for use within the given context.  There are two ways that I&#8217;ve found to include context processors: Per request or for all requests.</p>
+
+<h4>Per Request</h4>
+
+<p>Pass the context processor into the request in your view.py:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">aj2</span> <span class="kn">import</span> <span class="n">context_processors</span> <span class="k">as</span> <span class="n">cp</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">content_collection</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">slug</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;content/content_list.html&#39;</span><span class="p">,</span> <span class="nb">locals</span><span class="p">(),</span>
+</span><span class='line'>    <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">processors</span><span class="o">=</span><span class="p">[</span><span class="n">cp</span><span class="o">.</span><span class="n">content_common</span><span class="p">]))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That means that when the content_list.html template is loaded, all content_common variables will be available in that template context.  Those variables are:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">aj2</span> <span class="kn">import</span> <span class="n">util</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">content_common</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s">&#39;default_theme&#39;</span> <span class="p">:</span> <span class="n">util</span><span class="o">.</span><span class="n">get_default_theme</span><span class="p">(),</span>
+</span><span class='line'>    <span class="s">&#39;friends&#39;</span><span class="p">:</span> <span class="n">util</span><span class="o">.</span><span class="n">get_friend_list</span><span class="p">(),</span>
+</span><span class='line'>    <span class="s">&#39;fp_highlight&#39;</span><span class="p">:</span> <span class="n">util</span><span class="o">.</span><span class="n">get_random_fp_highlight</span><span class="p">(),</span>
+</span><span class='line'>    <span class="s">&#39;collections&#39;</span><span class="p">:</span> <span class="n">util</span><span class="o">.</span><span class="n">get_collection_list</span><span class="p">(),</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>For All Requests</h4>
+
+<p>Sometimes you don&#8217;t have absolute control of all the views in your project (ie, plugins).  So, what if you want to apply the context processor to those views as well?  The best way that I&#8217;ve found is by including the context processor definition in the settings.py file:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">TEMPLATE_CONTEXT_PROCESSORS</span> <span class="o">=</span> <span class="p">(</span>
+</span><span class='line'>  <span class="s">&#39;aj2.context_processors.content_common&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Glory, glory, django.</p>
+
+<p>Just make sure that you put the auth context processor in with the TEMPLATE_CONTEXT_PROCESSOR entries that you&#8217;re adding, otherwise you&#8217;ll get this message:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ImproperlyConfigured at /admin/
+</span><span class='line'>
+</span><span class='line'>Put <span class="s1">&#39;django.core.context_processors.auth&#39;</span> in your TEMPLATE_CONTEXT_PROCESSORS setting in order to use the admin application.
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-28T14:55:00-07:00" pubdate data-updated="true">Feb 28<span>th</span>, 2009</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/django/'>django</a>, <a class='category' href='/blog/categories/python/'>python</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/hibernates-enumerated-annotation-brittle/" title="Previous Post: Hibernate's @Enumerated Annotation is Brittle">&laquo; Hibernate's @Enumerated Annotation is Brittle</a>
+      
+      
+        <a class="next-article-link" href="/post/replace-text-css-defined-image/" title="Next Post: Replace Text With Css-Defined Image">Replace Text With Css-Defined Image &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/context-processors-put-content-multiple-pages/';
+        var disqus_url = 'http://jaketrent.com/post/context-processors-put-content-multiple-pages/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

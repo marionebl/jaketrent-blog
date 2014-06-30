@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: exception-handling | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/exception-handling/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Custom Exception Handling for AccessDeniedException]]></title>
+    <link href="http://jaketrent.com/post/custom-exception-handling-accessdeniedexception/"/>
+    <updated>2012-01-06T13:20:00-07:00</updated>
+    <id>http://jaketrent.com/post/custom-exception-handling-accessdeniedexception</id>
+    <content type="html"><![CDATA[<p>Our app throws all sorts of exceptions.  Well, it doesn't usually.  It shouldn't normally.  Er... But, when it does we want to put in some handling so that the app doesn't blow up in some unsuspecting user's face.  And even then, sometimes we want special handling for certain exceptions and make sure others are just caught.  And that's what we'll do with AccessDeniedException.</p>
+
+<!--more-->
+
+
+<h2>The Simple Case</h2>
+
+<p>In the simple case, all exceptions that bubble up to the servlet container will just need to be caught and a user needs to get a nice view instead of stack trace shown to them.  There's a nice class called <code>SimpleMappingExceptionResolver</code> that does, in fact, resolve this.  Provide it with the mappings from exception types to views that you've created, and as exceptions surface, the user will be shown the views instead of the exceptions.  Here's the config:</p>
+
+<p>```xml
+<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+  <property name="exceptionMappings"></p>
+
+<pre><code>&lt;props&gt;
+  &lt;prop key=".AccessDeniedException"&gt;errors/accessDenied&lt;/prop&gt;
+  &lt;prop key=".DataAccessException"&gt;errors/dataAccessFailure&lt;/prop&gt;
+  &lt;prop key=".TypeMismatchException"&gt;errors/resourceNotFound&lt;/prop&gt;
+  &lt;prop key=".NoSuchRequestHandlingMethodException"&gt;errors/resourceNotFound&lt;/prop&gt;
+  &lt;prop key=".MissingServletRequestParameterException"&gt;errors/resourceNotFound&lt;/prop&gt;
+&lt;/props&gt;
+</code></pre>
+
+<p>  </property>
+  <property name="defaultErrorView" value="errors/generalError"/>
+  <property name="warnLogCategory" value="com.rockycode"/>
+</bean>
+```</p>
+
+<p>As it turns out, this is perfect for the simple case.  What if I want something special?  And when don't I?!</p>
+
+<h2>Custom HandlerExceptionResolver</h2>
+
+<p>In my case, I want to catch <code>AccessDeniedException</code> just like all others, except I want to do some special checking of the user attributes who just go rejected via Spring Security.  This means I need a custom <code>HandlerExceptionResolver</code>.  And thankfully these things aren't all that complicated.  Something custom to handle our <code>AccessDeniedException</code> might be called <code>AccessDeniedExceptionResolver</code> and looks somewhat like this:</p>
+
+<p>```java
+public class AccessDeniedExceptionResolver implements HandlerExceptionResolver, Ordered {</p>
+
+<p>  private int order;</p>
+
+<p>  public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {</p>
+
+<pre><code>ModelAndView view = null;
+if (ex instanceof AccessDeniedException) {
+  // super special handling lives here
+  view = new ModelAndView("specialness");
+}
+return view;
+</code></pre>
+
+<p>  }</p>
+
+<p>  // .. getters and setters ..
+}
+```</p>
+
+<p>The <code>resolveException()</code> method is where the magic goes.  I only care about a certain type of exception, so I check for it and do special stuff.  If not, the <code>view</code> is returned as null with just falls through to the next resolver in line if there is one.  And blast it, we want one.  Let's just use our existing simple case resolver.</p>
+
+<h2>Setting up 2 ExceptionResolvers</h2>
+
+<p>In <code>AccessDeniedExceptionResolver</code>, we implemented <code>Ordered</code>.  This shows priority in a potential string of resolvers.  We're going to setup our resolver for the specific case to be higher priority (lower number), remove the <code>AccessDeniedException</code> entry on <code>SimpleMappingExceptionResolver</code> and add an order property to it:</p>
+
+<p>```xml
+<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+  <property name="exceptionMappings"></p>
+
+<pre><code>&lt;props&gt;
+  &lt;prop key=".DataAccessException"&gt;errors/dataAccessFailure&lt;/prop&gt;
+  &lt;prop key=".TypeMismatchException"&gt;errors/resourceNotFound&lt;/prop&gt;
+  &lt;prop key=".NoSuchRequestHandlingMethodException"&gt;errors/resourceNotFound&lt;/prop&gt;
+  &lt;prop key=".MissingServletRequestParameterException"&gt;errors/resourceNotFound&lt;/prop&gt;
+&lt;/props&gt;
+</code></pre>
+
+<p>  </property>
+  <property name="defaultErrorView" value="errors/generalError"/>
+  <property name="warnLogCategory" value="com.rockycode"/>
+  <property name="order" value="1"/>
+</bean></p>
+
+<p><bean class="com.rockycode.AccessDeniedExceptionResolver">
+  <property name="order" value="0"/>
+</bean>
+```</p>
+
+<p>Slap that config in your app context and sing for joy.  Now you can create as many custom handlers as you'd like and just string em up like clean laundry on the line.</p>
+]]></content>
+  </entry>
+  
+</feed>

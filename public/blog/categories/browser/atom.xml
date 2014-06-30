@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: browser | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/browser/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Cross-Domain RequireJs Text]]></title>
+    <link href="http://jaketrent.com/post/cross-domain-requirejs-text/"/>
+    <updated>2012-06-07T13:11:00-06:00</updated>
+    <id>http://jaketrent.com/post/cross-domain-requirejs-text</id>
+    <content type="html"><![CDATA[<p>Through long-available browser quirks/features, javascript has been available for requests across disparate domains.  But, other resources, such as text files (eg, handlebars templates) have had more restrictions placed on them.  Recently, CORS support has enhanced the ability to make these requests.  Here's how you get your text files from another domain via requirejs.</p>
+
+<!--more-->
+
+
+<h2>CORS</h2>
+
+<p><a href="https://developer.mozilla.org/en/http_access_control">CORS</a> is a great feature for modern browsers that allows a site on a domain A to request a resource from domain B without restriction, because domain B already said that it's willing to accept those requests. In an <a href="http://remysharp.com/2011/04/21/getting-cors-working/">article on CORS by Remy Sharp</a>, he outlines in more detail how to setup your server to be CORS ready.  Simply, it comes down to the server responding with an http header.  To allow all sites to request a server's resources:</p>
+
+<p><code>http
+Access-Control-Allow-Origin: *
+</code></p>
+
+<p>To allow a whitelist of sites to request resources, the server must give the same header with only certain sites listed:</p>
+
+<p><code>http
+Access-Control-Allow-Origin: http://rockycode.com http://builtbyjake.com
+</code></p>
+
+<p>What servers can <a href="http://html5please.com/#cors">support CORS</a>?  Firefox and Chrome have supported it for some time.  IE8 has its own Microsoft flavor.  iOS and Android also have strong support for a few version back.  Check out the <a href="http://caniuse.com/cors">detailed stats on caniuse.com</a>.</p>
+
+<h2>RequireJs</h2>
+
+<p><a href="http://requirejs.org/">RequireJs</a> Is a fantastic Javascript loader that allows for client-side async loading of js and other static assets.  For textual, non-code things, there is a <a href="http://requirejs.org/docs/download.html#text"><code>text</code> plugin</a>.</p>
+
+<p>Because RequireJs knows about non-CORS-enabled browser restrictions, by default it functions differently for cross-domain requests.  In the current (2.0.0) implementation of the text plugin, line 163, the plugin decides whether to do a normal XHR (more lenient on text assets) request or to skip to the <code>else</code> statement to require what it will <a href="https://groups.google.com/group/requirejs/browse_thread/thread/bc0608ef5f8943e7/3a1cafaa93869c32">assume is javascript</a> because that's requestable across domains:</p>
+
+<p>```js
+//Load the text. Use XHR if possible and in a browser.
+if (!hasLocation || useXhr(url, defaultProtocol, defaultHostName, defaultPort)) {
+  text.get(url, function (content) {</p>
+
+<pre><code>text.finishLoad(name, parsed.strip, content, onLoad);
+</code></pre>
+
+<p>  }, function (err) {</p>
+
+<pre><code>if (onLoad.error) {
+    onLoad.error(err);
+}
+</code></pre>
+
+<p>  });
+} else {
+  //Need to fetch the resource across domains. Assume
+  //the resource has been optimized into a JS module. Fetch
+  //by the module name + extension, but do not include the
+  //!strip part to avoid file system issues.
+  req([nonStripName], function (content) {</p>
+
+<pre><code>text.finishLoad(parsed.moduleName + '.' + parsed.ext,
+                parsed.strip, content, onLoad);
+</code></pre>
+
+<p>  });
+}
+```</p>
+
+<p>To allow CORS-enabled servers to get resources requested from them, we <a href="http://requirejs.org/docs/api.html#config">configure RequireJs</a> to override the <code>getXhr</code> function to return true:</p>
+
+<p>(Note: 25 Oct 2012 - Syntax updated per Chris' comment below)</p>
+
+<p>```js
+require.config({
+  config: {</p>
+
+<pre><code>text: {
+  useXhr: function (url, protocol, hostname, port) {
+    // allow cross-domain requests
+    // remote server allows CORS
+    return true;
+  }
+}
+</code></pre>
+
+<p>  }
+});
+```</p>
+
+<p>Now you should be able to ask for various and sundry things across domains and continue enjoy the RequireJs goodness -- now multiplied:</p>
+
+<p><code>js
+require('text!http://anotherDomain/my.html', function (my) {
+  // have fun!
+});
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[XQuery Browser Language Detection]]></title>
+    <link href="http://jaketrent.com/post/xquery-browser-language-detection/"/>
+    <updated>2011-05-06T14:07:00-06:00</updated>
+    <id>http://jaketrent.com/post/xquery-browser-language-detection</id>
+    <content type="html"><![CDATA[<p>If you've created an internationalized website lately, you've probably implemented some sort of language chooser widget in your site ui to allow your users to indicate which language they would like to see content displayed in.  What I often forget is that the user may have already made this indication previous to visiting your site, and you might be like to think about respecting their previously indicated preference.</p>
+
+<!--more-->
+
+
+<p>Within the browser, a user can store their preferred language.  The w3c has a <a href="http://www.w3.org/International/questions/qa-lang-priorities#changing">nice browser list</a> to give some terse instructions on how to set your language in your browser.</p>
+
+<p>Your app might read the browser preference differently, but at least one component is consistent.  Your browser is going to pass an <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html">HTTP header</a> called "Accept-Language" to your app.  In a recent app, I read this using XQuery:</p>
+
+<p><code>
+xdmp:get-request-header("Accept-Language")
+</code>
+That's going to return a string something like this one, which is mine:</p>
+
+<p><code>
+en-US,en;q=0.8
+</code></p>
+
+<p>This is a comma-delimited list of 2-letter <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">language codes &lt;http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes><code>_ and 2-letter</code>locale codes</a>, informally "language-locale".</p>
+
+<p>The "q=#" describes the quality of the language.  The higher, the quality, the more preferred.  Notice that in my header, "en-US", American English, does not have a "q=" attribute.  The lack of "q=" indicates a default, actually the highest preference, of 1.0.</p>
+
+<p>There's also a Content-Language header, that I suppose you could use if you were making a differentiation for what language the actual content was using compared to the site chrome.  But, as far as I can tell, this is used less.  Even less by myself.  (Never.)</p>
+
+<p>Here's a full XQuery implementation for MarkLogic that will read the header and parse out the preferred language.  In my implementation, I don't care about the locale, so I'm paying attention only to the language code.  The regex used is an adjustment of <a href="http://www.thefutureoftheweb.com/blog/use-accept-language-header">this original php regex</a>:</p>
+
+<p>```
+xquery version "1.0-ml";</p>
+
+<p>declare option xdmp:mapping "false";</p>
+
+<p>declare function local:get-browser-lang() as xs:string? {
+  let $header := xdmp:get-request-header("Accept-Language")
+  return if (fn:exists($header)) then</p>
+
+<pre><code>local:get-top-hit-lang($header)
+</code></pre>
+
+<p>  else</p>
+
+<pre><code>()
+</code></pre>
+
+<p>};</p>
+
+<p>declare private function local:get-top-hit-lang($header as xs:string) as xs:string? {
+  let $langs :=</p>
+
+<pre><code>for $entry in fn:tokenize(local:parse-header($header), ",")
+let $data := fn:tokenize($entry, "q=")
+let $quality := $data[2]
+order by
+  if (fn:exists($quality) and fn:string-length($quality) gt 0) then
+    xs:float($quality)
+  else
+    xs:float(1.0)
+  descending
+return $data[1]
+</code></pre>
+
+<p>  return $langs[1]
+};</p>
+
+<p>declare private function local:parse-header($header as xs:string) as xs:string {
+  let $regex := "(([a-z]{1,8})(-[a-z]{1,8})?)\s<em>(;\s</em>q\s<em>=\s</em>(1|0.[0-9]+))?"
+  let $flags := "i"
+  let $format := "$2q=$5"
+  return fn:replace(fn:lower-case($header), $regex, $format)
+};</p>
+
+<p>local:get-browser-lang()
+```</p>
+
+<p>This implementation just takes the top language, no matter what.  You might want to check to see if your site actually supports the language before picking from the browser preference.  While you're looping through the list of acceptable languages in get-top-hit-lang(), you could add a where clause to check for support.</p>
+
+<p>Do you find that the sites you visit respect this header?</p>
+
+<h2>Update</h2>
+
+<p>Here's an updated version of the code that respects secondary language selections as well (not just first choice):</p>
+
+<p>```
+xquery version "1.0-ml";</p>
+
+<p>declare option xdmp:mapping "false";</p>
+
+<p>declare function local:get-browser-lang() as xs:string? {
+  let $header := xdmp:get-request-header("Accept-Language")
+  return if (fn:exists($header)) then</p>
+
+<pre><code>local:get-top-supported-lang(local:get-browser-langs($header), ("en", "es", "it"))
+</code></pre>
+
+<p>  else</p>
+
+<pre><code>()
+</code></pre>
+
+<p>};</p>
+
+<p>declare function local:get-top-supported-lang($ordered-langs as xs:string<em>, $translations as xs:string</em>) as xs:string? {
+  if (fn:empty($ordered-langs)) then</p>
+
+<pre><code>()
+</code></pre>
+
+<p>  else</p>
+
+<pre><code>let $lang := $ordered-langs[1]
+return if ($lang = $translations) then
+  $lang
+else
+  local:get-top-supported-lang(fn:subsequence($ordered-langs, 2), $translations)
+</code></pre>
+
+<p>};</p>
+
+<p>declare private function local:get-browser-langs($header as xs:string) as xs:string* {
+  let $langs :=</p>
+
+<pre><code>for $entry in fn:tokenize(local:parse-header($header), ",")
+let $data := fn:tokenize($entry, "q=")
+let $quality := $data[2]
+order by
+  if (fn:exists($quality) and fn:string-length($quality) gt 0) then
+</code></pre>
+
+<p>  xs:float($quality)</p>
+
+<pre><code>  else
+</code></pre>
+
+<p>  xs:float(1.0)</p>
+
+<pre><code>  descending
+return $data[1]
+</code></pre>
+
+<p>  return $langs
+};</p>
+
+<p>declare private function local:parse-header($header as xs:string) as xs:string {
+  let $regex := "(([a-z]{1,8})(-[a-z]{1,8})?)\s<em>(;\s</em>q\s<em>=\s</em>(1|0.[0-9]+))?"
+  let $flags := "i"
+  let $format := "$2q=$5"
+  return fn:replace(fn:lower-case($header), $regex, $format)
+};</p>
+
+<p>local:get-browser-lang()
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Quick Bookmarks]]></title>
+    <link href="http://jaketrent.com/post/quick-bookmarks/"/>
+    <updated>2010-07-28T09:54:00-06:00</updated>
+    <id>http://jaketrent.com/post/quick-bookmarks</id>
+    <content type="html"><![CDATA[<p>For someone who spends mucho time daily on the interwebs, being able to jump around quickly is important -- both for focused productivity and ADD-inducing web surfing.  Bookmarks have long facilitated savings your place on the web for a future return, but there are a few enhancements to the regular vanilla bookmarks that have greatly added to my bookmark delight: 1) Bookmarks in the cloud and 2) Keywords/custom search engines.</p>
+
+<!--more-->
+
+
+<h2>Bookmarks in the Cloud</h2>
+
+<p>You have lots of options here, but what I really mean is <a href="http://delicious.com">Delicious</a> (my personal <a href="http://delicious.com/jtsnake/">fav</a>).  "In the cloud" only means not on your personal computing device.  Rather, your bookmarks are stored on the Delicious servers, ready to be slurped up at whatever computer you belly up to.  For instance, if I cite a bookmark at work, I instantly have access to it at home.  Also, Delicious bookmarks are gonna give you tagging ability, giving good meta information for categorizing your links without all the rigmarole.  Plus, you have great plugins/extensions available for both <a href="https://addons.mozilla.org/en-US/firefox/addon/3615/">Firefox</a> and Chrome, integrating Delicious into your browser through REST services.  Firefox, with a Ctrl-D shortcut for bookmarking and nice separate interface for browsing your sync'ed Delicious bookmarks, seems to have a slight upper hand here.</p>
+
+<h2>Keywords / Custom Search Engines</h2>
+
+<p>These are two words, depending on the browser, for the same bookmark-type thing.  Have you ever had a bookmark that's just slightly different?  For instance, every day at my current job, I use a bug/issue tracker called <a href="http://www.atlassian.com/software/jira/">Jira</a>.  As I work through my assigned issues at work, I'm always popping directly to the issue, navigating by number.  So, let's have an example:</p>
+
+<p>Now, I work on a project called Screening, so the first issue I want to go to, by # of 303, might be here:</p>
+
+<p>http://theurl/jira/browse/SCRN-303</p>
+
+<p>But then the next issue I want to jump to is # 135 at:</p>
+
+<p>http://theurl/jira/browse/SCRN-135</p>
+
+<p>Well, since I don't want to bookmark each of these individual issues, I'm going to create a bookmark based on keyword (in Firefox) or a custom search engine (in Chrome), that is going to be formatted the same in each:</p>
+
+<p>http://theurl/jira/browse/SCRN-%s</p>
+
+<p>with a keyword of:</p>
+
+<p>scrn</p>
+
+<p>Then, when I want to jump to an issue, all I type in my address bar is:</p>
+
+<p>scrn 303</p>
+
+<p>or</p>
+
+<p>scrn 135</p>
+
+<p>It's fast, snazzy, and quick!  Just jump to your bookmarks with glee!  I love this feature!</p>
+
+<p><a href="http://www.mozilla.org/docs/end-user/keywords.html">In Firefox</a>, set this up by going to: Bookmarks menu > Organize Bookmarks > right click and Add Bookmark</p>
+
+<p><a href="http://www.google.com/support/chrome/bin/answer.py?answer=95653">In Chrome</a>, set this up by going to:  Tools menu > Basic tab > Default Search Manage button</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Unexpected call to method or property access]]></title>
+    <link href="http://jaketrent.com/post/unexpected-call-method-or-property-access/"/>
+    <updated>2009-12-18T11:43:00-07:00</updated>
+    <id>http://jaketrent.com/post/unexpected-call-method-or-property-access</id>
+    <content type="html"><![CDATA[<p>In a recent admin tool I was creating, I was using SOUIT of Javascript... apparently more than I knew how to write well.  Eventually, it all worked wonderfully -- that is, until someone tried to use it in a lesser browser -- Internet Explorer. The error was thus:</p>
+
+<!--more-->
+
+
+<p>Unexpected call to method or property access</p>
+
+<p>The usefulness of this error message led me to Google, where I soon found the many people had experienced this same awfulness on IE for a multiplicity of reasons, most wide-spread among them being appending children to elements that didn't exist and trying to remove elements from the head.  Neither of these scenarios seemed applicable, so being stuck without Firebug on the offending "browser", I devo'd back to the good 'ol alert box debugging.  I soon happened upon this method:</p>
+
+<p>```js
+function (data, prefix) {
+  for (field in data) {</p>
+
+<pre><code>  $(prefix + field).html(data[field]).val(data[field]);
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>It turns out that the elements that I'm selecting with the selector "prefix + field", gave me both input tags and other html elements.  This is why I do an update to the content with html() and with val().  This works in Firefox and Chrome.  But, on IE, it fails without pretense of working at all.  Eventually, I found that if I did an html() update on the html tags, and a val() update on inputs, it would work.  In this light, the error message actually makes a little sense.  Rewritten, it might say, "Hey naive web developer, you are trying to set an attribute that is not there.  I'm gonna die.  Bye now."</p>
+
+<p>Rewritten for the express purpose of pleasing IE and to overcome my naivete, here it is:</p>
+
+<p>```js
+function (data, prefix) {
+  for (field in data) {</p>
+
+<pre><code>  $(prefix + field).each(function () {
+      if ($(this).attr('value') != undefined) {
+          $(this).val(data[field]);
+      } else {
+          $(this).html(data[field]);
+      }
+  });
+</code></pre>
+
+<p>  }
+}
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

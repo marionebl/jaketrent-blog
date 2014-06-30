@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>jQuery Mobile Selector Context - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="As web developers we're used to being able to write a jQuery selector and easily get the DOM elements back on the page that we're looking for.">
+  <meta name="keywords" content="javascript, jquery, jquery-mobile">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="jQuery Mobile Selector Context" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/jquery-mobile-selector-context/" />
+  <meta property="og:description" content="As web developers we're used to being able to write a jQuery selector and easily get the DOM elements back on the page that we're looking for." />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="jQuery Mobile Selector Context" />
+  <meta name="twitter:description" content="As web developers we're used to being able to write a jQuery selector and easily get the DOM elements back on the page that we're looking for." />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/jquery-mobile-selector-context/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">jQuery Mobile Selector Context</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-01T12:58:00-06:00" pubdate data-updated="true">Sep 1<span>st</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>As web developers we&#8217;re used to being able to write a jQuery selector and easily get the DOM elements back on the page that we&#8217;re looking for.  In the case of jQuery Mobile, it&#8217;s slightly more complicated because a &#8220;page&#8221; is a different beast.</p>
+
+<!--more-->
+
+
+<h2>First Page Loads the Head</h2>
+
+<p>You can actually have multipe <a href="http://jquerymobile.com/demos/1.0b2/#/demos/1.0b2/docs/pages/page-anatomy.html">pages on the DOM</a> at a time.  This is required for the slide animation, helps with page caching for the back button, and helps make things feel snappier.  When you request a brand new page from the server, that page&#8217;s <code>&lt;body /&gt;</code> is ajax&#8217;ed onto the DOM and the <code>&lt;title /&gt;</code> is updated.</p>
+
+<p>This means that the first page that you load that initializes requests the jQuery mobile script and initializes it is the one that loads the <code>&lt;head /&gt;</code> tag is loaded.  From the <a href="http://jquerymobile.com/demos/1.0b2/#/demos/1.0b2/docs/pages/page-scripting.html">docs</a>:</p>
+
+<p>When you click a link in jQuery Mobile, the Ajax navigation system uses the link&#8217;s href to formulate an Ajax request. Although the full page is loaded with Ajax, the framework only pulls in the contents of the page, and ignores anything in the head except for title tag contents.</p>
+
+<p>In other words, on subsequent pages, you better have already imported the scripts and styles in the head that you need for subsequent page loads.</p>
+
+<h2>Expanded Context</h2>
+
+<p>Now, if multiple &#8220;pages&#8221; are all on the DOM, when you craft a selector in jQuery, you have the potential of picking up lots of other elements than you were expecting.  We&#8217;re used to our context being defined as a the single page served up from the server, so we can write a selector like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.media-carousel li&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And only get back the <code>&lt;li /&gt;</code>s that are on the page.  But now, if I nav to multiple pages with media carousels on them, on the 2nd one, when I execute this code, I&#8217;ll select all <code>&lt;li /&gt;</code> s from the 2nd <em>and</em> the 1st.  This quickly produces bugs that we don&#8217;t have to watch out for in our normal server-assisted MVC architecture.</p>
+
+<h2>Constrain to Page Context</h2>
+
+<p>The fix for jQuery Mobile, however, is super simple.  Per the <a href="http://api.jquery.com/jQuery/">jQuery docs</a>:</p>
+
+<p>  By default, selectors perform their searches within the DOM starting at the document root. However, an alternate context can be given for the search by using the optional second parameter to the $() function.</p>
+
+<p>In other words, we want to provide the currently-operating page in jQuery mobile as the context for the selector.  Here&#8217;s a snippet of the what the multimedia carousel selection might look like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">carouselStuff</span><span class="p">(</span><span class="nx">$page</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.media-carousel li&quot;</span><span class="p">,</span> <span class="nx">$page</span><span class="p">).</span><span class="nx">doStuff</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">).</span><span class="nx">live</span><span class="p">(</span><span class="s1">&#39;pageshow&#39;</span><span class="p">,</span> <span class="kd">function</span>  <span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">ui</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">carouselStuff</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When a <code>pageshow</code> event is triggered, that means the containing page (<code>&lt;div class="ui-page"/&gt;</code>) has been displayed with the newly ajax-requested content.  So, now our selections, bindings, and other jQuery goodness will only affect the current &#8220;page&#8221; context.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-01T12:58:00-06:00" pubdate data-updated="true">Sep 1<span>st</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/jquery/'>jquery</a>, <a class='category' href='/blog/categories/jquery-mobile/'>jquery-mobile</a>, <a class='category' href='/blog/categories/js/'>js</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/software-dev-hard-dont-be-negative-about-it/" title="Previous Post: Software Dev is Hard -- Don't Be Negative About It">&laquo; Software Dev is Hard -- Don't Be Negative About It</a>
+      
+      
+        <a class="next-article-link" href="/post/test-driven-development-marklogic/" title="Next Post: Test-driven Development on MarkLogic">Test-driven Development on MarkLogic &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/jquery-mobile-selector-context/';
+        var disqus_url = 'http://jaketrent.com/post/jquery-mobile-selector-context/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: souit | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/souit/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Pass Parameters to Javascript Callback]]></title>
+    <link href="http://jaketrent.com/post/pass-parameters-javascript-callback/"/>
+    <updated>2009-09-09T11:45:00-06:00</updated>
+    <id>http://jaketrent.com/post/pass-parameters-javascript-callback</id>
+    <content type="html"><![CDATA[<p>Callback functions are a nice feature of Javascript.  It's nice to be able to just use a function handle to show that it should be called when a certain something completes.  Sometimes, however, we want to do more than just specify a function handle.  We want to pass parameters.  Why?  Because sometimes the callback method cares about other data that was available before the original request.  Here's an example:</p>
+
+<!--more-->
+
+
+<p>As a part of the same voting mechanism that I wrote about for <a href="http://rockycode.com/blog/pass-parameters-jquery-event-functions/">this article on event handler parameter passing</a>, I wanted to keep id and (vote) direction around for the callback, which was to update the UI.</p>
+
+<p>First, I made an ajax call with jquery to make vote updates to the database, and on my way to the ajax call, I would save the id and direction in a global (bad) variable.  This works, because later, I can reference it in my callback function, updateUI:</p>
+
+<p>```js
+var action = null;
+var objectid = null;</p>
+
+<p>function vote(id, direction) {
+   action = direction;
+   objectid = id;
+   $.ajax({</p>
+
+<pre><code> type: 'POST',
+ url: '/hymn/' + id + '/vote/' + direction + '/',
+ dataType: 'json',
+ async: false,
+ timeout: 15000,
+ success: updateUI
+</code></pre>
+
+<p>   });
+}
+```</p>
+
+<p>The next solution is a bit cleaner and makes us feel better about ourself.  Instead of the global, a closure is used, in which we decorate the response object with new state (id and direction); and since the response object is passed by default into the ajax callback function, it's available later by calling response.id or response.objectid:</p>
+
+<p>```js
+function vote(id, direction) {
+   $.ajax({</p>
+
+<pre><code> type: 'POST',
+ url: '/hymn/' + id + '/vote/' + direction + '/',
+ dataType: 'json',
+ async: false,
+ timeout: 15000,
+ success: function (response) {
+       response.action = direction
+       response.objectid = id
+       updateUI(response);
+    }
+</code></pre>
+
+<p>   });
+}
+```</p>
+
+<p>Sweet!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Pass Parameters to Jquery Event Functions]]></title>
+    <link href="http://jaketrent.com/post/pass-parameters-jquery-event-functions/"/>
+    <updated>2009-09-08T14:06:00-06:00</updated>
+    <id>http://jaketrent.com/post/pass-parameters-jquery-event-functions</id>
+    <content type="html"><![CDATA[<p>Jquery has some awesome event-handling abilities.  The elusive ability to pass parameters into these event callbacks seems way harder than it should be.  Nevertheless, I have found <em>a</em> solution.  I really doubt it's the best one.  I really hope it isn't.</p>
+
+<!--more-->
+
+
+<p>The need to pass parameters is made clear when you have a callback that functions differently depending on what particular element triggers the event.  For example,  I'm doing a simple voting mechanism for every item in a list.  When an up or down arrow in front of the item is pressed, I want to make an ajax call that will record the vote on the server and then update the UI.  Therefore, I need to know what item I'm recording the vote for.  In the code below, the id will tell me what row I'm on.  This is the most important part.  The second parameter is the direction of the vote (up or down).  This is less important, in this case, because the same thing could have been accomplished by creating a separate callback for up and down.</p>
+
+<p>```js
+$(document).ready(function() {
+   $(".voter-up,.voter-down").click(function() {</p>
+
+<pre><code> var id = parseInt($(this).attr("id").substring(12));
+ var direction = $(this).attr("class").substring(6);
+ vote(id, direction);
+</code></pre>
+
+<p>   });
+});
+```</p>
+
+<p>So what's the key?  Embed the data that you want in id, class, or just any attribute of any element that has a per-item/row presence.  That explains the substring() calls.  My attributes look like this:</p>
+
+<p>
+<code>html
+&lt;a class="voter-up" id="link-hymn-u-{{ h.id }}" href="#"&gt;...something...&lt;/a&gt;
+</code></p>
+
+<p>The {{ curlies }} are for django templates, which are awesome, btw.
+</p>
+]]></content>
+  </entry>
+  
+</feed>

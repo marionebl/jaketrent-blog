@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Xdmp:Login Love - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="How do you log into a MarkLogic application to run as a user besides the default app server user? Use xdmp:login(), baby! User/role management can be &hellip;">
+  <meta name="keywords" content="marklogic, security, xquery">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Xdmp:Login Love" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/xdmp-login-love/" />
+  <meta property="og:description" content="How do you log into a MarkLogic application to run as a user besides the default app server user? Use xdmp:login(), baby! User/role management can be &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Xdmp:Login Love" />
+  <meta name="twitter:description" content="How do you log into a MarkLogic application to run as a user besides the default app server user? Use xdmp:login(), baby! User/role management can be &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/xdmp-login-love/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Xdmp:Login Love</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-03T13:22:00-07:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>How do you log into a MarkLogic application to run as a user besides the default app server user?  Use xdmp:login(), baby!  User/role management can be awesome &#8211; when it&#8217;s done and coded.  For now, let&#8217;s sing out a few important things to remember about xdmp:login() and all its hidden secrets.</p>
+
+<!--more-->
+
+
+<h2>My voice is my passport&#8230;</h2>
+
+<p>I was debugging some xdmp:login() goodness and realized that sometimes the SEC-PRIV exception wasn&#8217;t thrown.  It seems that if the xdmp:login() doesn&#8217;t recognize the username as a user known to the system, it won&#8217;t login.  Thus, if I code this beauty:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>xdmp:login("asdf")
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It won&#8217;t even try.  It just doesn&#8217;t do anything, assuming &#8220;asdf&#8221; really isn&#8217;t a known user in your app.</p>
+
+<h2>Session Masquerade</h2>
+
+<p>Make sure that you realize, as I failed to scrutinize in my quick glance at the <a href="http://developer.marklogic.com/pubs/4.2/apidocs/AppServerBuiltins.html#xdmp:login">xdmp:login() API</a>, that by default xdmp:login() logs in as the specified user for the entire session.  The last (optional) parameter, $set-session is true by default.  What will stop the masquerade?  Only session timeout or a call to xdmp:logout().  Don&#8217;t want to have to rip the mask off your user every time?  Try:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>xdmp:login($username, (), fn:false())</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But, if session logins are what you&#8217;re craving, you may run into the same issue I did&#8230; On a dark dreary night I crept to the monitor, brought up my code and began pressing the keys&#8230; typity, typity.  The branches of the tree outside scraped across the moonlit window.  Breathing more quickly now, I focused back at the flickering monitor.  I did an xdmp:login() to a user that didn&#8217;t have the xdmp-login execute privilege.  It worked.  But then to my horror, the second time it failed.  But, why?  Thinking that I might have to beat back the horrors of the night at any time with a flashlight, I stumbled to my feet.  Then, I realized that I was now permanently (at least for the duration of the session) an unprivileged peon and could not enjoy the warmth that privilege had once bought me.  After this realization, my nocturnal hallucination suddenly seemed less harrowing, less threatening, and I committed my code and went to sleep.</p>
+
+<p>Obviously not wanting to relive such an experience, just realize that you&#8217;ll need more logic around when to xdmp:login() and, in this case more importantly, when to not login.</p>
+
+<h2>And now a word about amps</h2>
+
+<p>Another experience to not forget (and also, thankfully, not embellish to such great, un-useful lengths) is that amps on the filesystem act a little bit differently than everywhere else.  That is, when I was trying to define xdmp-login privileges for the function that performed the password-less xdmp:login(), I couldn&#8217;t seem to get them to take on the filesystem.  That is because my deployment mechanism doesn&#8217;t apply amps to the filesystem.  If you want that goodness, make sure you do something as sweet as this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>xdmp:amp($namespace, $localname, $module-uri, xs:unsignedLong(0))</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Where the &#8220;0&#8221; represents the filesystem instead of a deployed Modules database.</p>
+
+<p>&#8230; verify me.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-02-03T13:22:00-07:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/marklogic/'>marklogic</a>, <a class='category' href='/blog/categories/security/'>security</a>, <a class='category' href='/blog/categories/xquery/'>xquery</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/xquery-imports-marklogic/" title="Previous Post: Xquery Imports on MarkLogic">&laquo; Xquery Imports on MarkLogic</a>
+      
+      
+        <a class="next-article-link" href="/post/thoughts-customization-and-convention/" title="Next Post: Thoughts on Customization and Convention">Thoughts on Customization and Convention &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/xdmp-login-love/';
+        var disqus_url = 'http://jaketrent.com/post/xdmp-login-love/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

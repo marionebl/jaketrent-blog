@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: maven | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/maven/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Xquery Imports on MarkLogic]]></title>
+    <link href="http://jaketrent.com/post/xquery-imports-marklogic/"/>
+    <updated>2011-01-28T14:06:00-07:00</updated>
+    <id>http://jaketrent.com/post/xquery-imports-marklogic</id>
+    <content type="html"><![CDATA[<p>When a person looks at an Xquery module import, ... um, sorry... he usually gets distracted by something else before he can get to the semicolon at the end of the statement.  They're seriously long!  Few are the files in which one-line imports adhere to an 80 character width limit.  Read on for my other Martin Luther-spirited grievances.</p>
+
+<!--more-->
+
+
+<h2>Length</h2>
+
+<p>Ridiculously long.  Example that speaks for itself:</p>
+
+<p><code>
+import module namespace translate = "http://aprilandjake.com/audience/modules/content/translate" at "/modules/content/translate.xqy";
+</code></p>
+
+<p>Ok, some of the blame here lies with me for picking a ridiculous namespace.  But it seems conventional to stick the domain on the front in proper URL fashion.  And then, I'm mirroring the path from app server root as the rest of the namespace, which takes me to repetition:</p>
+
+<h2>Repetition</h2>
+
+<p>Doesn't it seem like we have the same data listed here twice.  From what I'm getting from the <a href="http://www.w3.org/TR/xquery/#id-module-import">W3C Xquery Spec</a>:</p>
+
+<p>The URILiterals that follow the at keyword are optional location hints, and can be interpreted or disregarded in an implementation-defined way.</p>
+
+<p>The implementation I'm operating in is MarkLogic.  As far as I can tell, then url after the "at" is required in this implementation.  Can anyone fulfill a boyish dream of mine and tell me otherwise?  Please!</p>
+
+<p>So, I thought I was pretty cool creating a Live Template in IntelliJ to throw down this nasty import for my current project and save me a few keystrokes:</p>
+
+<p><code>
+import module namespace $NAME$ = "http://aprilandjake.com/audience$PATH$" at "$PATH$.xqy";
+</code></p>
+
+<p>So, then I could type the path from app server root to the library module file once and it would be duplicated, but now I get bitten by paths:</p>
+
+<h2>Paths</h2>
+
+<p>It seems like most of the Xquery code that I see uses absolute paths after the "at" in the import, as in:</p>
+
+<p><code>
+import module namespace myns = "http://super.long/namespace/of/modules/death" at "/modules/death.xqy";
+</code></p>
+
+<p>Note the leading slash.  So, I have done this in most of my code.  Remember, it helps my live template work as well (less typing overall).  Well, it seems that I may need to change my standard here, because the leading slash limits me, as I see it, in my code reuse.  Paraphrasing from the <a href="http://docs.marklogic.com/4.2doc/docapp.xqy#display.xqy?fname=http://pubs/4.2doc/xml/dev_guide/import_modules.xml%2329407">MarkLogic Documentation</a>:</p>
+
+<p>Paths in imports are resolved as follows:</p>
+
+<ol>
+<li>Starts with "/", look under Modules subdir in MarkLogic install</li>
+<li>Starts with "/", look under App Server root</li>
+<li>Doesn't start with "/", look relative to location of referencing module</li>
+<li>Contains scheme/network location (eg, "http://"), throw exception</li>
+</ol>
+
+
+<p>So, everything's all well and good using leading "/" in the "at" expression until you want to reference the same code from multiple locations (really only a problem in local filesystem development thus far).  For Example:</p>
+
+<ul>
+<li>App Server 1 - This app server's root is pointed to its own code.  Absolute paths work fine. Bam!</li>
+<li>App Server 2 - This app server's root is different.  It has its own code and also has a maven dependency declared on the code that's currently being run on App Server 1.  App Server 1 code is a module that I've packaged up and sent to the maven repo, but developing locally, I don't have a compile or package phase for running my app, so I create a symlink with the same name as the artifactId to where the code is that I want to reference.  To get my import statements that link App Server 2 to App Server 1 code to work, I have to add the artifactId at the front of the absolute path.  But, now the problem is the code within App Server 1, where it links to itself.  Because it uses the leading "/" (absolute), MarkLogic tries to resolve it under App Server root, which in this case is a different App Server entirely.</li>
+</ul>
+
+
+<p>So, am I stuck using relative paths at least inside of the App Server 1 code?</p>
+
+<h2>Dreams</h2>
+
+<p>All I want in an import statement is to declare to my language that I want to use code that is stored elsewhere.  Can't we do that in fewer than 80 chars?  And couldn't there be a really cool convention (over configuration), for developers like me whose fingers tire from writing ranting blog posts, that, for example, could derive a path to the .xqy file from the namespace that follows said convention?  Finally, I can't help but think that there has to be an easier way for me to find and run bits of code from places besides my App Server root, even in local filesystem dev mode.</p>
+
+<p>Help me, Obi-wan Kenobi, you're my only hope.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Change Maven JDK]]></title>
+    <link href="http://jaketrent.com/post/change-maven-jdk/"/>
+    <updated>2009-09-21T12:46:00-06:00</updated>
+    <id>http://jaketrent.com/post/change-maven-jdk</id>
+    <content type="html"><![CDATA[<p>Sometimes you want Maven to compile your code with a different JDK than is the one assigned to your JAVA_HOME.  For instance, I have code in a project that I'm working on that only compiles on Java 1.5.  My JAVA_HOME, however, is 1.6.  So, how do we specify the JDK for Maven?</p>
+
+<!--more-->
+
+
+<p>Go to the pom.xml for the module or submodule that needs a specific JDK version for compilation, and insert such a goody:</p>
+
+<p>```xml
+<project>
+   <build></p>
+
+<pre><code>  &lt;plugins&gt;
+     &lt;plugin&gt;
+     &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+           &lt;source&gt;1.5&lt;/source&gt;
+           &lt;target&gt;1.5&lt;/target&gt;
+           &lt;compilerVersion&gt;1.5&lt;/compilerVersion&gt;               
+           &lt;executable&gt;/usr/lib/jvm/java-1.5.0-sun/bin/javac&lt;/executable&gt;
+        &lt;/configuration&gt;
+     &lt;/plugin&gt;
+  &lt;/plugins&gt;
+</code></pre>
+
+<p>   </build>
+</project>
+```</p>
+
+<p><em>Note: My code parser/colorer is removing camelcase, which is important.  (ie, artifactId, compilerVersion)</em></p>
+
+<p>Notice that the executable for javac is hardcoded in the pom.xml.  That's not the most awesome thing to do, so you can use a property for the absolute path that can be specified on a per-user basis.  For more details, see the <a href="http://maven.apache.org/plugins/maven-compiler-plugin/examples/compile-using-different-jdk.html">Apache documentation</a>.</p>
+
+<p>Now mvn compile, etc, and JDK 1.5 will be used where you have specified.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Intellij Maven Source Downloads]]></title>
+    <link href="http://jaketrent.com/post/intellij-maven-source-downloads/"/>
+    <updated>2008-11-24T14:04:00-07:00</updated>
+    <id>http://jaketrent.com/post/intellij-maven-source-downloads</id>
+    <content type="html"><![CDATA[<p>Debugging time is a blessed time in one's day where the hotkeys for continue, step into, step over, and others often grace the pads of the programmer's fingers.  This can be quite a rewarding experience.  Now ponder on the disappointment that materializes on the programmer's crestfallen brow when the step into button is pressed and upon the screen displays the all-descriptive and utterly useless "/<em>* compiled code </em>/".  Maven mixed with IntelliJ to the rescue -- download the sources!</p>
+
+<!--more-->
+
+
+<p>Debugging time is a blessed time in one's day where the hotkeys for continue, step into, step over, and others often grace the pads of the programmer's fingers.  This can be quite a rewarding experience.  Now ponder on the disappointment that materializes on the programmer's crestfallen brow when the step into button is pressed and upon the screen displays the all-descriptive and utterly useless "/<em>* compiled code </em>/".  Maven mixed with IntelliJ to the rescue -- download the sources!</p>
+
+<p>In a project with many external dependencies, this can expand your view of the code your using at least 42-fold.</p>
+
+<p>Here, Maven is your friend.  It's a great tool.  This command led to my discovery of this gem:</p>
+
+<p><code>bash
+mvn idea:help -Ddetail=true -Dgoal=[insert name of goal here]
+</code></p>
+
+<p>And now for the awesome one... When tooling your project for IntelliJ, run this:</p>
+
+<p><code>bash
+mvn idea:idea -DdownloadSources=true
+</code></p>
+
+<p>This can also be done when you're blowing away your dependency metadata, which is stored in your project .iml file by default:</p>
+
+<p><code>bash
+mvn idea:module -DdownloadSources=true
+</code></p>
+
+<p>Enjoy that source!</p>
+]]></content>
+  </entry>
+  
+</feed>

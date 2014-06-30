@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: security | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/security/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA['And' Spring @Secured Roles]]></title>
+    <link href="http://jaketrent.com/post/and-spring-secured-roles/"/>
+    <updated>2012-01-06T10:30:00-07:00</updated>
+    <id>http://jaketrent.com/post/and-spring-secured-roles</id>
+    <content type="html"><![CDATA[<p>Spring Security (previously Acegi) gives you an awesome AOP way of locking down methods in your Java application.  And well-placed <a href="http://www.youtube.com/watch?v=ldFOHUaf2zg">lock down</a> is a special power indeed.  However, Spring disappoints a bit on this score because it turns out its default behavior is to 'or' the roles listed in @Secured annotation.  You'd think the default would be the stricter 'and', but alas.  But never fear, there is hope.</p>
+
+<!--more-->
+
+
+<p><em>Updated (21 June 2012)</em>:</p>
+
+<h2>The easy way</h2>
+
+<p>This article can be simplified into this line of code:</p>
+
+<p><code>java
+@PreAuthorize("hasRole('ROLE_role1') and hasRole('ROLE_role2')")
+</code></p>
+
+<p>There are other combo options <a href="http://static.springsource.org/spring-security/site/docs/3.0.x/reference/el-access.html">as documented by Spring</a>.</p>
+
+<p>If you wish to go on, enjoy the custom code and xml config that follows:  :)</p>
+
+<p>There is always hope.</p>
+
+<p>Note:  My experimentation with this and the line numbers in files mentioned here are from spring-security-core/3.0.7.RELEASE.</p>
+
+<h2>GrantedAuthority</h2>
+
+<p>Your authorities populator or however you're getting roles assigned to your user will eventually place them in the place that you can get to them programmatically:</p>
+
+<p><code>java
+SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+</code></p>
+
+<p>And here is where the @Secured annotation will eventually look for them (AbstractSecurityInterceptor.java:204):</p>
+
+<p><code>java
+Collection&lt;ConfigAttribute&gt; attributes = this.obtainSecurityMetadataSource().getAttributes(object);
+</code></p>
+
+<p>This collection of <code>GrantedAuthorities</code> is are the roles that have been assigned to the user associated with your request to a method.</p>
+
+<h2>@Secured</h2>
+
+<p>When you want only users with certain authorities to access methods, you apply the <code>@Secured</code> annotation to the method needing protection.  Also note that you can specify multiple roles in this annotation:</p>
+
+<p><code>java
+@Secured({"role1", "role2"})
+public void makeSomethingAwesome() {
+  // pure awesome
+}
+</code></p>
+
+<p>Again, to note what is important and initially stunned me:  By default, you just need one of these roles (either role1 OR role2) to make it into the innards of this awesomeness.  This is because of the default configuration.  From the <a href="http://static.springsource.org/spring-security/site/docs/3.0.x/reference/ns-config.html">Spring Security docs</a>:</p>
+
+<p>The default strategy is to use an AffirmativeBased AccessDecisionManager with a RoleVoter and an AuthenticatedVoter.</p>
+
+<h2>Role Name Prefix</h2>
+
+<p>Another point worth making is about the prefix required for roles.  Roles that are counted by the <code>RoleVoter</code> are only seen as roles if they start with the specified prefix.  By default, <code>RoleVoter</code> sees this prefix as "ROLE_".  It is settable, but be warned that your roles will count for nothing and your <code>@Secured</code> method will be totally exposed unless it looks something like this:</p>
+
+<p><code>java
+@Secured({"ROLE_role1", "ROLE_role2"})
+public void makeSomethingAwesome() {
+  // pure awesome that is now protected
+}
+</code></p>
+
+<p>From the <code>RoleVoter</code> docs:</p>
+
+<blockquote><p>Votes if any ConfigAttribute#getAttribute() starts with a prefix indicating that it is a role. The default prefix string is <code>ROLE_</code>, but this may be overridden to any value. It may also be set to empty, which means that essentially any attribute will be voted on. As described further below, the effect of an empty prefix may not be quite desirable.</p></blockquote>
+
+<h2>The 2 Keys</h2>
+
+<p>There are two key interfaces that Spring Security is using to determine how you want your roles checked that you specify in the <code>@Secured</code> annotation:</p>
+
+<ul>
+<li>AccessDecisionManager implemented as AffirmativeBased, ConsensusBased or UnanimousBased</li>
+<li>AccessDecisionVoter, implemented as RoleVoter</li>
+</ul>
+
+
+<p>The decision manager is the class that has a collection of voters.  The decision manager orchestrates the voters and asks each in turn whether the requesting user should be let through the <code>@Secured</code> annotation or denied.  By default, the <code>AffirmativeBased</code> manager is used.</p>
+
+<p>Each decision manager functions differently in how it counts the votes of its voters:</p>
+
+<ul>
+<li>AffirmativeBased - if any voter comes votes 'yes' or 'access granted', the manager allows access</li>
+<li>ConsensusBased - this manager is majority rules.  There can be votes 'yes' and 'no', and as long as 'yes' votes outnumber 'no' votes, access is allowed</li>
+<li>UnanimousBased - this manager requires every voter to vote 'yes' or else access is denied</li>
+</ul>
+
+
+<p>Since this discussion is based around roles, we only care to use Spring's <code>RoleVoter</code>.  Here's part of its implementation, starting on line 98:</p>
+
+<p>```java
+public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
+  int result = ACCESS_ABSTAIN;
+  Collection<GrantedAuthority> authorities = extractAuthorities(authentication);</p>
+
+<p>  for (ConfigAttribute attribute : attributes) {</p>
+
+<pre><code>if (this.supports(attribute)) {
+  result = ACCESS_DENIED;
+
+  // Attempt to find a matching granted authority
+  for (GrantedAuthority authority : authorities) {
+    if (attribute.getAttribute().equals(authority.getAuthority())) {
+      return ACCESS_GRANTED;
+    }
+  }
+}
+</code></pre>
+
+<p>  }</p>
+
+<p>  return result;
+}
+```</p>
+
+<p>Verbalized, this <code>vote()</code> method goes through each role specified in the <code>@Secured</code> annotation and for each of those checks whether the user has that role.  If he does, the voter returns its vote as 'yes'.  Got that?  <em>At the first match, the vote is yes</em>.  This is a logical 'or'.</p>
+
+<h2>Making the role vote a logical 'and'</h2>
+
+<p>I don't want my roles 'or'ed together.  I want the uesr to be required to have them all in combination or I will deny him access.  Since we've already shown that the default <code>RoleVoter</code> uses a logical 'or' operation, I guess we'll need to write our own role voter that uses a logical 'and'.  Potentially, that might be called 'HasAllRolesVoter', and  might look like this:</p>
+
+<p>```java
+public class HasAllRolesVoter extends RoleVoter {</p>
+
+<p>  @Override
+  public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {</p>
+
+<pre><code>Collection&lt;GrantedAuthority&gt; authorities = authentication.getAuthorities();
+int requiredMatches = attributes.size();
+int matches = 0;
+for (ConfigAttribute attribute : attributes) {
+  if (this.supports(attribute)) {
+    for (GrantedAuthority authority : authorities) {
+      if (attribute.getAttribute().equals(authority.getAuthority())) {
+        ++matches;
+        break;
+      }
+    }
+  }
+}
+
+int result = ACCESS_ABSTAIN;
+if (requiredMatches &gt; 0 &amp;&amp; matches &lt; requiredMatches) {
+  result = ACCESS_DENIED;
+} else if (matches &gt; 0 &amp;&amp; matches == requiredMatches) {
+  result = ACCESS_GRANTED;
+}
+return result;
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>It looks much like <code>RoleVoter</code>.  It extends <code>RoleVoter</code> and overrides <code>vote()</code>, which now goes through the roles on the <code>@Secured</code> annotation, checks each against the roles of the user, incrementing a count with each match.  If, in the end, there are as many matches as roles specified, we've found them all.  This is just a potential implementation.  There are probably many better was to get this done.</p>
+
+<p>So now can we do a logical 'and'?  Yes.  There are 3 ways of accomplishing this (and probably more):</p>
+
+<ol>
+<li>AffirmativeBased w/ HasAllRolesVoter</li>
+<li>ConsensusBased w/ HasAllRolesVoter</li>
+<li>UnanimousBased w/ RolesVoter</li>
+</ol>
+
+
+<p>Note that in the last option <code>UnanimousBased</code> access manager can use just the plain jane <code>RolesVoter</code>.  This is because <code>UnanimousBased</code> calls the <code>RoleVoter</code> up for vote for each individual role (one by one via the <code>singleAttributeList</code>) as opposed to the roles as a collection.  Thus, that combination ignores the fact that <code>RoleVoter</code> normally 'or's matching roles together.</p>
+
+<h2>Configuration</h2>
+
+<p>So, there really hasn't been too much to this solution.  But as with most frameworks of this flexibility and complexity, the key is knowing how to actually specify that you want it to work this way.  To specify a <code>UnanimousBased</code> access manager using the plain <code>RoleVoter</code> (my eventual solution for my own problem) looks something like this:</p>
+
+<p>```xml
+&lt;beans xmlns="http://www.springframework.org/schema/beans"</p>
+
+<pre><code>   xmlns:sec="http://www.springframework.org/schema/security"&gt;
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd"&gt;
+</code></pre>
+
+<p>  <bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased"></p>
+
+<pre><code>&lt;property name="decisionVoters"&gt;
+  &lt;bean class="org.springframework.security.access.vote.RoleVoter" /&gt;
+&lt;/property&gt;
+&lt;property name="allowIfAllAbstainDecisions" value="false" /&gt;
+&lt;property name="messageSource" ref="messageSource" /&gt;
+</code></pre>
+
+<p>  </bean></p>
+
+<p>  &lt;sec:global-method-security secured-annotations="enabled" jsr250-annotations="enabled" pre-post-annotations="enabled"</p>
+
+<pre><code>access-decision-manager-ref="accessDecisionManager" /&gt;
+</code></pre>
+
+<p></beans>
+```</p>
+
+<p>Smooth as butter.  As with most Spring solutions, the answer was in an xml configuration.  Oh boy.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Calling Webservices in Java]]></title>
+    <link href="http://jaketrent.com/post/calling-webservices-java/"/>
+    <updated>2011-12-30T14:54:00-07:00</updated>
+    <id>http://jaketrent.com/post/calling-webservices-java</id>
+    <content type="html"><![CDATA[<p>In Java Land, everything is tied up in multiple layers of multi-colored wrapping paper.  The abstraction often provides niceties and protections and convenience, etc.  But, sometimes it practically makes you forget where you are.  For instance, why would anyone write a little howto on requesting something over the web from the context of the web.  That should be easy, right?  Well, yes, I think so.  And it turns out it is in Java, as it is in many <a href="http://developer.marklogic.com/pubs/5.0/apidocs/Ext-2.html">other languages</a>.  It's just that there you're super close to the HTTP protocol all the time, and in many Java uber-frameworks, if you want to know how to break into the low-level operations, you have to know where the fire exit is.</p>
+
+<!--more-->
+
+
+<h2>The Right Class</h2>
+
+<p>By 'fire exit', I mean you have to know what specific API to use.  Hehe, and since we're doing some I/O (a request across the network), be prepared for at least a multi-layered chain of wrapper classes to package the data into.</p>
+
+<p>It turns out that <a href="http://docs.oracle.com/javase/6/docs/api/java/net/URL.html"><code>java.net.URL</code></a> and <a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/net/HttpURLConnection.html"><code>java.net.HttpUrlConnection</code></a> are the classes that will give us the operations we need.  And the operation is <a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/net/URLConnection.html#getInputStream("><code>connection.getInputStream()</code></a>).  So, we have the bits to make a simple helper class for requesting other web resources like REST webservices.</p>
+
+<h2>UrlReader.java</h2>
+
+<p>```java
+// ...package and imports...
+public class UrlReader {
+  public String request(String req) {</p>
+
+<pre><code>String response = null;
+HttpURLConnection conn = null;
+try {
+  URL url = new URL(req);
+  conn = (HttpURLConnection) url.openConnection();
+  BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+  StringBuilder sb = new StringBuilder();
+  String line;
+  while ((line = br.readLine()) != null) {
+    sb.append(line);
+  }
+  br.close();
+  response = sb.toString();
+} catch (Exception e) {
+  // An I/O exception handling you care for
+} finally {
+  if (conn != null) {
+    conn.disconnect();
+  }
+}
+return response;
+</code></pre>
+
+<p>  }</p>
+
+<p>}
+```</p>
+
+<p>It doesn't consist of too much:  Specify your url, open an input stream to that url, read it back, and buffer it into a string response.</p>
+
+<p>But as is often the case, let's try a little bonus twist...</p>
+
+<h2>Internal Https With Invalid Certificate</h2>
+
+<p>When I started requesting webservices from my Java app, I needed to connect to an interanl web service that was https only but had a self-signed (not valid) SSL certificate.  It turns out that <code>HttpUrlConnection</code> doesn't handle https requests.  If you request such a resource, you'll turn up a nice stack trace that includes:</p>
+
+<p><code>bash
+javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+</code></p>
+
+<p>It turns out that Java has another class that's doing some validation for you.  Also in the stack trace, <code>com.sun.net.ssl.internal.ssl.X509TrustManagerImpl.validate()</code> is called at <code>X509TrustManagerImpl.java:126</code>.</p>
+
+<p>In my case, I didn't care if the certificate was good because to me it's an internal, trusted source anyway.  So, I want to accept any certificates in my http request.</p>
+
+<h2>A TrustManager that Trusts all Certificates</h2>
+
+<p>So, when it goes to validate, we need to give it an automatic pass.  Here's the modified <code>UrlReader.java</code>:</p>
+
+<p>```java
+// ...package and imports...  <br/>
+public class UrlReader {</p>
+
+<p>  private static SSLContext SSL_CONTEXT;</p>
+
+<p>  static {</p>
+
+<pre><code>try {
+  TrustManager[] trustAllCerts = new TrustManager[]{
+    new X509TrustManager() {
+        public java.security.cert.X509Certificate[] getAcceptedIssuers() {return null;}
+        public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType){}
+        public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType){}
+    }
+  };
+  SSL_CONTEXT = SSLContext.getInstance("SSL");
+  SSL_CONTEXT.init(null, trustAllCerts, new java.security.SecureRandom());
+} catch (NoSuchAlgorithmException e) {
+  throw new RuntimeException("Unable to initialise SSL context", e);
+} catch (KeyManagementException e) {
+  throw new RuntimeException("Unable to initialise SSL context", e);
+}
+</code></pre>
+
+<p>  }</p>
+
+<p>  public String request(String req) {</p>
+
+<pre><code>String response = null;
+HttpsURLConnection conn = null;
+try {
+  URL url = new URL(req);
+  conn = (HttpsURLConnection) url.openConnection();
+  conn.setSSLSocketFactory(SSL_CONTEXT.getSocketFactory());
+
+  BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+  StringBuilder sb = new StringBuilder();
+  String line;
+  while ((line = br.readLine()) != null) {
+    sb.append(line);
+  }
+  br.close();
+  response = sb.toString();
+} catch (Exception e) {
+  // I/O exception handling -- or NOT!
+} finally {
+  if (conn != null) {
+    conn.disconnect();
+  }
+}
+return response;
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>So, we pretty much doubled the size of the class, but most of it is on ceremony.  There's no much there.  In the static block, we are creating an <code>SSLContext</code> that has includes a <code>TrustManager</code> anonymous class in which the method implementations explictly leave out any checking for valid certification of the connection.  Plug er in and roll.  Or not.  Please at least <em>think</em> for a moment if you really know your app, what's going to use this <code>UrlReader</code> class and whether it's a good idea or not, because trusting all "https" connections regardless isn't a great general philosophy.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Encrypt your IMs in Pidgin]]></title>
+    <link href="http://jaketrent.com/post/encrypt-your-ims-pidgin/"/>
+    <updated>2011-04-20T08:36:00-06:00</updated>
+    <id>http://jaketrent.com/post/encrypt-your-ims-pidgin</id>
+    <content type="html"><![CDATA[<p>Around the office, when someone security-minded finds out that I instant message (IM) over Pidgin (using Google Talk's service), there tends to be wailing and gnashing of teeth, because I am chatting in clear text over the wire.  I am encouraged to use a clunky, Windows-only, proprietary, corporate, different tool that is for internal talk with internal people.  "It's secure."  "It's encrypted," they say.  I never though I said too much of worth over chat, and what was occasionally awesome was well-encoded in l33t.  But, now my friend Dean teaches me the goodness of encrypting your IMs in Pidgin.</p>
+
+<!--more-->
+
+
+<p>First, install Pidgin and the pidgin-encryption plugin.  For Debian'ites, it's easy:</p>
+
+<p><code>bash
+sudo apt-get install pidgin pidgin-encryption
+</code></p>
+
+<p>For users who like to download their own binaries from the web, go to the <a href="http://pidgin-encrypt.sourceforge.net/">pidgin-encryption site</a>.</p>
+
+<p>Once you install, start up <a href="http://www.pidgin.im/">Pidgin</a> awesomely in <a href="http://do.davebsd.com/">gnome-do</a>:</p>
+
+<p><img src="https://lh4.googleusercontent.com/_mA-9kCcx0bs/Ta7_wER1voI/AAAAAAAAAB8/FupSAZdUz0c/s800/PidginGnomeDo.png" alt="image" /></p>
+
+<p>On the Pidgin Buddy, go to Tools > Plugins, and enable the Pidgin-Encryption plugin:</p>
+
+<p><img src="https://lh3.googleusercontent.com/_mA-9kCcx0bs/Ta7_wur-zRI/AAAAAAAAACI/160M7IL5Ajs/s800/PidginPlugin.png" alt="image" /></p>
+
+<p>Next, inform Pidgin that you want to start using encryption whilst chatting with someone who also has their chats through Pidgin encrypted.  In your chat window, there's a new padlock icon on the top menu bar.  Click it and "Enable Encryption":</p>
+
+<p><img src="https://lh6.googleusercontent.com/_mA-9kCcx0bs/Ta8R2IMyHNI/AAAAAAAAACs/RAAczsPJFkI/s800/PidginEnableEncryption.png" alt="image" /></p>
+
+<p>Once you start chatting with someone you'll both have to accept the public key that the other person is sending with their chats:</p>
+
+<p><img src="https://lh5.googleusercontent.com/_mA-9kCcx0bs/Ta8BbyPeIrI/AAAAAAAAACU/G9hf5dV0ObA/s800/PidginEncrypt.png" alt="image" /></p>
+
+<p>Finally, if you don't want to accept keys and do the hand shake every time, you can enable encryption on every chat with that person.  Go to your buddy list, find the person on the list, right click on them, and select "Turn Auto-Encrypt On":</p>
+
+<p><img src="https://lh6.googleusercontent.com/_mA-9kCcx0bs/Ta7_wMsvbKI/AAAAAAAAACA/dSIeOT7_QnI/s800/PidginAlwaysOn.png" alt="image" /></p>
+
+<p>Well, now you can chat freely with the best of them.  Open tool.  Open protocol.  Linux support.  Google contact list.  All for the low cost of zero.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Xdmp:Login Love]]></title>
+    <link href="http://jaketrent.com/post/xdmp-login-love/"/>
+    <updated>2011-02-03T13:22:00-07:00</updated>
+    <id>http://jaketrent.com/post/xdmp-login-love</id>
+    <content type="html"><![CDATA[<p>How do you log into a MarkLogic application to run as a user besides the default app server user?  Use xdmp:login(), baby!  User/role management can be awesome -- when it's done and coded.  For now, let's sing out a few important things to remember about xdmp:login() and all its hidden secrets.</p>
+
+<!--more-->
+
+
+<h2>My voice is my passport...</h2>
+
+<p>I was debugging some xdmp:login() goodness and realized that sometimes the SEC-PRIV exception wasn't thrown.  It seems that if the xdmp:login() doesn't recognize the username as a user known to the system, it won't login.  Thus, if I code this beauty:</p>
+
+<p>```
+xdmp:login("asdf")</p>
+
+<p>```
+It won't even try.  It just doesn't do anything, assuming "asdf" really isn't a known user in your app.</p>
+
+<h2>Session Masquerade</h2>
+
+<p>Make sure that you realize, as I failed to scrutinize in my quick glance at the <a href="http://developer.marklogic.com/pubs/4.2/apidocs/AppServerBuiltins.html#xdmp:login">xdmp:login() API</a>, that by default xdmp:login() logs in as the specified user for the entire session.  The last (optional) parameter, $set-session is true by default.  What will stop the masquerade?  Only session timeout or a call to xdmp:logout().  Don't want to have to rip the mask off your user every time?  Try:</p>
+
+<p><code>
+xdmp:login($username, (), fn:false())
+</code></p>
+
+<p>But, if session logins are what you're craving, you may run into the same issue I did... On a dark dreary night I crept to the monitor, brought up my code and began pressing the keys... typity, typity.  The branches of the tree outside scraped across the moonlit window.  Breathing more quickly now, I focused back at the flickering monitor.  I did an xdmp:login() to a user that didn't have the xdmp-login execute privilege.  It worked.  But then to my horror, the second time it failed.  But, why?  Thinking that I might have to beat back the horrors of the night at any time with a flashlight, I stumbled to my feet.  Then, I realized that I was now permanently (at least for the duration of the session) an unprivileged peon and could not enjoy the warmth that privilege had once bought me.  After this realization, my nocturnal hallucination suddenly seemed less harrowing, less threatening, and I committed my code and went to sleep.</p>
+
+<p>Obviously not wanting to relive such an experience, just realize that you'll need more logic around when to xdmp:login() and, in this case more importantly, when to not login.</p>
+
+<h2>And now a word about amps</h2>
+
+<p>Another experience to not forget (and also, thankfully, not embellish to such great, un-useful lengths) is that amps on the filesystem act a little bit differently than everywhere else.  That is, when I was trying to define xdmp-login privileges for the function that performed the password-less xdmp:login(), I couldn't seem to get them to take on the filesystem.  That is because my deployment mechanism doesn't apply amps to the filesystem.  If you want that goodness, make sure you do something as sweet as this:</p>
+
+<p><code>
+xdmp:amp($namespace, $localname, $module-uri, xs:unsignedLong(0))
+</code></p>
+
+<p>Where the "0" represents the filesystem instead of a deployed Modules database.</p>
+
+<p>... verify me.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[InstallCert for Java Security Certificate]]></title>
+    <link href="http://jaketrent.com/post/installcert-java-security-certificate/"/>
+    <updated>2009-09-16T09:39:00-06:00</updated>
+    <id>http://jaketrent.com/post/installcert-java-security-certificate</id>
+    <content type="html"><![CDATA[<p>Sometimes you need to install a security certificate for authentication to work for certain services -- services that are accessed by your java application that requirement a secure connection.  For instance, needing to authenticate against an LDAP server from one of our apps, we had to run a little InstallCert.java on all JDKs used to run the app.</p>
+
+<!--more-->
+
+
+<p>Interesting to me, the <a href="http://blogs.sun.com/andreas/resource/InstallCert.java">InstallCert.java</a> code is found mostly on Sun blogs.  But, there you have it.  If you have much trouble with the manual process of installing these certificates, there's a good <a href="http://stufftohelpyouout.blogspot.com/2008/10/unable-to-find-valid-certification-path.html">blog post</a> to help you figure it out.</p>
+
+<p>After multiple updates to my JDK, my biggest problem was not so much that I couldn't figure out how to do it, but more that I had to do it again and again because the certs were being blown away.</p>
+
+<p>So, here's a quick python script to help make the process a little more automatic:</p>
+
+<p>```python</p>
+
+<h1>!/bin/python</h1>
+
+<p>import sys
+import subprocess
+import os</p>
+
+<p>CURR_DIR = os.getcwd()
+SECURITY_SUBDIR = os.path.join("jre", "lib", "security")
+JAVA_ARGS = "your-cert-host" # host:port passphrase
+JDK_HOMES = [] # path to desired JDKs</p>
+
+<p>if <strong>name</strong> == "<strong>main</strong>":</p>
+
+<pre><code>if os.path.isfile(os.path.join(CURR_DIR, "InstallCert.java")) == 0:
+    raise Exception("Must have InstallCert.java in current directory")
+
+if len(sys.argv) &lt; 2:
+    if len(JDK_HOMES) &gt; 0:
+        paths = JDK_HOMES
+    else:
+        raise Exception("Must specify JDK paths args or JDK_HOMES var")
+else:
+    paths = sys.argv[1:]
+
+for javapath in paths:
+    secpath = os.path.join(javapath, SECURITY_SUBDIR)
+    cmds = [
+        "cd %s" % CURR_DIR,
+        "cp InstallCert.java %s" % (secpath),
+        "javac %s" % (os.path.join(secpath, "InstallCert.java")),
+        "cd %s &amp;&amp; java %s %s" % (secpath, "InstallCert", JAVA_ARGS)
+        ]
+
+    for cmd in cmds:
+        print cmd
+        subprocess.call(cmd, shell=True)
+</code></pre>
+
+<p>```</p>
+
+<p>I have only run/tested this in Linux.  Make sure that you run this script with the proper user/permissions to write all the needed files.  For instance, I have to sudo this because my JDKs are in /usr/lib/...</p>
+]]></content>
+  </entry>
+  
+</feed>

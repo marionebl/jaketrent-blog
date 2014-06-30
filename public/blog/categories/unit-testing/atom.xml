@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: unit-testing | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/unit-testing/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[BusterJs with RequireJs/Backbone]]></title>
+    <link href="http://jaketrent.com/post/busterjs-requirejsbackbone/"/>
+    <updated>2012-07-25T14:42:00-06:00</updated>
+    <id>http://jaketrent.com/post/busterjs-requirejsbackbone</id>
+    <content type="html"><![CDATA[<p>BusterJs is a still-in-beta library that allows for testing your Javascript.  It's got a wealth of cool features.  The browser capturing is awesome for running your Javascript directly in the browsers you choose from one runner.  You can also execute within Node.  In short, it rocks.  But, how to get this rockin' with your project, specifically your AMD RequireJs with BackboneJs combo project is the lock that must be opened before daily buster love can be had.</p>
+
+<!--more-->
+
+
+<h2>Install</h2>
+
+<p>Buster is easily installed everywhere (but apparently not in Windows, which I have not tried):</p>
+
+<p>```bash</p>
+
+<blockquote><p>sudo npm install -g buster
+```</p></blockquote>
+
+<p>The <a href="http://busterjs.org/docs/getting-started/">buster docs</a> indicate not to use sudo, but I'm reckless.</p>
+
+<h2>Buster Config</h2>
+
+<p>My directory structure looks something like:</p>
+
+<p>```bash
+proj/
+  src/</p>
+
+<pre><code>static/
+  js/      # here are the objects under test
+</code></pre>
+
+<p>  test/</p>
+
+<pre><code>tests/     # here are the tests
+buster.js  # here is the buster config
+</code></pre>
+
+<p>```</p>
+
+<p>My previous experience with setting up <a href="http://rockycode.com/blog/jasmine-unit-testing-requirejs/">Jasmine testing with RequireJs</a> was not entirely straightforward.  BusterJs was not totally straightforward either, but it felt better.  For one, it already has a runner.  I just need to give it some config (<code>buster.js</code>):</p>
+
+<p>```js
+var config = module.exports;
+config['browser-all'] = {
+  autoRun: false,
+  environment: 'browser',
+  rootPath: '../',
+  libs: [</p>
+
+<pre><code>'src/static/js/vendor/require-jquery-2.0.2.js',
+'src/static/js/vendor/underscore-1.3.3.js',
+'src/static/js/vendor/backbone-0.9.2.js'
+</code></pre>
+
+<p>  ],
+  sources: [</p>
+
+<pre><code>'src/static/js/**/*.js',
+'src/static/js/**/*.handlebars'
+</code></pre>
+
+<p>  ],
+  tests: ['test/tests/*.js'],
+  extensions: [require('buster-amd')]
+};
+```</p>
+
+<p>A few salient points related to RequireJs / Backbone:</p>
+
+<ul>
+<li><code>autoRun</code> - Turning this off allows you to <a href="http://busterjs.org/docs/starting-testrun-manually/">run buster tests manually</a>.  This is important from an AMD perspective, because the objects under test are loaded asynchronously.  Only once they're loaded do we want to kick off the tests.</li>
+<li><code>libs</code> - Include the RequireJs, Underscore, and Backbone files here.  <code>libs</code> will put some script tags into the browser, so require will be ready once tests start executing.  They're loaded first and in order (Underscore before Backbone is important).</li>
+<li><code>sources</code> - I was having problems with my <a href="http://handlebarsjs.com/">handlebars template</a> loader plugin until I realized that I need to list <em>all</em> sources, including templates, under this attribute.  And don't forget '**' for subfolders.</li>
+<li><code>extentions</code> - <a href="https://github.com/busterjs/buster-amd">buster-amd</a> is a buster extension that helps with the AMD module loading.  This will also require a <code>npm install buster-amd</code>.  As the <a href="http://busterjs.org/docs/extensions/">buster-amd docs</a> point out, you still need to list your sources and tests normally so they're available to the buster runner, so don't leave these out thinking they'll be magically available.</li>
+</ul>
+
+
+<p>The <a href="http://busterjs.org/docs/configuration/">other configuration options/details</a> are well documented.</p>
+
+<h2>BusterJs Test Example</h2>
+
+<p>There are a few <a href="https://github.com/trodrigues/buster-amd-example/">simple examples</a> of other busterjs tests that test AMD modules.  Mine looks something like:</p>
+
+<p>```js
+buster.spec.expose();
+require.config({
+  baseUrl: 'src/static/js/',
+  paths: {</p>
+
+<pre><code>text: './vendor/text-2.0.0',
+/* ... */
+</code></pre>
+
+<p>  }
+});
+```</p>
+
+<pre><code>describe('single backbone dependency', function(run) {
+  require(['Widget'], function(widget) {
+    run(function() {
+      it('should load', function() {
+        expect(true).toEqual(true); // nothing but test execution
+      });
+    });
+  });
+});
+</code></pre>
+
+<p>More from the peanut gallery:</p>
+
+<ul>
+<li><code>buster.spec.expose()</code> just pushes main buster functions into the wide-open namespace to be called willy nilly.  Reckless -- again. :)</li>
+<li><code>require.config</code> - it saddens me, but I have had to include this within each test file.  Others have <a href="https://groups.google.com/d/msg/busterjs/IZWItTzDT5I/AmX9wN-6oJoJ">commented</a> that they could include this once in the buster.config <code>libs</code>, but it didn't work for me.  I also tried 'testHelpers', without the help they advertise.  Please let me know if it does for you and what kind of pixie dust is required.</li>
+<li><code>baseUrl</code> needs to jive with your buster rootPath so that your RequireJs relative paths will match up and work in your app runtime and in the test runtime.</li>
+<li><code>run</code> - notice this is called within the require callback manually.</li>
+</ul>
+
+
+<h2>BusterJs Runner</h2>
+
+<p>If you call within the next 15 minutes, the travel-size test runner is included.  Operators are standing by.  Start your test server:</p>
+
+<p>```bash</p>
+
+<blockquote><p>buster server
+```</p></blockquote>
+
+<p>That will start a server at localhost:1111.  Head 1+ of your local browsers to that address and capture them as your imprisoned slaves.  They will do your bidding when you run the tests.  Go to your project directory and run:</p>
+
+<p>```bash</p>
+
+<blockquote><p>buster test
+```</p></blockquote>
+
+<p>If you've tied it all together, you should see something like:</p>
+
+<p>```bash</p>
+
+<blockquote><p>buster test
+Chrome 21.0.1180.49, OS X 10.7 (Lion): .....                                                                          <br/>
+1 test cases, 1 tests, 1 assertions, 0 failures, 0 errors, 0 timeouts
+Finished in 0.02s
+```</p></blockquote>
+
+<p>And now for a few parting tips...</p>
+
+<h2>Mismatched Define Module</h2>
+
+<p>If you happen to include a js file in your 'libs' attribute or another section that's loaded previous to your tests running that includes a <code>define()</code> block, you're going to get stuck with this wonder:</p>
+
+<p><code>bash
+Uncaught exception: ./src/static/js/vendor/require-jquery-2.0.2.js:1803 Uncaught Error: Mismatched anonymous define() module: function (module) {
+</code></p>
+
+<p>As the <a href="http://requirejs.org/docs/errors.html#mismatch">require docs</a> point out, to avoid this:</p>
+
+<blockquote><p>Be sure to load all scripts that call define() via the RequireJS API.</p></blockquote>
+
+<h2>RequireJs 2.0 shim</h2>
+
+<p>I wasn't able to get the shim setup for getting underscore/backbone loaded and in the correct order.  Instead, I just listed these non-AMD files in the correct order under the 'libs' attribute in buster.config.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Test-driven Development on MarkLogic]]></title>
+    <link href="http://jaketrent.com/post/test-driven-development-marklogic/"/>
+    <updated>2011-10-11T19:46:00-06:00</updated>
+    <id>http://jaketrent.com/post/test-driven-development-marklogic</id>
+    <content type="html"><![CDATA[<p>Unit testing is a required part of a healthy software development lifecycle and a balanced breakfast.  But test-driven development is a rockin' part of an <em>awesome</em> development lifecycle.  What's the difference?  If you don't test-drive the dev of your MarkLogic XQuery, you may never come back to test again.  Test-driven XQuery development will ease your headaches, put you into the plush seat of a developer with confidence, and rocket you down the road to making all your wildest dreams come true.  Kachow!</p>
+
+<!--more-->
+
+
+<p>Ok, it may be slightly <em>more</em> magical than that.  But, I don't want to get your hopes up.  Seriously, though, if TDD is fun in, say Java Land (and it still is in MarkLogic land with "the Swede"), then it's a required portion of fun in MarkLogic Land?  Why?  While you might imagine yourself going back and adding tests to your Java project and sometimes you do, if you imagine it and then attempt it in your XQuery project, I believe the likelihood that you shrivel in shame and tears under your desk is much higher than in some other environments.</p>
+
+<p>I the difficulty of the test after development approach is higher in MarkLogic XQuery because of what I've called "camouflaged dependencies" -- essentially, access to the http request and respond and to the database.</p>
+
+<p>You can get access to request fields or headers or anything else dealing with the web context in which the code is executed at any place in your code.  This doesn't mean you have to code like this, but the language doesn't necessarily help you enforce your discipline.  This is where testing before you write the code will help.  Make you functions functional -- pass in parameters and make them the only data access.</p>
+
+<p>You can read the database natively in MarkLogic XQuery.  That means that you can be retrieving data anywhere in your code.  There is an extreme lack of ceremony in making a connection to the database -- it's always there;  they're connected.  This is both refreshing and a shiny nail strip upon which to puncture the tires of your test-driven sports coupe e're you drive it off the lot.  Resist the temptation to read from the database or write to the database save in very determined and specific parts of your app -- parts that you will not actually unit test [gasp] because they'll be doing nothing but saving xmls at given database uris, and MarkLogic already has internal testing for that.</p>
+
+<p>So, respect what you might call your dependencies -- the network and the database -- and be thrilled with the adventure of testing the business logic that you write yourself and need to verify.  And test it first to help keep you on the strait and narrow.  Otherwise, you're "discipline" will crumble under deadlines and in the end it will "just work" -- until it doesn't -- and you won't know why.</p>
+
+<p>Note:
+Below are the slides to support a presentation given at an in-house development conference.  It is an evolution of a talk previously given on <a href="">unit testing XQuery on MarkLogic</a> with streamlined principles and skills section and a not-included coding portion surrounding the use of XqTest, our XQuery unit test framework, and its integration in our environment.  Tonight, as I say my prayers, I will continue to hope that someday XqTest will be released from its prison and "the Swede" will see the light of day!</p>
+
+<div style="width:425px" id="__ss_9651897"> <strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/rockycode/testdriven-development-on-marklogic" title="Test-driven Development on MarkLogic" target="_blank">Test-driven Development on MarkLogic</a></strong> <iframe src="http://www.slideshare.net/slideshow/embed_code/9651897" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe> <div style="padding:5px 0 12px"> View more <a href="http://www.slideshare.net/" target="_blank">presentations</a> from <a href="http://www.slideshare.net/rockycode" target="_blank">rockycode</a> </div> </div>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Unit Testing XQuery on MarkLogic]]></title>
+    <link href="http://jaketrent.com/post/unit-testing-xquery-marklogic/"/>
+    <updated>2011-04-29T08:50:00-06:00</updated>
+    <id>http://jaketrent.com/post/unit-testing-xquery-marklogic</id>
+    <content type="html"><![CDATA[<p>Unit testing is a required part of a healthy software development lifecycle.  Business logic in MarkLogic Xquery needs the same insurance of superb testing as any other language.</p>
+
+<p>Principles: Come learn the motivation for unit testing and how test-driven development can increase your productivity writing solid Xquery code in an Agile-coding environment.</p>
+
+<p>Skills: We'll code Xquery examples to learn general skills including the TDD workflow, how to isolate your code for unit testability, and how to test one thing at a time.  In each case, we'll address how to apply these skills specifically to development in the MarkLogic environment.</p>
+
+<p>Tools: We'll also introduce you to in-house-developed tooling for creating unit tests and running them.  This tooling provides an all-Xquery method of creating test functions, annotating them as such so they're runnable in the test runner, isolating certain modules to test, and viewing clear test results.</p>
+
+<p>With a few principles, skills, and tools for unit testing, you can go forward with increased confidence that the Xquery code you write on MarkLogic is more awesome than ever.</p>
+
+<!--more-->
+
+
+<p>This slide deck is from a presentation at the MarkLogic Users Conference 2011.</p>
+
+<div style="width:510px" id="__ss_7778485"> <strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/rockycode/unit-testing-xquery-on-marklogic" title="Unit Testing XQuery on MarkLogic">Unit Testing XQuery on MarkLogic</a></strong> <iframe src="http://www.slideshare.net/slideshow/embed_code/7778485" width="510" height="426" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe> <div style="padding:5px 0 12px"> View more <a href="http://www.slideshare.net/">presentations</a> from <a href="http://www.slideshare.net/rockycode">rockycode</a> </div> </div>
+
+
+<p>More prose to follow and support these slides soon.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[EasyMock Cause-Effect Exception Mapping]]></title>
+    <link href="http://jaketrent.com/post/easymock-cause-effect-exception-mapping/"/>
+    <updated>2009-07-06T09:36:00-06:00</updated>
+    <id>http://jaketrent.com/post/easymock-cause-effect-exception-mapping</id>
+    <content type="html"><![CDATA[<p>EasyMock is a great tool for separating external dependencies from unit tests.  There is a learning curve to learning the mock method of testing, and unfortunately, EasyMock does not give very good prompts when you do something wrong.  The exception messages are actually quite cryptic.  This article is meant to be a crude mapping of exception output and the behavior that might have caused it.  At least, this is a log of many of my experiences with EasyMock and how I usually get into the messes I do.  It is quite possible that the same exception output could be had via different behavior.  It's also important to note that I'm not trying to show how to create meaningful tests here (I don't even show full tests half the time), only help figure out how mysterious EasyMock exceptions were thrown.  These experiences were documented on EasyMock 2.2 and 2.4.</p>
+
+<!--more-->
+
+
+<h3>Argument Matcher</h3>
+
+<h4>Exception</h4>
+
+<p>```java
+java.lang.IllegalStateException: 2 matchers expected, 1 recorded.
+  at org.easymock.internal.ExpectedInvocation.createMissingMatchers(ExpectedInvocation.java:41)
+  at org.easymock.internal.ExpectedInvocation.(ExpectedInvocation.java:33)
+  at org.easymock.internal.ExpectedInvocation.(ExpectedInvocation.java:26)
+  at org.easymock.internal.RecordState.invoke(RecordState.java:64)
+  at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:24)
+  at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:45)
+  at $Proxy0.findFoos(Unknown Source)
+  at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</p>
+
+<pre><code>...
+</code></pre>
+
+<p>```</p>
+
+<h4>Behavior</h4>
+
+<p>Sometimes you don't know the exact instance of the objects that will be passed as arguments into methods on external dependencies.  Thus, the mocked call on that method will be different than normal.  EasyMock provides a method, EasyMock.isA().  From the JavaDoc, this method "Expects an object implementing the given class."  Essentially, it looks for type (class) instead of instance (object) when setting up the EasyMock.expect().  This is useful when you don't have the actual instance of a method parameter from the context of your test, like a local variable.</p>
+
+<p>So, if I was testing a method like this:</p>
+
+<p>```java
+public class BeingTested {
+   void doSomething(Integer code) {</p>
+
+<pre><code>  StringBuilder sb = new StringBuilder()
+  externalService.serviceCall(sb, code);
+</code></pre>
+
+<p>   }
+}</p>
+
+<p>interface ExternalService {
+   void serviceCall(StringBuilder sb, Integer code);
+}
+```</p>
+
+<p>And tried to test it like this:</p>
+
+<p><code>java
+@Test
+public void testDoSomething() {
+   /* ... */
+   externalService.serviceCall(isA(StringBuilder.class), 123);
+   expectLastCall();
+   /* ... */
+   tested.doSomething(123);
+   /* ... */
+}
+</code></p>
+
+<p>I will inevitably get the above exception.</p>
+
+<h4>Explanation</h4>
+
+<p>So, now to get rid of this nasty exception.  Use of isA() either implies that you really don't care what the exact instance of the method parameter is or you use it to get around another constraint on your code.  Either way, EasyMock, through this wonderful exception, is trying to tell you that <strong>if you're going to use isA() for one of the method parameters, it must be used on all!</strong>  Thus, to keep your StringBuilder isA() call, you must add one for Integer in this example.</p>
+
+<p><code>java
+externalService.serviceCall(isA(StringBuilder.class), isA(Integer.class));
+</code></p>
+
+<h3>Behavior Definition</h3>
+
+<h4>Exception</h4>
+
+<p><code>java
+java.lang.IllegalStateException: missing behavior definition for the preceeding method call getIsInitialized()
+  at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:30)
+  at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:61)
+...
+</code></p>
+
+<h4>Behavior</h4>
+
+<p>If I was testing a method like this:</p>
+
+<p>```java
+public class SomethingElse {
+   void doSomething() {</p>
+
+<pre><code>  externalService.checkSomething();
+</code></pre>
+
+<p>   }
+}</p>
+
+<p>interface ExternalService {
+   int checkSomething();
+}
+```</p>
+
+<p>And tried to test it like this:</p>
+
+<p><code>java
+@Test
+public void testDoSomething() {
+   /* ... */
+   expect(externalService.checkSomething());
+   /* ... */
+   tested.doSomething();
+   /* ... */
+}
+</code></p>
+
+<p>I just may get the above exception.</p>
+
+<h4>Explanation</h4>
+
+<p>The issue is that you've only half-told EasyMock what you expect to happen.  Because the checkSomething() method has a return type other than void, when need to explicitly tell EasyMock what to expect as the return value.  That is done by using the andReturn() method.</p>
+
+<p><code>java
+expect(externalService.checkSomething()).andReturn(0);
+</code></p>
+
+<h3>Mock methods use Mocks</h3>
+
+<h4>Exception</h4>
+
+<p>Here's an exception that may very well be thrown in many instances by EasyMock.  It might not be very helpful there; it certainly wasn't here.</p>
+
+<p><code>java
+org.easymock.internal.RuntimeExceptionWrapper
+  at org.easymock.classextension.internal.ClassExtensionHelper.getControl(ClassExtensionHelper.java:52)
+  at org.easymock.classextension.EasyMock.replay(EasyMock.java:117)
+...
+</code></p>
+
+<h3>Behavior</h3>
+
+<p>When you're using EasyMock, there are several steps that you need to take in setting up your mock scenario.  And we all know that the more steps a process takes, the more prone it is to error.  Well, as the user of the EasyMock API, I make errors all the time.  For instance, as I'm evolving my test, deciding that some objects will be mocked one moment and not mocked the next, the test changes but sometimes I forget to adjust the multi-step EasyMock setup process at every step.  For instance, I had a test:</p>
+
+<p><code>java
+@Test
+public void testSomething() {
+   Something something = createMock(Something.class);
+   Else else = createMock(Else.class);
+   /* ... expects ... */
+   replay(something, else);
+   /* ... */
+   verify(something, else);   
+}
+</code></p>
+
+<p>And I refactor it to be:</p>
+
+<p><code>java
+@Test
+public void testSomething() {
+   Something something = createMock(Something.class);
+   Else else = new Else();
+   /* ... expects ... */
+   replay(something, else);
+   /* ... */
+   verify(something, else);   
+}
+</code></p>
+
+<h4>Explanation</h4>
+
+<p>I changed the Else class to not be a mock object for the test.  But, I forgot to remove the reference to else from the replay() and verify() methods  (statically imported EasyMock methods).  So, this RuntimeExceptionWrapper exception makes no sense, but I have had it thrown many times for this reason.  To fix it, remove the non-mocks from the mock-related methods.</p>
+
+<p><code>java
+@Test
+public void testSomething() {
+   Something something = createMock(Something.class);
+   Else else = new Else();
+   /* ... expects ... */
+   replay(something);
+   /* ... */
+   verify(something);   
+}
+</code></p>
+
+<h3>Last Call for Mocks</h3>
+
+<h4>Exception</h4>
+
+<p>Again, I believe I may have seen this exception in more than one type of situation.  This is just one.</p>
+
+<p><code>java
+java.lang.IllegalStateException: no last call on a mock available
+  at org.easymock.EasyMock.getControlForLastCall(EasyMock.java:174)
+  at org.easymock.EasyMock.expectLastCall(EasyMock.java:167)
+  ...
+</code></p>
+
+<h4>Behavior</h4>
+
+<p>I use IntelliJ IDEA, which I love for many reasons.  One of them is it's robust refactoring toolset.  For instance, Ctrl-Alt-V, by default, is the introduce variable shortcut.  So, you select the expression that returns some value, introduce variable, and voila, that return value is stored in a nice local variable for you (or there are other options to refactor into fields, constants, parameters, and such.  End shameless plug.  Anywho, EasyMock scenarios value ordering of method calls.  This can become problematic if you're not careful to maintain its delicate order needs (which a refactoring tool, for instance, knows nothing about).</p>
+
+<p>If I start with this as a part of a test:</p>
+
+<p><code>java
+someObj.doSomething();
+expectLastCall().andThrow(new Exception());
+</code></p>
+
+<p>And then somehow came to this, let's assume for the sake of a refactor:</p>
+
+<p><code>java
+someObj.doSomething();
+Exception e = new Exception();
+expectLastCall().andThrow(e);
+</code></p>
+
+<p>You will get the above exception.</p>
+
+<h4>Explanation</h4>
+
+<p>Simply, the problem is that something has been interjected in between the method call and the expect.  Because these things are syntatically separate with the void return type methods, this becomes a possible pitfall.  To fix, put the two together, keep the ordering correct.</p>
+
+<p><code>java
+Exception e = new Exception();
+someObj.doSomething();
+expectLastCall().andThrow(e);
+</code></p>
+
+<h3>Throws like a girl</h3>
+
+<h4>Exception</h4>
+
+<p><code>java
+java.lang.IllegalArgumentException: last method called on mock cannot throw com.lowagie.text.DocumentException
+  at org.easymock.internal.MocksControl.andThrow(MocksControl.java:137)
+   ...
+</code></p>
+
+<h4>Behavior</h4>
+
+<p>When I'm trying to test the catch blocks in my code, often times I will simulate an exception being thrown with the mock andThrow() method.  If I start with a class like this:</p>
+
+<p>```java
+public class Something {
+   void doSomething() {</p>
+
+<pre><code>  try {
+     externalService.callService();
+  } catch (Exception e) { 
+     // log 
+  }
+</code></pre>
+
+<p>   }
+}</p>
+
+<p>interface ExternalService {
+   void callService();
+}
+```</p>
+
+<p>And do a test like this:</p>
+
+<p><code>java
+@Test
+public void testDoSomething() {
+   /* ... */
+   externalService.callService();
+   expectLastCall().andThrow(new Exception());
+   /* ... */
+}
+</code></p>
+
+<p>You are likely to get the above problematic exception.</p>
+
+<h4>Explanation</h4>
+
+<p>Sure you catch the exception; sure you want to check your catch block logic (lame here); but andThrow() needs to know that it's doing the right thing.  Expectations in mocks are really quite flexible and allow us to make the code do things it might not otherwise do through simulated conditions in a test.  But, EasyMock will not do the impossible.  And in this case, it knows that if you're expecting a checked exception to be thrown, it must be declared as thrown, which it is not.  So, to fix this, your code must actually declare that it throws Exception.  Of course, only do this if it makes sense.  And, if it doesn't, why are you testing it anyway?</p>
+
+<p>For interface and implementing class:</p>
+
+<p><code>java
+void callService() throws Exception;
+</code></p>
+
+<h3>Half-Mocked Expectations</h3>
+
+<h4>Exception</h4>
+
+<p>This exception is very similar to that mentioned in the "<a href="#mocksusemocks">Mock methods use Mocks</a>" section above.</p>
+
+<p><code>java
+java.lang.IllegalStateException: void method cannot return a value
+  at org.easymock.internal.MocksControl.andReturn(MocksControl.java:128)
+   ...
+</code></p>
+
+<h4>Behavior</h4>
+
+<p>It is convenient and more unit-like to test one method in a class that calls other methods in that class but not test the other method at that point.  Thus, we half-mock the class, mocking the "external" methods, the ones not being tested in this particular test, but not mocking the method being tested.  Did I mention how useful this is?  Let's try it.</p>
+
+<p>Start with this code:</p>
+
+<p>```java
+public class TestMe {
+   void doTestNow() {</p>
+
+<pre><code>  /* ... */
+  doTestLater();
+</code></pre>
+
+<p>   }
+}
+```</p>
+
+<p>And this test:</p>
+
+<p><code>java
+@Test
+public void testDoTestNow() throws NoSuchMethodException {
+   Method doTestLater = TestMe.class.getDeclaredMethod("doTestLater");
+   TestMe me = createMock(TestMe.class, doTestLater);
+   /* ... */
+   me.doTestLater();
+   expectLastCall();
+   replay(me);
+   me.doTestNow();
+   verify(me);
+}
+</code></p>
+
+<p>When we instantiate TestMe, it looks like a mock, but when we pass in var-arg java.lang.reflect.Method parameters, only those specified methods are mocked.  This works, is cool, and allows the doTestNow() method to be tested independent of the doTestLater() method and its test.  Now, let us pretend that we change our test to not want to mock calls to methods on TestMe, and instead of doing this:</p>
+
+<p><code>java
+TestMe me = createMock(TestMe.class, doTestLater);
+</code></p>
+
+<p>We do this:</p>
+
+<p><code>java
+TestMe me = new TestMe();
+</code></p>
+
+<p>We will get the icky exception shown above.</p>
+
+<h4>Explanation</h4>
+
+<p>The first thing we tried to do worked, but the reason we got the exception that we're decrypting is because we made the refactor to the test, making the TestMe instance totally non-mocked, but we left the expectLastCall() on the me.doTestLater() call.  Simply remove that expectation and you're good to go again.  Just remember, now you're actually calling into the body of doTestLater().</p>
+
+<p>Well, that's it for this current round into the EasyMock foray.  But, I'm sure to continue to make mistakes using this helpful, yet often-problematic tool that is EasyMock.  If you have any cause-effect mappings related EasyMock that might help, let us know.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Expose Fields via Java Reflection]]></title>
+    <link href="http://jaketrent.com/post/expose-fields-java-reflection/"/>
+    <updated>2009-06-08T13:29:00-06:00</updated>
+    <id>http://jaketrent.com/post/expose-fields-java-reflection</id>
+    <content type="html"><![CDATA[<p>For unit testing purposes, I often want to set field values in objects so that I can setup for the test conditions.  One of most annoying things about testing is the urge to change code design for just the sake of testing -- especially if it's in a way that is considered less safe, like exposing elements or lessening accessibility.  (This is not to say that trying to test code can reveal certain code smells and prompt refactoring).  I, myself, have a number of setter methods with this comment prepended: "// for test only comments".  Stinkers!  Well, sometimes enough becomes enough.  So, here's a way to set any field on an object w/o exposing it.  This is done via reflection.</p>
+
+<!--more-->
+
+
+<p>```java
+import java.lang.reflect.Field;</p>
+
+<p>/<em>*
+ * @author: jtsnake
+ * @date: Jun 3, 2009
+ </em>/
+public class ReflectionUtil {</p>
+
+<p>  /<em>*
+   * Gets the value of the field on the given object
+   * @param obj the object with the field being examined
+   * @param name the name of the field in the object
+   * @param &lt; T > will return the field type w/o static casting
+   * @return the field value
+   * @throws NoSuchFieldException thrown if can't find field
+   * @throws IllegalAccessException thrown if the field isn't accessible (shouldn't be a problem w/ setAccessible(true))
+   </em>/
+  public static &lt; T > T getFieldValue(Object obj, String name) throws NoSuchFieldException, IllegalAccessException {</p>
+
+<pre><code>  Field field = findField(obj.getClass(), name);
+  field.setAccessible(true);
+  return (T) field.get(obj);
+</code></pre>
+
+<p>  }</p>
+
+<p>  /<em>*
+   * Set the value of the field on a given object
+   * @param obj the object with the field to set value on
+   * @param name name of the field in the object
+   * @param value the value to set on the field
+   * @throws NoSuchFieldException thrown if can't find the field
+   * @throws IllegalAccessException thrown if the field isn't accessible (shouldn't be a problem w/ setAccessible(true))
+   </em>/
+  public static void setFieldValue(Object obj, String name, Object value) throws NoSuchFieldException, IllegalAccessException {</p>
+
+<pre><code>  Field field = findField(obj.getClass(), name);
+  field.setAccessible(true);
+  field.set(obj, value);
+</code></pre>
+
+<p>  }</p>
+
+<p>  /<em>*
+   * Helper method to find the field in the class
+   * @param clzz class type of the object
+   * @param name name of the field
+   * @return the java.lang.reflect.Field
+   * @throws NoSuchFieldException thrown if method recurses to java.lang.Object w/o finding the field by the given name
+   </em>/
+  static Field findField(Class clzz, String name) throws NoSuchFieldException {</p>
+
+<pre><code>  Field field = null;
+  try {
+      field = clzz.getDeclaredField(name);
+  } catch (NoSuchFieldException e) {
+      if (clzz.getSuperclass() != null) {
+          field = ReflectionUtil.findField(clzz.getSuperclass(), name);
+      } else {
+          throw e;
+      }
+  }
+  return field;
+</code></pre>
+
+<p>  }
+}
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

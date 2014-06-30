@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: debugging | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/debugging/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Debugging Remote Tomcat from IntelliJ with Style]]></title>
+    <link href="http://jaketrent.com/post/debugging-remote-tomcat-intellij/"/>
+    <updated>2011-04-13T10:54:00-06:00</updated>
+    <id>http://jaketrent.com/post/debugging-remote-tomcat-intellij</id>
+    <content type="html"><![CDATA[<p>One of the worst things to debug can be something that works just fine in your local development environment but does not work in a deployed environment.  If you deploy to Tomcat, you can debug it remotely.  If you use IntelliJ IDEA, you can do it with style.</p>
+
+<!--more-->
+
+
+<p>IntelliJ makes it easy.  First, you want to click the runnable configurations dropdown and select "Edit Configurations":</p>
+
+<p><img src="https://lh3.googleusercontent.com/_mA-9kCcx0bs/TaXdzFFhpxI/AAAAAAAAABM/6FoV9E3FpII/s800/ConfigDropdown.png" alt="image" /></p>
+
+<p>Once in the "Edit Configurations" dialog, click the "+" Plus icon to create a new configuration.  Select "Remote":</p>
+
+<p><img src="https://lh4.googleusercontent.com/_mA-9kCcx0bs/TaXdzLv6GAI/AAAAAAAAABQ/3giI8x9pZc0/s640/SelectRemote.png" alt="image" /></p>
+
+<p>This dialog is the last, and you will need to configure your connection:</p>
+
+<ul>
+<li>Transport: Socket</li>
+<li>Debugger: Attach</li>
+<li>Host: Either IP or hostname of remote server</li>
+<li>Port: Must match debug port opened on remote Tomcat (address arg below)</li>
+</ul>
+
+
+<p><img src="https://lh3.googleusercontent.com/_mA-9kCcx0bs/TaXdzPI1ovI/AAAAAAAAABU/EU-fflxWQ1g/s800/RemoteDebug.png" alt="image" /></p>
+
+<p>As is explained to you on the window, you need to be able to add JVM arguments to the remote JVM.  By now, let us hope that we're all using a JDK more recent than JDK 1.3. :)  In that case, you'll need:</p>
+
+<p><code>java
+-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=7007
+</code></p>
+
+<p>To get those args on the server might require different mechanisms by default.  My environment's deploy is automated to put the args on the JAVA_OPTS variable in:</p>
+
+<p><code>bash
+$CATALINA_HOME/conf/Catalina/localhost/tcat-env.conf
+</code></p>
+
+<p>But if your deployment doesn't apply JVM properties for your app, you can put them in:</p>
+
+<p><code>bash
+$CATALINA_HOME/bin/setenv.sh
+</code></p>
+
+<p>Like so:</p>
+
+<p><code>bash
+export JAVA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=7007"
+</code></p>
+
+<p>Finally, restart the remote server, and your debugging port will be open.  Start your remote connection in IntelliJ and set a break point.  Exercise your deployed app so your code will be executed, and let the good times roll!</p>
+]]></content>
+  </entry>
+  
+</feed>

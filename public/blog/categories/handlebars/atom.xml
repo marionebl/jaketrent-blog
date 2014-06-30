@@ -4,7 +4,7 @@
   <title><![CDATA[Category: handlebars | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/handlebars/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-06-23T09:05:30-06:00</updated>
+  <updated>2014-06-29T22:38:24-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -415,6 +415,76 @@ bower install handlebars#1.0.0-rc.3
 <p>The helper is simple, essentially just a copy of <code>#each</code> with a few new variables in context.  That's the beauty of Handlebars helpers.  With this little baby you can determine where you are in your iterations through your array.</p>
 
 <p>What are some of the things you use Handlebars helpers for?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Handlebars For-Loop Index]]></title>
+    <link href="http://jaketrent.com/post/handlebars-loop-index/"/>
+    <updated>2012-05-27T21:48:00-06:00</updated>
+    <id>http://jaketrent.com/post/handlebars-loop-index</id>
+    <content type="html"><![CDATA[<p>HandlebarsJs is a great Javascript templating engine.  It's pretty much Mustache templates on steriods -- or Rogaine or something like that.  Well, there's a great for loop, but it'd be cool if it had a loop index built in.  It doesn't have one as of the current version (1.0.0.beta.6).  But, we can make an easy helper.</p>
+
+<!--more-->
+
+
+<h2>Update: Native method</h2>
+
+<p>Thanks to a bit of looking, Zander (see comment thread below), has discovered that Handlebars <a href="https://github.com/wycats/handlebars.js/issues/250#issuecomment-9514811">now supports a native loop index accessor called <code>@index</code></a>.  And there's a <a href="http://jsfiddle.net/mpetrovich/gER9M/">jsfiddle to prove it</a>.  Thanks, Zander.</p>
+
+<h2>When We're Helping We're Happy</h2>
+
+<p>Compared to Mustache templates, Handlebars has the Rogaine element of helper functions.  You have the ability to register as many custom functions for use in your templates as you find useful.  And we're gonna make a sweet one.</p>
+
+<p>Lots of languages have the built-in ability to let you access the current index of a <code>for</code> loop.  We'll have to build our own</p>
+
+<h2>For Loop Index Helper</h2>
+
+<p>
+The default Handlebars loop helper is <code>{{#each}}</code>.  We will replace it with <code>{{#iter}}</code>.  It essentially copies the current implementation of the for loop and adds a few more parameters to the loop context.
+</p>
+
+<p>```js
+Handlebars.registerHelper('iter', function(context, options) {
+  var fn = options.fn, inverse = options.inverse;
+  var ret = "";</p>
+
+<p>  if(context &amp;&amp; context.length > 0) {</p>
+
+<pre><code>for(var i=0, j=context.length; i&lt;j; i++) {
+  ret = ret + fn(_.extend({}, context[i], { i: i, iPlus1: i + 1 }));
+}
+</code></pre>
+
+<p>  } else {</p>
+
+<pre><code>ret = inverse(this);
+</code></pre>
+
+<p>  }
+  return ret;
+});
+```</p>
+
+<p>The key line is:</p>
+
+<p><code>js
+fn(_.extend({}, context[i], { i: i, iPlus1: i + 1 }))
+</code></p>
+
+<p><code>fn()</code> is the call to execute the block of the template surrounded by <code></code>.  We pass in <code>context[i]</code> as in the normal loop, but we extend it with <code>i</code> (the 0-based index) and <code>iPlus1</code> (for a 1-based index).</p>
+
+<p>Here's an example usage:</p>
+
+<p><code>js
+
+  . 
+
+</code></p>
+
+<p>This would print a list of numbers, then a period, the field values.  Pretty sweet eh?  Use Handlebars and bring new life and lushness to your crop of js templating.  Now with an index in your for loops!</p>
+
+<p>Note: This code snippet makes use of <a href="http://underscorejs.org/">underscore.js</a>.  You could easily not use <code>_.extend()</code>.</p>
 ]]></content>
   </entry>
   

@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Parameterized States in Webflow - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="My first experience with Spring Webflow is on a project that uses Webflow 1.0.5. So far,">
+  <meta name="keywords" content="java, spring, webflow">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Parameterized States in Webflow" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/parameterized-states-webflow/" />
+  <meta property="og:description" content="My first experience with Spring Webflow is on a project that uses Webflow 1.0.5. So far," />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Parameterized States in Webflow" />
+  <meta name="twitter:description" content="My first experience with Spring Webflow is on a project that uses Webflow 1.0.5. So far," />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/parameterized-states-webflow/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Parameterized States in Webflow</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-10-08T09:52:00-06:00" pubdate data-updated="true">Oct 8<span>th</span>, 2009</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>My first experience with <a href="http://www.springsource.org/webflow" target="_blank">Spring Webflow</a> is on a project that uses Webflow 1.0.5.  So far, I&#8217;m impressed.  Apparently, Webflow 2 offers even more incredible awesomeness, but thusfar I would put my webflow experience over that of my previous couple years in Seam.  (I was just waiting for a chance to abandon that library anyway.)</p>
+
+<!--more-->
+
+
+<p>A few quick observations based on my limited Webflow exposure:  Conversation control seems more granular.  Starting subflows (sub-conversations) is very easy and clean up well after themselves.  Webflow keeps flow/nav all in related webflow xml, which are clearly hierarchical and separated.  Webflow also seems to have a clearer and easier-to-follow syntax in its xml.</p>
+
+<p>In my 2 days on this project with Webflow, I saw what I thought looked like a fair amount of duplicate xml code in the *-flow.xml files.  This smell led me to perservere on a better solution.  Thus, recorded here, is my method for creating a reusable state that has behavior specific to the code that is using it.  Specifically, for a view-state that navs to an action-state, that action-state&#8217;s back/error transition can know how to return to the state that just invoked it.</p>
+
+<p>Here&#8217;s the view-state:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;view-state</span> <span class="na">id=</span><span class="s">&quot;startingView&quot;</span> <span class="na">view=</span><span class="s">&quot;/start.xhtml&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;transition</span> <span class="na">on=</span><span class="s">&quot;return&quot;</span> <span class="na">to=</span><span class="s">&quot;processReturn&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;set</span> <span class="na">attribute=</span><span class="s">&quot;returningFrom&quot;</span> <span class="na">value=</span><span class="s">&quot;${&#39;startingView&#39;}&quot;</span> <span class="na">scope=</span><span class="s">&quot;flash&quot;</span><span class="nt">&gt;&lt;/set&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/transition&gt;</span>
+</span><span class='line'><span class="nt">&lt;/view-state&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And the action-state:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;action-state</span> <span class="na">id=</span><span class="s">&quot;processReturn&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;bean-action</span> <span class="na">bean=</span><span class="s">&quot;service&quot;</span> <span class="na">method=</span><span class="s">&quot;saveAndReturn&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;method-result</span> <span class="na">name=</span><span class="s">&quot;saveSuccessful&quot;</span> <span class="na">scope=</span><span class="s">&quot;flash&quot;</span><span class="nt">&gt;&lt;/method&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/bean-action&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;transition</span> <span class="na">on=</span><span class="s">&quot;${flashScope.saveSuccessful}&quot;</span> <span class="na">to=</span><span class="s">&quot;backToIndex&quot;</span><span class="nt">&gt;&lt;/transition&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;transition</span> <span class="na">on=</span><span class="s">&quot;${!flashScope.saveSuccessful}&quot;</span> <span class="na">to=</span><span class="s">&quot;${flashScope.returningFrom}&quot;</span><span class="nt">&gt;&lt;/transition&gt;</span>
+</span><span class='line'><span class="nt">&lt;/action-state&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So, when the transition in the view for &#8220;return&#8221; is hit, we save an attribute in the flash scope, which is maintained over redirects in the flow, the value being the id of the view-state from which we&#8217;re coming.  When we get to the action-state, if we find that our action was unsuccessful, we grab the attribute from the flash scope and transition back to that view-state with the given id.  Thus, we don&#8217;t have to have a separate action-state for each view-state that might want to use similar functionality because we have parameterized the specific data/functionality.</p>
+
+<p>Note: I had to use the ${&#8216;literal&#8217;} syntax for the attribute value.  I&#8217;m not sure if this is a quirk of Webflow 1 or my project.</p>
+
+<p>Viva la Webflow.  That, or just write SOUIT apps!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-10-08T09:52:00-06:00" pubdate data-updated="true">Oct 8<span>th</span>, 2009</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/spring/'>spring</a>, <a class='category' href='/blog/categories/webflow/'>webflow</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/find-network-hosts-nmap/" title="Previous Post: Find network hosts with nmap">&laquo; Find network hosts with nmap</a>
+      
+      
+        <a class="next-article-link" href="/post/django-intro-presentation/" title="Next Post: Django Intro Presentation">Django Intro Presentation &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/parameterized-states-webflow/';
+        var disqus_url = 'http://jaketrent.com/post/parameterized-states-webflow/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

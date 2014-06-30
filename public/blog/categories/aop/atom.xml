@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: aop | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/aop/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA['And' Spring @Secured Roles]]></title>
+    <link href="http://jaketrent.com/post/and-spring-secured-roles/"/>
+    <updated>2012-01-06T10:30:00-07:00</updated>
+    <id>http://jaketrent.com/post/and-spring-secured-roles</id>
+    <content type="html"><![CDATA[<p>Spring Security (previously Acegi) gives you an awesome AOP way of locking down methods in your Java application.  And well-placed <a href="http://www.youtube.com/watch?v=ldFOHUaf2zg">lock down</a> is a special power indeed.  However, Spring disappoints a bit on this score because it turns out its default behavior is to 'or' the roles listed in @Secured annotation.  You'd think the default would be the stricter 'and', but alas.  But never fear, there is hope.</p>
+
+<!--more-->
+
+
+<p><em>Updated (21 June 2012)</em>:</p>
+
+<h2>The easy way</h2>
+
+<p>This article can be simplified into this line of code:</p>
+
+<p><code>java
+@PreAuthorize("hasRole('ROLE_role1') and hasRole('ROLE_role2')")
+</code></p>
+
+<p>There are other combo options <a href="http://static.springsource.org/spring-security/site/docs/3.0.x/reference/el-access.html">as documented by Spring</a>.</p>
+
+<p>If you wish to go on, enjoy the custom code and xml config that follows:  :)</p>
+
+<p>There is always hope.</p>
+
+<p>Note:  My experimentation with this and the line numbers in files mentioned here are from spring-security-core/3.0.7.RELEASE.</p>
+
+<h2>GrantedAuthority</h2>
+
+<p>Your authorities populator or however you're getting roles assigned to your user will eventually place them in the place that you can get to them programmatically:</p>
+
+<p><code>java
+SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+</code></p>
+
+<p>And here is where the @Secured annotation will eventually look for them (AbstractSecurityInterceptor.java:204):</p>
+
+<p><code>java
+Collection&lt;ConfigAttribute&gt; attributes = this.obtainSecurityMetadataSource().getAttributes(object);
+</code></p>
+
+<p>This collection of <code>GrantedAuthorities</code> is are the roles that have been assigned to the user associated with your request to a method.</p>
+
+<h2>@Secured</h2>
+
+<p>When you want only users with certain authorities to access methods, you apply the <code>@Secured</code> annotation to the method needing protection.  Also note that you can specify multiple roles in this annotation:</p>
+
+<p><code>java
+@Secured({"role1", "role2"})
+public void makeSomethingAwesome() {
+  // pure awesome
+}
+</code></p>
+
+<p>Again, to note what is important and initially stunned me:  By default, you just need one of these roles (either role1 OR role2) to make it into the innards of this awesomeness.  This is because of the default configuration.  From the <a href="http://static.springsource.org/spring-security/site/docs/3.0.x/reference/ns-config.html">Spring Security docs</a>:</p>
+
+<p>The default strategy is to use an AffirmativeBased AccessDecisionManager with a RoleVoter and an AuthenticatedVoter.</p>
+
+<h2>Role Name Prefix</h2>
+
+<p>Another point worth making is about the prefix required for roles.  Roles that are counted by the <code>RoleVoter</code> are only seen as roles if they start with the specified prefix.  By default, <code>RoleVoter</code> sees this prefix as "ROLE_".  It is settable, but be warned that your roles will count for nothing and your <code>@Secured</code> method will be totally exposed unless it looks something like this:</p>
+
+<p><code>java
+@Secured({"ROLE_role1", "ROLE_role2"})
+public void makeSomethingAwesome() {
+  // pure awesome that is now protected
+}
+</code></p>
+
+<p>From the <code>RoleVoter</code> docs:</p>
+
+<blockquote><p>Votes if any ConfigAttribute#getAttribute() starts with a prefix indicating that it is a role. The default prefix string is <code>ROLE_</code>, but this may be overridden to any value. It may also be set to empty, which means that essentially any attribute will be voted on. As described further below, the effect of an empty prefix may not be quite desirable.</p></blockquote>
+
+<h2>The 2 Keys</h2>
+
+<p>There are two key interfaces that Spring Security is using to determine how you want your roles checked that you specify in the <code>@Secured</code> annotation:</p>
+
+<ul>
+<li>AccessDecisionManager implemented as AffirmativeBased, ConsensusBased or UnanimousBased</li>
+<li>AccessDecisionVoter, implemented as RoleVoter</li>
+</ul>
+
+
+<p>The decision manager is the class that has a collection of voters.  The decision manager orchestrates the voters and asks each in turn whether the requesting user should be let through the <code>@Secured</code> annotation or denied.  By default, the <code>AffirmativeBased</code> manager is used.</p>
+
+<p>Each decision manager functions differently in how it counts the votes of its voters:</p>
+
+<ul>
+<li>AffirmativeBased - if any voter comes votes 'yes' or 'access granted', the manager allows access</li>
+<li>ConsensusBased - this manager is majority rules.  There can be votes 'yes' and 'no', and as long as 'yes' votes outnumber 'no' votes, access is allowed</li>
+<li>UnanimousBased - this manager requires every voter to vote 'yes' or else access is denied</li>
+</ul>
+
+
+<p>Since this discussion is based around roles, we only care to use Spring's <code>RoleVoter</code>.  Here's part of its implementation, starting on line 98:</p>
+
+<p>```java
+public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
+  int result = ACCESS_ABSTAIN;
+  Collection<GrantedAuthority> authorities = extractAuthorities(authentication);</p>
+
+<p>  for (ConfigAttribute attribute : attributes) {</p>
+
+<pre><code>if (this.supports(attribute)) {
+  result = ACCESS_DENIED;
+
+  // Attempt to find a matching granted authority
+  for (GrantedAuthority authority : authorities) {
+    if (attribute.getAttribute().equals(authority.getAuthority())) {
+      return ACCESS_GRANTED;
+    }
+  }
+}
+</code></pre>
+
+<p>  }</p>
+
+<p>  return result;
+}
+```</p>
+
+<p>Verbalized, this <code>vote()</code> method goes through each role specified in the <code>@Secured</code> annotation and for each of those checks whether the user has that role.  If he does, the voter returns its vote as 'yes'.  Got that?  <em>At the first match, the vote is yes</em>.  This is a logical 'or'.</p>
+
+<h2>Making the role vote a logical 'and'</h2>
+
+<p>I don't want my roles 'or'ed together.  I want the uesr to be required to have them all in combination or I will deny him access.  Since we've already shown that the default <code>RoleVoter</code> uses a logical 'or' operation, I guess we'll need to write our own role voter that uses a logical 'and'.  Potentially, that might be called 'HasAllRolesVoter', and  might look like this:</p>
+
+<p>```java
+public class HasAllRolesVoter extends RoleVoter {</p>
+
+<p>  @Override
+  public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {</p>
+
+<pre><code>Collection&lt;GrantedAuthority&gt; authorities = authentication.getAuthorities();
+int requiredMatches = attributes.size();
+int matches = 0;
+for (ConfigAttribute attribute : attributes) {
+  if (this.supports(attribute)) {
+    for (GrantedAuthority authority : authorities) {
+      if (attribute.getAttribute().equals(authority.getAuthority())) {
+        ++matches;
+        break;
+      }
+    }
+  }
+}
+
+int result = ACCESS_ABSTAIN;
+if (requiredMatches &gt; 0 &amp;&amp; matches &lt; requiredMatches) {
+  result = ACCESS_DENIED;
+} else if (matches &gt; 0 &amp;&amp; matches == requiredMatches) {
+  result = ACCESS_GRANTED;
+}
+return result;
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>It looks much like <code>RoleVoter</code>.  It extends <code>RoleVoter</code> and overrides <code>vote()</code>, which now goes through the roles on the <code>@Secured</code> annotation, checks each against the roles of the user, incrementing a count with each match.  If, in the end, there are as many matches as roles specified, we've found them all.  This is just a potential implementation.  There are probably many better was to get this done.</p>
+
+<p>So now can we do a logical 'and'?  Yes.  There are 3 ways of accomplishing this (and probably more):</p>
+
+<ol>
+<li>AffirmativeBased w/ HasAllRolesVoter</li>
+<li>ConsensusBased w/ HasAllRolesVoter</li>
+<li>UnanimousBased w/ RolesVoter</li>
+</ol>
+
+
+<p>Note that in the last option <code>UnanimousBased</code> access manager can use just the plain jane <code>RolesVoter</code>.  This is because <code>UnanimousBased</code> calls the <code>RoleVoter</code> up for vote for each individual role (one by one via the <code>singleAttributeList</code>) as opposed to the roles as a collection.  Thus, that combination ignores the fact that <code>RoleVoter</code> normally 'or's matching roles together.</p>
+
+<h2>Configuration</h2>
+
+<p>So, there really hasn't been too much to this solution.  But as with most frameworks of this flexibility and complexity, the key is knowing how to actually specify that you want it to work this way.  To specify a <code>UnanimousBased</code> access manager using the plain <code>RoleVoter</code> (my eventual solution for my own problem) looks something like this:</p>
+
+<p>```xml
+&lt;beans xmlns="http://www.springframework.org/schema/beans"</p>
+
+<pre><code>   xmlns:sec="http://www.springframework.org/schema/security"&gt;
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd"&gt;
+</code></pre>
+
+<p>  <bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased"></p>
+
+<pre><code>&lt;property name="decisionVoters"&gt;
+  &lt;bean class="org.springframework.security.access.vote.RoleVoter" /&gt;
+&lt;/property&gt;
+&lt;property name="allowIfAllAbstainDecisions" value="false" /&gt;
+&lt;property name="messageSource" ref="messageSource" /&gt;
+</code></pre>
+
+<p>  </bean></p>
+
+<p>  &lt;sec:global-method-security secured-annotations="enabled" jsr250-annotations="enabled" pre-post-annotations="enabled"</p>
+
+<pre><code>access-decision-manager-ref="accessDecisionManager" /&gt;
+</code></pre>
+
+<p></beans>
+```</p>
+
+<p>Smooth as butter.  As with most Spring solutions, the answer was in an xml configuration.  Oh boy.</p>
+]]></content>
+  </entry>
+  
+</feed>

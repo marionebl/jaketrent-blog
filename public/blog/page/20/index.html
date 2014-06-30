@@ -1,0 +1,567 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="I was having problems doing operations on a java.util.List object returned by Arrays.asList() method call. The specific exception was a java.lang. &hellip;">
+  
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/blog/page/20/index.html" />
+  <meta property="og:description" content="I was having problems doing operations on a java.util.List object returned by Arrays.asList() method call. The specific exception was a java.lang. &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  <meta name="twitter:description" content="I was having problems doing operations on a java.util.List object returned by Arrays.asList() method call. The specific exception was a java.lang. &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/blog/page/20/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div class="blog-index">
+  
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/arraysaslist-returns-immutable-list/">Arrays.asList Returns Immutable List</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-29T08:29:00-06:00" pubdate data-updated="true">Apr 29<span>th</span>, 2009</time>
+        
+         | <a href="/post/arraysaslist-returns-immutable-list/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I was having problems doing operations on a java.util.List object returned by Arrays.asList() method call.   The specific exception was a java.lang.UnsupportedOperationException.  I soon found out why this was a problem.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/arraysaslist-returns-immutable-list/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/java-reflection-methods-primitive-params/">Java Reflection for Methods With Primitive Params</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-14T08:35:00-06:00" pubdate data-updated="true">Apr 14<span>th</span>, 2009</time>
+        
+         | <a href="/post/java-reflection-methods-primitive-params/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>First-class objects are the norm in the code that I usually write and edit, but every now and then I run across a method with a primitive parameter.  I use EasyMock a lot in testing, and need to find these methods by reflection, this is how it&#8217;s done&#8230;</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/java-reflection-methods-primitive-params/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/show-full-sql-developer-timestamp/">Show Full SQL Developer Timestamp</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-08T08:06:00-06:00" pubdate data-updated="true">Apr 8<span>th</span>, 2009</time>
+        
+         | <a href="/post/show-full-sql-developer-timestamp/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In Oracle&#8217;s SQL Developer 1.5 tool, there seems to be a crazy bug where one can&#8217;t see the full timestamp value (including time) by default.  You can change this by running this awesome piece of code&#8230;</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/show-full-sql-developer-timestamp/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/facelets-template-includes-and-params/">Facelets Template Includes and Params</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-24T07:36:00-06:00" pubdate data-updated="true">Mar 24<span>th</span>, 2009</time>
+        
+         | <a href="/post/facelets-template-includes-and-params/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Facelets is a great template framework that sits on top of JSF.  They have some fun template includes and parameters that you can pass into the included templates.  Here is an example with one gotcha pertaining to the parameter name.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/facelets-template-includes-and-params/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/replace-text-css-defined-image/">Replace Text With Css-Defined Image</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-28T15:05:00-07:00" pubdate data-updated="true">Feb 28<span>th</span>, 2009</time>
+        
+         | <a href="/post/replace-text-css-defined-image/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sometimes bland text on a webpage needs a little spicing up with an image.  Instead of having to mess with markup, this text can be replaced with an image.  Plus, the remaining text in the markup allows for better screen-reader access.  There is a fair amount of discussion on the best way to do this.  One of the ways that I&#8217;ve found works pretty well for me is what is known as the <a href="http://stopdesign.com/archive/2003/03/07/replace-text.html#notes">Leahy/Langridge Image Replacement (LIR)</a></p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/replace-text-css-defined-image/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/context-processors-put-content-multiple-pages/">Context Processors Put Content on Multiple Pages</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-28T14:55:00-07:00" pubdate data-updated="true">Feb 28<span>th</span>, 2009</time>
+        
+         | <a href="/post/context-processors-put-content-multiple-pages/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In software development, be <a href="http://en.wikipedia.org/wiki/Don%27t_repeat_yourself">dry</a>, and define data once.  But, what if that data needs to be used in many places?  This is the case with parts of a web page, for instance, that are common to many different pages.  Django has a great mechanism for this: it is context processors.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/context-processors-put-content-multiple-pages/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/hibernates-enumerated-annotation-brittle/">Hibernate&#8217;s @Enumerated Annotation Is Brittle</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-23T08:27:00-07:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2009</time>
+        
+         | <a href="/post/hibernates-enumerated-annotation-brittle/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Hibernate&#8217;s @Enumerated annotation seems much too brittle in the case of using it with EnumType.ORDINAL.   If you&#8217;re using EnumType.STRING, I think it works beautifully.  This is because the annotation can use the name of the enum to make the mapping.  In the case of ORDINAL, the value of the enum is used.  This presents a couple problems&#8230;</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/hibernates-enumerated-annotation-brittle/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/loop-index-uirepeat/">Loop Index in Ui:repeat</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-20T13:56:00-07:00" pubdate data-updated="true">Feb 20<span>th</span>, 2009</time>
+        
+         | <a href="/post/loop-index-uirepeat/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sometimes it&#8217;s useful to know what the invariant value is for your loop within a facelets loop.  I use ui:repeat a lot, but have seen <a href="http://aprilandjake.com/content/jsf-wont-submit-null-uirepeat/">some problems</a> with it in the past.   If you want to get the loop index for your ui:repeat, you may be disappointed.  Basically, it requires that you use a different looping mechanism.  A nice alternative is the a4j:repeat, which offers the same functionality, plus more awesomeness&#8230;</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/loop-index-uirepeat/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/create-custom-facelets-component/">Create Custom Facelets Component</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-20T13:06:00-07:00" pubdate data-updated="true">Feb 20<span>th</span>, 2009</time>
+        
+         | <a href="/post/create-custom-facelets-component/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Facelets is a great addition to jsf.  It is very extensible, and it makes creating custom components even easier.  It&#8217;s fantastic.  This is almost TOO easy.  If you have a pile of view markup and/or client-side logic, then this is a good option.  And by good, I mean awesome.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/create-custom-facelets-component/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/use-java-reflection-get-field-w-accessor/">Use Java Reflection to Get Field W/ Accessor</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-20T12:36:00-07:00" pubdate data-updated="true">Feb 20<span>th</span>, 2009</time>
+        
+         | <a href="/post/use-java-reflection-get-field-w-accessor/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Java is about objects.  Reflection is about knowing things about those objects generally without have specific fields and methods in hand.  I must get to one of those field values via its accessor, allowing me to keep the fields private and abstracted away&#8230; of course, until I start unit testing.  Here&#8217;s one method&#8230;</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/use-java-reflection-get-field-w-accessor/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/21/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/19/">Newer &rarr;</a>
+    
+  </div>
+</div>
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

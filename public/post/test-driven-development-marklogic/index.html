@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Test-driven Development on MarkLogic - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Unit testing is a required part of a healthy software development lifecycle and a balanced breakfast. But test-driven development is a rockin' part &hellip;">
+  <meta name="keywords" content="marklogic, tdd, unit-testing, xquery">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Test-driven Development on MarkLogic" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/test-driven-development-marklogic/" />
+  <meta property="og:description" content="Unit testing is a required part of a healthy software development lifecycle and a balanced breakfast. But test-driven development is a rockin' part &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Test-driven Development on MarkLogic" />
+  <meta name="twitter:description" content="Unit testing is a required part of a healthy software development lifecycle and a balanced breakfast. But test-driven development is a rockin' part &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/test-driven-development-marklogic/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Test-driven Development on MarkLogic</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-11T19:46:00-06:00" pubdate data-updated="true">Oct 11<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Unit testing is a required part of a healthy software development lifecycle and a balanced breakfast.  But test-driven development is a rockin&#8217; part of an <em>awesome</em> development lifecycle.  What&#8217;s the difference?  If you don&#8217;t test-drive the dev of your MarkLogic XQuery, you may never come back to test again.  Test-driven XQuery development will ease your headaches, put you into the plush seat of a developer with confidence, and rocket you down the road to making all your wildest dreams come true.  Kachow!</p>
+
+<!--more-->
+
+
+<p>Ok, it may be slightly <em>more</em> magical than that.  But, I don&#8217;t want to get your hopes up.  Seriously, though, if TDD is fun in, say Java Land (and it still is in MarkLogic land with &#8220;the Swede&#8221;), then it&#8217;s a required portion of fun in MarkLogic Land?  Why?  While you might imagine yourself going back and adding tests to your Java project and sometimes you do, if you imagine it and then attempt it in your XQuery project, I believe the likelihood that you shrivel in shame and tears under your desk is much higher than in some other environments.</p>
+
+<p>I the difficulty of the test after development approach is higher in MarkLogic XQuery because of what I&#8217;ve called &#8220;camouflaged dependencies&#8221; &#8211; essentially, access to the http request and respond and to the database.</p>
+
+<p>You can get access to request fields or headers or anything else dealing with the web context in which the code is executed at any place in your code.  This doesn&#8217;t mean you have to code like this, but the language doesn&#8217;t necessarily help you enforce your discipline.  This is where testing before you write the code will help.  Make you functions functional &#8211; pass in parameters and make them the only data access.</p>
+
+<p>You can read the database natively in MarkLogic XQuery.  That means that you can be retrieving data anywhere in your code.  There is an extreme lack of ceremony in making a connection to the database &#8211; it&#8217;s always there;  they&#8217;re connected.  This is both refreshing and a shiny nail strip upon which to puncture the tires of your test-driven sports coupe e&#8217;re you drive it off the lot.  Resist the temptation to read from the database or write to the database save in very determined and specific parts of your app &#8211; parts that you will not actually unit test [gasp] because they&#8217;ll be doing nothing but saving xmls at given database uris, and MarkLogic already has internal testing for that.</p>
+
+<p>So, respect what you might call your dependencies &#8211; the network and the database &#8211; and be thrilled with the adventure of testing the business logic that you write yourself and need to verify.  And test it first to help keep you on the strait and narrow.  Otherwise, you&#8217;re &#8220;discipline&#8221; will crumble under deadlines and in the end it will &#8220;just work&#8221; &#8211; until it doesn&#8217;t &#8211; and you won&#8217;t know why.</p>
+
+<p>Note:
+Below are the slides to support a presentation given at an in-house development conference.  It is an evolution of a talk previously given on <a href="">unit testing XQuery on MarkLogic</a> with streamlined principles and skills section and a not-included coding portion surrounding the use of XqTest, our XQuery unit test framework, and its integration in our environment.  Tonight, as I say my prayers, I will continue to hope that someday XqTest will be released from its prison and &#8220;the Swede&#8221; will see the light of day!</p>
+
+<div style="width:425px" id="__ss_9651897"> <strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/rockycode/testdriven-development-on-marklogic" title="Test-driven Development on MarkLogic" target="_blank">Test-driven Development on MarkLogic</a></strong> <iframe src="http://www.slideshare.net/slideshow/embed_code/9651897" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe> <div style="padding:5px 0 12px"> View more <a href="http://www.slideshare.net/" target="_blank">presentations</a> from <a href="http://www.slideshare.net/rockycode" target="_blank">rockycode</a> </div> </div>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-11T19:46:00-06:00" pubdate data-updated="true">Oct 11<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/marklogic/'>marklogic</a>, <a class='category' href='/blog/categories/tdd/'>tdd</a>, <a class='category' href='/blog/categories/unit-testing/'>unit-testing</a>, <a class='category' href='/blog/categories/xquery/'>xquery</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/jquery-mobile-selector-context/" title="Previous Post: jQuery Mobile Selector Context">&laquo; jQuery Mobile Selector Context</a>
+      
+      
+        <a class="next-article-link" href="/post/django-loaddata-heroku/" title="Next Post: Django loaddata on Heroku">Django loaddata on Heroku &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/test-driven-development-marklogic/';
+        var disqus_url = 'http://jaketrent.com/post/test-driven-development-marklogic/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Backbone Views in a Dynamic DOM - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="When you start writing applications with BackboneJS, that means that you're dealing with some dynamic UI. There are elements being pushed into and &hellip;">
+  <meta name="keywords" content="javascript, jquery, backbonejs, requirejs">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Backbone Views in a Dynamic DOM" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/backbone-views-dynamic-dom/" />
+  <meta property="og:description" content="When you start writing applications with BackboneJS, that means that you're dealing with some dynamic UI. There are elements being pushed into and &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Backbone Views in a Dynamic DOM" />
+  <meta name="twitter:description" content="When you start writing applications with BackboneJS, that means that you're dealing with some dynamic UI. There are elements being pushed into and &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/backbone-views-dynamic-dom/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Backbone Views in a Dynamic DOM</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-29T15:58:00-07:00" pubdate data-updated="true">Dec 29<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>When you start writing applications with BackboneJS, that means that you&#8217;re dealing with some dynamic UI.  There are elements being pushed into and pulled out of the DOM.  I was having problems trying to reference DOM elements that were dynamically inserted into the DOM by other Backbone views.  The fix was simple but not immediately obvious without cracking open Backbone.</p>
+
+<!--more-->
+
+
+<h2>Backbone View Element</h2>
+
+<p>The <a href="http://documentcloud.github.com/backbone/#View-el"><code>el</code></a> property of a <code>Backbone.View</code> is the dom element within which your view contents will be displayed.  By default it&#8217;s an empty div, otherwise it can be specified by a combination of <code>tagName</code>, <code>className</code>, and <code>id</code> properties.  For these options, Backbone assumes that your DOM element isn&#8217;t living within the document; rather, it will be created in memory and then inserted where you later specify.</p>
+
+<p>If you want to specify a pre-existing DOM element within which to insert your Backbone view contents, you set the <code>el</code> property of your view directly.  This is where I ran into problems.</p>
+
+<h2>Shifting Plates of the DOM</h2>
+
+<p>Backbone views assume the <code>$</code> alias is either <a href="http://docs.jquery.com/Main_Page">jQuery</a>or <a href="http://zeptojs.com/">Zepto</a>.  They do the same thing, just use css-like selectors to get references to DOM elements.  So, I would have a view and set the <code>el</code> property to a DOM element selected by jQuery (note: examples use <a href="http://requirejs.org/docs/whyamd.html">RequireJS to manage dependencies</a>), such as <code>MountainView.js</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">define</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">el</span><span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#mountains&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">el</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">makePrettyMountains</span><span class="p">());</span>
+</span><span class='line'>      <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Problem is that earlier in the code, another view was being relied upon to insert the <code>#mountains</code> element into the DOM.  Let&#8217;s say <code>SceneryStarterView.js</code> looked something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;MountainView&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">MountainView</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">makePlaceForMountains</span><span class="p">());</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">mountain</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MountainView</span><span class="p">();</span>
+</span><span class='line'>      <span class="nx">mountain</span><span class="p">.</span><span class="nx">render</span><span class="p">().</span><span class="nx">el</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It was importing (via <a href="http://requirejs.org/docs/whyamd.html">RequireJS</a>) <code>MountainView.js</code>.  At import time, <code>$('#mountains')</code> was evaluated but nothing was found, because <code>makePlaceForMountains()</code> hadn&#8217;t been called yet.  It was looking for <code>#mountains</code> too early!  How import the needed view, let it specify somewhere on the DOM that doesn&#8217;t exist <em>yet</em> but <em>will</em> by the time it&#8217;s instantiated and then rendered?  Backbone has a mechanism for this&#8230;</p>
+
+<h2>Into the <a href="http://en.wikipedia.org/wiki/Asthenosphere">Asthenosphere</a></h2>
+
+<p>To find the answer, I had to peel back the Backbone crust and do a little dumpster diving.  When my <code>MountainView</code> is new&#8217;ed up, the constructor for <code>Backbone.View</code> is hit.  It calls a function called <code>_ensureElement()</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// Ensure that the View has a DOM element to render into.</span>
+</span><span class='line'><span class="c1">// If `this.el` is a string, pass it through `$()`, take the first</span>
+</span><span class='line'><span class="c1">// matching element, and re-assign it to `el`. Otherwise, create</span>
+</span><span class='line'><span class="c1">// an element from the `id`, `className` and `tagName` proeprties.</span>
+</span><span class='line'><span class="nx">_ensureElement</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">el</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">attrs</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">attributes</span> <span class="o">||</span> <span class="p">{};</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span> <span class="nx">attrs</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">className</span><span class="p">)</span> <span class="nx">attrs</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">className</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">el</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">make</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tagName</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">el</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">el</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">el</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Hmmmm&#8230;  If there isn&#8217;t an <code>el</code> field, grab <code>id</code>, <code>className</code>, and <code>tagName</code> and create an in-memory element with <code>document.createElement()</code>.  And it&#8217;s the <code>else if</code> that gives us the option we need.  <em>If the <code>el</code> property is a string, <em>now</em> try and select it with jQuery</em>.  Perfect!  If we change our code for <code>MountainView.js</code> to reflect that one change:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">define</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#mountains&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="c1">// render, etc</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It works like a charm.  Why?  Now the order of events is:</p>
+
+<ul>
+<li><code>SceneryStartView</code> is instantiated somewhere</li>
+<li>It imports <code>MountainView</code> as a dependency</li>
+<li><code>SceneryStartView</code> inserts the <code>#mountians</code> DOM element</li>
+<li>Then it news up <code>MountainView</code></li>
+<li>In the constructor for <code>Backbone.View</code>, jQuery selects my string value for <code>el</code></li>
+<li>One more round of hallelujah is sung!</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-12-29T15:58:00-07:00" pubdate data-updated="true">Dec 29<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/backbonejs/'>backbonejs</a>, <a class='category' href='/blog/categories/jquery/'>jquery</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/requirejs/'>requirejs</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/backbone-and-jax-rs/" title="Previous Post: Backbone and JAX-RS">&laquo; Backbone and JAX-RS</a>
+      
+      
+        <a class="next-article-link" href="/post/django_content_type_app_label_key-constraint-herok/" title="Next Post: django_content_type_app_label_key Constraint on Heroku">django_content_type_app_label_key Constraint on Heroku &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/backbone-views-dynamic-dom/';
+        var disqus_url = 'http://jaketrent.com/post/backbone-views-dynamic-dom/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

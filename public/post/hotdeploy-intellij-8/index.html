@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Hotdeploy in Intellij 8 - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Development on JEE projects can be a real pain sometime. 1/2 of this (sometimes in literal minutes) is because of the need to spin up the server in &hellip;">
+  <meta name="keywords" content="deployment, ide, intellij">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Hotdeploy in Intellij 8" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/hotdeploy-intellij-8/" />
+  <meta property="og:description" content="Development on JEE projects can be a real pain sometime. 1/2 of this (sometimes in literal minutes) is because of the need to spin up the server in &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Hotdeploy in Intellij 8" />
+  <meta name="twitter:description" content="Development on JEE projects can be a real pain sometime. 1/2 of this (sometimes in literal minutes) is because of the need to spin up the server in &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/hotdeploy-intellij-8/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Hotdeploy in Intellij 8</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-22T14:02:00-07:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2008</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Development on JEE projects can be a real pain sometime.  1/2 of this (sometimes in literal minutes) is because of the need to spin up the server in order to run your code.  This server startup time can be a killer of one&#8217;s development momentum.</p>
+
+<p>True to its mantra, IntelliJ IDEA delivers some goodness is making this pain a little more pleasurable &#8211; if that&#8217;s possible.</p>
+
+<!--more-->
+
+
+<p>Development on JEE projects can be a real pain sometime.  1/2 of this (sometimes in literal minutes) is because of the need to spin up the server in order to run your code.  This server startup time can be a killer of one&#8217;s development momentum.  If one is trying to make a change to code and then follow through and check the resulting differences, it can be much like running downstairs in one&#8217;s house to fetch something, forgetting what that something was upon arrival.</p>
+
+<p>It seems that the solutions to this problem are varied.  For me, it has meant: - Coding webapps in interpreted languages
+- Trying IDE-based hotdeploy schemes
+- Trying 3rd-party plugins like JavaRebel.</p>
+
+<p>I have had problems with all 3 solutions:
+- These are fun, but not what my employer uses
+- I haven&#8217;t found an IDE yet that hotdeploys to my liking.  It&#8217;s always extremely hard to tell if an IDE has really done its job and if what the browser is giving back to me is the new version. Eclipse has tried to give a visual indicator with its &#8216;Published&#8217;/&#8217;Republish&#8217; verbage in its Servers view, but it seems that this indicator is often wrong.
+- I haven&#8217;t had hardly any luck with JavaRebel.  Pre-version 1.0, it seemed buggy.  Then, I had problems integrating it with my IDE&#8217;s build/deploy process.  Since the version 1.0 release, I haven&#8217;t tried it again, but I hear it&#8217;s still buggy.</p>
+
+<p>As imperfect as the solutions are, it seems to me that the current best solution to the Java webapp hotdeploy is still the IDE-based hotdeploy scheme.  As my favorite IDE is IntelliJ IDEA, here&#8217;s a little 1-2-3 on how to get hotdeploy working in IntelliJ 8 (as of Milestone 1, Diana):</p>
+
+<h3>Select two important options</h3>
+
+
+<p>Go to Settings > Compiler, and set &#8220;Deploy web applications to server after compilation&#8221; to &#8220;Never&#8221;</p>
+
+<p><a href="http://picasaweb.google.com/lh/photo/qOoybG2F413C8IkbKljbug"><img src="http://lh5.ggpht.com/trent.jake/SNgOk1bJ1cI/AAAAAAAAENs/DTZhP4ZvYBk/s800/compileropt.png" /></a></p>
+
+<p>Go to Settings > Debugger, and set &#8220;Reload classes after compilation&#8221; to &#8220;Always&#8221; and optionally check &#8220;Reload classes in background&#8221;.</p>
+
+<h3>Compile after a code change</h3>
+
+
+<p>Now, every time you make a change to compiled code (e.g., .java files), make sure you re-compile.  The shortcut is Ctrl-Shift-F9.</p>
+
+<p>And that&#8217;s it!  Pleasurable development was meant to be fast and simple.</p>
+
+<p>I&#8217;m a little unclear as to the essentialness, but as a general rule, I also set another option in the deployment settings for static file hotdeploy:</p>
+
+<p>Go to Settings > Project Settings > your web module > Java EE Build Settings and check &#8220;Build on frame deactivation&#8221; and check &#8220;Build Web resources only&#8221;</p>
+
+<p><a href="http://picasaweb.google.com/lh/photo/hsw-VeKzduwMGCANP4p5xg"><img src="http://lh4.ggpht.com/trent.jake/SNgSOwB4qyI/AAAAAAAAEOI/d07_gHC89nI/s400/projsettings.png" /></a></p>
+
+<p>I haven&#8217;t tested the utter-most limits of this hotdeploy.  I&#8217;m not really sure at their limitations, but I would guess that changes to method signatures or changes to descriptor files would require a server restart.  I am, however, unsure.  How about you?</p>
+
+<p>Besides just the handy hotdeploy, one should also keep in mind that other things can help startup time: viva los smaller projects!  But, for anyone wanting to enjoy a behemoth, enjoy Napi.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-22T14:02:00-07:00" pubdate data-updated="true">Nov 22<span>nd</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/deployment/'>deployment</a>, <a class='category' href='/blog/categories/ide/'>ide</a>, <a class='category' href='/blog/categories/intellij/'>intellij</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/ids-jsf-used-jquery/" title="Previous Post: Id's from JSF, used in jQuery">&laquo; Id's from JSF, used in jQuery</a>
+      
+      
+        <a class="next-article-link" href="/post/vpn-ubuntu-linux/" title="Next Post: VPN on Ubuntu Linux">VPN on Ubuntu Linux &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/hotdeploy-intellij-8/';
+        var disqus_url = 'http://jaketrent.com/post/hotdeploy-intellij-8/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

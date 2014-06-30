@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: performance | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/performance/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Xquery Optimization Tips]]></title>
+    <link href="http://jaketrent.com/post/xquery-optimization-tips/"/>
+    <updated>2010-07-01T09:39:00-06:00</updated>
+    <id>http://jaketrent.com/post/xquery-optimization-tips</id>
+    <content type="html"><![CDATA[<p>My first xquery experience has been on the MarkLogic platform.  The project that we just released was written entirely in xquery and on that platform.  As our site continues to gains popularity, we continue to realize how little about xquery we knew or know.  Sometimes and in some places, the site is just really not that performant.  "But I thought MarkLogic/xquery is super-scalable," some exclaim indignantly.  If you do it right, an Oracle relational database can be made to scale.  Done wrong, a MarkLogic database can be made to not scale at all.  There's a lot to be said about knowledge of the platform, the language, and how to wrestle it to do your bidding.  Here are a few optimization ditties that I've collected as of late that might help in your future xquery dev.</p>
+
+<!--more-->
+
+
+<ul>
+<li><p>Flatten your query - This means push your where clause into the xpath at the beginning of your FLOWR statement, limiting the amount of work you have to do once you're inside the for statement.</p></li>
+<li><p>Limit your data set - Do whatever it takes.  You just want to get to the smallest set of data possible in the most direct way.  For us, that has meant putting the most specific predicate first or keeping active datasets in a collection (king of AoP-like, not affecting persisted XML data)</p></li>
+<li><p>Query once, reference later - This comes pretty naturally in a, say, Oracle world, because it takes so much work to get down to the persistence layer and retrieve the data.  In xquery, the data sits so much closer to your app layer, giving you plenty of easy access.  Just think of it as taking another needless roundtrip to the database every time you want to run a little xpath action.</p></li>
+<li><p>Favor xdmp:estimate() - If you can, use xdmp:estimate() because it's faster.  And, it's accurate if counting at fragment boundaries (doc roots).</p></li>
+<li><p>Beware calculations - "select count (id)" might work snappy quick in sql, but do the same thing in xquery, and depending on your xpath or where clause, it's gonna work as slow as snot.  The biggest difference?  Probably that documents may need read into memory in their entirety for even a simple result like a count.  Lots of times, it might be good to design for pre-calculations, that happen before the calculation is actually even needed.  For instance, you could put all id's for docs in a certain state inside of a single doc, which is much cheaper to query than many.</p></li>
+<li><p>Know your indexes - I'm definitely still learning this one:  which ones are being used implicitly w/o being setup by an admin.  Here's a pearl that we just picked up: Range indexes will significantly increase the performance of your order by clauses that use those indexed elements/attributes (including fn:distinct-values()).</p></li>
+<li><p>Limit logging - By nature, file i/o can be expensive.  If you want to keep it in, but turn it off, protect it with a conditional (it's a lazy calculation and hopefully a cheap one too).</p></li>
+<li><p>Beware the double slash - This is a given, even for the xquery newb.  This is tree traversal galore.  Then again, don't be afraid to use it, when helpful, for data sets that are always guaranteed to be known and small.</p></li>
+<li><p>Utilize search functions - MarkLogic, for instance, has many performance optimizations built into its search capability.  Sometimes it will be more performant to use a search function as opposed to raw xpath.  For example, if an element personId is supplant deep in the bowels of an xml document, requiring xpath muscle to get in, find docs with a particular personId, and return the set, you could do something simple like cts:search(/doc,cts:element-word-query(xs:QName("personId"), $personId)) that could be legions faster.</p></li>
+</ul>
+
+
+<p>Those are some dev tips, here are your tools, really quickly:</p>
+
+<ul>
+<li><p>Known and love <a href="http://developer.marklogic.com/code/cq">CQ</a> and its profiler</p></li>
+<li><p>xdmp:query-trace() and  xdmp:query-meters()</p></li>
+<li><p>Some code to generate large amounts of data for you to test on</p></li>
+</ul>
+
+
+<p>Finally:</p>
+
+<ul>
+<li><p>There are a few more tips in the Priscilla Walmsley <a href="http://www.amazon.com/XQuery-Priscilla-Walmsley/dp/0596006349/ref=sr_1_1?ie=UTF8&amp;s=books&amp;qid=1278002233&amp;sr=8-1">XQuery</a> book, chapter 15.</p></li>
+<li><p>Performance guide available at <a href="http://developer.marklogic.com/docs">developer.marklogic.org</a>.</p></li>
+</ul>
+
+
+<p>Happy coding.  And remember, it's always possible to write bad, unperformant code.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Not in vs. Outer join Performance]]></title>
+    <link href="http://jaketrent.com/post/not-vs-outer-join-performance/"/>
+    <updated>2009-09-17T12:59:00-06:00</updated>
+    <id>http://jaketrent.com/post/not-vs-outer-join-performance</id>
+    <content type="html"><![CDATA[<p>I was running an SQL query today and it was sooooo slow.  So slow, in fact, that it never returned.  I asked the DBA, Reed, who built the table what might be up, and he informed me that it was not indexed.  And proceeded to show me some cool stuff I could do to actually get my query to return.  In the end, it was a comparison between the "not in" operator and a "left join".</p>
+
+<!--more-->
+
+
+<p>My original query was thus, names changed to protect the innocent:</p>
+
+<p><code>sql
+select count(*)
+from   temp_legacy_attachments i
+where  i.person_id not in (
+  select m.legacy_person_id
+  from   new_attachment a
+  ,      person p
+  where  a.person_id = p.id);
+</code></p>
+
+<p>I was trying to query the temp_legacy_attachments to get all rows that didn't have a record in the new_attachments table.  It never returned, and so Reed told me to give this one a try:</p>
+
+<p><code>sql
+select count(*)
+from   temp_legacy_attachments i
+left join (
+  select m.legacy_person_id
+  from   new_attachment a
+  ,      person p
+  where  a.person_id = p.id) ea on ea.legacy_person_id = i.person_id
+where ea.legacy_person_id is null ;
+</code></p>
+
+<p>So, instead of using "not in" a set, I select all the legacy rows, then outer join to the new_attachment rows and filter where a column on the new attachment set is null (it's the smaller/less-available set).</p>
+
+<p>I thought it was pretty sweet.  No magic bullet, though, as Reed tells me that there is a fair amount of debate over the performance difference between the two methods.  You just have to try it and find out.  For me, in this case, the outer join was more awesome.</p>
+
+<h3>Update</h3>
+
+<p>Another savvy DBA, Bill, has graced us with another method yet:</p>
+
+<p>```sql
+select sum(cnt)
+from (
+  select p.legacy_person_id
+  ,      count(*) cnt
+  from   person p
+  join   temp_legacy_attachments i on i.person_id = p.legacy_person_id
+  where  not exists</p>
+
+<pre><code>(select null
+from   new_attachments a
+where  a.person_id = p.id
+and    a.created_by = 'LEGACY_MIGRATION')
+</code></pre>
+
+<p>  group by p.legacy_person_id)
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Variable Declaration Performance]]></title>
+    <link href="http://jaketrent.com/post/variable-declaration-performance/"/>
+    <updated>2009-09-02T11:52:00-06:00</updated>
+    <id>http://jaketrent.com/post/variable-declaration-performance</id>
+    <content type="html"><![CDATA[<p>Often when coding, we use a single local variable multiple times, overwriting the value many times.  It is considered good practice to move the variable out of the looping overwrite and into the smallest scope of code that is run once.  But, this makes the code a little bit less concise.  So, how useful is it, anyway?  I wanted to run a few little tests and see if there's really a noticable difference in performance.</p>
+
+<!--more-->
+
+
+<h3>Experiment</h3>
+
+<p>My primitive experiment was to create two different Java programs where I kept declaring the variable in one and where I declared it once and then assigned in multiple times in another.</p>
+
+<p>```java
+class TestDeclareOnce {
+  public static void main(String[] args) {</p>
+
+<pre><code>int x;
+for (int i = 0; i &lt; Integer.parseInt(args[0]); ++i) {
+    x = i;
+}
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>class TestDeclareMany {
+  public static void main(String[] args) {</p>
+
+<pre><code>for (int i = 0; i &lt; Integer.parseInt(args[0]); ++i) {
+  int x = i;
+}
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>And run like so:</p>
+
+<p><code>bash
+java TestDeclareOnce [num-times-to-loop]
+</code></p>
+
+<p>I wrote similar versions for java.util.List's, trying to determine whether or not constructing and assigning a larger object would change the pattern or not.  Of course, the declaration of an object is only a reference to somewhere in the heap, so I'm not sure what I was expecting, but I tried it all the same.  Those classes were very congruent in form to the first two, differing in this form:</p>
+
+<p><code>java
+List list = new ArrayList(i);
+</code></p>
+
+<p>One of my initial theories was that the Java compiler would optimize the difference away, making the byte code the same.  I diff'ed the resultant 2 bytecodes, however, and they are indeed different.</p>
+
+<p>So, I instead ran these a few times and tried to determine the difference in time to completion.  I used the Unix 'time' function to record running time.  Who knows how accurate that is, but it was handy at the moment.</p>
+
+<h3>Results</h3>
+
+<p><a href="http://picasaweb.google.com/lh/photo/LvQyLtgitOy4XVWZYjX7LQ?feat=embedwebsite"><img src="http://lh6.ggpht.com/_5XZCKcD6--c/Sp6-v4GovRI/AAAAAAAAIWg/KlHJpd4HQsI/s400/VarDeclarationSpeedResults.png" /></a></p>
+
+<br />
+
+
+<p>I didn't run this test many times and look for the average or mean, so there are some outliers here.  But, I think there's a fairly obvious, if not conclusive, pattern.  Defining a variable outside the loop makes a bigger difference the more times you loop.  Even then, some of the time the results are very close or even contradict the previous statement.  Data sets used here weren't very large either, so the difference is less drastic.</p>
+
+<p>The conclusion?  It's not going to make a big difference whether you declare your variable inside or outside the loop when dealing with a small number of loop iterations.  Here, small has been demonstrated to be up to 100 million.  There may be some situations in which it matters more.  What has been your experience?</p>
+]]></content>
+  </entry>
+  
+</feed>

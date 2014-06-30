@@ -1,0 +1,644 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Audit History with Hibernate Interceptor - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Our goal is to create a history audit tool that fires automatically, tracks only selected fields, categorizes those fields, and saves old vs. new &hellip;">
+  <meta name="keywords" content="hibernate, java, orm">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Audit History with Hibernate Interceptor" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/audit-history-hibernate-interceptor/" />
+  <meta property="og:description" content="Our goal is to create a history audit tool that fires automatically, tracks only selected fields, categorizes those fields, and saves old vs. new &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Audit History with Hibernate Interceptor" />
+  <meta name="twitter:description" content="Our goal is to create a history audit tool that fires automatically, tracks only selected fields, categorizes those fields, and saves old vs. new &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/audit-history-hibernate-interceptor/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Audit History With Hibernate Interceptor</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-20T14:17:00-06:00" pubdate data-updated="true">Oct 20<span>th</span>, 2008</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Our goal is to create a history audit tool that fires automatically, tracks only selected fields, categorizes those fields, and saves old vs. new data.</p>
+
+<p>We&#8217;ll cover interceptor config, data types, dependency Injection, and alternate EntityListeners.</p>
+
+<p>The one option that I found that met all these requirements was the Hibernate Interceptor.  There may be better alternatives for you if your requirements differ.</p>
+
+<!--more-->
+
+
+<p>The interceptor configuration:</p>
+
+<h3>persistence.xml</h3>
+
+
+<p>You&#8217;ll find many docs that exist online showing how to configure Hibernate Interceptors.  Virtually none described anything that I had available to me.  In this app, we don&#8217;t control the SessionFactory or Session&#8217;s, the two most popular methods of registering your Interceptor.  We only configure the EntityManagerFactory.  I found only one <a href="http://www.hibernate.org/hib_docs/entitymanager/reference/en/html/configuration.html">doc</a> that describes the property available.  Here it is implemented:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;persistence</span> <span class="na">xmlns=</span><span class="s">&quot;http://java.sun.com/xml/ns/persistence&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+</span><span class='line'>  <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd&quot;</span>
+</span><span class='line'>  <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;persistence-unit</span> <span class="na">name=</span><span class="s">&quot;com.jtsnake.tracker&quot;</span> <span class="na">transaction-type=</span><span class="s">&quot;JTA&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="c">&lt;!-- ... model objects listed ... --&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;class&gt;</span>com.jtsnake.tracker.model.Person<span class="nt">&lt;/class&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;exclude-unlisted-classes/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;properties&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;hibernate.ejb.interceptor&quot;</span> <span class="na">value=</span><span class="s">&quot;com.jtsnake.tracker.util.HistoryInterceptor&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/properties&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/persistence-unit&gt;</span>
+</span><span class='line'><span class="nt">&lt;/persistence&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3>HistoryInterceptor.java</h3>
+
+
+<p>You&#8217;ll want to notice a few things:</p>
+
+<ul>
+<li>The &#8216;instanceof Historical&#8217; is merely an optimization (see below).</li>
+<li>FacesContext is required as a workaround for dependency injection.  I couldn&#8217;t get Spring to auto-inject dependencies as normally done in other classes.  If anyone knows another way, please <a href="#commentform">let me know</a>, because I don&#8217;t like this method.  All of these dependencies were defined as spring beans elsewhere.  You&#8217;ll only have available to you what you would have on a JSF page via EL, as seen in the &#8220;#{springBean}&#8221; expressions.</li>
+<li>You may not need to save all of this data, which means that you could simplify the logic in this class.</li>
+<li>I could not do a regular entity object .save() for the history entry.  It wasn&#8217;t available.  I had to make a direct table insert.  I did try the JPA method, however, but I kept getting the SequenceGenerator to fire, selecting nextval&#8217;s again and again, but the history record was never written.  I, therefore, fell back on direct table insertion.</li>
+<li>One thing that tripped me up was the SimpleJdbcTemplate.  Previously, I have just used the JdbcTemplate.  Here, you don&#8217;t have to specify <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/sql/Types.html">Types</a>, but you&#8217;ll want to make sure that the types (that will be determined automagically by the platform) of the objects you use for parameters in your insert  map strictly to the database column types.  A useful doc was found <a href="http://java.sun.com/j2se/1.5.0/docs/guide/jdbc/getstart/mapping.html">here</a>.</li>
+</ul>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">jtsnake</span><span class="o">.</span><span class="na">tracker</span><span class="o">.</span><span class="na">util</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.hibernate.CallbackException</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.hibernate.EmptyInterceptor</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.hibernate.type.Type</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">com.jtsnake.tracker.model.Historical</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">com.jtsnake.tracker.model.PieceOfHistory</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">com.jtsnake.tracker.model.HistoryChangeType</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.springframework.transaction.TransactionStatus</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.springframework.transaction.support.TransactionCallbackWithoutResult</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.springframework.transaction.support.TransactionTemplate</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.springframework.jdbc.core.simple.SimpleJdbcTemplate</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.springframework.dao.DataAccessException</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">javax.el.ValueExpression</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">javax.faces.context.FacesContext</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">javax.persistence.Column</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.io.Serializable</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.lang.reflect.Field</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.Date</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HistoryInterceptor</span> <span class="kd">extends</span> <span class="n">EmptyInterceptor</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">onFlushDirty</span><span class="o">(</span><span class="n">Object</span> <span class="n">entity</span><span class="o">,</span> <span class="n">Serializable</span> <span class="n">id</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">currentState</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">previousState</span><span class="o">,</span> <span class="n">String</span><span class="o">[]</span> <span class="n">propertyNames</span><span class="o">,</span> <span class="n">Type</span><span class="o">[]</span> <span class="n">types</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">CallbackException</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">entity</span> <span class="k">instanceof</span> <span class="n">Historical</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">FacesContext</span> <span class="n">fc</span> <span class="o">=</span> <span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">if</span><span class="o">(</span><span class="n">fc</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="s">&quot;No FacesContext available. HistoryInterceptor currently only works in faces requests.&quot;</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">ValueExpression</span> <span class="n">jdbcVe</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="na">getApplication</span><span class="o">().</span><span class="na">getExpressionFactory</span><span class="o">().</span><span class="na">createValueExpression</span><span class="o">(</span><span class="n">fc</span><span class="o">.</span><span class="na">getELContext</span><span class="o">(),</span> <span class="s">&quot;#{simpleJdbcTemplate}&quot;</span><span class="o">,</span> <span class="n">SimpleJdbcTemplate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>            <span class="kd">final</span> <span class="n">SimpleJdbcTemplate</span> <span class="n">simpleJdbcTemplate</span> <span class="o">=</span> <span class="o">(</span><span class="n">SimpleJdbcTemplate</span><span class="o">)</span> <span class="n">jdbcVe</span><span class="o">.</span><span class="na">getValue</span><span class="o">(</span><span class="n">fc</span><span class="o">.</span><span class="na">getELContext</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">ValueExpression</span> <span class="n">txVe</span> <span class="o">=</span> <span class="n">fc</span><span class="o">.</span><span class="na">getApplication</span><span class="o">().</span><span class="na">getExpressionFactory</span><span class="o">().</span><span class="na">createValueExpression</span><span class="o">(</span><span class="n">fc</span><span class="o">.</span><span class="na">getELContext</span><span class="o">(),</span> <span class="s">&quot;#{transactionTemplate}&quot;</span><span class="o">,</span> <span class="n">TransactionTemplate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">TransactionTemplate</span> <span class="n">transactionTemplate</span> <span class="o">=</span> <span class="o">(</span><span class="n">TransactionTemplate</span><span class="o">)</span> <span class="n">txVe</span><span class="o">.</span><span class="na">getValue</span><span class="o">(</span><span class="n">fc</span><span class="o">.</span><span class="na">getELContext</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="cm">/** ... more dependencies ... */</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="k">for</span> <span class="o">(</span><span class="n">Field</span> <span class="n">f</span> <span class="o">:</span> <span class="n">entity</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getDeclaredFields</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>                <span class="k">if</span> <span class="o">(</span><span class="n">f</span><span class="o">.</span><span class="na">isAnnotationPresent</span><span class="o">(</span><span class="n">PieceOfHistory</span><span class="o">.</span><span class="na">class</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>                    <span class="n">String</span> <span class="n">fieldName</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+</span><span class='line'>                    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">propertyNames</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                        <span class="k">if</span> <span class="o">(</span><span class="n">propertyNames</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">equals</span><span class="o">(</span><span class="n">fieldName</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>                            <span class="k">if</span> <span class="o">(</span><span class="n">isChanged</span><span class="o">(</span><span class="n">currentState</span><span class="o">[</span><span class="n">i</span><span class="o">],</span> <span class="n">previousState</span><span class="o">[</span><span class="n">i</span><span class="o">]))</span>  <span class="o">{</span>
+</span><span class='line'>                                <span class="n">HistoryChangeType</span> <span class="n">type</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="na">getAnnotation</span><span class="o">(</span><span class="n">PieceOfHistory</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">type</span><span class="o">();</span>
+</span><span class='line'>                                <span class="n">saveHistoryEntry</span><span class="o">(</span><span class="n">simpleJdbcTemplate</span><span class="o">,</span>
+</span><span class='line'>                                                 <span class="n">transactionTemplate</span><span class="o">,</span>
+</span><span class='line'>                                                 <span class="n">getNullSafeString</span><span class="o">(</span><span class="n">previousState</span><span class="o">[</span><span class="n">i</span><span class="o">]),</span>
+</span><span class='line'>                                                 <span class="n">getNullSafeString</span><span class="o">(</span><span class="n">currentState</span><span class="o">[</span><span class="n">i</span><span class="o">]),</span>
+</span><span class='line'>                                                 <span class="n">username</span><span class="o">,</span>
+</span><span class='line'>                                                 <span class="n">type</span><span class="o">.</span><span class="na">toString</span><span class="o">(),</span>
+</span><span class='line'>                                                 <span class="n">getColumnName</span><span class="o">(</span><span class="n">f</span><span class="o">),</span>
+</span><span class='line'>                                                 <span class="n">type</span><span class="o">.</span><span class="na">getDefaultMessage</span><span class="o">(),</span>
+</span><span class='line'>                                                 <span class="n">getNullSafeLong</span><span class="o">(</span><span class="n">personId</span><span class="o">));</span>
+</span><span class='line'>                            <span class="o">}</span>
+</span><span class='line'>                        <span class="o">}</span>
+</span><span class='line'>                    <span class="o">}</span>
+</span><span class='line'>                <span class="o">}</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">String</span> <span class="nf">getColumnName</span><span class="o">(</span><span class="n">Field</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">colName</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">f</span><span class="o">.</span><span class="na">isAnnotationPresent</span><span class="o">(</span><span class="n">Column</span><span class="o">.</span><span class="na">class</span><span class="o">))</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">colName</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="na">getAnnotation</span><span class="o">(</span><span class="n">Column</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">name</span><span class="o">();</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">colName</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">boolean</span> <span class="nf">isChanged</span><span class="o">(</span><span class="n">Object</span> <span class="n">currentState</span><span class="o">,</span> <span class="n">Object</span> <span class="n">previousState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="o">(</span><span class="n">previousState</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">currentState</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="c1">// nothing to something</span>
+</span><span class='line'>            <span class="o">||</span> <span class="o">(</span><span class="n">previousState</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">currentState</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="c1">// something to nothing</span>
+</span><span class='line'>            <span class="o">||</span> <span class="o">(</span><span class="n">previousState</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">previousState</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">currentState</span><span class="o">));</span> <span class="c1">// something to something else</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">String</span> <span class="nf">getNullSafeString</span><span class="o">(</span><span class="n">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">obj</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">obj</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span> <span class="o">:</span> <span class="s">&quot;NULL&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Long</span> <span class="nf">getNullSafeLong</span><span class="o">(</span><span class="n">Long</span> <span class="n">l</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">l</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">l</span> <span class="o">:</span> <span class="mi">0L</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">saveHistoryEntry</span><span class="o">(</span><span class="kd">final</span> <span class="n">SimpleJdbcTemplate</span> <span class="n">simpleJdbcTemplate</span><span class="o">,</span>
+</span><span class='line'>                          <span class="n">TransactionTemplate</span> <span class="n">transactionTemplate</span><span class="o">,</span>
+</span><span class='line'>                          <span class="kd">final</span> <span class="n">String</span> <span class="n">oldValue</span><span class="o">,</span>
+</span><span class='line'>                          <span class="kd">final</span> <span class="n">String</span> <span class="n">newValue</span><span class="o">,</span>
+</span><span class='line'>                          <span class="kd">final</span> <span class="n">String</span> <span class="n">username</span><span class="o">,</span>
+</span><span class='line'>                          <span class="kd">final</span> <span class="n">String</span> <span class="n">changeType</span><span class="o">,</span>
+</span><span class='line'>                          <span class="kd">final</span> <span class="n">String</span> <span class="n">columnName</span><span class="o">,</span>
+</span><span class='line'>                          <span class="kd">final</span> <span class="n">String</span> <span class="n">changeMessage</span><span class="o">,</span>
+</span><span class='line'>                          <span class="kd">final</span> <span class="n">Long</span> <span class="n">personId</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">transactionTemplate</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">TransactionCallbackWithoutResult</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nd">@Override</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doInTransactionWithoutResult</span><span class="o">(</span><span class="n">TransactionStatus</span> <span class="n">status</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>               <span class="n">java</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">Date</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">().</span><span class="na">getTime</span><span class="o">());</span>
+</span><span class='line'>               <span class="n">simpleJdbcTemplate</span><span class="o">.</span><span class="na">update</span><span class="o">(</span>
+</span><span class='line'>                    <span class="s">&quot;insert into mssw.person_history &quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;(           person_id &quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;,           modified_date &quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;,           username &quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;,           type &quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;,           msg &quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;,           old &quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;,           new &quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;,           col_name &quot;</span> <span class="o">+</span>
+</span><span class='line'>                        <span class="s">&quot;) values (  ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8 ) &quot;</span><span class="o">,</span>
+</span><span class='line'>                        <span class="n">personId</span><span class="o">,</span> <span class="n">date</span><span class="o">,</span> <span class="n">username</span><span class="o">,</span> <span class="n">changeType</span><span class="o">,</span> <span class="n">changeMessage</span><span class="o">,</span> <span class="n">oldValue</span><span class="o">,</span> <span class="n">newValue</span><span class="o">,</span> <span class="n">columnName</span><span class="o">);</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>  <span class="o">});</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The interceptor uses some other classes and interfaces to do it&#8217;s work:  The check for Historical interface is only an optimization, allowing the code inside to only spin on modifications to classes of interest and not all changes.</p>
+
+<h3>Historical.java</h3>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">jtsnake</span><span class="o">.</span><span class="na">tracker</span><span class="o">.</span><span class="na">model</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Historical</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// marker interface only</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The PieceOfHistory interface (don&#8217;t you love the names based on cliche&#8217;s) is to mark those fields that need to have their changes tracked:</p>
+
+<h3>PieceOfHistory.java</h3>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">jtsnake</span><span class="o">.</span><span class="na">tracker</span><span class="o">.</span><span class="na">model</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.lang.annotation.ElementType</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.lang.annotation.Retention</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.lang.annotation.RetentionPolicy</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.lang.annotation.Target</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Target</span><span class="o">({</span><span class="n">ElementType</span><span class="o">.</span><span class="na">FIELD</span><span class="o">})</span>
+</span><span class='line'><span class="nd">@Retention</span><span class="o">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+</span><span class='line'><span class="kd">public</span> <span class="nd">@interface</span> <span class="n">PieceOfHistory</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">HistoryChangeType</span> <span class="nf">type</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Important pieces of data are marked in the entity models.  Here&#8217;s one: Person.java.  Here, you can see that the preferredFirstName field was marked with the PieceOfHistory interface, where the type (a HistoryChangeType to show category) of change is specified.</p>
+
+<h3>Person.java</h3>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">jtsnake</span><span class="o">.</span><span class="na">tracker</span><span class="o">.</span><span class="na">model</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Entity</span>
+</span><span class='line'><span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;person&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&quot;serial&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="kd">implements</span> <span class="n">Serializable</span><span class="o">,</span> <span class="n">Historical</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nd">@Id</span>
+</span><span class='line'>  <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Length</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">255</span><span class="o">,</span> <span class="n">message</span> <span class="o">=</span> <span class="s">&quot;Preferred first name length must be between 0 and 255.&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;pref_first&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="nd">@PieceOfHistory</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">HistoryChangeType</span><span class="o">.</span><span class="na">PREFERRED_NAME_CHANGE</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">preferredFirstName</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/** ... other fields ... */</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Categorizations are made according a previously determined enum type:</p>
+
+<h3>HistoryChangeType.java</h3>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">jtsnake</span><span class="o">.</span><span class="na">tracker</span><span class="o">.</span><span class="na">model</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">enum</span> <span class="n">HistoryChangeType</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">PREFERRED_NAME_CHANGE</span><span class="o">,</span>
+</span><span class='line'>    <span class="n">TYPE</span><span class="o">,</span>
+</span><span class='line'>    <span class="n">STATUS</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There it is!  That&#8217;s all, and you&#8217;ve got one snappin&#8217; audit history tracker.</p>
+
+<p>I would only go the Hibernate Interceptor route if you need the old vs. new values.  All other requirements can be met through the less-complicated and more available JPA EntityListeners.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-20T14:17:00-06:00" pubdate data-updated="true">Oct 20<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/hibernate/'>hibernate</a>, <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/orm/'>orm</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/running-php-apache-linux/" title="Previous Post: Running Php in Apache on Linux">&laquo; Running Php in Apache on Linux</a>
+      
+      
+        <a class="next-article-link" href="/post/django-pagination/" title="Next Post: Django Pagination">Django Pagination &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/audit-history-hibernate-interceptor/';
+        var disqus_url = 'http://jaketrent.com/post/audit-history-hibernate-interceptor/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

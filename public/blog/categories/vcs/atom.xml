@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: vcs | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/vcs/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[SVN Comment Editor]]></title>
+    <link href="http://jaketrent.com/post/svn-comment-editor/"/>
+    <updated>2008-11-26T14:06:00-07:00</updated>
+    <id>http://jaketrent.com/post/svn-comment-editor</id>
+    <content type="html"><![CDATA[<p>Comments are essential to Subversion checkins.  A good text editor is essential to a good comment.  Here's how to set the editor of your choice to pop up when you do an svn checkin.</p>
+
+<!--more-->
+
+
+<p>Comments are essential to Subversion checkins.  A good text editor is essential to a good comment.  Here's how to set the editor of your choice to pop up when you do an svn checkin.</p>
+
+<p>Of course, the best plain text editor (and so much more) that I can think of is Emacs, so we'll use that for this example.</p>
+
+<p>SVN will attempt these options in this order when trying to launch a text editor for checkin comments:</p>
+
+<p>   1.Command-line option --editor-cmd
+   2.Environment variable SVN_EDITOR
+   3.Configuration option editor-cmd
+   4.Environment variable VISUAL
+   5.Environment variable EDITOR
+   6. Possibly, a default value built in to Subversion (not present in the official builds)</p>
+
+<p>I prefer option #2:</p>
+
+<p>```bash
+emacs ~/.bashrc</p>
+
+<h1>add this line</h1>
+
+<p>export SVN_EDITOR="/usr/bin/emacs"
+```</p>
+
+<p>Reload your bashrc:</p>
+
+<p><code>bash
+. ~/.bashrc
+</code></p>
+
+<p>And now do your checkin:</p>
+
+<p><code>bash
+svn ci information.html
+</code></p>
+
+<p>And voila, Emacs pops up in all its glory!</p>
+
+<p>For short comments, the inline option might be more convenient:</p>
+
+<p><code>bash
+svn ci information.html -m "This is my comment"
+</code></p>
+
+<p>For the section of the Subversion manual describing this, see <a href="http://svnbook.red-bean.com/en/1.4/svn-book.html#svn.advanced.confarea.opts.config">this page</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SVN Ignore]]></title>
+    <link href="http://jaketrent.com/post/svn-ignore/"/>
+    <updated>2008-11-23T14:20:00-07:00</updated>
+    <id>http://jaketrent.com/post/svn-ignore</id>
+    <content type="html"><![CDATA[<p>In projects that create project meta data or compiled class files in the same directory as source, svn commits can be particularly cluttered with those files that we really don't care to keep under version control.  This is where svn:ignore can beceome our good friend.</p>
+
+<!--more-->
+
+
+<p>In projects that create project meta data or compiled class files in the same directory as source, svn commits can be particularly cluttered with those files that we really don't care to keep under version control.  This is where svn:ignore can beceome our good friend.</p>
+
+<p>For instance, in my django projects, the compile .pyc files are littered throughout my directory structure.  I don't want to commit them, so I want to ignore them.</p>
+
+<p>We need to edit the special property: svn:ignore.  The syntax is:</p>
+
+<p><code>bash
+svn propedit svn:ignore target_dir
+</code></p>
+
+<p>If you have multiple directories, you'll have to run this for each or list multiple directories in the command.  I have yet to figure out how to do this recursively.  Does anyone know?</p>
+
+<p>Later, to see what you're ignoring, try this:</p>
+
+<p><code>bash
+svn status --no-ignore
+</code></p>
+
+<h3>Update for Django</h3>
+
+
+<p>One of the main reasons I care about svn ignore is for my django projects.  I hate getting the .pyc files stuck in svn.  To purge your project of your *.pyc files, go to the project root and run this:</p>
+
+<p><code>bash
+find -name '*.pyc' -print0|xargs -0 rm
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

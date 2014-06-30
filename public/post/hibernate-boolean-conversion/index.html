@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Hibernate Boolean Conversion - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="The object-relational mapping world of JPA and Hibernate has made a lot of things really nice and easy. As with any framework of this sort, however, &hellip;">
+  <meta name="keywords" content="hibernate, jpa, orm">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Hibernate Boolean Conversion" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/hibernate-boolean-conversion/" />
+  <meta property="og:description" content="The object-relational mapping world of JPA and Hibernate has made a lot of things really nice and easy. As with any framework of this sort, however, &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Hibernate Boolean Conversion" />
+  <meta name="twitter:description" content="The object-relational mapping world of JPA and Hibernate has made a lot of things really nice and easy. As with any framework of this sort, however, &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/hibernate-boolean-conversion/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Hibernate Boolean Conversion</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-09T14:14:00-06:00" pubdate data-updated="true">Oct 9<span>th</span>, 2008</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The object-relational mapping world of JPA and Hibernate has made a lot of things really nice and easy.  As with any framework of this sort, however, it becomes frustrating when the pieces that are supposed to provide magic ease of development do not work as expected.  The frustration is only exacerbated when the docs are skimpy.</p>
+
+<p>Type conversions usually happen automatically in JPA, but possibly due to some databases incredibly not having implemented boolean fields yet (Oracle and pre-5.0 MySQL), an extra bit of help in conversion is needed.</p>
+
+<!--more-->
+
+
+<p>The object-relational mapping world of JPA and Hibernate has made a lot of things really nice and easy.  As with any framework of this sort, however, it becomes frustrating when the pieces that are supposed to provide magic ease of development do not work as expected.  The frustration is only exacerbated when the docs are skimpy.</p>
+
+<p>Type conversions usually happen automatically in JPA, but possibly due to some databases incredibly not having implemented boolean fields yet (Oracle and pre-5.0 MySQL), an extra bit of help in conversion is needed.</p>
+
+<p>The mechanism for showing that a conversion will need to be manually specified is this annotation:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Type</span><span class="o">(</span><span class="n">type</span><span class="o">=</span><span class="s">&quot;[type here]&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">Boolean</span> <span class="n">active</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In your database, if you store your boolean values as &#8216;Y&#8217; or &#8216;N&#8217;, then you will want to use this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Type</span><span class="o">(</span><span class="n">type</span><span class="o">=</span><span class="s">&quot;yes_no&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">Boolean</span> <span class="n">active</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In your database, if you store your boolean values as &#8216;1&#8217; or &#8216;0&#8217;, then you will want to use this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Type</span><span class="o">(</span><span class="n">type</span><span class="o">=</span><span class="s">&quot;boolean&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">Boolean</span> <span class="n">active</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In your database, if you store your boolean values as &#8216;T or &#8216;F&#8217;, then you will want to use this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Type</span><span class="o">(</span><span class="n">type</span><span class="o">=</span><span class="s">&quot;true_false&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">Boolean</span> <span class="n">active</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that these solutions are Hibernate-dependent, and not sticking with the general standard of JPA.  Too bad JPA doesn&#8217;t provide something like this (as of now, anyway)!</p>
+
+<p>After much searching, I found this <a href="http://www.hibernate.org/hib_docs/reference/en/html/mapping-types.html">doc</a> that you may find useful.</p>
+
+<p>If you want a Java logic-specific (but more portable) solution, you could try this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Basic</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">Character</span> <span class="n">active</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="n">Boolean</span> <span class="nf">getActive</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">active</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">active</span> <span class="o">==</span> <span class="sc">&#39;Y&#39;</span> <span class="o">?</span> <span class="n">Boolean</span><span class="o">.</span><span class="na">TRUE</span> <span class="o">:</span> <span class="n">Boolean</span><span class="o">.</span><span class="na">FALSE</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setActive</span><span class="o">(</span><span class="n">Boolean</span> <span class="n">active</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">active</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">active</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">active</span> <span class="o">=</span> <span class="n">active</span> <span class="o">==</span> <span class="kc">true</span> <span class="o">?</span> <span class="sc">&#39;Y&#39;</span> <span class="o">:</span> <span class="sc">&#39;N&#39;</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-10-09T14:14:00-06:00" pubdate data-updated="true">Oct 9<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/hibernate/'>hibernate</a>, <a class='category' href='/blog/categories/jpa/'>jpa</a>, <a class='category' href='/blog/categories/orm/'>orm</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/document-viewer-shell/" title="Previous Post: Document Viewer in the Shell">&laquo; Document Viewer in the Shell</a>
+      
+      
+        <a class="next-article-link" href="/post/these-arent-tables-youre-looking/" title="Next Post: These Aren't the Tables You're Looking For">These Aren't the Tables You're Looking For &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/hibernate-boolean-conversion/';
+        var disqus_url = 'http://jaketrent.com/post/hibernate-boolean-conversion/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

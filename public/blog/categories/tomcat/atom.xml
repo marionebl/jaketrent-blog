@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: tomcat | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/tomcat/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Calling Webservices in Java]]></title>
+    <link href="http://jaketrent.com/post/calling-webservices-java/"/>
+    <updated>2011-12-30T14:54:00-07:00</updated>
+    <id>http://jaketrent.com/post/calling-webservices-java</id>
+    <content type="html"><![CDATA[<p>In Java Land, everything is tied up in multiple layers of multi-colored wrapping paper.  The abstraction often provides niceties and protections and convenience, etc.  But, sometimes it practically makes you forget where you are.  For instance, why would anyone write a little howto on requesting something over the web from the context of the web.  That should be easy, right?  Well, yes, I think so.  And it turns out it is in Java, as it is in many <a href="http://developer.marklogic.com/pubs/5.0/apidocs/Ext-2.html">other languages</a>.  It's just that there you're super close to the HTTP protocol all the time, and in many Java uber-frameworks, if you want to know how to break into the low-level operations, you have to know where the fire exit is.</p>
+
+<!--more-->
+
+
+<h2>The Right Class</h2>
+
+<p>By 'fire exit', I mean you have to know what specific API to use.  Hehe, and since we're doing some I/O (a request across the network), be prepared for at least a multi-layered chain of wrapper classes to package the data into.</p>
+
+<p>It turns out that <a href="http://docs.oracle.com/javase/6/docs/api/java/net/URL.html"><code>java.net.URL</code></a> and <a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/net/HttpURLConnection.html"><code>java.net.HttpUrlConnection</code></a> are the classes that will give us the operations we need.  And the operation is <a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/net/URLConnection.html#getInputStream("><code>connection.getInputStream()</code></a>).  So, we have the bits to make a simple helper class for requesting other web resources like REST webservices.</p>
+
+<h2>UrlReader.java</h2>
+
+<p>```java
+// ...package and imports...
+public class UrlReader {
+  public String request(String req) {</p>
+
+<pre><code>String response = null;
+HttpURLConnection conn = null;
+try {
+  URL url = new URL(req);
+  conn = (HttpURLConnection) url.openConnection();
+  BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+  StringBuilder sb = new StringBuilder();
+  String line;
+  while ((line = br.readLine()) != null) {
+    sb.append(line);
+  }
+  br.close();
+  response = sb.toString();
+} catch (Exception e) {
+  // An I/O exception handling you care for
+} finally {
+  if (conn != null) {
+    conn.disconnect();
+  }
+}
+return response;
+</code></pre>
+
+<p>  }</p>
+
+<p>}
+```</p>
+
+<p>It doesn't consist of too much:  Specify your url, open an input stream to that url, read it back, and buffer it into a string response.</p>
+
+<p>But as is often the case, let's try a little bonus twist...</p>
+
+<h2>Internal Https With Invalid Certificate</h2>
+
+<p>When I started requesting webservices from my Java app, I needed to connect to an interanl web service that was https only but had a self-signed (not valid) SSL certificate.  It turns out that <code>HttpUrlConnection</code> doesn't handle https requests.  If you request such a resource, you'll turn up a nice stack trace that includes:</p>
+
+<p><code>bash
+javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+</code></p>
+
+<p>It turns out that Java has another class that's doing some validation for you.  Also in the stack trace, <code>com.sun.net.ssl.internal.ssl.X509TrustManagerImpl.validate()</code> is called at <code>X509TrustManagerImpl.java:126</code>.</p>
+
+<p>In my case, I didn't care if the certificate was good because to me it's an internal, trusted source anyway.  So, I want to accept any certificates in my http request.</p>
+
+<h2>A TrustManager that Trusts all Certificates</h2>
+
+<p>So, when it goes to validate, we need to give it an automatic pass.  Here's the modified <code>UrlReader.java</code>:</p>
+
+<p>```java
+// ...package and imports...  <br/>
+public class UrlReader {</p>
+
+<p>  private static SSLContext SSL_CONTEXT;</p>
+
+<p>  static {</p>
+
+<pre><code>try {
+  TrustManager[] trustAllCerts = new TrustManager[]{
+    new X509TrustManager() {
+        public java.security.cert.X509Certificate[] getAcceptedIssuers() {return null;}
+        public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType){}
+        public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType){}
+    }
+  };
+  SSL_CONTEXT = SSLContext.getInstance("SSL");
+  SSL_CONTEXT.init(null, trustAllCerts, new java.security.SecureRandom());
+} catch (NoSuchAlgorithmException e) {
+  throw new RuntimeException("Unable to initialise SSL context", e);
+} catch (KeyManagementException e) {
+  throw new RuntimeException("Unable to initialise SSL context", e);
+}
+</code></pre>
+
+<p>  }</p>
+
+<p>  public String request(String req) {</p>
+
+<pre><code>String response = null;
+HttpsURLConnection conn = null;
+try {
+  URL url = new URL(req);
+  conn = (HttpsURLConnection) url.openConnection();
+  conn.setSSLSocketFactory(SSL_CONTEXT.getSocketFactory());
+
+  BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+  StringBuilder sb = new StringBuilder();
+  String line;
+  while ((line = br.readLine()) != null) {
+    sb.append(line);
+  }
+  br.close();
+  response = sb.toString();
+} catch (Exception e) {
+  // I/O exception handling -- or NOT!
+} finally {
+  if (conn != null) {
+    conn.disconnect();
+  }
+}
+return response;
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>So, we pretty much doubled the size of the class, but most of it is on ceremony.  There's no much there.  In the static block, we are creating an <code>SSLContext</code> that has includes a <code>TrustManager</code> anonymous class in which the method implementations explictly leave out any checking for valid certification of the connection.  Plug er in and roll.  Or not.  Please at least <em>think</em> for a moment if you really know your app, what's going to use this <code>UrlReader</code> class and whether it's a good idea or not, because trusting all "https" connections regardless isn't a great general philosophy.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Debugging Remote Tomcat from IntelliJ with Style]]></title>
+    <link href="http://jaketrent.com/post/debugging-remote-tomcat-intellij/"/>
+    <updated>2011-04-13T10:54:00-06:00</updated>
+    <id>http://jaketrent.com/post/debugging-remote-tomcat-intellij</id>
+    <content type="html"><![CDATA[<p>One of the worst things to debug can be something that works just fine in your local development environment but does not work in a deployed environment.  If you deploy to Tomcat, you can debug it remotely.  If you use IntelliJ IDEA, you can do it with style.</p>
+
+<!--more-->
+
+
+<p>IntelliJ makes it easy.  First, you want to click the runnable configurations dropdown and select "Edit Configurations":</p>
+
+<p><img src="https://lh3.googleusercontent.com/_mA-9kCcx0bs/TaXdzFFhpxI/AAAAAAAAABM/6FoV9E3FpII/s800/ConfigDropdown.png" alt="image" /></p>
+
+<p>Once in the "Edit Configurations" dialog, click the "+" Plus icon to create a new configuration.  Select "Remote":</p>
+
+<p><img src="https://lh4.googleusercontent.com/_mA-9kCcx0bs/TaXdzLv6GAI/AAAAAAAAABQ/3giI8x9pZc0/s640/SelectRemote.png" alt="image" /></p>
+
+<p>This dialog is the last, and you will need to configure your connection:</p>
+
+<ul>
+<li>Transport: Socket</li>
+<li>Debugger: Attach</li>
+<li>Host: Either IP or hostname of remote server</li>
+<li>Port: Must match debug port opened on remote Tomcat (address arg below)</li>
+</ul>
+
+
+<p><img src="https://lh3.googleusercontent.com/_mA-9kCcx0bs/TaXdzPI1ovI/AAAAAAAAABU/EU-fflxWQ1g/s800/RemoteDebug.png" alt="image" /></p>
+
+<p>As is explained to you on the window, you need to be able to add JVM arguments to the remote JVM.  By now, let us hope that we're all using a JDK more recent than JDK 1.3. :)  In that case, you'll need:</p>
+
+<p><code>java
+-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=7007
+</code></p>
+
+<p>To get those args on the server might require different mechanisms by default.  My environment's deploy is automated to put the args on the JAVA_OPTS variable in:</p>
+
+<p><code>bash
+$CATALINA_HOME/conf/Catalina/localhost/tcat-env.conf
+</code></p>
+
+<p>But if your deployment doesn't apply JVM properties for your app, you can put them in:</p>
+
+<p><code>bash
+$CATALINA_HOME/bin/setenv.sh
+</code></p>
+
+<p>Like so:</p>
+
+<p><code>bash
+export JAVA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=7007"
+</code></p>
+
+<p>Finally, restart the remote server, and your debugging port will be open.  Start your remote connection in IntelliJ and set a break point.  Exercise your deployed app so your code will be executed, and let the good times roll!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[AES Encryption Odyssey in Java with Bouncy Castle]]></title>
+    <link href="http://jaketrent.com/post/aes-encryption-java-bouncy-castle/"/>
+    <updated>2011-04-12T15:24:00-06:00</updated>
+    <id>http://jaketrent.com/post/aes-encryption-java-bouncy-castle</id>
+    <content type="html"><![CDATA[<p>Recently, I've been working on a project where I've tried to use AES encryption for the first time.  I didn't have to implement it myself, thank goodness, but I still ran into a few snags.  Perhaps you can avoid my pitfalls and rise to new greatness on the peaks of glory and fortitude!  This article title sounds like a laundry detergent.</p>
+
+<!--more-->
+
+
+<h2>Why Java</h2>
+
+<p>We do a fair amount of our development on MarkLogic lately.  Our app right now happens to be heaped in XQuery.  When we learned that we had to interface with an external system passing AES-encrypted payloads, I did a quick looksy into what was needed for AES encryption.  Turns out that AES is rather complicated to implement.  So easy, even a <a href="http://www.bouncycastle.org/">stick figure &lt;http://www.moserware.com/2009/09/stick-figure-guide-to-advanced.html><code>_ can do it.  :)  If you want a nice (but dry) higher level overview of AES,</code>Patrick Townsend &lt;http://www.youtube.com/watch?v=Xna-qBWgn90><code>_ can provide.  But the bottom line was that it couldn't be implemented in MarkLogic because the only hash function we had available was</code>xdmp:md5 &lt;http://developer.marklogic.com/pubs/4.2/apidocs/Ext-1.html#xdmp:md5><code>_.  And Java already had a nice AES encryption provider,</code>Bouncy Castle</a>.  So, it was Java Webservice time...</p>
+
+<h2>Illegal Key Size Jar Fix</h2>
+
+<p>The first issue I ran into was this exception:</p>
+
+<p><code>java
+java.security.InvalidKeyException:Illegal Key Size
+</code></p>
+
+<p>That is solved in an earlier <a href="http://rockycode.com/blog/java-encryption-illegal-key-size/">article about JCE jars</a>.</p>
+
+<p>Finally, I was able to encrypt my payload using AES-192 but then when I sentthe data to the receiver, they weren't able to decrypt it.  Something was wrong again.</p>
+
+<h2>Classpath Resource or Not?  Not!</h2>
+
+<p>First, I found out that when I put my key in as a classpath resource, the key was changed at build time.  When it got deployed to target it went from 40 bytes to 69 bytes:</p>
+
+<p><code>bash
+-rw-r--r-- 1 me me 69 2011-04-12 08:05 after.key
+-rw-r--r-- 1 me me 40 2011-04-12 08:05 before.key
+</code></p>
+
+<p>So, leave the key outside the classpath.  And put it in WEB-INF if you don't want it accessible over the network.  Then use the servlet context to load the file.  I happen to be in Spring3 land:</p>
+
+<p>```java
+import javax.servlet.ServletContext;</p>
+
+<p>// ..</p>
+
+<p>@Autowired
+ServletContext servletContext;</p>
+
+<p>private File getKeyFile() {
+  String path = servletContext.getRealPath("/WEB-INF/key");
+  return new File(path);
+}
+```</p>
+
+<h2>Encrypted Payload on the Wire(shark)</h2>
+
+<p>But, it turned out that the receiver still couldn't decrypt what I encrypted, even though we were fairly certain that our keys were either the same or generated in the same fashion (same passphrase, etc).  So, I ran some code provided by another app that encrypts data to send to the same receiver.  I set the debugger so I could grab their generated cipher text and then send it myself.  When I did this, it still didn't work!  Then I busted out Wireshark:</p>
+
+<p><code>bash
+sudo apt-get install wireshark
+</code></p>
+
+<p>(I love package managers!)  And I found that the cipher text going over the wire was different than what I had grabbed in the debugger.  When comparing the two, I found the length of the payload over the wire was longer than in the debugger.  For instance, the char "+2" was changed to "%2B2".  Different encoding!  So, then I made sure that I was using the proper encoding:</p>
+
+<p>```java
+import java.net.URLEncoder;</p>
+
+<p>public String encrypt() {
+  // .. encryption impl
+  return URLEncoder.encode(cipherText, "UTF-8");
+}
+```</p>
+
+<h2>ServletContext in a WAR deployment</h2>
+
+<p>Finally!  I was able to pass an encrypted payload to the receiver in my local environment.  But when I deployed to Tomcat as a war file, suddently my key was unable to be found in WEB-INF.  I discovered that:</p>
+
+<p><code>java
+servletContext.getRealPath("/WEB-INF/key")
+</code></p>
+
+<p>Doesn't work in a war deploy.  From the Javadoc:</p>
+
+<blockquote><p> The real path returned will be in a form appropriate to the computer and operating system on which the servlet container is running, including the proper path separators. This method returns <code>null</code> if the servlet container cannot translate the virtual path to a real path for any reason (such as when the content is being made available from a <code>.war</code> archive</p></blockquote>
+
+<p>So, the Tomcat deploy had to be adjusted via the server.xml:</p>
+
+<p><code>xml
+&lt;Host name="localhost" appBase="webapps" unpackWARs="true"
+</code></p>
+
+<p>Once the WAR was exploded in the webapps directory, the key file was findable again.  But now I begin to learn that it's best to put such secret keys in a <a href="http://download.oracle.com/javase/6/docs/api/java/security/KeyStore.html">KeyStore</a>.</p>
+
+<h2>Validate the BouncyCastle Provider</h2>
+
+<p>Still the battle rages.  Now there was a new champion of evil to vanquish... Now that I could actually find the key and start encrypting in the deployed environment, this beast reared its ugly head:</p>
+
+<p><code>java
+java.security.NoSuchAlgorithmException: PBEWithSHAAndTwofish-CBC SecretKeyFactory not available
+</code></p>
+
+<p>Lame!  Googling this exception landed us on some sweet <a href="http://sce.uhcl.edu/yang/teaching/JDK_JCE_environment_Configuration.htm">BouncyCastle setup tutorials</a>.  Apparently your BouncyCastle version needs to match your JDK version.  So, we made the necessary adjustments in our pom:</p>
+
+<p><code>xml
+&lt;dependency&gt;
+  &lt;groupId&gt;bouncycastle&lt;/groupId&gt;
+  &lt;artifactId&gt;bcprov-jdk16&lt;/artifactId&gt;
+  &lt;version&gt;140&lt;/version&gt;
+&lt;/dependency&gt;
+</code></p>
+
+<p>(There are more recent versions that might be in your <a href="http://repo2.maven.org/maven2/org/bouncycastle/">Maven repo</a>.)</p>
+
+<p>Still it wasn't enough.  The exception persisted and so did we.  Hours later our energy wained, but Spencer came to reinforce us and we were able to hook up a remote debugger to our deployed app.  We were obviously adding the BouncyCastle provider in our code, so that looked good:</p>
+
+<p><code>java
+Security.addProvider(new BouncyCastleProvider());
+</code></p>
+
+<p>But when we went to use it:</p>
+
+<p><code>java
+factory = SecretKeyFactory.getInstance("PBEWithSHAAndTwofish-CBC");
+</code></p>
+
+<p>It blew some serious chunks.  On our remote debugger, when we tried to retrieve the BouncyCastle provider ourself:</p>
+
+<p><code>java
+SecretKeyFactory.getInstance("PBEWithSHAAndTwofish-CBC", new BouncyCastleProvider())
+</code></p>
+
+<p>We got a new clue:</p>
+
+<p>```java
+java.lang.SecurityException: JCE cannot authenticate the provider BC</p>
+
+<p>  .. caused by ..</p>
+
+<p>  java.util.jar.JarException: Cannot parse file
+```</p>
+
+<p>The jar was the one deployed in WEB-INF/lib.  Well, somehow that clicked in our good friend, Spencer's, mind because he immediately changed our deployment to Tomcat so that instead of the bcprov-jdk16-140.jar being deployed to WEB-INF/lib, he deployed it to <TOMCAT_HOME>/applib.  The apparent difference is that when the jar is in applib, it's loaded by Tomcat's class loader.  When it's in WEB-INF/lib, it's loaded by the app's class loader, which apparently wasn't cutting it.<br/>
+To get our BouncyCastle jar not to deploy to WEB-INF/lib, we had to change our dependency:</p>
+
+<p><code>xml
+&lt;dependency&gt;
+  &lt;groupId&gt;bouncycastle&lt;/groupId&gt;
+  &lt;artifactId&gt;bcprov-jdk16&lt;/artifactId&gt;
+  &lt;version&gt;140&lt;/version&gt;
+  &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></p>
+
+<p>From the <a href="http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html">Maven Docs</a>:</p>
+
+<p>  This is much like compile, but indicates you expect the JDK or a container to provide the dependency at runtime. For example, when building a web application for the Java Enterprise Edition, you would set the dependency on the Servlet API and related Java EE APIs to scope provided because the web container provides those classes. This scope is only available on the compilation and test classpath, and is not transitive.</p>
+
+<p>Since we are deploying bcprov-jdk16-140.jar to applib by another means, this scope is perfect for us.  It also seems that there are other ways around this particular problem, such as defining BouncyCastle as a provider on your JVM via editing the <a href="http://www.randombugs.com/java/javalangsecurityexception-jce-authenticate-provider-bc.html">security.provider</a> file.</p>
+
+<p>Well, now it works.  It was a serious adventure -- even an odyssey.  I need a nap.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ie | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/ie/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Caching Ajax Requests in IE]]></title>
+    <link href="http://jaketrent.com/post/caching-ajax-requests-ie/"/>
+    <updated>2010-04-08T16:17:00-06:00</updated>
+    <id>http://jaketrent.com/post/caching-ajax-requests-ie</id>
+    <content type="html"><![CDATA[<p>Have you ever had a problem with ajax requests caching in Internet Explorer.  I have, and recently I came across a nicer solution than I have traditionally used.  In the past, I have used a unique parameter on the url to keep IE from caching previous requests to the same url, like so:</p>
+
+<!--more-->
+
+
+<p><code>javascript
+$.ajax({
+  ...
+  url: "/r/e/s/t/?unique=" + new Date().getTime()
+});
+</code></p>
+
+<p>But, wouldn't it be nice to keep your urls clean and not have to add this chunk of code for every Ajax call.  On a recent project, we have a url rewriter through which all requests are routed.  I added a call to this function (in xquery), to tell the browser not to cache any response.</p>
+
+<h2>Xquery</h2>
+
+<p>```
+declare function no-cache() {
+  let $is-ajax := xdmp:get-request-header("X-Requested-With") eq "XMLHttpRequest"
+  return if ($is-ajax) then</p>
+
+<pre><code>let $expire-immediately := xdmp:add-response-header("Expires", "-1")
+let $no-cache := xdmp:add-response-header("Cache-Control", "no-cache, no-store")
+return ()
+</code></pre>
+
+<p>  else ()
+};
+```</p>
+
+<p>For Java, there's something similar:</p>
+
+<h2>Java</h2>
+
+<p>```java
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;</p>
+
+<p>public class CacheUtil {
+  public static Response BuildNoCache(ResponseBuilder builder) {</p>
+
+<pre><code>return builder.header("Expires", "-1").header("Cache-Control", "no-cache, no-store").build();
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>How do you control your ajax caching problems in the pseudo-browsr of IE?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Unexpected call to method or property access]]></title>
+    <link href="http://jaketrent.com/post/unexpected-call-method-or-property-access/"/>
+    <updated>2009-12-18T11:43:00-07:00</updated>
+    <id>http://jaketrent.com/post/unexpected-call-method-or-property-access</id>
+    <content type="html"><![CDATA[<p>In a recent admin tool I was creating, I was using SOUIT of Javascript... apparently more than I knew how to write well.  Eventually, it all worked wonderfully -- that is, until someone tried to use it in a lesser browser -- Internet Explorer. The error was thus:</p>
+
+<!--more-->
+
+
+<p>Unexpected call to method or property access</p>
+
+<p>The usefulness of this error message led me to Google, where I soon found the many people had experienced this same awfulness on IE for a multiplicity of reasons, most wide-spread among them being appending children to elements that didn't exist and trying to remove elements from the head.  Neither of these scenarios seemed applicable, so being stuck without Firebug on the offending "browser", I devo'd back to the good 'ol alert box debugging.  I soon happened upon this method:</p>
+
+<p>```js
+function (data, prefix) {
+  for (field in data) {</p>
+
+<pre><code>  $(prefix + field).html(data[field]).val(data[field]);
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>It turns out that the elements that I'm selecting with the selector "prefix + field", gave me both input tags and other html elements.  This is why I do an update to the content with html() and with val().  This works in Firefox and Chrome.  But, on IE, it fails without pretense of working at all.  Eventually, I found that if I did an html() update on the html tags, and a val() update on inputs, it would work.  In this light, the error message actually makes a little sense.  Rewritten, it might say, "Hey naive web developer, you are trying to set an attribute that is not there.  I'm gonna die.  Bye now."</p>
+
+<p>Rewritten for the express purpose of pleasing IE and to overcome my naivete, here it is:</p>
+
+<p>```js
+function (data, prefix) {
+  for (field in data) {</p>
+
+<pre><code>  $(prefix + field).each(function () {
+      if ($(this).attr('value') != undefined) {
+          $(this).val(data[field]);
+      } else {
+          $(this).html(data[field]);
+      }
+  });
+</code></pre>
+
+<p>  }
+}
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

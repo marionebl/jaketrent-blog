@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Crystal Reports in Ubuntu Linux - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="All over the net, there are questions asked about running Crystal Reports in Linux. This isn't a solution for running Crystal in Linux per se, but &hellip;">
+  <meta name="keywords" content="crystal-reports, linux, ubuntu">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Crystal Reports in Ubuntu Linux" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/crystal-reports-ubuntu-linux/" />
+  <meta property="og:description" content="All over the net, there are questions asked about running Crystal Reports in Linux. This isn't a solution for running Crystal in Linux per se, but &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Crystal Reports in Ubuntu Linux" />
+  <meta name="twitter:description" content="All over the net, there are questions asked about running Crystal Reports in Linux. This isn't a solution for running Crystal in Linux per se, but &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/crystal-reports-ubuntu-linux/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Crystal Reports in Ubuntu Linux</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-07T14:19:00-07:00" pubdate data-updated="true">Nov 7<span>th</span>, 2008</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>All over the net, there are questions asked about running Crystal Reports in Linux.  This isn&#8217;t a solution for running Crystal in Linux per se, but running Crystal as lightweight as possible on a Linux host machine.  This means, run a VM, install Crystal, and use a small Oracle client.</p>
+
+<!--more-->
+
+
+<p>All over the net, there are questions asked about running Crystal Reports in Linux.  This isn&#8217;t a solution for running Crystal in Linux per se, but running Crystal as lightweight as possible on a Linux host machine.  This means, run a VM, install Crystal, and use a small Oracle client.</p>
+
+<p>My VM of choice is VirtualBox.  It runs smoothly, is equal in its non-performance to other VM&#8217;s, and has some cool features.  For a little how to on how to install VirtualBox on Ubuntu, look <a href="http://aprilandjake.com/content/virtual-box-ubuntu-linux/">here</a>.  Be sure to install Windows XP on your VM, as that&#8217;s the only environment I know of that Crystal is actually runnable in.  We also tried using CodeWeavers Pro (which is built on top of Wine) to run Crystal.  It was a no go.  No matter what method we used within CodeWeavers, we always ran into an error about needing to run the setup.exe again.</p>
+
+<p>Once the VM is installed, you can install <a href="http://www.businessobjects.com/product/catalog/crystalreports/">Crystal Reports</a> on the VM.</p>
+
+<p>Then, make sure to download an Oracle client.  Oracle clients are infamously large, clunky, and have a very low-value per Mb of size.  Therefore, I like to go with the smallest client available.  As of this writing, the smallest is the Oracle <a href="http://www.oracle.com/technology/tech/oci/instantclient/index.html">Instant Client</a>, basic lite version.  Download the package, extract to a folder, and put that folder in your PATH.</p>
+
+<p>Now you can pull up Crystal Reports and make a new connection.  The Instant Client, because of the lack of pork rolled its package, lacks functionality, but that&#8217;s ok because there&#8217;s a workaround.  It&#8217;s worth the saved space and thought of massive amounts of worthless Oracle code cluttering your hard drive.  Instead of being able to use your tnsnames.ora, you will need to enter the actual address of the database host.  Use this format:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>//host:port/servicename
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The service name will be the database alias that you would normally use via tnsnames.ora.  In fact, you can just inspect your tnsnames.ora file to find the host, port, and all that jazz.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-11-07T14:19:00-07:00" pubdate data-updated="true">Nov 7<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/crystal-reports/'>crystal-reports</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/sharing-folders-virtual-box/" title="Previous Post: Sharing Folders in Virtual Box">&laquo; Sharing Folders in Virtual Box</a>
+      
+      
+        <a class="next-article-link" href="/post/application-audio-control-ubuntu/" title="Next Post: Application Audio Control in Ubuntu">Application Audio Control in Ubuntu &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/crystal-reports-ubuntu-linux/';
+        var disqus_url = 'http://jaketrent.com/post/crystal-reports-ubuntu-linux/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

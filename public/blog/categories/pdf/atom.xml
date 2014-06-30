@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: pdf | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/pdf/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Document Viewer in the Shell]]></title>
+    <link href="http://jaketrent.com/post/document-viewer-shell/"/>
+    <updated>2008-10-08T14:12:00-06:00</updated>
+    <id>http://jaketrent.com/post/document-viewer-shell</id>
+    <content type="html"><![CDATA[<p>For me, one of the major draws for Linux is the oh-so-awesome bash shell.  I also like the default pdf viewer for Ubuntu.  I always forget that this thing is called evince.</p>
+
+<!--more-->
+
+
+<p>For me, one of the major draws for Linux is the oh-so-awesome bash shell.  I also like the default pdf viewer for Ubuntu.  I always forget that this thing is called <a href="http://www.gnome.org/projects/evince/">evince</a>.  It's a gnome project and is very nice.  Xpdf is also nice, but not preinstalled, but still pretty fast.</p>
+
+<p>Evince supports viewing these file formats:
+- PDF
+- Postscript
+- djvu
+- tiff
+- dvi</p>
+
+<p>To open your doc, type this in the shell of awesomeness:
+<code>bash
+evince document.pdf &amp;
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

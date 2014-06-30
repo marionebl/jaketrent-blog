@@ -1,0 +1,755 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: backbonejs | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/backbonejs/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[BusterJs with RequireJs/Backbone]]></title>
+    <link href="http://jaketrent.com/post/busterjs-requirejsbackbone/"/>
+    <updated>2012-07-25T14:42:00-06:00</updated>
+    <id>http://jaketrent.com/post/busterjs-requirejsbackbone</id>
+    <content type="html"><![CDATA[<p>BusterJs is a still-in-beta library that allows for testing your Javascript.  It's got a wealth of cool features.  The browser capturing is awesome for running your Javascript directly in the browsers you choose from one runner.  You can also execute within Node.  In short, it rocks.  But, how to get this rockin' with your project, specifically your AMD RequireJs with BackboneJs combo project is the lock that must be opened before daily buster love can be had.</p>
+
+<!--more-->
+
+
+<h2>Install</h2>
+
+<p>Buster is easily installed everywhere (but apparently not in Windows, which I have not tried):</p>
+
+<p>```bash</p>
+
+<blockquote><p>sudo npm install -g buster
+```</p></blockquote>
+
+<p>The <a href="http://busterjs.org/docs/getting-started/">buster docs</a> indicate not to use sudo, but I'm reckless.</p>
+
+<h2>Buster Config</h2>
+
+<p>My directory structure looks something like:</p>
+
+<p>```bash
+proj/
+  src/</p>
+
+<pre><code>static/
+  js/      # here are the objects under test
+</code></pre>
+
+<p>  test/</p>
+
+<pre><code>tests/     # here are the tests
+buster.js  # here is the buster config
+</code></pre>
+
+<p>```</p>
+
+<p>My previous experience with setting up <a href="http://rockycode.com/blog/jasmine-unit-testing-requirejs/">Jasmine testing with RequireJs</a> was not entirely straightforward.  BusterJs was not totally straightforward either, but it felt better.  For one, it already has a runner.  I just need to give it some config (<code>buster.js</code>):</p>
+
+<p>```js
+var config = module.exports;
+config['browser-all'] = {
+  autoRun: false,
+  environment: 'browser',
+  rootPath: '../',
+  libs: [</p>
+
+<pre><code>'src/static/js/vendor/require-jquery-2.0.2.js',
+'src/static/js/vendor/underscore-1.3.3.js',
+'src/static/js/vendor/backbone-0.9.2.js'
+</code></pre>
+
+<p>  ],
+  sources: [</p>
+
+<pre><code>'src/static/js/**/*.js',
+'src/static/js/**/*.handlebars'
+</code></pre>
+
+<p>  ],
+  tests: ['test/tests/*.js'],
+  extensions: [require('buster-amd')]
+};
+```</p>
+
+<p>A few salient points related to RequireJs / Backbone:</p>
+
+<ul>
+<li><code>autoRun</code> - Turning this off allows you to <a href="http://busterjs.org/docs/starting-testrun-manually/">run buster tests manually</a>.  This is important from an AMD perspective, because the objects under test are loaded asynchronously.  Only once they're loaded do we want to kick off the tests.</li>
+<li><code>libs</code> - Include the RequireJs, Underscore, and Backbone files here.  <code>libs</code> will put some script tags into the browser, so require will be ready once tests start executing.  They're loaded first and in order (Underscore before Backbone is important).</li>
+<li><code>sources</code> - I was having problems with my <a href="http://handlebarsjs.com/">handlebars template</a> loader plugin until I realized that I need to list <em>all</em> sources, including templates, under this attribute.  And don't forget '**' for subfolders.</li>
+<li><code>extentions</code> - <a href="https://github.com/busterjs/buster-amd">buster-amd</a> is a buster extension that helps with the AMD module loading.  This will also require a <code>npm install buster-amd</code>.  As the <a href="http://busterjs.org/docs/extensions/">buster-amd docs</a> point out, you still need to list your sources and tests normally so they're available to the buster runner, so don't leave these out thinking they'll be magically available.</li>
+</ul>
+
+
+<p>The <a href="http://busterjs.org/docs/configuration/">other configuration options/details</a> are well documented.</p>
+
+<h2>BusterJs Test Example</h2>
+
+<p>There are a few <a href="https://github.com/trodrigues/buster-amd-example/">simple examples</a> of other busterjs tests that test AMD modules.  Mine looks something like:</p>
+
+<p>```js
+buster.spec.expose();
+require.config({
+  baseUrl: 'src/static/js/',
+  paths: {</p>
+
+<pre><code>text: './vendor/text-2.0.0',
+/* ... */
+</code></pre>
+
+<p>  }
+});
+```</p>
+
+<pre><code>describe('single backbone dependency', function(run) {
+  require(['Widget'], function(widget) {
+    run(function() {
+      it('should load', function() {
+        expect(true).toEqual(true); // nothing but test execution
+      });
+    });
+  });
+});
+</code></pre>
+
+<p>More from the peanut gallery:</p>
+
+<ul>
+<li><code>buster.spec.expose()</code> just pushes main buster functions into the wide-open namespace to be called willy nilly.  Reckless -- again. :)</li>
+<li><code>require.config</code> - it saddens me, but I have had to include this within each test file.  Others have <a href="https://groups.google.com/d/msg/busterjs/IZWItTzDT5I/AmX9wN-6oJoJ">commented</a> that they could include this once in the buster.config <code>libs</code>, but it didn't work for me.  I also tried 'testHelpers', without the help they advertise.  Please let me know if it does for you and what kind of pixie dust is required.</li>
+<li><code>baseUrl</code> needs to jive with your buster rootPath so that your RequireJs relative paths will match up and work in your app runtime and in the test runtime.</li>
+<li><code>run</code> - notice this is called within the require callback manually.</li>
+</ul>
+
+
+<h2>BusterJs Runner</h2>
+
+<p>If you call within the next 15 minutes, the travel-size test runner is included.  Operators are standing by.  Start your test server:</p>
+
+<p>```bash</p>
+
+<blockquote><p>buster server
+```</p></blockquote>
+
+<p>That will start a server at localhost:1111.  Head 1+ of your local browsers to that address and capture them as your imprisoned slaves.  They will do your bidding when you run the tests.  Go to your project directory and run:</p>
+
+<p>```bash</p>
+
+<blockquote><p>buster test
+```</p></blockquote>
+
+<p>If you've tied it all together, you should see something like:</p>
+
+<p>```bash</p>
+
+<blockquote><p>buster test
+Chrome 21.0.1180.49, OS X 10.7 (Lion): .....                                                                          <br/>
+1 test cases, 1 tests, 1 assertions, 0 failures, 0 errors, 0 timeouts
+Finished in 0.02s
+```</p></blockquote>
+
+<p>And now for a few parting tips...</p>
+
+<h2>Mismatched Define Module</h2>
+
+<p>If you happen to include a js file in your 'libs' attribute or another section that's loaded previous to your tests running that includes a <code>define()</code> block, you're going to get stuck with this wonder:</p>
+
+<p><code>bash
+Uncaught exception: ./src/static/js/vendor/require-jquery-2.0.2.js:1803 Uncaught Error: Mismatched anonymous define() module: function (module) {
+</code></p>
+
+<p>As the <a href="http://requirejs.org/docs/errors.html#mismatch">require docs</a> point out, to avoid this:</p>
+
+<blockquote><p>Be sure to load all scripts that call define() via the RequireJS API.</p></blockquote>
+
+<h2>RequireJs 2.0 shim</h2>
+
+<p>I wasn't able to get the shim setup for getting underscore/backbone loaded and in the correct order.  Instead, I just listed these non-AMD files in the correct order under the 'libs' attribute in buster.config.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Intro to BackboneJs]]></title>
+    <link href="http://jaketrent.com/post/intro-backbonejs/"/>
+    <updated>2012-03-30T09:32:00-06:00</updated>
+    <id>http://jaketrent.com/post/intro-backbonejs</id>
+    <content type="html"><![CDATA[<p>BackboneJs is a great resource for creating rich UIs.  Rich means interactive.  Interactivity grows when the client can do more of the work of an application itself, becoming more reactive and dynamic to user feedback, able to be more event-driven, and hopefully more quick and responsive.  Here's a short history of how we've been creating rich UIs and a simple example of a rich UI in backbonejs</p>
+
+<!--more-->
+
+
+<p>The background:</p>
+
+<div style="width:510px" id="__ss_12224939"> <strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/rockycode/rich-uis-with-backbonejs" title="Rich UIs with BackboneJs" target="_blank">Rich UIs with BackboneJs</a></strong> <iframe src="http://www.slideshare.net/slideshow/embed_code/12224939?rel=0" width="510" height="426" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe> <div style="padding:5px 0 12px"> View more <a href="http://www.slideshare.net/" target="_blank">presentations</a> from <a href="http://www.slideshare.net/rockycode" target="_blank">rockycode</a> </div> </div>
+
+
+<p>The code:</p>
+
+<p><a href="https://github.com/jtsnake/backbone-intro">backbone-intro on github</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Backbone Views in a Dynamic DOM]]></title>
+    <link href="http://jaketrent.com/post/backbone-views-dynamic-dom/"/>
+    <updated>2011-12-29T15:58:00-07:00</updated>
+    <id>http://jaketrent.com/post/backbone-views-dynamic-dom</id>
+    <content type="html"><![CDATA[<p>When you start writing applications with BackboneJS, that means that you're dealing with some dynamic UI.  There are elements being pushed into and pulled out of the DOM.  I was having problems trying to reference DOM elements that were dynamically inserted into the DOM by other Backbone views.  The fix was simple but not immediately obvious without cracking open Backbone.</p>
+
+<!--more-->
+
+
+<h2>Backbone View Element</h2>
+
+<p>The <a href="http://documentcloud.github.com/backbone/#View-el"><code>el</code></a> property of a <code>Backbone.View</code> is the dom element within which your view contents will be displayed.  By default it's an empty div, otherwise it can be specified by a combination of <code>tagName</code>, <code>className</code>, and <code>id</code> properties.  For these options, Backbone assumes that your DOM element isn't living within the document; rather, it will be created in memory and then inserted where you later specify.</p>
+
+<p>If you want to specify a pre-existing DOM element within which to insert your Backbone view contents, you set the <code>el</code> property of your view directly.  This is where I ran into problems.</p>
+
+<h2>Shifting Plates of the DOM</h2>
+
+<p>Backbone views assume the <code>$</code> alias is either <a href="http://docs.jquery.com/Main_Page">jQuery</a>or <a href="http://zeptojs.com/">Zepto</a>.  They do the same thing, just use css-like selectors to get references to DOM elements.  So, I would have a view and set the <code>el</code> property to a DOM element selected by jQuery (note: examples use <a href="http://requirejs.org/docs/whyamd.html">RequireJS to manage dependencies</a>), such as <code>MountainView.js</code>:</p>
+
+<p>```javascript
+define(function () {
+  return Backbone.View.extend({</p>
+
+<pre><code>el: $('#mountains'),
+render: function () {
+  $(this.el).html(makePrettyMountains());
+  return this;
+}
+</code></pre>
+
+<p>  });    <br/>
+});
+```</p>
+
+<p>Problem is that earlier in the code, another view was being relied upon to insert the <code>#mountains</code> element into the DOM.  Let's say <code>SceneryStarterView.js</code> looked something like this:</p>
+
+<p>```javascript
+define(['MountainView'], function (MountainView) {
+  return Backbone.View.extend({</p>
+
+<pre><code>initialize: function () {
+  $('body').html(makePlaceForMountains());
+  var mountain = new MountainView();
+  mountain.render().el;
+}
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>It was importing (via <a href="http://requirejs.org/docs/whyamd.html">RequireJS</a>) <code>MountainView.js</code>.  At import time, <code>$('#mountains')</code> was evaluated but nothing was found, because <code>makePlaceForMountains()</code> hadn't been called yet.  It was looking for <code>#mountains</code> too early!  How import the needed view, let it specify somewhere on the DOM that doesn't exist <em>yet</em> but <em>will</em> by the time it's instantiated and then rendered?  Backbone has a mechanism for this...</p>
+
+<h2>Into the <a href="http://en.wikipedia.org/wiki/Asthenosphere">Asthenosphere</a></h2>
+
+<p>To find the answer, I had to peel back the Backbone crust and do a little dumpster diving.  When my <code>MountainView</code> is new'ed up, the constructor for <code>Backbone.View</code> is hit.  It calls a function called <code>_ensureElement()</code>:</p>
+
+<p><code>``javascript
+// Ensure that the View has a DOM element to render into.
+// If</code>this.el<code>is a string, pass it through</code>$()<code>, take the first
+// matching element, and re-assign it to</code>el<code>. Otherwise, create
+// an element from the</code>id<code>,</code>className<code>and</code>tagName` proeprties.
+_ensureElement : function() {
+  if (!this.el) {</p>
+
+<pre><code>var attrs = this.attributes || {};
+if (this.id) attrs.id = this.id;
+if (this.className) attrs['class'] = this.className;
+this.el = this.make(this.tagName, attrs);
+</code></pre>
+
+<p>  } else if (_.isString(this.el)) {</p>
+
+<pre><code>this.el = $(this.el).get(0);
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Hmmmm...  If there isn't an <code>el</code> field, grab <code>id</code>, <code>className</code>, and <code>tagName</code> and create an in-memory element with <code>document.createElement()</code>.  And it's the <code>else if</code> that gives us the option we need.  <em>If the <code>el</code> property is a string, <em>now</em> try and select it with jQuery</em>.  Perfect!  If we change our code for <code>MountainView.js</code> to reflect that one change:</p>
+
+<p>```javascript
+define(function () {
+  return Backbone.View.extend({</p>
+
+<pre><code>el: '#mountains',
+// render, etc
+</code></pre>
+
+<p>  });    <br/>
+});
+```</p>
+
+<p>It works like a charm.  Why?  Now the order of events is:</p>
+
+<ul>
+<li><code>SceneryStartView</code> is instantiated somewhere</li>
+<li>It imports <code>MountainView</code> as a dependency</li>
+<li><code>SceneryStartView</code> inserts the <code>#mountians</code> DOM element</li>
+<li>Then it news up <code>MountainView</code></li>
+<li>In the constructor for <code>Backbone.View</code>, jQuery selects my string value for <code>el</code></li>
+<li>One more round of hallelujah is sung!</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Backbone and JAX-RS]]></title>
+    <link href="http://jaketrent.com/post/backbone-and-jax-rs/"/>
+    <updated>2011-12-28T13:23:00-07:00</updated>
+    <id>http://jaketrent.com/post/backbone-and-jax-rs</id>
+    <content type="html"><![CDATA[<p>BackboneJS is setup to do some pretty sweet single-page app action.  And of course, a single page app will probably be wanting to talk to web services on the server.  And if your server code is doing the Java jive, then a great way to expose your REST services is via JAX-RS.  It's as easy as Mikey singin' ABC-123!</p>
+
+<!--more-->
+
+
+<p>Note:  These examples use AMD-style modules in Javascript.  I personally use <a href="http://requirejs.org/">RequireJS</a> for my module loading fettish.</p>
+
+<h2><a href="http://documentcloud.github.com/backbone/">BackboneJS</a> Model Url</h2>
+
+<p>To tell a client-side <a href="http://documentcloud.github.com/backbone/#Model"><code>Backbone.Model</code></a> object where it syncs to on the server, it needs a <a href="http://documentcloud.github.com/backbone/#Model-url"><code>url</code></a> field like so (in <code>Cat.js</code>):</p>
+
+<p>```javascript
+define(function () {
+  return Backbone.Model.extend({</p>
+
+<pre><code>url: '/ws/cat'
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>The <code>url</code> field can be a string literal or a function that has more meat to it.  The point is that it be awesome and point correctly to your REST endpoint exposed on the server.</p>
+
+<p>If you want to fetch a model from the server, you can call <a href="http://documentcloud.github.com/backbone/#Model-fetch"><code>fetch()</code></a> directly on the model a la <code>myModelInstance.fetch()</code>, but in practice you won't know which specific model you want initially, and instead your model will be part of a <a href="http://documentcloud.github.com/backbone/#Collection-fetch">collection</a>.  But let's say that your model had an id of, say, 1334, and you wanted to get it off the server, you'd call <code>fetch()</code> and that call will delegate to <a href="http://documentcloud.github.com/backbone/#Sync"><code>Backbone.sync</code></a>, making an HTTP GET to:</p>
+
+<p><code>bash
+GET /ws/cat/1334
+</code></p>
+
+<p>When you save a model by calling <code>myModelInstance.save()</code>, it delegates to <code>Backbone.sync</code> in the same way.  If it's a new object (in Backbone, that means it doesn't yet have an <code>id</code> field) that was initially created on the client and thus doesn't appear on the server yet, it'll make an HTTP POST to:</p>
+
+<p><code>bash
+POST /ws/cat
+</code></p>
+
+<p>If it's already an object that was requested from the server (and has, say, and id of 1334) and is now being updated based on client action, it'll make an HTTP PUT to:</p>
+
+<p><code>bash
+PUT /ws/cat/1334
+</code></p>
+
+<p>(BTW, HTTP DELETE works the same way as PUT.)</p>
+
+<h2>JAX-RS Endpoints</h2>
+
+<p><a href="http://en.wikipedia.org/wiki/Java_API_for_RESTful_Web_Services">JAX-RS</a> endpoints are exceedingly easy to setup.  It's all annotation-based, so you're free to rejoice.  Here's an example (It's also a <a href="http://static.springsource.org/spring/docs/2.5.x/reference/beans.html">Spring <code>@Controller</code></a>):</p>
+
+<p>```java</p>
+
+<p>import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;</p>
+
+<p>@Controller
+@Scope("singleton")
+@Path("/ws/cat")
+public class CatRest {</p>
+
+<p>  @GET
+  @Produces("application/json")
+  public List<CatDto> getCats() {</p>
+
+<pre><code>return getCatsFromSomewhere();
+</code></pre>
+
+<p>  }</p>
+
+<p>  @POST
+  @Produces("application/json")
+  @Consumes("application/json")
+  public CatDto createCat(CatDto dto) {</p>
+
+<pre><code>return saveCatAndReturnInstanceWithId();      
+</code></pre>
+
+<p>  }</p>
+
+<p>  @PUT
+  @Path("/{id}")
+  @Produces("application/json")
+  public CatDto updateCat(CatDto dto) {</p>
+
+<pre><code>return updateCatReturnSameInstance();
+</code></pre>
+
+<p>  }</p>
+
+<p>  @DELETE
+  @Path("/{id}")
+  @Produces("application/json")
+  public void deleteCat(@PathParam("id") Long id) {</p>
+
+<pre><code>removeTheBlastedCat();
+</code></pre>
+
+<p>  }</p>
+
+<p>}
+```</p>
+
+<p>This should all be fairly self-descriptive.  It matches the HTTP actions that can be made from Backbone.sync.  So what is JAX-RS doing for you.  It's allowing your methods to be exposed as rest endpoints by the simple addition of the <code>@GET</code>, <code>@POST</code>, etc annotations.</p>
+
+<p>Note that the <code>@Path</code> matches the <code>url</code> field on your Backbone model.  And <code>@PUT</code> and <code>@DELETE</code> append an <code>{id}</code> variable to the end of the path.  In the case of <code>@PUT</code>, the id gets set on the <code>CatDto</code>.  For HTTP DELETE, a body is not send, just the HTTP request, so a <code>@PathParam</code> is all you get.</p>
+
+<p>If these operations are successful, they all <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">respond with</a> HTTP 200, except for DELETE which returns 204 NO CONTENT.</p>
+
+<p>JAX-RS is also dealing with the marshalling and unmarshalling from, in this case, json into and out of <code>CatDto</code>.  The <code>CatDto</code>, but like most <a href="http://en.wikipedia.org/wiki/Data_Transfer_Object">DTOs</a> just provides a wrapper around your actually domain object that exposes only what you desire in your web service (ie, possibly not everything in domain objects).</p>
+
+<p>And what does the DTO look like?  I'm glad you asked.</p>
+
+<h2>DTOs -- The Backbone / JAX-RS Gophers</h2>
+
+<p>Here's <code>CatDto.java</code>:</p>
+
+<p>```java
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;</p>
+
+<p>@SuppressWarnings("serial")
+@XmlRootElement
+public class CatDto implements Serializable {</p>
+
+<p>  private Long id;</p>
+
+<p>  private String name;</p>
+
+<p>  // getters and setters...</p>
+
+<p>}
+```</p>
+
+<p>There's not much to it  -- just like a DTO should be.</p>
+
+<p>By default, when JAX-RS gets some JSON in the body of an HTTP request, it's going to try and bind fields in the JSON to the DTO fields.  So, a nice piece of JSON from the client that could be unmarshalled into a <code>CatDto</code> instance would look something like:</p>
+
+<p><code>javascript
+{
+  id: 1334,
+  name: 'Cotton-headed Ninnymuggins'
+}
+</code></p>
+
+<p>It's as magical as <a href="http://www.youtube.com/watch?v=Fig956-MuVA">maple syrup</a>!</p>
+
+<h2>Binding form fields to a Backbone Model</h2>
+
+<p>By default, BackboneJS has no built-in ability to automatically bind the values that are entered in form fields in the UI to fields in the corresponding <code>Backbone.Model</code> object.  But, Derick Bailey has created a nice little Backbone plugin for this purpose called <a href="https://github.com/derickbailey/backbone.modelbinding">Backbone.ModelBinding</a>.  This is a <a href="http://knockoutjs.com/">KnockoutJS</a>-inspired dom to model (and vice versa) data transfer lib.</p>
+
+<p>If you don't have <code>Backbone.ModelBinding</code> on your project, you'll have to do your own setting of fields when you save with the "set and save" idiom from Backbone that will look something like:</p>
+
+<p><code>javascript
+myModel.save({
+  name: $("#name-form-field").val()
+});
+</code></p>
+
+<p>If you do want to use <code>Backbone.ModelBinding</code>, make sure you make it globally available (as a dependency <a href="http://requirejs.org/docs/api.html#order">ordered</a> after Backbone itself) just put this snippet in your <code>Backbone.View</code> code:</p>
+
+<p>```javascript
+define(function () {
+  return Backbone.View.extend({</p>
+
+<pre><code>initialize: function () {
+  // ...
+  Backbone.ModelBinding.bind(this);
+},
+// more view goodness
+</code></pre>
+
+<p>  }
+});
+```</p>
+
+<p>You should also be aware of some of the limitations of <code>Backbone.ModelBinding</code>.  For instance, it can only bind anything that a Backbone.Model can get() and set(), which doesn't include nested objects or arrays.  So, some stuff you'll have to set manually anyway if you have objects more interesting than cats.</p>
+
+<p>Also note that any inputs on the form, that are sometimes fields you don't care about or necessarily want attached to your <code>Backbone.Model</code>, show up there anyway.  So now when you call <code>myModelInstance.save()</code>, the json that gets sent to the server will be laden with extra coconuts, potentially like this:</p>
+
+<p><code>javascript
+{
+  id: 1334,
+  name: 'Mittens',
+  ladenWith: 'coconuts,
+  africaan: true
+}
+</code></p>
+
+<p>And just between you and me, that won't work with our currently-defined <code>CatDto</code>.  It's time for a season reboot:</p>
+
+<h2>Backbone.ModelBinding and JAX-RS</h2>
+
+<p>If we get these extra, albeit more exciting, fields in the json, when unmarshalling happens, we get a late Christmas present:</p>
+
+<p><code>text
+[12/26/12 00:00:0:001] 0000000e Wr WebApplicationExceptionMapper: WebApplicationException has been caught :
+Unrecognized field "laden_with" (Class CatDto), not marked as ignorable
+  at [Source: org.apache.cxf.transport.http.AbstractHTTPDestination$1@b98117; line: 1, column: 286] (through reference chain: CatDto["laden_with"])
+</code></p>
+
+<p>"Not marked as ignorable", eh?  A couple ways to fix this.  The one requiring more typing and creating a brittle dto first.  Back to <code>CatDto.java</code>:</p>
+
+<p>```java
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;</p>
+
+<p>@SuppressWarnings("serial")
+@XmlRootElement
+public class CatDto implements Serializable {</p>
+
+<p>  private Long id;</p>
+
+<p>  private String name;</p>
+
+<p>  @XmlTransient
+  private String ladeWith;</p>
+
+<p>  @XmlTransient
+  private Boolean africaan;</p>
+
+<p>  // getters and setters...</p>
+
+<p>}
+```</p>
+
+<p>We can label each of the undesirable fields with <code>@XmlTransient</code>, but oh the pain.</p>
+
+<p>It's maybe not all that bad that this blows big chunks.  Perhaps more secure.  You want to validate input at the REST endpoints.  Maybe this is the way you personally do it.  I do it elsewhere -- in the converstion from DTOs to domain objects and with Hibernate validators on those objects.</p>
+
+<p>So, for me the better option that allows me to not have to go back and mess with <code>CatDto.java</code> as much is:</p>
+
+<p>```java
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;</p>
+
+<p>@SuppressWarnings("serial")
+@XmlRootElement
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CatDto implements Serializable {</p>
+
+<p>  private Long id;</p>
+
+<p>  private String name;</p>
+
+<p>  // getters and setters...</p>
+
+<p>}
+```</p>
+
+<p>This is whitelisting instead of blacklisting.  Lots less maintenance when more fields show up as unrecognizable.  Either way, I just use what I want on the server, so just ignore <em>everything</em> else with the <a href="http://wiki.fasterxml.com/JacksonAnnotations"><code>@JsonIgnoreProperties</code></a> annotation.</p>
+
+<h2>Lots of HTTP</h2>
+
+<p>This kind of programming is really quite fun.  And it feels pretty clean.  There's lots of cool UI possibilities for single-page apps on the client.  BackboneJS and RequireJS makes handling the complexity there much more doable.  And data-handling REST endpoints on the backend are super simple.  The simplicity of the REST endpoints makes Java feel a little heavy-handed on ceremony (like it often seems these days), but JAX-RS is a great framework if Java is what you have on the backend.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Backbone Inheritance]]></title>
+    <link href="http://jaketrent.com/post/backbone-inheritance/"/>
+    <updated>2011-12-14T11:40:00-07:00</updated>
+    <id>http://jaketrent.com/post/backbone-inheritance</id>
+    <content type="html"><![CDATA[<p>Backbone has a great inheritance mechanism.  It's as easy as Backbone.Model.extend().  This much is obvious.  Let's try a few other things, like:  Subclassing our own classes, calling to super classes, adding subclass attributes, and adding various subclasses to a collection based on a super class.</p>
+
+<!--more-->
+
+
+<p>Let's just envision a potential application where we are modeling locations of different types.  In the general case, we'll refer to these things as Locations.  If it is to be a Backbone-flavored object, must <a href="http://documentcloud.github.com/backbone/#Model-extend">extend from Backbone</a>.  Let's just show the imagined models.</p>
+
+<p>These examples are using AMD-style modules.  I personally use <a href="http://requirejs.org/docs/start.html">RequireJS</a>.  Note that Backbone is not AMD-compatible, so it is assume to be globally available here.</p>
+
+<h2>Subclass Your Subclasses</h2>
+
+<p><code>Location.js</code> might look like this:</p>
+
+<p>```javascript
+define(function () {
+  return Backbone.Model.extend({</p>
+
+<pre><code>// general state and behavior for all locations        
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>In <code>Location.js</code> is where we want to put all general state and behavior across locations. Now to create a location that's specifically of type Country, we just change what we extend.  Since <code>Location.js</code> is a <code>Backbone.Model</code>, we can call extend on it as well in <code>Country.js</code>:</p>
+
+<p>```javascript
+define(['Location'], function (Location) {
+  return Location.extend({</p>
+
+<pre><code>// things that just a country knows and does
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>Boom!  Just like that, <code>Country.js</code> will have everything <code>Location.js</code> does, and can add to it (by creating fields of different names than exist in <code>Location.js</code>) and can override it (by create fields of the same name).</p>
+
+<h2>Calling Backbone Super</h2>
+
+<p>It's super!  That was easy.</p>
+
+<p>Many times, we may want to put more specific behavior in a subclass, but we still want to execute the more general code in the superclass.  For example, the <code>Location.js</code> may do certain things in its <code>initialize()</code> function that the <code>Country.js</code> wants to do as well in addition to its special country things.  Call super, causing the Location stuff to happen, the code out the rest.</p>
+
+<p>In <code>Country.js</code>:</p>
+
+<p>```javascript
+define(['Location'], function (Location) {
+  return Location.extend({</p>
+
+<pre><code>initialize: function () {
+  this.constructor.__super__.initialize.apply(this, arguments);
+  // ... do more Country-only stuff
+}
+</code></pre>
+
+<p>  });
+});</p>
+
+<p>```</p>
+
+<p>So, latch onto the <code>constructor</code> field, then to <code>__super__</code>.  Finally, use the <em>actual name</em> of the function in the superclass that you want to call and apply it.</p>
+
+<p>And you don't even have to make the call to super as the first operation of the function. w00t!</p>
+
+<p>There have been other <a href="http://forrst.com/posts/Backbone_js_super_function-4co">efforts made to simplify the call to super</a>, but they really aren't that much nicer so I just stick to what's built in.</p>
+
+<h2>Adding Attributes</h2>
+
+<p>For things that aren't functions, such as an object, sometimes we want to do the equivalent of a call to super, but there's nothing to call.  Yet, we still don't want to re-state all the state of the superclass.  What's a coder to do.  Try a little <a href="http://documentcloud.github.com/underscore/">underscore</a> action.</p>
+
+<p>If <code>Location.js</code>'s defaults field looks like this:</p>
+
+<p>```javascript
+define(function () {
+  return Backbone.Model.extend({</p>
+
+<pre><code>defaults: {
+  name: 'Lame Default Location Name'
+}
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>Then you can add more defaults in the Country and not lose the <code>name</code> field.  In <code>Country.js</code>:</p>
+
+<p>```javascript
+define(['Location'], function (Location) {
+  return Location.extend({</p>
+
+<pre><code>defaults: _.extend({
+  more: 'goodness'
+}, Location.prototype.defaults)
+</code></pre>
+
+<p>  });
+});<br/>
+```</p>
+
+<p>Underscore's <a href="http://documentcloud.github.com/underscore/#extend">extend</a> function will combine object attributes for you!  So, in the end, you'll have all of the fields in one object:</p>
+
+<p><code>javascript
+{
+  name: 'Lame Default Location Name',
+  more: 'goodness'
+}
+</code></p>
+
+<p>This is especially great for subclassing the <code>Backbone.View</code> events attribute.</p>
+
+<h2>Subclasses in a Super Collection</h2>
+
+<p>If you want a heterogeneous mix of subclasses in a super <code>Backbone.Collection</code>, you can do it.  For instance, if for some reason we wanted another Location subclass, <code>Ocean.js</code>, you'd make it extend Location:</p>
+
+<p>```javascript
+define(['Location'], function (Location) {
+  return Location.extend({</p>
+
+<pre><code>// big blue wet things here
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>Now, we'll setup our collection as <code>World.js</code>:</p>
+
+<p>```javascript
+define(['Location'], function (Location) {
+  return Backbone.Collection.extend({</p>
+
+<pre><code>model: Location
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>When you call <code>Backbone.Collection.fetch()</code>, <code>Backbone.sync</code> is called and a request is made to the server for your list of objects.  When the data comes back, <code>Backbone.Collection.parse()</code> is called before being saved in the collection.  Something in the incoming data must differentiate the models as being different subclasses.  For instance, countries are solid and oceans are liquid:</p>
+
+<p>In <code>World.js</code>:</p>
+
+<p>```javascript
+define(['Location', 'Country', 'Ocean'], function (Location, Country, Ocean) {
+  return Backbone.Collection.extend({</p>
+
+<pre><code>model: Location,
+parse: function (res) {
+  var self = this;
+  _.each(res, function (location) {
+    switch(location.phase) {
+      case 'solid':
+        self.add(new Country(location));
+      case 'liquid':
+        self.add(new Ocean(location));
+      case 'gas':
+        alert('kernel panic');
+    }
+  });
+}
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>Now, <code>World.js</code> will contain different kinds of Locations, including Country, Ocean, and whatever other types you support.</p>
+
+<h2>Super Indeed</h2>
+
+<p>Backbone does really give some niceties around inheritance.  Use it and cry with joy.</p>
+]]></content>
+  </entry>
+  
+</feed>

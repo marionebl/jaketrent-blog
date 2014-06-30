@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ioc | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/ioc/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Stored Procedures in Spring Jdbc]]></title>
+    <link href="http://jaketrent.com/post/stored-procedure-spring-jdbc/"/>
+    <updated>2011-12-21T14:33:00-07:00</updated>
+    <id>http://jaketrent.com/post/stored-procedure-spring-jdbc</id>
+    <content type="html"><![CDATA[<p>In addition to some sweet Inversion of Control injection action, Spring brings flowers and baby deer.  And it brings some nice database connection help.  Spring JdbcTemplate is a vanguard of strength and ease for connecting to your favorite RDBMS.  And it so happens that the DBA I'm working with right now digs the stored procs.  So, we'll meet in the middle with some more goodness born of Spring.</p>
+
+<!--more-->
+
+
+<h2>StoredProcedure</h2>
+
+<p>Blessed Rod Johnson gives us the <code>org.springframework.jdbc.object.StoredProcedure</code>.  It's abstract, and you'll want to extend it and fully implement it in order to specify what stored proc in your database you're calling.  And here's a sample implementation:</p>
+
+<p>```java
+@Component
+public class ItemInsert extends StoredProcedure {
+  public static final String SPROC_NAME = "schema.oracle_pkg.proc_name";
+  public static final String INPUT_PARAM = "input_prm_name";
+  public static final String OUPUT_PARAM = "output_prm_name";</p>
+
+<p>  @Inject
+  public ItemInsert(DataSource ds) {</p>
+
+<pre><code>super(ds, SPROC_NAME);
+declareParameter(new SqlParameter(INPUT_PARAM, Types.VARCHAR));
+declareParameter(new SqlOutParameter(OUTPUT_PARAM, Types.NUMERIC));
+compile();
+</code></pre>
+
+<p>  }</p>
+
+<p>  public Item insert(Item item)</p>
+
+<pre><code>  throws DataAccessException {
+Map&lt;String, Object&gt; inputs = new HashMap&lt;String, Object&gt;();
+inputs.put(INPUT_PARAM, item.getSomething());
+Map&lt;String, Object&gt; output = super.execute(inputs);
+Object newId = output.get(OUTPUT_PARAM);
+if (newId != null) {
+  item.setId(Long.parseLong(newId.toString()));
+}
+return item;
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Points to consider:</p>
+
+<ul>
+<li><code>ItemInsert</code> is itself injectable as a Spring bean <code>@Component</code>.</li>
+<li>Input and output parameters are declared in the constructor</li>
+<li><code>insert()</code> is where <code>super.execute()</code> is call, which is the function that really does the magic.</li>
+</ul>
+
+
+<p>The only other interesting thing...</p>
+
+<h2>Execute()</h2>
+
+<p>From the JavaDoc:</p>
+
+<p>  Execute the stored procedure. Subclasses should define a strongly typed execute method (with a meaningful name) that invokes this method, populating the input map and extracting typed values from the output map. Subclass execute methods will often take domain objects as arguments and return values.  Alternatively, they can return void.</p>
+
+<p>Thusly, out method is called <code>insert()</code> because it's a meaningful name.  It takes our domain object, <code>Item</code> and pulls out the necessary fields inside the method, putting them into a map for the call <code>super.execute()</code>.</p>
+
+<h2>Call it from a service</h2>
+
+<p>Now the only work left is just to call your awesome procedure and use the results for something wonderful.  Eg,</p>
+
+<p>```java
+@Service
+public class ItemServiceImpl implements ItemService {</p>
+
+<p>  @Inject
+  private ItemInsert itemInsert;</p>
+
+<p>  public Item doWonderfulThingsWithItems(Item item) {</p>
+
+<pre><code>return itemInsert.insert(item);
+</code></pre>
+
+<p>  }</p>
+
+<p>}
+```</p>
+
+<p>Items are now stored procedurally and you can rest easy knowing that Oracle has all your data.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Environment-based Dependency Injection]]></title>
+    <link href="http://jaketrent.com/post/environment-based-dependency-injection/"/>
+    <updated>2009-09-02T13:22:00-06:00</updated>
+    <id>http://jaketrent.com/post/environment-based-dependency-injection</id>
+    <content type="html"><![CDATA[<p>In developing an email notification system recently, we became interested in code acting differently depending on what environment we were in.  A potentially good solution for this is environment-based dependency injection.  This means that different Spring beans, for instance, will be used depending on the environment, ie dev, test, etc.  This is useful for something like emailing, because we may not want real emails hitting the mail server in dev or test environments, but we do in prod.  With some Spring constructs, it's pretty easy.</p>
+
+<!--more-->
+
+
+<p>If you have property files that Spring knows about, you could put entries in like this:</p>
+
+<p><code>text defaultContext-dev-test.properties
+mailProvider=devTestEmailServiceImpl
+</code></p>
+
+<p><code>text defaultContext.properties
+mailProvider=emailServiceImpl
+</code></p>
+
+<p>Then, in your Spring bean context file:</p>
+
+<p><code>xml serviceBeanContext.xml
+&lt;alias alias="emailService" name="@{mailProvider}"/&gt;
+</code></p>
+
+<p>The <code>@{}</code> notation is for finding variables of that name in a properties file.  Finally, in your Java code, you can reference the alias that will be different depending on your environment:</p>
+
+<p><code>java
+@Autowired
+@Qualifier("emailService")
+private EmailService emailService;
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

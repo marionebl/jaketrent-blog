@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Execution Context in MarkLogic - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Have you ever needed to know the location of the actual file that houses the code that's currently executing? Well, if you have then you're not alone &hellip;">
+  <meta name="keywords" content="marklogic, xquery">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Execution Context in MarkLogic" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/execution-context-marklogic/" />
+  <meta property="og:description" content="Have you ever needed to know the location of the actual file that houses the code that's currently executing? Well, if you have then you're not alone &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Execution Context in MarkLogic" />
+  <meta name="twitter:description" content="Have you ever needed to know the location of the actual file that houses the code that's currently executing? Well, if you have then you're not alone &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/execution-context-marklogic/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Execution Context in MarkLogic</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-11T13:38:00-07:00" pubdate data-updated="true">Mar 11<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Have you ever needed to know the location of the actual file that houses the code that&#8217;s currently executing?  Well, if you have then you&#8217;re not alone.  I have been there myself.  The answer might not be as interesting as some of life&#8217;s deeper mysteries unveiled, but I was excited about it nonetheless.</p>
+
+<p>This information seems especially useful in cases where an absolute path to the code is required but you want to avoid hard-coding context information into your app.  Your app really shouldn&#8217;t care where it is deployed to afterall.  My love for Django increased when I discovered os.path.dirname(<strong>file</strong>).  Here&#8217;s an equivalent goody in MarkLogic.</p>
+
+<!--more-->
+
+
+<p>If I have the following directory structure:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>code
+</span><span class='line'>  cutlass
+</span><span class='line'>   test
+</span><span class='line'>    unit.xqy</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And I want to find the context of my unit.xqy from within the unit.xqy code as it&#8217;s executing, I can call this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>fn:concat(xdmp:modules-root(), fn:substring(xdmp:get-request-path(), 2))</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What&#8217;s happening?</p>
+
+<ul>
+<li>xdmp:modules-root() points to the Modules DB (which happens to be where the code is running).  This also works if you&#8217;re running modules on the filesystem.</li>
+<li>xdmp:get-request-path() is giving you path from your domain root</li>
+<li>The substring is to strip the / (slash) prepended to the request path, because the modules-root also ends with a slash</li>
+</ul>
+
+
+<p>Finally, that line of code yields the full path to the context of execution, boom!:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/code/cutlass/test/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As a side note to the above solution, I was thinking from <a href="http://markmail.org/search/?q=marklogic:%20get%20uri%20of%20current%20file#query:marklogic%3A%20get%20uri%20of%20current%20file+page:1+mid:mdj6xdqyf3lajez6+state:results">this MarkMail thread</a> that this would work:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> resolve-uri(".", xdmp:get-request-path())</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But this is all I ever got:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/test/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Anyone know what I was doing wrong?</p>
+
+<p>Well, it&#8217;s good to know where you came from, why you are here, and where you are going &#8211; in many contexts, I guess. :)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-03-11T13:38:00-07:00" pubdate data-updated="true">Mar 11<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/marklogic/'>marklogic</a>, <a class='category' href='/blog/categories/xquery/'>xquery</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/thoughts-customization-and-convention/" title="Previous Post: Thoughts on Customization and Convention">&laquo; Thoughts on Customization and Convention</a>
+      
+      
+        <a class="next-article-link" href="/post/most-seamless-iframe/" title="Next Post: Most Seamless Iframe">Most Seamless Iframe &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/execution-context-marklogic/';
+        var disqus_url = 'http://jaketrent.com/post/execution-context-marklogic/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>XQuery Browser Language Detection - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="If you've created an internationalized website lately, you've probably implemented some sort of language chooser widget in your site ui to allow your &hellip;">
+  <meta name="keywords" content="browser, http, marklogic, xquery">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="XQuery Browser Language Detection" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/xquery-browser-language-detection/" />
+  <meta property="og:description" content="If you've created an internationalized website lately, you've probably implemented some sort of language chooser widget in your site ui to allow your &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="XQuery Browser Language Detection" />
+  <meta name="twitter:description" content="If you've created an internationalized website lately, you've probably implemented some sort of language chooser widget in your site ui to allow your &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/xquery-browser-language-detection/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">XQuery Browser Language Detection</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-06T14:07:00-06:00" pubdate data-updated="true">May 6<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>If you&#8217;ve created an internationalized website lately, you&#8217;ve probably implemented some sort of language chooser widget in your site ui to allow your users to indicate which language they would like to see content displayed in.  What I often forget is that the user may have already made this indication previous to visiting your site, and you might be like to think about respecting their previously indicated preference.</p>
+
+<!--more-->
+
+
+<p>Within the browser, a user can store their preferred language.  The w3c has a <a href="http://www.w3.org/International/questions/qa-lang-priorities#changing">nice browser list</a> to give some terse instructions on how to set your language in your browser.</p>
+
+<p>Your app might read the browser preference differently, but at least one component is consistent.  Your browser is going to pass an <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html">HTTP header</a> called &#8220;Accept-Language&#8221; to your app.  In a recent app, I read this using XQuery:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>xdmp:get-request-header("Accept-Language")</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s going to return a string something like this one, which is mine:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>en-US,en;q=0.8</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is a comma-delimited list of 2-letter <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">language codes &lt;http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes><code>_ and 2-letter</code>locale codes</a>, informally &#8220;language-locale&#8221;.</p>
+
+<p>The &#8220;q=#&#8221; describes the quality of the language.  The higher, the quality, the more preferred.  Notice that in my header, &#8220;en-US&#8221;, American English, does not have a &#8220;q=&#8221; attribute.  The lack of &#8220;q=&#8221; indicates a default, actually the highest preference, of 1.0.</p>
+
+<p>There&#8217;s also a Content-Language header, that I suppose you could use if you were making a differentiation for what language the actual content was using compared to the site chrome.  But, as far as I can tell, this is used less.  Even less by myself.  (Never.)</p>
+
+<p>Here&#8217;s a full XQuery implementation for MarkLogic that will read the header and parse out the preferred language.  In my implementation, I don&#8217;t care about the locale, so I&#8217;m paying attention only to the language code.  The regex used is an adjustment of <a href="http://www.thefutureoftheweb.com/blog/use-accept-language-header">this original php regex</a>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>xquery version "1.0-ml";
+</span><span class='line'>
+</span><span class='line'>declare option xdmp:mapping "false";
+</span><span class='line'>
+</span><span class='line'>declare function local:get-browser-lang() as xs:string? {
+</span><span class='line'>  let $header := xdmp:get-request-header("Accept-Language")
+</span><span class='line'>  return if (fn:exists($header)) then
+</span><span class='line'>    local:get-top-hit-lang($header)
+</span><span class='line'>  else
+</span><span class='line'>    ()
+</span><span class='line'>};
+</span><span class='line'>
+</span><span class='line'>declare private function local:get-top-hit-lang($header as xs:string) as xs:string? {
+</span><span class='line'>  let $langs :=
+</span><span class='line'>    for $entry in fn:tokenize(local:parse-header($header), ",")
+</span><span class='line'>    let $data := fn:tokenize($entry, "q=")
+</span><span class='line'>    let $quality := $data[2]
+</span><span class='line'>    order by
+</span><span class='line'>      if (fn:exists($quality) and fn:string-length($quality) gt 0) then
+</span><span class='line'>        xs:float($quality)
+</span><span class='line'>      else
+</span><span class='line'>        xs:float(1.0)
+</span><span class='line'>      descending
+</span><span class='line'>    return $data[1]
+</span><span class='line'>  return $langs[1]
+</span><span class='line'>};
+</span><span class='line'>
+</span><span class='line'>declare private function local:parse-header($header as xs:string) as xs:string {
+</span><span class='line'>  let $regex := "(([a-z]{1,8})(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?"
+</span><span class='line'>  let $flags := "i"
+</span><span class='line'>  let $format := "$2q=$5"
+</span><span class='line'>  return fn:replace(fn:lower-case($header), $regex, $format)
+</span><span class='line'>};
+</span><span class='line'>
+</span><span class='line'>local:get-browser-lang()</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This implementation just takes the top language, no matter what.  You might want to check to see if your site actually supports the language before picking from the browser preference.  While you&#8217;re looping through the list of acceptable languages in get-top-hit-lang(), you could add a where clause to check for support.</p>
+
+<p>Do you find that the sites you visit respect this header?</p>
+
+<h2>Update</h2>
+
+<p>Here&#8217;s an updated version of the code that respects secondary language selections as well (not just first choice):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>xquery version "1.0-ml";
+</span><span class='line'>
+</span><span class='line'>declare option xdmp:mapping "false";
+</span><span class='line'>
+</span><span class='line'>declare function local:get-browser-lang() as xs:string? {
+</span><span class='line'>  let $header := xdmp:get-request-header("Accept-Language")
+</span><span class='line'>  return if (fn:exists($header)) then
+</span><span class='line'>    local:get-top-supported-lang(local:get-browser-langs($header), ("en", "es", "it"))
+</span><span class='line'>  else
+</span><span class='line'>    ()
+</span><span class='line'>};
+</span><span class='line'>
+</span><span class='line'>declare function local:get-top-supported-lang($ordered-langs as xs:string*, $translations as xs:string*) as xs:string? {
+</span><span class='line'>  if (fn:empty($ordered-langs)) then
+</span><span class='line'>    ()
+</span><span class='line'>  else
+</span><span class='line'>    let $lang := $ordered-langs[1]
+</span><span class='line'>    return if ($lang = $translations) then
+</span><span class='line'>      $lang
+</span><span class='line'>    else
+</span><span class='line'>      local:get-top-supported-lang(fn:subsequence($ordered-langs, 2), $translations)
+</span><span class='line'>};
+</span><span class='line'>
+</span><span class='line'>declare private function local:get-browser-langs($header as xs:string) as xs:string* {
+</span><span class='line'>  let $langs :=
+</span><span class='line'>    for $entry in fn:tokenize(local:parse-header($header), ",")
+</span><span class='line'>    let $data := fn:tokenize($entry, "q=")
+</span><span class='line'>    let $quality := $data[2]
+</span><span class='line'>    order by
+</span><span class='line'>      if (fn:exists($quality) and fn:string-length($quality) gt 0) then
+</span><span class='line'>  xs:float($quality)
+</span><span class='line'>      else
+</span><span class='line'>  xs:float(1.0)
+</span><span class='line'>      descending
+</span><span class='line'>    return $data[1]
+</span><span class='line'>  return $langs
+</span><span class='line'>};
+</span><span class='line'>
+</span><span class='line'>declare private function local:parse-header($header as xs:string) as xs:string {
+</span><span class='line'>  let $regex := "(([a-z]{1,8})(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?"
+</span><span class='line'>  let $flags := "i"
+</span><span class='line'>  let $format := "$2q=$5"
+</span><span class='line'>  return fn:replace(fn:lower-case($header), $regex, $format)
+</span><span class='line'>};
+</span><span class='line'>
+</span><span class='line'>local:get-browser-lang()</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-06T14:07:00-06:00" pubdate data-updated="true">May 6<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/browser/'>browser</a>, <a class='category' href='/blog/categories/http/'>http</a>, <a class='category' href='/blog/categories/marklogic/'>marklogic</a>, <a class='category' href='/blog/categories/xquery/'>xquery</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/marklogic-users-conference-2011-impressions/" title="Previous Post: MarkLogic Users Conference 2011 Impressions ">&laquo; MarkLogic Users Conference 2011 Impressions </a>
+      
+      
+        <a class="next-article-link" href="/post/greater-flexibility-with-responsive-design/" title="Next Post: Greater Flexibility with Responsive Design">Greater Flexibility with Responsive Design &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/xquery-browser-language-detection/';
+        var disqus_url = 'http://jaketrent.com/post/xquery-browser-language-detection/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

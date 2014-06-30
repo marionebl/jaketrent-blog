@@ -1,0 +1,392 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>BusterJs with RequireJs/Backbone - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="BusterJs is a still-in-beta library that allows for testing your Javascript. It's got a wealth of cool features. The browser capturing is awesome for &hellip;">
+  <meta name="keywords" content="javascript, unit-testing, backbonejs, requirejs">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="BusterJs with RequireJs/Backbone" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/busterjs-requirejsbackbone/" />
+  <meta property="og:description" content="BusterJs is a still-in-beta library that allows for testing your Javascript. It's got a wealth of cool features. The browser capturing is awesome for &hellip;" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="BusterJs with RequireJs/Backbone" />
+  <meta name="twitter:description" content="BusterJs is a still-in-beta library that allows for testing your Javascript. It's got a wealth of cool features. The browser capturing is awesome for &hellip;" />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/busterjs-requirejsbackbone/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+      <article class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">JakeTrent.com</a>
+    </h2>
+  </header>
+</article>
+
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">BusterJs With RequireJs/Backbone</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-25T14:42:00-06:00" pubdate data-updated="true">Jul 25<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>BusterJs is a still-in-beta library that allows for testing your Javascript.  It&#8217;s got a wealth of cool features.  The browser capturing is awesome for running your Javascript directly in the browsers you choose from one runner.  You can also execute within Node.  In short, it rocks.  But, how to get this rockin&#8217; with your project, specifically your AMD RequireJs with BackboneJs combo project is the lock that must be opened before daily buster love can be had.</p>
+
+<!--more-->
+
+
+<h2>Install</h2>
+
+<p>Buster is easily installed everywhere (but apparently not in Windows, which I have not tried):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; sudo npm install -g buster
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <a href="http://busterjs.org/docs/getting-started/">buster docs</a> indicate not to use sudo, but I&#8217;m reckless.</p>
+
+<h2>Buster Config</h2>
+
+<p>My directory structure looks something like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>proj/
+</span><span class='line'>  src/
+</span><span class='line'>    static/
+</span><span class='line'>      js/      <span class="c"># here are the objects under test</span>
+</span><span class='line'>  <span class="nb">test</span>/
+</span><span class='line'>    tests/     <span class="c"># here are the tests</span>
+</span><span class='line'>    buster.js  <span class="c"># here is the buster config</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>My previous experience with setting up <a href="http://rockycode.com/blog/jasmine-unit-testing-requirejs/">Jasmine testing with RequireJs</a> was not entirely straightforward.  BusterJs was not totally straightforward either, but it felt better.  For one, it already has a runner.  I just need to give it some config (<code>buster.js</code>):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">;</span>
+</span><span class='line'><span class="nx">config</span><span class="p">[</span><span class="s1">&#39;browser-all&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">autoRun</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">environment</span><span class="o">:</span> <span class="s1">&#39;browser&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">rootPath</span><span class="o">:</span> <span class="s1">&#39;../&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">libs</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s1">&#39;src/static/js/vendor/require-jquery-2.0.2.js&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;src/static/js/vendor/underscore-1.3.3.js&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;src/static/js/vendor/backbone-0.9.2.js&#39;</span>
+</span><span class='line'>  <span class="p">],</span>
+</span><span class='line'>  <span class="nx">sources</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s1">&#39;src/static/js/**/*.js&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;src/static/js/**/*.handlebars&#39;</span>
+</span><span class='line'>  <span class="p">],</span>
+</span><span class='line'>  <span class="nx">tests</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;test/tests/*.js&#39;</span><span class="p">],</span>
+</span><span class='line'>  <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;buster-amd&#39;</span><span class="p">)]</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A few salient points related to RequireJs / Backbone:</p>
+
+<ul>
+<li><code>autoRun</code> - Turning this off allows you to <a href="http://busterjs.org/docs/starting-testrun-manually/">run buster tests manually</a>.  This is important from an AMD perspective, because the objects under test are loaded asynchronously.  Only once they&#8217;re loaded do we want to kick off the tests.</li>
+<li><code>libs</code> - Include the RequireJs, Underscore, and Backbone files here.  <code>libs</code> will put some script tags into the browser, so require will be ready once tests start executing.  They&#8217;re loaded first and in order (Underscore before Backbone is important).</li>
+<li><code>sources</code> - I was having problems with my <a href="http://handlebarsjs.com/">handlebars template</a> loader plugin until I realized that I need to list <em>all</em> sources, including templates, under this attribute.  And don&#8217;t forget &#8216;**&#8217; for subfolders.</li>
+<li><code>extentions</code> - <a href="https://github.com/busterjs/buster-amd">buster-amd</a> is a buster extension that helps with the AMD module loading.  This will also require a <code>npm install buster-amd</code>.  As the <a href="http://busterjs.org/docs/extensions/">buster-amd docs</a> point out, you still need to list your sources and tests normally so they&#8217;re available to the buster runner, so don&#8217;t leave these out thinking they&#8217;ll be magically available.</li>
+</ul>
+
+
+<p>The <a href="http://busterjs.org/docs/configuration/">other configuration options/details</a> are well documented.</p>
+
+<h2>BusterJs Test Example</h2>
+
+<p>There are a few <a href="https://github.com/trodrigues/buster-amd-example/">simple examples</a> of other busterjs tests that test AMD modules.  Mine looks something like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">buster</span><span class="p">.</span><span class="nx">spec</span><span class="p">.</span><span class="nx">expose</span><span class="p">();</span>
+</span><span class='line'><span class="nx">require</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">baseUrl</span><span class="o">:</span> <span class="s1">&#39;src/static/js/&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">text</span><span class="o">:</span> <span class="s1">&#39;./vendor/text-2.0.0&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="cm">/* ... */</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>describe('single backbone dependency', function(run) {
+  require(['Widget'], function(widget) {
+    run(function() {
+      it('should load', function() {
+        expect(true).toEqual(true); // nothing but test execution
+      });
+    });
+  });
+});
+</code></pre>
+
+<p>More from the peanut gallery:</p>
+
+<ul>
+<li><code>buster.spec.expose()</code> just pushes main buster functions into the wide-open namespace to be called willy nilly.  Reckless &#8211; again. :)</li>
+<li><code>require.config</code> - it saddens me, but I have had to include this within each test file.  Others have <a href="https://groups.google.com/d/msg/busterjs/IZWItTzDT5I/AmX9wN-6oJoJ">commented</a> that they could include this once in the buster.config <code>libs</code>, but it didn&#8217;t work for me.  I also tried &#8216;testHelpers&#8217;, without the help they advertise.  Please let me know if it does for you and what kind of pixie dust is required.</li>
+<li><code>baseUrl</code> needs to jive with your buster rootPath so that your RequireJs relative paths will match up and work in your app runtime and in the test runtime.</li>
+<li><code>run</code> - notice this is called within the require callback manually.</li>
+</ul>
+
+
+<h2>BusterJs Runner</h2>
+
+<p>If you call within the next 15 minutes, the travel-size test runner is included.  Operators are standing by.  Start your test server:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; buster server
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That will start a server at localhost:1111.  Head 1+ of your local browsers to that address and capture them as your imprisoned slaves.  They will do your bidding when you run the tests.  Go to your project directory and run:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; buster <span class="nb">test</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you&#8217;ve tied it all together, you should see something like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; buster <span class="nb">test</span>
+</span><span class='line'>Chrome 21.0.1180.49, OS X 10.7 <span class="o">(</span>Lion<span class="o">)</span>: .....
+</span><span class='line'>1 <span class="nb">test </span>cases, 1 tests, 1 assertions, 0 failures, 0 errors, 0 timeouts
+</span><span class='line'>Finished in 0.02s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And now for a few parting tips&#8230;</p>
+
+<h2>Mismatched Define Module</h2>
+
+<p>If you happen to include a js file in your &#8216;libs&#8217; attribute or another section that&#8217;s loaded previous to your tests running that includes a <code>define()</code> block, you&#8217;re going to get stuck with this wonder:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Uncaught exception: ./src/static/js/vendor/require-jquery-2.0.2.js:1803 Uncaught Error: Mismatched anonymous define<span class="o">()</span> module: <span class="k">function</span> <span class="o">(</span>module<span class="o">)</span> <span class="o">{</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As the <a href="http://requirejs.org/docs/errors.html#mismatch">require docs</a> point out, to avoid this:</p>
+
+<blockquote><p>Be sure to load all scripts that call define() via the RequireJS API.</p></blockquote>
+
+<h2>RequireJs 2.0 shim</h2>
+
+<p>I wasn&#8217;t able to get the shim setup for getting underscore/backbone loaded and in the correct order.  Instead, I just listed these non-AMD files in the correct order under the &#8216;libs&#8217; attribute in buster.config.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-25T14:42:00-06:00" pubdate data-updated="true">Jul 25<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/backbonejs/'>backbonejs</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/requirejs/'>requirejs</a>, <a class='category' href='/blog/categories/unit-testing/'>unit-testing</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/pipe-stdout-socketio/" title="Previous Post: Pipe stdout to SocketIO">&laquo; Pipe stdout to SocketIO</a>
+      
+      
+        <a class="next-article-link" href="/post/book-review-for-platform/" title="Next Post: Book Review for Platform">Book Review for Platform &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="container">
+    <footer class="main-footer" role="contentinfo"><p>
+  <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a> 2014 -
+  <a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a> -
+  <a href="/atom.xml">Feed</a>
+  <span class="main-footer-extras">-
+    <a href="/sitemap.xml">Sitemap</a> -
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a> -
+    <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  </span>
+</p>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/busterjs-requirejsbackbone/';
+        var disqus_url = 'http://jaketrent.com/post/busterjs-requirejsbackbone/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

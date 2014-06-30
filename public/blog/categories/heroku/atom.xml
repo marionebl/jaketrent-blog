@@ -4,7 +4,7 @@
   <title><![CDATA[Category: heroku | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/heroku/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-06-23T09:05:30-06:00</updated>
+  <updated>2014-06-29T22:38:24-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -248,6 +248,227 @@ else
 <p>If it's not <code>https</code> already, redirect the same url on <code>https</code>.  If it is, that's what I want, and you can pass on through my middleware function.  Note that this middleware will protect <em>all</em> urls on the site with an <code>https</code> redirect.  Your middleware could be more selective.  You could even create this as a stacked middleware per route if you wanted.  We could even enhance our middleware to use inspect both the http header <em>and</em> the <code>secure</code> flag.</p>
 
 <p>Heroku threw us a for a minor, unexpected loop, but it was nothing that we couldn't easily code for.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[django_content_type_app_label_key Constraint on Heroku]]></title>
+    <link href="http://jaketrent.com/post/django_content_type_app_label_key-constraint-herok/"/>
+    <updated>2011-12-30T13:30:00-07:00</updated>
+    <id>http://jaketrent.com/post/django_content_type_app_label_key-constraint-herok</id>
+    <content type="html"><![CDATA[<p>Django comes with some awesome CLI tools.  Manage.py is a beast of magic and lore.  And it loves the fantastical kingdom of Heroku, where is romps with merry measure twixt the ether.  But, when I've tried to go through a dumpdata of a previous site, syncdb on a migration to Heroku, and loaddata for moving the data, I've run into a snag on django_content_type_app_label_key more than once.  Here are some resolutions.</p>
+
+<!--more-->
+
+
+<h2>The Error Stack</h2>
+
+<p>Specifically, when I do a sync of the database:</p>
+
+<p><code>bash
+heroku run python manage.py syncdb
+</code></p>
+
+<p>It works like a charm.  And then a loading of the data:</p>
+
+<p><code>bash
+heroku run python manage.py loaddata data.json
+</code></p>
+
+<p>It runs for a bit then spews this small hiccup:</p>
+
+<p>```bash
+Running python manage.py loaddata data.json attached to terminal... up, run.2
+Problem installing fixture 'data.json': Traceback (most recent call last):
+  File "/app/lib/python2.7/site-packages/django/core/management/commands/loaddata.py", line 174, in handle</p>
+
+<pre><code>obj.save(using=using)
+</code></pre>
+
+<p>  # ...more stack trace...
+  File "/app/lib/python2.7/site-packages/django/db/backends/postgresql_psycopg2/base.py", line 44, in execute</p>
+
+<pre><code>return self.cursor.execute(query, args)
+</code></pre>
+
+<p>IntegrityError: duplicate key value violates unique constraint "django_content_type_app_label_key"
+```
+Lovely.</p>
+
+<p>It turns out that <code>syncdb</code>, in addition to running the DDLs for your table creation also populates the <code>django_content_type</code> table.  And then when you loaddata it tries to repopulate the table, violating the unique constraint on the content type name.</p>
+
+<h2>Make the Magic Live Again</h2>
+
+<p>There are a couple ways around this:</p>
+
+<h3>Dump Something Specific</h3>
+
+<p>When you dumpdata, only <a href="https://docs.djangoproject.com/en/dev/ref/django-admin/#dumpdata-appname-appname-appname-model">dump specific apps</a> instead of the whole project.  For example:</p>
+
+<p><code>bash
+python manage.py dumpdata myApp
+</code></p>
+
+<h3>Django 1.3 Exclude</h3>
+
+<p>If you're on Django 1.3 or above, you get a nice new option with dumpdata to <a href="https://docs.djangoproject.com/en/dev/ref/django-admin/#django-admin-option---exclude">exclude certain apps</a>.  So you could run:</p>
+
+<p><code>bash
+python manage.py dumpdata --exclude contenttypes
+</code></p>
+
+<h3>Try in Vain to Reset</h3>
+
+<p>Another one I tried (but didn't work) was:</p>
+
+<p><code>bash
+heroku run python aprilandjake/manage.py reset contenttypes
+</code></p>
+
+<h3>Sql Truncate</h3>
+
+<p>Or, if you're still trying to dumpdata on your whole project, you could <code>syncdb</code> on Heroku and then truncate the data out of <code>django_content_type</code> like this:</p>
+
+<p><code>bash
+heroku run python aprilandjake/manage.py dbshell
+</code></p>
+
+<p>And then <a href="http://swik.net/django/Django+Community+Aggregator?page=2">truncate</a> (inside the dbshell):</p>
+
+<p><code>bash
+truncate django_content_type cascade;    
+</code></p>
+
+<p>Problem for me is that didn't work either.  I am on the super cheap in Heroku, so I get this lovely denial:</p>
+
+<p><code>bash
+Running python manage.py dbshell attached to terminal... up, run.5
+Error: You appear not to have the 'psql' program installed or on your path.
+</code></p>
+
+<p>(It's not available in a <a href="http://devcenter.heroku.com/articles/heroku-postgresql">shared database</a>):</p>
+
+<p><code>bash
+heroku pg:psql
+!  Cannot ingress to a shared database
+</code></p>
+
+<h3>Delete via Admin UI</h3>
+
+<p>And finally, if you want to get rid of the data via the admin UI, set it up to appear as editable.  In an <a href="https://docs.djangoproject.com/en/dev/ref/contrib/admin/#modeladmin-objects"><code>admin.py</code></a> in your project, try something like this:</p>
+
+<p>```python
+from django.contrib.contenttypes.models import ContentType</p>
+
+<p>class ContentTypeAdmin(admin.ModelAdmin):
+  list_display = ['name', 'app_label']
+  fieldsets = (</p>
+
+<pre><code>('', {
+  'classes': ('',),
+  'fields': ('name', 'app_label')
+}),
+</code></pre>
+
+<p>  )</p>
+
+<p>  admin.site.register(ContentType, ContentTypeAdmin)
+```</p>
+
+<p>Now you should be able to loaddata and feel the Django wind in your hair and the Heroku grass beneath your feet again.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Django loaddata on Heroku]]></title>
+    <link href="http://jaketrent.com/post/django-loaddata-heroku/"/>
+    <updated>2011-11-20T09:45:00-07:00</updated>
+    <id>http://jaketrent.com/post/django-loaddata-heroku</id>
+    <content type="html"><![CDATA[<p>Django's manage.py script comes with some great utilitarian commands.  Two of my favorites are dumpdata and loaddata.  I've used these commands recently to migrate a Django app's data to the same Django app now running on Heroku.  Here's a little taste of the glory.</p>
+
+<!--more-->
+
+
+<p><a href="https://www.djangoproject.com/">Django</a> is awesome.  <a href="http://www.heroku.com/">Heroku</a> is awesome.  <a href="http://devcenter.heroku.com/articles/django>">Combined</a> they are awesomeerest.</p>
+
+<p>First, get your data out of your existing Django app with manage.py's <a href="https://docs.djangoproject.com/en/dev/ref/django-admin/#dumpdata-appname-appname-appname-model">dumpdata</a>:</p>
+
+<p><code>bash
+python manage.py dumpddata --natural --indent 2 &gt; data.json
+</code></p>
+
+<p>By default it comes out as json, but you can <a href="https://docs.djangoproject.com/en/dev/ref/django-admin/#django-admin-option---format>">change that</a>.  The two options used above have now become common-place for me, providing:</p>
+
+<ul>
+<li>"--natural" - use this baby for when you dump contrib.contenttypes ContentType.  Since we're taking the whole db, odds are that you're using it, since most interesting django apps do.</li>
+<li>"--indent" - make it human-readable instead of a single-liner.</li>
+</ul>
+
+
+<p>The "> data.json" is just some Unix'y redirect goodness to stash the output of your dumpdata command in the data.json file.</p>
+
+<p>Now you want to get your data.json into the db of your Heroku-based Django app.  Heroku allows you the ability to run <a href="http://devcenter.heroku.com/articles/oneoff-admin-ps">one-off processes</a> such as the loaddata command.  But the next hurdle will be getting your data.json onto the Heroku server.  This is always handled in a git push.  And to make it a little bit more interesting, let's say that the code you have isn't particularly sensitive, but the data is.  So, we're going to commit the data.json, push it, remove the latest git commit, be able to push our code to the origin server, and still run loaddata on Heroku.  Sheesh.</p>
+
+<p>Ok, so commit your file:</p>
+
+<p><code>bash
+git add data.json
+git commit -m "Added data"
+</code></p>
+
+<p>Push it to Heroku:</p>
+
+<p><code>bash
+git push heroku master
+</code></p>
+
+<p><a href="http://stackoverflow.com/questions/927358/git-undo-last-commit/927386#927386">Remove commit</a>:</p>
+
+<p><code>bash
+git reset --soft HEAD^
+</code></p>
+
+<p><a href="http://stackoverflow.com/questions/1505948/how-do-i-remove-a-single-file-from-the-staging-area-of-git-but-not-remove-it-fro/1505968#1505968">Remove file</a> from staging area:</p>
+
+<p><code>bash
+git reset HEAD data.json
+</code></p>
+
+<p>Save your code w/o data included:</p>
+
+<p><code>bash
+git push origin master
+</code></p>
+
+<p>And now you should still have data.json on your Heroku server and be able to run loaddata:</p>
+
+<p><code>bash
+heroku run python manage.py loaddata data.json
+</code></p>
+
+<p>If it all works, your data fixtures should be found and you should see a confirmation message that they were loaded into the db.  Just like a dream.  The only thing that would make it better is if you never had to commit data.json at all.  Too bad Heroku couldn't pick up local file input like it can pick up STDIN in a 'heroku run' command!</p>
+
+<h2>Update: Force Next Push</h2>
+
+<p>Also note that if you continue to commit to git locally on future enhancements to your app and then want to push again to Heroku, you'll likely get an error message:</p>
+
+<p><code>bash
+git push heroku master
+To git@heroku.com:myProject.git
+ ! [rejected]        master -&gt; master (non-fast-forward)
+error: failed to push some refs to 'git@heroku.com:myProject.git'
+To prevent you from losing history, non-fast-forward updates were rejected
+Merge the remote changes (e.g. 'git pull') before pushing again.  See the
+'Note about fast-forwards' section of 'git push --help' for details.
+</code></p>
+
+<p>To get around this, next time you push to Heroku, try:</p>
+
+<p><code>bash
+git push heroku master -f
+</code></p>
+
+<p>And force it to do your bidding.</p>
 ]]></content>
   </entry>
   

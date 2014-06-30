@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: jquery-mobile | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/jquery-mobile/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[jQuery Mobile Selector Context]]></title>
+    <link href="http://jaketrent.com/post/jquery-mobile-selector-context/"/>
+    <updated>2011-09-01T12:58:00-06:00</updated>
+    <id>http://jaketrent.com/post/jquery-mobile-selector-context</id>
+    <content type="html"><![CDATA[<p>As web developers we're used to being able to write a jQuery selector and easily get the DOM elements back on the page that we're looking for.  In the case of jQuery Mobile, it's slightly more complicated because a "page" is a different beast.</p>
+
+<!--more-->
+
+
+<h2>First Page Loads the Head</h2>
+
+<p>You can actually have multipe <a href="http://jquerymobile.com/demos/1.0b2/#/demos/1.0b2/docs/pages/page-anatomy.html">pages on the DOM</a> at a time.  This is required for the slide animation, helps with page caching for the back button, and helps make things feel snappier.  When you request a brand new page from the server, that page's <code>&lt;body /&gt;</code> is ajax'ed onto the DOM and the <code>&lt;title /&gt;</code> is updated.</p>
+
+<p>This means that the first page that you load that initializes requests the jQuery mobile script and initializes it is the one that loads the <code>&lt;head /&gt;</code> tag is loaded.  From the <a href="http://jquerymobile.com/demos/1.0b2/#/demos/1.0b2/docs/pages/page-scripting.html">docs</a>:</p>
+
+<p>When you click a link in jQuery Mobile, the Ajax navigation system uses the link's href to formulate an Ajax request. Although the full page is loaded with Ajax, the framework only pulls in the contents of the page, and ignores anything in the head except for title tag contents.</p>
+
+<p>In other words, on subsequent pages, you better have already imported the scripts and styles in the head that you need for subsequent page loads.</p>
+
+<h2>Expanded Context</h2>
+
+<p>Now, if multiple "pages" are all on the DOM, when you craft a selector in jQuery, you have the potential of picking up lots of other elements than you were expecting.  We're used to our context being defined as a the single page served up from the server, so we can write a selector like this:</p>
+
+<p><code>javascript
+$(".media-carousel li")
+</code></p>
+
+<p>And only get back the <code>&lt;li /&gt;</code>s that are on the page.  But now, if I nav to multiple pages with media carousels on them, on the 2nd one, when I execute this code, I'll select all <code>&lt;li /&gt;</code> s from the 2nd <em>and</em> the 1st.  This quickly produces bugs that we don't have to watch out for in our normal server-assisted MVC architecture.</p>
+
+<h2>Constrain to Page Context</h2>
+
+<p>The fix for jQuery Mobile, however, is super simple.  Per the <a href="http://api.jquery.com/jQuery/">jQuery docs</a>:</p>
+
+<p>  By default, selectors perform their searches within the DOM starting at the document root. However, an alternate context can be given for the search by using the optional second parameter to the $() function.</p>
+
+<p>In other words, we want to provide the currently-operating page in jQuery mobile as the context for the selector.  Here's a snippet of the what the multimedia carousel selection might look like:</p>
+
+<p>```javascript
+function carouselStuff($page) {
+  $(".media-carousel li", $page).doStuff();
+}</p>
+
+<p>$('div').live('pageshow', function  (e, ui) {
+  carouselStuff($(this));
+});
+```</p>
+
+<p>When a <code>pageshow</code> event is triggered, that means the containing page (<code>&lt;div class="ui-page"/&gt;</code>) has been displayed with the newly ajax-requested content.  So, now our selections, bindings, and other jQuery goodness will only affect the current "page" context.</p>
+]]></content>
+  </entry>
+  
+</feed>

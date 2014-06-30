@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: convention | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/convention/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2014-06-29T22:38:24-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Thoughts on Customization and Convention]]></title>
+    <link href="http://jaketrent.com/post/thoughts-customization-and-convention/"/>
+    <updated>2011-03-11T10:16:00-07:00</updated>
+    <id>http://jaketrent.com/post/thoughts-customization-and-convention</id>
+    <content type="html"><![CDATA[<p>There is an epic balancing act in software today, fought between customization and convention.  When to build, when to buy?  When to create new solutions or reuse those already created?  What are the pros and cons to either?  I don't think that there is a quick answer that is going to always be true for any of these questions?  Each situation brings with it too many diverse aspects.  But, here are some of my observations.</p>
+
+<!--more-->
+
+
+<ul>
+<li><p>If you buy instead of build, expect to change your business processes to match the purchased product or expect to build onto what you have bought.</p></li>
+<li><p>Early standardization stifles innovation.</p></li>
+<li><p>Software comes in generations.  In the beginning phase of a generation, it's the wild west because nothing is established.  Somewhere in the middle, reuse is desired, best practices are assembled, and products become de facto standards.  Toward the end of a generation, software developers begin to decide the standard is insufficient.   A new generation begins when a large enough mass of mind share decides to again make the jump into the unknown of innovation.</p></li>
+<li><p>Customized solutions encourage innovation and project ownership.</p></li>
+<li><p>Convention can move you miles ahead, often much faster than starting ground-up, which can feel just as satisfying as a possibly more creative solution.</p></li>
+<li><p>Custom solutions and standard solutions both have bugs.</p></li>
+<li><p>Standard solutions, if the product of increased time and contributors, can be more thoroughly proven and solid.</p></li>
+<li><p>Build it and solve technical problems or buy it and solve political problems.</p></li>
+<li><p>Customized solutions incur greater risk because they ideas are often new and untested.  Reward potentials are similar.</p></li>
+<li><p>It is easier to quantify costs of custom development -- it's x number of people working x hours on a product.  It is hard to quantify the costs of buying a product -- support wait time, consultation time, business inefficiencies because of mismatched product.</p></li>
+<li><p>The best solutions are born from solving a specific, practical problem in real life as opposed to theoretical, invented problems for which a solution can be built and marketed.</p></li>
+<li><p>Priorities influence the build or buy decision.  For instance, what's the value of R&amp;D compared with business consolidation?</p></li>
+<li><p>Standard solutions tend to be standard, addressing a general need.  Custom solutions can answer your problem as directly as you can make it.</p></li>
+<li><p>You own the destiny of your own custom solutions -- most of the time.</p></li>
+</ul>
+
+
+<p>Well, there are some thoughts from my swirling cerebral cortex.  It's not an easy problem.  I have no answers.  Being a creative person, an independent person, and a curious person I sometimes favor custom solutions.  Being a practical, conservative,  or tired person I sometimes favor a standard out-of-the box solution.  Take my mutterings for what they're worth.</p>
+]]></content>
+  </entry>
+  
+</feed>
