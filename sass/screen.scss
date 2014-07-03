@@ -114,6 +114,15 @@ body {
   border-bottom: 1px solid darken($nav-item-2-color, 10%);
 }
 
+.logo-img {
+  margin-top: 10px;
+  display: block;
+  height: 30px;
+  width: 110px;
+  background: url(/images/jaketrent-logo-sm-inverted.png) no-repeat center;
+  background-size: cover;
+}
+
 .content {
   padding: 40px 20px;
 }
@@ -327,7 +336,7 @@ body {
 
   .sidebar {
     position: absolute;
-    top: 110px;
+    top: 50px;
     left: 0;
     width: $sidebar-width;
   }
@@ -347,21 +356,22 @@ body {
     }
   }
 
-  .logo {
-    padding-top: 40px;
-  }
-
   .logo-link {
     display: block;
-    height: 50px;
-    line-height: 50px;
-    padding: 0 20px;
+    overflow: hidden;
+    padding: 0 20px 130px 20px;
     background: none;
     color: inherit;
     text-shadow: none;
-
     border: none;
     background: none;
+  }
+
+  .logo-img {
+    height: 56px;
+    width: 202px;
+    background: url(/images/jaketrent-logo.png) no-repeat center;
+    background-size: cover;
   }
 
   .content {
@@ -396,10 +406,6 @@ body {
 
   .sidebar {
     left: 50px;
-  }
-
-  .logo-link {
-    padding: 0;
   }
 
   .content {
