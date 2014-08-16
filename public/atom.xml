@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-07-12T14:36:08-06:00</updated>
+  <updated>2014-08-15T20:38:56-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,170 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Send Props to Children in React]]></title>
+    <link href="http://jaketrent.com/post/send-props-to-children-react/"/>
+    <updated>2014-08-12T16:55:00-06:00</updated>
+    <id>http://jaketrent.com/post/send-props-to-children-react</id>
+    <content type="html"><![CDATA[<p>In React, you&#8217;re always making components.  Sometimes components are standalone.  Other times, you&#8217;ll have components that can nest children components.  Sometimes you&#8217;ll want to send properties to the children components from the parent as often as a doting parent wants to send packages to a child missionary.  It&#8217;s possible, it&#8217;s simple, and it&#8217;s not documented super well.  Here&#8217;s one method.</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="React" /></p>
+
+<!--more-->
+
+
+<h2>Children Components</h2>
+
+<p>When parent components are rendered, they have access to a special property, <code>this.props.children</code>.  It&#8217;s like an Angular <code>ng-transclude</code> or an Ember <code>yield</code>.  Children components are generally rendered something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;iAmParentHearMeRoar&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span><span class="p">}</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The generic example above shows simply how to render children, <code>props</code> untouched, within a parent component.  Sometimes, however, a parent wants to bequeath its children with extra properties.  How will we make that happen?</p>
+
+<h2>Setting Child Props</h2>
+
+<p><code>props</code> are meant to be immutable.  But, in order for us to send <code>props</code> values to our children, we&#8217;re going to essentially loop through our children and set props on them as a part of our parent <code>render</code> function.</p>
+
+<p>Deep breath.  It&#8217;s ok.  The children that we&#8217;ll loop through aren&#8217;t mounted component instances.  They are, instead, <a href="http://facebook.github.io/react/blog/2014/07/17/react-v0.11.html#descriptors">descriptors</a>.  These descriptors have all the <code>props</code> attributes that we&#8217;ve declared should be put on the components, but they haven&#8217;t been rendered yet.  Because of this, we can change props, and it&#8217;s ok.  We&#8217;re not mutating what has rendered.  The data still hasn&#8217;t flowed to the children.  We&#8217;re still effectively still riffing on the logic of what the children components should really be when they&#8217;re eventually mounted.</p>
+
+<h2>Looping on Children Components</h2>
+
+<p><code>this.props.children</code> is a funny property.  It&#8217;s special in more ways than one.  The things that might trip us up in looping is that even though it sounds like a plural thing, meaning an array, sometimes it&#8217;s a singular object.  To help avoid potential problems, React gives us a helper, <code>React.Children</code>.  It has a few functions for array iteration, such as <code>map</code> and <code>forEach</code> that help account for the potential forms of <code>this.props.children</code>.</p>
+
+<h2>Functional Modifications</h2>
+
+<p>Immutable data is a big part of functional programming.  This means that when we &#8216;mutate&#8217; the props, we want to mutate on a clone of the child component without affecting the original.  There&#8217;s an input, there&#8217;s an output, and the input is untouched.  Once we have our cloned children components as we want them, we&#8217;ll render those instead.  React offers another great helper for cloning components and setting properties in a single function, <code>React.addons.cloneWithProps</code>.  Note that in order to use this function, you need to <code>require('react/addons')</code>.</p>
+
+<h2>Checking Child Type</h2>
+
+<p>It&#8217;s a generally-useful thing to be able to tell what the React class type of a component object is.  It&#8217;s an applicable skill in terms of looping through child components because we might not want to modify the properties of all types of children.  Each React component class has a <code>type</code> attribute accessible via <code>MyComponent.type</code>.  This attribute is also available on component descriptors.</p>
+
+<h2>A Child CheckOption Example</h2>
+
+<p>To bring this all together and illustrate the concepts, let&#8217;s say we created a <code>RadioGroup</code> component that could take one or many <code>RadioOption</code> child components.  In raw html, which is what our component will eventually render, <code>input</code>s with type <code>checkbox</code> need to all have the same <code>name</code> attribute value to work well as toggles within the group.  But this is something that React can help us not have to duplicate.  We&#8217;ll instead put a <code>name</code> property on the parent <code>RadioGroup</code> and have it transfer it as a property on all its children.  The implementation might look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="cm">/** @jsx React.DOM */</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">React</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;react/addons&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">RadioOption</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;radio&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">value</span><span class="p">}</span> <span class="nx">name</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">label</span><span class="p">}</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/label&gt;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">RadioGroup</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">renderChildren</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Children</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">child</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">child</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="nx">RadioOption</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">addons</span><span class="p">.</span><span class="nx">cloneWithProps</span><span class="p">(</span><span class="nx">child</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">name</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span>
+</span><span class='line'>        <span class="p">})</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">child</span>
+</span><span class='line'>    <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">))</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;radio-group&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">renderChildren</span><span class="p">()}</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">WhereImUsingRadioGroups</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">RadioGroup</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;blizzard-games&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Warcraft 2&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;wc2&quot;</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Warcraft 3&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;wc3&quot;</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Starcraft 1&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;sc1&quot;</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Starcraft 2&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;sc2&quot;</span> <span class="o">/&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/RadioGroup&gt;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this example, where the parent <code>RadioGroup</code> has the <code>name</code> prop, it will be given to each of the children so their <code>name</code> prop will match and the radio group will work as expected.  Thus, the hearts of the children are turned toward their fathers.</p>
+
+<p>Is there a better way to do this?  How have you been sending <code>props</code> to children?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Set State in Callbacks in React]]></title>
@@ -1756,89 +1920,6 @@
 <p>Pretty cool and pretty powerful all for the price of including the library and including a breakpoint in your code.</p>
 
 <p>Are there tools similar to this that you love to use for debugging?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Change Page Title in Angular Route]]></title>
-    <link href="http://jaketrent.com/post/change-page-title-angular-route/"/>
-    <updated>2013-11-07T07:03:00-07:00</updated>
-    <id>http://jaketrent.com/post/change-page-title-angular-route</id>
-    <content type="html"><![CDATA[<p>When you change routes in Angular, the page title doesn&#8217;t change automatically, but this can be done rather simply.</p>
-
-<p><img src="http://i.imgur.com/wVBKD.png" alt="Angular Router" /></p>
-
-<!--more-->
-
-
-<h2>Servers and Clients</h2>
-
-<p>Client-side routers are pretty awesome.  A new url is pushed into the browser&#8217;s history to represent the particular resource that pure client code has produced and displayed.  It&#8217;s pretty cool.  It&#8217;s also used widely these days.  Angularjs has a nice little router built into its framework.</p>
-
-<p>Route changes from a server always have the page title set automatically in the <code>head &gt; title</code> tag.  Client-side routing doesn&#8217;t have that exactly.  Nor does the Angularjs router change the page title via an automatic mechanism.  So, let&#8217;s add our own.</p>
-
-<h2>Add Page Title to Angular Router</h2>
-
-<p>First, notice that you can add any arbitrary attributes to an angular route that you desire.  In the code below, notice that each route has a <code>title</code> attribute:</p>
-
-<figure class='code'><figcaption><span>app.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">,</span> <span class="p">[]).</span><span class="nx">config</span> <span class="nf">($routeProvider) -&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">$routeProvider</span>
-</span><span class='line'>    <span class="p">.</span><span class="k">when</span> <span class="s">&#39;/&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nv">controller: </span><span class="s">&#39;HomeCtrl&#39;</span>
-</span><span class='line'>      <span class="nv">templateUrl: </span><span class="s">&quot;/templates/home.html&quot;</span>
-</span><span class='line'>      <span class="nv">title: </span><span class="s">&#39;Home&#39;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">.</span><span class="k">when</span> <span class="s">&#39;/about&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nv">controller: </span><span class="s">&#39;AboutCtrl&#39;</span>
-</span><span class='line'>      <span class="nv">templateUrl: </span><span class="s">&quot;/templates/about.html&quot;</span>
-</span><span class='line'>      <span class="nv">title: </span><span class="s">&#39;About&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then in a place that exists on every route &#8211; something like an <code>AppCtrl</code> &#8211; you can gain access to the <code>current</code> route&#8217;s <code>title</code> every time the route changes:</p>
-
-<figure class='code'><figcaption><span>app-ctrl.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">).</span><span class="nx">controller</span> <span class="s">&#39;AppCtrl&#39;</span><span class="p">,</span> <span class="nf">($rootScope) -&gt;</span>
-</span><span class='line'>  <span class="nx">$rootScope</span><span class="p">.</span><span class="nx">$on</span> <span class="s">&#39;$routeChangeSuccess&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">current</span><span class="p">,</span> <span class="nx">previous</span><span class="p">)</span> <span class="o">=&gt;</span>
-</span><span class='line'>    <span class="nv">$rootScope.pageTitle = </span><span class="nx">$route</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">title</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now we have put the route&#8217;s <code>title</code> in <code>$rootScope.pageTitle</code> and can use it in our template:</p>
-
-<figure class='code'><figcaption><span>app.html</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;html&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;head&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;title</span> <span class="na">ng-bind=</span><span class="s">&quot;pageTitle + &#39; | MyApp&#39;&quot;</span><span class="nt">&gt;&lt;/title&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/head&gt;</span>
-</span><span class='line'>  <span class="c">&lt;!-- ... --&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>ng-bind</code> is just like using double curlies, but also acts as if it&#8217;s surrounded by an ng-cloak as well.  Notice that in the title, I&#8217;m even concatenating the <code>pageTitle</code> with my app&#8217;s overall name.</p>
-
-<p>Props go to <a href="http://github.com/danethurber">@danethurber</a> for putting this title changing logic in our most recent app.</p>
-
-<p>Is this how you change your Angular app&#8217;s title?  Is there a better way?  Specifically, I wonder if <code>AppCtrl</code> really is the best place to listen for <code>$routeChangeSuccess</code>.</p>
 ]]></content>
   </entry>
   

@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Send Props to Children in React - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Sometimes you'll want to pass properties from a parent component to children components. Here's how to do it.">
+  <meta name="keywords" content="js, react, components, render children, this.props.children, child props, child properties">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Send Props to Children in React" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://i.imgur.com/DXuSNbw.png" />
+  <meta property="og:url" content="http://jaketrent.com/post/send-props-to-children-react/" />
+  <meta property="og:description" content="Sometimes you'll want to pass properties from a parent component to children components. Here's how to do it." />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Send Props to Children in React" />
+  <meta name="twitter:description" content="Sometimes you'll want to pass properties from a parent component to children components. Here's how to do it." />
+  <meta name="twitter:image" content="http://i.imgur.com/DXuSNbw.png" />
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/send-props-to-children-react/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <section class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">
+        <span class="logo-img"></span>
+      </a>
+    </h2>
+  </header>
+</section>
+
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/books">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Send Props to Children in React</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-12T16:55:00-06:00" pubdate data-updated="true">Aug 12<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In React, you&#8217;re always making components.  Sometimes components are standalone.  Other times, you&#8217;ll have components that can nest children components.  Sometimes you&#8217;ll want to send properties to the children components from the parent as often as a doting parent wants to send packages to a child missionary.  It&#8217;s possible, it&#8217;s simple, and it&#8217;s not documented super well.  Here&#8217;s one method.</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="React" /></p>
+
+<!--more-->
+
+
+<h2>Children Components</h2>
+
+<p>When parent components are rendered, they have access to a special property, <code>this.props.children</code>.  It&#8217;s like an Angular <code>ng-transclude</code> or an Ember <code>yield</code>.  Children components are generally rendered something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;iAmParentHearMeRoar&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span><span class="p">}</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The generic example above shows simply how to render children, <code>props</code> untouched, within a parent component.  Sometimes, however, a parent wants to bequeath its children with extra properties.  How will we make that happen?</p>
+
+<h2>Setting Child Props</h2>
+
+<p><code>props</code> are meant to be immutable.  But, in order for us to send <code>props</code> values to our children, we&#8217;re going to essentially loop through our children and set props on them as a part of our parent <code>render</code> function.</p>
+
+<p>Deep breath.  It&#8217;s ok.  The children that we&#8217;ll loop through aren&#8217;t mounted component instances.  They are, instead, <a href="http://facebook.github.io/react/blog/2014/07/17/react-v0.11.html#descriptors">descriptors</a>.  These descriptors have all the <code>props</code> attributes that we&#8217;ve declared should be put on the components, but they haven&#8217;t been rendered yet.  Because of this, we can change props, and it&#8217;s ok.  We&#8217;re not mutating what has rendered.  The data still hasn&#8217;t flowed to the children.  We&#8217;re still effectively still riffing on the logic of what the children components should really be when they&#8217;re eventually mounted.</p>
+
+<h2>Looping on Children Components</h2>
+
+<p><code>this.props.children</code> is a funny property.  It&#8217;s special in more ways than one.  The things that might trip us up in looping is that even though it sounds like a plural thing, meaning an array, sometimes it&#8217;s a singular object.  To help avoid potential problems, React gives us a helper, <code>React.Children</code>.  It has a few functions for array iteration, such as <code>map</code> and <code>forEach</code> that help account for the potential forms of <code>this.props.children</code>.</p>
+
+<h2>Functional Modifications</h2>
+
+<p>Immutable data is a big part of functional programming.  This means that when we &#8216;mutate&#8217; the props, we want to mutate on a clone of the child component without affecting the original.  There&#8217;s an input, there&#8217;s an output, and the input is untouched.  Once we have our cloned children components as we want them, we&#8217;ll render those instead.  React offers another great helper for cloning components and setting properties in a single function, <code>React.addons.cloneWithProps</code>.  Note that in order to use this function, you need to <code>require('react/addons')</code>.</p>
+
+<h2>Checking Child Type</h2>
+
+<p>It&#8217;s a generally-useful thing to be able to tell what the React class type of a component object is.  It&#8217;s an applicable skill in terms of looping through child components because we might not want to modify the properties of all types of children.  Each React component class has a <code>type</code> attribute accessible via <code>MyComponent.type</code>.  This attribute is also available on component descriptors.</p>
+
+<h2>A Child CheckOption Example</h2>
+
+<p>To bring this all together and illustrate the concepts, let&#8217;s say we created a <code>RadioGroup</code> component that could take one or many <code>RadioOption</code> child components.  In raw html, which is what our component will eventually render, <code>input</code>s with type <code>checkbox</code> need to all have the same <code>name</code> attribute value to work well as toggles within the group.  But this is something that React can help us not have to duplicate.  We&#8217;ll instead put a <code>name</code> property on the parent <code>RadioGroup</code> and have it transfer it as a property on all its children.  The implementation might look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="cm">/** @jsx React.DOM */</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">React</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;react/addons&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">RadioOption</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;radio&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">value</span><span class="p">}</span> <span class="nx">name</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">label</span><span class="p">}</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/label&gt;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">RadioGroup</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">renderChildren</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Children</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">child</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">child</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="nx">RadioOption</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">addons</span><span class="p">.</span><span class="nx">cloneWithProps</span><span class="p">(</span><span class="nx">child</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">name</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span>
+</span><span class='line'>        <span class="p">})</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">child</span>
+</span><span class='line'>    <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">))</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;radio-group&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">renderChildren</span><span class="p">()}</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">WhereImUsingRadioGroups</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">RadioGroup</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;blizzard-games&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Warcraft 2&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;wc2&quot;</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Warcraft 3&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;wc3&quot;</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Starcraft 1&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;sc1&quot;</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Starcraft 2&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;sc2&quot;</span> <span class="o">/&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/RadioGroup&gt;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In this example, where the parent <code>RadioGroup</code> has the <code>name</code> prop, it will be given to each of the children so their <code>name</code> prop will match and the radio group will work as expected.  Thus, the hearts of the children are turned toward their fathers.</p>
+
+<p>Is there a better way to do this?  How have you been sending <code>props</code> to children?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-12T16:55:00-06:00" pubdate data-updated="true">Aug 12<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/react/'>react</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/set-state-in-callbacks-in-react/" title="Previous Post: Set State in Callbacks in React">&laquo; Set State in Callbacks in React</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="footer-container">
+    <footer class="main-footer" role="contentinfo"><div class="main-footer-logo"></div>
+<ul class="main-footer-links-list">
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Content licensed</span> 2014 <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a>
+  </li>
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Authored by </span><a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a>
+  </li>
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Subscribe to the </span><a href="/atom.xml">Feed</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <a href="/sitemap.xml">Sitemap</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <span class="main-footer-verbage">Chat on </span><a href="https://keybase.io/jaketrent">Keybase</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <span class="main-footer-verbage">Powered by </span><a href="http://octopress.org">Octopress</a>
+  </li>
+</ul>
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/send-props-to-children-react/';
+        var disqus_url = 'http://jaketrent.com/post/send-props-to-children-react/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
