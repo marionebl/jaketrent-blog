@@ -4,7 +4,7 @@
   <title><![CDATA[Category: http | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/http/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-08-15T20:38:56-06:00</updated>
+  <updated>2014-09-15T10:32:15-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,85 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Expose HTTP Headers in CORS]]></title>
+    <link href="http://jaketrent.com/post/expose-http-headers-in-cors/"/>
+    <updated>2014-09-15T09:42:00-06:00</updated>
+    <id>http://jaketrent.com/post/expose-http-headers-in-cors</id>
+    <content type="html"><![CDATA[<p>For APIs, it seems more and more data is making its way into the HTTP headers.  Recently, whilst adding a <code>Link</code> header, for paging data, into the HTTP response, I realized that my browser code couldn't see it.  Who was the culprit?  CORS, of course.</p>
+
+<p><img src="http://i.imgur.com/JAce7py.jpg" alt="Cors" /></p>
+
+<!--more-->
+
+
+<h2>Headers in Browser</h2>
+
+<p>It was just another day, and I was developing in my browser of choice, Chrome, known, in part, for its unequaled developer tools.  The <code>Link</code> header that I had added onto my HTTP responses for my API were viewable from the Network tab.  It looked good.  The browser could see it, curl could even see it.</p>
+
+<p>In the browser client code, I was using <code>superagent</code>, but the code failed to see it.  I'd run:</p>
+
+<p><code>js
+var request = require('superagent')
+request.get('myApi').end(function (err, res) {
+  res.xhr.getResponseHeader('Link') // nothing
+  res.headers.link // nothing
+})
+</code></p>
+
+<p>And the header was not coming through.  I ran the same command in the console, <code>res.xhr.getResponseHeader('Link')</code>, and got the error response:</p>
+
+<p><code>
+Refused to get unsafe header ‘Link’
+</code></p>
+
+<p>These are a classic CORS symptoms.</p>
+
+<h2>CORS Spec</h2>
+
+<p>Well, a few great <a href="http://blog.import.io/tech-blog/exposing-headers-over-cors-with-access-control-expose-headers">google results</a> later, I ended up at the <a href="http://www.w3.org/TR/cors/#simple-response-header">CORS spec</a>, which drones on that only simple headers are allowable in CORS requests by default.  These headers include:</p>
+
+<ul>
+<li>Cache-Control</li>
+<li>Content-Language</li>
+<li>Content-Type</li>
+<li>Expires</li>
+<li>Last-Modified</li>
+<li>Pragma</li>
+</ul>
+
+
+<p><code>Link</code> is definitely not on that list.  So, how to add it?</p>
+
+<h2>Access-Control-Expose-Headers in rack-cors</h2>
+
+<p>Like the other CORS headers, the <code>Access-Control-</code> prefix is present.  The one you're looking for is <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS"><code>Access-Control-Expose-Headers</code></a>.  It is a comma-separated list of header names. You can add this header manually to your response, or depending on the library you're using, it might be added differently.</p>
+
+<p>I was using <code>rack-cors</code>.  Thus, my addition ended up looking something like:</p>
+
+<p>```ruby config/application.rb</p>
+
+<h1>...</h1>
+
+<p>config.middleware.use Rack::Cors do
+  allow do</p>
+
+<pre><code>origins '*'
+resource '*', :headers =&gt; :any, :methods =&gt; [:get, :post, :put, :delete, :options], :expose =&gt; ['Link']
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>Can you see that the <code>expose</code> key was the key for me?  Once that was added, the browser let the client code read the link, and all was safe and well.</p>
+
+<h2>Bonus:</h2>
+
+<p>As a bonus, here's a great client library for consuming a <a href="https://developer.github.com/v3/#link-header">GitHub API-style</a> <code>Link</code> header, called <a href="https://www.npmjs.org/package/parse-link-header">parse-link-header</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Read Request Body in Spring Bean]]></title>

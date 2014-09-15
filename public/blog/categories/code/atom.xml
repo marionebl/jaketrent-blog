@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-08-15T20:38:56-06:00</updated>
+  <updated>2014-09-15T10:32:15-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,85 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Expose HTTP Headers in CORS]]></title>
+    <link href="http://jaketrent.com/post/expose-http-headers-in-cors/"/>
+    <updated>2014-09-15T09:42:00-06:00</updated>
+    <id>http://jaketrent.com/post/expose-http-headers-in-cors</id>
+    <content type="html"><![CDATA[<p>For APIs, it seems more and more data is making its way into the HTTP headers.  Recently, whilst adding a <code>Link</code> header, for paging data, into the HTTP response, I realized that my browser code couldn't see it.  Who was the culprit?  CORS, of course.</p>
+
+<p><img src="http://i.imgur.com/JAce7py.jpg" alt="Cors" /></p>
+
+<!--more-->
+
+
+<h2>Headers in Browser</h2>
+
+<p>It was just another day, and I was developing in my browser of choice, Chrome, known, in part, for its unequaled developer tools.  The <code>Link</code> header that I had added onto my HTTP responses for my API were viewable from the Network tab.  It looked good.  The browser could see it, curl could even see it.</p>
+
+<p>In the browser client code, I was using <code>superagent</code>, but the code failed to see it.  I'd run:</p>
+
+<p><code>js
+var request = require('superagent')
+request.get('myApi').end(function (err, res) {
+  res.xhr.getResponseHeader('Link') // nothing
+  res.headers.link // nothing
+})
+</code></p>
+
+<p>And the header was not coming through.  I ran the same command in the console, <code>res.xhr.getResponseHeader('Link')</code>, and got the error response:</p>
+
+<p><code>
+Refused to get unsafe header ‘Link’
+</code></p>
+
+<p>These are a classic CORS symptoms.</p>
+
+<h2>CORS Spec</h2>
+
+<p>Well, a few great <a href="http://blog.import.io/tech-blog/exposing-headers-over-cors-with-access-control-expose-headers">google results</a> later, I ended up at the <a href="http://www.w3.org/TR/cors/#simple-response-header">CORS spec</a>, which drones on that only simple headers are allowable in CORS requests by default.  These headers include:</p>
+
+<ul>
+<li>Cache-Control</li>
+<li>Content-Language</li>
+<li>Content-Type</li>
+<li>Expires</li>
+<li>Last-Modified</li>
+<li>Pragma</li>
+</ul>
+
+
+<p><code>Link</code> is definitely not on that list.  So, how to add it?</p>
+
+<h2>Access-Control-Expose-Headers in rack-cors</h2>
+
+<p>Like the other CORS headers, the <code>Access-Control-</code> prefix is present.  The one you're looking for is <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS"><code>Access-Control-Expose-Headers</code></a>.  It is a comma-separated list of header names. You can add this header manually to your response, or depending on the library you're using, it might be added differently.</p>
+
+<p>I was using <code>rack-cors</code>.  Thus, my addition ended up looking something like:</p>
+
+<p>```ruby config/application.rb</p>
+
+<h1>...</h1>
+
+<p>config.middleware.use Rack::Cors do
+  allow do</p>
+
+<pre><code>origins '*'
+resource '*', :headers =&gt; :any, :methods =&gt; [:get, :post, :put, :delete, :options], :expose =&gt; ['Link']
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>Can you see that the <code>expose</code> key was the key for me?  Once that was added, the browser let the client code read the link, and all was safe and well.</p>
+
+<h2>Bonus:</h2>
+
+<p>As a bonus, here's a great client library for consuming a <a href="https://developer.github.com/v3/#link-header">GitHub API-style</a> <code>Link</code> header, called <a href="https://www.npmjs.org/package/parse-link-header">parse-link-header</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Send Props to Children in React]]></title>
@@ -382,108 +461,6 @@ Prefix the choice with ! to persist it to bower.json
 ```</p>
 
 <p>Now you should be able to push to heroku, have npm install, then have bower install.  Because you've recorded your resolutions choices, the process can work automatically on heroku without prompts.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Link to Broccoli Assets on a Webpage]]></title>
-    <link href="http://jaketrent.com/post/link-broccoli-assets-on-webpage/"/>
-    <updated>2014-03-18T08:06:00-06:00</updated>
-    <id>http://jaketrent.com/post/link-broccoli-assets-on-webpage</id>
-    <content type="html"><![CDATA[<p><a href="https://github.com/joliss/broccoli">Broccoli.js</a> is good at <a href="http://www.solitr.com/blog/2014/02/broccoli-first-release/">building assets</a>.  But now that they're built, how does one use them on a webpage?</p>
-
-<p><img src="http://i.imgur.com/oYpiHcU.jpg" alt="Broccoli" /></p>
-
-<!--more-->
-
-
-<h2>Broccoli Serve</h2>
-
-<p>Broccoli has a great feature of having assets cached at every step in a list of transforms.  This makes it quite fast.  It can selectively reprocess only the subset of assets that have changed, and it can selectively transform only what's required.</p>
-
-<p>Broccoli provides a command, <code>serve</code> that watches for changes to the trees specified in your <code>Brocfile.js</code> and spits them out to its temporary directory.  From there, it sets up a small webserver to serve the built assets to anyone who wants them.  The intent is that you can use this server in local dev on your sites.</p>
-
-<p>Open your project and run:</p>
-
-<p><code>
-$ broccoli serve
-Serving on http://localhost:4200
-</code></p>
-
-<p>And you'll get a local server defaulting on port 4200.</p>
-
-<h2>Webpage Reference</h2>
-
-<p>Now that you have this server for local assets, you need to reference it from your webpage.  Just as when you get to production, you'll want to reference a deployed asset on a CDN, locally broccoli can serve as your asset host.</p>
-
-<p>You can accomplish this in any number of ways.  Essentially, you need two things:</p>
-
-<h3>1. Environment Detection</h3>
-
-<p>If you're in development, you'll want to use <code>http://localhost:4200</code> for asset host, otherwise you'll want to use something like <code>http://mycdn.com</code>.</p>
-
-<p>Assuming less of your other infrastructure, we'll make Broccoli accomplish this (but you could do this easily with <code>NODE_ENV</code> or something similar).  Broccoli internally uses <code>BROCCOLI_ENV</code> to switch functionality.  To detect this value easily, you can install <a href="https://github.com/joliss/broccoli-env">the plugin</a>:</p>
-
-<p><code>
-npm install broccoli-env --save-dev
-</code></p>
-
-<p>Then you'll be able to use it in your <code>Brocfile.js</code> to switch on important things:</p>
-
-<p><code>javascript
-var env = require('broccoli-env').getEnv()
-if (env === 'development') // do stuff
-</code></p>
-
-<p>Currently, the plugin only supports <code>development</code> and <code>production</code> values.</p>
-
-<h3>2. View Compilation</h3>
-
-<p>If you have a server-side component in your project that serves UI, you likely have this built in already with the likes of <code>erb</code>, <code>jade</code>, <code>swig</code>, or something else.  If you don't, again you can defer to Broccoli.  It's good at building assets after all.</p>
-
-<p>As an example, there is a plugin for compiling <code>jade</code> templates, <a href="https://github.com/sindresorhus/broccoli-jade">broccoli-jade</a>.  First, install:</p>
-
-<p><code>
-npm install broccoli-jade --save-dev
-</code></p>
-
-<p>Then create a view to meet your needs.  Perhaps in part, that might look like:</p>
-
-<p>```jade
-doctype html
-html
-  head</p>
-
-<pre><code>script(src="#{assetsHost}/main.js", type="text/javascript")
-/ ...
-</code></pre>
-
-<p>```</p>
-
-<p>Here, <code>assetsHost</code> is a variable that will be replaced at compile time with the appropriate asset host value.</p>
-
-<p>Finally, in your <code>Brocfile.js</code> you can tie it all together with something like:</p>
-
-<p>```javascript
-var env = require('broccoli-env').getEnv()
-var jade = require('broccoli-jade')
-var tree = broccoli.makeTree('my/views/path')
-tree =  jade(tree, {
-  data: {</p>
-
-<pre><code>assetsHost: env === 'development' ? 'http://localhost:4200' : 'http://mycdn.com'
-</code></pre>
-
-<p>  }
-})
-return tree
-```</p>
-
-<p>Now when the <code>jade</code> template is compiled, it will have as local data the value of <code>assetHost</code> according to the env set by <code>BROCCOLI_ENV</code>.</p>
-
-<p>And since Broccoli is handling the building of your view, you can even use Broccoli to serve it.  If it's called <code>index.jade</code> and ends up at the root directory after building with Broccoli, you could serve your whole site at <code>http://localhost:4200</code>.</p>
-
-<p>And just like that, you can dev locally referencing the assets that Broccoli is building for you.  Does it work for you?  Is the picture clear?</p>
 ]]></content>
   </entry>
   

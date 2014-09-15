@@ -901,16 +901,20 @@
         <lastmod>2014-08-15T20:38:48-06:00</lastmod>
     </url>
     <url>
+        <loc>http://jaketrent.com/post/expose-http-headers-in-cors/</loc>
+        <lastmod>2014-09-15T10:31:45-06:00</lastmod>
+    </url>
+    <url>
         <loc>http://jaketrent.com/blog/archives/</loc>
-        <lastmod>2014-08-15T20:38:48-06:00</lastmod>
+        <lastmod>2014-09-15T10:31:45-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/books/</loc>
-        <lastmod>2014-08-15T20:38:48-06:00</lastmod>
+        <lastmod>2014-09-15T10:31:45-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/</loc>
-        <lastmod>2014-08-15T20:38:48-06:00</lastmod>
+        <lastmod>2014-09-15T10:31:45-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/robots.txt</loc>
@@ -918,6 +922,6 @@
     </url>
     <url>
         <loc>http://jaketrent.com/work/</loc>
-        <lastmod>2014-08-15T20:38:48-06:00</lastmod>
+        <lastmod>2014-09-15T10:31:45-06:00</lastmod>
     </url>
 </urlset>
