@@ -81,7 +81,7 @@ html
   head
     title My Slim Templates App
   body
-    = yield
+    == yield
 ```
 
 And, index.slim:
