@@ -47,7 +47,7 @@ React.createClass({
           goodiesFrom: data 
         })
       }
-    }).bind(this)
+    }.bind(this))
   }
   // ...
 })
@@ -64,7 +64,7 @@ React.createClass({
   componentDidMount: function () {
     this.req = MyModel.find(function (err, data) {
       this.setState({})
-    })
+    }.bind(this))
   },
   componentWillUnmount: function () {
     this.req.abort()
