@@ -268,39 +268,6 @@ body {
 
 }
 
-.books-list {
-  padding-top: 22px;
-  overflow: hidden;
-}
-
-.entry-book {
-  position: relative;
-  padding: 20px;
-
-  .entry-img {
-    position: absolute;
-    top: 10px;
-    left: 0px;
-    width: 100px;
-  }
-  .entry-content {
-    margin-left: 110px;
-  }
-  .entry-title {
-    font-size: 22px;
-  }
-  .entry-author {
-    font-size: 16px;
-  }
-  .entry-review {
-
-  }
-  .entry-desc {
-
-  }
-
-}
-
 .work-list {
   overflow: hidden;
   position: relative;
@@ -395,24 +362,6 @@ body {
 
   .content {
     margin-left: $sidebar-width + 100px;
-  }
-
-  .entry-book {
-    margin-bottom: 30px;
-
-    .entry-img {
-      top: 10px;
-      left: 10px;
-    }
-
-    .entry-author {
-      padding-top: .3em;
-      font-style: italic;
-    }
-
-    .entry-content {
-      margin-left: 110px;
-    }
   }
 
   .work-item {
