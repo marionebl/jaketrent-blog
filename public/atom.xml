@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-11-28T10:47:31-07:00</updated>
+  <updated>2014-12-04T12:51:47-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,194 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[A JSON API Errors Serializer in Rails]]></title>
+    <link href="http://jaketrent.com/post/jsonapi-errors-serializer-in-rails/"/>
+    <updated>2014-12-04T10:11:00-07:00</updated>
+    <id>http://jaketrent.com/post/jsonapi-errors-serializer-in-rails</id>
+    <content type="html"><![CDATA[<p>The default serialization of error states in Rails might not be what you want for your app.  In that case, it&#8217;d be worth knowing how to write a custom serialization format for your needs.  In my case, I am trying to match the <a href="http://jsonapi.org/format/#errors">JSON API format for errors</a>.  Here&#8217;s a potential implementation&#8230;</p>
+
+<p><img src="http://i.imgur.com/XOUecnw.jpg" alt="Rails jsonapi errors" /></p>
+
+<!--more-->
+
+
+<h2>JSON API Errors Format</h2>
+
+<p>JSON API is cool because it is a standard format for REST APIs to serialize data.  It would be even cooler if it was well-established and it was standardized more than it currently is.  As it is, it&#8217;s a standard that seems to fluctuate a fair bit.  Nevertheless, it has many worthy ideas and might be worth using as a format on your app.</p>
+
+<p>The <a href="http://jsonapi.org/format/#errors">errors format</a> specifically asks for JSON that looks something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;errors&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Name cannot be empty&quot;</span>
+</span><span class='line'>    <span class="p">}</span> <span class="err">//</span> <span class="err">...</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There must be an <code>errors</code> root attribute.  Its value is an array.  That array has individual errors that may include a number of different attributes.  Here, I have highlighted just two &#8211; <code>id</code>, a unique id of the problem and <code>title</code>, the human-readable error message.</p>
+
+<h2>Rails Default Error Serialization</h2>
+
+<p>A common place for errors to be reported are in the HTTP responses for requests to the resources in your REST API.  For instance, in your model for your resource &#8211; in this case, let&#8217;s say it&#8217;s a book &#8211; you may have some validation rules for what constitutes a well-formed book.  That model might look like:</p>
+
+<figure class='code'><figcaption><span>book.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Book</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">validates</span> <span class="ss">:title</span><span class="p">,</span> <span class="n">presence</span><span class="p">:</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Thus, if I try to create a new book without a title, I should get some sort of error.  And indeed, I do.  If I have a <code>books_controller.rb</code> that looks like this:</p>
+
+<figure class='code'><figcaption><span>books_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">BooksController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>    <span class="n">book</span> <span class="o">=</span> <span class="no">Book</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">book_params</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">book</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>      <span class="n">render</span> <span class="n">json</span><span class="p">:</span> <span class="n">book</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">render</span> <span class="n">json</span><span class="p">:</span> <span class="n">book</span><span class="o">.</span><span class="n">errors</span>  <span class="c1"># Allowing default serialization</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">book_params</span>
+</span><span class='line'>    <span class="n">params</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>By default, Rails 4 will return an error serialization that looks like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s2">&quot;can&#39;t be blank&quot;</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Custom Error Serializer in Rails</h2>
+
+<p>But I wrote a client that doesn&#8217;t consume errors in the default Rails format, so I want a custom error serialization format &#8211; specifically one to match the JSON API specs.</p>
+
+<p>On the line in <code>books_controller.rb</code> that was returning <code>book.errors</code>, now we&#8217;ll introduce a new function to call:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">render</span><span class="p">:</span> <span class="n">json</span><span class="p">:</span> <span class="no">ErrorSerializer</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">book</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;re going to write the serializer method in a separate file, <code>error_serializer.rb</code>, so it can be used in many controllers.  To gain access to it in our controller, we need to include the line:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="kp">include</span> <span class="no">ErrorSerializer</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The contents of your <code>error_serializer.rb</code> can be whatever fits your use case.  For my simple JSON API implementation, it looks like:</p>
+
+<figure class='code'><figcaption><span>error_serializer.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">ErrorSerializer</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">ErrorSerializer</span><span class="o">.</span><span class="nf">serialize</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">if</span> <span class="n">errors</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">json</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="n">new_hash</span> <span class="o">=</span> <span class="n">errors</span><span class="o">.</span><span class="n">to_hash</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">v</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">msg</span><span class="o">|</span>
+</span><span class='line'>        <span class="p">{</span> <span class="nb">id</span><span class="p">:</span> <span class="n">k</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="n">msg</span> <span class="p">}</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span><span class="o">.</span><span class="n">flatten</span>
+</span><span class='line'>    <span class="n">json</span><span class="o">[</span><span class="ss">:errors</span><span class="o">]</span> <span class="o">=</span> <span class="n">new_hash</span>
+</span><span class='line'>    <span class="n">json</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note the format includes an <code>errors</code> root attribute and an <code>id</code> and <code>title</code> for each error object.</p>
+
+<p>Now, the errors serialization format from the API in the case of an error appears like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;errors&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Title can&#39;t be blank&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Just what we wanted.</p>
+
+<p>I&#8217;m sure there are better places to put your error serialization logic, ways to call it, or great libraries you&#8217;ve worked with that do a similar thing.  Any suggestions?  Have fun!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Destroy Duplicate Tests]]></title>
@@ -1790,92 +1978,6 @@
 
 
 <p>So, <code>send</code> turns out to be pretty easy to deal with and really useful.  Use it, and be happy.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Exercism Review]]></title>
-    <link href="http://jaketrent.com/post/exercism-review/"/>
-    <updated>2013-11-19T07:29:00-07:00</updated>
-    <id>http://jaketrent.com/post/exercism-review</id>
-    <content type="html"><![CDATA[<p>Exercism.io is a fantastic site and tool that provides a wealth of daily code exercises.  If you want to learn to be better in a language, it&#8217;s a great resource to do exercises and receive feedback.</p>
-
-<p><img src="http://i.imgur.com/2oAEqBZ.jpg" alt="Exercism" /></p>
-
-<!--more-->
-
-
-<h2>Origin</h2>
-
-<p><a href="http://exercism.io">Exercism.io</a> was introduced to me by Franklin Webber of gSchool and JumpStart Labs fame.  He and his colleagues use it as a part of their instruction, and it&#8217;s a great, free tool available to the public.</p>
-
-<h2>Languages</h2>
-
-<p>There is a fun array of language-learning possibilities inside Exercism.  It currently includes a varying number of exercises across these languages:</p>
-
-<ul>
-<li>clojure</li>
-<li>elixir</li>
-<li>haskell</li>
-<li>javascript</li>
-<li>objective-c</li>
-<li>python</li>
-<li>ruby</li>
-<li>scala</li>
-</ul>
-
-
-<p>I&#8217;m currently running through the Ruby exercises.</p>
-
-<h2>Starting Point</h2>
-
-<p>Based on what I&#8217;ve seen of the Ruby and JavaScript exercises, I don&#8217;t think that Exercism&#8217;s exercises are meant for an absolute beginner.  Some basic knowledge of the programming language is assumed and required.  You&#8217;ll start a little deep if you know next to nothing.  These exercises are meant to expand your exposure to and understanding of language features.</p>
-
-<h2>Installation</h2>
-
-<p>Installation consists of a few things:</p>
-
-<ol>
-<li>Go to <a href="http://exercism.io">exercism.io</a> and register using your Github credentials.</li>
-<li>While on the site, download the CLI.  It&#8217;s a pre-built binary that you just need to put somewhere that is tied to your system PATH.  That way you can execute it from the terminal.</li>
-<li>Setup your environment for the language you&#8217;ll be learning.  Again, this information is on the site.  None of the environments are automatic in their setup, and you must follow the written steps to be ready to develop in your weapon, er language of choice.</li>
-</ol>
-
-
-<h2>Your First Exercise</h2>
-
-<p>After installation, you&#8217;re ready for your first exercise.  On the terminal, type:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>exercism fetch
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This will download fresh exercises at the head of each of your language paths.  At first, you&#8217;ll start on exercise 0 of each of the language paths.  Now, choose a language.  I chose Ruby first.  The first exercise was called <code>bob</code>.  Bob is a lackadaisical teenager who responds with smart remarks to whatever somewhat says to him.  Typical.</p>
-
-<p>Bob comes with a suite of failing tests.  All the tests are written, and it&#8217;s up to use to write the code that actually makes Bob function and the tests pass.  This is literally TDD or test-driven development, and yay for us, someone has already written the tests!  In the case of Ruby, the tests are written in a MiniTest syntax.  To run them, I&#8217;m typing:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>ruby bob_test.rb
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is where I think we might be able to have a bit of a better setup with the exercises.  It would be nice to have the tests automatically run on a file watch as opposed to having to run them each time manually.  For this, I personally setup <code>guard-minitest</code>.  I would recommend the same.  Of course, I can only think that Exercism doesn&#8217;t do this by default in order to simplify the environment setup process.</p>
-
-<h2>Nitpicking</h2>
-
-<p>After you complete your first exercise in some form by getting all the tests to pass, you can submit it to the site for feedback.  For example:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>exercism submit ruby/bob/bob.rb
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The CLI will give you a link to your now-online code, and you can go there to see your submission.  Others who have completed the same exercise will also be able to see your solution.  And this is one of the coolest potentials of Exercism.  Others can give you feedback on your solution, called &#8220;nitpicks&#8221; by default.  This is a great learning opportunity.  We are ready to take feedback given from the perspective of others in their experience with the language.  We can also give feedback, training our eye to be more critical in our observation and future writing of code.  It feels like a great outcome and a great potential community.</p>
-
-<p>I have given nitpicks.  Of course, that&#8217;s easier to do.  But, I am sad to say that I have never received any.  It&#8217;s hard to tell how active the community really is.  I see quite a few submissions, but there are definitely fewer nitpicks than submissions.  There&#8217;s quite a bit untapped community learning potential here.  To help this, I wish the system allowed you to unlock the next exercise in your language path without closing opportunity for nitpicks on submitted exercises.</p>
-
-<p>So, have you used Exercism.io before?  Do you know of similar sites?</p>
 ]]></content>
   </entry>
   

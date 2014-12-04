@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-11-28T10:47:31-07:00</updated>
+  <updated>2014-12-04T12:51:47-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,154 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[A JSON API Errors Serializer in Rails]]></title>
+    <link href="http://jaketrent.com/post/jsonapi-errors-serializer-in-rails/"/>
+    <updated>2014-12-04T10:11:00-07:00</updated>
+    <id>http://jaketrent.com/post/jsonapi-errors-serializer-in-rails</id>
+    <content type="html"><![CDATA[<p>The default serialization of error states in Rails might not be what you want for your app.  In that case, it'd be worth knowing how to write a custom serialization format for your needs.  In my case, I am trying to match the <a href="http://jsonapi.org/format/#errors">JSON API format for errors</a>.  Here's a potential implementation...</p>
+
+<p><img src="http://i.imgur.com/XOUecnw.jpg" alt="Rails jsonapi errors" /></p>
+
+<!--more-->
+
+
+<h2>JSON API Errors Format</h2>
+
+<p>JSON API is cool because it is a standard format for REST APIs to serialize data.  It would be even cooler if it was well-established and it was standardized more than it currently is.  As it is, it's a standard that seems to fluctuate a fair bit.  Nevertheless, it has many worthy ideas and might be worth using as a format on your app.</p>
+
+<p>The <a href="http://jsonapi.org/format/#errors">errors format</a> specifically asks for JSON that looks something like this:</p>
+
+<p>```json
+{
+  "errors": [</p>
+
+<pre><code>{
+  "id": "name",
+  "title": "Name cannot be empty"
+} // ...
+</code></pre>
+
+<p>  ]
+}
+```</p>
+
+<p>There must be an <code>errors</code> root attribute.  Its value is an array.  That array has individual errors that may include a number of different attributes.  Here, I have highlighted just two -- <code>id</code>, a unique id of the problem and <code>title</code>, the human-readable error message.</p>
+
+<h2>Rails Default Error Serialization</h2>
+
+<p>A common place for errors to be reported are in the HTTP responses for requests to the resources in your REST API.  For instance, in your model for your resource -- in this case, let's say it's a book -- you may have some validation rules for what constitutes a well-formed book.  That model might look like:</p>
+
+<p><code>ruby book.rb
+class Book &lt; ActiveRecord::Base
+  validates :title, presence: true
+end
+</code></p>
+
+<p>Thus, if I try to create a new book without a title, I should get some sort of error.  And indeed, I do.  If I have a <code>books_controller.rb</code> that looks like this:</p>
+
+<p>```ruby books_controller.rb
+class BooksController &lt; ApplicationController
+  def create</p>
+
+<pre><code>book = Book.new(book_params)
+if book.save
+  render json: book
+else
+  render json: book.errors  # Allowing default serialization
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  private</p>
+
+<p>  def book_params</p>
+
+<pre><code>params.permit(:title)
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>By default, Rails 4 will return an error serialization that looks like this:</p>
+
+<p>```json
+{
+  "title": [</p>
+
+<pre><code>"can't be blank"
+</code></pre>
+
+<p>  ]
+}
+```</p>
+
+<h2>Custom Error Serializer in Rails</h2>
+
+<p>But I wrote a client that doesn't consume errors in the default Rails format, so I want a custom error serialization format -- specifically one to match the JSON API specs.</p>
+
+<p>On the line in <code>books_controller.rb</code> that was returning <code>book.errors</code>, now we'll introduce a new function to call:</p>
+
+<p><code>ruby
+render: json: ErrorSerializer.serialize(book.errors)
+</code></p>
+
+<p>We're going to write the serializer method in a separate file, <code>error_serializer.rb</code>, so it can be used in many controllers.  To gain access to it in our controller, we need to include the line:</p>
+
+<p><code>ruby
+include ErrorSerializer
+</code></p>
+
+<p>The contents of your <code>error_serializer.rb</code> can be whatever fits your use case.  For my simple JSON API implementation, it looks like:</p>
+
+<p>```ruby error_serializer.rb
+module ErrorSerializer</p>
+
+<p>  def ErrorSerializer.serialize(errors)</p>
+
+<pre><code>return if errors.nil?
+
+json = {}
+new_hash = errors.to_hash(true).map do |k, v|
+  v.map do |msg|
+    { id: k, title: msg }
+  end
+end.flatten
+json[:errors] = new_hash
+json
+</code></pre>
+
+<p>  end</p>
+
+<p>end
+```</p>
+
+<p>Note the format includes an <code>errors</code> root attribute and an <code>id</code> and <code>title</code> for each error object.</p>
+
+<p>Now, the errors serialization format from the API in the case of an error appears like:</p>
+
+<p>```json
+{
+  "errors": [</p>
+
+<pre><code>{
+  "id": "title",
+  "title": "Title can't be blank"
+}
+</code></pre>
+
+<p>  ]
+}
+```</p>
+
+<p>Just what we wanted.</p>
+
+<p>I'm sure there are better places to put your error serialization logic, ways to call it, or great libraries you've worked with that do a similar thing.  Any suggestions?  Have fun!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Destroy Duplicate Tests]]></title>
@@ -357,86 +505,6 @@ MyModel.prototype.find = function (done) {
 <p>Also note that in my <code>end</code> function callback, I'm checking for the existence of data.  This is because when a request is aborted, data will come back as undefined.</p>
 
 <p>My favored method for solving the problem is the latter request abort method.  It feels cleaner that we're relying on the lifecycle functions of the component to deal with cleanup, much like we would for <a href="http://facebook.github.io/react/tips/dom-event-listeners.html">events</a>.  How have you dealt with this problem?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Broccoli Ember Emblem]]></title>
-    <link href="http://jaketrent.com/post/broccoli-ember-emblem/"/>
-    <updated>2014-05-30T07:18:00-06:00</updated>
-    <id>http://jaketrent.com/post/broccoli-ember-emblem</id>
-    <content type="html"><![CDATA[<p>Make broccoli compile your emblem templates so they're ready for your ember app.</p>
-
-<p><img src="http://i.imgur.com/85v8PQP.png" alt="Broccoli Ember Emblem" /></p>
-
-<!--more-->
-
-
-<h2>The Libraries</h2>
-
-<p><a href="https://www.npmjs.org/package/broccoli">Broccoli</a> builds your assets quickly.  It makes heavy use of caching so it only has to rebuild affected subtrees when files change.  <a href="http://emblemjs.com/">Emblem</a> is a significant whitespace version of <a href="http://handlebarsjs.com/">Handlebars</a> templates, similar in style to <a href="http://slim-lang.com/">Slim</a> or <a href="http://jade-lang.com/">Jade</a>.  <a href="http://emberjs.com/">Ember</a> is a MVC framework for building browser apps.</p>
-
-<p>Put them all together, and you have something that will help you compile your templates quickly for your browser app.  The <a href="https://github.com/jaketrent/broccoli-ember-emblem">broccoli-ember-emblem</a> plugin for Broccoli will do just that.</p>
-
-<h2>Install</h2>
-
-<p>To use the library, you'll need broccoli installed first.  Then, you'll install the plugin via npm:</p>
-
-<p><code>
-npm install --save-dev broccoli-ember-emblem
-</code></p>
-
-<h2>Usage</h2>
-
-<p>You'll setup the plugin in your app's <code>Brocfile.js</code>.  That setup might look something like this:</p>
-
-<p>```js
-var emblem = require('broccoli-ember-emblem')
-var mergeTrees = require('broccoli-merge-trees')
-var pickFiles = require('broccoli-static-compiler')</p>
-
-<p>function preprocess (tree) {
-  tree = emblem(tree, {</p>
-
-<pre><code>stripPathFromName: 'tmpl/'
-</code></pre>
-
-<p>  })
-  return tree
-}</p>
-
-<p>var tmplTree = 'client/tmpl'
-tmplTree = pickFiles(tmplTree, {
-  srcDir: '/',
-  destDir: '/tmpl'
-})
-tmplTree = preprocess(tmplTree)</p>
-
-<p>module.exports = mergeTrees([ /<em> other trees, </em>/ tmplTree ])
-```</p>
-
-<p>Note a few things:</p>
-
-<ul>
-<li>I'm using another plugin, <code>broccoli-static-compiler</code> to move files around in the broccoli build directories.  This is to be able to identify separate trees that both use similar file filters (eg, *.js for both src scripts and templates).</li>
-<li>I'm using the one option for the <code>broccoli-ember-emblem</code> plugin, <code>stripPathFromName</code>, which allows me to remove the path name from the template name in output.  For example, if I have a file at <code>tmpl/application.emblem</code>, I want the template name in ember to be <code>application</code>, not <code>tmpl/application</code>.</li>
-<li>Final output is merged into a single tree via another plugin, <code>broccoli-merge-trees</code>.</li>
-</ul>
-
-
-<h2>Output</h2>
-
-<p>Broccoli will take care of finding all of your template files.  It will use directories and filenames as the input for template names.  As a few examples, here is input and output as it might happen in the above configuration:</p>
-
-<ul>
-<li>File: <code>client/tmpl/application.emblem</code> becomes: <code>Ember.TEMPLATES['application']</code></li>
-<li>File: <code>client/tmpl/components/song.emblem</code> becomes: <code>Ember.TEMPLATES['components/song']</code></li>
-</ul>
-
-
-<p>Notice that Ember requires all templates to be registered on the <code>Ember.TEMPLATES</code> object.  Later, at app runtime, they are looked up on that object by name.</p>
-
-<p>So, use the plugin and win.  How does your template compilation for Ember/Emblem differ?  What other features do you wish were supported here?</p>
 ]]></content>
   </entry>
   

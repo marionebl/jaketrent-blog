@@ -1,0 +1,406 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>A JSON API Errors Serializer in Rails - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Don't write duplicate tests. If you have duplicates, destroy them.">
+  <meta name="keywords" content="testing, tdd, duplicates, test code smells">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="A JSON API Errors Serializer in Rails" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://i.imgur.com/XOUecnw.jpg" />
+  <meta property="og:url" content="http://jaketrent.com/post/jsonapi-errors-serializer-in-rails/" />
+  <meta property="og:description" content="Don't write duplicate tests. If you have duplicates, destroy them." />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="A JSON API Errors Serializer in Rails" />
+  <meta name="twitter:description" content="Don't write duplicate tests. If you have duplicates, destroy them." />
+  <meta name="twitter:image" content="http://i.imgur.com/XOUecnw.jpg" />
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/jsonapi-errors-serializer-in-rails/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <section class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">
+        <span class="logo-img"></span>
+      </a>
+    </h2>
+  </header>
+</section>
+
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://books.jaketrent.com">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">A JSON API Errors Serializer in Rails</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-04T10:11:00-07:00" pubdate data-updated="true">Dec 4<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The default serialization of error states in Rails might not be what you want for your app.  In that case, it&#8217;d be worth knowing how to write a custom serialization format for your needs.  In my case, I am trying to match the <a href="http://jsonapi.org/format/#errors">JSON API format for errors</a>.  Here&#8217;s a potential implementation&#8230;</p>
+
+<p><img src="http://i.imgur.com/XOUecnw.jpg" alt="Rails jsonapi errors" /></p>
+
+<!--more-->
+
+
+<h2>JSON API Errors Format</h2>
+
+<p>JSON API is cool because it is a standard format for REST APIs to serialize data.  It would be even cooler if it was well-established and it was standardized more than it currently is.  As it is, it&#8217;s a standard that seems to fluctuate a fair bit.  Nevertheless, it has many worthy ideas and might be worth using as a format on your app.</p>
+
+<p>The <a href="http://jsonapi.org/format/#errors">errors format</a> specifically asks for JSON that looks something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;errors&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Name cannot be empty&quot;</span>
+</span><span class='line'>    <span class="p">}</span> <span class="err">//</span> <span class="err">...</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There must be an <code>errors</code> root attribute.  Its value is an array.  That array has individual errors that may include a number of different attributes.  Here, I have highlighted just two &#8211; <code>id</code>, a unique id of the problem and <code>title</code>, the human-readable error message.</p>
+
+<h2>Rails Default Error Serialization</h2>
+
+<p>A common place for errors to be reported are in the HTTP responses for requests to the resources in your REST API.  For instance, in your model for your resource &#8211; in this case, let&#8217;s say it&#8217;s a book &#8211; you may have some validation rules for what constitutes a well-formed book.  That model might look like:</p>
+
+<figure class='code'><figcaption><span>book.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Book</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">validates</span> <span class="ss">:title</span><span class="p">,</span> <span class="n">presence</span><span class="p">:</span> <span class="kp">true</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Thus, if I try to create a new book without a title, I should get some sort of error.  And indeed, I do.  If I have a <code>books_controller.rb</code> that looks like this:</p>
+
+<figure class='code'><figcaption><span>books_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">BooksController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>    <span class="n">book</span> <span class="o">=</span> <span class="no">Book</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">book_params</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">book</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>      <span class="n">render</span> <span class="n">json</span><span class="p">:</span> <span class="n">book</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">render</span> <span class="n">json</span><span class="p">:</span> <span class="n">book</span><span class="o">.</span><span class="n">errors</span>  <span class="c1"># Allowing default serialization</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">book_params</span>
+</span><span class='line'>    <span class="n">params</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>By default, Rails 4 will return an error serialization that looks like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s2">&quot;can&#39;t be blank&quot;</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Custom Error Serializer in Rails</h2>
+
+<p>But I wrote a client that doesn&#8217;t consume errors in the default Rails format, so I want a custom error serialization format &#8211; specifically one to match the JSON API specs.</p>
+
+<p>On the line in <code>books_controller.rb</code> that was returning <code>book.errors</code>, now we&#8217;ll introduce a new function to call:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">render</span><span class="p">:</span> <span class="n">json</span><span class="p">:</span> <span class="no">ErrorSerializer</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">book</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&#8217;re going to write the serializer method in a separate file, <code>error_serializer.rb</code>, so it can be used in many controllers.  To gain access to it in our controller, we need to include the line:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="kp">include</span> <span class="no">ErrorSerializer</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The contents of your <code>error_serializer.rb</code> can be whatever fits your use case.  For my simple JSON API implementation, it looks like:</p>
+
+<figure class='code'><figcaption><span>error_serializer.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">ErrorSerializer</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">ErrorSerializer</span><span class="o">.</span><span class="nf">serialize</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">if</span> <span class="n">errors</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">json</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="n">new_hash</span> <span class="o">=</span> <span class="n">errors</span><span class="o">.</span><span class="n">to_hash</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">v</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">msg</span><span class="o">|</span>
+</span><span class='line'>        <span class="p">{</span> <span class="nb">id</span><span class="p">:</span> <span class="n">k</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="n">msg</span> <span class="p">}</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span><span class="o">.</span><span class="n">flatten</span>
+</span><span class='line'>    <span class="n">json</span><span class="o">[</span><span class="ss">:errors</span><span class="o">]</span> <span class="o">=</span> <span class="n">new_hash</span>
+</span><span class='line'>    <span class="n">json</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note the format includes an <code>errors</code> root attribute and an <code>id</code> and <code>title</code> for each error object.</p>
+
+<p>Now, the errors serialization format from the API in the case of an error appears like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;errors&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Title can&#39;t be blank&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Just what we wanted.</p>
+
+<p>I&#8217;m sure there are better places to put your error serialization logic, ways to call it, or great libraries you&#8217;ve worked with that do a similar thing.  Any suggestions?  Have fun!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-04T10:11:00-07:00" pubdate data-updated="true">Dec 4<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/jsonapi/'>jsonapi</a>, <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing"></div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/destroy-duplicate-tests/" title="Previous Post: Destroy Duplicate Tests">&laquo; Destroy Duplicate Tests</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="footer-container">
+    <footer class="main-footer" role="contentinfo"><div class="main-footer-logo"></div>
+<ul class="main-footer-links-list">
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Content licensed</span> 2014 <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a>
+  </li>
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Authored by </span><a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a>
+  </li>
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Subscribe to the </span><a href="/atom.xml">Feed</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <a href="/sitemap.xml">Sitemap</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <span class="main-footer-verbage">Chat on </span><a href="https://keybase.io/jaketrent">Keybase</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <span class="main-footer-verbage">Powered by </span><a href="http://octopress.org">Octopress</a>
+  </li>
+</ul>
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/jsonapi-errors-serializer-in-rails/';
+        var disqus_url = 'http://jaketrent.com/post/jsonapi-errors-serializer-in-rails/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
