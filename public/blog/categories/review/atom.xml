@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Review | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/review/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-12-04T12:51:47-07:00</updated>
+  <updated>2014-12-10T15:32:06-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,60 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ideas From The Accidental Creative]]></title>
+    <link href="http://jaketrent.com/post/ideas-from-accidental-creative/"/>
+    <updated>2014-12-10T14:27:00-07:00</updated>
+    <id>http://jaketrent.com/post/ideas-from-accidental-creative</id>
+    <content type="html"><![CDATA[<p>I just finished a book about becoming a more productive and effective creative person, called “The Accidental Creative”.  It was a great book and included some thoughtful ideas that I ended up pondering and have started incorporating into my life.</p>
+
+<p><img src="http://i.imgur.com/S3LkEjQ.jpg" alt="The Accidental Creative" /></p>
+
+<!--more-->
+
+
+<p>What follows are the big ideas from the book, broken into the areas that the author had identified and my short take on what each of them is or has the potential to benefit.</p>
+
+<h2>Focus</h2>
+
+<p><strong>Challenges</strong> - Define what you’re working on the big statements, sometimes in the form of questions, around what you’re focused on solving.</p>
+
+<p><strong>The Big 3</strong> - Refine what you will actually tackle by aligning the efforts with what you’ve identified as your important work.</p>
+
+<p><strong>Clustering</strong> - Avoid the frenetic task switching and the associated productivity penalties by scheduling single activities in order to deep and flow with your ideas.</p>
+
+<h2>Relationships</h2>
+
+<p><strong>Circles</strong> - Identify and regularly meet with people with similar interest with whom you can combine creative power and generate and vet new ideas.</p>
+
+<p><strong>Head-to-heads</strong> - One-on-one meetings of people between who there is mutual respect in order to share as much value in the form of ideas and creative thought as possible.</p>
+
+<p><strong>Core Team</strong> - Identify a handful of people in your life whose opinion and experience you value so much that you will trust yourself to be guided by their input on important decisions and life events.</p>
+
+<h2>Energy</h2>
+
+<p><strong>Whole-life Planning</strong> - Don’t pretend you can compartmentalize work and other parts of your life separately.  Rather, schedule and plan these things together to get a full picture of all important work you’re involved in.</p>
+
+<p><strong>Pruning</strong> - Remove the things from your life that don’t match your big 3 or that are excessive energy drains in order to open possibilities for better/more results in areas that really matter to you.</p>
+
+<h2>Stimuli</h2>
+
+<p><strong>Study Plan</strong> - Have scheduled time to ingest new ideas and learn new things.</p>
+
+<p><strong>Notation</strong> - In an effort to really digest what you experience, take notes and review them in order to understand more fully, remember, and let what you encounter change you for the better.</p>
+
+<p><strong>Purposeful Experience</strong> - Filter the over-abundance of stimuli available to you and be intentional about what you experience, feeding your most important needs and efforts.</p>
+
+<h2>Hours</h2>
+
+<p><strong>Idea Time</strong> - Great ideas are important to the value you generate in your work, so actually schedule time to do nothing but  ponder and generate new ideas specifically for the future.</p>
+
+<p><strong>Unnecessary Creating</strong> - Often what used to be a fulfilling creation activity for someone becomes drudgery and work without remembering what it feels like to just create without the pressure of the end product.</p>
+
+<p>Have you read this book?  Others like it?  What are the practices that you’ve ended up incorporating, and how have you seen the benefits?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mountain West JavaScript Review]]></title>
@@ -332,89 +386,6 @@
 <p>The app dev portion could probably have been cut short.  About the time they start into the user management screens, we probably could have called it good.  But, they do introduce some good, new concepts in the app dev section of the book.  For instance, he covers a little on containers and <code>Ember.run</code> as it relates to testing.</p>
 
 <p>I'm glad I read the book.  It was helpful to my slingshot into the Ember atmosphere.  Boom!  Go get it.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Exercism Review]]></title>
-    <link href="http://jaketrent.com/post/exercism-review/"/>
-    <updated>2013-11-19T07:29:00-07:00</updated>
-    <id>http://jaketrent.com/post/exercism-review</id>
-    <content type="html"><![CDATA[<p>Exercism.io is a fantastic site and tool that provides a wealth of daily code exercises.  If you want to learn to be better in a language, it's a great resource to do exercises and receive feedback.</p>
-
-<p><img src="http://i.imgur.com/2oAEqBZ.jpg" alt="Exercism" /></p>
-
-<!--more-->
-
-
-<h2>Origin</h2>
-
-<p><a href="http://exercism.io">Exercism.io</a> was introduced to me by Franklin Webber of gSchool and JumpStart Labs fame.  He and his colleagues use it as a part of their instruction, and it's a great, free tool available to the public.</p>
-
-<h2>Languages</h2>
-
-<p>There is a fun array of language-learning possibilities inside Exercism.  It currently includes a varying number of exercises across these languages:</p>
-
-<ul>
-<li>clojure</li>
-<li>elixir</li>
-<li>haskell</li>
-<li>javascript</li>
-<li>objective-c</li>
-<li>python</li>
-<li>ruby</li>
-<li>scala</li>
-</ul>
-
-
-<p>I'm currently running through the Ruby exercises.</p>
-
-<h2>Starting Point</h2>
-
-<p>Based on what I've seen of the Ruby and JavaScript exercises, I don't think that Exercism's exercises are meant for an absolute beginner.  Some basic knowledge of the programming language is assumed and required.  You'll start a little deep if you know next to nothing.  These exercises are meant to expand your exposure to and understanding of language features.</p>
-
-<h2>Installation</h2>
-
-<p>Installation consists of a few things:</p>
-
-<ol>
-<li>Go to <a href="http://exercism.io">exercism.io</a> and register using your Github credentials.</li>
-<li>While on the site, download the CLI.  It's a pre-built binary that you just need to put somewhere that is tied to your system PATH.  That way you can execute it from the terminal.</li>
-<li>Setup your environment for the language you'll be learning.  Again, this information is on the site.  None of the environments are automatic in their setup, and you must follow the written steps to be ready to develop in your weapon, er language of choice.</li>
-</ol>
-
-
-<h2>Your First Exercise</h2>
-
-<p>After installation, you're ready for your first exercise.  On the terminal, type:</p>
-
-<p><code>bash
-exercism fetch
-</code></p>
-
-<p>This will download fresh exercises at the head of each of your language paths.  At first, you'll start on exercise 0 of each of the language paths.  Now, choose a language.  I chose Ruby first.  The first exercise was called <code>bob</code>.  Bob is a lackadaisical teenager who responds with smart remarks to whatever somewhat says to him.  Typical.</p>
-
-<p>Bob comes with a suite of failing tests.  All the tests are written, and it's up to use to write the code that actually makes Bob function and the tests pass.  This is literally TDD or test-driven development, and yay for us, someone has already written the tests!  In the case of Ruby, the tests are written in a MiniTest syntax.  To run them, I'm typing:</p>
-
-<p><code>bash
-ruby bob_test.rb
-</code></p>
-
-<p>This is where I think we might be able to have a bit of a better setup with the exercises.  It would be nice to have the tests automatically run on a file watch as opposed to having to run them each time manually.  For this, I personally setup <code>guard-minitest</code>.  I would recommend the same.  Of course, I can only think that Exercism doesn't do this by default in order to simplify the environment setup process.</p>
-
-<h2>Nitpicking</h2>
-
-<p>After you complete your first exercise in some form by getting all the tests to pass, you can submit it to the site for feedback.  For example:</p>
-
-<p><code>bash
-exercism submit ruby/bob/bob.rb
-</code></p>
-
-<p>The CLI will give you a link to your now-online code, and you can go there to see your submission.  Others who have completed the same exercise will also be able to see your solution.  And this is one of the coolest potentials of Exercism.  Others can give you feedback on your solution, called "nitpicks" by default.  This is a great learning opportunity.  We are ready to take feedback given from the perspective of others in their experience with the language.  We can also give feedback, training our eye to be more critical in our observation and future writing of code.  It feels like a great outcome and a great potential community.</p>
-
-<p>I have given nitpicks.  Of course, that's easier to do.  But, I am sad to say that I have never received any.  It's hard to tell how active the community really is.  I see quite a few submissions, but there are definitely fewer nitpicks than submissions.  There's quite a bit untapped community learning potential here.  To help this, I wish the system allowed you to unlock the next exercise in your language path without closing opportunity for nitpicks on submitted exercises.</p>
-
-<p>So, have you used Exercism.io before?  Do you know of similar sites?</p>
 ]]></content>
   </entry>
   

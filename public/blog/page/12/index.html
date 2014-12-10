@@ -9,7 +9,7 @@
 
   <meta name="author" content="https://plus.google.com/115032056022257436849">
   
-  <meta name="description" content="Have you ever tried to start up a local dev server and attach it to a port only to find that the port says it&#8217;s already in use. Here&#8217;s a &hellip;">
+  <meta name="description" content="Often when building a single-page app, you&#8217;ll want to optimize all your js into a single asset. RequireJs is a great mechanism for managing &hellip;">
   
   <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
 
@@ -22,11 +22,11 @@
   <meta property="og:type" content="article" />
   
   <meta property="og:url" content="http://jaketrent.com/blog/page/12/index.html" />
-  <meta property="og:description" content="Have you ever tried to start up a local dev server and attach it to a port only to find that the port says it&#8217;s already in use. Here&#8217;s a &hellip;" />
+  <meta property="og:description" content="Often when building a single-page app, you&#8217;ll want to optimize all your js into a single asset. RequireJs is a great mechanism for managing &hellip;" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="" />
-  <meta name="twitter:description" content="Have you ever tried to start up a local dev server and attach it to a port only to find that the port says it&#8217;s already in use. Here&#8217;s a &hellip;" />
+  <meta name="twitter:description" content="Often when building a single-page app, you&#8217;ll want to optimize all your js into a single asset. RequireJs is a great mechanism for managing &hellip;" />
   
 
   
@@ -89,6 +89,49 @@
     <div class="content">
       <div class="blog-index">
   
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/dynamically-require-optimized-modules-requirejs/">Dynamically Require Optimized Modules in RequireJs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-12T08:36:00-06:00" pubdate data-updated="true">Jul 12<span>th</span>, 2012</time>
+        
+         | <a href="/post/dynamically-require-optimized-modules-requirejs/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Often when building a single-page app, you&#8217;ll want to optimize all your js into a single asset.  RequireJs is a great mechanism for managing your js dependencies.  It also comes with a great build tool for doing the optimization (r.js).  But sometimes you won&#8217;t want to put all your js into a single asset.  For instance, perhaps you only want to load a large chunk of code when the user interacts with the app so that you know he intends to use that functionality, and so you load it dynamically.  But, you still want that dynamically-loaded set of modules to be optimized to increase the performance of your app.  It&#8217;s a pretty simple desired functionality, but I didn&#8217;t just stumble upon the solution.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/dynamically-require-optimized-modules-requirejs/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article class="entry">
@@ -471,49 +514,6 @@
   
     <footer>
       <a class="full-article-link" rel="full-article" href="/post/and-spring-secured-roles/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article class="entry">
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/post/calling-webservices-java/">Calling Webservices in Java</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-12-30T14:54:00-07:00" pubdate data-updated="true">Dec 30<span>th</span>, 2011</time>
-        
-         | <a href="/post/calling-webservices-java/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In Java Land, everything is tied up in multiple layers of multi-colored wrapping paper.  The abstraction often provides niceties and protections and convenience, etc.  But, sometimes it practically makes you forget where you are.  For instance, why would anyone write a little howto on requesting something over the web from the context of the web.  That should be easy, right?  Well, yes, I think so.  And it turns out it is in Java, as it is in many <a href="http://developer.marklogic.com/pubs/5.0/apidocs/Ext-2.html">other languages</a>.  It&#8217;s just that there you&#8217;re super close to the HTTP protocol all the time, and in many Java uber-frameworks, if you want to know how to break into the low-level operations, you have to know where the fire exit is.</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="full-article-link" rel="full-article" href="/post/calling-webservices-java/">Read on &rarr;</a>
     </footer>
   
 

@@ -4,8 +4,8 @@ title: "A JSON API Errors Serializer in Rails"
 date: 2014-12-04 10:11
 comments: true
 categories: [Code, rails, ruby, jsonapi]
-description: Don't write duplicate tests.  If you have duplicates, destroy them.
-keywords: testing, tdd, duplicates, test code smells
+description: You can write a custom error serializer in rails to match something like jsonapi.
+keywords: rails, ruby, jsonapi, serializer, errors, custom
 published: true
 image: http://i.imgur.com/XOUecnw.jpg
 ---

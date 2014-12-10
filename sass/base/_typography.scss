@@ -28,6 +28,10 @@ p {
   margin-bottom: 1.5em;
 }
 
+strong {
+  font-weight: bold;
+}
+
 @media screen and (min-width: $min-width-med) {
   h1 { font-size: 50px }
   h2 { font-size: 48px }
