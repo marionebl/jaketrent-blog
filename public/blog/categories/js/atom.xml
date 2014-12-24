@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-12-10T15:32:06-07:00</updated>
+  <updated>2014-12-24T14:16:54-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,115 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[D3 Class Operations]]></title>
+    <link href="http://jaketrent.com/post/d3-class-operations/"/>
+    <updated>2014-12-24T10:58:00-07:00</updated>
+    <id>http://jaketrent.com/post/d3-class-operations</id>
+    <content type="html"><![CDATA[<p>D3 has operations for class name manipulation that you're used to from jQuery.  These include addClass, removeClass, hasClass, and toggleClass.  They just go by different names.</p>
+
+<p><img src="http://i.imgur.com/94JQ8N8.jpg" alt="d3 class names" /></p>
+
+<!--more-->
+
+
+<h2>selection.classed</h2>
+
+<p>The magic all comes in the form of the <code>selection.classed</code> method from d3.  It is going to be the api that is used to accomplish all the operations listed below.  From the <a href="https://github.com/mbostock/d3/wiki/Selections#classed">docs</a>:</p>
+
+<blockquote><p>This operator is a convenience routine for setting the "class" attribute; it understands that the "class" attribute is a set of tokens separated by spaces. Under the hood, it will use the classList if available, for convenient adding, removing and toggling of CSS classes.</p></blockquote>
+
+<p>It knows how to handle one or many classes on an element, and it will be performant.</p>
+
+<p>Also note that this method is only available on a selection.</p>
+
+<h2>d3 addClass</h2>
+
+<p>To add a class, the second parameter to <code>classed</code> must be true, as in this code:</p>
+
+<p><code>js
+d3.selectAll(".bar")
+ .classed("my-selector", true);
+</code></p>
+
+<h2>d3 removeClass</h2>
+
+<p>To remove a class, the second parameter to <code>classed</code> must be false.</p>
+
+<p><code>js
+d3.selectAll(".bar")
+  .classed("my-selector", false);
+</code></p>
+
+<h2>d3 hasClass</h2>
+
+<p>To check for the existence of a class, just leave off the second parameter and pass the class name you're querying for.  This will return true if it exists, false if it does not.</p>
+
+<p><code>js
+d3.selectAll(".bar")
+ .classed("my-selector");
+</code></p>
+
+<p>This will return true if any element in the selection has the class.  Use <code>d3.select</code> for single element selection.</p>
+
+<h2>d3 toggleClass</h2>
+
+<p>To flip a class to the opposite state  -- remove it if it exists already, add it if it does not yet exist -- you can do one of the following.</p>
+
+<p>For a single element, the code might look like this:</p>
+
+<p><code>js
+var oneBar = d3.select(".bar")
+oneBar.classed("my-selector", !oneBar.classed("my-selector"));
+</code></p>
+
+<p>For multiple elements, one will want to pass in a callback.  The callback function takes as parameters <code>d</code>, the datum, <code>i</code>, the index in the selection, and <code>this</code> is the current DOM element.</p>
+
+<p>It's also important to note that the <a href="https://github.com/mbostock/d3/wiki/Selections#classed">docs</a> inform us that:</p>
+
+<blockquote><p>The function's return value is then used to assign or unassign the specified class on each element.</p></blockquote>
+
+<p>The code for toggling multiple elements in a selection at once might look like this:</p>
+
+<p>```js
+d3.selectAll("bar")
+  .classed("my-selector", function (d, i) {</p>
+
+<pre><code>return !d3.select(this).classed("my-selector");
+</code></pre>
+
+<p>  });
+```</p>
+
+<p>Here's a <a href="http://jsbin.com/xukibajelo/4/edit?html,output">jsbin</a> that provides some toggle functionality.  Ees for fun.</p>
+
+<p><a class="jsbin-embed" href="http://jsbin.com/xukibajelo/4/embed?output">d3 toggleClass</a><script src="http://static.jsbin.com/js/embed.js"></script></p>
+
+<h2>Bonus: A note on single active classes</h2>
+
+<p>Here's a fun tip for that oft-encountered situation where you want a single element in a selection to have a class, like an <code>active</code> class, and the rest of the selection should not:</p>
+
+<p>Make sure that you detect the active class in the selection previous to the clearing of the active classes.</p>
+
+<p>A sample of what that might look like could be:</p>
+
+<p>```js
+d3.selectAll(".bar").on("click", function () {
+  var activeClass = "active";
+  var alreadyIsActive = d3.select(this).classed(activeClass);
+  svg.selectAll(".reports-chart__bar")</p>
+
+<pre><code>.classed(activeClass, false);
+</code></pre>
+
+<p>  d3.select(this).classed(activeClass, !alreadyIsActive);
+});
+```</p>
+
+<p>Now, unleash the power of your creativity!  Kazaam!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Send Props to Children in React]]></title>
@@ -382,172 +491,6 @@ Prefix the choice with ! to persist it to bower.json
 ```</p>
 
 <p>Now you should be able to push to heroku, have npm install, then have bower install.  Because you've recorded your resolutions choices, the process can work automatically on heroku without prompts.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mountain West JavaScript Review]]></title>
-    <link href="http://jaketrent.com/post/mtnwest-javascript-review/"/>
-    <updated>2014-03-25T11:45:00-06:00</updated>
-    <id>http://jaketrent.com/post/mtnwest-javascript-review</id>
-    <content type="html"><![CDATA[<p>MountainWest JavaScript was a great conference last week.  It was a jubilee. Well, if you can have a jubilee in the first year of a conference.   Here's my take.</p>
-
-<p><img src="http://i.imgur.com/VGtnQzX.png" alt="MtnWest JavaScript" /></p>
-
-<!--more-->
-
-
-<h2>Format</h2>
-
-<p><a href="http://mtnwestjs.org/">MountainWest JavaScript</a> started this year as a part of the larger Mountain West conference set, including <a href="http://mtnwestdevops.org/">devops</a> and <a href="http://mtnwestrubyconf.org/">Ruby</a> as well.  It was two full days.  There is a single track -- everyone (that stays) hears everything.  Love both these features.  Splitting the disciplines into separate conferences is genius.</p>
-
-<h2>Speakers</h2>
-
-<p>The speaker lineup was exceptional.  There were many great minds assembled, fun experience shared, and great companies represented.  Following <a href="/post/ng-conf-review/">ng-conf</a> earlier this year, I was again pleasantly surprised at the amount of great content.  I did not attend the devops or ruby portions, but it has been said by some that they were not as exceptional.</p>
-
-<p>Thanks to the organizers for selecting great content and presenters.  Thank you to all the speakers for preparing some killer talks.</p>
-
-<h2>Topics</h2>
-
-<p>The mix of topics seemed relevant and varied.  This was welcome.  There was just a bit of overlap on some topics.  Conference organizers put similar topics together, which was fine.  But in one case, the back-to-back speakers, from the same company and essentially the same topic had so much overlap that it was obvious.  Repetition is good, but it should be done in front of the YouTube recording of a single, great talk on the subject.  The conference was recorded, so hopefully we can see the sessions online soon.</p>
-
-<h2>Venue</h2>
-
-<p>The conference met at the Salt Lake City Public Library.  It's a great city.  It's a cool building.  It has a location close to public transit lines.  The stadium seating in the conference room is good for visibility but bad for knees.  There were plenty of power sources.</p>
-
-<p>Despite these good points about the location, I found myself not super-excited about showing up at the library for another conference.  I feel like it's time for something fresh.</p>
-
-<h2>Swag</h2>
-
-<p>There was a nice shirt with mysterious symbols emblazened across the front.  Ruby was discernable.  I'm still up in the air over which represents JavaScript or devops.  There was also a nice, laminate sticker that they gave out with the conference logo.  Sponsors gave out nothing.  I was hoping for an O.C. Tanner gold bracelet and Instructure panda hoodie.  There was also a stunning lack of sweet treats and lunch. :(  In the place of actual food, there was an especially long, 2-hour lunch break -- oh, and a lot of water.</p>
-
-<h2>I'd Go Again</h2>
-
-<p>I'd definitely go again if the speaker and topic lineup seemed as promising as it turned out to be this year.  Next year, hopefully I'll attend at a different location in Salt Lake City and enjoy a chocolate eclair whilst learning about how I can actually use es6 features in the then-current evergreen browsers.</p>
-
-<h2>My Notes</h2>
-
-<p>As I've indicated, there were many topics touched upon that were interesting and helpful.  I've included my chicken scratch below (if you can actually type chicken scratch), mostly so you can grab some hyperlinks if you'd like.</p>
-
-<p>```</p>
-
-<p>react.js - Pete Hunt - made react look very interesting from a perspective of the underlying ideas</p>
-
-<pre><code> - jsx - http://facebook.github.io/react/docs/jsx-in-depth.html
- - virtual dom
- - simplicity over familiarity
-  - riot.js - super-small mvp lib - https://moot.it/riotjs/docs/
-</code></pre>
-
-<p>macros - James Long -</p>
-
-<pre><code> - sweet.js
-</code></pre>
-
-<p>async js - Jafar Husain - simplicity of event handling, handling of race conditions, and description of handling looked very compelling</p>
-
-<pre><code> - observable - combine iterator (‘i’m done’) with event (pub sub)
- - events are just arrays
- - vector programming - transformations over collections
- - practice and learn - http://jhusain.github.io/learnrx/
-</code></pre>
-
-<p>async -</p>
-
-<pre><code> - same bit as above
- - rxjs - http://reactive-extensions.github.io/RxJS/ - https://rx.codeplex.com/
- - Reactive Manifesto - http://www.reactivemanifesto.org/
-</code></pre>
-
-<p>ball of mud - Brandon Hays - most entertaining; great</p>
-
-<pre><code> - Ball of mud architecture - http://laputan.org/mud/
- - @tehviking
-</code></pre>
-
-<p>TDD ember - Andy Pliszka</p>
-
-<p>Screenreaders - Ryan Florence - a humanistic appeal to do the right thing and help those with disabilities on the web</p>
-
-<pre><code> - aria-role
-</code></pre>
-
-<p>seo - Jeff Whepley</p>
-
-<pre><code> - fragment spec
- - make server render substates, js can pick up
-</code></pre>
-
-<p>teach kids js - Liz Abinante - fun and light encouragement to share programming concepts with children</p>
-
-<pre><code> - children are moldable
- - creative, imagination
- - not limited by inhibitions
- - start early, have time for mastery by young age.
-</code></pre>
-
-<p>modules, packages - Guy Bedford</p>
-
-<pre><code> - traceur - still use
- - es6-module-loader - es6 loader polyfill - used by addy osmani’s todomvc - http://addyosmani.github.io/todomvc-backbone-es6/
- - systemjs - shim require on top of es6 loader polyfill
- - jspm.io + systemjs - https://github.com/systemjs
- - addy osmani’s todomvc rewrite experience - http://blog.tastejs.com/rewriting-a-webapp-with-ecmascript-6
-</code></pre>
-
-<p>web animation - Jeremy Kahn</p>
-
-<pre><code> - detect end of css animation - http://blog.teamtreehouse.com/using-jquery-to-detect-when-css3-animations-and-transitions-end
- - edit keyframe animation via js - https://github.com/jlongster/css-animations.js
- - js tweening - https://github.com/jeremyckahn/shifty/
- - stylie - viz tool create keyframe animation
-</code></pre>
-
-<p>hardware hack - Jamisson Dance</p>
-
-<pre><code> - npm - johnny-five - node arduino
- - npm - xbox-controller
- - parrot ar drone
-      - “That’s against the spirit of node to use something when you could rewrite it yourself.”
- - arduino uno w/ breadboard - ~$100
-</code></pre>
-
-<p>flight.js - Kassandra Perch</p>
-
-<pre><code> - slides - http://kperch.github.io/mtn_west/
-</code></pre>
-
-<p>node error handling - Jamund Ferguson</p>
-
-<pre><code> - Kraken - on top of express - https://github.com/paypal/kraken-js
- - try/catch - for json.parse
- - callback - first param is err
- - custom error - custom name, attach custom data (e.g., ServerError has a list of services hitting, ports, etc)
- - process.on(‘uncaughtException’) must always process.exit()
- - handle errors in middleware - call next w/ error as first param, call return right after
- - use default error handler in express - app.use(function (err, req, res, next) { res.send(500, etc) })
- - node core notes - https://nodefirm.hackpad.com/Node-Error-Handling-Summit-uXFi4FUg8Td
-</code></pre>
-
-<p>client error handling - Todd Gardner</p>
-
-<pre><code> - error handling service - http://trackjs.com/
- - name your inner functions
- - stacktrace.js - normalizes format of stack trace
- - tracekit.js - get stack traces in old browsers
- - zone.js - long stack traces across async events
-</code></pre>
-
-<p>gulp - Eric Schoffstall</p>
-
-<pre><code> - getfractal
- - still has problems with 3rd-party file-based builds, such as require.js
- - github.com/substack/stream-handbook
-</code></pre>
-
-<p>canvas animation - Josh Robertson</p>
-
-<p>```</p>
 ]]></content>
   </entry>
   

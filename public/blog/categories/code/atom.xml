@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-12-10T15:32:06-07:00</updated>
+  <updated>2014-12-24T14:16:54-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,115 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[D3 Class Operations]]></title>
+    <link href="http://jaketrent.com/post/d3-class-operations/"/>
+    <updated>2014-12-24T10:58:00-07:00</updated>
+    <id>http://jaketrent.com/post/d3-class-operations</id>
+    <content type="html"><![CDATA[<p>D3 has operations for class name manipulation that you're used to from jQuery.  These include addClass, removeClass, hasClass, and toggleClass.  They just go by different names.</p>
+
+<p><img src="http://i.imgur.com/94JQ8N8.jpg" alt="d3 class names" /></p>
+
+<!--more-->
+
+
+<h2>selection.classed</h2>
+
+<p>The magic all comes in the form of the <code>selection.classed</code> method from d3.  It is going to be the api that is used to accomplish all the operations listed below.  From the <a href="https://github.com/mbostock/d3/wiki/Selections#classed">docs</a>:</p>
+
+<blockquote><p>This operator is a convenience routine for setting the "class" attribute; it understands that the "class" attribute is a set of tokens separated by spaces. Under the hood, it will use the classList if available, for convenient adding, removing and toggling of CSS classes.</p></blockquote>
+
+<p>It knows how to handle one or many classes on an element, and it will be performant.</p>
+
+<p>Also note that this method is only available on a selection.</p>
+
+<h2>d3 addClass</h2>
+
+<p>To add a class, the second parameter to <code>classed</code> must be true, as in this code:</p>
+
+<p><code>js
+d3.selectAll(".bar")
+ .classed("my-selector", true);
+</code></p>
+
+<h2>d3 removeClass</h2>
+
+<p>To remove a class, the second parameter to <code>classed</code> must be false.</p>
+
+<p><code>js
+d3.selectAll(".bar")
+  .classed("my-selector", false);
+</code></p>
+
+<h2>d3 hasClass</h2>
+
+<p>To check for the existence of a class, just leave off the second parameter and pass the class name you're querying for.  This will return true if it exists, false if it does not.</p>
+
+<p><code>js
+d3.selectAll(".bar")
+ .classed("my-selector");
+</code></p>
+
+<p>This will return true if any element in the selection has the class.  Use <code>d3.select</code> for single element selection.</p>
+
+<h2>d3 toggleClass</h2>
+
+<p>To flip a class to the opposite state  -- remove it if it exists already, add it if it does not yet exist -- you can do one of the following.</p>
+
+<p>For a single element, the code might look like this:</p>
+
+<p><code>js
+var oneBar = d3.select(".bar")
+oneBar.classed("my-selector", !oneBar.classed("my-selector"));
+</code></p>
+
+<p>For multiple elements, one will want to pass in a callback.  The callback function takes as parameters <code>d</code>, the datum, <code>i</code>, the index in the selection, and <code>this</code> is the current DOM element.</p>
+
+<p>It's also important to note that the <a href="https://github.com/mbostock/d3/wiki/Selections#classed">docs</a> inform us that:</p>
+
+<blockquote><p>The function's return value is then used to assign or unassign the specified class on each element.</p></blockquote>
+
+<p>The code for toggling multiple elements in a selection at once might look like this:</p>
+
+<p>```js
+d3.selectAll("bar")
+  .classed("my-selector", function (d, i) {</p>
+
+<pre><code>return !d3.select(this).classed("my-selector");
+</code></pre>
+
+<p>  });
+```</p>
+
+<p>Here's a <a href="http://jsbin.com/xukibajelo/4/edit?html,output">jsbin</a> that provides some toggle functionality.  Ees for fun.</p>
+
+<p><a class="jsbin-embed" href="http://jsbin.com/xukibajelo/4/embed?output">d3 toggleClass</a><script src="http://static.jsbin.com/js/embed.js"></script></p>
+
+<h2>Bonus: A note on single active classes</h2>
+
+<p>Here's a fun tip for that oft-encountered situation where you want a single element in a selection to have a class, like an <code>active</code> class, and the rest of the selection should not:</p>
+
+<p>Make sure that you detect the active class in the selection previous to the clearing of the active classes.</p>
+
+<p>A sample of what that might look like could be:</p>
+
+<p>```js
+d3.selectAll(".bar").on("click", function () {
+  var activeClass = "active";
+  var alreadyIsActive = d3.select(this).classed(activeClass);
+  svg.selectAll(".reports-chart__bar")</p>
+
+<pre><code>.classed(activeClass, false);
+</code></pre>
+
+<p>  d3.select(this).classed(activeClass, !alreadyIsActive);
+});
+```</p>
+
+<p>Now, unleash the power of your creativity!  Kazaam!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[A JSON API Errors Serializer in Rails]]></title>
@@ -404,107 +513,6 @@ React.createClass({
 <p>In this example, where the parent <code>RadioGroup</code> has the <code>name</code> prop, it will be given to each of the children so their <code>name</code> prop will match and the radio group will work as expected.  Thus, the hearts of the children are turned toward their fathers.</p>
 
 <p>Is there a better way to do this?  How have you been sending <code>props</code> to children?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Set State in Callbacks in React]]></title>
-    <link href="http://jaketrent.com/post/set-state-in-callbacks-in-react/"/>
-    <updated>2014-06-23T08:30:00-06:00</updated>
-    <id>http://jaketrent.com/post/set-state-in-callbacks-in-react</id>
-    <content type="html"><![CDATA[<p>In React, you can setup components that fetch their own data and set their own state with that data.  Because of the async nature of data fetching, you’ll have to make sure to keep things cleaned up to avoid the error of trying to set state in an unmounted component.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="React" /></p>
-
-<!--more-->
-
-
-<h2>React Components setState</h2>
-
-<p>If a React component fetches its own data, it will usually do so in the <code>componentDidMount</code> method.  In the data request callback, it will set its own state via the <code>this.setState</code> method.  (<code>this.state</code> should be treated as immutable.)  State should only be set on mounted components, or those components that are inserted into the dom.</p>
-
-<p>If you attempt to set state on an unmounted component, you'll get an error that looks like this:</p>
-
-<p><code>
-Uncaught Error: Invariant Violation: replaceState(...): Can only update a mounted or mounting component.
-</code></p>
-
-<p>Others have reported this variation:</p>
-
-<p><code>
-Invariant Violation: replaceState(...): Cannot update while unmounting component. This usually means you called setState() on an unmounted component.
-</code></p>
-
-<p>Both indicate that you're setting state on a component that is not mounted.  How should one avoid this?  In my case, <code>setState</code> was being called in a callback that was firing after the component that initially started the request had already been unmounted from the dom.  Here are the two ways I addressed the problem...</p>
-
-<h2>Assure Component isMounted</h2>
-
-<p>If the component is mounted, <code>setState</code> is a safe bet.  If it's not mounted, never do it.  If it's not mounted, you probably don't about the state at that point either.  So wrap your state setting in <code>this.isMounted()</code>:</p>
-
-<p>```js
-React.createClass({
-  componentDidMount: function () {</p>
-
-<pre><code>MyModel.find(function (err, data) {
-  if (this.isMounted()) {
-    this.setState({ 
-      goodiesFrom: data 
-    })
-  }
-}.bind(this))
-</code></pre>
-
-<p>  }
-  // ...
-})
-```</p>
-
-<p>It feels a bit like a hack, but it makes the code safe.  Another option...</p>
-
-<h2>Abort the Request</h2>
-
-<p>My asynchronous action is a network request that, when finished, will call the callback function.  When the component unmounts, I can just throw away the request so the callback is never invoked.  To do this, we'll take advantage of another React lifecycle hook, <code>componentWillUnmount</code>:</p>
-
-<p>```js my-component.js
-React.createClass({
-  componentDidMount: function () {</p>
-
-<pre><code>this.req = MyModel.find(function (err, data) {
-  this.setState({})
-}.bind(this))
-</code></pre>
-
-<p>  },
-  componentWillUnmount: function () {</p>
-
-<pre><code>this.req.abort()
-</code></pre>
-
-<p>  }
-  // ...
-})
-```</p>
-
-<p>In my model, I'm using the <a href="https://github.com/visionmedia/superagent">superagent</a> library for network requests which provides an <a href="http://visionmedia.github.io/superagent/#aborting-requests">abort</a> method.</p>
-
-<p>```js my-model.js
-var request = require(‘superagent')
-MyModel.prototype.find = function (done) {
-  return request(‘modelUrl’)</p>
-
-<pre><code>.end(function (err, data) {
-  if (data) {
-    done(err, data.body)
-  }
-})
-</code></pre>
-
-<p>}
-```</p>
-
-<p>Also note that in my <code>end</code> function callback, I'm checking for the existence of data.  This is because when a request is aborted, data will come back as undefined.</p>
-
-<p>My favored method for solving the problem is the latter request abort method.  It feels cleaner that we're relying on the lifecycle functions of the component to deal with cleanup, much like we would for <a href="http://facebook.github.io/react/tips/dom-event-listeners.html">events</a>.  How have you dealt with this problem?</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-12-10T15:32:06-07:00</updated>
+  <updated>2014-12-24T14:16:54-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,128 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[D3 Class Operations]]></title>
+    <link href="http://jaketrent.com/post/d3-class-operations/"/>
+    <updated>2014-12-24T10:58:00-07:00</updated>
+    <id>http://jaketrent.com/post/d3-class-operations</id>
+    <content type="html"><![CDATA[<p>D3 has operations for class name manipulation that you&#8217;re used to from jQuery.  These include addClass, removeClass, hasClass, and toggleClass.  They just go by different names.</p>
+
+<p><img src="http://i.imgur.com/94JQ8N8.jpg" alt="d3 class names" /></p>
+
+<!--more-->
+
+
+<h2>selection.classed</h2>
+
+<p>The magic all comes in the form of the <code>selection.classed</code> method from d3.  It is going to be the api that is used to accomplish all the operations listed below.  From the <a href="https://github.com/mbostock/d3/wiki/Selections#classed">docs</a>:</p>
+
+<blockquote><p>This operator is a convenience routine for setting the &#8220;class&#8221; attribute; it understands that the &#8220;class&#8221; attribute is a set of tokens separated by spaces. Under the hood, it will use the classList if available, for convenient adding, removing and toggling of CSS classes.</p></blockquote>
+
+<p>It knows how to handle one or many classes on an element, and it will be performant.</p>
+
+<p>Also note that this method is only available on a selection.</p>
+
+<h2>d3 addClass</h2>
+
+<p>To add a class, the second parameter to <code>classed</code> must be true, as in this code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
+</span><span class='line'> <span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>d3 removeClass</h2>
+
+<p>To remove a class, the second parameter to <code>classed</code> must be false.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>d3 hasClass</h2>
+
+<p>To check for the existence of a class, just leave off the second parameter and pass the class name you&#8217;re querying for.  This will return true if it exists, false if it does not.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
+</span><span class='line'> <span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will return true if any element in the selection has the class.  Use <code>d3.select</code> for single element selection.</p>
+
+<h2>d3 toggleClass</h2>
+
+<p>To flip a class to the opposite state  &#8211; remove it if it exists already, add it if it does not yet exist &#8211; you can do one of the following.</p>
+
+<p>For a single element, the code might look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">oneBar</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">oneBar</span><span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">,</span> <span class="o">!</span><span class="nx">oneBar</span><span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For multiple elements, one will want to pass in a callback.  The callback function takes as parameters <code>d</code>, the datum, <code>i</code>, the index in the selection, and <code>this</code> is the current DOM element.</p>
+
+<p>It&#8217;s also important to note that the <a href="https://github.com/mbostock/d3/wiki/Selections#classed">docs</a> inform us that:</p>
+
+<blockquote><p>The function&#8217;s return value is then used to assign or unassign the specified class on each element.</p></blockquote>
+
+<p>The code for toggling multiple elements in a selection at once might look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;bar&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="o">!</span><span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here&#8217;s a <a href="http://jsbin.com/xukibajelo/4/edit?html,output">jsbin</a> that provides some toggle functionality.  Ees for fun.</p>
+
+<p><a class="jsbin-embed" href="http://jsbin.com/xukibajelo/4/embed?output">d3 toggleClass</a><script src="http://static.jsbin.com/js/embed.js"></script></p>
+
+<h2>Bonus: A note on single active classes</h2>
+
+<p>Here&#8217;s a fun tip for that oft-encountered situation where you want a single element in a selection to have a class, like an <code>active</code> class, and the rest of the selection should not:</p>
+
+<p>Make sure that you detect the active class in the selection previous to the clearing of the active classes.</p>
+
+<p>A sample of what that might look like could be:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">activeClass</span> <span class="o">=</span> <span class="s2">&quot;active&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">alreadyIsActive</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">classed</span><span class="p">(</span><span class="nx">activeClass</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">svg</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.reports-chart__bar&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="nx">activeClass</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">classed</span><span class="p">(</span><span class="nx">activeClass</span><span class="p">,</span> <span class="o">!</span><span class="nx">alreadyIsActive</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, unleash the power of your creativity!  Kazaam!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ideas From The Accidental Creative]]></title>
@@ -1867,94 +1989,6 @@
 <p>This should be the point at which you can refresh your browser at &#8220;yourapp.com&#8221;.  You should see the redirect happen, moving you to &#8220;www.yourapp.com&#8221;.  The routing should be happy on Heroku&#8217;s end.  It sometimes takes more time for this to propagate, so if you don&#8217;t see results immediately, be a bit patient before your start changing your configuration, thinking it&#8217;s not working.</p>
 
 <p>Has anyone else run into this?  Is there a better way to set this up?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Define Methods Dynamically in Ruby]]></title>
-    <link href="http://jaketrent.com/post/define-dynamic-methods-ruby/"/>
-    <updated>2013-11-26T07:28:00-07:00</updated>
-    <id>http://jaketrent.com/post/define-dynamic-methods-ruby</id>
-    <content type="html"><![CDATA[<p>In Ruby, it&#8217;s common to see new methods defined dynamically or on the fly for your class.  And who doesn&#8217;t want to have a piece of that metaprogramming?</p>
-
-<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="Ruby" /></p>
-
-<!--more-->
-
-
-<h2>An Example</h2>
-
-<p>For example, I just finished an <a href="http://jaketrent.com/post/exercism-review/">exercism code exercise</a> where I felt like there was a fair bit of code duplication.  I had a bunch of convenience functions that would show the conversion of a time in earth time to a time specific to a planet.  So, the API required something that looked something like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SpaceAge</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">on_earth</span>
-</span><span class='line'>    <span class="n">seconds_on_planet</span> <span class="ss">:earth</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">on_mercury</span>
-</span><span class='line'>    <span class="n">seconds_on_planet</span> <span class="ss">:mercury</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">on_venus</span>
-</span><span class='line'>    <span class="n">seconds_on_planet</span> <span class="ss">:venus</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># ...</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Feeling that this might be an excessive number of similarly pattern methods, I considered ways that the API might stay in tact but the effort of maintenance of these many functions might be decreased.</p>
-
-<h2><code>define_method</code></h2>
-
-<p>We could collapse these methods quite a bit in the visual code by defining them dynamically, using <code>define_method</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SpaceAge</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">on_planets</span><span class="p">(</span><span class="o">*</span><span class="n">planets</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">planets</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">planet</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">define_method</span> <span class="s2">&quot;on_</span><span class="si">#{</span><span class="n">planet</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">do</span>
-</span><span class='line'>        <span class="n">seconds_on_planet</span> <span class="n">planet</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">on_planets</span> <span class="ss">:earth</span><span class="p">,</span> <span class="ss">:mercury</span><span class="p">,</span> <span class="ss">:venus</span><span class="p">,</span> <span class="ss">:mars</span><span class="p">,</span> <span class="ss">:jupiter</span><span class="p">,</span> <span class="ss">:saturn</span><span class="p">,</span> <span class="ss">:uranus</span><span class="p">,</span> <span class="ss">:neptune</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The exact same code would be generated.  It&#8217;s better! But it&#8217;s worse!  It&#8217;s actually less readable than before.  <code>on_planets</code> as a new helper API might be nice.  But, we&#8217;re not currently using this anywhere else.  The code is probably more maintainable, but it&#8217;s also more stiff.  Previously, each of the methods was separate and therefore separately modifiable and customizable.  Now, there&#8217;s one implementation of an &#8220;on_#{planet}&#8221; method.  This could be easier/harder to deal with, depending.  I think the readability is better because of the smaller amount of code, but the readability is worse because of the increased complexity and eye parsing required.  In the end, for my code, I stayed with the original solution for its 5-star readability.</p>
-
-<p>But the ability to define methods dynamically is super awesome.  When do you find yourself using this super power?</p>
 ]]></content>
   </entry>
   
