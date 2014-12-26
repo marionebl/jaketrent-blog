@@ -4,6 +4,7 @@
 
 @import "base";
 @import "partials";
+@import "vendor/rrssb";
 
 * {
   box-sizing: border-box;
@@ -186,6 +187,11 @@ body {
     overflow: hidden;
     font-size: 14px;
     color: #656565;
+  }
+
+  .rrssb-buttons {
+    margin: 30px 0;
+    overflow: hidden;
   }
 }
 
