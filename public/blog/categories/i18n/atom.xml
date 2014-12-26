@@ -4,7 +4,7 @@
   <title><![CDATA[Category: i18n | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/i18n/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-12-26T09:23:56-07:00</updated>
+  <updated>2014-12-26T09:24:59-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -120,7 +120,7 @@ define(['i18n!nls/str'], function(str) {
 
 <p>So, if we were using a Handlebars template to blast our i18n strings plus markup to the DOM, our handlebars template could look like this:</p>
 
-<p>{% raw %}
+<p>
 ```javascript</p>
 
 <h1>{{ str.welcome }}</h1>
@@ -130,7 +130,7 @@ define(['i18n!nls/str'], function(str) {
 
 
 <p>```
-{% endraw %}</p>
+</p>
 
 <p>And you could import it and use it in your module:</p>
 
@@ -247,7 +247,7 @@ else
 
 <p>The XQuery expression that renders the html page includes a call to populate the Javascript "lang" object with the json:</p>
 
-<p>{% raw %}
+<p>
 ```
 declare function lang-dictionary($lang as xs:string?) as element(script) {
   <script type="text/javascript"></p>
@@ -262,7 +262,7 @@ declare function lang-dictionary($lang as xs:string?) as element(script) {
 <p>  </script>
 };
 ```
-{% endraw %}</p>
+</p>
 
 <p>Note that if you provide a pre-known set of i18n string $keys to the get-lang-dict() function, it will only add those resources to the dictionary.  Otherwsie, all the resources in your bundle are added.</p>
 
