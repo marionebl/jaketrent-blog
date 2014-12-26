@@ -12,6 +12,7 @@
 body {
   font-family: $sans;
   background: #f5ede3;
+  color: #000024;
 }
 
 .container {
@@ -172,6 +173,13 @@ body {
   h4 { font-size: 20px; padding-top: .25em; margin-bottom: 6px; color: $nav-item-3-color; }
   h5 { font-size: 18px; padding-top: .25em; margin-bottom: 4px; color: $nav-item-3-color;  }
   h6 { font-size: 16px; padding-top: .25em; margin-bottom: 2px; color: $nav-item-4-color;  }
+
+  blockquote {
+    border-left: 6px solid $nav-item-5-color;
+    padding-left: 15px;
+    font-style: italic;
+    color: #474848;
+  }
 
   .meta,
   .entry-categories {
