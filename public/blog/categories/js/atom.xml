@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-12-26T10:42:47-07:00</updated>
+  <updated>2015-01-15T10:37:31-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,158 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[React-Router with Flux]]></title>
+    <link href="http://jaketrent.com/post/react-router-with-flux/"/>
+    <updated>2015-01-15T09:21:00-07:00</updated>
+    <id>http://jaketrent.com/post/react-router-with-flux</id>
+    <content type="html"><![CDATA[<p>react-router provides great route handling with route params and query params.  Flux provides a pattern for building React apps, including a pattern from providing data to your components.  Here's a straightforward way to make route changes trigger data changes in your components.</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react" /></p>
+
+<!--more-->
+
+
+<p>Note: Code here reflects usage of react-router 0.11.x.</p>
+
+<p>It is often the case that we'll need to trigger data changes in a react component in our Flux app because of a route transition.  A prime example of this would be on an object show page, where the details of a particular object are being shown.  In our example, let's say that we're showing the details of a book, such as title, author, and description.</p>
+
+<p>The route to our book detail page is likely defined as:</p>
+
+<p><code>js routes.js
+// ...
+&lt;Route name="book" path="/books/:id" handler={require('./books-show')} /&gt;
+</code></p>
+
+<p>The handler is just a controller-component that defines the view.  It might look simply like:</p>
+
+<p>```js books-show.js
+const React = require('react')
+const {State} = require('react-router')</p>
+
+<p>const BooksStore = require('./books-store')</p>
+
+<p>module.exports = React.createClass({</p>
+
+<p>  displayName: 'BooksShow',</p>
+
+<p>  mixins: [ State ],</p>
+
+<p>  getInitialState() {</p>
+
+<pre><code>return this.getStateFromStores()
+</code></pre>
+
+<p>  },</p>
+
+<p>  getStateFromStores() {</p>
+
+<pre><code>return {
+  book: BooksStore.find({ id: this.getParams().id })
+}
+</code></pre>
+
+<p>  },</p>
+
+<p>  componentDidMount() {</p>
+
+<pre><code>BooksStore.addChangeListener(this._onChange)
+</code></pre>
+
+<p>  },</p>
+
+<p>  componentWillUnmount() {</p>
+
+<pre><code>BooksStore.removeChangeListener(this._onChange)
+</code></pre>
+
+<p>  },</p>
+
+<p>  _onChange: function() {</p>
+
+<pre><code>this.setState(this.getStateFromStores())
+</code></pre>
+
+<p>  },</p>
+
+<p>  render() {</p>
+
+<pre><code>return (
+  &lt;ul&gt;
+    &lt;li&gt;{this.state.book.title}&lt;/li&gt;
+    &lt;li&gt;{this.state.book.author}&lt;/li&gt;
+    &lt;li&gt;{this.state.book.description}&lt;/li&gt;
+  &lt;/ul&gt;
+)
+</code></pre>
+
+<p>  }</p>
+
+<p>})
+```</p>
+
+<p>Note that the view component references a <code>BooksStore</code> for getting its initial state.  The state of <code>book</code> will also be updated as the <code>BooksStore</code> emits that its data has changed and <code>this._onChange</code> is called.</p>
+
+<p>Every time a route transitions, react-router has a <code>Router.run</code> callback that will also run in order to render the matching route.  This will also be a great place to put our action to signal to our Flux app that routes are transitioning and therefore other stuff like data in the display might need to change as well.</p>
+
+<p><code>js
+Router.run(routes, (Handler, state) =&gt; {
+  React.render(&lt;Handler /&gt;, document.body)
+  BooksAction.transition(state.params)
+})
+</code></p>
+
+<p><strong>Important note</strong>: Make sure the transition action is called after <code>React.render</code> so that the change emission will be detected after render, otherwise you'll be one route transition behind.</p>
+
+<p>The <code>BooksAction.transition</code> definition is something very simple -- something that can trigger events on the dispatcher:</p>
+
+<p>```js books-actions.js
+exports.transition = () => {
+  AppDispatcher.handleViewAction({</p>
+
+<pre><code>type: ActionTypes.TRANSITION
+</code></pre>
+
+<p>  })
+}
+```</p>
+
+<p>The final connection is in the store, where the dispatched action can be listened for an then trigger the store event, updating the component views:</p>
+
+<p>```js books-store.js
+// ...</p>
+
+<p>var BooksStore = merge(EventEmitter.prototype, {
+  find(filter) {</p>
+
+<pre><code>// ...
+</code></pre>
+
+<p>  }
+})</p>
+
+<p>BooksStore.dispatchToken = AppDispatcher.register((payload) => {
+  var action = payload.action
+  switch(action.type) {</p>
+
+<pre><code>// ...
+
+case ActionTypes.TRANSITION:
+  BooksStore.emitChange()
+  break
+</code></pre>
+
+<p>  }
+})</p>
+
+<p>```</p>
+
+<p>At this point, all the route transitions should trigger data changes in views.  Visiting the url <code>/books/1</code> and then the url <code>/books/2</code> should display different data on screen according to which book id was in the route.  <code>Router.Link</code> should work correctly, usable instead of buttons with actions being triggered on click.</p>
+
+<p>react-router and Flux make for a great combo in this way, right?  What adjustments would you make?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[D3 Class Operations]]></title>
@@ -423,74 +575,6 @@ tmplTree = preprocess(tmplTree)</p>
 <p>Notice that Ember requires all templates to be registered on the <code>Ember.TEMPLATES</code> object.  Later, at app runtime, they are looked up on that object by name.</p>
 
 <p>So, use the plugin and win.  How does your template compilation for Ember/Emblem differ?  What other features do you wish were supported here?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Bower Resolutions]]></title>
-    <link href="http://jaketrent.com/post/bower-resolutions/"/>
-    <updated>2014-05-29T07:18:00-06:00</updated>
-    <id>http://jaketrent.com/post/bower-resolutions</id>
-    <content type="html"><![CDATA[<p>When you specify dependencies for you app via Bower, some of the packages might rely on different versions of the same library.  You will have to resolve what version of libraries your app actually wants.  In other words, you break the tie.  But you don't want to break it every time, so save your choice.</p>
-
-<p><img src="http://i.imgur.com/t4XxrHn.jpg" alt="Bower" /></p>
-
-<!--more-->
-
-
-<h2>bower.json Resolutions</h2>
-
-<p>When you run <code>bower install</code>, the resolution process is interactive.  When bower recognizes that there are two packages that depend on a package at different versions, it'll list all those versions and ask:</p>
-
-<p>```
-Unable to find a suitable version for ember, please choose one:</p>
-
-<pre><code>1) ember#~1.0.0 which resolved to 1.0.1 and is required by ember-data#0.0.14
-2) ember#1.5.1 which resolved to 1.5.1 and is required by melodrama
-</code></pre>
-
-<p>```</p>
-
-<p>In this case, the library in question is ember.  I can press the number <code>2</code> and bower will install the 2nd option, <code>ember#1.5.1</code>.</p>
-
-<p>The next line in the prompt is very handy.  It reads:</p>
-
-<p><code>
-Prefix the choice with ! to persist it to bower.json
-</code></p>
-
-<p>Awesome! So, if I type <code>!2</code> instead, my choice is saved in <code>bower.json</code>.  Specifically, it'll add a <code>resolutions</code> entry:</p>
-
-<p><code>js
-"resolutions": {
-  "ember": "1.5.1"
-}
-</code></p>
-
-<p>Now, the next time you run <code>bower install</code>, there is no interactive question of what version I want because I've already resolved that <code>ember</code> for my app should be version <code>1.5.1</code>.</p>
-
-<h2>Bonus: Heroku install</h2>
-
-<p>Not only do you save your brain from having to remember what version you want in your app, you save your fingers the added stress of typing numbers.  And as a bonus, you also make <code>bower install</code> possible for automated processes.  For instance, if you want to run <code>bower install</code> in a Heroku deploy of a Node app, you can add a postinstall script for npm in your <code>package.json</code>:</p>
-
-<p>```js
-{
-  "scripts": {</p>
-
-<pre><code>"postinstall": "./node_modules/bower/bin/bower install"
-</code></pre>
-
-<p>  },
-  "dependencies": {</p>
-
-<pre><code>"bower": "~1.3.3"
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>Now you should be able to push to heroku, have npm install, then have bower install.  Because you've recorded your resolutions choices, the process can work automatically on heroku without prompts.</p>
 ]]></content>
   </entry>
   

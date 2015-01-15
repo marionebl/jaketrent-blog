@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2014-12-26T10:42:47-07:00</updated>
+  <updated>2015-01-15T10:37:31-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,158 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[React-Router with Flux]]></title>
+    <link href="http://jaketrent.com/post/react-router-with-flux/"/>
+    <updated>2015-01-15T09:21:00-07:00</updated>
+    <id>http://jaketrent.com/post/react-router-with-flux</id>
+    <content type="html"><![CDATA[<p>react-router provides great route handling with route params and query params.  Flux provides a pattern for building React apps, including a pattern from providing data to your components.  Here's a straightforward way to make route changes trigger data changes in your components.</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react" /></p>
+
+<!--more-->
+
+
+<p>Note: Code here reflects usage of react-router 0.11.x.</p>
+
+<p>It is often the case that we'll need to trigger data changes in a react component in our Flux app because of a route transition.  A prime example of this would be on an object show page, where the details of a particular object are being shown.  In our example, let's say that we're showing the details of a book, such as title, author, and description.</p>
+
+<p>The route to our book detail page is likely defined as:</p>
+
+<p><code>js routes.js
+// ...
+&lt;Route name="book" path="/books/:id" handler={require('./books-show')} /&gt;
+</code></p>
+
+<p>The handler is just a controller-component that defines the view.  It might look simply like:</p>
+
+<p>```js books-show.js
+const React = require('react')
+const {State} = require('react-router')</p>
+
+<p>const BooksStore = require('./books-store')</p>
+
+<p>module.exports = React.createClass({</p>
+
+<p>  displayName: 'BooksShow',</p>
+
+<p>  mixins: [ State ],</p>
+
+<p>  getInitialState() {</p>
+
+<pre><code>return this.getStateFromStores()
+</code></pre>
+
+<p>  },</p>
+
+<p>  getStateFromStores() {</p>
+
+<pre><code>return {
+  book: BooksStore.find({ id: this.getParams().id })
+}
+</code></pre>
+
+<p>  },</p>
+
+<p>  componentDidMount() {</p>
+
+<pre><code>BooksStore.addChangeListener(this._onChange)
+</code></pre>
+
+<p>  },</p>
+
+<p>  componentWillUnmount() {</p>
+
+<pre><code>BooksStore.removeChangeListener(this._onChange)
+</code></pre>
+
+<p>  },</p>
+
+<p>  _onChange: function() {</p>
+
+<pre><code>this.setState(this.getStateFromStores())
+</code></pre>
+
+<p>  },</p>
+
+<p>  render() {</p>
+
+<pre><code>return (
+  &lt;ul&gt;
+    &lt;li&gt;{this.state.book.title}&lt;/li&gt;
+    &lt;li&gt;{this.state.book.author}&lt;/li&gt;
+    &lt;li&gt;{this.state.book.description}&lt;/li&gt;
+  &lt;/ul&gt;
+)
+</code></pre>
+
+<p>  }</p>
+
+<p>})
+```</p>
+
+<p>Note that the view component references a <code>BooksStore</code> for getting its initial state.  The state of <code>book</code> will also be updated as the <code>BooksStore</code> emits that its data has changed and <code>this._onChange</code> is called.</p>
+
+<p>Every time a route transitions, react-router has a <code>Router.run</code> callback that will also run in order to render the matching route.  This will also be a great place to put our action to signal to our Flux app that routes are transitioning and therefore other stuff like data in the display might need to change as well.</p>
+
+<p><code>js
+Router.run(routes, (Handler, state) =&gt; {
+  React.render(&lt;Handler /&gt;, document.body)
+  BooksAction.transition(state.params)
+})
+</code></p>
+
+<p><strong>Important note</strong>: Make sure the transition action is called after <code>React.render</code> so that the change emission will be detected after render, otherwise you'll be one route transition behind.</p>
+
+<p>The <code>BooksAction.transition</code> definition is something very simple -- something that can trigger events on the dispatcher:</p>
+
+<p>```js books-actions.js
+exports.transition = () => {
+  AppDispatcher.handleViewAction({</p>
+
+<pre><code>type: ActionTypes.TRANSITION
+</code></pre>
+
+<p>  })
+}
+```</p>
+
+<p>The final connection is in the store, where the dispatched action can be listened for an then trigger the store event, updating the component views:</p>
+
+<p>```js books-store.js
+// ...</p>
+
+<p>var BooksStore = merge(EventEmitter.prototype, {
+  find(filter) {</p>
+
+<pre><code>// ...
+</code></pre>
+
+<p>  }
+})</p>
+
+<p>BooksStore.dispatchToken = AppDispatcher.register((payload) => {
+  var action = payload.action
+  switch(action.type) {</p>
+
+<pre><code>// ...
+
+case ActionTypes.TRANSITION:
+  BooksStore.emitChange()
+  break
+</code></pre>
+
+<p>  }
+})</p>
+
+<p>```</p>
+
+<p>At this point, all the route transitions should trigger data changes in views.  Visiting the url <code>/books/1</code> and then the url <code>/books/2</code> should display different data on screen according to which book id was in the route.  <code>Router.Link</code> should work correctly, usable instead of buttons with actions being triggered on click.</p>
+
+<p>react-router and Flux make for a great combo in this way, right?  What adjustments would you make?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[D3 Class Operations]]></title>
@@ -390,129 +542,6 @@ end
 <h2>Bonus:</h2>
 
 <p>As a bonus, here's a great client library for consuming a <a href="https://developer.github.com/v3/#link-header">GitHub API-style</a> <code>Link</code> header, called <a href="https://www.npmjs.org/package/parse-link-header">parse-link-header</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Send Props to Children in React]]></title>
-    <link href="http://jaketrent.com/post/send-props-to-children-react/"/>
-    <updated>2014-08-12T16:55:00-06:00</updated>
-    <id>http://jaketrent.com/post/send-props-to-children-react</id>
-    <content type="html"><![CDATA[<p>In React, you're always making components.  Sometimes components are standalone.  Other times, you'll have components that can nest children components.  Sometimes you'll want to send properties to the children components from the parent as often as a doting parent wants to send packages to a child missionary.  It's possible, it's simple, and it's not documented super well.  Here's one method.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="React" /></p>
-
-<!--more-->
-
-
-<h2>Children Components</h2>
-
-<p>When parent components are rendered, they have access to a special property, <code>this.props.children</code>.  It's like an Angular <code>ng-transclude</code> or an Ember <code>yield</code>.  Children components are generally rendered something like this:</p>
-
-<p>```js
-React.createClass({
-  render: function () {</p>
-
-<pre><code>return (
-  &lt;div id="iAmParentHearMeRoar"&gt;
-    {this.props.children}
-  &lt;/div&gt;
-)
-</code></pre>
-
-<p>  }
-})
-```</p>
-
-<p>The generic example above shows simply how to render children, <code>props</code> untouched, within a parent component.  Sometimes, however, a parent wants to bequeath its children with extra properties.  How will we make that happen?</p>
-
-<h2>Setting Child Props</h2>
-
-<p><code>props</code> are meant to be immutable.  But, in order for us to send <code>props</code> values to our children, we're going to essentially loop through our children and set props on them as a part of our parent <code>render</code> function.</p>
-
-<p>Deep breath.  It's ok.  The children that we'll loop through aren't mounted component instances.  They are, instead, <a href="http://facebook.github.io/react/blog/2014/07/17/react-v0.11.html#descriptors">descriptors</a>.  These descriptors have all the <code>props</code> attributes that we've declared should be put on the components, but they haven't been rendered yet.  Because of this, we can change props, and it's ok.  We're not mutating what has rendered.  The data still hasn't flowed to the children.  We're still effectively still riffing on the logic of what the children components should really be when they're eventually mounted.</p>
-
-<h2>Looping on Children Components</h2>
-
-<p><code>this.props.children</code> is a funny property.  It's special in more ways than one.  The things that might trip us up in looping is that even though it sounds like a plural thing, meaning an array, sometimes it's a singular object.  To help avoid potential problems, React gives us a helper, <code>React.Children</code>.  It has a few functions for array iteration, such as <code>map</code> and <code>forEach</code> that help account for the potential forms of <code>this.props.children</code>.</p>
-
-<h2>Functional Modifications</h2>
-
-<p>Immutable data is a big part of functional programming.  This means that when we 'mutate' the props, we want to mutate on a clone of the child component without affecting the original.  There's an input, there's an output, and the input is untouched.  Once we have our cloned children components as we want them, we'll render those instead.  React offers another great helper for cloning components and setting properties in a single function, <code>React.addons.cloneWithProps</code>.  Note that in order to use this function, you need to <code>require('react/addons')</code>.</p>
-
-<h2>Checking Child Type</h2>
-
-<p>It's a generally-useful thing to be able to tell what the React class type of a component object is.  It's an applicable skill in terms of looping through child components because we might not want to modify the properties of all types of children.  Each React component class has a <code>type</code> attribute accessible via <code>MyComponent.type</code>.  This attribute is also available on component descriptors.</p>
-
-<h2>A Child CheckOption Example</h2>
-
-<p>To bring this all together and illustrate the concepts, let's say we created a <code>RadioGroup</code> component that could take one or many <code>RadioOption</code> child components.  In raw html, which is what our component will eventually render, <code>input</code>s with type <code>checkbox</code> need to all have the same <code>name</code> attribute value to work well as toggles within the group.  But this is something that React can help us not have to duplicate.  We'll instead put a <code>name</code> property on the parent <code>RadioGroup</code> and have it transfer it as a property on all its children.  The implementation might look like this:</p>
-
-<p>```js
-/<em>* @jsx React.DOM </em>/</p>
-
-<p>var React = require('react/addons')</p>
-
-<p>var RadioOption = React.createClass({
-  render: function () {</p>
-
-<pre><code>return (
-  &lt;label&gt;
-    &lt;input type="radio" value={this.props.value} name={this.props.name} /&gt;
-    {this.props.label}
-  &lt;/label&gt;
-)
-</code></pre>
-
-<p>  }
-})</p>
-
-<p>var RadioGroup = React.createClass({
-  renderChildren: function () {</p>
-
-<pre><code>return React.Children.map(this.props.children, function (child) {
-  if (child.type === RadioOption.type)
-    return React.addons.cloneWithProps(child, {
-      name: this.props.name
-    })
-  else
-    return child
-}.bind(this))
-</code></pre>
-
-<p>  },
-  render: function () {</p>
-
-<pre><code>return (
-  &lt;div class="radio-group"&gt;
-    {this.renderChildren()}
-  &lt;/div&gt;
-)
-</code></pre>
-
-<p>  }
-})</p>
-
-<p>var WhereImUsingRadioGroups = React.createClass({
-  render: function () {</p>
-
-<pre><code>return (
-  &lt;RadioGroup name="blizzard-games"&gt;
-    &lt;RadioOption label="Warcraft 2" value="wc2" /&gt;
-    &lt;RadioOption label="Warcraft 3" value="wc3" /&gt;
-    &lt;RadioOption label="Starcraft 1" value="sc1" /&gt;
-    &lt;RadioOption label="Starcraft 2" value="sc2" /&gt;
-  &lt;/RadioGroup&gt;
-)
-</code></pre>
-
-<p>  }
-})
-```</p>
-
-<p>In this example, where the parent <code>RadioGroup</code> has the <code>name</code> prop, it will be given to each of the children so their <code>name</code> prop will match and the radio group will work as expected.  Thus, the hearts of the children are turned toward their fathers.</p>
-
-<p>Is there a better way to do this?  How have you been sending <code>props</code> to children?</p>
 ]]></content>
   </entry>
   

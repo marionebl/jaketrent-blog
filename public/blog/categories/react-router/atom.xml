@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: react-router | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/react-router/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2015-01-15T10:37:31-07:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[React-Router with Flux]]></title>
+    <link href="http://jaketrent.com/post/react-router-with-flux/"/>
+    <updated>2015-01-15T09:21:00-07:00</updated>
+    <id>http://jaketrent.com/post/react-router-with-flux</id>
+    <content type="html"><![CDATA[<p>react-router provides great route handling with route params and query params.  Flux provides a pattern for building React apps, including a pattern from providing data to your components.  Here's a straightforward way to make route changes trigger data changes in your components.</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react" /></p>
+
+<!--more-->
+
+
+<p>Note: Code here reflects usage of react-router 0.11.x.</p>
+
+<p>It is often the case that we'll need to trigger data changes in a react component in our Flux app because of a route transition.  A prime example of this would be on an object show page, where the details of a particular object are being shown.  In our example, let's say that we're showing the details of a book, such as title, author, and description.</p>
+
+<p>The route to our book detail page is likely defined as:</p>
+
+<p><code>js routes.js
+// ...
+&lt;Route name="book" path="/books/:id" handler={require('./books-show')} /&gt;
+</code></p>
+
+<p>The handler is just a controller-component that defines the view.  It might look simply like:</p>
+
+<p>```js books-show.js
+const React = require('react')
+const {State} = require('react-router')</p>
+
+<p>const BooksStore = require('./books-store')</p>
+
+<p>module.exports = React.createClass({</p>
+
+<p>  displayName: 'BooksShow',</p>
+
+<p>  mixins: [ State ],</p>
+
+<p>  getInitialState() {</p>
+
+<pre><code>return this.getStateFromStores()
+</code></pre>
+
+<p>  },</p>
+
+<p>  getStateFromStores() {</p>
+
+<pre><code>return {
+  book: BooksStore.find({ id: this.getParams().id })
+}
+</code></pre>
+
+<p>  },</p>
+
+<p>  componentDidMount() {</p>
+
+<pre><code>BooksStore.addChangeListener(this._onChange)
+</code></pre>
+
+<p>  },</p>
+
+<p>  componentWillUnmount() {</p>
+
+<pre><code>BooksStore.removeChangeListener(this._onChange)
+</code></pre>
+
+<p>  },</p>
+
+<p>  _onChange: function() {</p>
+
+<pre><code>this.setState(this.getStateFromStores())
+</code></pre>
+
+<p>  },</p>
+
+<p>  render() {</p>
+
+<pre><code>return (
+  &lt;ul&gt;
+    &lt;li&gt;{this.state.book.title}&lt;/li&gt;
+    &lt;li&gt;{this.state.book.author}&lt;/li&gt;
+    &lt;li&gt;{this.state.book.description}&lt;/li&gt;
+  &lt;/ul&gt;
+)
+</code></pre>
+
+<p>  }</p>
+
+<p>})
+```</p>
+
+<p>Note that the view component references a <code>BooksStore</code> for getting its initial state.  The state of <code>book</code> will also be updated as the <code>BooksStore</code> emits that its data has changed and <code>this._onChange</code> is called.</p>
+
+<p>Every time a route transitions, react-router has a <code>Router.run</code> callback that will also run in order to render the matching route.  This will also be a great place to put our action to signal to our Flux app that routes are transitioning and therefore other stuff like data in the display might need to change as well.</p>
+
+<p><code>js
+Router.run(routes, (Handler, state) =&gt; {
+  React.render(&lt;Handler /&gt;, document.body)
+  BooksAction.transition(state.params)
+})
+</code></p>
+
+<p><strong>Important note</strong>: Make sure the transition action is called after <code>React.render</code> so that the change emission will be detected after render, otherwise you'll be one route transition behind.</p>
+
+<p>The <code>BooksAction.transition</code> definition is something very simple -- something that can trigger events on the dispatcher:</p>
+
+<p>```js books-actions.js
+exports.transition = () => {
+  AppDispatcher.handleViewAction({</p>
+
+<pre><code>type: ActionTypes.TRANSITION
+</code></pre>
+
+<p>  })
+}
+```</p>
+
+<p>The final connection is in the store, where the dispatched action can be listened for an then trigger the store event, updating the component views:</p>
+
+<p>```js books-store.js
+// ...</p>
+
+<p>var BooksStore = merge(EventEmitter.prototype, {
+  find(filter) {</p>
+
+<pre><code>// ...
+</code></pre>
+
+<p>  }
+})</p>
+
+<p>BooksStore.dispatchToken = AppDispatcher.register((payload) => {
+  var action = payload.action
+  switch(action.type) {</p>
+
+<pre><code>// ...
+
+case ActionTypes.TRANSITION:
+  BooksStore.emitChange()
+  break
+</code></pre>
+
+<p>  }
+})</p>
+
+<p>```</p>
+
+<p>At this point, all the route transitions should trigger data changes in views.  Visiting the url <code>/books/1</code> and then the url <code>/books/2</code> should display different data on screen according to which book id was in the route.  <code>Router.Link</code> should work correctly, usable instead of buttons with actions being triggered on click.</p>
+
+<p>react-router and Flux make for a great combo in this way, right?  What adjustments would you make?</p>
+]]></content>
+  </entry>
+  
+</feed>
