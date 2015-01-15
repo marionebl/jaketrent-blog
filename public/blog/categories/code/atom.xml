@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-01-15T10:41:37-07:00</updated>
+  <updated>2015-01-15T14:28:12-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,134 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Pagination Headers with Kaminari]]></title>
+    <link href="http://jaketrent.com/post/pagination-headers-with-kaminari/"/>
+    <updated>2015-01-15T14:07:00-07:00</updated>
+    <id>http://jaketrent.com/post/pagination-headers-with-kaminari</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/amatsuda/kaminari">Kaminari</a> provides easy pagination in a rails app.  It's great to use.  We'll make it better by adding a little function to your controllers to provide useful pagination headers.</p>
+
+<p><img src="http://i.imgur.com/XOUecnw.jpg" alt="kaminari pagination" /></p>
+
+<!--more-->
+
+
+<h2>Pagination from Kaminari</h2>
+
+<p>Installation is easy with an addition to your <code>Gemfile</code>:</p>
+
+<p><code>
+gem 'kaminari'
+</code></p>
+
+<p>and an install:</p>
+
+<p><code>
+bundle install
+</code></p>
+
+<p>Now, you have a magical <code>page</code> method available on your models.  It works like a charm right out of the box.</p>
+
+<p>Let's say that I have a <code>germs_controller.rb</code> (because it's a great time of year for that), where I have a list of germs that I want to paginate.  I could easily request <code>/api/v1/germs?page=2</code> and get the second page with this code in the controller:</p>
+
+<p>```ruby germs_controller.rb
+module Api
+  module V1</p>
+
+<pre><code>class GermsController &lt; ApplicationController
+  def index
+    @germs = Germ.page params[:page]
+    render json: @germs
+  end
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>If you want to control the default page size, you can do that in the initializers:</p>
+
+<p><code>ruby kaminari_config.rb
+Kaminari.configure do |config|
+  config.default_per_page = 20
+end
+</code></p>
+
+<h2>Pagination Headers</h2>
+
+<p>There's another feature that we want to add, and that's pagination headers.  These are going to be HTTP headers that come back in the response that indicate to clients where the relative pages are located in our API.  For instance, we asked for page 2, but where might one request the previous and next pages, 1 and 3?</p>
+
+<p>Putting the pagination info into the header follows a pattern used in the <a href="https://developer.github.com/guides/traversing-with-pagination/">github api</a>.</p>
+
+<p>We'll add a function to our <code>ApplicationController</code> to helps us out:</p>
+
+<p>```ruby application_controller.rb
+class ApplicationController &lt; ActionController::API</p>
+
+<p>  protected</p>
+
+<p>  def set_pagination_header(name, options = {})</p>
+
+<pre><code>scope = instance_variable_get("@#{name}")
+request_params = request.query_parameters
+url_without_params = request.original_url.slice(0..(request.original_url.index("?")-1)) unless request_params.empty?
+url_without_params ||= request.original_url
+
+page = {}
+page[:first] = 1 if scope.total_pages &gt; 1 &amp;&amp; !scope.first_page?
+page[:last] = scope.total_pages  if scope.total_pages &gt; 1 &amp;&amp; !scope.last_page?
+page[:next] = scope.current_page + 1 unless scope.last_page?
+page[:prev] = scope.current_page - 1 unless scope.first_page?
+
+pagination_links = []
+page.each do |k, v|
+  new_request_hash= request_params.merge({:page =&gt; v})
+  pagination_links &lt;&lt; "&lt;#{url_without_params}?#{new_request_hash.to_param}&gt;; rel=\"#{k}\""
+end
+headers["Link"] = pagination_links.join(", ")
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>This code will provide a <code>Link</code> header in the HTTP response.  Its value might look something like this:</p>
+
+<p><code>text Link
+&lt;http://myapi.com/api/v1/germs?page=1&gt;; rel="prev", &lt;http://myapi.com/api/v1/germs?page=3&gt;; rel="next"
+</code></p>
+
+<p>The values of <code>first</code>, <code>last</code>, <code>next</code>, etc are populated from calls to <a href="http://www.rubydoc.info/github/amatsuda/kaminari/Kaminari/PageScopeMethods">Kaminari methods</a> such as <code>first_page?</code>.</p>
+
+<p>In order to have this header set on a response, we need to add it to a callback in our controller:</p>
+
+<p>```ruby germs_controller.rb
+module Api
+  module V1</p>
+
+<pre><code>class GermsController &lt; ApplicationController
+
+  after_filter only: [:index] { set_pagination_header(:germs) }
+
+  def index
+    @germs = Germ.page params[:page]
+    render json: @germs
+  end
+
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>Now, a fresh request to <code>/api/v1/germs</code> with or without the <code>page</code> query parameter should return back the <code>Link</code> header in the HTTP response which your client can use to traverse the other pages of data available in your API.</p>
+
+<p>So, there's one way to get pagination info from Kaminari into your HTTP headers.  What would you improve?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[React-Router with Flux]]></title>
@@ -463,85 +591,6 @@ json
 <p>The best scenario would be the one where we avoid duplicate tests.  Teams with clear guidelines will be able to coordinate better.  Useful information might include which classes of tests exist in the project and what each is intended for.  We might describe which kinds of tests we prefer, in which order, for certain kinds of verifications.  Having clean, well-organized tests will also encourage the team to read each others’ tests and familiarize themselves with what’s already written and know where to find existing cases and where to properly categorize new cases.</p>
 
 <p>So have fun testing, and destroy the duplicate tests!  Yay for test doubles, but boo for double tests.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Expose HTTP Headers in CORS]]></title>
-    <link href="http://jaketrent.com/post/expose-http-headers-in-cors/"/>
-    <updated>2014-09-15T09:42:00-06:00</updated>
-    <id>http://jaketrent.com/post/expose-http-headers-in-cors</id>
-    <content type="html"><![CDATA[<p>For APIs, it seems more and more data is making its way into the HTTP headers.  Recently, whilst adding a <code>Link</code> header, for paging data, into the HTTP response, I realized that my browser code couldn't see it.  Who was the culprit?  CORS, of course.</p>
-
-<p><img src="http://i.imgur.com/JAce7py.jpg" alt="Cors" /></p>
-
-<!--more-->
-
-
-<h2>Headers in Browser</h2>
-
-<p>It was just another day, and I was developing in my browser of choice, Chrome, known, in part, for its unequaled developer tools.  The <code>Link</code> header that I had added onto my HTTP responses for my API were viewable from the Network tab.  It looked good.  The browser could see it, curl could even see it.</p>
-
-<p>In the browser client code, I was using <code>superagent</code>, but the code failed to see it.  I'd run:</p>
-
-<p><code>js
-var request = require('superagent')
-request.get('myApi').end(function (err, res) {
-  res.xhr.getResponseHeader('Link') // nothing
-  res.headers.link // nothing
-})
-</code></p>
-
-<p>And the header was not coming through.  I ran the same command in the console, <code>res.xhr.getResponseHeader('Link')</code>, and got the error response:</p>
-
-<p><code>
-Refused to get unsafe header ‘Link’
-</code></p>
-
-<p>These are a classic CORS symptoms.</p>
-
-<h2>CORS Spec</h2>
-
-<p>Well, a few great <a href="http://blog.import.io/tech-blog/exposing-headers-over-cors-with-access-control-expose-headers">google results</a> later, I ended up at the <a href="http://www.w3.org/TR/cors/#simple-response-header">CORS spec</a>, which drones on that only simple headers are allowable in CORS requests by default.  These headers include:</p>
-
-<ul>
-<li>Cache-Control</li>
-<li>Content-Language</li>
-<li>Content-Type</li>
-<li>Expires</li>
-<li>Last-Modified</li>
-<li>Pragma</li>
-</ul>
-
-
-<p><code>Link</code> is definitely not on that list.  So, how to add it?</p>
-
-<h2>Access-Control-Expose-Headers in rack-cors</h2>
-
-<p>Like the other CORS headers, the <code>Access-Control-</code> prefix is present.  The one you're looking for is <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS"><code>Access-Control-Expose-Headers</code></a>.  It is a comma-separated list of header names. You can add this header manually to your response, or depending on the library you're using, it might be added differently.</p>
-
-<p>I was using <code>rack-cors</code>.  Thus, my addition ended up looking something like:</p>
-
-<p>```ruby config/application.rb</p>
-
-<h1>...</h1>
-
-<p>config.middleware.use Rack::Cors do
-  allow do</p>
-
-<pre><code>origins '*'
-resource '*', :headers =&gt; :any, :methods =&gt; [:get, :post, :put, :delete, :options], :expose =&gt; ['Link']
-</code></pre>
-
-<p>  end
-end
-```</p>
-
-<p>Can you see that the <code>expose</code> key was the key for me?  Once that was added, the browser let the client code read the link, and all was safe and well.</p>
-
-<h2>Bonus:</h2>
-
-<p>As a bonus, here's a great client library for consuming a <a href="https://developer.github.com/v3/#link-header">GitHub API-style</a> <code>Link</code> header, called <a href="https://www.npmjs.org/package/parse-link-header">parse-link-header</a></p>
 ]]></content>
   </entry>
   

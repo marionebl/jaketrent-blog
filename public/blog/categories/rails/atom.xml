@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-01-15T10:41:37-07:00</updated>
+  <updated>2015-01-15T14:28:12-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,134 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Pagination Headers with Kaminari]]></title>
+    <link href="http://jaketrent.com/post/pagination-headers-with-kaminari/"/>
+    <updated>2015-01-15T14:07:00-07:00</updated>
+    <id>http://jaketrent.com/post/pagination-headers-with-kaminari</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/amatsuda/kaminari">Kaminari</a> provides easy pagination in a rails app.  It's great to use.  We'll make it better by adding a little function to your controllers to provide useful pagination headers.</p>
+
+<p><img src="http://i.imgur.com/XOUecnw.jpg" alt="kaminari pagination" /></p>
+
+<!--more-->
+
+
+<h2>Pagination from Kaminari</h2>
+
+<p>Installation is easy with an addition to your <code>Gemfile</code>:</p>
+
+<p><code>
+gem 'kaminari'
+</code></p>
+
+<p>and an install:</p>
+
+<p><code>
+bundle install
+</code></p>
+
+<p>Now, you have a magical <code>page</code> method available on your models.  It works like a charm right out of the box.</p>
+
+<p>Let's say that I have a <code>germs_controller.rb</code> (because it's a great time of year for that), where I have a list of germs that I want to paginate.  I could easily request <code>/api/v1/germs?page=2</code> and get the second page with this code in the controller:</p>
+
+<p>```ruby germs_controller.rb
+module Api
+  module V1</p>
+
+<pre><code>class GermsController &lt; ApplicationController
+  def index
+    @germs = Germ.page params[:page]
+    render json: @germs
+  end
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>If you want to control the default page size, you can do that in the initializers:</p>
+
+<p><code>ruby kaminari_config.rb
+Kaminari.configure do |config|
+  config.default_per_page = 20
+end
+</code></p>
+
+<h2>Pagination Headers</h2>
+
+<p>There's another feature that we want to add, and that's pagination headers.  These are going to be HTTP headers that come back in the response that indicate to clients where the relative pages are located in our API.  For instance, we asked for page 2, but where might one request the previous and next pages, 1 and 3?</p>
+
+<p>Putting the pagination info into the header follows a pattern used in the <a href="https://developer.github.com/guides/traversing-with-pagination/">github api</a>.</p>
+
+<p>We'll add a function to our <code>ApplicationController</code> to helps us out:</p>
+
+<p>```ruby application_controller.rb
+class ApplicationController &lt; ActionController::API</p>
+
+<p>  protected</p>
+
+<p>  def set_pagination_header(name, options = {})</p>
+
+<pre><code>scope = instance_variable_get("@#{name}")
+request_params = request.query_parameters
+url_without_params = request.original_url.slice(0..(request.original_url.index("?")-1)) unless request_params.empty?
+url_without_params ||= request.original_url
+
+page = {}
+page[:first] = 1 if scope.total_pages &gt; 1 &amp;&amp; !scope.first_page?
+page[:last] = scope.total_pages  if scope.total_pages &gt; 1 &amp;&amp; !scope.last_page?
+page[:next] = scope.current_page + 1 unless scope.last_page?
+page[:prev] = scope.current_page - 1 unless scope.first_page?
+
+pagination_links = []
+page.each do |k, v|
+  new_request_hash= request_params.merge({:page =&gt; v})
+  pagination_links &lt;&lt; "&lt;#{url_without_params}?#{new_request_hash.to_param}&gt;; rel=\"#{k}\""
+end
+headers["Link"] = pagination_links.join(", ")
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>This code will provide a <code>Link</code> header in the HTTP response.  Its value might look something like this:</p>
+
+<p><code>text Link
+&lt;http://myapi.com/api/v1/germs?page=1&gt;; rel="prev", &lt;http://myapi.com/api/v1/germs?page=3&gt;; rel="next"
+</code></p>
+
+<p>The values of <code>first</code>, <code>last</code>, <code>next</code>, etc are populated from calls to <a href="http://www.rubydoc.info/github/amatsuda/kaminari/Kaminari/PageScopeMethods">Kaminari methods</a> such as <code>first_page?</code>.</p>
+
+<p>In order to have this header set on a response, we need to add it to a callback in our controller:</p>
+
+<p>```ruby germs_controller.rb
+module Api
+  module V1</p>
+
+<pre><code>class GermsController &lt; ApplicationController
+
+  after_filter only: [:index] { set_pagination_header(:germs) }
+
+  def index
+    @germs = Germ.page params[:page]
+    render json: @germs
+  end
+
+end
+</code></pre>
+
+<p>  end
+end
+```</p>
+
+<p>Now, a fresh request to <code>/api/v1/germs</code> with or without the <code>page</code> query parameter should return back the <code>Link</code> header in the HTTP response which your client can use to traverse the other pages of data available in your API.</p>
+
+<p>So, there's one way to get pagination info from Kaminari into your HTTP headers.  What would you improve?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[A JSON API Errors Serializer in Rails]]></title>
@@ -393,60 +521,6 @@ true
 <p>Pretty cool and pretty powerful all for the price of including the library and including a breakpoint in your code.</p>
 
 <p>Are there tools similar to this that you love to use for debugging?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Import Erb Into Karma]]></title>
-    <link href="http://jaketrent.com/post/import-erb-into-karma/"/>
-    <updated>2013-09-20T16:59:00-06:00</updated>
-    <id>http://jaketrent.com/post/import-erb-into-karma</id>
-    <content type="html"><![CDATA[<p>Rails asset pipeline allows you to use erb helpers in your CoffeeScript.  You'll still need to bring get these files into Karma runner.  It's really easy.  You just need to get to know your Karma config options.</p>
-
-<p><img src="http://i.imgur.com/i5fJT6j.png" alt="erb files in Karma runner" /></p>
-
-<!--more-->
-
-
-<h2>erb in JavaScripts</h2>
-
-<p>Why in the world would you want to use erb helpers inside your script files?  You might not.  I definitely think this should be a limited practice.  In some cases, it can be very helpful.  For instance, if you use Ruby/Rails (via <a href="https://github.com/rumblelabs/asset_sync"><code>asset_sync</code></a>) to upload your static assets to an external server, such as S3, you can help your scripts know where static assets live after upload.</p>
-
-<p>So your script might use the <code>asset_path</code> helper and end up looking something like this:</p>
-
-<p>```coffeescript app.coffee.erb
-angular.module('app', []).config ($routeProvider) -></p>
-
-<p>  $routeProvider</p>
-
-<pre><code>.when '/admin',
-  controller: 'AdminIndexCtrl'
-  templateUrl: "&lt;%= asset_path('admin/index.html') %&gt;"
-</code></pre>
-
-<p>```</p>
-
-<h2>Import erb Files into Karma</h2>
-
-<p>Well, now you have an <code>app.coffee.erb</code> file.  You need to get it into <a href="http://karma-runner.github.io">Karma runner</a>.  Normally <code>*.coffee</code> files will be brought straight in and compiled automatically by the runner as needed.  In this case, however, the Karma defaults won't recognize the <code>.coffee.erb</code> file as a CoffeeScript file need compilation.</p>
-
-<p>To tell Karma to process your erb file as a CoffeeScript file, add this to your config:</p>
-
-<p>```coffeescript karma.conf.coffee
-module.exports = (config) ->
-  config.set</p>
-
-<pre><code># ...
-preprocessors:
-  '**/*.coffee.erb': ['coffee']
-  '**/*.coffee': ['coffee']
-</code></pre>
-
-<p>```</p>
-
-<p>That's it.  That's the key to getting your Erb files processed into JavaScript and ready for Karma to use.</p>
-
-<p>Now, what are your thoughts on putting your CoffeeScripts through the erb filter of the asset pipeline at all?</p>
 ]]></content>
   </entry>
   

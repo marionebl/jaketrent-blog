@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-01-15T10:41:37-07:00</updated>
+  <updated>2015-01-15T14:28:12-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,177 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Pagination Headers with Kaminari]]></title>
+    <link href="http://jaketrent.com/post/pagination-headers-with-kaminari/"/>
+    <updated>2015-01-15T14:07:00-07:00</updated>
+    <id>http://jaketrent.com/post/pagination-headers-with-kaminari</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/amatsuda/kaminari">Kaminari</a> provides easy pagination in a rails app.  It&#8217;s great to use.  We&#8217;ll make it better by adding a little function to your controllers to provide useful pagination headers.</p>
+
+<p><img src="http://i.imgur.com/XOUecnw.jpg" alt="kaminari pagination" /></p>
+
+<!--more-->
+
+
+<h2>Pagination from Kaminari</h2>
+
+<p>Installation is easy with an addition to your <code>Gemfile</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem 'kaminari'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and an install:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, you have a magical <code>page</code> method available on your models.  It works like a charm right out of the box.</p>
+
+<p>Let&#8217;s say that I have a <code>germs_controller.rb</code> (because it&#8217;s a great time of year for that), where I have a list of germs that I want to paginate.  I could easily request <code>/api/v1/germs?page=2</code> and get the second page with this code in the controller:</p>
+
+<figure class='code'><figcaption><span>germs_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Api</span>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">V1</span>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">GermsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>        <span class="vi">@germs</span> <span class="o">=</span> <span class="no">Germ</span><span class="o">.</span><span class="n">page</span> <span class="n">params</span><span class="o">[</span><span class="ss">:page</span><span class="o">]</span>
+</span><span class='line'>        <span class="n">render</span> <span class="n">json</span><span class="p">:</span> <span class="vi">@germs</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you want to control the default page size, you can do that in the initializers:</p>
+
+<figure class='code'><figcaption><span>kaminari_config.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Kaminari</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">default_per_page</span> <span class="o">=</span> <span class="mi">20</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Pagination Headers</h2>
+
+<p>There&#8217;s another feature that we want to add, and that&#8217;s pagination headers.  These are going to be HTTP headers that come back in the response that indicate to clients where the relative pages are located in our API.  For instance, we asked for page 2, but where might one request the previous and next pages, 1 and 3?</p>
+
+<p>Putting the pagination info into the header follows a pattern used in the <a href="https://developer.github.com/guides/traversing-with-pagination/">github api</a>.</p>
+
+<p>We&#8217;ll add a function to our <code>ApplicationController</code> to helps us out:</p>
+
+<figure class='code'><figcaption><span>application_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">API</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">protected</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">set_pagination_header</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>    <span class="n">scope</span> <span class="o">=</span> <span class="nb">instance_variable_get</span><span class="p">(</span><span class="s2">&quot;@</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">request_params</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_parameters</span>
+</span><span class='line'>    <span class="n">url_without_params</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">original_url</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">original_url</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="k">unless</span> <span class="n">request_params</span><span class="o">.</span><span class="n">empty?</span>
+</span><span class='line'>    <span class="n">url_without_params</span> <span class="o">||=</span> <span class="n">request</span><span class="o">.</span><span class="n">original_url</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">page</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="n">page</span><span class="o">[</span><span class="ss">:first</span><span class="o">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">scope</span><span class="o">.</span><span class="n">total_pages</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">scope</span><span class="o">.</span><span class="n">first_page?</span>
+</span><span class='line'>    <span class="n">page</span><span class="o">[</span><span class="ss">:last</span><span class="o">]</span> <span class="o">=</span> <span class="n">scope</span><span class="o">.</span><span class="n">total_pages</span>  <span class="k">if</span> <span class="n">scope</span><span class="o">.</span><span class="n">total_pages</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">scope</span><span class="o">.</span><span class="n">last_page?</span>
+</span><span class='line'>    <span class="n">page</span><span class="o">[</span><span class="ss">:next</span><span class="o">]</span> <span class="o">=</span> <span class="n">scope</span><span class="o">.</span><span class="n">current_page</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">unless</span> <span class="n">scope</span><span class="o">.</span><span class="n">last_page?</span>
+</span><span class='line'>    <span class="n">page</span><span class="o">[</span><span class="ss">:prev</span><span class="o">]</span> <span class="o">=</span> <span class="n">scope</span><span class="o">.</span><span class="n">current_page</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">unless</span> <span class="n">scope</span><span class="o">.</span><span class="n">first_page?</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">pagination_links</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>    <span class="n">page</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">new_request_hash</span><span class="o">=</span> <span class="n">request_params</span><span class="o">.</span><span class="n">merge</span><span class="p">({</span><span class="ss">:page</span> <span class="o">=&gt;</span> <span class="n">v</span><span class="p">})</span>
+</span><span class='line'>      <span class="n">pagination_links</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;&lt;</span><span class="si">#{</span><span class="n">url_without_params</span><span class="si">}</span><span class="s2">?</span><span class="si">#{</span><span class="n">new_request_hash</span><span class="o">.</span><span class="n">to_param</span><span class="si">}</span><span class="s2">&gt;; rel=</span><span class="se">\&quot;</span><span class="si">#{</span><span class="n">k</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">headers</span><span class="o">[</span><span class="s2">&quot;Link&quot;</span><span class="o">]</span> <span class="o">=</span> <span class="n">pagination_links</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This code will provide a <code>Link</code> header in the HTTP response.  Its value might look something like this:</p>
+
+<figure class='code'><figcaption><span>Link</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>&lt;http://myapi.com/api/v1/germs?page=1&gt;; rel=&quot;prev&quot;, &lt;http://myapi.com/api/v1/germs?page=3&gt;; rel=&quot;next&quot;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The values of <code>first</code>, <code>last</code>, <code>next</code>, etc are populated from calls to <a href="http://www.rubydoc.info/github/amatsuda/kaminari/Kaminari/PageScopeMethods">Kaminari methods</a> such as <code>first_page?</code>.</p>
+
+<p>In order to have this header set on a response, we need to add it to a callback in our controller:</p>
+
+<figure class='code'><figcaption><span>germs_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Api</span>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">V1</span>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">GermsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">after_filter</span> <span class="n">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:index</span><span class="o">]</span> <span class="p">{</span> <span class="n">set_pagination_header</span><span class="p">(</span><span class="ss">:germs</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>        <span class="vi">@germs</span> <span class="o">=</span> <span class="no">Germ</span><span class="o">.</span><span class="n">page</span> <span class="n">params</span><span class="o">[</span><span class="ss">:page</span><span class="o">]</span>
+</span><span class='line'>        <span class="n">render</span> <span class="n">json</span><span class="p">:</span> <span class="vi">@germs</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, a fresh request to <code>/api/v1/germs</code> with or without the <code>page</code> query parameter should return back the <code>Link</code> header in the HTTP response which your client can use to traverse the other pages of data available in your API.</p>
+
+<p>So, there&#8217;s one way to get pagination info from Kaminari into your HTTP headers.  What would you improve?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[React-Router with Flux]]></title>
@@ -2011,92 +2182,6 @@
 
 
 <p>What have you done that looks better?  Please! :)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Grunt-init Exercism.io]]></title>
-    <link href="http://jaketrent.com/post/grunt-init-exercism-io/"/>
-    <updated>2014-01-03T07:07:00-07:00</updated>
-    <id>http://jaketrent.com/post/grunt-init-exercism-io</id>
-    <content type="html"><![CDATA[<p><a href="http://exercism.io">Exercism.io</a> has a great set of JavaScript exercises.  They could be made better by a better test setup and runner.  I&#8217;ve created a small grunt-init template to help in that setup.</p>
-
-<p><img src="http://i.imgur.com/4773D.jpg" alt="Grunt and Exercism" /></p>
-
-<!--more-->
-
-
-<h2>Exercism.io</h2>
-
-<p>For those unfamiliar, <a href="http://exercism.io">Excercism.io</a> is a great tool that helps coders and potential coders learn and expand their knowledge in several programming languages.  Currently, among the 9 language choices, JavaScript is one.  The JavaScript exercises come with a pre-built <a href="https://github.com/mhevery/jasmine-node">jasmine_node</a> test suite.  The point of the exercise is to write code that will make all the corresponding tests pass.  For more on Excercism.io, see my <a href="http://jaketrent.com/post/exercism-review/">review</a>.</p>
-
-<h2>Vanilla jasmine_node</h2>
-
-<p>As the <a href="http://exercism.io/help/setup/javascript">Exercism JavaScript docs</a> indicate, you can setup your JavaScript environment like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install -g jasmine_node
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And then run your tests like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>jasmine_node bob_test.spec.js
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This does work perfectly well.  But, we want something more.  Of course.</p>
-
-<h2>Grunt watch</h2>
-
-<p>We want the test suite to re-run as soon as we make a change and save either our test file or our file under test.  Well, it turns out that <a href="http://gruntjs.com">Grunt</a> is a great little command-line tool that has plugins for file watching.</p>
-
-<p>Grunt needs to be told to use a plugin.  Then it needs to be told that we want to run the task that watches our files.  All of this is indicated to Grunt via a local <code>Gruntfile.js</code> or <code>Gruntfile.coffee</code> file.  You could create this file by yourself, but wouldn&#8217;t it be nice if there was a <code>Gruntfile.js</code> created somewhere for you already that worked well with Exercism?</p>
-
-<h2>Grunt-init</h2>
-
-<p>It turns out that there is a great, separate utility called <a href="http://gruntjs.com/project-scaffolding">grunt-init</a> that you can use to create your <code>Gruntfile.js</code> (and many other things) with a pre-built template.</p>
-
-<p>To install this tool, run:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install -g grunt-init
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To use a grunt-init template, you need to have a local copy.  This template copy could live anywhere, but grunt-init can reference these templates purely by name if you put them in <code>~/.grunt-init/</code>.</p>
-
-<p>To get the <a href="https://github.com/jaketrent/grunt-init-exercism">Exercism grunt-init template</a>, clone it like so:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>git clone git@github.com:jaketrent/grunt-init-exercism.git ~/.grunt-init/exercism
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then change into your specific Exercism directory, init your <code>Gruntfile.js</code>, and follow the other commands:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> ~/dev/exercism/javascript/bob
-</span><span class='line'>grunt-init exercism
-</span><span class='line'>npm init
-</span><span class='line'>npm install
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <code>npm init</code> will flush out the rest of the generated <code>package.json</code>.  The <code>npm install</code> will install all dependencies that we said Grunt needed to do its job.</p>
-
-<p>Finally, activate Grunt to watch your files with:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>grunt watch
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now as you write your Exercism code to fulfill tests, you will see the tests get run automatically and become greenlit as your code increases in awesomeness.</p>
 ]]></content>
   </entry>
   
