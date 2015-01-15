@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-01-15T10:37:31-07:00</updated>
+  <updated>2015-01-15T10:41:37-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -132,9 +132,7 @@ exports.transition = () => {
 <p>The final connection is in the store, where the dispatched action can be listened for an then trigger the store event, updating the component views:</p>
 
 <p>```js books-store.js
-// ...</p>
-
-<p>var BooksStore = merge(EventEmitter.prototype, {
+var BooksStore = merge(EventEmitter.prototype, {
   find(filter) {</p>
 
 <pre><code>// ...
@@ -156,6 +154,8 @@ case ActionTypes.TRANSITION:
 
 <p>  }
 })</p>
+
+<p>module.exports = BooksStore</p>
 
 <p>```</p>
 

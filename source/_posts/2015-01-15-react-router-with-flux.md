@@ -102,8 +102,6 @@ exports.transition = () => {
 The final connection is in the store, where the dispatched action can be listened for an then trigger the store event, updating the component views:
 
 ```js books-store.js
-// ...
-
 var BooksStore = merge(EventEmitter.prototype, {
   find(filter) {
     // ...
@@ -120,6 +118,8 @@ BooksStore.dispatchToken = AppDispatcher.register((payload) => {
       break
   }
 })
+
+module.exports = BooksStore
 
 ```
 

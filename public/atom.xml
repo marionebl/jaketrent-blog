@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-01-15T10:37:31-07:00</updated>
+  <updated>2015-01-15T10:41:37-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -183,9 +183,7 @@
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">// ...</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">BooksStore</span> <span class="o">=</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">EventEmitter</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">BooksStore</span> <span class="o">=</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">EventEmitter</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="p">{</span>
 </span><span class='line'>  <span class="nx">find</span><span class="p">(</span><span class="nx">filter</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>    <span class="c1">// ...</span>
 </span><span class='line'>  <span class="p">}</span>
@@ -201,6 +199,8 @@
 </span><span class='line'>      <span class="k">break</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">BooksStore</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
