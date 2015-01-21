@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-01-15T14:28:12-07:00</updated>
+  <updated>2015-01-21T11:25:05-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,59 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Set Cookie on Rack Mock Request]]></title>
+    <link href="http://jaketrent.com/post/set-cookie-on-rack-mock-request/"/>
+    <updated>2015-01-21T10:58:00-07:00</updated>
+    <id>http://jaketrent.com/post/set-cookie-on-rack-mock-request</id>
+    <content type="html"><![CDATA[<p>Rack apps are generally straightforward to test because of their very basic public interface.  But where do we put specific things, in this case, a cookie for the request, on that <code>env</code> argument it takes?  Here's one way.</p>
+
+<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="rack mock request" /></p>
+
+<!--more-->
+
+
+<h1>env</h1>
+
+<p>The <code>env</code> argument that is sent to <code>#call</code> in a Rack app is an variable that represents the <a href="http://www.rubydoc.info/github/rack/rack/master/file/SPEC#The_Environment">environment of the request</a>.  It is a hash of CGI-like headers: request method, query params, http headers -- that sort of thing.</p>
+
+<p>The <code>HTTP_*</code> keys on the hash will be <a href="https://tools.ietf.org/html/rfc3875#section-4.1.18">read as request headers from the environment</a>.</p>
+
+<h1>Rack MockRequest Cookies</h1>
+
+<p>Rack provides a great little <code>Rack::MockRequest</code> helper object in its library that will help us test our app.  This object has a class method called <code>env_for</code> which allows for quick construction of an <code>env</code> var that is a request to a specified url.</p>
+
+<p>On the returned <code>env</code> we will continue to make modifications before passing it to our Rack app.  We'll add our cookie header with a key of <code>HTTP_COOKIE</code>.  The value will be of the format <code>cookieName=cookieValue</code>.  We can handle multiple cookies by separating the cookies with <code>;</code>.</p>
+
+<p>Let's say we're testing a token authentication middleware with rspec.  Our spec may look something like this:</p>
+
+<p><code>ruby
+it "accepts an cookie token in the request" do
+  middleware = # ... instantiate rack middleware
+  env = Rack::MockRequest.env_for("/protected")
+  env["HTTP_COOKIE"] = "AUTH_COOKIE=123"
+  status, _, _ = middleware.call(env)
+  expect(status).to eq(200)
+end
+</code></p>
+
+<p>Then in our Rack app source, we can code for the availability of a cookie on the request.  It might look like:</p>
+
+<p>```ruby</p>
+
+<h1>...</h1>
+
+<p>def call(env)
+  request = Rack::Request.new(env)
+  token = request.cookies["AUTH_TOKEN"]
+  # ...
+end
+```</p>
+
+<p>Is this the easiest or best way to set cookies on requests when testing Rack apps?  What do you do?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Pagination Headers with Kaminari]]></title>
@@ -418,69 +471,6 @@ end
 <p>The exact same code would be generated.  It's better! But it's worse!  It's actually less readable than before.  <code>on_planets</code> as a new helper API might be nice.  But, we're not currently using this anywhere else.  The code is probably more maintainable, but it's also more stiff.  Previously, each of the methods was separate and therefore separately modifiable and customizable.  Now, there's one implementation of an "on_#{planet}" method.  This could be easier/harder to deal with, depending.  I think the readability is better because of the smaller amount of code, but the readability is worse because of the increased complexity and eye parsing required.  In the end, for my code, I stayed with the original solution for its 5-star readability.</p>
 
 <p>But the ability to define methods dynamically is super awesome.  When do you find yourself using this super power?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Call Dynamic Method in Ruby]]></title>
-    <link href="http://jaketrent.com/post/ruby-call-dynamic-method/"/>
-    <updated>2013-11-25T07:10:00-07:00</updated>
-    <id>http://jaketrent.com/post/ruby-call-dynamic-method</id>
-    <content type="html"><![CDATA[<p>I love Ruby's syntax for method calls.  The syntax for calling dynamic methods is pretty nice, and it's easily mastered.</p>
-
-<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="Ruby" /></p>
-
-<!--more-->
-
-
-<h2><code>send</code> method</h2>
-
-<p>The <code>send</code> method is one of the best and most basic ways to call a method dynamically on your object.  Let's say we have an object with multiple methods like this:</p>
-
-<p>```ruby
-class Fezzik
-  def show_sportsmanship
-  end</p>
-
-<p>  def be_colossus_for(person_1, person_2=nil, person_3=nil)
-  end
-end
-```</p>
-
-<p>The method you want to call might be represented as a string or a symbol.  Your method call might look like this:</p>
-
-<p>```ruby
-Fezzik.new.send(:show_sportsmanship)</p>
-
-<h1>or</h1>
-
-<p>Fezzik.new.send("show_sportsmanship")
-```</p>
-
-<h2>Calling <code>send</code> with parameters</h2>
-
-<p>Now, some of your methods might have parameters.  How are those called?  Simply pass the argument values into the <code>send</code> call as the final argument, which is a variable length argument:</p>
-
-<p><code>ruby
-just_one_person = Person.new
-Fezzik.new.send(:be_colossus_for, just_one_person)
-</code></p>
-
-<p>You can also pass the parameters as a splat array, such as this:</p>
-
-<p><code>ruby
-people = [Person.new, Person.new, Person.new]
-Fezzik.new.send(:be_colossus_for, *people)
-</code></p>
-
-<p>In Ruby, the splat operator destructures the array into parameters, so the above code essentially becomes:</p>
-
-<p><code>ruby
-people = [Person.new, Person.new, Person.new]
-Fezzik.new.send(:be_colossus_for, people[0], people[1], people[2])
-</code></p>
-
-<p>So, <code>send</code> turns out to be pretty easy to deal with and really useful.  Use it, and be happy.</p>
 ]]></content>
   </entry>
   

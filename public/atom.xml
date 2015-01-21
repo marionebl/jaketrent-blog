@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-01-15T14:28:12-07:00</updated>
+  <updated>2015-01-21T11:25:05-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,70 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Set Cookie on Rack Mock Request]]></title>
+    <link href="http://jaketrent.com/post/set-cookie-on-rack-mock-request/"/>
+    <updated>2015-01-21T10:58:00-07:00</updated>
+    <id>http://jaketrent.com/post/set-cookie-on-rack-mock-request</id>
+    <content type="html"><![CDATA[<p>Rack apps are generally straightforward to test because of their very basic public interface.  But where do we put specific things, in this case, a cookie for the request, on that <code>env</code> argument it takes?  Here&#8217;s one way.</p>
+
+<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="rack mock request" /></p>
+
+<!--more-->
+
+
+<h1>env</h1>
+
+<p>The <code>env</code> argument that is sent to <code>#call</code> in a Rack app is an variable that represents the <a href="http://www.rubydoc.info/github/rack/rack/master/file/SPEC#The_Environment">environment of the request</a>.  It is a hash of CGI-like headers: request method, query params, http headers &#8211; that sort of thing.</p>
+
+<p>The <code>HTTP_*</code> keys on the hash will be <a href="https://tools.ietf.org/html/rfc3875#section-4.1.18">read as request headers from the environment</a>.</p>
+
+<h1>Rack MockRequest Cookies</h1>
+
+<p>Rack provides a great little <code>Rack::MockRequest</code> helper object in its library that will help us test our app.  This object has a class method called <code>env_for</code> which allows for quick construction of an <code>env</code> var that is a request to a specified url.</p>
+
+<p>On the returned <code>env</code> we will continue to make modifications before passing it to our Rack app.  We&#8217;ll add our cookie header with a key of <code>HTTP_COOKIE</code>.  The value will be of the format <code>cookieName=cookieValue</code>.  We can handle multiple cookies by separating the cookies with <code>;</code>.</p>
+
+<p>Let&#8217;s say we&#8217;re testing a token authentication middleware with rspec.  Our spec may look something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="s2">&quot;accepts an cookie token in the request&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">middleware</span> <span class="o">=</span> <span class="c1"># ... instantiate rack middleware</span>
+</span><span class='line'>  <span class="n">env</span> <span class="o">=</span> <span class="no">Rack</span><span class="o">::</span><span class="no">MockRequest</span><span class="o">.</span><span class="n">env_for</span><span class="p">(</span><span class="s2">&quot;/protected&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">env</span><span class="o">[</span><span class="s2">&quot;HTTP_COOKIE&quot;</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;AUTH_COOKIE=123&quot;</span>
+</span><span class='line'>  <span class="n">status</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">middleware</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span><span class="n">status</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then in our Rack app source, we can code for the availability of a cookie on the request.  It might look like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># ...</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Request</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">[</span><span class="s2">&quot;AUTH_TOKEN&quot;</span><span class="o">]</span>
+</span><span class='line'>  <span class="c1"># ...</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Is this the easiest or best way to set cookies on requests when testing Rack apps?  What do you do?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Pagination Headers with Kaminari]]></title>
@@ -2114,74 +2178,6 @@
 <p>The app dev portion could probably have been cut short.  About the time they start into the user management screens, we probably could have called it good.  But, they do introduce some good, new concepts in the app dev section of the book.  For instance, he covers a little on containers and <code>Ember.run</code> as it relates to testing.</p>
 
 <p>I&#8217;m glad I read the book.  It was helpful to my slingshot into the Ember atmosphere.  Boom!  Go get it.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Permit Array in Rails Strong Parameters]]></title>
-    <link href="http://jaketrent.com/post/permit-array-rails-strong-parameters/"/>
-    <updated>2014-01-22T11:19:00-07:00</updated>
-    <id>http://jaketrent.com/post/permit-array-rails-strong-parameters</id>
-    <content type="html"><![CDATA[<p>Rails 4 introduced the pattern of strong parameters at the controller layer.  As a best practice, you will explicitly list the parameters that an endpoint should accept in payloads.  Arrays are specified just slightly different.</p>
-
-<p><img src="http://i.imgur.com/XOUecnw.jpg" alt="Rails" /></p>
-
-<!--more-->
-
-
-<h2>Strong Parameters</h2>
-
-<p>You don&#8217;t want those blackhats to update any field they want on your poor models.  Raise the shields &#8211; strong parameters!  In ye olden days, <code>attr_accessible</code> could add some protection to your models.  Since Rails 4, it has been best practice to move this responsibility to the controller.  At that layer, you can make adjustments and allowances on a per-endpoint basis (eg, admin functionality has more power over a particular model than the layman user).</p>
-
-<p>So, create a private function in your controller where you can filter your params for your model.  It might look like:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="kp">private</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">luchador_params</span>
-</span><span class='line'>  <span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:luchador</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:favorite_move</span><span class="p">,</span> <span class="ss">:weight</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You have two main methods to use:</p>
-
-<ul>
-<li><code>require</code> - ensures that the parameter is present (as in this root <code>luchador</code> key)</li>
-<li><code>permit</code> - whitelist filters the parameters to the set specified</li>
-</ul>
-
-
-<h2>Arrays in <code>permit</code></h2>
-
-<p>The most standard use case for <code>permit</code> is to pass it a collection of :symbols.  These keys must represent scalar values (string, number, that sort) only.  But what about arrays?  They&#8217;re represented differently by an empty array:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:luchador</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:favorite_move</span><span class="p">,</span> <span class="ss">:weight</span><span class="p">,</span> <span class="n">wins</span><span class="p">:</span> <span class="o">[]</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>But wait &#8211; one more problem, and I don&#8217;t like the answer here.  My client might send back a <code>nil</code> instead of an array (ie, when the luchador has no <code>wins</code>).  If this happens, cue ugly error:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>Unpermitted parameter: wins
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To fix, default to empty array:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">params</span><span class="o">[</span><span class="ss">:luchador</span><span class="o">][</span><span class="ss">:wins</span><span class="o">]</span> <span class="o">||=</span> <span class="o">[]</span>
-</span><span class='line'><span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:luchador</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:favorite_move</span><span class="p">,</span> <span class="ss">:weight</span><span class="p">,</span> <span class="n">wins</span><span class="p">:</span> <span class="o">[]</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>What have you done that looks better?  Please! :)</p>
 ]]></content>
   </entry>
   
