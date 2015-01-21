@@ -4,7 +4,7 @@
   <title><![CDATA[Category: unit-testing | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/unit-testing/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-01-21T11:25:05-07:00</updated>
+  <updated>2015-01-21T11:39:31-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -20,7 +20,7 @@
     <id>http://jaketrent.com/post/set-cookie-on-rack-mock-request</id>
     <content type="html"><![CDATA[<p>Rack apps are generally straightforward to test because of their very basic public interface.  But where do we put specific things, in this case, a cookie for the request, on that <code>env</code> argument it takes?  Here's one way.</p>
 
-<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="rack mock request" /></p>
+<p><img src="http://i.imgur.com/044x6s6.jpg" alt="rack mock request" /></p>
 
 <!--more-->
 
