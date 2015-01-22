@@ -10,7 +10,7 @@ keywords: javascript, jquery
 published: true
 ---
 
-Jquery and other sweeto js frameworks have some awesomeness to help you change the css classes of various elements on the page with ease and grace.  They have some very convenient functions to add and remove classes.  These are uber-useful and highly recommended for saving you precious time and jiggawatts, but if you don't have jquery available to you, sometimes you may want to do this in raw javascript.  
+Jquery and other sweeto js frameworks have some awesomeness to help you change the css classes of various elements on the page with ease and grace.  They have some very convenient functions to add and remove classes.  These are uber-useful and highly recommended for saving you precious time and jiggawatts, but if you don't have jquery available to you, sometimes you may want to do this in raw javascript.
 <!--more-->
 
 ```javascript
@@ -25,11 +25,11 @@ And now for raw power and lack of ease and grace:
 document.getElementById("peace").className = "be-still";
 ```
 
-If you want to add or remove your own, you have to write that goodness, and here's one implementation example for your souit pleasure:
+If you want to add or remove your own, you have to write that goodness, and here's one implementation example for your sweet pleasure:
 
 ```javascript
 function hasClass(ele,cls) {
-  return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+  return !!ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
 }
 
 function addClass(ele,cls) {
@@ -54,4 +54,4 @@ removeClass(ele, "be-still");
 ```
 
 
-  
+
