@@ -4,7 +4,7 @@
   <title><![CDATA[Category: react-router | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/react-router/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-01-22T12:54:41-07:00</updated>
+  <updated>2015-02-09T16:12:29-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,88 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Test React-Router Previous Params for Component Update]]></title>
+    <link href="http://jaketrent.com/post/test-react-router-params-component-update/"/>
+    <updated>2015-02-09T15:39:00-07:00</updated>
+    <id>http://jaketrent.com/post/test-react-router-params-component-update</id>
+    <content type="html"><![CDATA[<p>Once upon a time, react-router transferred params and query params from the url via props into components.  It doesn't happen this way any more.  So, let's say you have a need in your component like overriding <code>shouldComponentUpdate</code> in your component which only has access to <code>this.props</code> and <code>this.state</code>.   How can you use the url data to affect the component re-render or not?</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react" /></p>
+
+<!--more-->
+
+
+<h2>Why control rendering with the url?</h2>
+
+<p>There are two instances that come to mind when considering the scenarios that it might be needful to control the update of your component based on the url:</p>
+
+<ol>
+<li><p><strong>Avoid re-render</strong>: Of course, if the component we're talking about is a page-level component, you'll most likely always be wanting to re-render as the url changes.  But, if you're a little widget component that cares about the url, you might not need to always re-render on url change.</p></li>
+<li><p><strong>Trigger re-render when it might not otherwise happen</strong>: For whatever reason, you may have already needed to implement <code>shouldComponentUpdate</code> in your component.  This function returns true or false to flag a "should" or "should not" re-render.  You'll need to access url state and likely previous url state in this method to make re-renders happen that otherwise wouldn't if you had no logic in this function for it.</p></li>
+</ol>
+
+
+<p>Of course, beyond these re-render scenarios, there are many other situations in which knowing previous and current states in the url could come in handy.</p>
+
+<h2>React-Router in shouldComponentUpdate</h2>
+
+<p><code>shouldComponentUpdate</code> determines if component should re-render.  It's called whenever <code>this.props</code> or <code>this.state</code> changes.  It has access to incoming props and state via the function parameters.</p>
+
+<p>React-router gives your component access to params and query params by requiring you to mix in the <code>State</code> param from react-router.  Then you have access to new functions, <code>this.getParams()</code> and <code>this.getQuery()</code>.  If you only need to know current url state, this is enough.  If you want to compare current url state to previous url state, you'll have to save the parts that you care about.  We'll do that in <code>this.state</code>.</p>
+
+<p>Let's say that we want to trigger a redraw on changes to a <code>range</code> query parameter.  The component might, in part, look like this:</p>
+
+<p>```
+var { State } = require('react-router')</p>
+
+<p>module.exports = React.createClass({</p>
+
+<p>  mixins: [ State ],</p>
+
+<p>  getInitialState() {</p>
+
+<pre><code>range: nul
+</code></pre>
+
+<p>  },</p>
+
+<p>  componentWillReceiveProps() {</p>
+
+<pre><code>this.setState({
+  range: this.getQuery().range
+})
+</code></pre>
+
+<p>  },</p>
+
+<p>  componentWillMount() {</p>
+
+<pre><code>this.setState({
+  range: this.getQuery().range
+})
+</code></pre>
+
+<p>  }</p>
+
+<p>  shouldComponentUpdate() {</p>
+
+<pre><code>return this.state.range !== nextState.range
+</code></pre>
+
+<p>  }</p>
+
+<p>  // ...</p>
+
+<p>})
+```</p>
+
+<p>When the url params change, <code>componentWillReceiveProps</code> is called.  But this is not called on the first render, thus we implement <code>componentWillMount</code>.  Both these functions save the <code>range</code> from the url to the component state.  Now, as <code>shouldComponentUpdate</code> is called on future <code>this.props</code> and <code>this.state</code> changes, current and next <code>range</code> values can be compared and used in "should re-render" calculation.</p>
+
+<p>What other ways have you found to accomplish this tracking of previous state in the url?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[React-Router with Flux]]></title>
