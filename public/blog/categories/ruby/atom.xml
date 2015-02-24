@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-02-09T16:12:29-07:00</updated>
+  <updated>2015-02-24T07:51:30-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,77 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby CLI Options Parsing]]></title>
+    <link href="http://jaketrent.com/post/ruby-cli-options-parsing/"/>
+    <updated>2015-02-24T07:21:00-07:00</updated>
+    <id>http://jaketrent.com/post/ruby-cli-options-parsing</id>
+    <content type="html"><![CDATA[<p>Ruby's stdlib never ceases to amaze.  If you're making a CLI tool in Ruby, your efforts are made more straightforward by the existence of the <a href="http://ruby-doc.org/stdlib-2.2.0/libdoc/optparse/rdoc/OptionParser.html">OptionParser</a> class.  Use it, and let happiness fill your heart.</p>
+
+<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="Ruby" /></p>
+
+<!--more-->
+
+
+<p>We're used to some nice CLI tools these days -- ones that have many useful options that allow for easier scripting and more powerful, quick usage.  Ruby's <code>OptionParser</code> will help us make our own and not disappoint the masses of fevered CLI users.</p>
+
+<p>All terminal input from initial execution will enter our Ruby program via the <code>ARGV</code> variable.</p>
+
+<p>To have the <code>OptionParser</code> class available to us, we must require the <code>optsparse</code> package.</p>
+
+<p><code>OptionParser</code> options are defined similar to how you'd expect event handlers to be defined: with the <code>on</code> keyword.  You can pass it a string to match a short option, a string to match the verbose option, and finally a block to be executed when the option is detected.  In the block, we generally will want to store the option state.  We'll choose to use an <code>OpenStruct</code> for that (and will need the <code>ostruct</code> package).</p>
+
+<p>For example:</p>
+
+<p>```ruby
+require "optsparse"
+require "ostruct"</p>
+
+<p>options = OpenStruct.new
+opt_parser = OptionParser.new do |opts|</p>
+
+<pre><code>opts.banner = "Usage: luchador [options]"
+opts.separator ""
+opts.separator "Options:"
+
+opts.on("-t, "--twist", "Apply the nipple twist") do |t|
+  options.twist = true
+end
+
+opts.on("-a a", "--anaconda-squeeze a", "The degrees of anaconda squeeze pressure") do |a|
+  options.anaconda_squeeze = a
+end
+
+opt_parser.parse!(ARGV)
+options
+</code></pre>
+
+<p>end
+```</p>
+
+<p>Now we can we might run CLI tool something like this:</p>
+
+<p><code>
+luchador -t --anaconda-squeeze 130
+</code></p>
+
+<p>And run with both options engaged for ultimate luchador power.  Notice we used both short and verbose-style options (choosing to write out the longest of the options for its added poetic punch on that whopping 130 degrees of pure squeeze pressure!).</p>
+
+<p>A few more points to note:</p>
+
+<ul>
+<li><code>opts.banner</code> and <code>opts.separator</code> can be used to format usage information.</li>
+<li>Usage information, stored in <code>opts</code> can be <code>put</code> to the screen.  A <code>-h</code>/<code>--help</code> option is automatically built in for this purpose.</li>
+<li>Remember to call <code>parse!</code> after configuring the options so the input is actually processed.</li>
+<li>Here, the <code>--anaconda-squeeze</code> option is defined differently than the first: there is a trailing <code>a</code>.  For options that require a non-boolean, this is required.  Otherwise, the argument to your handling block will always be a boolean <code>true</code>.</li>
+<li>Note that this example code only shows option parsing -- nothing about the <code>luchador</code> binary itself.</li>
+</ul>
+
+
+<p>This gives you the basic tools.  It's very easy, and it's built in!  To do more, you might take required options first through the CLI options and then read them interactively from the console.  What other neat additions do you see that we could add?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Set Cookie on Rack Mock Request]]></title>
@@ -398,79 +469,6 @@ params.require(:luchador).permit(:favorite_move, :weight, wins: [])
 </code></p>
 
 <p>What have you done that looks better?  Please! :)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Define Methods Dynamically in Ruby]]></title>
-    <link href="http://jaketrent.com/post/define-dynamic-methods-ruby/"/>
-    <updated>2013-11-26T07:28:00-07:00</updated>
-    <id>http://jaketrent.com/post/define-dynamic-methods-ruby</id>
-    <content type="html"><![CDATA[<p>In Ruby, it's common to see new methods defined dynamically or on the fly for your class.  And who doesn't want to have a piece of that metaprogramming?</p>
-
-<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="Ruby" /></p>
-
-<!--more-->
-
-
-<h2>An Example</h2>
-
-<p>For example, I just finished an <a href="/post/exercism-review/">exercism code exercise</a> where I felt like there was a fair bit of code duplication.  I had a bunch of convenience functions that would show the conversion of a time in earth time to a time specific to a planet.  So, the API required something that looked something like this:</p>
-
-<p>```ruby
-class SpaceAge</p>
-
-<p>  def on_earth</p>
-
-<pre><code>seconds_on_planet :earth
-</code></pre>
-
-<p>  end</p>
-
-<p>  def on_mercury</p>
-
-<pre><code>seconds_on_planet :mercury
-</code></pre>
-
-<p>  end</p>
-
-<p>  def on_venus</p>
-
-<pre><code>seconds_on_planet :venus
-</code></pre>
-
-<p>  end</p>
-
-<p>  # ...
-end
-```</p>
-
-<p>Feeling that this might be an excessive number of similarly pattern methods, I considered ways that the API might stay in tact but the effort of maintenance of these many functions might be decreased.</p>
-
-<h2><code>define_method</code></h2>
-
-<p>We could collapse these methods quite a bit in the visual code by defining them dynamically, using <code>define_method</code>:</p>
-
-<p>```ruby
-class SpaceAge
-  def self.on_planets(*planets)</p>
-
-<pre><code>planets.each do |planet|
-  define_method "on_#{planet}" do
-    seconds_on_planet planet
-  end
-end
-</code></pre>
-
-<p>  end</p>
-
-<p>  on_planets :earth, :mercury, :venus, :mars, :jupiter, :saturn, :uranus, :neptune
-end
-```</p>
-
-<p>The exact same code would be generated.  It's better! But it's worse!  It's actually less readable than before.  <code>on_planets</code> as a new helper API might be nice.  But, we're not currently using this anywhere else.  The code is probably more maintainable, but it's also more stiff.  Previously, each of the methods was separate and therefore separately modifiable and customizable.  Now, there's one implementation of an "on_#{planet}" method.  This could be easier/harder to deal with, depending.  I think the readability is better because of the smaller amount of code, but the readability is worse because of the increased complexity and eye parsing required.  In the end, for my code, I stayed with the original solution for its 5-star readability.</p>
-
-<p>But the ability to define methods dynamically is super awesome.  When do you find yourself using this super power?</p>
 ]]></content>
   </entry>
   

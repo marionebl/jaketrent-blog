@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-02-09T16:12:29-07:00</updated>
+  <updated>2015-02-24T07:51:30-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,95 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby CLI Options Parsing]]></title>
+    <link href="http://jaketrent.com/post/ruby-cli-options-parsing/"/>
+    <updated>2015-02-24T07:21:00-07:00</updated>
+    <id>http://jaketrent.com/post/ruby-cli-options-parsing</id>
+    <content type="html"><![CDATA[<p>Ruby&#8217;s stdlib never ceases to amaze.  If you&#8217;re making a CLI tool in Ruby, your efforts are made more straightforward by the existence of the <a href="http://ruby-doc.org/stdlib-2.2.0/libdoc/optparse/rdoc/OptionParser.html">OptionParser</a> class.  Use it, and let happiness fill your heart.</p>
+
+<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="Ruby" /></p>
+
+<!--more-->
+
+
+<p>We&#8217;re used to some nice CLI tools these days &#8211; ones that have many useful options that allow for easier scripting and more powerful, quick usage.  Ruby&#8217;s <code>OptionParser</code> will help us make our own and not disappoint the masses of fevered CLI users.</p>
+
+<p>All terminal input from initial execution will enter our Ruby program via the <code>ARGV</code> variable.</p>
+
+<p>To have the <code>OptionParser</code> class available to us, we must require the <code>optsparse</code> package.</p>
+
+<p><code>OptionParser</code> options are defined similar to how you&#8217;d expect event handlers to be defined: with the <code>on</code> keyword.  You can pass it a string to match a short option, a string to match the verbose option, and finally a block to be executed when the option is detected.  In the block, we generally will want to store the option state.  We&#8217;ll choose to use an <code>OpenStruct</code> for that (and will need the <code>ostruct</code> package).</p>
+
+<p>For example:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;optsparse&quot;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;ostruct&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">options</span> <span class="o">=</span> <span class="no">OpenStruct</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">opt_parser</span> <span class="o">=</span> <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">opts</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">opts</span><span class="o">.</span><span class="n">banner</span> <span class="o">=</span> <span class="s2">&quot;Usage: luchador [options]&quot;</span>
+</span><span class='line'>    <span class="n">opts</span><span class="o">.</span><span class="n">separator</span> <span class="s2">&quot;&quot;</span>
+</span><span class='line'>    <span class="n">opts</span><span class="o">.</span><span class="n">separator</span> <span class="s2">&quot;Options:&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-t, &quot;</span><span class="o">--</span><span class="n">twist</span><span class="s2">&quot;, &quot;</span><span class="no">Apply</span> <span class="n">the</span> <span class="n">nipple</span> <span class="n">twist</span><span class="s2">&quot;) do |t|</span>
+</span><span class='line'><span class="s2">      options.twist = true</span>
+</span><span class='line'><span class="s2">    end</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">    opts.on(&quot;</span><span class="o">-</span><span class="n">a</span> <span class="n">a</span><span class="s2">&quot;, &quot;</span><span class="o">--</span><span class="n">anaconda</span><span class="o">-</span><span class="n">squeeze</span> <span class="n">a</span><span class="s2">&quot;, &quot;</span><span class="no">The</span> <span class="n">degrees</span> <span class="n">of</span> <span class="n">anaconda</span> <span class="n">squeeze</span> <span class="n">pressure</span><span class="s2">&quot;) do |a|</span>
+</span><span class='line'><span class="s2">      options.anaconda_squeeze = a</span>
+</span><span class='line'><span class="s2">    end</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">    opt_parser.parse!(ARGV)</span>
+</span><span class='line'><span class="s2">    options</span>
+</span><span class='line'><span class="s2">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we can we might run CLI tool something like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">luchador</span> <span class="o">-</span><span class="n">t</span> <span class="o">--</span><span class="n">anaconda</span><span class="o">-</span><span class="n">squeeze</span> <span class="mi">130</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And run with both options engaged for ultimate luchador power.  Notice we used both short and verbose-style options (choosing to write out the longest of the options for its added poetic punch on that whopping 130 degrees of pure squeeze pressure!).</p>
+
+<p>A few more points to note:</p>
+
+<ul>
+<li><code>opts.banner</code> and <code>opts.separator</code> can be used to format usage information.</li>
+<li>Usage information, stored in <code>opts</code> can be <code>put</code> to the screen.  A <code>-h</code>/<code>--help</code> option is automatically built in for this purpose.</li>
+<li>Remember to call <code>parse!</code> after configuring the options so the input is actually processed.</li>
+<li>Here, the <code>--anaconda-squeeze</code> option is defined differently than the first: there is a trailing <code>a</code>.  For options that require a non-boolean, this is required.  Otherwise, the argument to your handling block will always be a boolean <code>true</code>.</li>
+<li>Note that this example code only shows option parsing &#8211; nothing about the <code>luchador</code> binary itself.</li>
+</ul>
+
+
+<p>This gives you the basic tools.  It&#8217;s very easy, and it&#8217;s built in!  To do more, you might take required options first through the CLI options and then read them interactively from the console.  What other neat additions do you see that we could add?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Test React-Router Previous Params for Component Update]]></title>
@@ -2196,48 +2285,6 @@
 <h2>Style and Read</h2>
 
 <p>Switch is a pretty short book.  The sheer amount of anecdotal and interesting examples of people chaning their lives and communities made it fun and inspiring to read.  I think I&#8217;d have to re-read it to have the strategies and tactics for change sink in deep enough to pull them out in the midst of change, but it does seems small enough to remember and powerful enough to be useful.  At the least, it&#8217;s a great reference.  I&#8217;d recommend the book.  And since everyone has encountered and/or wants to change, it seems like an applicable read.  Chip and Dan have several other books I&#8217;m going to go check out now.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ng-Conf Review]]></title>
-    <link href="http://jaketrent.com/post/ng-conf-review/"/>
-    <updated>2014-01-24T07:22:00-07:00</updated>
-    <id>http://jaketrent.com/post/ng-conf-review</id>
-    <content type="html"><![CDATA[<p>Ng-Conf just happened last week in Salt Lake City, Utah.  It was awesome.  Oh blast, I blew the punch line.  Anyway, here&#8217;s my take.</p>
-
-<p><img src="http://i.imgur.com/4swtO6x.jpg" alt="ng-conf" /></p>
-
-<!--more-->
-
-
-<h2>Format</h2>
-
-<p>Two days.  Early &#8216;til late.  One track.  20-40 min talks virtually back to back.  Lightning&#8217;y?  When we broke for lunch, I felt relieved.  My brain could go into some low-power mode.  Breaks between talks were mostly announced as anywhere from 30 seconds to 3 minutes, this whilst yammering off a short list of swag winners.  The format encouraged content, and there was a lot of it!</p>
-
-<h2>Line Up</h2>
-
-<p>The conference was easy to look forward to.  Looking at the speaker list, I was immediately impressed.  At one point during the event, Aaron Frost said that they hoped if the Angular team would come that they&#8217;d get more attendees.  Yes, that was a draw.  It was fun having them there.  Core.  Very core.  I believe that about each member of the team took the stage over the two days.</p>
-
-<p>The speaker list in total was very impressive.  There was a good mix of local and remote talent who came together to cover a broad array of Angular and JavaScript-related topics.</p>
-
-<h2>Talk Quality</h2>
-
-<p>Talk for talk, just numbers-wise, it was definitely one of the most high quality conferences I&#8217;ve attended.  Of course, there were some less-than-stellar presentations.  But, on the whole, I was more than impressed by the subject mastery and teaching ability of the speakers.  Thank you to everyone who prepared.</p>
-
-<p>There were also some definite highlights: Dave Smith on directives, Vojta Jina on DI, Brian Ford on zone.js, and Julie Ralph on Protractor.</p>
-
-<p>And one of the best parts is that each of these talks was recorded on video for a livestream and <a href="http://www.youtube.com/user/ngconfvideos">on youtube for later viewing</a>.</p>
-
-<h2>Venue</h2>
-
-<p>The conference was held at the Little America hotel in Salt Lake City.  It was a beautiful location.  The combined main ballrooms that the talks were held in were awesome.  Plenty of marble.  The food was great.  There weren&#8217;t tons of snacks, but that was probably good for my health.  The air quality in Salt Lake during the conference wasn&#8217;t good.  In fact, oobleck!  But, I didn&#8217;t get food poisoning &#8211; plus!</p>
-
-<h2>Smooth</h2>
-
-<p>I heard it said by multiple people during the conference that it was the best first-time conference they had attended.  Indeed, everything went Domo smooth.  The content was the star.  It was fun.  It was energetic (minus some confusing lack of screaming for all the sweet swag &#8211; probably had something to do with the sheer amount, like clapping for the 3rd curtain call).  The AV crew did a fantastic job.  Usually, it&#8217;s annoying to sit in an audience as video or audio problems plague the start of a talk.  That simply did not happen here, and it was oh, so refreshing.</p>
-
-<p>Oh yeah, and sweet jacket!</p>
 ]]></content>
   </entry>
   
