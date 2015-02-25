@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-02-24T07:51:30-07:00</updated>
+  <updated>2015-02-25T08:26:43-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,111 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sinon Spies vs. Stubs]]></title>
+    <link href="http://jaketrent.com/post/sinon-spies-vs-stubs/"/>
+    <updated>2015-02-25T07:35:00-07:00</updated>
+    <id>http://jaketrent.com/post/sinon-spies-vs-stubs</id>
+    <content type="html"><![CDATA[<p><a href="http://sinonjs.org/">Sinon</a> provides spies, stubs, and mocks.  They're all useful as fakes in tests.  They come with essential differences for what they're helpful in doing and how they work.</p>
+
+<p><img src="http://i.imgur.com/yuKcrP9.jpg" alt="spies vs stubs" /></p>
+
+<!--more-->
+
+
+<h2>Why Use Fakes?</h2>
+
+<p>In a unit test, you might want to avoid having to test the unit's dependencies.  This is especially true in <a href="http://en.wikipedia.org/wiki/White-box_testing">white-box testing</a>.  In this case, test fakes are going to be very helpful.  Sinon provides several fakes, notably spies, stubs, and mocks.  Let's compare and contrast the three:</p>
+
+<h2>Sinon Spies</h2>
+
+<p>Spies sound like what they do -- they watch your functions and report back on how they are called.  They generally avoid the violence and mayhem of a Hollywood spy, but depending on your application, this could vary.</p>
+
+<p>They don't change the functionality of your application.  They simply report what they see.  The <a href="http://sinonjs.org/docs/#spies-api">sinon API for spies</a> is fairly large, but it essentially centers around the <code>called</code> attribute (of which there are many variations).</p>
+
+<p>I first setup that I want to spy on something.  Then I call my subject under test (src code).  Then I verify with the spy what was actually called and stop spying.  That might look like this in a test:</p>
+
+<p>```js
+describe("#fight", function () {
+  it("calls prayForStrength for fight success", function () {</p>
+
+<pre><code>sinon.spy(subject.strengthDep, "prayForStrength");
+subject.fight();
+subject.strengthDep.called.should.be.true;
+subject.strengthDep.restore();
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p><em>Note: this example is in <a href="http://mochajs.org/">mocha</a> using a <a href="https://www.npmjs.com/package/should">should.js</a> assertion style</em></p>
+
+<p>The dependency's <code>prayForStrength</code> method is referred to by name in a string to setup the spy.  When <code>fight</code> is called here, <code>strengthDep.prayForStrength</code> will be called as normal -- but there will be someone watching.  Finally, we call <code>restore</code> on the function we spied on so that all spies are called off.  If you want to do more than watch as dependencies work as described, you might want to use a stub.</p>
+
+<h2>Sinon Stubs</h2>
+
+<p>Stubs are more hands-on than spies (though they sound more useless, don't they).  With a stub, you will actually change how functions are called in your test.  You don't want to change the subject under test, thus changing the accuracy of your test.  But you may want to test several ways that dependencies of your unit could be expected to act.</p>
+
+<p>For instance, if you had a function that returned a boolean that your code used to do different things, you might want to use a stub in two different tests to verify conditions when returning different values (ie, guarantee one run of <code>true</code> and one of <code>false</code> return).</p>
+
+<p>To continue the <code>fight</code> example from above, let's assume that if <code>prayForStrength</code> returns true, we are guaranteed to win the fight for the orphans (ie, <code>fight()</code> should return <code>true</code>).  That might look like this:</p>
+
+<p>```js
+describe("#fight", function () {
+  it("always wins when prayForStrength is true", function () {</p>
+
+<pre><code>sinon.stub(subject.strengthDep, "prayForStrength", function () { return true; });
+subject.fight().should.be.true;
+subject.strengthDep.restore();
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>Notice that we use a different <code>sinon.stub</code> API.  For the 3rd parameter, we're supplying our own version of <code>prayForStrength</code>.  For our test, all we care about is the return value, so that's all we supply.  We're not testing this dependency.  We're instead testing how our subject <code>fight</code>s in a certain circumstance.  There are many ways you can use <a href="http://sinonjs.org/docs/#stubs">sinon stubs</a> to control how functions are called.  Also note that you can still use the <code>called</code> verifications with stubs.  But if you do verify a stub was called, you may want to use a mock.</p>
+
+<h2>Sinon Mocks</h2>
+
+<p><a href="http://sinonjs.org/docs/#mocks">Mocks</a> take the attributes of spies and stubs, smashes them together and changes the style a bit.  A mock will both observe the calling of functions and verify that they were called in some specific way.  And all this setup happens <em>previous</em> to calling your subject under test.  After the call, mocks are simply asked if all went to plan.</p>
+
+<p>So the previous test could be rewritten to use a mock:</p>
+
+<p>```js
+describe("#fight", function () {
+  it("always wins when prayForStrength is true", function () {</p>
+
+<pre><code>var mock = sinon.mock(subject.strengthDep)
+mock.expects("prayForStrength").returns(true);
+subject.fight().should.be.true;
+mock.verify();
+mock.restore();
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>The <code>expects</code> and <code>returns</code> line is where the combo magic happens.  <code>expects</code> is verifying a call (like <code>spies</code> can), and <code>returns</code> is specifying functionality (like <code>stubs</code> can).  The <code>verify</code> call is the line that will fail (essentially the mock assertion) if things in the subject didn't go exactly according to plan.</p>
+
+<h2>Spies vs. Stubs vs. Mocks</h2>
+
+<p>So when should I use spies or stubs or mocks?  As with most art, there are many ways to accomplish what you want.  Much of your choice will depend on your own style and what you become proficient in.</p>
+
+<p>Some basic rules might be:</p>
+
+<ul>
+<li><strong><em>Use Spies</em></strong> - if you simply want to watch and verify somethings happens in your test case.</li>
+<li><strong><em>Use Stubs</em></strong> - if you simply want to specify how something will work to help your test case.</li>
+<li><strong><em>Use Mocks</em></strong> - if you want to both of the above on a single dependency in your test case.</li>
+</ul>
+
+
+<p>When do you find yourself most often using spies vs. stubs vs. mocks?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby CLI Options Parsing]]></title>
@@ -344,158 +449,6 @@ end
 <p>Now, a fresh request to <code>/api/v1/germs</code> with or without the <code>page</code> query parameter should return back the <code>Link</code> header in the HTTP response which your client can use to traverse the other pages of data available in your API.</p>
 
 <p>So, there's one way to get pagination info from Kaminari into your HTTP headers.  What would you improve?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[React-Router with Flux]]></title>
-    <link href="http://jaketrent.com/post/react-router-with-flux/"/>
-    <updated>2015-01-15T09:21:00-07:00</updated>
-    <id>http://jaketrent.com/post/react-router-with-flux</id>
-    <content type="html"><![CDATA[<p>react-router provides great route handling with route params and query params.  Flux provides a pattern for building React apps, including a pattern from providing data to your components.  Here's a straightforward way to make route changes trigger data changes in your components.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react" /></p>
-
-<!--more-->
-
-
-<p>Note: Code here reflects usage of react-router 0.11.x.</p>
-
-<p>It is often the case that we'll need to trigger data changes in a react component in our Flux app because of a route transition.  A prime example of this would be on an object show page, where the details of a particular object are being shown.  In our example, let's say that we're showing the details of a book, such as title, author, and description.</p>
-
-<p>The route to our book detail page is likely defined as:</p>
-
-<p><code>js routes.js
-// ...
-&lt;Route name="book" path="/books/:id" handler={require('./books-show')} /&gt;
-</code></p>
-
-<p>The handler is just a controller-component that defines the view.  It might look simply like:</p>
-
-<p>```js books-show.js
-const React = require('react')
-const {State} = require('react-router')</p>
-
-<p>const BooksStore = require('./books-store')</p>
-
-<p>module.exports = React.createClass({</p>
-
-<p>  displayName: 'BooksShow',</p>
-
-<p>  mixins: [ State ],</p>
-
-<p>  getInitialState() {</p>
-
-<pre><code>return this.getStateFromStores()
-</code></pre>
-
-<p>  },</p>
-
-<p>  getStateFromStores() {</p>
-
-<pre><code>return {
-  book: BooksStore.find({ id: this.getParams().id })
-}
-</code></pre>
-
-<p>  },</p>
-
-<p>  componentDidMount() {</p>
-
-<pre><code>BooksStore.addChangeListener(this._onChange)
-</code></pre>
-
-<p>  },</p>
-
-<p>  componentWillUnmount() {</p>
-
-<pre><code>BooksStore.removeChangeListener(this._onChange)
-</code></pre>
-
-<p>  },</p>
-
-<p>  _onChange: function() {</p>
-
-<pre><code>this.setState(this.getStateFromStores())
-</code></pre>
-
-<p>  },</p>
-
-<p>  render() {</p>
-
-<pre><code>return (
-  &lt;ul&gt;
-    &lt;li&gt;{this.state.book.title}&lt;/li&gt;
-    &lt;li&gt;{this.state.book.author}&lt;/li&gt;
-    &lt;li&gt;{this.state.book.description}&lt;/li&gt;
-  &lt;/ul&gt;
-)
-</code></pre>
-
-<p>  }</p>
-
-<p>})
-```</p>
-
-<p>Note that the view component references a <code>BooksStore</code> for getting its initial state.  The state of <code>book</code> will also be updated as the <code>BooksStore</code> emits that its data has changed and <code>this._onChange</code> is called.</p>
-
-<p>Every time a route transitions, react-router has a <code>Router.run</code> callback that will also run in order to render the matching route.  This will also be a great place to put our action to signal to our Flux app that routes are transitioning and therefore other stuff like data in the display might need to change as well.</p>
-
-<p><code>js
-Router.run(routes, (Handler, state) =&gt; {
-  React.render(&lt;Handler /&gt;, document.body)
-  BooksAction.transition(state.params)
-})
-</code></p>
-
-<p><strong>Important note</strong>: Make sure the transition action is called after <code>React.render</code> so that the change emission will be detected after render, otherwise you'll be one route transition behind.</p>
-
-<p>The <code>BooksAction.transition</code> definition is something very simple -- something that can trigger events on the dispatcher:</p>
-
-<p>```js books-actions.js
-exports.transition = () => {
-  AppDispatcher.handleViewAction({</p>
-
-<pre><code>type: ActionTypes.TRANSITION
-</code></pre>
-
-<p>  })
-}
-```</p>
-
-<p>The final connection is in the store, where the dispatched action can be listened for an then trigger the store event, updating the component views:</p>
-
-<p>```js books-store.js
-var BooksStore = merge(EventEmitter.prototype, {
-  find(filter) {</p>
-
-<pre><code>// ...
-</code></pre>
-
-<p>  }
-})</p>
-
-<p>BooksStore.dispatchToken = AppDispatcher.register((payload) => {
-  var action = payload.action
-  switch(action.type) {</p>
-
-<pre><code>// ...
-
-case ActionTypes.TRANSITION:
-  BooksStore.emitChange()
-  break
-</code></pre>
-
-<p>  }
-})</p>
-
-<p>module.exports = BooksStore</p>
-
-<p>```</p>
-
-<p>At this point, all the route transitions should trigger data changes in views.  Visiting the url <code>/books/1</code> and then the url <code>/books/2</code> should display different data on screen according to which book id was in the route.  <code>Router.Link</code> should work correctly, usable instead of buttons with actions being triggered on click.</p>
-
-<p>react-router and Flux make for a great combo in this way, right?  What adjustments would you make?</p>
 ]]></content>
   </entry>
   

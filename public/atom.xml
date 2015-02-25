@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-02-24T07:51:30-07:00</updated>
+  <updated>2015-02-25T08:26:18-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,126 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sinon Spies vs. Stubs]]></title>
+    <link href="http://jaketrent.com/post/sinon-spies-vs-stubs/"/>
+    <updated>2015-02-25T07:35:00-07:00</updated>
+    <id>http://jaketrent.com/post/sinon-spies-vs-stubs</id>
+    <content type="html"><![CDATA[<p><a href="http://sinonjs.org/">Sinon</a> provides spies, stubs, and mocks.  They&#8217;re all useful as fakes in tests.  They come with essential differences for what they&#8217;re helpful in doing and how they work.</p>
+
+<p><img src="http://i.imgur.com/yuKcrP9.jpg" alt="spies vs stubs" /></p>
+
+<!--more-->
+
+
+<h2>Why Use Fakes?</h2>
+
+<p>In a unit test, you might want to avoid having to test the unit&#8217;s dependencies.  This is especially true in <a href="http://en.wikipedia.org/wiki/White-box_testing">white-box testing</a>.  In this case, test fakes are going to be very helpful.  Sinon provides several fakes, notably spies, stubs, and mocks.  Let&#8217;s compare and contrast the three:</p>
+
+<h2>Sinon Spies</h2>
+
+<p>Spies sound like what they do &#8211; they watch your functions and report back on how they are called.  They generally avoid the violence and mayhem of a Hollywood spy, but depending on your application, this could vary.</p>
+
+<p>They don&#8217;t change the functionality of your application.  They simply report what they see.  The <a href="http://sinonjs.org/docs/#spies-api">sinon API for spies</a> is fairly large, but it essentially centers around the <code>called</code> attribute (of which there are many variations).</p>
+
+<p>I first setup that I want to spy on something.  Then I call my subject under test (src code).  Then I verify with the spy what was actually called and stop spying.  That might look like this in a test:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;#fight&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;calls prayForStrength for fight success&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">sinon</span><span class="p">.</span><span class="nx">spy</span><span class="p">(</span><span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">,</span> <span class="s2">&quot;prayForStrength&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">fight</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">.</span><span class="nx">called</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Note: this example is in <a href="http://mochajs.org/">mocha</a> using a <a href="https://www.npmjs.com/package/should">should.js</a> assertion style</em></p>
+
+<p>The dependency&#8217;s <code>prayForStrength</code> method is referred to by name in a string to setup the spy.  When <code>fight</code> is called here, <code>strengthDep.prayForStrength</code> will be called as normal &#8211; but there will be someone watching.  Finally, we call <code>restore</code> on the function we spied on so that all spies are called off.  If you want to do more than watch as dependencies work as described, you might want to use a stub.</p>
+
+<h2>Sinon Stubs</h2>
+
+<p>Stubs are more hands-on than spies (though they sound more useless, don&#8217;t they).  With a stub, you will actually change how functions are called in your test.  You don&#8217;t want to change the subject under test, thus changing the accuracy of your test.  But you may want to test several ways that dependencies of your unit could be expected to act.</p>
+
+<p>For instance, if you had a function that returned a boolean that your code used to do different things, you might want to use a stub in two different tests to verify conditions when returning different values (ie, guarantee one run of <code>true</code> and one of <code>false</code> return).</p>
+
+<p>To continue the <code>fight</code> example from above, let&#8217;s assume that if <code>prayForStrength</code> returns true, we are guaranteed to win the fight for the orphans (ie, <code>fight()</code> should return <code>true</code>).  That might look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;#fight&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;always wins when prayForStrength is true&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">sinon</span><span class="p">.</span><span class="nx">stub</span><span class="p">(</span><span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">,</span> <span class="s2">&quot;prayForStrength&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="p">});</span>
+</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">fight</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice that we use a different <code>sinon.stub</code> API.  For the 3rd parameter, we&#8217;re supplying our own version of <code>prayForStrength</code>.  For our test, all we care about is the return value, so that&#8217;s all we supply.  We&#8217;re not testing this dependency.  We&#8217;re instead testing how our subject <code>fight</code>s in a certain circumstance.  There are many ways you can use <a href="http://sinonjs.org/docs/#stubs">sinon stubs</a> to control how functions are called.  Also note that you can still use the <code>called</code> verifications with stubs.  But if you do verify a stub was called, you may want to use a mock.</p>
+
+<h2>Sinon Mocks</h2>
+
+<p><a href="http://sinonjs.org/docs/#mocks">Mocks</a> take the attributes of spies and stubs, smashes them together and changes the style a bit.  A mock will both observe the calling of functions and verify that they were called in some specific way.  And all this setup happens <em>previous</em> to calling your subject under test.  After the call, mocks are simply asked if all went to plan.</p>
+
+<p>So the previous test could be rewritten to use a mock:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;#fight&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;always wins when prayForStrength is true&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">sinon</span><span class="p">.</span><span class="nx">mock</span><span class="p">(</span><span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">mock</span><span class="p">.</span><span class="nx">expects</span><span class="p">(</span><span class="s2">&quot;prayForStrength&quot;</span><span class="p">).</span><span class="nx">returns</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">fight</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">mock</span><span class="p">.</span><span class="nx">verify</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">mock</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>expects</code> and <code>returns</code> line is where the combo magic happens.  <code>expects</code> is verifying a call (like <code>spies</code> can), and <code>returns</code> is specifying functionality (like <code>stubs</code> can).  The <code>verify</code> call is the line that will fail (essentially the mock assertion) if things in the subject didn&#8217;t go exactly according to plan.</p>
+
+<h2>Spies vs. Stubs vs. Mocks</h2>
+
+<p>So when should I use spies or stubs or mocks?  As with most art, there are many ways to accomplish what you want.  Much of your choice will depend on your own style and what you become proficient in.</p>
+
+<p>Some basic rules might be:</p>
+
+<ul>
+<li><strong><em>Use Spies</em></strong> - if you simply want to watch and verify somethings happens in your test case.</li>
+<li><strong><em>Use Stubs</em></strong> - if you simply want to specify how something will work to help your test case.</li>
+<li><strong><em>Use Mocks</em></strong> - if you want to both of the above on a single dependency in your test case.</li>
+</ul>
+
+
+<p>When do you find yourself most often using spies vs. stubs vs. mocks?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby CLI Options Parsing]]></title>
@@ -2209,82 +2329,6 @@
 
 
 <p>What do you think?  Is there an easier way?  A way to get better assertions?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Switch: How to Change Things When Change is Hard Review]]></title>
-    <link href="http://jaketrent.com/post/switch-review/"/>
-    <updated>2014-03-04T07:51:00-07:00</updated>
-    <id>http://jaketrent.com/post/switch-review</id>
-    <content type="html"><![CDATA[<p>The book is called Switch: How to Change Things When Change is Hard.  It&#8217;s by Chip Heath and Dan Heath.  It shows interesting anecdotes and good strategies on how to motivate people and situations to change.</p>
-
-<p><img src="http://i.imgur.com/zjnOrqX.jpg" alt="Switch" /></p>
-
-<!--more-->
-
-
-<h2>Who are you?</h2>
-
-<p>Did you know you are actually a combination elephant and rider?  Your rider represents your analytical thinking.  He wants to know every option.  He gets hung up in analysis paralysis.  It is likely he&#8217;ll never make a decision.  Your elephant represents your emotions and your instincts on things.  It&#8217;s much bigger than the rider, who is supposedly in control.  If your elephant decides it wants something, it usually gets its way.</p>
-
-<p>This analogy of our two halves is a bit silly but works quite well.  It illustrates well our internal struggle.  It helps me realize how I approach problems, seek solutions, and eventually make a choice on how to proceed.  I thought it was quite helpful.  As with most of the concepts in the book, it is revisited many times, presumably in order for us to do a better job remembering the concept.</p>
-
-<h2>Practical and Powerful</h2>
-
-<p>The 3 main thrusts of the book are focused around a strategy that the authors stated they hoped was small and simple enough to be memorable and practiced yet real and powerful enough to actually help us exact change.</p>
-
-<h3>1. Direct the Rider</h3>
-
-<p>The rider, admittedly, will not make decisions easily.  So, he needs some direction.  It can be hard to choose how to even begin to change.  The main helps stated in the book are as follows:</p>
-
-<h4>Follow the Bright Spots</h4>
-
-<p>In the problem situation or field that you are considering, there are most definitely things that <em>are</em> working.  These are the bright spots.  Why not replicate these good things in your own way for your own problem?  There are people who have faced a similar problem, whether they knew it or not, and found their way through all or part of it.  These are usually easier to discover than by starting from scratch.  And we know they&#8217;ll work!</p>
-
-<h4>Script the Critical Moves</h4>
-
-<p>To ensure the rider takes action, you&#8217;ll want to make it more than abundantly clear what <em>exactly</em> you want him to do.  If there is one thing that will make the biggest impact, that becomes your critical move.  Script, just as in a screenplay, exactly what actors in the program are expect to perform.</p>
-
-<h4>Point to the Destination</h4>
-
-<p>As the rider is weighing options, there will be many that appeal to him (or not).  It will be important to enumerate in an analytical way why the destination you&#8217;re choosing is worth pointing toward.</p>
-
-<h3>2. Motivate the Elephant</h3>
-
-<p>The elephant, once sufficiently motivated becomes the powerhouse that ensures change will begin.  The elephant is the one to change inertia, bringing us lurching out of our standing position.</p>
-
-<h4>Find the Feeling</h4>
-
-<p>Knowledge alone will not change behavior.  This is obvious considering our clear knowledge of the ill effects of habits such as smoking.  People still smoke.  So we must additional paint an emotional picture of what a change may mean to someone, what it will feel like, and the deeper reasons for attempting it.</p>
-
-<h4>Shrink the Change</h4>
-
-<p>Large changes require a large effort and many steps.  It may look daunting, especially to start.  The elephant starts on emotion, but it will also stop by the same virtues.  Break down the change into steps that are small and readily doable.</p>
-
-<h4>Grow Your People</h4>
-
-<p>People attach themselves to causes.  Causes appeal to the inner values of people and motivate them from within.  Encourage a sense of identity with the change you&#8217;re promoting.  If people can identify with the behavior as a part of who they are, they are likely to meet the change with a great dose of internal enthusiasm and excitement.</p>
-
-<h3>3. Shape the Path</h3>
-
-<p>Even with great instructions for our riders and motivation for our elephant, the friction to change may still be strong.  There is still more we can do to help.</p>
-
-<h4>Tweak the Environment</h4>
-
-<p>What looks like resistance from a person may just be that person falling into the environmental norms.  It may be the way things have always been done, and it&#8217;s natural to continue doing them.  Make the change you advocate the most natural thing to do as a product of the environment.  And consider environmental change your responsibility before you blame others for not responding well to change.</p>
-
-<h4>Build Habits</h4>
-
-<p>It turns out that making decisions, especially hard decisions to change, takes energy and will power.  And we only have so much to give.  If something becomes automatic, the effort to enact the behavior will be much lower.  We&#8217;ll just do it.  Determine how you can create triggers that happen automatically to regularly change behavior along the path.</p>
-
-<h4>Rally the Herd</h4>
-
-<p>Behavior is contagious.  People want to respond as others around them do.  Most people instinctively do not want to stand out, especially in negative ways, compared to the crowd around them.  To encourage change, publicize the majority behavior that is in line with what you seek.</p>
-
-<h2>Style and Read</h2>
-
-<p>Switch is a pretty short book.  The sheer amount of anecdotal and interesting examples of people chaning their lives and communities made it fun and inspiring to read.  I think I&#8217;d have to re-read it to have the strategies and tactics for change sink in deep enough to pull them out in the midst of change, but it does seems small enough to remember and powerful enough to be useful.  At the least, it&#8217;s a great reference.  I&#8217;d recommend the book.  And since everyone has encountered and/or wants to change, it seems like an applicable read.  Chip and Dan have several other books I&#8217;m going to go check out now.</p>
 ]]></content>
   </entry>
   

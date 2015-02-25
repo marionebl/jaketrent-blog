@@ -4,7 +4,7 @@
   <title><![CDATA[Category: unit-testing | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/unit-testing/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-02-24T07:51:30-07:00</updated>
+  <updated>2015-02-25T08:26:43-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,111 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sinon Spies vs. Stubs]]></title>
+    <link href="http://jaketrent.com/post/sinon-spies-vs-stubs/"/>
+    <updated>2015-02-25T07:35:00-07:00</updated>
+    <id>http://jaketrent.com/post/sinon-spies-vs-stubs</id>
+    <content type="html"><![CDATA[<p><a href="http://sinonjs.org/">Sinon</a> provides spies, stubs, and mocks.  They're all useful as fakes in tests.  They come with essential differences for what they're helpful in doing and how they work.</p>
+
+<p><img src="http://i.imgur.com/yuKcrP9.jpg" alt="spies vs stubs" /></p>
+
+<!--more-->
+
+
+<h2>Why Use Fakes?</h2>
+
+<p>In a unit test, you might want to avoid having to test the unit's dependencies.  This is especially true in <a href="http://en.wikipedia.org/wiki/White-box_testing">white-box testing</a>.  In this case, test fakes are going to be very helpful.  Sinon provides several fakes, notably spies, stubs, and mocks.  Let's compare and contrast the three:</p>
+
+<h2>Sinon Spies</h2>
+
+<p>Spies sound like what they do -- they watch your functions and report back on how they are called.  They generally avoid the violence and mayhem of a Hollywood spy, but depending on your application, this could vary.</p>
+
+<p>They don't change the functionality of your application.  They simply report what they see.  The <a href="http://sinonjs.org/docs/#spies-api">sinon API for spies</a> is fairly large, but it essentially centers around the <code>called</code> attribute (of which there are many variations).</p>
+
+<p>I first setup that I want to spy on something.  Then I call my subject under test (src code).  Then I verify with the spy what was actually called and stop spying.  That might look like this in a test:</p>
+
+<p>```js
+describe("#fight", function () {
+  it("calls prayForStrength for fight success", function () {</p>
+
+<pre><code>sinon.spy(subject.strengthDep, "prayForStrength");
+subject.fight();
+subject.strengthDep.called.should.be.true;
+subject.strengthDep.restore();
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p><em>Note: this example is in <a href="http://mochajs.org/">mocha</a> using a <a href="https://www.npmjs.com/package/should">should.js</a> assertion style</em></p>
+
+<p>The dependency's <code>prayForStrength</code> method is referred to by name in a string to setup the spy.  When <code>fight</code> is called here, <code>strengthDep.prayForStrength</code> will be called as normal -- but there will be someone watching.  Finally, we call <code>restore</code> on the function we spied on so that all spies are called off.  If you want to do more than watch as dependencies work as described, you might want to use a stub.</p>
+
+<h2>Sinon Stubs</h2>
+
+<p>Stubs are more hands-on than spies (though they sound more useless, don't they).  With a stub, you will actually change how functions are called in your test.  You don't want to change the subject under test, thus changing the accuracy of your test.  But you may want to test several ways that dependencies of your unit could be expected to act.</p>
+
+<p>For instance, if you had a function that returned a boolean that your code used to do different things, you might want to use a stub in two different tests to verify conditions when returning different values (ie, guarantee one run of <code>true</code> and one of <code>false</code> return).</p>
+
+<p>To continue the <code>fight</code> example from above, let's assume that if <code>prayForStrength</code> returns true, we are guaranteed to win the fight for the orphans (ie, <code>fight()</code> should return <code>true</code>).  That might look like this:</p>
+
+<p>```js
+describe("#fight", function () {
+  it("always wins when prayForStrength is true", function () {</p>
+
+<pre><code>sinon.stub(subject.strengthDep, "prayForStrength", function () { return true; });
+subject.fight().should.be.true;
+subject.strengthDep.restore();
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>Notice that we use a different <code>sinon.stub</code> API.  For the 3rd parameter, we're supplying our own version of <code>prayForStrength</code>.  For our test, all we care about is the return value, so that's all we supply.  We're not testing this dependency.  We're instead testing how our subject <code>fight</code>s in a certain circumstance.  There are many ways you can use <a href="http://sinonjs.org/docs/#stubs">sinon stubs</a> to control how functions are called.  Also note that you can still use the <code>called</code> verifications with stubs.  But if you do verify a stub was called, you may want to use a mock.</p>
+
+<h2>Sinon Mocks</h2>
+
+<p><a href="http://sinonjs.org/docs/#mocks">Mocks</a> take the attributes of spies and stubs, smashes them together and changes the style a bit.  A mock will both observe the calling of functions and verify that they were called in some specific way.  And all this setup happens <em>previous</em> to calling your subject under test.  After the call, mocks are simply asked if all went to plan.</p>
+
+<p>So the previous test could be rewritten to use a mock:</p>
+
+<p>```js
+describe("#fight", function () {
+  it("always wins when prayForStrength is true", function () {</p>
+
+<pre><code>var mock = sinon.mock(subject.strengthDep)
+mock.expects("prayForStrength").returns(true);
+subject.fight().should.be.true;
+mock.verify();
+mock.restore();
+</code></pre>
+
+<p>  });
+});
+```</p>
+
+<p>The <code>expects</code> and <code>returns</code> line is where the combo magic happens.  <code>expects</code> is verifying a call (like <code>spies</code> can), and <code>returns</code> is specifying functionality (like <code>stubs</code> can).  The <code>verify</code> call is the line that will fail (essentially the mock assertion) if things in the subject didn't go exactly according to plan.</p>
+
+<h2>Spies vs. Stubs vs. Mocks</h2>
+
+<p>So when should I use spies or stubs or mocks?  As with most art, there are many ways to accomplish what you want.  Much of your choice will depend on your own style and what you become proficient in.</p>
+
+<p>Some basic rules might be:</p>
+
+<ul>
+<li><strong><em>Use Spies</em></strong> - if you simply want to watch and verify somethings happens in your test case.</li>
+<li><strong><em>Use Stubs</em></strong> - if you simply want to specify how something will work to help your test case.</li>
+<li><strong><em>Use Mocks</em></strong> - if you want to both of the above on a single dependency in your test case.</li>
+</ul>
+
+
+<p>When do you find yourself most often using spies vs. stubs vs. mocks?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Set Cookie on Rack Mock Request]]></title>
@@ -303,33 +408,6 @@ Below are the slides to support a presentation given at an in-house development 
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Unit Testing XQuery on MarkLogic]]></title>
-    <link href="http://jaketrent.com/post/unit-testing-xquery-marklogic/"/>
-    <updated>2011-04-29T08:50:00-06:00</updated>
-    <id>http://jaketrent.com/post/unit-testing-xquery-marklogic</id>
-    <content type="html"><![CDATA[<p>Unit testing is a required part of a healthy software development lifecycle.  Business logic in MarkLogic Xquery needs the same insurance of superb testing as any other language.</p>
-
-<p>Principles: Come learn the motivation for unit testing and how test-driven development can increase your productivity writing solid Xquery code in an Agile-coding environment.</p>
-
-<p>Skills: We'll code Xquery examples to learn general skills including the TDD workflow, how to isolate your code for unit testability, and how to test one thing at a time.  In each case, we'll address how to apply these skills specifically to development in the MarkLogic environment.</p>
-
-<p>Tools: We'll also introduce you to in-house-developed tooling for creating unit tests and running them.  This tooling provides an all-Xquery method of creating test functions, annotating them as such so they're runnable in the test runner, isolating certain modules to test, and viewing clear test results.</p>
-
-<p>With a few principles, skills, and tools for unit testing, you can go forward with increased confidence that the Xquery code you write on MarkLogic is more awesome than ever.</p>
-
-<!--more-->
-
-
-<p>This slide deck is from a presentation at the MarkLogic Users Conference 2011.</p>
-
-<div style="width:510px" id="__ss_7778485"> <strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/rockycode/unit-testing-xquery-on-marklogic" title="Unit Testing XQuery on MarkLogic">Unit Testing XQuery on MarkLogic</a></strong> <iframe src="http://www.slideshare.net/slideshow/embed_code/7778485" width="510" height="426" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe> <div style="padding:5px 0 12px"> View more <a href="http://www.slideshare.net/">presentations</a> from <a href="http://www.slideshare.net/rockycode">rockycode</a> </div> </div>
-
-
-<p>More prose to follow and support these slides soon.</p>
 ]]></content>
   </entry>
   

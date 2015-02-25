@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Sinon Spies vs. Stubs - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Sinon provides spies, stubs, mocks. They're all useful as fakes in tests with essential differences.">
+  <meta name="keywords" content="js, sinon, spy, stub, mock, unit testing, mocha">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Sinon Spies vs. Stubs" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="http://jaketrent.com/post/sinon-spies-vs-stubs/" />
+  <meta property="og:description" content="Sinon provides spies, stubs, mocks. They're all useful as fakes in tests with essential differences." />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Sinon Spies vs. Stubs" />
+  <meta name="twitter:description" content="Sinon provides spies, stubs, mocks. They're all useful as fakes in tests with essential differences." />
+  
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/sinon-spies-vs-stubs/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <section class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">
+        <span class="logo-img"></span>
+      </a>
+    </h2>
+  </header>
+</section>
+
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://books.jaketrent.com">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Sinon Spies vs. Stubs</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-02-25T07:35:00-07:00" pubdate data-updated="true">Feb 25<span>th</span>, 2015</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="http://sinonjs.org/">Sinon</a> provides spies, stubs, and mocks.  They&#8217;re all useful as fakes in tests.  They come with essential differences for what they&#8217;re helpful in doing and how they work.</p>
+
+<p><img src="http://i.imgur.com/yuKcrP9.jpg" alt="spies vs stubs" /></p>
+
+<!--more-->
+
+
+<h2>Why Use Fakes?</h2>
+
+<p>In a unit test, you might want to avoid having to test the unit&#8217;s dependencies.  This is especially true in <a href="http://en.wikipedia.org/wiki/White-box_testing">white-box testing</a>.  In this case, test fakes are going to be very helpful.  Sinon provides several fakes, notably spies, stubs, and mocks.  Let&#8217;s compare and contrast the three:</p>
+
+<h2>Sinon Spies</h2>
+
+<p>Spies sound like what they do &#8211; they watch your functions and report back on how they are called.  They generally avoid the violence and mayhem of a Hollywood spy, but depending on your application, this could vary.</p>
+
+<p>They don&#8217;t change the functionality of your application.  They simply report what they see.  The <a href="http://sinonjs.org/docs/#spies-api">sinon API for spies</a> is fairly large, but it essentially centers around the <code>called</code> attribute (of which there are many variations).</p>
+
+<p>I first setup that I want to spy on something.  Then I call my subject under test (src code).  Then I verify with the spy what was actually called and stop spying.  That might look like this in a test:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;#fight&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;calls prayForStrength for fight success&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">sinon</span><span class="p">.</span><span class="nx">spy</span><span class="p">(</span><span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">,</span> <span class="s2">&quot;prayForStrength&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">fight</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">.</span><span class="nx">called</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>Note: this example is in <a href="http://mochajs.org/">mocha</a> using a <a href="https://www.npmjs.com/package/should">should.js</a> assertion style</em></p>
+
+<p>The dependency&#8217;s <code>prayForStrength</code> method is referred to by name in a string to setup the spy.  When <code>fight</code> is called here, <code>strengthDep.prayForStrength</code> will be called as normal &#8211; but there will be someone watching.  Finally, we call <code>restore</code> on the function we spied on so that all spies are called off.  If you want to do more than watch as dependencies work as described, you might want to use a stub.</p>
+
+<h2>Sinon Stubs</h2>
+
+<p>Stubs are more hands-on than spies (though they sound more useless, don&#8217;t they).  With a stub, you will actually change how functions are called in your test.  You don&#8217;t want to change the subject under test, thus changing the accuracy of your test.  But you may want to test several ways that dependencies of your unit could be expected to act.</p>
+
+<p>For instance, if you had a function that returned a boolean that your code used to do different things, you might want to use a stub in two different tests to verify conditions when returning different values (ie, guarantee one run of <code>true</code> and one of <code>false</code> return).</p>
+
+<p>To continue the <code>fight</code> example from above, let&#8217;s assume that if <code>prayForStrength</code> returns true, we are guaranteed to win the fight for the orphans (ie, <code>fight()</code> should return <code>true</code>).  That might look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;#fight&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;always wins when prayForStrength is true&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">sinon</span><span class="p">.</span><span class="nx">stub</span><span class="p">(</span><span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">,</span> <span class="s2">&quot;prayForStrength&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="p">});</span>
+</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">fight</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice that we use a different <code>sinon.stub</code> API.  For the 3rd parameter, we&#8217;re supplying our own version of <code>prayForStrength</code>.  For our test, all we care about is the return value, so that&#8217;s all we supply.  We&#8217;re not testing this dependency.  We&#8217;re instead testing how our subject <code>fight</code>s in a certain circumstance.  There are many ways you can use <a href="http://sinonjs.org/docs/#stubs">sinon stubs</a> to control how functions are called.  Also note that you can still use the <code>called</code> verifications with stubs.  But if you do verify a stub was called, you may want to use a mock.</p>
+
+<h2>Sinon Mocks</h2>
+
+<p><a href="http://sinonjs.org/docs/#mocks">Mocks</a> take the attributes of spies and stubs, smashes them together and changes the style a bit.  A mock will both observe the calling of functions and verify that they were called in some specific way.  And all this setup happens <em>previous</em> to calling your subject under test.  After the call, mocks are simply asked if all went to plan.</p>
+
+<p>So the previous test could be rewritten to use a mock:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;#fight&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;always wins when prayForStrength is true&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">sinon</span><span class="p">.</span><span class="nx">mock</span><span class="p">(</span><span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">mock</span><span class="p">.</span><span class="nx">expects</span><span class="p">(</span><span class="s2">&quot;prayForStrength&quot;</span><span class="p">).</span><span class="nx">returns</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">fight</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">mock</span><span class="p">.</span><span class="nx">verify</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">mock</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>expects</code> and <code>returns</code> line is where the combo magic happens.  <code>expects</code> is verifying a call (like <code>spies</code> can), and <code>returns</code> is specifying functionality (like <code>stubs</code> can).  The <code>verify</code> call is the line that will fail (essentially the mock assertion) if things in the subject didn&#8217;t go exactly according to plan.</p>
+
+<h2>Spies vs. Stubs vs. Mocks</h2>
+
+<p>So when should I use spies or stubs or mocks?  As with most art, there are many ways to accomplish what you want.  Much of your choice will depend on your own style and what you become proficient in.</p>
+
+<p>Some basic rules might be:</p>
+
+<ul>
+<li><strong><em>Use Spies</em></strong> - if you simply want to watch and verify somethings happens in your test case.</li>
+<li><strong><em>Use Stubs</em></strong> - if you simply want to specify how something will work to help your test case.</li>
+<li><strong><em>Use Mocks</em></strong> - if you want to both of the above on a single dependency in your test case.</li>
+</ul>
+
+
+<p>When do you find yourself most often using spies vs. stubs vs. mocks?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-02-25T07:35:00-07:00" pubdate data-updated="true">Feb 25<span>th</span>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/sinon/'>sinon</a>, <a class='category' href='/blog/categories/unit-testing/'>unit-testing</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+
+  <ul class="rrssb-buttons">
+    <li class="rrssb-twitter">
+      <!-- Replace href with your Meta and URL information  -->
+      <a href="http://twitter.com/home?status=Sinon Spies vs. Stubs%20by%20@jaketrent%20%20http://jaketrent.com/post/sinon-spies-vs-stubs/" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                 width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+            <path d="M24.253,8.756C24.689,17.08,18.297,24.182,9.97,24.62c-3.122,0.162-6.219-0.646-8.861-2.32
+                c2.703,0.179,5.376-0.648,7.508-2.321c-2.072-0.247-3.818-1.661-4.489-3.638c0.801,0.128,1.62,0.076,2.399-0.155
+                C4.045,15.72,2.215,13.6,2.115,11.077c0.688,0.275,1.426,0.407,2.168,0.386c-2.135-1.65-2.729-4.621-1.394-6.965
+                C5.575,7.816,9.54,9.84,13.803,10.071c-0.842-2.739,0.694-5.64,3.434-6.482c2.018-0.623,4.212,0.044,5.546,1.683
+                c1.186-0.213,2.318-0.662,3.329-1.317c-0.385,1.256-1.247,2.312-2.399,2.942c1.048-0.106,2.069-0.394,3.019-0.851
+                C26.275,7.229,25.39,8.196,24.253,8.756z"/>
+            </svg>
+        </span>
+      </a>
+    </li>
+    <li class="rrssb-linkedin">
+      <!-- Replace href with your meta and URL information -->
+      <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://jaketrent.com/post/sinon-spies-vs-stubs/&amp;title=Sinon Spies vs. Stubs&amp;summary=from jaketrent.com" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                <path d="M25.424,15.887v8.447h-4.896v-7.882c0-1.979-0.709-3.331-2.48-3.331c-1.354,0-2.158,0.911-2.514,1.803
+                    c-0.129,0.315-0.162,0.753-0.162,1.194v8.216h-4.899c0,0,0.066-13.349,0-14.731h4.899v2.088c-0.01,0.016-0.023,0.032-0.033,0.048
+                    h0.033V11.69c0.65-1.002,1.812-2.435,4.414-2.435C23.008,9.254,25.424,11.361,25.424,15.887z M5.348,2.501
+                    c-1.676,0-2.772,1.092-2.772,2.539c0,1.421,1.066,2.538,2.717,2.546h0.032c1.709,0,2.771-1.132,2.771-2.546
+                    C8.054,3.593,7.019,2.501,5.343,2.501H5.348z M2.867,24.334h4.897V9.603H2.867V24.334z"/>
+            </svg>
+        </span>
+      </a>
+    </li>
+    <li class="rrssb-googleplus">
+      <!-- Replace href with your meta and URL information.  -->
+      <a href="https://plus.google.com/share?url=http://jaketrent.com/post/sinon-spies-vs-stubs/" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                <g>
+                    <g>
+                        <path d="M14.703,15.854l-1.219-0.948c-0.372-0.308-0.88-0.715-0.88-1.459c0-0.748,0.508-1.223,0.95-1.663
+                            c1.42-1.119,2.839-2.309,2.839-4.817c0-2.58-1.621-3.937-2.399-4.581h2.097l2.202-1.383h-6.67c-1.83,0-4.467,0.433-6.398,2.027
+                            C3.768,4.287,3.059,6.018,3.059,7.576c0,2.634,2.022,5.328,5.604,5.328c0.339,0,0.71-0.033,1.083-0.068
+                            c-0.167,0.408-0.336,0.748-0.336,1.324c0,1.04,0.551,1.685,1.011,2.297c-1.524,0.104-4.37,0.273-6.467,1.562
+                            c-1.998,1.188-2.605,2.916-2.605,4.137c0,2.512,2.358,4.84,7.289,4.84c5.822,0,8.904-3.223,8.904-6.41
+                            c0.008-2.327-1.359-3.489-2.829-4.731H14.703z M10.269,11.951c-2.912,0-4.231-3.765-4.231-6.037c0-0.884,0.168-1.797,0.744-2.511
+                            c0.543-0.679,1.489-1.12,2.372-1.12c2.807,0,4.256,3.798,4.256,6.242c0,0.612-0.067,1.694-0.845,2.478
+                            c-0.537,0.55-1.438,0.948-2.295,0.951V11.951z M10.302,25.609c-3.621,0-5.957-1.732-5.957-4.142c0-2.408,2.165-3.223,2.911-3.492
+                            c1.421-0.479,3.25-0.545,3.555-0.545c0.338,0,0.52,0,0.766,0.034c2.574,1.838,3.706,2.757,3.706,4.479
+                            c-0.002,2.073-1.736,3.665-4.982,3.649L10.302,25.609z"/>
+                        <polygon points="23.254,11.89 23.254,8.521 21.569,8.521 21.569,11.89 18.202,11.89 18.202,13.604 21.569,13.604 21.569,17.004
+                            23.254,17.004 23.254,13.604 26.653,13.604 26.653,11.89      "/>
+                    </g>
+                </g>
+            </svg>
+        </span>
+      </a>
+    </li>
+    <li class="rrssb-facebook">
+      <!-- Replace with your URL. For best results, make sure you page has the proper FB Open Graph tags in header:
+      https://developers.facebook.com/docs/opengraph/howtos/maximizing-distribution-media-content/ -->
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://jaketrent.com/post/sinon-spies-vs-stubs/" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                <path d="M27.825,4.783c0-2.427-2.182-4.608-4.608-4.608H4.783c-2.422,0-4.608,2.182-4.608,4.608v18.434
+                    c0,2.427,2.181,4.608,4.608,4.608H14V17.379h-3.379v-4.608H14v-1.795c0-3.089,2.335-5.885,5.192-5.885h3.718v4.608h-3.726
+                    c-0.408,0-0.884,0.492-0.884,1.236v1.836h4.609v4.608h-4.609v10.446h4.916c2.422,0,4.608-2.188,4.608-4.608V4.783z"/>
+            </svg>
+        </span>
+      </a>
+    </li>
+  </ul>
+
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/ruby-cli-options-parsing/" title="Previous Post: Ruby CLI Options Parsing">&laquo; Ruby CLI Options Parsing</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="footer-container">
+    <footer class="main-footer" role="contentinfo"><div class="main-footer-logo"></div>
+<ul class="main-footer-links-list">
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Content licensed</span> 2015 <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a>
+  </li>
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Authored by </span><a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a>
+  </li>
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Subscribe to the </span><a href="/atom.xml">Feed</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <a href="/sitemap.xml">Sitemap</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues">Report a Bug</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <span class="main-footer-verbage">Chat on </span><a href="https://keybase.io/jaketrent">Keybase</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <span class="main-footer-verbage">Powered by </span><a href="http://octopress.org">Octopress</a>
+  </li>
+</ul>
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/sinon-spies-vs-stubs/';
+        var disqus_url = 'http://jaketrent.com/post/sinon-spies-vs-stubs/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
