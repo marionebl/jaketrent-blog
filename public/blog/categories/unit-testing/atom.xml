@@ -4,7 +4,7 @@
   <title><![CDATA[Category: unit-testing | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/unit-testing/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-02-25T19:52:15-07:00</updated>
+  <updated>2015-02-26T09:10:56-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,121 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Test React componentWillReceiveProps]]></title>
+    <link href="http://jaketrent.com/post/test-react-componentwillreceiveprops/"/>
+    <updated>2015-02-26T08:34:00-07:00</updated>
+    <id>http://jaketrent.com/post/test-react-componentwillreceiveprops</id>
+    <content type="html"><![CDATA[<p>Testing React Components has been easier and more enjoyable than any previous UI unit testing I've done in the past.  Components that have interesting things happen in lifecycle methods have a little more setup to get tested.  Components that use the <code>componentWillReceiveProps</code> method are in this category.</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react" /></p>
+
+<!--more-->
+
+
+<h2>React Test Setup</h2>
+
+<p>Not all lifecycle methods require as much setup in a test as <code>componentWillReceiveProps</code>.  This is because:</p>
+
+<ul>
+<li>This method is concerned with <strong><em>changing</em></strong> props.</li>
+<li>Changing props directly on a React Component (even under test) is against the React code of conduct</li>
+</ul>
+
+
+<p>So, we need something that is legal to change... <code>state</code>!  We need to not modify our subject under test and simply pass it new <code>props</code>.</p>
+
+<p>My solution is to create a React Component specifically for the test.  This Component will be a parent to the subject under test, on which we can set <code>state</code>.  We'll design it so that this state is transferred to the child Component under test.</p>
+
+<h2>React Component using <code>componentWillReceiveProps</code></h2>
+
+<p>You might have a React Component to test that looks like this:</p>
+
+<p>```js
+var ComponentToTest = React.createClass({
+  getInitialProps() {</p>
+
+<pre><code>return {
+  myProp: "blank"
+};
+</code></pre>
+
+<p>  },
+  getInitialState() {</p>
+
+<pre><code>return {
+  modified: "still blank"
+};
+</code></pre>
+
+<p>  },
+  componentWillReceiveProps(nextProps) {</p>
+
+<pre><code>this.setState({
+  modified: nextProps.myProp + "IsSoModified"
+});
+</code></pre>
+
+<p>  },
+  render() {</p>
+
+<pre><code>return &lt;div class="displayed"&gt;{this.state.modified}&lt;/div&gt;
+</code></pre>
+
+<p>  }
+});
+```</p>
+
+<p>There is nothing particularly interesting about this subject beyond the fact that it uses <code>componentWillReceiveProps</code>.  When new props are received, internal state is modified.  In real life, more interesting things like data fetching or complex calculations might be done here and then stored in state.  We simply are matching the scenario of needing to verify something when <code>componentWillReceiveProps</code> is called.</p>
+
+<h2>A Parent Test Component</h2>
+
+<p>The test to exercise <code>componentWillReceiveProps</code> on the above Component might look like this:</p>
+
+<p>```js
+var React = require("react/addons");
+var TestUtils = React.addons.TestUtils;</p>
+
+<p>it("displays a modified state upon changing props", function () {
+  var TestParent = React.createFactory(React.createClass({</p>
+
+<pre><code>getInitialState() {
+  return { testState: "init" };
+},
+render() {
+  return &lt;ComponentToTest ref="sot" myProp={this.state.testState} /&gt;
+}
+</code></pre>
+
+<p>  }));</p>
+
+<p>  var parent = TestUtils.renderIntoDocument(TestParent());
+  parent.refs.sot.props.myProp.should.eql("init");</p>
+
+<p>  parent.setState({</p>
+
+<pre><code>testState: "somethingElse"
+</code></pre>
+
+<p>  });</p>
+
+<p>  parent.refs.sot.props.myProp.should.eql("somethingElse");
+  parent.refs.sot.state.modified.should.eql("somethingElseIsSoModified"); // assert #1
+  var child = TestUtils.scryRenderedDOMComponentsWithClass(parent, "displayed")[0];
+  child.getDOMNode().innerText.should.eql("somethingElseIsSoModified");  // assert #2
+});
+```</p>
+
+<p>The <code>TestParent</code> component is created specifically for this test.  It renders the Component under test.  It sets a <code>ref</code> attribute to it for easy access.  Once we render the parent, the initial state was sent as the prop to the child Component.  As soon as we <code>setState</code> on the parent, a new prop is sent to the child, triggering <code>componentWillReceiveProps</code>.</p>
+
+<p>Finally, I've included two assertion styles.  Again, there are going to be more interesting things that you're asserting here in real life.  In this case I'm verifying that state that renders directly to the UI is set in our lifecycle method.  I can interrogate the state directly.  Here, we reach into the child Component state for assertion method #1.  That may sound bad, but remember that <code>TestParent</code> was created only in the context of this test anyway, so the level we're reaching through to grab child state is just test code.  Assertion method #2 is to go to the DOM to verify final output from the state change.</p>
+
+<p>There is definitely more setup here to make this happen.  I feel like usually testing a React Component doesn't require this much test code.</p>
+
+<p>What methods have you used to test Components that use either <code>componentWillReceiveProps</code> or other interesting lifecycle methods?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sinon Spies vs. Stubs]]></title>
@@ -378,36 +493,6 @@ Uncaught exception: ./src/static/js/vendor/require-jquery-2.0.2.js:1803 Uncaught
 <h2>RequireJs 2.0 shim</h2>
 
 <p>I wasn't able to get the shim setup for getting underscore/backbone loaded and in the correct order.  Instead, I just listed these non-AMD files in the correct order under the 'libs' attribute in buster.config.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Test-driven Development on MarkLogic]]></title>
-    <link href="http://jaketrent.com/post/test-driven-development-marklogic/"/>
-    <updated>2011-10-11T19:46:00-06:00</updated>
-    <id>http://jaketrent.com/post/test-driven-development-marklogic</id>
-    <content type="html"><![CDATA[<p>Unit testing is a required part of a healthy software development lifecycle and a balanced breakfast.  But test-driven development is a rockin' part of an <em>awesome</em> development lifecycle.  What's the difference?  If you don't test-drive the dev of your MarkLogic XQuery, you may never come back to test again.  Test-driven XQuery development will ease your headaches, put you into the plush seat of a developer with confidence, and rocket you down the road to making all your wildest dreams come true.  Kachow!</p>
-
-<!--more-->
-
-
-<p>Ok, it may be slightly <em>more</em> magical than that.  But, I don't want to get your hopes up.  Seriously, though, if TDD is fun in, say Java Land (and it still is in MarkLogic land with "the Swede"), then it's a required portion of fun in MarkLogic Land?  Why?  While you might imagine yourself going back and adding tests to your Java project and sometimes you do, if you imagine it and then attempt it in your XQuery project, I believe the likelihood that you shrivel in shame and tears under your desk is much higher than in some other environments.</p>
-
-<p>I the difficulty of the test after development approach is higher in MarkLogic XQuery because of what I've called "camouflaged dependencies" -- essentially, access to the http request and respond and to the database.</p>
-
-<p>You can get access to request fields or headers or anything else dealing with the web context in which the code is executed at any place in your code.  This doesn't mean you have to code like this, but the language doesn't necessarily help you enforce your discipline.  This is where testing before you write the code will help.  Make you functions functional -- pass in parameters and make them the only data access.</p>
-
-<p>You can read the database natively in MarkLogic XQuery.  That means that you can be retrieving data anywhere in your code.  There is an extreme lack of ceremony in making a connection to the database -- it's always there;  they're connected.  This is both refreshing and a shiny nail strip upon which to puncture the tires of your test-driven sports coupe e're you drive it off the lot.  Resist the temptation to read from the database or write to the database save in very determined and specific parts of your app -- parts that you will not actually unit test [gasp] because they'll be doing nothing but saving xmls at given database uris, and MarkLogic already has internal testing for that.</p>
-
-<p>So, respect what you might call your dependencies -- the network and the database -- and be thrilled with the adventure of testing the business logic that you write yourself and need to verify.  And test it first to help keep you on the strait and narrow.  Otherwise, you're "discipline" will crumble under deadlines and in the end it will "just work" -- until it doesn't -- and you won't know why.</p>
-
-<p>Note:
-Below are the slides to support a presentation given at an in-house development conference.  It is an evolution of a talk previously given on <a href="">unit testing XQuery on MarkLogic</a> with streamlined principles and skills section and a not-included coding portion surrounding the use of XqTest, our XQuery unit test framework, and its integration in our environment.  Tonight, as I say my prayers, I will continue to hope that someday XqTest will be released from its prison and "the Swede" will see the light of day!</p>
-
-<div style="width:425px" id="__ss_9651897"> <strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/rockycode/testdriven-development-on-marklogic" title="Test-driven Development on MarkLogic" target="_blank">Test-driven Development on MarkLogic</a></strong> <iframe src="http://www.slideshare.net/slideshow/embed_code/9651897" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe> <div style="padding:5px 0 12px"> View more <a href="http://www.slideshare.net/" target="_blank">presentations</a> from <a href="http://www.slideshare.net/rockycode" target="_blank">rockycode</a> </div> </div>
-
-
-
 ]]></content>
   </entry>
   

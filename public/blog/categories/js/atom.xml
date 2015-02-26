@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-02-25T19:52:15-07:00</updated>
+  <updated>2015-02-26T09:10:56-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,121 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Test React componentWillReceiveProps]]></title>
+    <link href="http://jaketrent.com/post/test-react-componentwillreceiveprops/"/>
+    <updated>2015-02-26T08:34:00-07:00</updated>
+    <id>http://jaketrent.com/post/test-react-componentwillreceiveprops</id>
+    <content type="html"><![CDATA[<p>Testing React Components has been easier and more enjoyable than any previous UI unit testing I've done in the past.  Components that have interesting things happen in lifecycle methods have a little more setup to get tested.  Components that use the <code>componentWillReceiveProps</code> method are in this category.</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react" /></p>
+
+<!--more-->
+
+
+<h2>React Test Setup</h2>
+
+<p>Not all lifecycle methods require as much setup in a test as <code>componentWillReceiveProps</code>.  This is because:</p>
+
+<ul>
+<li>This method is concerned with <strong><em>changing</em></strong> props.</li>
+<li>Changing props directly on a React Component (even under test) is against the React code of conduct</li>
+</ul>
+
+
+<p>So, we need something that is legal to change... <code>state</code>!  We need to not modify our subject under test and simply pass it new <code>props</code>.</p>
+
+<p>My solution is to create a React Component specifically for the test.  This Component will be a parent to the subject under test, on which we can set <code>state</code>.  We'll design it so that this state is transferred to the child Component under test.</p>
+
+<h2>React Component using <code>componentWillReceiveProps</code></h2>
+
+<p>You might have a React Component to test that looks like this:</p>
+
+<p>```js
+var ComponentToTest = React.createClass({
+  getInitialProps() {</p>
+
+<pre><code>return {
+  myProp: "blank"
+};
+</code></pre>
+
+<p>  },
+  getInitialState() {</p>
+
+<pre><code>return {
+  modified: "still blank"
+};
+</code></pre>
+
+<p>  },
+  componentWillReceiveProps(nextProps) {</p>
+
+<pre><code>this.setState({
+  modified: nextProps.myProp + "IsSoModified"
+});
+</code></pre>
+
+<p>  },
+  render() {</p>
+
+<pre><code>return &lt;div class="displayed"&gt;{this.state.modified}&lt;/div&gt;
+</code></pre>
+
+<p>  }
+});
+```</p>
+
+<p>There is nothing particularly interesting about this subject beyond the fact that it uses <code>componentWillReceiveProps</code>.  When new props are received, internal state is modified.  In real life, more interesting things like data fetching or complex calculations might be done here and then stored in state.  We simply are matching the scenario of needing to verify something when <code>componentWillReceiveProps</code> is called.</p>
+
+<h2>A Parent Test Component</h2>
+
+<p>The test to exercise <code>componentWillReceiveProps</code> on the above Component might look like this:</p>
+
+<p>```js
+var React = require("react/addons");
+var TestUtils = React.addons.TestUtils;</p>
+
+<p>it("displays a modified state upon changing props", function () {
+  var TestParent = React.createFactory(React.createClass({</p>
+
+<pre><code>getInitialState() {
+  return { testState: "init" };
+},
+render() {
+  return &lt;ComponentToTest ref="sot" myProp={this.state.testState} /&gt;
+}
+</code></pre>
+
+<p>  }));</p>
+
+<p>  var parent = TestUtils.renderIntoDocument(TestParent());
+  parent.refs.sot.props.myProp.should.eql("init");</p>
+
+<p>  parent.setState({</p>
+
+<pre><code>testState: "somethingElse"
+</code></pre>
+
+<p>  });</p>
+
+<p>  parent.refs.sot.props.myProp.should.eql("somethingElse");
+  parent.refs.sot.state.modified.should.eql("somethingElseIsSoModified"); // assert #1
+  var child = TestUtils.scryRenderedDOMComponentsWithClass(parent, "displayed")[0];
+  child.getDOMNode().innerText.should.eql("somethingElseIsSoModified");  // assert #2
+});
+```</p>
+
+<p>The <code>TestParent</code> component is created specifically for this test.  It renders the Component under test.  It sets a <code>ref</code> attribute to it for easy access.  Once we render the parent, the initial state was sent as the prop to the child Component.  As soon as we <code>setState</code> on the parent, a new prop is sent to the child, triggering <code>componentWillReceiveProps</code>.</p>
+
+<p>Finally, I've included two assertion styles.  Again, there are going to be more interesting things that you're asserting here in real life.  In this case I'm verifying that state that renders directly to the UI is set in our lifecycle method.  I can interrogate the state directly.  Here, we reach into the child Component state for assertion method #1.  That may sound bad, but remember that <code>TestParent</code> was created only in the context of this test anyway, so the level we're reaching through to grab child state is just test code.  Assertion method #2 is to go to the DOM to verify final output from the state change.</p>
+
+<p>There is definitely more setup here to make this happen.  I feel like usually testing a React Component doesn't require this much test code.</p>
+
+<p>What methods have you used to test Components that use either <code>componentWillReceiveProps</code> or other interesting lifecycle methods?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sinon Spies vs. Stubs]]></title>
@@ -458,129 +573,6 @@ d3.selectAll(".bar").on("click", function () {
 ```</p>
 
 <p>Now, unleash the power of your creativity!  Kazaam!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Send Props to Children in React]]></title>
-    <link href="http://jaketrent.com/post/send-props-to-children-react/"/>
-    <updated>2014-08-12T16:55:00-06:00</updated>
-    <id>http://jaketrent.com/post/send-props-to-children-react</id>
-    <content type="html"><![CDATA[<p>In React, you're always making components.  Sometimes components are standalone.  Other times, you'll have components that can nest children components.  Sometimes you'll want to send properties to the children components from the parent as often as a doting parent wants to send packages to a child missionary.  It's possible, it's simple, and it's not documented super well.  Here's one method.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="React" /></p>
-
-<!--more-->
-
-
-<h2>Children Components</h2>
-
-<p>When parent components are rendered, they have access to a special property, <code>this.props.children</code>.  It's like an Angular <code>ng-transclude</code> or an Ember <code>yield</code>.  Children components are generally rendered something like this:</p>
-
-<p>```js
-React.createClass({
-  render: function () {</p>
-
-<pre><code>return (
-  &lt;div id="iAmParentHearMeRoar"&gt;
-    {this.props.children}
-  &lt;/div&gt;
-)
-</code></pre>
-
-<p>  }
-})
-```</p>
-
-<p>The generic example above shows simply how to render children, <code>props</code> untouched, within a parent component.  Sometimes, however, a parent wants to bequeath its children with extra properties.  How will we make that happen?</p>
-
-<h2>Setting Child Props</h2>
-
-<p><code>props</code> are meant to be immutable.  But, in order for us to send <code>props</code> values to our children, we're going to essentially loop through our children and set props on them as a part of our parent <code>render</code> function.</p>
-
-<p>Deep breath.  It's ok.  The children that we'll loop through aren't mounted component instances.  They are, instead, <a href="http://facebook.github.io/react/blog/2014/07/17/react-v0.11.html#descriptors">descriptors</a>.  These descriptors have all the <code>props</code> attributes that we've declared should be put on the components, but they haven't been rendered yet.  Because of this, we can change props, and it's ok.  We're not mutating what has rendered.  The data still hasn't flowed to the children.  We're still effectively still riffing on the logic of what the children components should really be when they're eventually mounted.</p>
-
-<h2>Looping on Children Components</h2>
-
-<p><code>this.props.children</code> is a funny property.  It's special in more ways than one.  The things that might trip us up in looping is that even though it sounds like a plural thing, meaning an array, sometimes it's a singular object.  To help avoid potential problems, React gives us a helper, <code>React.Children</code>.  It has a few functions for array iteration, such as <code>map</code> and <code>forEach</code> that help account for the potential forms of <code>this.props.children</code>.</p>
-
-<h2>Functional Modifications</h2>
-
-<p>Immutable data is a big part of functional programming.  This means that when we 'mutate' the props, we want to mutate on a clone of the child component without affecting the original.  There's an input, there's an output, and the input is untouched.  Once we have our cloned children components as we want them, we'll render those instead.  React offers another great helper for cloning components and setting properties in a single function, <code>React.addons.cloneWithProps</code>.  Note that in order to use this function, you need to <code>require('react/addons')</code>.</p>
-
-<h2>Checking Child Type</h2>
-
-<p>It's a generally-useful thing to be able to tell what the React class type of a component object is.  It's an applicable skill in terms of looping through child components because we might not want to modify the properties of all types of children.  Each React component class has a <code>type</code> attribute accessible via <code>MyComponent.type</code>.  This attribute is also available on component descriptors.</p>
-
-<h2>A Child CheckOption Example</h2>
-
-<p>To bring this all together and illustrate the concepts, let's say we created a <code>RadioGroup</code> component that could take one or many <code>RadioOption</code> child components.  In raw html, which is what our component will eventually render, <code>input</code>s with type <code>checkbox</code> need to all have the same <code>name</code> attribute value to work well as toggles within the group.  But this is something that React can help us not have to duplicate.  We'll instead put a <code>name</code> property on the parent <code>RadioGroup</code> and have it transfer it as a property on all its children.  The implementation might look like this:</p>
-
-<p>```js
-/<em>* @jsx React.DOM </em>/</p>
-
-<p>var React = require('react/addons')</p>
-
-<p>var RadioOption = React.createClass({
-  render: function () {</p>
-
-<pre><code>return (
-  &lt;label&gt;
-    &lt;input type="radio" value={this.props.value} name={this.props.name} /&gt;
-    {this.props.label}
-  &lt;/label&gt;
-)
-</code></pre>
-
-<p>  }
-})</p>
-
-<p>var RadioGroup = React.createClass({
-  renderChildren: function () {</p>
-
-<pre><code>return React.Children.map(this.props.children, function (child) {
-  if (child.type === RadioOption.type)
-    return React.addons.cloneWithProps(child, {
-      name: this.props.name
-    })
-  else
-    return child
-}.bind(this))
-</code></pre>
-
-<p>  },
-  render: function () {</p>
-
-<pre><code>return (
-  &lt;div class="radio-group"&gt;
-    {this.renderChildren()}
-  &lt;/div&gt;
-)
-</code></pre>
-
-<p>  }
-})</p>
-
-<p>var WhereImUsingRadioGroups = React.createClass({
-  render: function () {</p>
-
-<pre><code>return (
-  &lt;RadioGroup name="blizzard-games"&gt;
-    &lt;RadioOption label="Warcraft 2" value="wc2" /&gt;
-    &lt;RadioOption label="Warcraft 3" value="wc3" /&gt;
-    &lt;RadioOption label="Starcraft 1" value="sc1" /&gt;
-    &lt;RadioOption label="Starcraft 2" value="sc2" /&gt;
-  &lt;/RadioGroup&gt;
-)
-</code></pre>
-
-<p>  }
-})
-```</p>
-
-<p>In this example, where the parent <code>RadioGroup</code> has the <code>name</code> prop, it will be given to each of the children so their <code>name</code> prop will match and the radio group will work as expected.  Thus, the hearts of the children are turned toward their fathers.</p>
-
-<p>Is there a better way to do this?  How have you been sending <code>props</code> to children?</p>
 ]]></content>
   </entry>
   
