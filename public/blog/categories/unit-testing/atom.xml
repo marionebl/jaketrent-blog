@@ -4,7 +4,7 @@
   <title><![CDATA[Category: unit-testing | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/unit-testing/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-02-26T09:10:56-07:00</updated>
+  <updated>2015-02-26T09:15:38-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -123,6 +123,14 @@ render() {
 <p>Finally, I've included two assertion styles.  Again, there are going to be more interesting things that you're asserting here in real life.  In this case I'm verifying that state that renders directly to the UI is set in our lifecycle method.  I can interrogate the state directly.  Here, we reach into the child Component state for assertion method #1.  That may sound bad, but remember that <code>TestParent</code> was created only in the context of this test anyway, so the level we're reaching through to grab child state is just test code.  Assertion method #2 is to go to the DOM to verify final output from the state change.</p>
 
 <p>There is definitely more setup here to make this happen.  I feel like usually testing a React Component doesn't require this much test code.</p>
+
+<h2><code>componentWillReceiveProps</code> in Action</h2>
+
+<p>Here is a Component that uses <code>componentWillReceiveProps</code> to make a simple display change:</p>
+
+<p><a class="jsbin-embed" href="http://jsbin.com/munaxuguta/12/embed?js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script></p>
+
+<p>You can also check out this <a href="http://jsbin.com/buwoqod/22/edit?js,output">slightly modified jsbin</a> which does the test assertion.</p>
 
 <p>What methods have you used to test Components that use either <code>componentWillReceiveProps</code> or other interesting lifecycle methods?</p>
 ]]></content>
