@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-02-25T08:26:18-07:00</updated>
+  <updated>2015-02-25T19:40:01-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,22 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Programmer Struggle]]></title>
+    <link href="http://jaketrent.com/post/programmer-struggle/"/>
+    <updated>2015-02-25T09:39:00-07:00</updated>
+    <id>http://jaketrent.com/post/programmer-struggle</id>
+    <content type="html"><![CDATA[<blockquote class="quote large">
+<p>The life of a programmer is mostly a never-ending struggle.  Solving problems in an always-changing technical landscape means that programmers are always learning new things.  In this case, &#8220;learning new things&#8221; is a euphemism for &#8220;battling against our own ignorance.&#8221;  Even if a programmer is just fixing a bug in code that uses a familiar technology, sometimes the software we create is so complex that simply understanding what is going on can take an entire day.</p>
+<p>If you write code, you will struggle.  Most professional programmers learn to struggle hour after hour, day after day, without getting (too) frustrated.  This is another skill that will serve you well.</p>
+<footer>
+<cite>Aaron Hillegass, in <a target="_blank" href="https://books.google.com/books?id=yxwiAgAAQBAJ&pg=PA4&lpg=PA4&ots=MYkju-O5W3&sig=u4R8RZ1EhemFcQcD-3CCwllcEcw&hl=en&sa=X&ei=W5jsVOiuEsG7ogSG2YGADw&ved=0CDAQ6AEwAw#v=onepage">Objective-C Programming: The Big Nerd Ranch Guide</a></cite>
+</footer>
+</blockquote>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sinon Spies vs. Stubs]]></title>
@@ -2169,166 +2185,6 @@
 <p>In the case of the last example, it would be cool if we could detect the window closing, save the work automatically, and let the user close the tab as they indicated without interruption.  For asynchronous actions such as network requests, this is problematic.  The request will not finish before the browser has trashed the whole window.  In cases such as this, you will need to synchronize your requests to block before finishing execution of the <code>beforeunload</code> event callback.</p>
 
 <p>So, does this work for you?  How might you make it better?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Testing Express Validator]]></title>
-    <link href="http://jaketrent.com/post/testing-express-validator/"/>
-    <updated>2014-03-10T07:37:00-06:00</updated>
-    <id>http://jaketrent.com/post/testing-express-validator</id>
-    <content type="html"><![CDATA[<p><a href="https://github.com/ctavan/express-validator">Express-validator</a> is a <a href="http://expressjs.com/api.html#middleware">middleware for Express</a> on Node.js that can help you validate user input.  It&#8217;s a lovely library.  Here&#8217;s a pattern for testing code that uses it.</p>
-
-<p><img src="http://i.imgur.com/ZfK9bv4.png" alt="express-validator" /></p>
-
-<!--more-->
-
-
-<h2>Install</h2>
-
-<p>To get <code>express-validator</code> in your project, install with npm:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install express-validator --save
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Plug in the Middleware</h2>
-
-<p>To use the middleware in your code, crack open the part of your app that sets up Express middlewares, and add in a reference to this lil beaut:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">expressValidator = </span><span class="nx">require</span> <span class="s">&#39;express-validator&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># ...</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">expressValidator</span><span class="p">()</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Note that you should insert the new <code>express-validator</code> middleware directly after the <code>json</code> middleware.  Also note that the <code>json</code> middleware, used in conjunction with <code>urlencoded</code> now <a href="http://andrewkelley.me/post/do-not-use-bodyparser-with-express-js.html">replace <code>bodyParser</code></a> to avoid deprecation warnings on startup.</p>
-
-<h2>Validate Something</h2>
-
-<p>Let&#8217;s say you&#8217;re writing a validator for new posts to a blog.  That code might look like this.</p>
-
-<figure class='code'><figcaption><span>blog-new-validator.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(req) -&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">req</span><span class="p">.</span><span class="nx">checkBody</span><span class="p">(</span><span class="s">&#39;title&#39;</span><span class="p">,</span> <span class="s">&#39;Title is required&#39;</span><span class="p">).</span><span class="nx">notEmpty</span><span class="p">()</span>
-</span><span class='line'>  <span class="nx">req</span><span class="p">.</span><span class="nx">checkBody</span><span class="p">(</span><span class="s">&#39;body&#39;</span><span class="p">,</span> <span class="s">&#39;Body is required&#39;</span><span class="p">).</span><span class="nx">notEmpty</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">()</span> <span class="o">or</span> <span class="nx">req</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">().</span><span class="nx">length</span> <span class="o">is</span> <span class="mi">0</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It checks to see if there is a title and a body given.  If there is not, the validator will return false, and there will be a validation errors array on the <code>req</code> object.  There are many <a href="https://github.com/chriso/validator.js">other assertions (provided internally by validator.js)</a> besides <code>notEmpty</code> that you can use.</p>
-
-<h2>Validating the Validator</h2>
-
-<p>First, setup a test helper that stubs the request, <code>req</code>, for validation:</p>
-
-<figure class='code'><figcaption><span>req.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">expressValidator = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;express-validator&#39;</span><span class="p">)()</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">exports.stubForValidation = </span><span class="nf">(done) -&gt;</span>
-</span><span class='line'>  <span class="nv">req =</span>
-</span><span class='line'>    <span class="nv">query: </span><span class="p">{}</span>
-</span><span class='line'>    <span class="nv">body: </span><span class="p">{}</span>
-</span><span class='line'>    <span class="nv">params: </span><span class="p">{}</span>
-</span><span class='line'>    <span class="nv">param: </span><span class="nf">(name) -&gt;</span>
-</span><span class='line'>      <span class="nx">@params</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">expressValidator</span> <span class="nx">req</span><span class="p">,</span> <span class="p">{},</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">done</span><span class="p">(</span><span class="nx">req</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There&#8217;s nothing too incredibly special here.  It&#8217;s just abstracted out of your test into a reusable helper.  The <code>req</code> object has empty objects to slap fixture data onto in your tests.  It includes a stubbed <code>param</code> function that can return params by name.  Finally, the <code>express-validator</code> middleware is called with the stubbed <code>req</code> object.</p>
-
-<p>Now, in your test, you can simply:</p>
-
-<ol>
-<li>Stub the request before each test</li>
-<li>Setup your fixture data to make the test pass (or not)</li>
-<li>Assert validation errors&#8217; existence and messages</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>blog-new-validator.spec.coffee</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">stubReq = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;req&#39;</span><span class="p">).</span><span class="nx">stubForValidation</span>
-</span><span class='line'><span class="nv">validateNew = </span><span class="nx">require</span> <span class="s">&#39;blog-new-validator&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">describe</span> <span class="s">&#39;blog-new-validator&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nv">req = </span><span class="kc">null</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">beforeEach</span> <span class="nf">(done) -&gt;</span>
-</span><span class='line'>    <span class="nx">stubReq</span> <span class="nf">(r) -&gt;</span>
-</span><span class='line'>      <span class="nv">req = </span><span class="nx">r</span>
-</span><span class='line'>      <span class="nx">done</span><span class="p">()</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">it</span> <span class="s">&#39;is invalid without title&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">validateNew</span><span class="p">(</span><span class="nx">req</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">false</span>
-</span><span class='line'>    <span class="nx">req</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="nx">title</span><span class="p">.</span><span class="nx">msg</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">eql</span> <span class="s">&#39;Title is required&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">it</span> <span class="s">&#39;is invalid without body&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nx">validateNew</span><span class="p">(</span><span class="nx">req</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">false</span>
-</span><span class='line'>    <span class="nx">req</span><span class="p">.</span><span class="nx">validationErrors</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="nx">body</span><span class="p">.</span><span class="nx">msg</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">eql</span> <span class="s">&#39;Body is required&#39;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">it</span> <span class="s">&#39;is valid with title and body&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>    <span class="nv">req.body.title = </span><span class="s">&#39;New Blog Title&#39;</span>
-</span><span class='line'>    <span class="nv">req.body.body = </span><span class="s">&#39;The body of the blog.&#39;</span>
-</span><span class='line'>    <span class="nx">validateNew</span><span class="p">(</span><span class="nx">req</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>What do you think?  Is there an easier way?  A way to get better assertions?</p>
 ]]></content>
   </entry>
   
