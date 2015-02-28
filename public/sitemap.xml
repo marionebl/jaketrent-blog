@@ -953,12 +953,16 @@
         <lastmod>2015-02-26T09:14:31-07:00</lastmod>
     </url>
     <url>
+        <loc>http://jaketrent.com/post/12-factor-app-summary/</loc>
+        <lastmod>2015-02-28T16:52:45-07:00</lastmod>
+    </url>
+    <url>
         <loc>http://jaketrent.com/blog/archives/</loc>
-        <lastmod>2015-02-26T09:14:31-07:00</lastmod>
+        <lastmod>2015-02-28T16:52:45-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/</loc>
-        <lastmod>2015-02-26T09:14:31-07:00</lastmod>
+        <lastmod>2015-02-28T16:52:45-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/robots.txt</loc>
@@ -966,6 +970,6 @@
     </url>
     <url>
         <loc>http://jaketrent.com/work/</loc>
-        <lastmod>2015-02-26T09:14:31-07:00</lastmod>
+        <lastmod>2015-02-28T16:52:45-07:00</lastmod>
     </url>
 </urlset>

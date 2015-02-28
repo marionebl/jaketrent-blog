@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-02-26T09:15:38-07:00</updated>
+  <updated>2015-02-28T16:53:01-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,130 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[12 Factor App Summary]]></title>
+    <link href="http://jaketrent.com/post/12-factor-app-summary/"/>
+    <updated>2015-02-28T16:20:00-07:00</updated>
+    <id>http://jaketrent.com/post/12-factor-app-summary</id>
+    <content type="html"><![CDATA[<p>I recently had a chance to go through the principles of the 12 Factor App as listed on <a href="http://12factor.net/">12factor.net</a>.  It&#8217;s written by some of the fine folk at Heroku.  The principles describe the best practices they see for how to get a modern web app deployed properly.  It&#8217;s a short read.  This summary is even shorter.</p>
+
+<p><img src="http://i.imgur.com/8aY0qiD.jpg" alt="12 Factors" /></p>
+
+<!--more-->
+
+
+<h3>1. Codebase</h3>
+
+<ul>
+<li>Always in src ctrl</li>
+<li>One codebase per app (many repos = distributed system)</li>
+<li>A deploy = instance of app running</li>
+</ul>
+
+
+<h3>2. Dependencies</h3>
+
+<ul>
+<li>All app and system dependencies explicitly declared</li>
+<li>Do not dep on implicit existence of system tools (eg, ImageMagick)</li>
+<li>Required sys tools vendored into app</li>
+</ul>
+
+
+<h3>3. Config</h3>
+
+<ul>
+<li>Strict separation between code and config</li>
+<li>Config stored in env vars</li>
+</ul>
+
+
+<h3>4. Backing Services</h3>
+
+<ul>
+<li>Should be loosely coupled, swappable</li>
+<li>Changes in services (eg, db) should not require code change</li>
+</ul>
+
+
+<h3>5. Build, release, run</h3>
+
+<ul>
+<li>Strict separation: build (binary), release (binary + env config), run (exec runtime)</li>
+<li>Ordered &#8211; can&#8217;t make change upstream</li>
+<li>Every release has unique id</li>
+</ul>
+
+
+<h3>6. Processes</h3>
+
+<ul>
+<li>Independent, stateless, share nothing</li>
+<li>Sharing happens in backing service (eg, db)</li>
+<li>No sticky sessions w/ process affinity</li>
+</ul>
+
+
+<h3>7. Port Binding</h3>
+
+<ul>
+<li>Can talk a protocol (eg, HTTP) by binding comm to a port</li>
+<li>Allows an app to become a backing service for another app via a url</li>
+<li>What does the alternative look like here?  Seems like a given.</li>
+</ul>
+
+
+<h3>8. Concurrency</h3>
+
+<ul>
+<li>Process is first-class citizen patterned after unix service daemons</li>
+<li>Process can multiplex internally (eg, threads or something like node.js)</li>
+<li>Scaling becomes a simple addition of the same process</li>
+</ul>
+
+
+<h3>9. Disposability</h3>
+
+<ul>
+<li>Startups are fast</li>
+<li>Requests are short</li>
+<li>Shutdowns are graceful; requests can finish; jobs returned to queue</li>
+</ul>
+
+
+<h3>10. Dev/Prod Parity</h3>
+
+<ul>
+<li>Time from dev to prod deploy should be short (eg, hrs)</li>
+<li>Devs who wrote the code should be around to op the code</li>
+<li>Toolchains and tech stacks should be as similar as possible</li>
+<li>Backing servies should be the same, even if adapters supposedly abstract implementations</li>
+</ul>
+
+
+<h3>11. Logs</h3>
+
+<ul>
+<li>Logs are treated as streams, simply written by an app to stdout</li>
+<li>Let log storage, collating, and analysis be done in the env or or w/ other tools</li>
+<li>Logs should provide visibility to how an app works over time</li>
+</ul>
+
+
+<h3>12. Admin Processes</h3>
+
+<ul>
+<li>Run as one-off processes in REPL</li>
+<li>Env shares same code and config as long-running processes</li>
+</ul>
+
+
+<p>If you have the extra little time required, I encourage you to check out <a href="http://12factor.net/">12factor.net</a> and draw some of your own conclusions.</p>
+
+<p>What other insights do you have on these principles?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Test React componentWillReceiveProps]]></title>
@@ -2200,85 +2324,6 @@
 <p>And since Broccoli is handling the building of your view, you can even use Broccoli to serve it.  If it&#8217;s called <code>index.jade</code> and ends up at the root directory after building with Broccoli, you could serve your whole site at <code>http://localhost:4200</code>.</p>
 
 <p>And just like that, you can dev locally referencing the assets that Broccoli is building for you.  Does it work for you?  Is the picture clear?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Convert App From EmberFire to Fireplace]]></title>
-    <link href="http://jaketrent.com/post/convert-app-from-emberfire-to-fireplace/"/>
-    <updated>2014-03-17T16:17:00-06:00</updated>
-    <id>http://jaketrent.com/post/convert-app-from-emberfire-to-fireplace</id>
-    <content type="html"><![CDATA[<p>There are a few changes required to convert your Ember app from using EmberFire to Fireplace.  Here are a few that I found to be required.  There are probably more.</p>
-
-<p><img src="http://i.imgur.com/1Jg69Pf.jpg" alt="Firebase" /></p>
-
-<!--more-->
-
-
-<h2>Your Options</h2>
-
-<p><a href="https://github.com/firebase/emberFire">EmberFire</a> and <a href="https://github.com/rlivsey/fireplace">Fireplace</a> both provide an API for you to integrate your Ember app with a <a href="https://www.firebase.com/">Firebase</a> backend.  You don&#8217;t need either library; they provide a more high-level API and help handle some of the nitty gritties of making Ember data-binding work with your socket traffic.  You can just use the <a href="https://www.firebase.com/docs/javascript/firebase/index.html">Firebase JavaScript API</a>.</p>
-
-<p>I was using EmberFire with ember-data first.  It worked pretty well.  I ran into a few hiccups where it seemed like model relationships weren&#8217;t working quite right in a couple places, but I worked around it for my simple app.  Fireplace was recommended to me as a good option instead of EmberFire.  From those that know more about this than I do, Fireplace was described as &#8220;the thing that ember-data should have been,&#8221; and way more capable than EmberFire.  As far as I can tell, they look very similar.  But, if you should want to switch, here are the basic changes:</p>
-
-<h2>Changes Required</h2>
-
-<h3>Set the Store</h3>
-
-<p>Instead of setting up an adapter for Firebase to work with Ember data, you want to define a store on your app.  That might look like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">App.Store = </span><span class="nx">FP</span><span class="p">.</span><span class="nx">Store</span><span class="p">.</span><span class="nx">extend</span>
-</span><span class='line'>  <span class="nv">firebaseRoot: </span><span class="s">&#39;https://myfirebase.firebaseio.com&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Note that the store is of type <code>FP.Store</code> instead of <code>DS.Store</code>.</p>
-
-<h3>Remove ember-data</h3>
-
-<p>Now that you have another store set, you want to make sure you remove ember-data so it doesn&#8217;t try to interact with it.  If you forget, you will get an error at runtime:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">Uncaught</span> <span class="nb">Error</span><span class="o">:</span> <span class="nx">Assertion</span> <span class="nv">Failed: </span><span class="nx">The</span> <span class="nx">initializer</span> <span class="s">&#39;store&#39;</span> <span class="nx">has</span> <span class="nx">already</span> <span class="nx">been</span> <span class="nx">registered</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Add ember-inflector</h3>
-
-<p>Ember-data comes bundled with ember-inflector.  But, now that ember-data is gone, we need to fetch this library separately.  This is the library responsible for inferring types in your models based on property names.  To get it, you&#8217;ll need the <a href="https://github.com/stefanpenner/ember-inflector">ember-inflector source</a>.  You&#8217;ll notice that there isn&#8217;t a nice package built for you.  Instead, you&#8217;ll have to build it with Ruby tools.</p>
-
-<p>To make your own version from source, follow these steps:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">git</span> <span class="nx">clone</span> <span class="nx">git@github</span><span class="p">.</span><span class="nx">com</span><span class="o">:</span><span class="nx">stefanpenner</span><span class="o">/</span><span class="nx">ember</span><span class="o">-</span><span class="nx">inflector</span><span class="p">.</span><span class="nx">git</span>
-</span><span class='line'><span class="nx">rake</span> <span class="nx">bundle</span>
-</span><span class='line'><span class="nx">rake</span> <span class="nx">dist</span>
-</span><span class='line'><span class="nx">cp</span> <span class="nx">dist</span><span class="o">/</span><span class="nx">modules</span><span class="o">/</span><span class="nx">ember</span><span class="o">-</span><span class="nx">inflector</span><span class="p">.</span><span class="nx">js</span> <span class="nx">your_project_dir</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>For convenience, at the risk of being out-dated, I&#8217;ve uploaded the version that I built as of 17 Mar 2014 to a <a href="https://gist.github.com/jaketrent/9621891">gist of ember-inflector at 32e30eb</a>.`</p>
-
-<h3>Change Model Definitions</h3>
-
-<p>Your models will need to change, but not by much.  <code>DS.Model</code> becomes <code>FP.Model</code>.  <code>DS.attr</code> becomes <code>FP.attr</code>.  The changes are pretty much one-to-one in requiring just a namespace change.</p>
-
-<h3>Optionally Change Finds</h3>
-
-<p>Where you use ember-data&#8217;s <code>model.find</code> function, you may want to change to use Fireplace&#8217;s <code>model.fetch</code>.  <code>fetch</code>, in this case will return a promise where <code>find</code> does not.</p>
-
-<h3>Change Deletes</h3>
-
-<p>Beyond the above, only API that broke for me was ember-data&#8217;s <code>model.destroyRecord</code>.  It seems on that this is the different, because <code>save</code> and <code>createRecord</code> remain the same.  But, for the delete, the API becomes simply <code>model.delete</code>.</p>
-
-<h3>Other Changes</h3>
-
-<p>The app I converted was quite simple, so I&#8217;m thinking that there will be other changes required.  What have you run into?</p>
 ]]></content>
   </entry>
   

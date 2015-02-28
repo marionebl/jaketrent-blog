@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Review | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/review/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-02-26T09:15:38-07:00</updated>
+  <updated>2015-02-28T16:53:01-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,130 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[12 Factor App Summary]]></title>
+    <link href="http://jaketrent.com/post/12-factor-app-summary/"/>
+    <updated>2015-02-28T16:20:00-07:00</updated>
+    <id>http://jaketrent.com/post/12-factor-app-summary</id>
+    <content type="html"><![CDATA[<p>I recently had a chance to go through the principles of the 12 Factor App as listed on <a href="http://12factor.net/">12factor.net</a>.  It's written by some of the fine folk at Heroku.  The principles describe the best practices they see for how to get a modern web app deployed properly.  It's a short read.  This summary is even shorter.</p>
+
+<p><img src="http://i.imgur.com/8aY0qiD.jpg" alt="12 Factors" /></p>
+
+<!--more-->
+
+
+<h3>1. Codebase</h3>
+
+<ul>
+<li>Always in src ctrl</li>
+<li>One codebase per app (many repos = distributed system)</li>
+<li>A deploy = instance of app running</li>
+</ul>
+
+
+<h3>2. Dependencies</h3>
+
+<ul>
+<li>All app and system dependencies explicitly declared</li>
+<li>Do not dep on implicit existence of system tools (eg, ImageMagick)</li>
+<li>Required sys tools vendored into app</li>
+</ul>
+
+
+<h3>3. Config</h3>
+
+<ul>
+<li>Strict separation between code and config</li>
+<li>Config stored in env vars</li>
+</ul>
+
+
+<h3>4. Backing Services</h3>
+
+<ul>
+<li>Should be loosely coupled, swappable</li>
+<li>Changes in services (eg, db) should not require code change</li>
+</ul>
+
+
+<h3>5. Build, release, run</h3>
+
+<ul>
+<li>Strict separation: build (binary), release (binary + env config), run (exec runtime)</li>
+<li>Ordered -- can't make change upstream</li>
+<li>Every release has unique id</li>
+</ul>
+
+
+<h3>6. Processes</h3>
+
+<ul>
+<li>Independent, stateless, share nothing</li>
+<li>Sharing happens in backing service (eg, db)</li>
+<li>No sticky sessions w/ process affinity</li>
+</ul>
+
+
+<h3>7. Port Binding</h3>
+
+<ul>
+<li>Can talk a protocol (eg, HTTP) by binding comm to a port</li>
+<li>Allows an app to become a backing service for another app via a url</li>
+<li>What does the alternative look like here?  Seems like a given.</li>
+</ul>
+
+
+<h3>8. Concurrency</h3>
+
+<ul>
+<li>Process is first-class citizen patterned after unix service daemons</li>
+<li>Process can multiplex internally (eg, threads or something like node.js)</li>
+<li>Scaling becomes a simple addition of the same process</li>
+</ul>
+
+
+<h3>9. Disposability</h3>
+
+<ul>
+<li>Startups are fast</li>
+<li>Requests are short</li>
+<li>Shutdowns are graceful; requests can finish; jobs returned to queue</li>
+</ul>
+
+
+<h3>10. Dev/Prod Parity</h3>
+
+<ul>
+<li>Time from dev to prod deploy should be short (eg, hrs)</li>
+<li>Devs who wrote the code should be around to op the code</li>
+<li>Toolchains and tech stacks should be as similar as possible</li>
+<li>Backing servies should be the same, even if adapters supposedly abstract implementations</li>
+</ul>
+
+
+<h3>11. Logs</h3>
+
+<ul>
+<li>Logs are treated as streams, simply written by an app to stdout</li>
+<li>Let log storage, collating, and analysis be done in the env or or w/ other tools</li>
+<li>Logs should provide visibility to how an app works over time</li>
+</ul>
+
+
+<h3>12. Admin Processes</h3>
+
+<ul>
+<li>Run as one-off processes in REPL</li>
+<li>Env shares same code and config as long-running processes</li>
+</ul>
+
+
+<p>If you have the extra little time required, I encourage you to check out <a href="http://12factor.net/">12factor.net</a> and draw some of your own conclusions.</p>
+
+<p>What other insights do you have on these principles?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ideas From The Accidental Creative]]></title>
@@ -348,44 +472,6 @@
 <p>I heard it said by multiple people during the conference that it was the best first-time conference they had attended.  Indeed, everything went Domo smooth.  The content was the star.  It was fun.  It was energetic (minus some confusing lack of screaming for all the sweet swag -- probably had something to do with the sheer amount, like clapping for the 3rd curtain call).  The AV crew did a fantastic job.  Usually, it's annoying to sit in an audience as video or audio problems plague the start of a talk.  That simply did not happen here, and it was oh, so refreshing.</p>
 
 <p>Oh yeah, and sweet jacket!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Developing an Ember Edge Review]]></title>
-    <link href="http://jaketrent.com/post/developing-an-ember-edge-review/"/>
-    <updated>2014-01-23T11:19:00-07:00</updated>
-    <id>http://jaketrent.com/post/developing-an-ember-edge-review</id>
-    <content type="html"><![CDATA[<p>The latest book on The List at <a href="http://emberwatch.com/books">emberwatch</a> is <a href="http://bleedingedgepress.com/our-books/developing-an-ember-edge/">Developing an Ember Edge</a>.  It's a great intro book to Ember.js.</p>
-
-<p><img src="http://i.imgur.com/85v8PQP.png" alt="Developing an Ember Edge" /></p>
-
-<!--more-->
-
-
-<p>The book is published by Bleeding Edge Press.  Pretty awesome name.  It is written by Jamie White, Matthew Beale, Christopher Sansone, Wesley Workman, and Bradley Priest, quite the host of authors.  It turns out to be a very timely read for me.  The code in the book even uses some of ember-data 1.0 beta 3.  As of this writing, that's almost the bleeding edge.</p>
-
-<p>I would compare the book to the <a href="http://emberjs.com/guides/">Ember.js official guides</a>.  It's introductory.  It definitely favors a breadth approach.  For me, but a wee Ember babe, it brings to light some interesting details about the Ember internals or at least the approach of the framework.</p>
-
-<h2>Format</h2>
-
-<p>I read the book in digital form as a pdf.  I love the digitalness, but I wonder if it wouldn't have had a bit more editorial review if printed.  Perhaps this is what Bleeding Edge Press means.  The code in the snippets was all smashed to the left, destroying most indentation reading assistance.  The code bits were also a smaller font size than the prose which made the switch between the two slightly awkward to my over-taxed eyes.  By the end of the book, I wasn't surprised when I found a typo.  There were a lot but not too many.  For someone of lesser OCD, it probably would've largely gone unnoticed.  Of course, considering the engineer audience of the book, maybe that doesn't exist.</p>
-
-<h2>The Zen of Ember</h2>
-
-<p>The book content is really good.  I felt like it helped me piece together why things are organized in Ember as they are.  I learned more of what the pieces are by themselves and how they're meant to interact together.  The authors were also kind to point out where some of the rough edges were in terms of design (or potential misdesign by app authors) and api changes.</p>
-
-<p>I liked the mostly-breadth approach to the writing.  The book was good for a newb and remained pretty short.  Perhaps that's because there's not too much there as a general subject without bloating this book into an API reference book. [whew]  The book struck a good balance of being technical, readable, and giving good insight into the practical use of the framework.</p>
-
-<h2>Ember Trackr</h2>
-
-<p>The first half of the book covers the concepts and layers of Ember, approaching mvc in general, objects, application, routes, handlebars, views, controllers, components, and models.  This takes 54 pages.  The other half(+) shows the development of a ticket tracking app.</p>
-
-<p>The development process shown is thorough, even including the tool install, project file layout, and ui styling.  The TDD of the app in total was awesome.  It's really step by step.  Sometimes this was a little painful, but you definitely don't miss anything.  The screenshots of test runners in terminals and the app in browser windows could have been cropped for easier reading with less vertical blank space.  The testing walkthrough was really great.  They even worked through a few "unexpected" errors as one might actually encounter them.</p>
-
-<p>The app dev portion could probably have been cut short.  About the time they start into the user management screens, we probably could have called it good.  But, they do introduce some good, new concepts in the app dev section of the book.  For instance, he covers a little on containers and <code>Ember.run</code> as it relates to testing.</p>
-
-<p>I'm glad I read the book.  It was helpful to my slingshot into the Ember atmosphere.  Boom!  Go get it.</p>
 ]]></content>
   </entry>
   
