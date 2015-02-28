@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "12 Factor App Summary"
+title: "\"12-Factor App\" Summary"
 date: 2015-02-28 16:20
 comments: true
 categories: [Review, deployment]
@@ -10,7 +10,7 @@ published: true
 image: http://i.imgur.com/8aY0qiD.jpg
 ---
 
-I recently had a chance to go through the principles of the 12 Factor App as listed on [12factor.net](http://12factor.net/).  It's written by some of the fine folk at Heroku.  The principles describe the best practices they see for how to get a modern web app deployed properly.  It's a short read.  This summary is even shorter.
+I recently had a chance to go through the principles of the 12-Factor App as listed on [12factor.net](http://12factor.net/).  It's written by some of the fine folk at Heroku.  The principles describe the best practices they see for how to get a modern web app deployed properly.  It's a short read.  This summary is even shorter.
 
 ![12 Factors](http://i.imgur.com/8aY0qiD.jpg)
 

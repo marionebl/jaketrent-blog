@@ -4,7 +4,7 @@
   <title><![CDATA[Category: deployment | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/deployment/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-02-28T16:54:53-07:00</updated>
+  <updated>2015-02-28T16:58:37-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -14,11 +14,11 @@
 
   
   <entry>
-    <title type="html"><![CDATA[12 Factor App Summary]]></title>
+    <title type="html"><![CDATA["12-Factor App" Summary]]></title>
     <link href="http://jaketrent.com/post/12-factor-app-summary/"/>
     <updated>2015-02-28T16:20:00-07:00</updated>
     <id>http://jaketrent.com/post/12-factor-app-summary</id>
-    <content type="html"><![CDATA[<p>I recently had a chance to go through the principles of the 12 Factor App as listed on <a href="http://12factor.net/">12factor.net</a>.  It's written by some of the fine folk at Heroku.  The principles describe the best practices they see for how to get a modern web app deployed properly.  It's a short read.  This summary is even shorter.</p>
+    <content type="html"><![CDATA[<p>I recently had a chance to go through the principles of the 12-Factor App as listed on <a href="http://12factor.net/">12factor.net</a>.  It's written by some of the fine folk at Heroku.  The principles describe the best practices they see for how to get a modern web app deployed properly.  It's a short read.  This summary is even shorter.</p>
 
 <p><img src="http://i.imgur.com/8aY0qiD.jpg" alt="12 Factors" /></p>
 
