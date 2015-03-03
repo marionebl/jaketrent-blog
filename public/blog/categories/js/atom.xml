@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-02-28T16:58:37-07:00</updated>
+  <updated>2015-03-03T08:36:32-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,123 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[List Npm Scripts]]></title>
+    <link href="http://jaketrent.com/post/list-npm-scripts/"/>
+    <updated>2015-03-02T07:44:00-07:00</updated>
+    <id>http://jaketrent.com/post/list-npm-scripts</id>
+    <content type="html"><![CDATA[<p>Tools for storing and then later easily running scripts alias names are awesome.  Npm is one of those tools.  Rake is another.  Rake has a cool feature of allowing you to list the scripts available to you.  Npm has not -- until now.</p>
+
+<p><img src="http://i.imgur.com/ZDCd9u1.png" alt="npm" /></p>
+
+<!--more-->
+
+
+<h2>Npm Scripts</h2>
+
+<p>You can specify scripts in your <code>package.json</code> for later use.  They go in the <code>scripts</code> attribute:</p>
+
+<p>```json package.json
+{
+  "scripts": {</p>
+
+<pre><code>"start": "node server.js",
+"dist": "webpack -p"
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>To run these scripts, you use the <a href="https://docs.npmjs.com/cli/run-script"><code>npm run</code></a> command.  For example, type <code>npm run build</code> to actually execute the <code>webpack -p</code> command in your terminal.  <code>start</code> and <code>test</code> are specially commands to npm and do not require <code>run</code>.  Instead, you can use <code>npm start</code>.</p>
+
+<h2>Npm List Scripts</h2>
+
+<p>In Rake, you run <code>rake -T</code> in your terminal and all the available scripts for your project are displayed.  This allows you to see the what's potentially helpful.  You can't be expected to remember all of them, especially months later, right?</p>
+
+<p>I certainly was having a hard time remembering all of my scripts and getting tired of typing <code>cat package.json</code>.  It didn't feel as cool as the <code>rake -T</code> experience.  I wrote a library called <a href="https://www.npmjs.com/package/npm-ls-scripts"><code>npm-ls-scripts</code></a>.  To install, run:</p>
+
+<p><code>
+npm install npm-ls-scripts -g
+</code></p>
+
+<p>I like installing this package globally because then the CLI binary is available globally -- it does seem applicable to all projects.  You could instead include it under project <code>devDependencies</code> if you'd like.</p>
+
+<p>If installed globally, you can then run it with:</p>
+
+<p><code>
+ls-scripts
+</code></p>
+
+<p>If I was to run this in the above project, it would print:</p>
+
+<p>```</p>
+
+<h2>NPM - ls scripts</h2>
+
+<p>start - node server.js</p>
+
+<h2>dist - webpack -p</h2>
+
+<p>```</p>
+
+<p>This prints the exact code that can be executed for each script.  If I would like to add some prose around any or all of the available scripts, I can do so by adding more config data to my <code>package.json</code> that will print when I run <code>ls-scripts</code>:</p>
+
+<p>```json package.json
+{
+  "config": {</p>
+
+<pre><code>"scripts: {
+   "dist": "Builds project for distribution"
+}
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Now if I were to run the <code>ls-scripts</code> command, I would see:</p>
+
+<p>```</p>
+
+<h2>NPM - ls scripts</h2>
+
+<p>start - node server.js</p>
+
+<h2>dist - Builds project for distribution</h2>
+
+<p>```</p>
+
+<p>Cool, right?  Complete with Shakespearean prose.</p>
+
+<h2>New: Npm Run</h2>
+
+<p>After I had developed the above <code>npm-ls-scripts</code> tool, Npm built this feature natively into the core tool -- finally!  Now, to list available scripts, the command is intuitively to leave off the target script and instead simply type:</p>
+
+<p><code>
+npm run
+</code></p>
+
+<p>On the above example, this would yield:</p>
+
+<p>```
+Available scripts in the package:
+  start</p>
+
+<pre><code>node server.js
+</code></pre>
+
+<p>  dist</p>
+
+<pre><code>webpack -p
+</code></pre>
+
+<p>```</p>
+
+<p>So, they work about the same, and now it's built in!  What other cool features could you imagine this having?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Test React componentWillReceiveProps]]></title>
@@ -472,115 +589,6 @@ case ActionTypes.TRANSITION:
 <p>At this point, all the route transitions should trigger data changes in views.  Visiting the url <code>/books/1</code> and then the url <code>/books/2</code> should display different data on screen according to which book id was in the route.  <code>Router.Link</code> should work correctly, usable instead of buttons with actions being triggered on click.</p>
 
 <p>react-router and Flux make for a great combo in this way, right?  What adjustments would you make?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[D3 Class Operations]]></title>
-    <link href="http://jaketrent.com/post/d3-class-operations/"/>
-    <updated>2014-12-24T10:58:00-07:00</updated>
-    <id>http://jaketrent.com/post/d3-class-operations</id>
-    <content type="html"><![CDATA[<p>D3 has operations for class name manipulation that you're used to from jQuery.  These include addClass, removeClass, hasClass, and toggleClass.  They just go by different names.</p>
-
-<p><img src="http://i.imgur.com/94JQ8N8.jpg" alt="d3 class names" /></p>
-
-<!--more-->
-
-
-<h2>selection.classed</h2>
-
-<p>The magic all comes in the form of the <code>selection.classed</code> method from d3.  It is going to be the api that is used to accomplish all the operations listed below.  From the <a href="https://github.com/mbostock/d3/wiki/Selections#classed">docs</a>:</p>
-
-<blockquote><p>This operator is a convenience routine for setting the "class" attribute; it understands that the "class" attribute is a set of tokens separated by spaces. Under the hood, it will use the classList if available, for convenient adding, removing and toggling of CSS classes.</p></blockquote>
-
-<p>It knows how to handle one or many classes on an element, and it will be performant.</p>
-
-<p>Also note that this method is only available on a selection.</p>
-
-<h2>d3 addClass</h2>
-
-<p>To add a class, the second parameter to <code>classed</code> must be true, as in this code:</p>
-
-<p><code>js
-d3.selectAll(".bar")
- .classed("my-selector", true);
-</code></p>
-
-<h2>d3 removeClass</h2>
-
-<p>To remove a class, the second parameter to <code>classed</code> must be false.</p>
-
-<p><code>js
-d3.selectAll(".bar")
-  .classed("my-selector", false);
-</code></p>
-
-<h2>d3 hasClass</h2>
-
-<p>To check for the existence of a class, just leave off the second parameter and pass the class name you're querying for.  This will return true if it exists, false if it does not.</p>
-
-<p><code>js
-d3.selectAll(".bar")
- .classed("my-selector");
-</code></p>
-
-<p>This will return true if any element in the selection has the class.  Use <code>d3.select</code> for single element selection.</p>
-
-<h2>d3 toggleClass</h2>
-
-<p>To flip a class to the opposite state  -- remove it if it exists already, add it if it does not yet exist -- you can do one of the following.</p>
-
-<p>For a single element, the code might look like this:</p>
-
-<p><code>js
-var oneBar = d3.select(".bar")
-oneBar.classed("my-selector", !oneBar.classed("my-selector"));
-</code></p>
-
-<p>For multiple elements, one will want to pass in a callback.  The callback function takes as parameters <code>d</code>, the datum, <code>i</code>, the index in the selection, and <code>this</code> is the current DOM element.</p>
-
-<p>It's also important to note that the <a href="https://github.com/mbostock/d3/wiki/Selections#classed">docs</a> inform us that:</p>
-
-<blockquote><p>The function's return value is then used to assign or unassign the specified class on each element.</p></blockquote>
-
-<p>The code for toggling multiple elements in a selection at once might look like this:</p>
-
-<p>```js
-d3.selectAll("bar")
-  .classed("my-selector", function (d, i) {</p>
-
-<pre><code>return !d3.select(this).classed("my-selector");
-</code></pre>
-
-<p>  });
-```</p>
-
-<p>Here's a <a href="http://jsbin.com/qeyawa/1/edit?html,js,output">jsbin</a> that provides some toggle functionality.  Ees for fun.</p>
-
-<p><a class="jsbin-embed" href="http://jsbin.com/qeyawa/1/embed?output">d3 toggleClass</a><script src="http://static.jsbin.com/js/embed.js"></script></p>
-
-<h2>Bonus: A note on single active classes</h2>
-
-<p>Here's a fun tip for that oft-encountered situation where you want a single element in a selection to have a class, like an <code>active</code> class, and the rest of the selection should not:</p>
-
-<p>Make sure that you detect the active class in the selection previous to the clearing of the active classes.</p>
-
-<p>A sample of what that might look like could be:</p>
-
-<p>```js
-d3.selectAll(".bar").on("click", function () {
-  var activeClass = "active";
-  var alreadyIsActive = d3.select(this).classed(activeClass);
-  svg.selectAll(".reports-chart__bar")</p>
-
-<pre><code>.classed(activeClass, false);
-</code></pre>
-
-<p>  d3.select(this).classed(activeClass, !alreadyIsActive);
-});
-```</p>
-
-<p>Now, unleash the power of your creativity!  Kazaam!</p>
 ]]></content>
   </entry>
   
