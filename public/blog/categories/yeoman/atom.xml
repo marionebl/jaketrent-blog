@@ -4,7 +4,7 @@
   <title><![CDATA[Category: yeoman | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/yeoman/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-03-03T08:36:32-07:00</updated>
+  <updated>2015-03-03T17:55:38-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -63,21 +63,15 @@ npm install gzippo express coffee-script --save
 
 <p>Now create your app server, <code>web.coffee</code>.  It's about as light as they come:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">gzippo = </span><span class="nx">require</span> <span class="s">&#39;gzippo&#39;</span>
-</span><span class='line'><span class="nv">express = </span><span class="nx">require</span> <span class="s">&#39;express&#39;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">app = </span><span class="nx">express</span><span class="p">()</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">logger</span> <span class="s">&#39;dev&#39;</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">gzippo</span><span class="p">.</span><span class="nx">staticGzip</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">__dirname</span><span class="si">}</span><span class="s">/dist&quot;</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span> <span class="o">||</span> <span class="mi">5000</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:coffeescript %}
+gzippo = require 'gzippo'
+express = require 'express'</p>
+
+<p>app = express()
+app.use express.logger 'dev'
+app.use gzippo.staticGzip "#{__dirname}/dist"
+app.listen process.env.PORT || 5000
+{% endcodeblock %}</p>
 
 <p>It's going to be serving the static resources that you build w/ Yeoman/Grunt that end up in the <code>dist</code> directory.  In order for code to get to Heroku, it needs to be commited to your git repo.  Thus, you need to remove the "dist" line from your <code>.gitignore</code> file, and don't forget to add and commit the files to git as you build them.  You may also have to add more tasks to the <code>Gruntfile.js</code> to copy over any other assets to <code>dist</code> that your app needs to run.</p>
 

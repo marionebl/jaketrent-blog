@@ -38,7 +38,7 @@ In Rake, you run `rake -T` in your terminal and all the available scripts for yo
 
 I certainly was having a hard time remembering all of my scripts and getting tired of typing `cat package.json`.  It didn't feel as cool as the `rake -T` experience.  I wrote a library called [`npm-ls-scripts`](https://www.npmjs.com/package/npm-ls-scripts).  To install, run:
 
-```
+```bash
 npm install npm-ls-scripts -g
 ```
 
@@ -46,13 +46,13 @@ I like installing this package globally because then the CLI binary is available
 
 If installed globally, you can then run it with:
 
-```
+```bash
 ls-scripts
 ```
 
 If I was to run this in the above project, it would print:
 
-```
+```bash
 NPM - ls scripts
 ---
 start - node server.js
@@ -74,7 +74,7 @@ This prints the exact code that can be executed for each script.  If I would lik
 
 Now if I were to run the `ls-scripts` command, I would see:
 
-```
+```bash
 NPM - ls scripts
 ---
 start - node server.js
@@ -88,13 +88,13 @@ Cool, right?  Complete with Shakespearean prose.
 
 After I had developed the above `npm-ls-scripts` tool, Npm built this feature natively into the core tool -- finally!  Now, to list available scripts, the command is intuitively to leave off the target script and instead simply type:
 
-```
+```bash
 npm run
 ```
 
 On the above example, this would yield:
 
-```
+```bash
 Available scripts in the package:
   start
     node server.js

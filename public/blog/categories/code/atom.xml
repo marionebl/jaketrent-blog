@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-03-03T08:36:32-07:00</updated>
+  <updated>2015-03-03T17:55:38-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -49,7 +49,7 @@
 
 <p>I certainly was having a hard time remembering all of my scripts and getting tired of typing <code>cat package.json</code>.  It didn't feel as cool as the <code>rake -T</code> experience.  I wrote a library called <a href="https://www.npmjs.com/package/npm-ls-scripts"><code>npm-ls-scripts</code></a>.  To install, run:</p>
 
-<p><code>
+<p><code>bash
 npm install npm-ls-scripts -g
 </code></p>
 
@@ -57,13 +57,13 @@ npm install npm-ls-scripts -g
 
 <p>If installed globally, you can then run it with:</p>
 
-<p><code>
+<p><code>bash
 ls-scripts
 </code></p>
 
 <p>If I was to run this in the above project, it would print:</p>
 
-<p>```</p>
+<p>```bash</p>
 
 <h2>NPM - ls scripts</h2>
 
@@ -90,7 +90,7 @@ ls-scripts
 
 <p>Now if I were to run the <code>ls-scripts</code> command, I would see:</p>
 
-<p>```</p>
+<p>```bash</p>
 
 <h2>NPM - ls scripts</h2>
 
@@ -106,13 +106,13 @@ ls-scripts
 
 <p>After I had developed the above <code>npm-ls-scripts</code> tool, Npm built this feature natively into the core tool -- finally!  Now, to list available scripts, the command is intuitively to leave off the target script and instead simply type:</p>
 
-<p><code>
+<p><code>bash
 npm run
 </code></p>
 
 <p>On the above example, this would yield:</p>
 
-<p>```
+<p>```bash
 Available scripts in the package:
   start</p>
 

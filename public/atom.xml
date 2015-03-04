@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-03-03T08:36:32-07:00</updated>
+  <updated>2015-03-03T17:55:17-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -52,8 +52,8 @@
 
 <p>I certainly was having a hard time remembering all of my scripts and getting tired of typing <code>cat package.json</code>.  It didn&#8217;t feel as cool as the <code>rake -T</code> experience.  I wrote a library called <a href="https://www.npmjs.com/package/npm-ls-scripts"><code>npm-ls-scripts</code></a>.  To install, run:</p>
 
-<figure class='code'><figcaption><span>package.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">npm</span> <span class="err">install</span> <span class="err">npm-ls-scripts</span> <span class="err">-g</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm install npm-ls-scripts -g
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -61,23 +61,23 @@
 
 <p>If installed globally, you can then run it with:</p>
 
-<figure class='code'><figcaption><span>package.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">ls-scripts</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ls-scripts
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>If I was to run this in the above project, it would print:</p>
 
-<figure class='code'><figcaption><span>package.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">NPM</span> <span class="err">-</span> <span class="err">ls</span> <span class="err">scripts</span>
-</span><span class='line'><span class="err">---</span>
-</span><span class='line'><span class="err">start</span> <span class="err">-</span> <span class="err">node</span> <span class="err">server.js</span>
-</span><span class='line'><span class="err">dist</span> <span class="err">-</span> <span class="err">webpack</span> <span class="err">-p</span>
-</span><span class='line'><span class="err">---</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>NPM - ls scripts
+</span><span class='line'>---
+</span><span class='line'>start - node server.js
+</span><span class='line'>dist - webpack -p
+</span><span class='line'>---
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -102,16 +102,16 @@
 
 <p>Now if I were to run the <code>ls-scripts</code> command, I would see:</p>
 
-<figure class='code'><figcaption><span>package.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">NPM</span> <span class="err">-</span> <span class="err">ls</span> <span class="err">scripts</span>
-</span><span class='line'><span class="err">---</span>
-</span><span class='line'><span class="err">start</span> <span class="err">-</span> <span class="err">node</span> <span class="err">server.js</span>
-</span><span class='line'><span class="err">dist</span> <span class="err">-</span> <span class="err">Builds</span> <span class="err">project</span> <span class="err">for</span> <span class="err">distribution</span>
-</span><span class='line'><span class="err">---</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>NPM - ls scripts
+</span><span class='line'>---
+</span><span class='line'>start - node server.js
+</span><span class='line'>dist - Builds project <span class="k">for </span>distribution
+</span><span class='line'>---
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -121,23 +121,23 @@
 
 <p>After I had developed the above <code>npm-ls-scripts</code> tool, Npm built this feature natively into the core tool &#8211; finally!  Now, to list available scripts, the command is intuitively to leave off the target script and instead simply type:</p>
 
-<figure class='code'><figcaption><span>package.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">npm</span> <span class="err">run</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm run
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>On the above example, this would yield:</p>
 
-<figure class='code'><figcaption><span>package.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="err">Available</span> <span class="err">scripts</span> <span class="err">in</span> <span class="err">the</span> <span class="err">package:</span>
-</span><span class='line'>  <span class="err">start</span>
-</span><span class='line'>    <span class="err">node</span> <span class="err">server.js</span>
-</span><span class='line'>  <span class="err">dist</span>
-</span><span class='line'>    <span class="err">webpack</span> <span class="err">-p</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Available scripts in the package:
+</span><span class='line'>  start
+</span><span class='line'>    node server.js
+</span><span class='line'>  dist
+</span><span class='line'>    webpack -p
 </span></code></pre></td></tr></table></div></figure>
 
 
