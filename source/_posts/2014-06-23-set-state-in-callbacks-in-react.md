@@ -16,14 +16,16 @@ In React, you can setup components that fetch their own data and set their own s
 
 <!--more-->
 
+**Updated** for React 0.13.  See below
+
 ## React Components setState
 
-If a React component fetches its own data, it will usually do so in the `componentDidMount` method.  In the data request callback, it will set its own state via the `this.setState` method.  (`this.state` should be treated as immutable.)  State should only be set on mounted components, or those components that are inserted into the dom.  
- 
+If a React component fetches its own data, it will usually do so in the `componentDidMount` method.  In the data request callback, it will set its own state via the `this.setState` method.  (`this.state` should be treated as immutable.)  State should only be set on mounted components, or those components that are inserted into the dom.
+
 If you attempt to set state on an unmounted component, you'll get an error that looks like this:
 
 ```
-Uncaught Error: Invariant Violation: replaceState(...): Can only update a mounted or mounting component. 
+Uncaught Error: Invariant Violation: replaceState(...): Can only update a mounted or mounting component.
 ```
 
 Others have reported this variation:
@@ -43,8 +45,8 @@ React.createClass({
   componentDidMount: function () {
     MyModel.find(function (err, data) {
       if (this.isMounted()) {
-        this.setState({ 
-          goodiesFrom: data 
+        this.setState({
+          goodiesFrom: data
         })
       }
     }.bind(this))
@@ -87,6 +89,46 @@ MyModel.prototype.find = function (done) {
 }
 ```
 
-Also note that in my `end` function callback, I'm checking for the existence of data.  This is because when a request is aborted, data will come back as undefined.  
+Also note that in my `end` function callback, I'm checking for the existence of data.  This is because when a request is aborted, data will come back as undefined.
 
 My favored method for solving the problem is the latter request abort method.  It feels cleaner that we're relying on the lifecycle functions of the component to deal with cleanup, much like we would for [events](http://facebook.github.io/react/tips/dom-event-listeners.html).  How have you dealt with this problem?
+
+## Update: Using ES6 Classes
+
+With React 0.13, you can define your components using the ES6 `class` definition.  These classes conspicuously change behavior from the old style of `React.createClass` in several ways.  Here are a couple that are relevant here:
+
+- There is no `isMounted()` method any more
+- There is no `getDOMNode()` method any more
+
+`isMounted` is gone, awol, as far as I can tell, and `getDOMNode` has been moved to a utility function.
+
+So, in order to get the DOM Node, you'd call it like this:
+
+```js
+React.getDOMNode(this) // `this` would be my component
+```
+
+It functions as before.
+
+In order to check `isMounted`, you're on your own.  My basic implementation can be seen in the following [jsbin](http://jsbin.com/telopegaya/2/edit?js,output).  Frankly, it feels dirty.  `React.findDOMNode` will throw an exception if the component isn't mounted, so we are using exceptions for flow control.  Egh:
+
+```js
+var isMounted = (component) => {
+  // exceptions for flow control :(
+  try {
+    React.findDOMNode(component);
+    return true;
+  } catch (e) {
+    // Error: Invariant Violation: Component (with keys: props,context,state,refs,_reactInternalInstance) contains `render` method but is not mounted in the DOM
+    return false;
+  }
+};
+```
+
+How it might still be used:
+
+<a class="jsbin-embed" href="http://jsbin.com/telopegaya/2/embed?js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+
+This leaves me with the question of why `isMounted` was removed if it helps solve a potential problem.  Do we solve it in another way?  Does the core library do more for you?  You can verify for yourself in the jsbin above that if you remove the `isMounted` check, the old invariant error message is still logged.
+
+Does anyone have a *good* `isMounted` solution?

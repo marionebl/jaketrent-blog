@@ -4,7 +4,7 @@
   <title><![CDATA[Category: react | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/react/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-03-03T17:55:38-07:00</updated>
+  <updated>2015-03-13T13:49:29-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -505,6 +505,8 @@ React.createClass({
 <!--more-->
 
 
+<p><strong>Updated</strong> for React 0.13.  See below</p>
+
 <h2>React Components setState</h2>
 
 <p>If a React component fetches its own data, it will usually do so in the <code>componentDidMount</code> method.  In the data request callback, it will set its own state via the <code>this.setState</code> method.  (<code>this.state</code> should be treated as immutable.)  State should only be set on mounted components, or those components that are inserted into the dom.</p>
@@ -533,8 +535,8 @@ React.createClass({
 
 <pre><code>MyModel.find(function (err, data) {
   if (this.isMounted()) {
-    this.setState({ 
-      goodiesFrom: data 
+    this.setState({
+      goodiesFrom: data
     })
   }
 }.bind(this))
@@ -591,6 +593,55 @@ MyModel.prototype.find = function (done) {
 <p>Also note that in my <code>end</code> function callback, I'm checking for the existence of data.  This is because when a request is aborted, data will come back as undefined.</p>
 
 <p>My favored method for solving the problem is the latter request abort method.  It feels cleaner that we're relying on the lifecycle functions of the component to deal with cleanup, much like we would for <a href="http://facebook.github.io/react/tips/dom-event-listeners.html">events</a>.  How have you dealt with this problem?</p>
+
+<h2>Update: Using ES6 Classes</h2>
+
+<p>With React 0.13, you can define your components using the ES6 <code>class</code> definition.  These classes conspicuously change behavior from the old style of <code>React.createClass</code> in several ways.  Here are a couple that are relevant here:</p>
+
+<ul>
+<li>There is no <code>isMounted()</code> method any more</li>
+<li>There is no <code>getDOMNode()</code> method any more</li>
+</ul>
+
+
+<p><code>isMounted</code> is gone, awol, as far as I can tell, and <code>getDOMNode</code> has been moved to a utility function.</p>
+
+<p>So, in order to get the DOM Node, you'd call it like this:</p>
+
+<p><code>js
+React.getDOMNode(this) // `this` would be my component
+</code></p>
+
+<p>It functions as before.</p>
+
+<p>In order to check <code>isMounted</code>, you're on your own.  My basic implementation can be seen in the following <a href="http://jsbin.com/telopegaya/2/edit?js,output">jsbin</a>.  Frankly, it feels dirty.  <code>React.findDOMNode</code> will throw an exception if the component isn't mounted, so we are using exceptions for flow control.  Egh:</p>
+
+<p>```js
+var isMounted = (component) => {
+  // exceptions for flow control :(
+  try {</p>
+
+<pre><code>React.findDOMNode(component);
+return true;
+</code></pre>
+
+<p>  } catch (e) {</p>
+
+<pre><code>// Error: Invariant Violation: Component (with keys: props,context,state,refs,_reactInternalInstance) contains `render` method but is not mounted in the DOM
+return false;
+</code></pre>
+
+<p>  }
+};
+```</p>
+
+<p>How it might still be used:</p>
+
+<p><a class="jsbin-embed" href="http://jsbin.com/telopegaya/2/embed?js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script></p>
+
+<p>This leaves me with the question of why <code>isMounted</code> was removed if it helps solve a potential problem.  Do we solve it in another way?  Does the core library do more for you?  You can verify for yourself in the jsbin above that if you remove the <code>isMounted</code> check, the old invariant error message is still logged.</p>
+
+<p>Does anyone have a <em>good</em> <code>isMounted</code> solution?</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: superagent | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/superagent/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-03-03T17:55:38-07:00</updated>
+  <updated>2015-03-13T13:49:29-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -104,6 +104,8 @@ end
 <!--more-->
 
 
+<p><strong>Updated</strong> for React 0.13.  See below</p>
+
 <h2>React Components setState</h2>
 
 <p>If a React component fetches its own data, it will usually do so in the <code>componentDidMount</code> method.  In the data request callback, it will set its own state via the <code>this.setState</code> method.  (<code>this.state</code> should be treated as immutable.)  State should only be set on mounted components, or those components that are inserted into the dom.</p>
@@ -132,8 +134,8 @@ React.createClass({
 
 <pre><code>MyModel.find(function (err, data) {
   if (this.isMounted()) {
-    this.setState({ 
-      goodiesFrom: data 
+    this.setState({
+      goodiesFrom: data
     })
   }
 }.bind(this))
@@ -190,6 +192,55 @@ MyModel.prototype.find = function (done) {
 <p>Also note that in my <code>end</code> function callback, I'm checking for the existence of data.  This is because when a request is aborted, data will come back as undefined.</p>
 
 <p>My favored method for solving the problem is the latter request abort method.  It feels cleaner that we're relying on the lifecycle functions of the component to deal with cleanup, much like we would for <a href="http://facebook.github.io/react/tips/dom-event-listeners.html">events</a>.  How have you dealt with this problem?</p>
+
+<h2>Update: Using ES6 Classes</h2>
+
+<p>With React 0.13, you can define your components using the ES6 <code>class</code> definition.  These classes conspicuously change behavior from the old style of <code>React.createClass</code> in several ways.  Here are a couple that are relevant here:</p>
+
+<ul>
+<li>There is no <code>isMounted()</code> method any more</li>
+<li>There is no <code>getDOMNode()</code> method any more</li>
+</ul>
+
+
+<p><code>isMounted</code> is gone, awol, as far as I can tell, and <code>getDOMNode</code> has been moved to a utility function.</p>
+
+<p>So, in order to get the DOM Node, you'd call it like this:</p>
+
+<p><code>js
+React.getDOMNode(this) // `this` would be my component
+</code></p>
+
+<p>It functions as before.</p>
+
+<p>In order to check <code>isMounted</code>, you're on your own.  My basic implementation can be seen in the following <a href="http://jsbin.com/telopegaya/2/edit?js,output">jsbin</a>.  Frankly, it feels dirty.  <code>React.findDOMNode</code> will throw an exception if the component isn't mounted, so we are using exceptions for flow control.  Egh:</p>
+
+<p>```js
+var isMounted = (component) => {
+  // exceptions for flow control :(
+  try {</p>
+
+<pre><code>React.findDOMNode(component);
+return true;
+</code></pre>
+
+<p>  } catch (e) {</p>
+
+<pre><code>// Error: Invariant Violation: Component (with keys: props,context,state,refs,_reactInternalInstance) contains `render` method but is not mounted in the DOM
+return false;
+</code></pre>
+
+<p>  }
+};
+```</p>
+
+<p>How it might still be used:</p>
+
+<p><a class="jsbin-embed" href="http://jsbin.com/telopegaya/2/embed?js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script></p>
+
+<p>This leaves me with the question of why <code>isMounted</code> was removed if it helps solve a potential problem.  Do we solve it in another way?  Does the core library do more for you?  You can verify for yourself in the jsbin above that if you remove the <code>isMounted</code> check, the old invariant error message is still logged.</p>
+
+<p>Does anyone have a <em>good</em> <code>isMounted</code> solution?</p>
 ]]></content>
   </entry>
   
@@ -219,30 +270,51 @@ MyModel.prototype.find = function (done) {
 
 <p>Supertest has no cookiejar for holding cookies like the sessionid.  But, superagent does.  So, we're going to need to import it explicitly.  A login helper could look something like this:</p>
 
-<p>{% codeblock lang:javascript %}
-var superagent = require('superagent');
-var agent = superagent.agent();
-var theAccount = {
-  "username": "nacho",
-  "password": "iamtheluchadore"
-};</p>
-
-<p>exports.login = function (request, done) {
-  request</p>
-
-<pre><code>.post('/login')
-.send(theAccount)
-.end(function (err, res) {
-  if (err) {
-    throw err;
-  }
-  agent.saveCookies(res);
-  done(agent);
-});
-</code></pre>
-
-<p>};
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">superagent</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;superagent&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">agent</span> <span class="o">=</span> <span class="nx">superagent</span><span class="p">.</span><span class="nx">agent</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">theAccount</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;nacho&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s2">&quot;password&quot;</span><span class="o">:</span> <span class="s2">&quot;iamtheluchadore&quot;</span>
+</span><span class='line'><span class="p">};</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">exports</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">request</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">theAccount</span><span class="p">)</span>
+</span><span class='line'><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">agent</span><span class="p">.</span><span class="nx">saveCookies</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">done</span><span class="p">(</span><span class="nx">agent</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>A few points:</p>
 
@@ -257,35 +329,61 @@ var theAccount = {
 
 <p>Now that we've made login request and saved the cookies, it's time to make our authenticated request(s).  Easy cheesy.  A simple test to see if the login worked might look like this:</p>
 
-<p>{% codeblock lang:javascript %}
-var request = require('supertest')(app);
-var login = require('./login');</p>
-
-<p>describe('MyApp', function () {</p>
-
-<p>  var agent;</p>
-
-<p>  before(function (done) {</p>
-
-<pre><code>login.login(request, function (loginAgent) {
-  agent = loginAgent;
-  done();
-});
-</code></pre>
-
-<p>  });</p>
-
-<p>  it('should allow access to admin when logged in', function (done) {</p>
-
-<pre><code>var req = request.get('/admin');
-agent.attachCookies(req);
-req.expect(200, done);
-</code></pre>
-
-<p>  });</p>
-
-<p>});
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;supertest&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">login</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./login&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;MyApp&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="kd">var</span> <span class="nx">agent</span><span class="p">;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">before</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">login</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">loginAgent</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">agent</span> <span class="o">=</span> <span class="nx">loginAgent</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">done</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should allow access to admin when logged in&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/admin&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">agent</span><span class="p">.</span><span class="nx">attachCookies</span><span class="p">(</span><span class="nx">req</span><span class="p">);</span>
+</span><span class='line'><span class="nx">req</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nx">done</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>More jabber about the code:</p>
 
