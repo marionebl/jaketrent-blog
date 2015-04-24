@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-03-13T13:49:29-06:00</updated>
+  <updated>2015-04-23T22:31:18-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,66 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[The Power of Liking]]></title>
+    <link href="http://jaketrent.com/post/the-power-of-liking/"/>
+    <updated>2015-04-23T21:50:00-06:00</updated>
+    <id>http://jaketrent.com/post/the-power-of-liking</id>
+    <content type="html"><![CDATA[<p>When there is a new software product to write, there&#8217;s a decision to be made on what to write it in.  In other words, what tech should we use?  Technologists have technology they &#8220;like&#8221;.  So then, what tech should they choose for the new project?  Does it matter what they like?</p>
+
+<p><img src="http://i.imgur.com/HmNq6Xz.jpg" alt="Like!" /></p>
+
+<!--more-->
+
+
+<h2>We Like Different Tech</h2>
+
+<p>Obviously, there are differences in people&#8217;s opinions.  Take a look at one current hot arena: in-browser MV* JavaScript frameworks.  They essentially are all made for the same purpose.  And years of different approaches and techs have been taken before each of them.</p>
+
+<p>They have many stylistic and substantive differences.  There are many acolytes assembled in each camp.  Each likes what they have.  Differences are real and perceived.  They&#8217;re here to stay.  That&#8217;s ok and probably better than ok.</p>
+
+<h2>On the Origins of Liking</h2>
+
+<p>Different people have different reasons for liking certain things.  Just like the subject of the liking, the origins of liking can be stylistic or substantive.</p>
+
+<p>Perhaps they have a long, storied background in a tech and want to cash in on their investment in the future.  Perhaps they had good experiences with successfully shipping product in the past in certain tech and bad experiences in others.  Perhaps the public perception and community uptake around a tech excites them to join in the merriment.</p>
+
+<p>They may, in fact, be drawn to something quite superficial &#8211; something as unaffecting the actual tech as liking the tech project&#8217;s logo.  More substantively, perhaps they&#8217;ve grown to like a tech after trying it out on a problem space and discovering and predicting great payoffs as they develop a particular product.</p>
+
+<h2>Of Course, Like the Product</h2>
+
+<p>If you like your product and you&#8217;re good at creating and supporting a product, of course you won&#8217;t choose a tech for just the tech&#8217;s sake.  You can do that inside your own github account.  There is time and space to simply explore tech as a technologist.  Here there are real products to ship to support great causes in real companies.</p>
+
+<p>I believe that choosing a tech should support the main goal of delivering value via an experience or service in software to real people.  I also believe that there is a power in liking a tech as the product creator.  Can we have both?  Often, I believe we can.</p>
+
+<h2>OK to Like</h2>
+
+<p>When is it appropriate to use a tech you want to write in?  There are insufficient blogosphere bits to enumerate all the permutations of appropriateness and inappropriateness factors.  You will need to use your judgement.  Often these issues are complicated in deciding how to support a product.  Believing that your personal desires have a place in product tech decisions, should what you like seem very complicated to you?</p>
+
+<p>I would ask, &#8220;What&#8217;s the alternative writing software in something you like?   Writing a product in a tech you <em>don&#8217;t</em> want to write in?&#8221;  And why would you do that?</p>
+
+<p>Sometimes I think we almost lead ourselves to think that something we don&#8217;t like to write in must have some power to do us good.  How, we&#8217;re not sure.  But just as our parents told us the veggies on our plates were good all those years ago, perhaps some tech austerity measure might do us some good now, right?</p>
+
+<p>Is a bad taste required for health?  Choosing the disliked option doesn&#8217;t necessarily mean that the outcome will be better just because it feels more responsible.</p>
+
+<h2>The Advantage of Liking</h2>
+
+<p>Are there advantages to writing in a tech you like?  Probably, yes.  And probably disadvantages, I&#8217;m sure.  Again, this isn&#8217;t meant to over simplify one&#8217;s analysis of tech options and problem fit.  Separate and in addition to that, what are the advantages of writing in something you like?</p>
+
+<p>An advantage is that you must already have some level of mastery in the tech you like.  I don&#8217;t think you&#8217;ll like things that you aren&#8217;t terribly good at.  You don&#8217;t have as much of a sense of accomplishment with those.  You have a strength in some tech that you can offer your company and your team.  You should play to that and use it to your advantage.  That&#8217;s what you, your leader, your team, and your customers want &#8211; your best productivity.</p>
+
+<p>If you&#8217;re a software creator, it&#8217;s likely that a good portion of your day is writing code for your product.  If you like the everyday experience, focus and flow time will come more easily to you.  You&#8217;ll be able to dig deep into your time and energy more easily to muster extra effort when needed.  The extra mile will not seem so laborious to you.</p>
+
+<h2>Like More Than the Tech</h2>
+
+<p>There is a lot of tech and a lot of product to be experienced out there.  It&#8217;s likely that you&#8217;ll be writing in a tech that you don&#8217;t fully like soon if you haven&#8217;t already.  There are many reasons to be a part of a software project beyond the tech.  It will be stabilizing and satisfying for you to find extra facets of your project to like.</p>
+
+<p>Like the team you work with.  Like the people you work for.  Like the purpose and aim of your company.  Like the product you&#8217;re making.  Like the values you&#8217;re living by.  Like the impact you&#8217;re making.  Like the relationships you&#8217;re building.  Like the skills you&#8217;re gaining.</p>
+
+<p>And if you have the choice &#8211; and we all do to one degree or another &#8211; why not like the tech you&#8217;re using!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[List Npm Scripts]]></title>
@@ -2175,229 +2235,6 @@
 
 
 <p>Now you should be able to push to heroku, have npm install, then have bower install.  Because you&#8217;ve recorded your resolutions choices, the process can work automatically on heroku without prompts.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mountain West JavaScript Review]]></title>
-    <link href="http://jaketrent.com/post/mtnwest-javascript-review/"/>
-    <updated>2014-03-25T11:45:00-06:00</updated>
-    <id>http://jaketrent.com/post/mtnwest-javascript-review</id>
-    <content type="html"><![CDATA[<p>MountainWest JavaScript was a great conference last week.  It was a jubilee. Well, if you can have a jubilee in the first year of a conference.   Here&#8217;s my take.</p>
-
-<p><img src="http://i.imgur.com/VGtnQzX.png" alt="MtnWest JavaScript" /></p>
-
-<!--more-->
-
-
-<h2>Format</h2>
-
-<p><a href="http://mtnwestjs.org/">MountainWest JavaScript</a> started this year as a part of the larger Mountain West conference set, including <a href="http://mtnwestdevops.org/">devops</a> and <a href="http://mtnwestrubyconf.org/">Ruby</a> as well.  It was two full days.  There is a single track &#8211; everyone (that stays) hears everything.  Love both these features.  Splitting the disciplines into separate conferences is genius.</p>
-
-<h2>Speakers</h2>
-
-<p>The speaker lineup was exceptional.  There were many great minds assembled, fun experience shared, and great companies represented.  Following <a href="http://jaketrent.com/post/ng-conf-review/">ng-conf</a> earlier this year, I was again pleasantly surprised at the amount of great content.  I did not attend the devops or ruby portions, but it has been said by some that they were not as exceptional.</p>
-
-<p>Thanks to the organizers for selecting great content and presenters.  Thank you to all the speakers for preparing some killer talks.</p>
-
-<h2>Topics</h2>
-
-<p>The mix of topics seemed relevant and varied.  This was welcome.  There was just a bit of overlap on some topics.  Conference organizers put similar topics together, which was fine.  But in one case, the back-to-back speakers, from the same company and essentially the same topic had so much overlap that it was obvious.  Repetition is good, but it should be done in front of the YouTube recording of a single, great talk on the subject.  The conference was recorded, so hopefully we can see the sessions online soon.</p>
-
-<h2>Venue</h2>
-
-<p>The conference met at the Salt Lake City Public Library.  It&#8217;s a great city.  It&#8217;s a cool building.  It has a location close to public transit lines.  The stadium seating in the conference room is good for visibility but bad for knees.  There were plenty of power sources.</p>
-
-<p>Despite these good points about the location, I found myself not super-excited about showing up at the library for another conference.  I feel like it&#8217;s time for something fresh.</p>
-
-<h2>Swag</h2>
-
-<p>There was a nice shirt with mysterious symbols emblazened across the front.  Ruby was discernable.  I&#8217;m still up in the air over which represents JavaScript or devops.  There was also a nice, laminate sticker that they gave out with the conference logo.  Sponsors gave out nothing.  I was hoping for an O.C. Tanner gold bracelet and Instructure panda hoodie.  There was also a stunning lack of sweet treats and lunch. :(  In the place of actual food, there was an especially long, 2-hour lunch break &#8211; oh, and a lot of water.</p>
-
-<h2>I&#8217;d Go Again</h2>
-
-<p>I&#8217;d definitely go again if the speaker and topic lineup seemed as promising as it turned out to be this year.  Next year, hopefully I&#8217;ll attend at a different location in Salt Lake City and enjoy a chocolate eclair whilst learning about how I can actually use es6 features in the then-current evergreen browsers.</p>
-
-<h2>My Notes</h2>
-
-<p>As I&#8217;ve indicated, there were many topics touched upon that were interesting and helpful.  I&#8217;ve included my chicken scratch below (if you can actually type chicken scratch), mostly so you can grab some hyperlinks if you&#8217;d like.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>react.js - Pete Hunt - made react look very interesting from a perspective of the underlying ideas
-</span><span class='line'>     - jsx - http://facebook.github.io/react/docs/jsx-in-depth.html
-</span><span class='line'>     - virtual dom
-</span><span class='line'>     - simplicity over familiarity
-</span><span class='line'>      - riot.js - super-small mvp lib - https://moot.it/riotjs/docs/
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>macros - James Long -
-</span><span class='line'>     - sweet.js
-</span><span class='line'>
-</span><span class='line'>async js - Jafar Husain - simplicity of event handling, handling of race conditions, and description of handling looked very compelling
-</span><span class='line'>     - observable - combine iterator (‘i’m done’) with event (pub sub)
-</span><span class='line'>     - events are just arrays
-</span><span class='line'>     - vector programming - transformations over collections
-</span><span class='line'>     - practice and learn - http://jhusain.github.io/learnrx/
-</span><span class='line'>
-</span><span class='line'>async -
-</span><span class='line'>     - same bit as above
-</span><span class='line'>     - rxjs - http://reactive-extensions.github.io/RxJS/ - https://rx.codeplex.com/
-</span><span class='line'>     - Reactive Manifesto - http://www.reactivemanifesto.org/
-</span><span class='line'>
-</span><span class='line'>ball of mud - Brandon Hays - most entertaining; great
-</span><span class='line'>     - Ball of mud architecture - http://laputan.org/mud/
-</span><span class='line'>     - @tehviking
-</span><span class='line'>
-</span><span class='line'>TDD ember - Andy Pliszka
-</span><span class='line'>
-</span><span class='line'>Screenreaders - Ryan Florence - a humanistic appeal to do the right thing and help those with disabilities on the web
-</span><span class='line'>     - aria-role
-</span><span class='line'>
-</span><span class='line'>seo - Jeff Whepley
-</span><span class='line'>     - fragment spec
-</span><span class='line'>     - make server render substates, js can pick up
-</span><span class='line'>
-</span><span class='line'>teach kids js - Liz Abinante - fun and light encouragement to share programming concepts with children
-</span><span class='line'>     - children are moldable
-</span><span class='line'>     - creative, imagination
-</span><span class='line'>     - not limited by inhibitions
-</span><span class='line'>     - start early, have time for mastery by young age.
-</span><span class='line'>
-</span><span class='line'>modules, packages - Guy Bedford
-</span><span class='line'>     - traceur - still use
-</span><span class='line'>     - es6-module-loader - es6 loader polyfill - used by addy osmani’s todomvc - http://addyosmani.github.io/todomvc-backbone-es6/
-</span><span class='line'>     - systemjs - shim require on top of es6 loader polyfill
-</span><span class='line'>     - jspm.io + systemjs - https://github.com/systemjs
-</span><span class='line'>     - addy osmani’s todomvc rewrite experience - http://blog.tastejs.com/rewriting-a-webapp-with-ecmascript-6
-</span><span class='line'>
-</span><span class='line'>web animation - Jeremy Kahn
-</span><span class='line'>     - detect end of css animation - http://blog.teamtreehouse.com/using-jquery-to-detect-when-css3-animations-and-transitions-end
-</span><span class='line'>     - edit keyframe animation via js - https://github.com/jlongster/css-animations.js
-</span><span class='line'>     - js tweening - https://github.com/jeremyckahn/shifty/
-</span><span class='line'>     - stylie - viz tool create keyframe animation
-</span><span class='line'>
-</span><span class='line'>hardware hack - Jamisson Dance
-</span><span class='line'>     - npm - johnny-five - node arduino
-</span><span class='line'>     - npm - xbox-controller
-</span><span class='line'>     - parrot ar drone
-</span><span class='line'>          - “That’s against the spirit of node to use something when you could rewrite it yourself.”
-</span><span class='line'>     - arduino uno w/ breadboard - ~$100
-</span><span class='line'>
-</span><span class='line'>flight.js - Kassandra Perch
-</span><span class='line'>     - slides - http://kperch.github.io/mtn_west/
-</span><span class='line'>
-</span><span class='line'>node error handling - Jamund Ferguson
-</span><span class='line'>     - Kraken - on top of express - https://github.com/paypal/kraken-js
-</span><span class='line'>     - try/catch - for json.parse
-</span><span class='line'>     - callback - first param is err
-</span><span class='line'>     - custom error - custom name, attach custom data (e.g., ServerError has a list of services hitting, ports, etc)
-</span><span class='line'>     - process.on(‘uncaughtException’) must always process.exit()
-</span><span class='line'>     - handle errors in middleware - call next w/ error as first param, call return right after
-</span><span class='line'>     - use default error handler in express - app.use(function (err, req, res, next) { res.send(500, etc) })
-</span><span class='line'>     - node core notes - https://nodefirm.hackpad.com/Node-Error-Handling-Summit-uXFi4FUg8Td
-</span><span class='line'>
-</span><span class='line'>client error handling - Todd Gardner
-</span><span class='line'>     - error handling service - http://trackjs.com/
-</span><span class='line'>     - name your inner functions
-</span><span class='line'>     - stacktrace.js - normalizes format of stack trace
-</span><span class='line'>     - tracekit.js - get stack traces in old browsers
-</span><span class='line'>     - zone.js - long stack traces across async events
-</span><span class='line'>
-</span><span class='line'>gulp - Eric Schoffstall
-</span><span class='line'>     - getfractal
-</span><span class='line'>     - still has problems with 3rd-party file-based builds, such as require.js
-</span><span class='line'>     - github.com/substack/stream-handbook
-</span><span class='line'>
-</span><span class='line'>canvas animation - Josh Robertson
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   
