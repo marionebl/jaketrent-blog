@@ -1,0 +1,26 @@
+
+.archive-year-title {
+  padding: 40px 0 10px 0;
+  border-bottom: 1px solid red;
+  margin-bottom: 25px;
+  font-size: 26px;
+}
+
+.entry-archive {
+
+  .entry-title {
+    font-size: 28px;
+  }
+
+  .entry-date {
+    display: inline-block;
+  }
+
+  .entry-categories {
+    position: relative;
+    top: 3px;
+    display: inline-block;
+    font-size: inherit;
+  }
+
+}

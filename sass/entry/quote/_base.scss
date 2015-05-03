@@ -1,0 +1,48 @@
+.entry .quote {
+  font-family: $heading-font-family;
+  color: #474848;
+  border-left: none;
+  padding-left: 0;
+
+  p {
+    font-size: 24px;
+    line-height: 36px;
+    font-style: italic;
+    margin: 0;
+    padding: 0 0 0 30px;
+    border-left: 8px solid $nav-item-3-color;
+  }
+
+  p + p {
+    padding-top: 30px;
+  }
+
+  cite {
+    display: block;
+    padding: 30px 0 0 38px;
+    line-height: 1.1em;
+    font-style: normal;
+  }
+
+  &.large {
+    p {
+      font-size: 24px;
+      line-height: 36px;
+    }
+
+    cite {
+      font-size: 16px;
+    }
+  }
+
+  &.giant {
+    p {
+      font-size: 36px;
+      line-height: 42px;
+    }
+
+    cite {
+      font-size: 20px;
+    }
+  }
+}

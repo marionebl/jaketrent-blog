@@ -20,6 +20,7 @@ h4 { font-size: 26px; font-weight: 300; }
 h5 { font-size: 24px; font-weight: 300; }
 h6 { font-size: 22px; font-weight: 300; }
 
+/* TODO: move out */
 a {
   color: $link-color;
 }
@@ -32,6 +33,7 @@ strong {
   font-weight: bold;
 }
 
+/* TODO: consolidate */
 @media screen and (min-width: $min-width-med) {
   h1 { font-size: 50px }
   h2 { font-size: 48px }

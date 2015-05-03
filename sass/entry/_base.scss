@@ -1,0 +1,71 @@
+
+.entry {
+  overflow: hidden;
+
+  & + & {
+    margin-top: 50px;
+  }
+
+  p {
+    font-size: 24px;
+    line-height: 1.2;
+    margin-bottom: 30px;
+  }
+
+  ul, ol {
+    li {
+      margin-bottom: 12px;
+      font-size: 16px;
+      line-height: 22px;
+    }
+  }
+
+  ul {
+    list-style: circle;
+    list-style-position: outside;
+    margin-left: 17px;
+  }
+
+  ol {
+    list-style: decimal;
+    list-style-position: inside;
+  }
+
+  img,
+  video,
+  .flash-video {
+    max-width: 100%;
+    @include border-radius(0.3em);
+    @include box-shadow(rgba(0,0,0,.15) 0 1px 4px);
+    border: #fff 0.5em solid;
+  }
+
+  h1, h2 { font-size: 24px; margin-bottom: 10px; color: #232020; }
+  h2 { color: rgba(0,0,0,0.44); }
+  h3 { font-size: 22px; padding-top: .5em; margin-bottom: 8px; color: $nav-item-1-color; }
+  h4 { font-size: 20px; padding-top: .25em; margin-bottom: 6px; color: $nav-item-3-color; }
+  h5 { font-size: 18px; padding-top: .25em; margin-bottom: 4px; color: $nav-item-3-color;  }
+  h6 { font-size: 16px; padding-top: .25em; margin-bottom: 2px; color: $nav-item-4-color;  }
+
+  blockquote {
+    border-left: 6px solid $nav-item-5-color;
+    padding-left: 15px;
+    font-style: italic;
+    color: #474848;
+  }
+}
+
+@media screen and (min-width: $min-width-med) {
+
+  .entry {
+
+    h1 { font-size: 36px; }
+    h2 { font-size: 32px; padding-top: 40px; margin-bottom: 30px }
+    h3 { font-size: 28px; font-weight: 300; }
+    h4 { font-size: 26px; font-weight: 300; }
+    h5 { font-size: 24px; font-weight: 300; }
+    h6 { font-size: 22px; font-weight: 300; }
+
+  }
+
+}
