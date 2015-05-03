@@ -11,9 +11,10 @@
 }
 
 body {
-  font-family: $sans;
+  font-family: $serif;
+  font-weight: 300;
   background: #f5ede3;
-  color: #000024;
+  color: rgba(0,0,0,.8);
 }
 
 .container {
@@ -137,8 +138,9 @@ body {
   }
 
   p {
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 24px;
+    line-height: 1.2;
+    margin-bottom: 30px;
   }
 
   ul, ol {
@@ -170,6 +172,7 @@ body {
   }
 
   h1, h2 { font-size: 24px; margin-bottom: 10px; color: #232020; }
+  h2 { color: rgba(0,0,0,0.44); }
   h3 { font-size: 22px; padding-top: .5em; margin-bottom: 8px; color: $nav-item-1-color; }
   h4 { font-size: 20px; padding-top: .25em; margin-bottom: 6px; color: $nav-item-3-color; }
   h5 { font-size: 18px; padding-top: .25em; margin-bottom: 4px; color: $nav-item-3-color;  }
@@ -399,12 +402,19 @@ body {
 
   .entry {
 
-    h1 { font-size: 36px; margin-bottom: 10px; }
+    h1 { font-size: 36px; }
+    h2 { font-size: 32px; padding-top: 40px; margin-bottom: 30px }
+    h3 { font-size: 28px; font-weight: 300; }
+    h4 { font-size: 26px; font-weight: 300; }
+    h5 { font-size: 24px; font-weight: 300; }
+    h6 { font-size: 22px; font-weight: 300; }
+
+    /* h1 { font-size: 36px; margin-bottom: 10px; } *//*
     h2 { font-size: 34px; padding-top: 1em; margin-bottom: 10px; }
     h3 { font-size: 30px; padding-top: .5em; margin-bottom: 8px; }
     h4 { font-size: 22px; padding-top: .25em; margin-bottom: 6px; }
     h5 { font-size: 18px; padding-top: .25em; margin-bottom: 4px; }
-    h6 { font-size: 16px; padding-top: .25em; margin-bottom: 2px; }
+    h6 { font-size: 16px; padding-top: .25em; margin-bottom: 2px */
 
   }
 
@@ -432,4 +442,3 @@ body {
   }
 
 }
-

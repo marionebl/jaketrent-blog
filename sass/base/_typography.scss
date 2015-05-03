@@ -1,10 +1,10 @@
-@import url(http://fonts.googleapis.com/css?family=Carme);
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400|Neuton:300);
 
 $blockquote: $type-border !default;
 $sans: "PT Sans", "Helvetica Neue", Arial, sans-serif !default;
-$serif: "PT Serif", Georgia, Times, "Times New Roman", serif !default;
+$serif: Neuton, "PT Serif", Georgia, Times, "Times New Roman", serif !default;
 $mono: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace !default;
-$heading-font-family: Carme, "PT Serif", "Georgia", "Helvetica Neue", Arial, sans-serif !default;
+$heading-font-family: Lato,"Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif !default;
 $header-title-font-family: $heading-font-family !default;
 $header-subtitle-font-family: $heading-font-family !default;
 
@@ -13,12 +13,12 @@ $header-subtitle-font-family: $heading-font-family !default;
 .mono { font-family: $mono; }
 
 h1, h2, h3, h4, h5, h6 { font-family: $header-title-font-family }
-h1 { font-size: 30px }
-h2 { font-size: 28px }
-h3 { font-size: 26px }
-h4 { font-size: 24px }
-h5 { font-size: 22px }
-h6 { font-size: 20px }
+h1 { font-size: 36px; font-weight: 400 }
+h2 { font-size: 32px; font-weight: 300; }
+h3 { font-size: 28px; font-weight: 300; }
+h4 { font-size: 26px; font-weight: 300; }
+h5 { font-size: 24px; font-weight: 300; }
+h6 { font-size: 22px; font-weight: 300; }
 
 a {
   color: $link-color;
