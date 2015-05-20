@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-05-03T13:54:56-06:00</updated>
+  <updated>2015-05-20T09:33:33-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,95 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[pushState with webpack-dev-server]]></title>
+    <link href="http://jaketrent.com/post/pushstate-webpack-dev-server/"/>
+    <updated>2015-05-20T07:17:00-06:00</updated>
+    <id>http://jaketrent.com/post/pushstate-webpack-dev-server</id>
+    <content type="html"><![CDATA[<p>Webpack has a jolly little server for your development environment called <a href="http://webpack.github.io/docs/webpack-dev-server.html"><code>webpack-dev-server</code></a>.  With a touch of configuration, it can be convinced to handle JavaScript history API pushState.</p>
+
+<p><img src="http://i.imgur.com/x0m2sTq.jpg" alt="webpack" /></p>
+
+<!--more-->
+
+
+<h2>webpack-dev-server</h2>
+
+<p>Webpack is fast.  But once you have a growing number of static assets to process and a increasily-complex asset pipeline, you may wish for a faster build lifecycle in development mode.  <a href="http://webpack.github.io/docs/webpack-dev-server.html"><code>webpack-dev-server</code></a> was created for such a purpose.</p>
+
+<p>It is a small <code>express</code> app that handles building your assets according to your webpack configuration, keeping them in memory, and doing so automatically as you change your source files.</p>
+
+<h2>html-webpack-plugin</h2>
+
+<p>In addition to webpack taking care of static assets like css and js for me, in dev mode I'll often include the <a href="https://www.npmjs.com/package/html-webpack-plugin"><code>html-webpack-plugin</code></a>.</p>
+
+<p>This plugin generates an <code>index.html</code> file for you that will keep up to date with the correct references to your assets built inside of <code>webpack-dev-server</code>.  Use of this plugin is perfect in situations where you're building a client-side app that just needs a single html file to bootstrap on top of.</p>
+
+<h2>History API</h2>
+
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history#Adding_and_modifying_history_entries">history API</a> allows the browser to locally handle url changes that would usually signal a need to go back to the server for resources.  This allows client-side apps to include routers that can navigate from urls like <code>http://localhost:3000/one-place</code> to <code>http://localhost:3000/another</code> instead of having to use the url hash (eg, <code>http://localhost:3000#/one-place</code>).</p>
+
+<h2>All routes to <code>index.html</code></h2>
+
+<p>By default, <code>webpack-dev-server</code> is setup to serve assets directly from the http requests received.  For instance, if my <code>webpack-dev-server</code> was running on port <code>3000</code>, and my <code>webpack.config.js</code> was setup so that I was building a <code>main.js</code> for my application, I could make a request to get that build asset via <code>http://localhost:3000/main.js</code>.</p>
+
+<p>Likewise, if I'm using the <code>html-webpack-plugin</code>, I can make a request to <code>http://localhost:3000/</code> to get my <code>index.html</code> file, which contains the <code>script</code> tag to bootstrap my app -- again, likely something like <code>main.js</code>.</p>
+
+<p>But if my app has a client-side router that is using the history API, how do I get <code>webpack-dev-server</code> to differentiate a client-side route from an asset request to <code>http://localhost:3000</code>?</p>
+
+<h2><code>historyApiFallback</code> Option</h2>
+
+<p>It turns out that we're in luck.  <code>webpack-dev-server</code> includes a useful option named <code>historyApiFallback</code>.  If this boolean flag is set to true, all requests to the <code>webpack-dev-server</code> that do not map to an existing asset will instead by routed straight to <code>/</code>, that is, the <code>index.html</code> file.</p>
+
+<p>This is exactly what we want.  If we want more customization in the fallback routes, we can specify that as well.  Internally, <code>webpack-dev-server</code> uses <a href="https://github.com/bripkens/connect-history-api-fallback"><code>connect-history-api-fallback</code></a> which takes several options.</p>
+
+<p>These options include overriding the name of the index file or rerouting certain request url patterns to different html files in the case you have multiples.  These options can be set by passing an object to <code>historyApiFallback</code> instead of a boolean flag.</p>
+
+<p>Finally, in order to not have to type this every time you want to run the <code>webpack-dev-server</code> cli, you can specify all of these options in the <code>webpack-config.js</code> under the <code>devServer</code> attribute.</p>
+
+<p>The simple example looks like:</p>
+
+<p>```js webpack-config.js
+{
+  //...
+  devServer: {</p>
+
+<pre><code>port: 3000,
+historyApiFallback: true
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>A more complex example might look something like:</p>
+
+<p>```js webpack-config.js
+{
+  //...
+  devServer: {</p>
+
+<pre><code>port: 3000,
+historyApiFallback: {
+  index: 'default.html',
+  rewrites: [
+    { from: /\/soccer/, to: '/soccer.html'}
+  ]
+}
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Given the above configuration, routes like <code>/one-place</code> and <code>/another</code> would go to <code>/</code>, which is backed by the <code>default.html</code> markup.  Routes like <code>/soccer/schedule</code> or <code>/soccer/games/123</code> would go to <code>soccer.html</code>.</p>
+
+<p>So, you don't need to write your own proxy.  The option is built in for you.  webpack excites again!</p>
+
+<p>What other things have you been surprised that webpack already does for you?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[List Npm Scripts]]></title>
@@ -437,158 +526,6 @@ var { State } = require('react-router')</p>
 <p>When the url params change, <code>componentWillReceiveProps</code> is called.  But this is not called on the first render, thus we implement <code>componentWillMount</code>.  Both these functions save the <code>range</code> from the url to the component state.  Now, as <code>shouldComponentUpdate</code> is called on future <code>this.props</code> and <code>this.state</code> changes, current and next <code>range</code> values can be compared and used in "should re-render" calculation.</p>
 
 <p>What other ways have you found to accomplish this tracking of previous state in the url?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[React-Router with Flux]]></title>
-    <link href="http://jaketrent.com/post/react-router-with-flux/"/>
-    <updated>2015-01-15T09:21:00-07:00</updated>
-    <id>http://jaketrent.com/post/react-router-with-flux</id>
-    <content type="html"><![CDATA[<p>react-router provides great route handling with route params and query params.  Flux provides a pattern for building React apps, including a pattern from providing data to your components.  Here's a straightforward way to make route changes trigger data changes in your components.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react" /></p>
-
-<!--more-->
-
-
-<p>Note: Code here reflects usage of react-router 0.11.x.</p>
-
-<p>It is often the case that we'll need to trigger data changes in a react component in our Flux app because of a route transition.  A prime example of this would be on an object show page, where the details of a particular object are being shown.  In our example, let's say that we're showing the details of a book, such as title, author, and description.</p>
-
-<p>The route to our book detail page is likely defined as:</p>
-
-<p><code>js routes.js
-// ...
-&lt;Route name="book" path="/books/:id" handler={require('./books-show')} /&gt;
-</code></p>
-
-<p>The handler is just a controller-component that defines the view.  It might look simply like:</p>
-
-<p>```js books-show.js
-const React = require('react')
-const {State} = require('react-router')</p>
-
-<p>const BooksStore = require('./books-store')</p>
-
-<p>module.exports = React.createClass({</p>
-
-<p>  displayName: 'BooksShow',</p>
-
-<p>  mixins: [ State ],</p>
-
-<p>  getInitialState() {</p>
-
-<pre><code>return this.getStateFromStores()
-</code></pre>
-
-<p>  },</p>
-
-<p>  getStateFromStores() {</p>
-
-<pre><code>return {
-  book: BooksStore.find({ id: this.getParams().id })
-}
-</code></pre>
-
-<p>  },</p>
-
-<p>  componentDidMount() {</p>
-
-<pre><code>BooksStore.addChangeListener(this._onChange)
-</code></pre>
-
-<p>  },</p>
-
-<p>  componentWillUnmount() {</p>
-
-<pre><code>BooksStore.removeChangeListener(this._onChange)
-</code></pre>
-
-<p>  },</p>
-
-<p>  _onChange: function() {</p>
-
-<pre><code>this.setState(this.getStateFromStores())
-</code></pre>
-
-<p>  },</p>
-
-<p>  render() {</p>
-
-<pre><code>return (
-  &lt;ul&gt;
-    &lt;li&gt;{this.state.book.title}&lt;/li&gt;
-    &lt;li&gt;{this.state.book.author}&lt;/li&gt;
-    &lt;li&gt;{this.state.book.description}&lt;/li&gt;
-  &lt;/ul&gt;
-)
-</code></pre>
-
-<p>  }</p>
-
-<p>})
-```</p>
-
-<p>Note that the view component references a <code>BooksStore</code> for getting its initial state.  The state of <code>book</code> will also be updated as the <code>BooksStore</code> emits that its data has changed and <code>this._onChange</code> is called.</p>
-
-<p>Every time a route transitions, react-router has a <code>Router.run</code> callback that will also run in order to render the matching route.  This will also be a great place to put our action to signal to our Flux app that routes are transitioning and therefore other stuff like data in the display might need to change as well.</p>
-
-<p><code>js
-Router.run(routes, (Handler, state) =&gt; {
-  React.render(&lt;Handler /&gt;, document.body)
-  BooksAction.transition(state.params)
-})
-</code></p>
-
-<p><strong>Important note</strong>: Make sure the transition action is called after <code>React.render</code> so that the change emission will be detected after render, otherwise you'll be one route transition behind.</p>
-
-<p>The <code>BooksAction.transition</code> definition is something very simple -- something that can trigger events on the dispatcher:</p>
-
-<p>```js books-actions.js
-exports.transition = () => {
-  AppDispatcher.handleViewAction({</p>
-
-<pre><code>type: ActionTypes.TRANSITION
-</code></pre>
-
-<p>  })
-}
-```</p>
-
-<p>The final connection is in the store, where the dispatched action can be listened for an then trigger the store event, updating the component views:</p>
-
-<p>```js books-store.js
-var BooksStore = merge(EventEmitter.prototype, {
-  find(filter) {</p>
-
-<pre><code>// ...
-</code></pre>
-
-<p>  }
-})</p>
-
-<p>BooksStore.dispatchToken = AppDispatcher.register((payload) => {
-  var action = payload.action
-  switch(action.type) {</p>
-
-<pre><code>// ...
-
-case ActionTypes.TRANSITION:
-  BooksStore.emitChange()
-  break
-</code></pre>
-
-<p>  }
-})</p>
-
-<p>module.exports = BooksStore</p>
-
-<p>```</p>
-
-<p>At this point, all the route transitions should trigger data changes in views.  Visiting the url <code>/books/1</code> and then the url <code>/books/2</code> should display different data on screen according to which book id was in the route.  <code>Router.Link</code> should work correctly, usable instead of buttons with actions being triggered on click.</p>
-
-<p>react-router and Flux make for a great combo in this way, right?  What adjustments would you make?</p>
 ]]></content>
   </entry>
   

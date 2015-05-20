@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-05-03T13:54:56-06:00</updated>
+  <updated>2015-05-20T09:33:33-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,95 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[pushState with webpack-dev-server]]></title>
+    <link href="http://jaketrent.com/post/pushstate-webpack-dev-server/"/>
+    <updated>2015-05-20T07:17:00-06:00</updated>
+    <id>http://jaketrent.com/post/pushstate-webpack-dev-server</id>
+    <content type="html"><![CDATA[<p>Webpack has a jolly little server for your development environment called <a href="http://webpack.github.io/docs/webpack-dev-server.html"><code>webpack-dev-server</code></a>.  With a touch of configuration, it can be convinced to handle JavaScript history API pushState.</p>
+
+<p><img src="http://i.imgur.com/x0m2sTq.jpg" alt="webpack" /></p>
+
+<!--more-->
+
+
+<h2>webpack-dev-server</h2>
+
+<p>Webpack is fast.  But once you have a growing number of static assets to process and a increasily-complex asset pipeline, you may wish for a faster build lifecycle in development mode.  <a href="http://webpack.github.io/docs/webpack-dev-server.html"><code>webpack-dev-server</code></a> was created for such a purpose.</p>
+
+<p>It is a small <code>express</code> app that handles building your assets according to your webpack configuration, keeping them in memory, and doing so automatically as you change your source files.</p>
+
+<h2>html-webpack-plugin</h2>
+
+<p>In addition to webpack taking care of static assets like css and js for me, in dev mode I'll often include the <a href="https://www.npmjs.com/package/html-webpack-plugin"><code>html-webpack-plugin</code></a>.</p>
+
+<p>This plugin generates an <code>index.html</code> file for you that will keep up to date with the correct references to your assets built inside of <code>webpack-dev-server</code>.  Use of this plugin is perfect in situations where you're building a client-side app that just needs a single html file to bootstrap on top of.</p>
+
+<h2>History API</h2>
+
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history#Adding_and_modifying_history_entries">history API</a> allows the browser to locally handle url changes that would usually signal a need to go back to the server for resources.  This allows client-side apps to include routers that can navigate from urls like <code>http://localhost:3000/one-place</code> to <code>http://localhost:3000/another</code> instead of having to use the url hash (eg, <code>http://localhost:3000#/one-place</code>).</p>
+
+<h2>All routes to <code>index.html</code></h2>
+
+<p>By default, <code>webpack-dev-server</code> is setup to serve assets directly from the http requests received.  For instance, if my <code>webpack-dev-server</code> was running on port <code>3000</code>, and my <code>webpack.config.js</code> was setup so that I was building a <code>main.js</code> for my application, I could make a request to get that build asset via <code>http://localhost:3000/main.js</code>.</p>
+
+<p>Likewise, if I'm using the <code>html-webpack-plugin</code>, I can make a request to <code>http://localhost:3000/</code> to get my <code>index.html</code> file, which contains the <code>script</code> tag to bootstrap my app -- again, likely something like <code>main.js</code>.</p>
+
+<p>But if my app has a client-side router that is using the history API, how do I get <code>webpack-dev-server</code> to differentiate a client-side route from an asset request to <code>http://localhost:3000</code>?</p>
+
+<h2><code>historyApiFallback</code> Option</h2>
+
+<p>It turns out that we're in luck.  <code>webpack-dev-server</code> includes a useful option named <code>historyApiFallback</code>.  If this boolean flag is set to true, all requests to the <code>webpack-dev-server</code> that do not map to an existing asset will instead by routed straight to <code>/</code>, that is, the <code>index.html</code> file.</p>
+
+<p>This is exactly what we want.  If we want more customization in the fallback routes, we can specify that as well.  Internally, <code>webpack-dev-server</code> uses <a href="https://github.com/bripkens/connect-history-api-fallback"><code>connect-history-api-fallback</code></a> which takes several options.</p>
+
+<p>These options include overriding the name of the index file or rerouting certain request url patterns to different html files in the case you have multiples.  These options can be set by passing an object to <code>historyApiFallback</code> instead of a boolean flag.</p>
+
+<p>Finally, in order to not have to type this every time you want to run the <code>webpack-dev-server</code> cli, you can specify all of these options in the <code>webpack-config.js</code> under the <code>devServer</code> attribute.</p>
+
+<p>The simple example looks like:</p>
+
+<p>```js webpack-config.js
+{
+  //...
+  devServer: {</p>
+
+<pre><code>port: 3000,
+historyApiFallback: true
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>A more complex example might look something like:</p>
+
+<p>```js webpack-config.js
+{
+  //...
+  devServer: {</p>
+
+<pre><code>port: 3000,
+historyApiFallback: {
+  index: 'default.html',
+  rewrites: [
+    { from: /\/soccer/, to: '/soccer.html'}
+  ]
+}
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Given the above configuration, routes like <code>/one-place</code> and <code>/another</code> would go to <code>/</code>, which is backed by the <code>default.html</code> markup.  Routes like <code>/soccer/schedule</code> or <code>/soccer/games/123</code> would go to <code>soccer.html</code>.</p>
+
+<p>So, you don't need to write your own proxy.  The option is built in for you.  webpack excites again!</p>
+
+<p>What other things have you been surprised that webpack already does for you?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[List Npm Scripts]]></title>
@@ -426,88 +515,6 @@ luchador -t --anaconda-squeeze 130
 
 
 <p>This gives you the basic tools.  It's very easy, and it's built in!  To do more, you might take required options first through the CLI options and then read them interactively from the console.  What other neat additions do you see that we could add?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Test React-Router Previous Params for Component Update]]></title>
-    <link href="http://jaketrent.com/post/test-react-router-params-component-update/"/>
-    <updated>2015-02-09T15:39:00-07:00</updated>
-    <id>http://jaketrent.com/post/test-react-router-params-component-update</id>
-    <content type="html"><![CDATA[<p>Once upon a time, react-router transferred params and query params from the url via props into components.  It doesn't happen this way any more.  So, let's say you have a need in your component like overriding <code>shouldComponentUpdate</code> in your component which only has access to <code>this.props</code> and <code>this.state</code>.   How can you use the url data to affect the component re-render or not?</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react" /></p>
-
-<!--more-->
-
-
-<h2>Why control rendering with the url?</h2>
-
-<p>There are two instances that come to mind when considering the scenarios that it might be needful to control the update of your component based on the url:</p>
-
-<ol>
-<li><p><strong>Avoid re-render</strong>: Of course, if the component we're talking about is a page-level component, you'll most likely always be wanting to re-render as the url changes.  But, if you're a little widget component that cares about the url, you might not need to always re-render on url change.</p></li>
-<li><p><strong>Trigger re-render when it might not otherwise happen</strong>: For whatever reason, you may have already needed to implement <code>shouldComponentUpdate</code> in your component.  This function returns true or false to flag a "should" or "should not" re-render.  You'll need to access url state and likely previous url state in this method to make re-renders happen that otherwise wouldn't if you had no logic in this function for it.</p></li>
-</ol>
-
-
-<p>Of course, beyond these re-render scenarios, there are many other situations in which knowing previous and current states in the url could come in handy.</p>
-
-<h2>React-Router in shouldComponentUpdate</h2>
-
-<p><code>shouldComponentUpdate</code> determines if component should re-render.  It's called whenever <code>this.props</code> or <code>this.state</code> changes.  It has access to incoming props and state via the function parameters.</p>
-
-<p>React-router gives your component access to params and query params by requiring you to mix in the <code>State</code> param from react-router.  Then you have access to new functions, <code>this.getParams()</code> and <code>this.getQuery()</code>.  If you only need to know current url state, this is enough.  If you want to compare current url state to previous url state, you'll have to save the parts that you care about.  We'll do that in <code>this.state</code>.</p>
-
-<p>Let's say that we want to trigger a redraw on changes to a <code>range</code> query parameter.  The component might, in part, look like this:</p>
-
-<p>```
-var { State } = require('react-router')</p>
-
-<p>module.exports = React.createClass({</p>
-
-<p>  mixins: [ State ],</p>
-
-<p>  getInitialState() {</p>
-
-<pre><code>range: nul
-</code></pre>
-
-<p>  },</p>
-
-<p>  componentWillReceiveProps() {</p>
-
-<pre><code>this.setState({
-  range: this.getQuery().range
-})
-</code></pre>
-
-<p>  },</p>
-
-<p>  componentWillMount() {</p>
-
-<pre><code>this.setState({
-  range: this.getQuery().range
-})
-</code></pre>
-
-<p>  }</p>
-
-<p>  shouldComponentUpdate() {</p>
-
-<pre><code>return this.state.range !== nextState.range
-</code></pre>
-
-<p>  }</p>
-
-<p>  // ...</p>
-
-<p>})
-```</p>
-
-<p>When the url params change, <code>componentWillReceiveProps</code> is called.  But this is not called on the first render, thus we implement <code>componentWillMount</code>.  Both these functions save the <code>range</code> from the url to the component state.  Now, as <code>shouldComponentUpdate</code> is called on future <code>this.props</code> and <code>this.state</code> changes, current and next <code>range</code> values can be compared and used in "should re-render" calculation.</p>
-
-<p>What other ways have you found to accomplish this tracking of previous state in the url?</p>
 ]]></content>
   </entry>
   
