@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-05-20T09:33:33-06:00</updated>
+  <updated>2015-06-18T08:00:45-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,212 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Testing React on jsdom]]></title>
+    <link href="http://jaketrent.com/post/testing-react-with-jsdom/"/>
+    <updated>2015-06-18T07:13:00-06:00</updated>
+    <id>http://jaketrent.com/post/testing-react-with-jsdom</id>
+    <content type="html"><![CDATA[<p>React allows you to create components that will render UI for your application.  If your UI is of any complexity, you&#8217;ll likely want to test that it functions correctly and allows for future refactors.  There are numerous ways to do this.  One way that you might appreciate is using <a href="https://github.com/tmpvar/jsdom">jsdom</a>, an in-JavaScript implementation of the DOM.</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react on jsdom" /></p>
+
+<!--more-->
+
+
+<h2>What is jsdom?</h2>
+
+<p>Jsdom is an in-JavaScript implementation of the DOM.  The DOM is the document object model, which is the tree of nodes that make up the UI for documents shown in web browsers.</p>
+
+<p>Because jsdom is implemented in JavaScript, we can have a DOM-like API to work with without needing a browser.  That means that we don&#8217;t have to capture a browser in order test, a la <a href="http://karma-runner.github.io/">Karma</a>.  That means that we can run our tests in environments without browsers, like in Node or in continuous integration environments.</p>
+
+<p>By not using real browsers, we&#8217;re also essentially saying that we believe the problems in our client JavaScript will not be browser-dependent (again, because we&#8217;re not capturing <em>real</em> browsers).</p>
+
+<h2>jsdom Requirements</h2>
+
+<p>The <a href="https://github.com/tmpvar/jsdom">latest version of jsdom</a>, as of this writing, requires <a href="https://iojs.org/en/index.html">io.js</a> instead of Node to run.  If you&#8217;d like to run in Node.js instead, the <a href="https://github.com/tmpvar/jsdom/tree/3.x">3.x series of jsdom</a> is required.</p>
+
+<p>As <a href="http://thenextweb.com/dd/2015/06/16/node-js-and-io-js-are-settling-their-differences-merging-back-together/">Node and io.js merge in the future</a>, I expect the new versions of jsdom to support the one, unified platform.</p>
+
+<h2>The Test Runner</h2>
+
+<p>In my JavaScript tests, I prefer to use the <a href="http://mochajs.org/">Mocha</a> test runner.  It&#8217;s usable in Node or browser environments.  It has great async test support.  It has the familiar behavior-style syntax of <code>describe</code> and <code>it</code> and all the normal test setup hooks that you like.  Most importantly, it features the Nyan cat test reporter:</p>
+
+<p><img src="http://mochajs.org/images/reporter-nyan.png" alt="nyan cat test reporter" /></p>
+
+<p>Mocha lets you choose your own assertion library.  I like <a href="http://shouldjs.github.io/">should.js</a>.</p>
+
+<p>To install both:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install mocha should --save-dev</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Configuring Mocha</h2>
+
+<p>By default, Mocha wants a <code>/test</code> directory in your project root in which to put its configuration and potentially your spec files, depending on how you like to organize your projects:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir test</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Inside of the <code>/test</code> dir, let&#8217;s <code>vim mocha.opts</code> and give it a place to configure jsdom and our other libs:</p>
+
+<figure class='code'><figcaption><span>mocha.opts</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>--require test/utils/dom.js
+</span><span class='line'>--require should
+</span><span class='line'>--reporter nyan
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We have yet to write the <code>test/utils/dom.js</code> file.  We will.  This file includes options for mocha.  Line by line, we&#8217;re saying that before mocha runs tests, we want to load our <code>dom.js</code> config, the <code>should.js</code> library, and specify our reporter as <code>nyan</code>.</p>
+
+<h2>Configuring jsdom</h2>
+
+<p>I&#8217;ve tried to come up with several configurations that will make jsdom work well with my React projects.  This is the best/simplest that I&#8217;ve come up with.  I&#8217;d be interested to hear if you have any suggestions on the approach.</p>
+
+<p>Here&#8217;s the full configuration with explanatory comments inline, as it would appear in <code>test/utils/dom.js</code>:</p>
+
+<figure class='code'><figcaption><span>dom.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">jsdom</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jsdom&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// setup the simplest document possible</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">doc</span> <span class="o">=</span> <span class="nx">jsdom</span><span class="p">.</span><span class="nx">jsdom</span><span class="p">(</span><span class="s1">&#39;&lt;!doctype html&gt;&lt;html&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// get the window object out of the document</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">win</span> <span class="o">=</span> <span class="nx">doc</span><span class="p">.</span><span class="nx">defaultView</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// set globals for mocha that make access to document and window feel </span>
+</span><span class='line'><span class="c1">// natural in the test environment</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nb">document</span> <span class="o">=</span> <span class="nx">doc</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nb">window</span> <span class="o">=</span> <span class="nx">win</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// take all properties of the window object and also attach it to the </span>
+</span><span class='line'><span class="c1">// mocha global object</span>
+</span><span class='line'><span class="nx">propagateToGlobal</span><span class="p">(</span><span class="nx">win</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">propagateToGlobal</span> <span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="k">in</span> <span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">window</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="k">continue</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">global</span><span class="p">)</span> <span class="k">continue</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">global</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">window</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The reason that we want to attach all the <code>window</code> properties to the mocha <code>global</code> object is because developers often write code that is meant for the browser without explicitly using the global environment object.  For instance, in React the developers write:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;Chrome&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>instead of:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nb">window</span><span class="p">.</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;Chrome&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Withing taking <code>window.navigator</code> and putting it on <code>global.navigator</code>, you&#8217;d get an error like this when running your tests:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">ReferenceError</span><span class="o">:</span> <span class="nx">navigator</span> <span class="nx">is</span> <span class="nx">not</span> <span class="nx">defined</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>The React Test</h2>
+
+<p>You are now ready to render React components into a document in your tests.  The document will be provided by jsdom.  You don&#8217;t need a browser environment to run this.</p>
+
+<figure class='code'><figcaption><span>mycomponent.spec.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">React</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;react/addons&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">should</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;should&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">TestUtils</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">addons</span><span class="p">.</span><span class="nx">TestUtils</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">MyComponent</span> <span class="o">=</span> <span class="c1">// a React.Component with a &lt;button/&gt; ...</span>
+</span><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;MyComponent&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;has button that fires a dom event for click&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">function</span> <span class="nx">handleClick</span><span class="p">()</span> <span class="p">{</span> <span class="nx">done</span><span class="p">()</span> <span class="p">}</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">detachedComp</span> <span class="o">=</span> <span class="nx">TestUtils</span><span class="p">.</span><span class="nx">renderIntoDocument</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">MyComponent</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">handleClick</span><span class="p">}</span><span class="o">/&gt;</span><span class="p">)</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">button</span> <span class="o">=</span> <span class="nx">TestUtils</span><span class="p">.</span><span class="nx">findRenderedDOMComponentWithTag</span><span class="p">(</span><span class="nx">detachedComp</span><span class="p">,</span> <span class="s1">&#39;button&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">buttonNode</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">findDOMNode</span><span class="p">(</span><span class="nx">button</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">should</span><span class="p">.</span><span class="nx">exist</span><span class="p">(</span><span class="nx">buttonNode</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">TestUtils</span><span class="p">.</span><span class="nx">Simulate</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">buttonNode</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To run mocha with the configuration above, I like to add an npm script in <code>package.json</code>:</p>
+
+<figure class='code'><figcaption><span>package.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>   <span class="nt">&quot;scripts&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>     <span class="nt">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;mocha test/**/*.spec.js&quot;</span>
+</span><span class='line'>   <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And then type:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm <span class="nb">test</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Write the source to satisfy your test, and the lights should go green.  Your DOM is happy.  Your test is happy.</p>
+
+<p>Does it work well for you?  How might you improve on it?  Enjoy testing!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[pushState with webpack-dev-server]]></title>
@@ -2169,102 +2375,6 @@
 <p>This leaves me with the question of why <code>isMounted</code> was removed if it helps solve a potential problem.  Do we solve it in another way?  Does the core library do more for you?  You can verify for yourself in the jsbin above that if you remove the <code>isMounted</code> check, the old invariant error message is still logged.</p>
 
 <p>Does anyone have a <em>good</em> <code>isMounted</code> solution?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Broccoli Ember Emblem]]></title>
-    <link href="http://jaketrent.com/post/broccoli-ember-emblem/"/>
-    <updated>2014-05-30T07:18:00-06:00</updated>
-    <id>http://jaketrent.com/post/broccoli-ember-emblem</id>
-    <content type="html"><![CDATA[<p>Make broccoli compile your emblem templates so they&#8217;re ready for your ember app.</p>
-
-<p><img src="http://i.imgur.com/85v8PQP.png" alt="Broccoli Ember Emblem" /></p>
-
-<!--more-->
-
-
-<h2>The Libraries</h2>
-
-<p><a href="https://www.npmjs.org/package/broccoli">Broccoli</a> builds your assets quickly.  It makes heavy use of caching so it only has to rebuild affected subtrees when files change.  <a href="http://emblemjs.com/">Emblem</a> is a significant whitespace version of <a href="http://handlebarsjs.com/">Handlebars</a> templates, similar in style to <a href="http://slim-lang.com/">Slim</a> or <a href="http://jade-lang.com/">Jade</a>.  <a href="http://emberjs.com/">Ember</a> is a MVC framework for building browser apps.</p>
-
-<p>Put them all together, and you have something that will help you compile your templates quickly for your browser app.  The <a href="https://github.com/jaketrent/broccoli-ember-emblem">broccoli-ember-emblem</a> plugin for Broccoli will do just that.</p>
-
-<h2>Install</h2>
-
-<p>To use the library, you&#8217;ll need broccoli installed first.  Then, you&#8217;ll install the plugin via npm:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>npm install --save-dev broccoli-ember-emblem</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Usage</h2>
-
-<p>You&#8217;ll setup the plugin in your app&#8217;s <code>Brocfile.js</code>.  That setup might look something like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">emblem</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;broccoli-ember-emblem&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">mergeTrees</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;broccoli-merge-trees&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">pickFiles</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;broccoli-static-compiler&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">function</span> <span class="nx">preprocess</span> <span class="p">(</span><span class="nx">tree</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">tree</span> <span class="o">=</span> <span class="nx">emblem</span><span class="p">(</span><span class="nx">tree</span><span class="p">,</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">stripPathFromName</span><span class="o">:</span> <span class="s1">&#39;tmpl/&#39;</span>
-</span><span class='line'>  <span class="p">})</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">tree</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">tmplTree</span> <span class="o">=</span> <span class="s1">&#39;client/tmpl&#39;</span>
-</span><span class='line'><span class="nx">tmplTree</span> <span class="o">=</span> <span class="nx">pickFiles</span><span class="p">(</span><span class="nx">tmplTree</span><span class="p">,</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">srcDir</span><span class="o">:</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">destDir</span><span class="o">:</span> <span class="s1">&#39;/tmpl&#39;</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'><span class="nx">tmplTree</span> <span class="o">=</span> <span class="nx">preprocess</span><span class="p">(</span><span class="nx">tmplTree</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">mergeTrees</span><span class="p">([</span> <span class="cm">/* other trees, */</span> <span class="nx">tmplTree</span> <span class="p">])</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Note a few things:</p>
-
-<ul>
-<li>I&#8217;m using another plugin, <code>broccoli-static-compiler</code> to move files around in the broccoli build directories.  This is to be able to identify separate trees that both use similar file filters (eg, *.js for both src scripts and templates).</li>
-<li>I&#8217;m using the one option for the <code>broccoli-ember-emblem</code> plugin, <code>stripPathFromName</code>, which allows me to remove the path name from the template name in output.  For example, if I have a file at <code>tmpl/application.emblem</code>, I want the template name in ember to be <code>application</code>, not <code>tmpl/application</code>.</li>
-<li>Final output is merged into a single tree via another plugin, <code>broccoli-merge-trees</code>.</li>
-</ul>
-
-
-<h2>Output</h2>
-
-<p>Broccoli will take care of finding all of your template files.  It will use directories and filenames as the input for template names.  As a few examples, here is input and output as it might happen in the above configuration:</p>
-
-<ul>
-<li>File: <code>client/tmpl/application.emblem</code> becomes: <code>Ember.TEMPLATES['application']</code></li>
-<li>File: <code>client/tmpl/components/song.emblem</code> becomes: <code>Ember.TEMPLATES['components/song']</code></li>
-</ul>
-
-
-<p>Notice that Ember requires all templates to be registered on the <code>Ember.TEMPLATES</code> object.  Later, at app runtime, they are looked up on that object by name.</p>
-
-<p>So, use the plugin and win.  How does your template compilation for Ember/Emblem differ?  What other features do you wish were supported here?</p>
 ]]></content>
   </entry>
   

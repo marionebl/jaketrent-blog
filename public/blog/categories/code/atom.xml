@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-05-20T09:33:33-06:00</updated>
+  <updated>2015-06-18T08:00:45-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,169 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Testing React on jsdom]]></title>
+    <link href="http://jaketrent.com/post/testing-react-with-jsdom/"/>
+    <updated>2015-06-18T07:13:00-06:00</updated>
+    <id>http://jaketrent.com/post/testing-react-with-jsdom</id>
+    <content type="html"><![CDATA[<p>React allows you to create components that will render UI for your application.  If your UI is of any complexity, you'll likely want to test that it functions correctly and allows for future refactors.  There are numerous ways to do this.  One way that you might appreciate is using <a href="https://github.com/tmpvar/jsdom">jsdom</a>, an in-JavaScript implementation of the DOM.</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react on jsdom" /></p>
+
+<!--more-->
+
+
+<h2>What is jsdom?</h2>
+
+<p>Jsdom is an in-JavaScript implementation of the DOM.  The DOM is the document object model, which is the tree of nodes that make up the UI for documents shown in web browsers.</p>
+
+<p>Because jsdom is implemented in JavaScript, we can have a DOM-like API to work with without needing a browser.  That means that we don't have to capture a browser in order test, a la <a href="http://karma-runner.github.io/">Karma</a>.  That means that we can run our tests in environments without browsers, like in Node or in continuous integration environments.</p>
+
+<p>By not using real browsers, we're also essentially saying that we believe the problems in our client JavaScript will not be browser-dependent (again, because we're not capturing <em>real</em> browsers).</p>
+
+<h2>jsdom Requirements</h2>
+
+<p>The <a href="https://github.com/tmpvar/jsdom">latest version of jsdom</a>, as of this writing, requires <a href="https://iojs.org/en/index.html">io.js</a> instead of Node to run.  If you'd like to run in Node.js instead, the <a href="https://github.com/tmpvar/jsdom/tree/3.x">3.x series of jsdom</a> is required.</p>
+
+<p>As <a href="http://thenextweb.com/dd/2015/06/16/node-js-and-io-js-are-settling-their-differences-merging-back-together/">Node and io.js merge in the future</a>, I expect the new versions of jsdom to support the one, unified platform.</p>
+
+<h2>The Test Runner</h2>
+
+<p>In my JavaScript tests, I prefer to use the <a href="http://mochajs.org/">Mocha</a> test runner.  It's usable in Node or browser environments.  It has great async test support.  It has the familiar behavior-style syntax of <code>describe</code> and <code>it</code> and all the normal test setup hooks that you like.  Most importantly, it features the Nyan cat test reporter:</p>
+
+<p><img src="http://mochajs.org/images/reporter-nyan.png" alt="nyan cat test reporter" /></p>
+
+<p>Mocha lets you choose your own assertion library.  I like <a href="http://shouldjs.github.io/">should.js</a>.</p>
+
+<p>To install both:</p>
+
+<p><code>
+npm install mocha should --save-dev
+</code></p>
+
+<h2>Configuring Mocha</h2>
+
+<p>By default, Mocha wants a <code>/test</code> directory in your project root in which to put its configuration and potentially your spec files, depending on how you like to organize your projects:</p>
+
+<p><code>
+mkdir test
+</code></p>
+
+<p>Inside of the <code>/test</code> dir, let's <code>vim mocha.opts</code> and give it a place to configure jsdom and our other libs:</p>
+
+<p><code>text mocha.opts
+--require test/utils/dom.js
+--require should
+--reporter nyan
+</code></p>
+
+<p>We have yet to write the <code>test/utils/dom.js</code> file.  We will.  This file includes options for mocha.  Line by line, we're saying that before mocha runs tests, we want to load our <code>dom.js</code> config, the <code>should.js</code> library, and specify our reporter as <code>nyan</code>.</p>
+
+<h2>Configuring jsdom</h2>
+
+<p>I've tried to come up with several configurations that will make jsdom work well with my React projects.  This is the best/simplest that I've come up with.  I'd be interested to hear if you have any suggestions on the approach.</p>
+
+<p>Here's the full configuration with explanatory comments inline, as it would appear in <code>test/utils/dom.js</code>:</p>
+
+<p>```js dom.js
+var jsdom = require('jsdom')</p>
+
+<p>// setup the simplest document possible
+var doc = jsdom.jsdom('&lt;!doctype html><html><body></body></html>')</p>
+
+<p>// get the window object out of the document
+var win = doc.defaultView</p>
+
+<p>// set globals for mocha that make access to document and window feel
+// natural in the test environment
+global.document = doc
+global.window = win</p>
+
+<p>// take all properties of the window object and also attach it to the
+// mocha global object
+propagateToGlobal(win)</p>
+
+<p>// from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80
+function propagateToGlobal (window) {
+  for (let key in window) {</p>
+
+<pre><code>if (!window.hasOwnProperty(key)) continue
+if (key in global) continue
+
+global[key] = window[key]
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>The reason that we want to attach all the <code>window</code> properties to the mocha <code>global</code> object is because developers often write code that is meant for the browser without explicitly using the global environment object.  For instance, in React the developers write:</p>
+
+<p><code>js
+navigator.userAgent.indexOf('Chrome') &gt; -1
+</code></p>
+
+<p>instead of:</p>
+
+<p><code>js
+window.navigator.userAgent.indexOf('Chrome') &gt; -1
+</code></p>
+
+<p>Withing taking <code>window.navigator</code> and putting it on <code>global.navigator</code>, you'd get an error like this when running your tests:</p>
+
+<p><code>
+ReferenceError: navigator is not defined
+</code></p>
+
+<h2>The React Test</h2>
+
+<p>You are now ready to render React components into a document in your tests.  The document will be provided by jsdom.  You don't need a browser environment to run this.</p>
+
+<p>```js mycomponent.spec.js
+var React = require('react/addons')
+var should = require('should')
+var TestUtils = React.addons.TestUtils
+var MyComponent = // a React.Component with a <button/> ...
+describe('MyComponent', function () {
+  it('has button that fires a dom event for click', function (done) {</p>
+
+<pre><code>function handleClick() { done() }
+var detachedComp = TestUtils.renderIntoDocument(&lt;MyComponent onClick={handleClick}/&gt;)
+var button = TestUtils.findRenderedDOMComponentWithTag(detachedComp, 'button')
+var buttonNode = React.findDOMNode(button)
+should.exist(buttonNode)
+TestUtils.Simulate.click(buttonNode)
+</code></pre>
+
+<p>  })
+})
+```</p>
+
+<p>To run mocha with the configuration above, I like to add an npm script in <code>package.json</code>:</p>
+
+<p>```json package.json
+{
+   "scripts": {</p>
+
+<pre><code> "test": "mocha test/**/*.spec.js"
+</code></pre>
+
+<p>   }
+}
+```</p>
+
+<p>And then type:</p>
+
+<p><code>bash
+npm test
+</code></p>
+
+<p>Write the source to satisfy your test, and the lights should go green.  Your DOM is happy.  Your test is happy.</p>
+
+<p>Does it work well for you?  How might you improve on it?  Enjoy testing!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[pushState with webpack-dev-server]]></title>
@@ -444,77 +607,6 @@ mock.restore();
 
 
 <p>When do you find yourself most often using spies vs. stubs vs. mocks?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby CLI Options Parsing]]></title>
-    <link href="http://jaketrent.com/post/ruby-cli-options-parsing/"/>
-    <updated>2015-02-24T07:21:00-07:00</updated>
-    <id>http://jaketrent.com/post/ruby-cli-options-parsing</id>
-    <content type="html"><![CDATA[<p>Ruby's stdlib never ceases to amaze.  If you're making a CLI tool in Ruby, your efforts are made more straightforward by the existence of the <a href="http://ruby-doc.org/stdlib-2.2.0/libdoc/optparse/rdoc/OptionParser.html">OptionParser</a> class.  Use it, and let happiness fill your heart.</p>
-
-<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="Ruby" /></p>
-
-<!--more-->
-
-
-<p>We're used to some nice CLI tools these days -- ones that have many useful options that allow for easier scripting and more powerful, quick usage.  Ruby's <code>OptionParser</code> will help us make our own and not disappoint the masses of fevered CLI users.</p>
-
-<p>All terminal input from initial execution will enter our Ruby program via the <code>ARGV</code> variable.</p>
-
-<p>To have the <code>OptionParser</code> class available to us, we must require the <code>optsparse</code> package.</p>
-
-<p><code>OptionParser</code> options are defined similar to how you'd expect event handlers to be defined: with the <code>on</code> keyword.  You can pass it a string to match a short option, a string to match the verbose option, and finally a block to be executed when the option is detected.  In the block, we generally will want to store the option state.  We'll choose to use an <code>OpenStruct</code> for that (and will need the <code>ostruct</code> package).</p>
-
-<p>For example:</p>
-
-<p>```ruby
-require "optsparse"
-require "ostruct"</p>
-
-<p>options = OpenStruct.new
-opt_parser = OptionParser.new do |opts|</p>
-
-<pre><code>opts.banner = "Usage: luchador [options]"
-opts.separator ""
-opts.separator "Options:"
-
-opts.on("-t, "--twist", "Apply the nipple twist") do |t|
-  options.twist = true
-end
-
-opts.on("-a a", "--anaconda-squeeze a", "The degrees of anaconda squeeze pressure") do |a|
-  options.anaconda_squeeze = a
-end
-
-opt_parser.parse!(ARGV)
-options
-</code></pre>
-
-<p>end
-```</p>
-
-<p>Now we can we might run CLI tool something like this:</p>
-
-<p><code>
-luchador -t --anaconda-squeeze 130
-</code></p>
-
-<p>And run with both options engaged for ultimate luchador power.  Notice we used both short and verbose-style options (choosing to write out the longest of the options for its added poetic punch on that whopping 130 degrees of pure squeeze pressure!).</p>
-
-<p>A few more points to note:</p>
-
-<ul>
-<li><code>opts.banner</code> and <code>opts.separator</code> can be used to format usage information.</li>
-<li>Usage information, stored in <code>opts</code> can be <code>put</code> to the screen.  A <code>-h</code>/<code>--help</code> option is automatically built in for this purpose.</li>
-<li>Remember to call <code>parse!</code> after configuring the options so the input is actually processed.</li>
-<li>Here, the <code>--anaconda-squeeze</code> option is defined differently than the first: there is a trailing <code>a</code>.  For options that require a non-boolean, this is required.  Otherwise, the argument to your handling block will always be a boolean <code>true</code>.</li>
-<li>Note that this example code only shows option parsing -- nothing about the <code>luchador</code> binary itself.</li>
-</ul>
-
-
-<p>This gives you the basic tools.  It's very easy, and it's built in!  To do more, you might take required options first through the CLI options and then read them interactively from the console.  What other neat additions do you see that we could add?</p>
 ]]></content>
   </entry>
   

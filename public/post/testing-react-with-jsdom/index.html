@@ -1,0 +1,498 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Testing React on jsdom - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Webpack's dev server for static assets can be quickly configured to handle JavaScript history api pushState.">
+  <meta name="keywords" content="webpack, webpack-dev-server, pushState, history api, client router">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Testing React on jsdom" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://i.imgur.com/DXuSNbw.png" />
+  <meta property="og:url" content="http://jaketrent.com/post/testing-react-with-jsdom/" />
+  <meta property="og:description" content="Webpack's dev server for static assets can be quickly configured to handle JavaScript history api pushState." />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Testing React on jsdom" />
+  <meta name="twitter:description" content="Webpack's dev server for static assets can be quickly configured to handle JavaScript history api pushState." />
+  <meta name="twitter:image" content="http://i.imgur.com/DXuSNbw.png" />
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/testing-react-with-jsdom/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <section class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">
+        <span class="logo-img"></span>
+      </a>
+    </h2>
+  </header>
+</section>
+
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://books.jaketrent.com">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Testing React on Jsdom</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-18T07:13:00-06:00" pubdate data-updated="true">Jun 18<span>th</span>, 2015</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>React allows you to create components that will render UI for your application.  If your UI is of any complexity, you&#8217;ll likely want to test that it functions correctly and allows for future refactors.  There are numerous ways to do this.  One way that you might appreciate is using <a href="https://github.com/tmpvar/jsdom">jsdom</a>, an in-JavaScript implementation of the DOM.</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react on jsdom" /></p>
+
+<!--more-->
+
+
+<h2>What is jsdom?</h2>
+
+<p>Jsdom is an in-JavaScript implementation of the DOM.  The DOM is the document object model, which is the tree of nodes that make up the UI for documents shown in web browsers.</p>
+
+<p>Because jsdom is implemented in JavaScript, we can have a DOM-like API to work with without needing a browser.  That means that we don&#8217;t have to capture a browser in order test, a la <a href="http://karma-runner.github.io/">Karma</a>.  That means that we can run our tests in environments without browsers, like in Node or in continuous integration environments.</p>
+
+<p>By not using real browsers, we&#8217;re also essentially saying that we believe the problems in our client JavaScript will not be browser-dependent (again, because we&#8217;re not capturing <em>real</em> browsers).</p>
+
+<h2>jsdom Requirements</h2>
+
+<p>The <a href="https://github.com/tmpvar/jsdom">latest version of jsdom</a>, as of this writing, requires <a href="https://iojs.org/en/index.html">io.js</a> instead of Node to run.  If you&#8217;d like to run in Node.js instead, the <a href="https://github.com/tmpvar/jsdom/tree/3.x">3.x series of jsdom</a> is required.</p>
+
+<p>As <a href="http://thenextweb.com/dd/2015/06/16/node-js-and-io-js-are-settling-their-differences-merging-back-together/">Node and io.js merge in the future</a>, I expect the new versions of jsdom to support the one, unified platform.</p>
+
+<h2>The Test Runner</h2>
+
+<p>In my JavaScript tests, I prefer to use the <a href="http://mochajs.org/">Mocha</a> test runner.  It&#8217;s usable in Node or browser environments.  It has great async test support.  It has the familiar behavior-style syntax of <code>describe</code> and <code>it</code> and all the normal test setup hooks that you like.  Most importantly, it features the Nyan cat test reporter:</p>
+
+<p><img src="http://mochajs.org/images/reporter-nyan.png" alt="nyan cat test reporter" /></p>
+
+<p>Mocha lets you choose your own assertion library.  I like <a href="http://shouldjs.github.io/">should.js</a>.</p>
+
+<p>To install both:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install mocha should --save-dev</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Configuring Mocha</h2>
+
+<p>By default, Mocha wants a <code>/test</code> directory in your project root in which to put its configuration and potentially your spec files, depending on how you like to organize your projects:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir test</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Inside of the <code>/test</code> dir, let&#8217;s <code>vim mocha.opts</code> and give it a place to configure jsdom and our other libs:</p>
+
+<figure class='code'><figcaption><span>mocha.opts</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>--require test/utils/dom.js
+</span><span class='line'>--require should
+</span><span class='line'>--reporter nyan
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We have yet to write the <code>test/utils/dom.js</code> file.  We will.  This file includes options for mocha.  Line by line, we&#8217;re saying that before mocha runs tests, we want to load our <code>dom.js</code> config, the <code>should.js</code> library, and specify our reporter as <code>nyan</code>.</p>
+
+<h2>Configuring jsdom</h2>
+
+<p>I&#8217;ve tried to come up with several configurations that will make jsdom work well with my React projects.  This is the best/simplest that I&#8217;ve come up with.  I&#8217;d be interested to hear if you have any suggestions on the approach.</p>
+
+<p>Here&#8217;s the full configuration with explanatory comments inline, as it would appear in <code>test/utils/dom.js</code>:</p>
+
+<figure class='code'><figcaption><span>dom.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">jsdom</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jsdom&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// setup the simplest document possible</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">doc</span> <span class="o">=</span> <span class="nx">jsdom</span><span class="p">.</span><span class="nx">jsdom</span><span class="p">(</span><span class="s1">&#39;&lt;!doctype html&gt;&lt;html&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// get the window object out of the document</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">win</span> <span class="o">=</span> <span class="nx">doc</span><span class="p">.</span><span class="nx">defaultView</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// set globals for mocha that make access to document and window feel </span>
+</span><span class='line'><span class="c1">// natural in the test environment</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nb">document</span> <span class="o">=</span> <span class="nx">doc</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nb">window</span> <span class="o">=</span> <span class="nx">win</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// take all properties of the window object and also attach it to the </span>
+</span><span class='line'><span class="c1">// mocha global object</span>
+</span><span class='line'><span class="nx">propagateToGlobal</span><span class="p">(</span><span class="nx">win</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">propagateToGlobal</span> <span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="k">in</span> <span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">window</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="k">continue</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">global</span><span class="p">)</span> <span class="k">continue</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">global</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">window</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The reason that we want to attach all the <code>window</code> properties to the mocha <code>global</code> object is because developers often write code that is meant for the browser without explicitly using the global environment object.  For instance, in React the developers write:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;Chrome&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>instead of:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nb">window</span><span class="p">.</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;Chrome&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Withing taking <code>window.navigator</code> and putting it on <code>global.navigator</code>, you&#8217;d get an error like this when running your tests:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">ReferenceError</span><span class="o">:</span> <span class="nx">navigator</span> <span class="nx">is</span> <span class="nx">not</span> <span class="nx">defined</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>The React Test</h2>
+
+<p>You are now ready to render React components into a document in your tests.  The document will be provided by jsdom.  You don&#8217;t need a browser environment to run this.</p>
+
+<figure class='code'><figcaption><span>mycomponent.spec.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">React</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;react/addons&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">should</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;should&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">TestUtils</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">addons</span><span class="p">.</span><span class="nx">TestUtils</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">MyComponent</span> <span class="o">=</span> <span class="c1">// a React.Component with a &lt;button/&gt; ...</span>
+</span><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;MyComponent&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;has button that fires a dom event for click&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">function</span> <span class="nx">handleClick</span><span class="p">()</span> <span class="p">{</span> <span class="nx">done</span><span class="p">()</span> <span class="p">}</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">detachedComp</span> <span class="o">=</span> <span class="nx">TestUtils</span><span class="p">.</span><span class="nx">renderIntoDocument</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">MyComponent</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">handleClick</span><span class="p">}</span><span class="o">/&gt;</span><span class="p">)</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">button</span> <span class="o">=</span> <span class="nx">TestUtils</span><span class="p">.</span><span class="nx">findRenderedDOMComponentWithTag</span><span class="p">(</span><span class="nx">detachedComp</span><span class="p">,</span> <span class="s1">&#39;button&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">buttonNode</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">findDOMNode</span><span class="p">(</span><span class="nx">button</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">should</span><span class="p">.</span><span class="nx">exist</span><span class="p">(</span><span class="nx">buttonNode</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">TestUtils</span><span class="p">.</span><span class="nx">Simulate</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">buttonNode</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To run mocha with the configuration above, I like to add an npm script in <code>package.json</code>:</p>
+
+<figure class='code'><figcaption><span>package.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>   <span class="nt">&quot;scripts&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>     <span class="nt">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;mocha test/**/*.spec.js&quot;</span>
+</span><span class='line'>   <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And then type:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm <span class="nb">test</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Write the source to satisfy your test, and the lights should go green.  Your DOM is happy.  Your test is happy.</p>
+
+<p>Does it work well for you?  How might you improve on it?  Enjoy testing!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-18T07:13:00-06:00" pubdate data-updated="true">Jun 18<span>th</span>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/jsdom/'>jsdom</a>, <a class='category' href='/blog/categories/mocha/'>mocha</a>, <a class='category' href='/blog/categories/react/'>react</a>, <a class='category' href='/blog/categories/unit-testing/'>unit-testing</a>, <a class='category' href='/blog/categories/webpack/'>webpack</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+
+  <ul class="rrssb-buttons">
+    <li class="rrssb-twitter">
+      <!-- Replace href with your Meta and URL information  -->
+      <a href="http://twitter.com/home?status=Testing React on jsdom%20by%20@jaketrent%20%20http://jaketrent.com/post/testing-react-with-jsdom/" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                 width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+            <path d="M24.253,8.756C24.689,17.08,18.297,24.182,9.97,24.62c-3.122,0.162-6.219-0.646-8.861-2.32
+                c2.703,0.179,5.376-0.648,7.508-2.321c-2.072-0.247-3.818-1.661-4.489-3.638c0.801,0.128,1.62,0.076,2.399-0.155
+                C4.045,15.72,2.215,13.6,2.115,11.077c0.688,0.275,1.426,0.407,2.168,0.386c-2.135-1.65-2.729-4.621-1.394-6.965
+                C5.575,7.816,9.54,9.84,13.803,10.071c-0.842-2.739,0.694-5.64,3.434-6.482c2.018-0.623,4.212,0.044,5.546,1.683
+                c1.186-0.213,2.318-0.662,3.329-1.317c-0.385,1.256-1.247,2.312-2.399,2.942c1.048-0.106,2.069-0.394,3.019-0.851
+                C26.275,7.229,25.39,8.196,24.253,8.756z"/>
+            </svg>
+        </span>
+      </a>
+    </li>
+    <li class="rrssb-linkedin">
+      <!-- Replace href with your meta and URL information -->
+      <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://jaketrent.com/post/testing-react-with-jsdom/&amp;title=Testing React on jsdom&amp;summary=from jaketrent.com" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                <path d="M25.424,15.887v8.447h-4.896v-7.882c0-1.979-0.709-3.331-2.48-3.331c-1.354,0-2.158,0.911-2.514,1.803
+                    c-0.129,0.315-0.162,0.753-0.162,1.194v8.216h-4.899c0,0,0.066-13.349,0-14.731h4.899v2.088c-0.01,0.016-0.023,0.032-0.033,0.048
+                    h0.033V11.69c0.65-1.002,1.812-2.435,4.414-2.435C23.008,9.254,25.424,11.361,25.424,15.887z M5.348,2.501
+                    c-1.676,0-2.772,1.092-2.772,2.539c0,1.421,1.066,2.538,2.717,2.546h0.032c1.709,0,2.771-1.132,2.771-2.546
+                    C8.054,3.593,7.019,2.501,5.343,2.501H5.348z M2.867,24.334h4.897V9.603H2.867V24.334z"/>
+            </svg>
+        </span>
+      </a>
+    </li>
+    <li class="rrssb-googleplus">
+      <!-- Replace href with your meta and URL information.  -->
+      <a href="https://plus.google.com/share?url=http://jaketrent.com/post/testing-react-with-jsdom/" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                <g>
+                    <g>
+                        <path d="M14.703,15.854l-1.219-0.948c-0.372-0.308-0.88-0.715-0.88-1.459c0-0.748,0.508-1.223,0.95-1.663
+                            c1.42-1.119,2.839-2.309,2.839-4.817c0-2.58-1.621-3.937-2.399-4.581h2.097l2.202-1.383h-6.67c-1.83,0-4.467,0.433-6.398,2.027
+                            C3.768,4.287,3.059,6.018,3.059,7.576c0,2.634,2.022,5.328,5.604,5.328c0.339,0,0.71-0.033,1.083-0.068
+                            c-0.167,0.408-0.336,0.748-0.336,1.324c0,1.04,0.551,1.685,1.011,2.297c-1.524,0.104-4.37,0.273-6.467,1.562
+                            c-1.998,1.188-2.605,2.916-2.605,4.137c0,2.512,2.358,4.84,7.289,4.84c5.822,0,8.904-3.223,8.904-6.41
+                            c0.008-2.327-1.359-3.489-2.829-4.731H14.703z M10.269,11.951c-2.912,0-4.231-3.765-4.231-6.037c0-0.884,0.168-1.797,0.744-2.511
+                            c0.543-0.679,1.489-1.12,2.372-1.12c2.807,0,4.256,3.798,4.256,6.242c0,0.612-0.067,1.694-0.845,2.478
+                            c-0.537,0.55-1.438,0.948-2.295,0.951V11.951z M10.302,25.609c-3.621,0-5.957-1.732-5.957-4.142c0-2.408,2.165-3.223,2.911-3.492
+                            c1.421-0.479,3.25-0.545,3.555-0.545c0.338,0,0.52,0,0.766,0.034c2.574,1.838,3.706,2.757,3.706,4.479
+                            c-0.002,2.073-1.736,3.665-4.982,3.649L10.302,25.609z"/>
+                        <polygon points="23.254,11.89 23.254,8.521 21.569,8.521 21.569,11.89 18.202,11.89 18.202,13.604 21.569,13.604 21.569,17.004
+                            23.254,17.004 23.254,13.604 26.653,13.604 26.653,11.89      "/>
+                    </g>
+                </g>
+            </svg>
+        </span>
+      </a>
+    </li>
+    <li class="rrssb-facebook">
+      <!-- Replace with your URL. For best results, make sure you page has the proper FB Open Graph tags in header:
+      https://developers.facebook.com/docs/opengraph/howtos/maximizing-distribution-media-content/ -->
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://jaketrent.com/post/testing-react-with-jsdom/" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                <path d="M27.825,4.783c0-2.427-2.182-4.608-4.608-4.608H4.783c-2.422,0-4.608,2.182-4.608,4.608v18.434
+                    c0,2.427,2.181,4.608,4.608,4.608H14V17.379h-3.379v-4.608H14v-1.795c0-3.089,2.335-5.885,5.192-5.885h3.718v4.608h-3.726
+                    c-0.408,0-0.884,0.492-0.884,1.236v1.836h4.609v4.608h-4.609v10.446h4.916c2.422,0,4.608-2.188,4.608-4.608V4.783z"/>
+            </svg>
+        </span>
+      </a>
+    </li>
+  </ul>
+
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/pushstate-webpack-dev-server/" title="Previous Post: pushState with webpack-dev-server">&laquo; pushState with webpack-dev-server</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="footer-container">
+    <footer class="main-footer" role="contentinfo"><div class="main-footer-logo"></div>
+<ul class="main-footer-links-list">
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Content licensed</span> 2015 <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a>
+  </li>
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Authored by </span><a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a>
+  </li>
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Subscribe to the </span><a href="/atom.xml">Feed</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <a href="/sitemap.xml">Sitemap</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues/new">Report a Bug</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <span class="main-footer-verbage">Chat on </span><a href="https://keybase.io/jaketrent">Keybase</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <span class="main-footer-verbage">Powered by </span><a href="http://octopress.org">Octopress</a>
+  </li>
+</ul>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/testing-react-with-jsdom/';
+        var disqus_url = 'http://jaketrent.com/post/testing-react-with-jsdom/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
