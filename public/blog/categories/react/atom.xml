@@ -4,7 +4,7 @@
   <title><![CDATA[Category: react | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/react/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-06-18T08:00:45-06:00</updated>
+  <updated>2015-06-26T10:05:51-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,160 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using JavaScript's Function Bind]]></title>
+    <link href="http://jaketrent.com/post/using-javascript-function-bind/"/>
+    <updated>2015-06-26T07:51:00-06:00</updated>
+    <id>http://jaketrent.com/post/using-javascript-function-bind</id>
+    <content type="html"><![CDATA[<p>JavaScript's Function object has a very helpful method, <code>bind</code>.  It is a great tool to give you control of the ever-squirrely <code>this</code> keyword.  Have you ever had trouble predicting what <code>this</code> will be or making equate to what you want?  <code>bind</code> will help you do that with more power and consistency.  It can also help you with partial function application.</p>
+
+<p><img src="http://i.imgur.com/4huM3Xb.jpg" alt="function bind" /></p>
+
+<!--more-->
+
+
+<h2>The <code>this</code> Keyword</h2>
+
+<p>In JavaScript, what the <code>this</code> keyword refers to changes often.  This can be useful but also unexpected.  Generally <code>this</code>, used within a function, will refer to the context in which that function was called. That calling context might be the global context of <code>window</code> if an event callback is being called in a browser.  That calling context might be an object that contains the function.  For more specific cases, MDN has some <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">great docs on the variety of contexts referred to by <code>this</code></a>.</p>
+
+<h2>Controlling <code>this</code> with <code>bind</code></h2>
+
+<p>When writing code, I often am thinking of <code>this</code> in the context in which I'm writing.  In other words, if I'm writing an object and use the keyword <code>this</code> in a function, I would normally expect <code>this</code> to refer to the object in which I <em>declared</em> the function.  But, again, it is actually the <em>calling</em> context that actually determines the value of <code>this</code>.</p>
+
+<p>To change this default behavior, I can pre-bind the function's value of <code>this</code> to a value of my choosing.  This will happen at the time of <em>declaration</em>, which is what I more naturally would expect.</p>
+
+<p>For example, in <a href="http://facebook.github.io/react/">React</a> we write UI components.  In interesting UIs, we're often handling events like those that occur with user interaction.  Normally events in the browser are attached to the DOM and are executed in the context of the <code>window</code>.  This being the case, it'll be hard for us to create an event handler function in our React Component that can refer back to anything of use in the React Component itself.</p>
+
+<p>As a simple example, we'll write a <code>handleClick</code> function that wants to call the Component's <code>doLog</code> function for interesting logging:</p>
+
+<p>```js event-handling.js
+class MyComponent extends React.Component {
+  doLog() {</p>
+
+<pre><code>console.log('Yay, you clicked!')
+</code></pre>
+
+<p>  }
+  handleClick() {</p>
+
+<pre><code>console.log('this is window?', 
+            this == window)
+console.log('this is component?',
+           this.constructor.name == 'MyComponent')
+this.doLog()
+</code></pre>
+
+<p>  }
+  render() {</p>
+
+<pre><code>return (
+  &lt;div&gt;
+    &lt;h1&gt;Time to start clicking&lt;/h1&gt;
+    &lt;button onClick={this.handleClick}&gt;So, click&lt;/button&gt;
+  &lt;/div&gt;
+)
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>React.render(<MyComponent />, document.getElementById('app'))
+```</p>
+
+<p><a href="http://jsbin.com/lixayanoso/edit?js,console,output">jsbin of broken state</a></p>
+
+<p>If you click the button, <code>this.doLog</code> is not available as a function.  How could it be?  <code>doLog</code> is defined in <code>MyComponent</code>, not the <code>window</code>, which is the original context in which the event callback is executed.</p>
+
+<p>To fix this, one need only pre-bind the <code>handleClick</code> function.  By changing one line, we can fix this:</p>
+
+<p><code>js
+&lt;button onClick={this.handleClick.bind(this)}&gt;So, click&lt;/button&gt;
+</code></p>
+
+<p>When this line is executed, it's in the <code>MyComponent#render</code> function, thus the <code>MyComponent</code> context.  So <code>this</code>, at that moment, is <code>MyComponent</code>.</p>
+
+<p>The other detail that makes this work is that <code>bind</code> returns a <em>brand new function</em>.  That's how the pre-binding works.  So, the <code>onClick</code> prop that gets given to the <code>button</code> is a new function where we have said we want to permanently control the value of <code>this</code> to be whatever we bound it to.</p>
+
+<p><a href="http://jsbin.com/luwoxegopu/edit?js,console,output">jsbin of fixed state</a></p>
+
+<h2>Passing Specific Arguments with <code>bind</code></h2>
+
+<p>Another great reason to use <code>bind</code> is to pass specific arguments to a function.  Just as <code>bind</code> can create new functions where the value of <code>this</code> is pre-determined (bound), <code>bind</code> can pre-fill (ie, partially apply) function arguments on the newly-created function.</p>
+
+<p>It may not be immediately intuitive why one would want to create a function with parameters just to turn around and permanently make it so an argument to the function equals a specific value.  It almost feels like hard-coding a wart-ridden value on something that was previously dynamic and beautiful.  Perhaps an example will help.</p>
+
+<p>Again, to the world of React...  As in the previous example, we'll pass an event handler for a click event.  Notice, just as above, that we're passing the function itself (<code>this.handleClick</code> above) instead of the return value of the function (which would look like <code>this.handleClick()</code>).  In this example, we'll have several click handlers, each on a list item, where the button will function as a remove button:</p>
+
+<p>```js
+class Item extends React.Component {
+  render() {</p>
+
+<pre><code>return (
+  &lt;li&gt;
+    {this.props.text}
+    &lt;button onClick={this.props.onRemove}&gt;Rm&lt;/button&gt;
+  &lt;/li&gt;
+)
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>class List extends React.Component {
+  constructor(props) {</p>
+
+<pre><code>super(props)
+this.state = { items: this.props.initalItems }
+</code></pre>
+
+<p>  }
+  handleClickRemove(index) {</p>
+
+<pre><code>var clonedItems = this.state.items.slice()
+clonedItems.splice(index, 1)
+this.setState({ items: clonedItems })
+</code></pre>
+
+<p>  }
+  render() {</p>
+
+<pre><code>return (
+  &lt;ul&gt;
+    {this.state.items.map((item, i) =&gt; {
+      return &lt;Item text={item} onRemove={this.handleClickRemove.bind(this, i)} key={item} /&gt;
+    })}
+  &lt;/ul&gt;
+)
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>React.render(<List initalItems={['Do', 'More', 'Reakt']} />, document.getElementById('app'))
+```</p>
+
+<p><a href="http://jsbin.com/cinovebasu/edit?js,console,output">A working jsbin</a></p>
+
+<p>In <code>List</code>, we have the event handler, the <code>handleClickRemove</code> function, that takes an <code>index</code> parameter.  In order to make this function work as defined, we are using <code>bind</code> on this line:</p>
+
+<p><code>js
+return &lt;Item text={item} onRemove={this.handleClickRemove.bind(this, i)} key={item} /&gt;
+</code></p>
+
+<p>This <code>bind</code> call is doing a few things for us:</p>
+
+<ol>
+<li>Pre-binding <code>handleClickRemove</code> to the <code>List</code> Component so that <code>this.setState</code> works inside the callback.</li>
+<li>Creating a new function that always has <code>i</code> as its first parameter.  Since this line is executed in a loop, <code>i</code> changes.  It will be <code>0</code> for the first item, <code>1</code>, then <code>2</code>.  This is perfect, as we want the first remove button to remove the first item, and so on.</li>
+</ol>
+
+
+<p>Isn't that awesome and useful?</p>
+
+<p>So <code>bind</code> can help make <code>this</code> more predictable for you.  It will help you send new functions with pre-filled parameters.  What else have you used <code>bind</code> for?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Testing React on jsdom]]></title>
@@ -530,129 +684,6 @@ case ActionTypes.TRANSITION:
 <p>At this point, all the route transitions should trigger data changes in views.  Visiting the url <code>/books/1</code> and then the url <code>/books/2</code> should display different data on screen according to which book id was in the route.  <code>Router.Link</code> should work correctly, usable instead of buttons with actions being triggered on click.</p>
 
 <p>react-router and Flux make for a great combo in this way, right?  What adjustments would you make?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Send Props to Children in React]]></title>
-    <link href="http://jaketrent.com/post/send-props-to-children-react/"/>
-    <updated>2014-08-12T16:55:00-06:00</updated>
-    <id>http://jaketrent.com/post/send-props-to-children-react</id>
-    <content type="html"><![CDATA[<p>In React, you're always making components.  Sometimes components are standalone.  Other times, you'll have components that can nest children components.  Sometimes you'll want to send properties to the children components from the parent as often as a doting parent wants to send packages to a child missionary.  It's possible, it's simple, and it's not documented super well.  Here's one method.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="React" /></p>
-
-<!--more-->
-
-
-<h2>Children Components</h2>
-
-<p>When parent components are rendered, they have access to a special property, <code>this.props.children</code>.  It's like an Angular <code>ng-transclude</code> or an Ember <code>yield</code>.  Children components are generally rendered something like this:</p>
-
-<p>```js
-React.createClass({
-  render: function () {</p>
-
-<pre><code>return (
-  &lt;div id="iAmParentHearMeRoar"&gt;
-    {this.props.children}
-  &lt;/div&gt;
-)
-</code></pre>
-
-<p>  }
-})
-```</p>
-
-<p>The generic example above shows simply how to render children, <code>props</code> untouched, within a parent component.  Sometimes, however, a parent wants to bequeath its children with extra properties.  How will we make that happen?</p>
-
-<h2>Setting Child Props</h2>
-
-<p><code>props</code> are meant to be immutable.  But, in order for us to send <code>props</code> values to our children, we're going to essentially loop through our children and set props on them as a part of our parent <code>render</code> function.</p>
-
-<p>Deep breath.  It's ok.  The children that we'll loop through aren't mounted component instances.  They are, instead, <a href="http://facebook.github.io/react/blog/2014/07/17/react-v0.11.html#descriptors">descriptors</a>.  These descriptors have all the <code>props</code> attributes that we've declared should be put on the components, but they haven't been rendered yet.  Because of this, we can change props, and it's ok.  We're not mutating what has rendered.  The data still hasn't flowed to the children.  We're still effectively still riffing on the logic of what the children components should really be when they're eventually mounted.</p>
-
-<h2>Looping on Children Components</h2>
-
-<p><code>this.props.children</code> is a funny property.  It's special in more ways than one.  The things that might trip us up in looping is that even though it sounds like a plural thing, meaning an array, sometimes it's a singular object.  To help avoid potential problems, React gives us a helper, <code>React.Children</code>.  It has a few functions for array iteration, such as <code>map</code> and <code>forEach</code> that help account for the potential forms of <code>this.props.children</code>.</p>
-
-<h2>Functional Modifications</h2>
-
-<p>Immutable data is a big part of functional programming.  This means that when we 'mutate' the props, we want to mutate on a clone of the child component without affecting the original.  There's an input, there's an output, and the input is untouched.  Once we have our cloned children components as we want them, we'll render those instead.  React offers another great helper for cloning components and setting properties in a single function, <code>React.addons.cloneWithProps</code>.  Note that in order to use this function, you need to <code>require('react/addons')</code>.</p>
-
-<h2>Checking Child Type</h2>
-
-<p>It's a generally-useful thing to be able to tell what the React class type of a component object is.  It's an applicable skill in terms of looping through child components because we might not want to modify the properties of all types of children.  Each React component class has a <code>type</code> attribute accessible via <code>MyComponent.type</code>.  This attribute is also available on component descriptors.</p>
-
-<h2>A Child CheckOption Example</h2>
-
-<p>To bring this all together and illustrate the concepts, let's say we created a <code>RadioGroup</code> component that could take one or many <code>RadioOption</code> child components.  In raw html, which is what our component will eventually render, <code>input</code>s with type <code>checkbox</code> need to all have the same <code>name</code> attribute value to work well as toggles within the group.  But this is something that React can help us not have to duplicate.  We'll instead put a <code>name</code> property on the parent <code>RadioGroup</code> and have it transfer it as a property on all its children.  The implementation might look like this:</p>
-
-<p>```js
-/<em>* @jsx React.DOM </em>/</p>
-
-<p>var React = require('react/addons')</p>
-
-<p>var RadioOption = React.createClass({
-  render: function () {</p>
-
-<pre><code>return (
-  &lt;label&gt;
-    &lt;input type="radio" value={this.props.value} name={this.props.name} /&gt;
-    {this.props.label}
-  &lt;/label&gt;
-)
-</code></pre>
-
-<p>  }
-})</p>
-
-<p>var RadioGroup = React.createClass({
-  renderChildren: function () {</p>
-
-<pre><code>return React.Children.map(this.props.children, function (child) {
-  if (child.type === RadioOption.type)
-    return React.addons.cloneWithProps(child, {
-      name: this.props.name
-    })
-  else
-    return child
-}.bind(this))
-</code></pre>
-
-<p>  },
-  render: function () {</p>
-
-<pre><code>return (
-  &lt;div class="radio-group"&gt;
-    {this.renderChildren()}
-  &lt;/div&gt;
-)
-</code></pre>
-
-<p>  }
-})</p>
-
-<p>var WhereImUsingRadioGroups = React.createClass({
-  render: function () {</p>
-
-<pre><code>return (
-  &lt;RadioGroup name="blizzard-games"&gt;
-    &lt;RadioOption label="Warcraft 2" value="wc2" /&gt;
-    &lt;RadioOption label="Warcraft 3" value="wc3" /&gt;
-    &lt;RadioOption label="Starcraft 1" value="sc1" /&gt;
-    &lt;RadioOption label="Starcraft 2" value="sc2" /&gt;
-  &lt;/RadioGroup&gt;
-)
-</code></pre>
-
-<p>  }
-})
-```</p>
-
-<p>In this example, where the parent <code>RadioGroup</code> has the <code>name</code> prop, it will be given to each of the children so their <code>name</code> prop will match and the radio group will work as expected.  Thus, the hearts of the children are turned toward their fathers.</p>
-
-<p>Is there a better way to do this?  How have you been sending <code>props</code> to children?</p>
 ]]></content>
   </entry>
   

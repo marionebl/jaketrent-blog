@@ -973,12 +973,16 @@
         <lastmod>2015-06-18T08:00:12-06:00</lastmod>
     </url>
     <url>
+        <loc>http://jaketrent.com/post/using-javascript-function-bind/</loc>
+        <lastmod>2015-06-26T10:04:54-06:00</lastmod>
+    </url>
+    <url>
         <loc>http://jaketrent.com/blog/archives/</loc>
-        <lastmod>2015-06-18T08:00:12-06:00</lastmod>
+        <lastmod>2015-06-26T10:04:54-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/</loc>
-        <lastmod>2015-06-18T08:00:12-06:00</lastmod>
+        <lastmod>2015-06-26T10:04:54-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/robots.txt</loc>
@@ -986,6 +990,6 @@
     </url>
     <url>
         <loc>http://jaketrent.com/work/</loc>
-        <lastmod>2015-06-18T08:00:12-06:00</lastmod>
+        <lastmod>2015-06-26T10:04:54-06:00</lastmod>
     </url>
 </urlset>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-06-18T08:00:45-06:00</updated>
+  <updated>2015-06-26T10:05:51-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,160 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using JavaScript's Function Bind]]></title>
+    <link href="http://jaketrent.com/post/using-javascript-function-bind/"/>
+    <updated>2015-06-26T07:51:00-06:00</updated>
+    <id>http://jaketrent.com/post/using-javascript-function-bind</id>
+    <content type="html"><![CDATA[<p>JavaScript's Function object has a very helpful method, <code>bind</code>.  It is a great tool to give you control of the ever-squirrely <code>this</code> keyword.  Have you ever had trouble predicting what <code>this</code> will be or making equate to what you want?  <code>bind</code> will help you do that with more power and consistency.  It can also help you with partial function application.</p>
+
+<p><img src="http://i.imgur.com/4huM3Xb.jpg" alt="function bind" /></p>
+
+<!--more-->
+
+
+<h2>The <code>this</code> Keyword</h2>
+
+<p>In JavaScript, what the <code>this</code> keyword refers to changes often.  This can be useful but also unexpected.  Generally <code>this</code>, used within a function, will refer to the context in which that function was called. That calling context might be the global context of <code>window</code> if an event callback is being called in a browser.  That calling context might be an object that contains the function.  For more specific cases, MDN has some <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">great docs on the variety of contexts referred to by <code>this</code></a>.</p>
+
+<h2>Controlling <code>this</code> with <code>bind</code></h2>
+
+<p>When writing code, I often am thinking of <code>this</code> in the context in which I'm writing.  In other words, if I'm writing an object and use the keyword <code>this</code> in a function, I would normally expect <code>this</code> to refer to the object in which I <em>declared</em> the function.  But, again, it is actually the <em>calling</em> context that actually determines the value of <code>this</code>.</p>
+
+<p>To change this default behavior, I can pre-bind the function's value of <code>this</code> to a value of my choosing.  This will happen at the time of <em>declaration</em>, which is what I more naturally would expect.</p>
+
+<p>For example, in <a href="http://facebook.github.io/react/">React</a> we write UI components.  In interesting UIs, we're often handling events like those that occur with user interaction.  Normally events in the browser are attached to the DOM and are executed in the context of the <code>window</code>.  This being the case, it'll be hard for us to create an event handler function in our React Component that can refer back to anything of use in the React Component itself.</p>
+
+<p>As a simple example, we'll write a <code>handleClick</code> function that wants to call the Component's <code>doLog</code> function for interesting logging:</p>
+
+<p>```js event-handling.js
+class MyComponent extends React.Component {
+  doLog() {</p>
+
+<pre><code>console.log('Yay, you clicked!')
+</code></pre>
+
+<p>  }
+  handleClick() {</p>
+
+<pre><code>console.log('this is window?', 
+            this == window)
+console.log('this is component?',
+           this.constructor.name == 'MyComponent')
+this.doLog()
+</code></pre>
+
+<p>  }
+  render() {</p>
+
+<pre><code>return (
+  &lt;div&gt;
+    &lt;h1&gt;Time to start clicking&lt;/h1&gt;
+    &lt;button onClick={this.handleClick}&gt;So, click&lt;/button&gt;
+  &lt;/div&gt;
+)
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>React.render(<MyComponent />, document.getElementById('app'))
+```</p>
+
+<p><a href="http://jsbin.com/lixayanoso/edit?js,console,output">jsbin of broken state</a></p>
+
+<p>If you click the button, <code>this.doLog</code> is not available as a function.  How could it be?  <code>doLog</code> is defined in <code>MyComponent</code>, not the <code>window</code>, which is the original context in which the event callback is executed.</p>
+
+<p>To fix this, one need only pre-bind the <code>handleClick</code> function.  By changing one line, we can fix this:</p>
+
+<p><code>js
+&lt;button onClick={this.handleClick.bind(this)}&gt;So, click&lt;/button&gt;
+</code></p>
+
+<p>When this line is executed, it's in the <code>MyComponent#render</code> function, thus the <code>MyComponent</code> context.  So <code>this</code>, at that moment, is <code>MyComponent</code>.</p>
+
+<p>The other detail that makes this work is that <code>bind</code> returns a <em>brand new function</em>.  That's how the pre-binding works.  So, the <code>onClick</code> prop that gets given to the <code>button</code> is a new function where we have said we want to permanently control the value of <code>this</code> to be whatever we bound it to.</p>
+
+<p><a href="http://jsbin.com/luwoxegopu/edit?js,console,output">jsbin of fixed state</a></p>
+
+<h2>Passing Specific Arguments with <code>bind</code></h2>
+
+<p>Another great reason to use <code>bind</code> is to pass specific arguments to a function.  Just as <code>bind</code> can create new functions where the value of <code>this</code> is pre-determined (bound), <code>bind</code> can pre-fill (ie, partially apply) function arguments on the newly-created function.</p>
+
+<p>It may not be immediately intuitive why one would want to create a function with parameters just to turn around and permanently make it so an argument to the function equals a specific value.  It almost feels like hard-coding a wart-ridden value on something that was previously dynamic and beautiful.  Perhaps an example will help.</p>
+
+<p>Again, to the world of React...  As in the previous example, we'll pass an event handler for a click event.  Notice, just as above, that we're passing the function itself (<code>this.handleClick</code> above) instead of the return value of the function (which would look like <code>this.handleClick()</code>).  In this example, we'll have several click handlers, each on a list item, where the button will function as a remove button:</p>
+
+<p>```js
+class Item extends React.Component {
+  render() {</p>
+
+<pre><code>return (
+  &lt;li&gt;
+    {this.props.text}
+    &lt;button onClick={this.props.onRemove}&gt;Rm&lt;/button&gt;
+  &lt;/li&gt;
+)
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>class List extends React.Component {
+  constructor(props) {</p>
+
+<pre><code>super(props)
+this.state = { items: this.props.initalItems }
+</code></pre>
+
+<p>  }
+  handleClickRemove(index) {</p>
+
+<pre><code>var clonedItems = this.state.items.slice()
+clonedItems.splice(index, 1)
+this.setState({ items: clonedItems })
+</code></pre>
+
+<p>  }
+  render() {</p>
+
+<pre><code>return (
+  &lt;ul&gt;
+    {this.state.items.map((item, i) =&gt; {
+      return &lt;Item text={item} onRemove={this.handleClickRemove.bind(this, i)} key={item} /&gt;
+    })}
+  &lt;/ul&gt;
+)
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>React.render(<List initalItems={['Do', 'More', 'Reakt']} />, document.getElementById('app'))
+```</p>
+
+<p><a href="http://jsbin.com/cinovebasu/edit?js,console,output">A working jsbin</a></p>
+
+<p>In <code>List</code>, we have the event handler, the <code>handleClickRemove</code> function, that takes an <code>index</code> parameter.  In order to make this function work as defined, we are using <code>bind</code> on this line:</p>
+
+<p><code>js
+return &lt;Item text={item} onRemove={this.handleClickRemove.bind(this, i)} key={item} /&gt;
+</code></p>
+
+<p>This <code>bind</code> call is doing a few things for us:</p>
+
+<ol>
+<li>Pre-binding <code>handleClickRemove</code> to the <code>List</code> Component so that <code>this.setState</code> works inside the callback.</li>
+<li>Creating a new function that always has <code>i</code> as its first parameter.  Since this line is executed in a loop, <code>i</code> changes.  It will be <code>0</code> for the first item, <code>1</code>, then <code>2</code>.  This is perfect, as we want the first remove button to remove the first item, and so on.</li>
+</ol>
+
+
+<p>Isn't that awesome and useful?</p>
+
+<p>So <code>bind</code> can help make <code>this</code> more predictable for you.  It will help you send new functions with pre-filled parameters.  What else have you used <code>bind</code> for?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Testing React on jsdom]]></title>
@@ -502,111 +656,6 @@ render() {
 <p>You can also check out this <a href="http://jsbin.com/buwoqod/22/edit?js,output">slightly modified jsbin</a> which does the test assertion.</p>
 
 <p>What methods have you used to test Components that use either <code>componentWillReceiveProps</code> or other interesting lifecycle methods?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Sinon Spies vs. Stubs]]></title>
-    <link href="http://jaketrent.com/post/sinon-spies-vs-stubs/"/>
-    <updated>2015-02-25T07:35:00-07:00</updated>
-    <id>http://jaketrent.com/post/sinon-spies-vs-stubs</id>
-    <content type="html"><![CDATA[<p><a href="http://sinonjs.org/">Sinon</a> provides spies, stubs, and mocks.  They're all useful as fakes in tests.  They come with essential differences for what they're helpful in doing and how they work.</p>
-
-<p><img src="http://i.imgur.com/yuKcrP9.jpg" alt="spies vs stubs" /></p>
-
-<!--more-->
-
-
-<h2>Why Use Fakes?</h2>
-
-<p>In a unit test, you might want to avoid having to test the unit's dependencies.  This is especially true in <a href="http://en.wikipedia.org/wiki/White-box_testing">white-box testing</a>.  In this case, test fakes are going to be very helpful.  Sinon provides several fakes, notably spies, stubs, and mocks.  Let's compare and contrast the three:</p>
-
-<h2>Sinon Spies</h2>
-
-<p>Spies sound like what they do -- they watch your functions and report back on how they are called.  They generally avoid the violence and mayhem of a Hollywood spy, but depending on your application, this could vary.</p>
-
-<p>They don't change the functionality of your application.  They simply report what they see.  The <a href="http://sinonjs.org/docs/#spies-api">sinon API for spies</a> is fairly large, but it essentially centers around the <code>called</code> attribute (of which there are many variations).</p>
-
-<p>I first setup that I want to spy on something.  Then I call my subject under test (src code).  Then I verify with the spy what was actually called and stop spying.  That might look like this in a test:</p>
-
-<p>```js
-describe("#fight", function () {
-  it("calls prayForStrength for fight success", function () {</p>
-
-<pre><code>sinon.spy(subject.strengthDep, "prayForStrength");
-subject.fight();
-subject.strengthDep.called.should.be.true;
-subject.strengthDep.restore();
-</code></pre>
-
-<p>  });
-});
-```</p>
-
-<p><em>Note: this example is in <a href="http://mochajs.org/">mocha</a> using a <a href="https://www.npmjs.com/package/should">should.js</a> assertion style</em></p>
-
-<p>The dependency's <code>prayForStrength</code> method is referred to by name in a string to setup the spy.  When <code>fight</code> is called here, <code>strengthDep.prayForStrength</code> will be called as normal -- but there will be someone watching.  Finally, we call <code>restore</code> on the function we spied on so that all spies are called off.  If you want to do more than watch as dependencies work as described, you might want to use a stub.</p>
-
-<h2>Sinon Stubs</h2>
-
-<p>Stubs are more hands-on than spies (though they sound more useless, don't they).  With a stub, you will actually change how functions are called in your test.  You don't want to change the subject under test, thus changing the accuracy of your test.  But you may want to test several ways that dependencies of your unit could be expected to act.</p>
-
-<p>For instance, if you had a function that returned a boolean that your code used to do different things, you might want to use a stub in two different tests to verify conditions when returning different values (ie, guarantee one run of <code>true</code> and one of <code>false</code> return).</p>
-
-<p>To continue the <code>fight</code> example from above, let's assume that if <code>prayForStrength</code> returns true, we are guaranteed to win the fight for the orphans (ie, <code>fight()</code> should return <code>true</code>).  That might look like this:</p>
-
-<p>```js
-describe("#fight", function () {
-  it("always wins when prayForStrength is true", function () {</p>
-
-<pre><code>sinon.stub(subject.strengthDep, "prayForStrength", function () { return true; });
-subject.fight().should.be.true;
-subject.strengthDep.restore();
-</code></pre>
-
-<p>  });
-});
-```</p>
-
-<p>Notice that we use a different <code>sinon.stub</code> API.  For the 3rd parameter, we're supplying our own version of <code>prayForStrength</code>.  For our test, all we care about is the return value, so that's all we supply.  We're not testing this dependency.  We're instead testing how our subject <code>fight</code>s in a certain circumstance.  There are many ways you can use <a href="http://sinonjs.org/docs/#stubs">sinon stubs</a> to control how functions are called.  Also note that you can still use the <code>called</code> verifications with stubs.  But if you do verify a stub was called, you may want to use a mock.</p>
-
-<h2>Sinon Mocks</h2>
-
-<p><a href="http://sinonjs.org/docs/#mocks">Mocks</a> take the attributes of spies and stubs, smashes them together and changes the style a bit.  A mock will both observe the calling of functions and verify that they were called in some specific way.  And all this setup happens <em>previous</em> to calling your subject under test.  After the call, mocks are simply asked if all went to plan.</p>
-
-<p>So the previous test could be rewritten to use a mock:</p>
-
-<p>```js
-describe("#fight", function () {
-  it("always wins when prayForStrength is true", function () {</p>
-
-<pre><code>var mock = sinon.mock(subject.strengthDep)
-mock.expects("prayForStrength").returns(true);
-subject.fight().should.be.true;
-mock.verify();
-mock.restore();
-</code></pre>
-
-<p>  });
-});
-```</p>
-
-<p>The <code>expects</code> and <code>returns</code> line is where the combo magic happens.  <code>expects</code> is verifying a call (like <code>spies</code> can), and <code>returns</code> is specifying functionality (like <code>stubs</code> can).  The <code>verify</code> call is the line that will fail (essentially the mock assertion) if things in the subject didn't go exactly according to plan.</p>
-
-<h2>Spies vs. Stubs vs. Mocks</h2>
-
-<p>So when should I use spies or stubs or mocks?  As with most art, there are many ways to accomplish what you want.  Much of your choice will depend on your own style and what you become proficient in.</p>
-
-<p>Some basic rules might be:</p>
-
-<ul>
-<li><strong><em>Use Spies</em></strong> - if you simply want to watch and verify somethings happens in your test case.</li>
-<li><strong><em>Use Stubs</em></strong> - if you simply want to specify how something will work to help your test case.</li>
-<li><strong><em>Use Mocks</em></strong> - if you want to both of the above on a single dependency in your test case.</li>
-</ul>
-
-
-<p>When do you find yourself most often using spies vs. stubs vs. mocks?</p>
 ]]></content>
   </entry>
   

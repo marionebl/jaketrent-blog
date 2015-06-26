@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-06-18T08:00:45-06:00</updated>
+  <updated>2015-06-26T10:05:51-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,196 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using JavaScript's Function Bind]]></title>
+    <link href="http://jaketrent.com/post/using-javascript-function-bind/"/>
+    <updated>2015-06-26T07:51:00-06:00</updated>
+    <id>http://jaketrent.com/post/using-javascript-function-bind</id>
+    <content type="html"><![CDATA[<p>JavaScript&#8217;s Function object has a very helpful method, <code>bind</code>.  It is a great tool to give you control of the ever-squirrely <code>this</code> keyword.  Have you ever had trouble predicting what <code>this</code> will be or making equate to what you want?  <code>bind</code> will help you do that with more power and consistency.  It can also help you with partial function application.</p>
+
+<p><img src="http://i.imgur.com/4huM3Xb.jpg" alt="function bind" /></p>
+
+<!--more-->
+
+
+<h2>The <code>this</code> Keyword</h2>
+
+<p>In JavaScript, what the <code>this</code> keyword refers to changes often.  This can be useful but also unexpected.  Generally <code>this</code>, used within a function, will refer to the context in which that function was called. That calling context might be the global context of <code>window</code> if an event callback is being called in a browser.  That calling context might be an object that contains the function.  For more specific cases, MDN has some <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">great docs on the variety of contexts referred to by <code>this</code></a>.</p>
+
+<h2>Controlling <code>this</code> with <code>bind</code></h2>
+
+<p>When writing code, I often am thinking of <code>this</code> in the context in which I&#8217;m writing.  In other words, if I&#8217;m writing an object and use the keyword <code>this</code> in a function, I would normally expect <code>this</code> to refer to the object in which I <em>declared</em> the function.  But, again, it is actually the <em>calling</em> context that actually determines the value of <code>this</code>.</p>
+
+<p>To change this default behavior, I can pre-bind the function&#8217;s value of <code>this</code> to a value of my choosing.  This will happen at the time of <em>declaration</em>, which is what I more naturally would expect.</p>
+
+<p>For example, in <a href="http://facebook.github.io/react/">React</a> we write UI components.  In interesting UIs, we&#8217;re often handling events like those that occur with user interaction.  Normally events in the browser are attached to the DOM and are executed in the context of the <code>window</code>.  This being the case, it&#8217;ll be hard for us to create an event handler function in our React Component that can refer back to anything of use in the React Component itself.</p>
+
+<p>As a simple example, we&#8217;ll write a <code>handleClick</code> function that wants to call the Component&#8217;s <code>doLog</code> function for interesting logging:</p>
+
+<figure class='code'><figcaption><span>event-handling.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">class</span> <span class="nx">MyComponent</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">doLog</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Yay, you clicked!&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">handleClick</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;this is window?&#39;</span><span class="p">,</span>
+</span><span class='line'>                <span class="k">this</span> <span class="o">==</span> <span class="nb">window</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;this is component?&#39;</span><span class="p">,</span>
+</span><span class='line'>               <span class="k">this</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">name</span> <span class="o">==</span> <span class="s1">&#39;MyComponent&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">doLog</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Time</span> <span class="nx">to</span> <span class="nx">start</span> <span class="nx">clicking</span><span class="o">&lt;</span><span class="err">/h1&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleClick</span><span class="p">}</span><span class="o">&gt;</span><span class="nx">So</span><span class="p">,</span> <span class="nx">click</span><span class="o">&lt;</span><span class="err">/button&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">React</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">MyComponent</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://jsbin.com/lixayanoso/edit?js,console,output">jsbin of broken state</a></p>
+
+<p>If you click the button, <code>this.doLog</code> is not available as a function.  How could it be?  <code>doLog</code> is defined in <code>MyComponent</code>, not the <code>window</code>, which is the original context in which the event callback is executed.</p>
+
+<p>To fix this, one need only pre-bind the <code>handleClick</code> function.  By changing one line, we can fix this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleClick</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">)}</span><span class="o">&gt;</span><span class="nx">So</span><span class="p">,</span> <span class="nx">click</span><span class="o">&lt;</span><span class="err">/button&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When this line is executed, it&#8217;s in the <code>MyComponent#render</code> function, thus the <code>MyComponent</code> context.  So <code>this</code>, at that moment, is <code>MyComponent</code>.</p>
+
+<p>The other detail that makes this work is that <code>bind</code> returns a <em>brand new function</em>.  That&#8217;s how the pre-binding works.  So, the <code>onClick</code> prop that gets given to the <code>button</code> is a new function where we have said we want to permanently control the value of <code>this</code> to be whatever we bound it to.</p>
+
+<p><a href="http://jsbin.com/luwoxegopu/edit?js,console,output">jsbin of fixed state</a></p>
+
+<h2>Passing Specific Arguments with <code>bind</code></h2>
+
+<p>Another great reason to use <code>bind</code> is to pass specific arguments to a function.  Just as <code>bind</code> can create new functions where the value of <code>this</code> is pre-determined (bound), <code>bind</code> can pre-fill (ie, partially apply) function arguments on the newly-created function.</p>
+
+<p>It may not be immediately intuitive why one would want to create a function with parameters just to turn around and permanently make it so an argument to the function equals a specific value.  It almost feels like hard-coding a wart-ridden value on something that was previously dynamic and beautiful.  Perhaps an example will help.</p>
+
+<p>Again, to the world of React&#8230;  As in the previous example, we&#8217;ll pass an event handler for a click event.  Notice, just as above, that we&#8217;re passing the function itself (<code>this.handleClick</code> above) instead of the return value of the function (which would look like <code>this.handleClick()</code>).  In this example, we&#8217;ll have several click handlers, each on a list item, where the button will function as a remove button:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">class</span> <span class="nx">Item</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">onRemove</span><span class="p">}</span><span class="o">&gt;</span><span class="nx">Rm</span><span class="o">&lt;</span><span class="err">/button&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/li&gt;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">class</span> <span class="nx">List</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kr">super</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">items</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">initalItems</span> <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">handleClickRemove</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">clonedItems</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">slice</span><span class="p">()</span>
+</span><span class='line'>    <span class="nx">clonedItems</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="nx">items</span><span class="o">:</span> <span class="nx">clonedItems</span> <span class="p">})</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">item</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">return</span> <span class="o">&lt;</span><span class="nx">Item</span> <span class="nx">text</span><span class="o">=</span><span class="p">{</span><span class="nx">item</span><span class="p">}</span> <span class="nx">onRemove</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleClickRemove</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">i</span><span class="p">)}</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">item</span><span class="p">}</span> <span class="o">/&gt;</span>
+</span><span class='line'>        <span class="p">})}</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="err">/ul&gt;</span>
+</span><span class='line'>    <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">React</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">List</span> <span class="nx">initalItems</span><span class="o">=</span><span class="p">{[</span><span class="s1">&#39;Do&#39;</span><span class="p">,</span> <span class="s1">&#39;More&#39;</span><span class="p">,</span> <span class="s1">&#39;Reakt&#39;</span><span class="p">]}</span> <span class="o">/&gt;</span><span class="p">,</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://jsbin.com/cinovebasu/edit?js,console,output">A working jsbin</a></p>
+
+<p>In <code>List</code>, we have the event handler, the <code>handleClickRemove</code> function, that takes an <code>index</code> parameter.  In order to make this function work as defined, we are using <code>bind</code> on this line:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="k">return</span> <span class="o">&lt;</span><span class="nx">Item</span> <span class="nx">text</span><span class="o">=</span><span class="p">{</span><span class="nx">item</span><span class="p">}</span> <span class="nx">onRemove</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleClickRemove</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">i</span><span class="p">)}</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">item</span><span class="p">}</span> <span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This <code>bind</code> call is doing a few things for us:</p>
+
+<ol>
+<li>Pre-binding <code>handleClickRemove</code> to the <code>List</code> Component so that <code>this.setState</code> works inside the callback.</li>
+<li>Creating a new function that always has <code>i</code> as its first parameter.  Since this line is executed in a loop, <code>i</code> changes.  It will be <code>0</code> for the first item, <code>1</code>, then <code>2</code>.  This is perfect, as we want the first remove button to remove the first item, and so on.</li>
+</ol>
+
+
+<p>Isn&#8217;t that awesome and useful?</p>
+
+<p>So <code>bind</code> can help make <code>this</code> more predictable for you.  It will help you send new functions with pre-filled parameters.  What else have you used <code>bind</code> for?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Testing React on jsdom]]></title>
@@ -2198,183 +2388,6 @@
 <p>In this example, where the parent <code>RadioGroup</code> has the <code>name</code> prop, it will be given to each of the children so their <code>name</code> prop will match and the radio group will work as expected.  Thus, the hearts of the children are turned toward their fathers.</p>
 
 <p>Is there a better way to do this?  How have you been sending <code>props</code> to children?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Set State in Callbacks in React]]></title>
-    <link href="http://jaketrent.com/post/set-state-in-callbacks-in-react/"/>
-    <updated>2014-06-23T08:30:00-06:00</updated>
-    <id>http://jaketrent.com/post/set-state-in-callbacks-in-react</id>
-    <content type="html"><![CDATA[<p>In React, you can setup components that fetch their own data and set their own state with that data.  Because of the async nature of data fetching, you’ll have to make sure to keep things cleaned up to avoid the error of trying to set state in an unmounted component.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="React" /></p>
-
-<!--more-->
-
-
-<p><strong>Updated</strong> for React 0.13.  See below</p>
-
-<h2>React Components setState</h2>
-
-<p>If a React component fetches its own data, it will usually do so in the <code>componentDidMount</code> method.  In the data request callback, it will set its own state via the <code>this.setState</code> method.  (<code>this.state</code> should be treated as immutable.)  State should only be set on mounted components, or those components that are inserted into the dom.</p>
-
-<p>If you attempt to set state on an unmounted component, you&#8217;ll get an error that looks like this:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Uncaught Error: Invariant Violation: replaceState(...): Can only update a mounted or mounting component.</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Others have reported this variation:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Invariant Violation: replaceState(...): Cannot update while unmounting component. This usually means you called setState() on an unmounted component.</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Both indicate that you&#8217;re setting state on a component that is not mounted.  How should one avoid this?  In my case, <code>setState</code> was being called in a callback that was firing after the component that initially started the request had already been unmounted from the dom.  Here are the two ways I addressed the problem&#8230;</p>
-
-<h2>Assure Component isMounted</h2>
-
-<p>If the component is mounted, <code>setState</code> is a safe bet.  If it&#8217;s not mounted, never do it.  If it&#8217;s not mounted, you probably don&#8217;t about the state at that point either.  So wrap your state setting in <code>this.isMounted()</code>:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">componentDidMount</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">MyModel</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isMounted</span><span class="p">())</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
-</span><span class='line'>          <span class="nx">goodiesFrom</span><span class="o">:</span> <span class="nx">data</span>
-</span><span class='line'>        <span class="p">})</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">))</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="c1">// ...</span>
-</span><span class='line'><span class="p">})</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It feels a bit like a hack, but it makes the code safe.  Another option&#8230;</p>
-
-<h2>Abort the Request</h2>
-
-<p>My asynchronous action is a network request that, when finished, will call the callback function.  When the component unmounts, I can just throw away the request so the callback is never invoked.  To do this, we&#8217;ll take advantage of another React lifecycle hook, <code>componentWillUnmount</code>:</p>
-
-<figure class='code'><figcaption><span>my-component.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">componentDidMount</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">req</span> <span class="o">=</span> <span class="nx">MyModel</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({})</span>
-</span><span class='line'>    <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">))</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="nx">componentWillUnmount</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">req</span><span class="p">.</span><span class="nx">abort</span><span class="p">()</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="c1">// ...</span>
-</span><span class='line'><span class="p">})</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In my model, I&#8217;m using the <a href="https://github.com/visionmedia/superagent">superagent</a> library for network requests which provides an <a href="http://visionmedia.github.io/superagent/#aborting-requests">abort</a> method.</p>
-
-<figure class='code'><figcaption><span>my-model.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="err">‘</span><span class="nx">superagent</span><span class="err">&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="nx">MyModel</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">find</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">request</span><span class="p">(</span><span class="err">‘</span><span class="nx">modelUrl</span><span class="err">’</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">done</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">})</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Also note that in my <code>end</code> function callback, I&#8217;m checking for the existence of data.  This is because when a request is aborted, data will come back as undefined.</p>
-
-<p>My favored method for solving the problem is the latter request abort method.  It feels cleaner that we&#8217;re relying on the lifecycle functions of the component to deal with cleanup, much like we would for <a href="http://facebook.github.io/react/tips/dom-event-listeners.html">events</a>.  How have you dealt with this problem?</p>
-
-<h2>Update: Using ES6 Classes</h2>
-
-<p>With React 0.13, you can define your components using the ES6 <code>class</code> definition.  These classes conspicuously change behavior from the old style of <code>React.createClass</code> in several ways.  Here are a couple that are relevant here:</p>
-
-<ul>
-<li>There is no <code>isMounted()</code> method any more</li>
-<li>There is no <code>getDOMNode()</code> method any more</li>
-</ul>
-
-
-<p><code>isMounted</code> is gone, awol, as far as I can tell, and <code>getDOMNode</code> has been moved to a utility function.</p>
-
-<p>So, in order to get the DOM Node, you&#8217;d call it like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">React</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="k">this</span><span class="p">)</span> <span class="c1">// `this` would be my component</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It functions as before.</p>
-
-<p>In order to check <code>isMounted</code>, you&#8217;re on your own.  My basic implementation can be seen in the following <a href="http://jsbin.com/telopegaya/2/edit?js,output">jsbin</a>.  Frankly, it feels dirty.  <code>React.findDOMNode</code> will throw an exception if the component isn&#8217;t mounted, so we are using exceptions for flow control.  Egh:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">isMounted</span> <span class="o">=</span> <span class="p">(</span><span class="nx">component</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// exceptions for flow control :(</span>
-</span><span class='line'>  <span class="k">try</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">React</span><span class="p">.</span><span class="nx">findDOMNode</span><span class="p">(</span><span class="nx">component</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// Error: Invariant Violation: Component (with keys: props,context,state,refs,_reactInternalInstance) contains `render` method but is not mounted in the DOM</span>
-</span><span class='line'>    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>How it might still be used:</p>
-
-<p><a class="jsbin-embed" href="http://jsbin.com/telopegaya/2/embed?js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script></p>
-
-<p>This leaves me with the question of why <code>isMounted</code> was removed if it helps solve a potential problem.  Do we solve it in another way?  Does the core library do more for you?  You can verify for yourself in the jsbin above that if you remove the <code>isMounted</code> check, the old invariant error message is still logged.</p>
-
-<p>Does anyone have a <em>good</em> <code>isMounted</code> solution?</p>
 ]]></content>
   </entry>
   
