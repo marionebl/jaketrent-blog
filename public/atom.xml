@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-06-26T10:13:35-06:00</updated>
+  <updated>2015-07-17T08:21:06-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Slack Survival Guide]]></title>
+    <link href="http://jaketrent.com/post/slack-survival-guide/"/>
+    <updated>2015-07-17T07:25:00-06:00</updated>
+    <id>http://jaketrent.com/post/slack-survival-guide</id>
+    <content type="html"><![CDATA[<p>Slack is a fantastic tool.  It allows always-on group chat in this spirit of Hipchat or Campfire or your friends&#8217; group text thread that just won&#8217;t end.  You can create channels, public or private, to suit your purpose.  You can gather communities together to talk about specific things.  Slack can become an invaluable source of communication and information for you and your teams.  Without a bit of management and care, however, it can become a burden that distracts you from the essence of your work.</p>
+
+<p><img src="http://i.imgur.com/gFBW4F4.jpg" alt="slack" /></p>
+
+<!--more-->
+
+
+<p>If your job is to coordinate and communicate all day, every day, this article won&#8217;t really apply.  You should use Slack to the max and worry about little else.  If, instead, Slack is a tool meant to empower your essential work, especially something that requires focused thinking, creative process, or anything that requires some cognitive flow time, the suggestions in this article are for you.</p>
+
+<h2>Don&#8217;t Notify on Everything</h2>
+
+<p>There are doubtless channels that you love and are very interested in on Slack.  You likely appreciate these places because they&#8217;re often abuzz with chatter that interests you.  Do not ask to be notified every time someone says something in these channels.  You are asking for interruptions about things that interest you but might not be directed at you.</p>
+
+<p>Notifications are valuable, but they are an active form of the tool getting your attention and should be used judiciously.  Set a small number of keywords that would indicate to you that someone is trying to talk to you specifically.</p>
+
+<p><img src="http://i.imgur.com/C1fG5y5.png" alt="limit notifications" /></p>
+
+<h2>Use Mentions</h2>
+
+<p>Assume that others are doing the above only listening for certain keywords, including their username.  And then realize that once you mention their name, like <code>@jaketrent</code>, in the channel, the tool will actively engage them with a notification.  Don&#8217;t assume their just watching the channel for traffic.  And don&#8217;t be upset if they don&#8217;t respond everything said in a channel.  Don&#8217;t mention unless you must.  And mention when you want someone&#8217;s specific attention.</p>
+
+<p><img src="http://i.imgur.com/VlzhTua.png" alt="mentions" /></p>
+
+<h2>Mention without Notifying</h2>
+
+<p>Sometimes you want to speak about someone in a message without notifying them.  For instance, you could be explaining to another questioning team member what Jake&#8217;s schedule is for that day.  Jake doesn&#8217;t necessarily need notified that you&#8217;re talking about him, and he&#8217;s probably being notified of mentions of his name.  So, we can break up his name so it doesn&#8217;t match his keywords.  For instance:</p>
+
+<p><img src="http://i.imgur.com/YxCQ1yw.png" alt="@justin Yesterday Jak e said that he would test that after we merged our change." /></p>
+
+<h2>Expect Involvement</h2>
+
+<p>If no one is involved on Slack, it has no value.  So if you team or company wants to communicate over the tool, you must be in there typing and reading.  We should also be understanding that people want to be involved at different levels.  Some people are great information radiators.  Some introverts would rather read and not type as much.  Some would rather talk to few people indeed and just get other essential work completed.  So expect involvement, and be willing to meet people where they&#8217;re at in relation to this communication tool and don&#8217;t expect equal involvement from everyone.</p>
+
+<h2>The Digest Version</h2>
+
+<p>Slack is always on, the clock is always ticking, and things are always being said.  Were you to always be keeping up, you&#8217;d never leave the tool.  So embrace &#8220;falling behind&#8221;.  Actually plan on catching up later and experiencing the past minutes, hours, or days in digest version.  Take advantage of down time and catch up then, being careful not to get sucked in past the actual down time.</p>
+
+<h2>Bankruptcy is Ok</h2>
+
+<p>In the context of a chat tool, bankruptcy is ok.  There is no great shame in declaring that you either don&#8217;t care about what happened in slack the past while or that you aren&#8217;t willing to take the time to experience the digest version.  Mark all those messages as read and go on with life.  If someone really wanted your attention, they&#8217;ll mention you again.</p>
+
+<h2>Turn it off</h2>
+
+<p>There are many moments of creative thought where an idle comment that you notice will whisk your mind away from the problem at hand that series of abstract connections you had just made is now lost.  Be willing to put boundaries around your most important, creative, or difficult work, and just turn Slack off for those periods.  It&#8217;ll be ok.  Just do it.</p>
+
+<h2>Limit <code>@channel</code> Usage</h2>
+
+<p>Really think twice before you use the <code>@channel</code> or <code>@group</code> mentions.  Everyone in the channel will receive a notification about what you&#8217;re saying.  Is it urgent &#8211; as in, is it time-sensitive enough that everyone should read this as soon as you type it?  Does it <em>really</em> apply to <em>everyone</em>?  <code>@channel</code> should really not be a part of your daily Slack vocabulary.  Your mind should not go there instinctively, and your fingers should not type it readily.  It should really be for exceptional moments when you remember, &#8220;Oh yeah, I <em>can</em> get a hold of everyone right now if use @channel&#8221;.</p>
+
+<p>Everyone really needs to be responsible and limit themselves on this point because the situation in which there are bunch of at-channel police is not fun either.  It tends to draw out people that think they&#8217;re funny and use <code>@channel</code> mentions for their own entertainment.</p>
+
+<h2>Talk Face-to-Face</h2>
+
+<p>Slack is great for letting multiple people, across geography, know at once what you&#8217;re talking about.  It&#8217;s also great a making a record of the conversation for later reference.  But be willing to stand up, stop typing, and look someone in the eye.  An important conversation prefers humans speaking directly to humans, where non-verbal cues are seen, conversation can flow more directly, and we are more aware that we&#8217;re talking to a person and not a machine.</p>
+
+<h2>Trim the Channels</h2>
+
+<p>Just like unsubscribing to all that junk mail that you accumulate over months, it&#8217;s a good idea to trim the fat on the Slack channels you&#8217;ve joined now and again.  This will slim down the digest-version catchups that you have to consume.  Ask yourself what value you&#8217;ve been able to receive and share in those channels lately.  Ask yourself if the info shared there is really essential communication for you.</p>
+
+<p>Well surely there are many, many other practices or thoughts that could encourage your better use of this group chat tool.  What are some ideas that occur to you?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Using JavaScript's Function Bind]]></title>
@@ -2224,170 +2292,6 @@
 <h2>Bonus:</h2>
 
 <p>As a bonus, here&#8217;s a great client library for consuming a <a href="https://developer.github.com/v3/#link-header">GitHub API-style</a> <code>Link</code> header, called <a href="https://www.npmjs.org/package/parse-link-header">parse-link-header</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Send Props to Children in React]]></title>
-    <link href="http://jaketrent.com/post/send-props-to-children-react/"/>
-    <updated>2014-08-12T16:55:00-06:00</updated>
-    <id>http://jaketrent.com/post/send-props-to-children-react</id>
-    <content type="html"><![CDATA[<p>In React, you&#8217;re always making components.  Sometimes components are standalone.  Other times, you&#8217;ll have components that can nest children components.  Sometimes you&#8217;ll want to send properties to the children components from the parent as often as a doting parent wants to send packages to a child missionary.  It&#8217;s possible, it&#8217;s simple, and it&#8217;s not documented super well.  Here&#8217;s one method.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="React" /></p>
-
-<!--more-->
-
-
-<h2>Children Components</h2>
-
-<p>When parent components are rendered, they have access to a special property, <code>this.props.children</code>.  It&#8217;s like an Angular <code>ng-transclude</code> or an Ember <code>yield</code>.  Children components are generally rendered something like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;iAmParentHearMeRoar&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span><span class="p">}</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
-</span><span class='line'>    <span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">})</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The generic example above shows simply how to render children, <code>props</code> untouched, within a parent component.  Sometimes, however, a parent wants to bequeath its children with extra properties.  How will we make that happen?</p>
-
-<h2>Setting Child Props</h2>
-
-<p><code>props</code> are meant to be immutable.  But, in order for us to send <code>props</code> values to our children, we&#8217;re going to essentially loop through our children and set props on them as a part of our parent <code>render</code> function.</p>
-
-<p>Deep breath.  It&#8217;s ok.  The children that we&#8217;ll loop through aren&#8217;t mounted component instances.  They are, instead, <a href="http://facebook.github.io/react/blog/2014/07/17/react-v0.11.html#descriptors">descriptors</a>.  These descriptors have all the <code>props</code> attributes that we&#8217;ve declared should be put on the components, but they haven&#8217;t been rendered yet.  Because of this, we can change props, and it&#8217;s ok.  We&#8217;re not mutating what has rendered.  The data still hasn&#8217;t flowed to the children.  We&#8217;re still effectively still riffing on the logic of what the children components should really be when they&#8217;re eventually mounted.</p>
-
-<h2>Looping on Children Components</h2>
-
-<p><code>this.props.children</code> is a funny property.  It&#8217;s special in more ways than one.  The things that might trip us up in looping is that even though it sounds like a plural thing, meaning an array, sometimes it&#8217;s a singular object.  To help avoid potential problems, React gives us a helper, <code>React.Children</code>.  It has a few functions for array iteration, such as <code>map</code> and <code>forEach</code> that help account for the potential forms of <code>this.props.children</code>.</p>
-
-<h2>Functional Modifications</h2>
-
-<p>Immutable data is a big part of functional programming.  This means that when we &#8216;mutate&#8217; the props, we want to mutate on a clone of the child component without affecting the original.  There&#8217;s an input, there&#8217;s an output, and the input is untouched.  Once we have our cloned children components as we want them, we&#8217;ll render those instead.  React offers another great helper for cloning components and setting properties in a single function, <code>React.addons.cloneWithProps</code>.  Note that in order to use this function, you need to <code>require('react/addons')</code>.</p>
-
-<h2>Checking Child Type</h2>
-
-<p>It&#8217;s a generally-useful thing to be able to tell what the React class type of a component object is.  It&#8217;s an applicable skill in terms of looping through child components because we might not want to modify the properties of all types of children.  Each React component class has a <code>type</code> attribute accessible via <code>MyComponent.type</code>.  This attribute is also available on component descriptors.</p>
-
-<h2>A Child CheckOption Example</h2>
-
-<p>To bring this all together and illustrate the concepts, let&#8217;s say we created a <code>RadioGroup</code> component that could take one or many <code>RadioOption</code> child components.  In raw html, which is what our component will eventually render, <code>input</code>s with type <code>checkbox</code> need to all have the same <code>name</code> attribute value to work well as toggles within the group.  But this is something that React can help us not have to duplicate.  We&#8217;ll instead put a <code>name</code> property on the parent <code>RadioGroup</code> and have it transfer it as a property on all its children.  The implementation might look like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="cm">/** @jsx React.DOM */</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">React</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;react/addons&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">RadioOption</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span>
-</span><span class='line'>        <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;radio&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">value</span><span class="p">}</span> <span class="nx">name</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span> <span class="o">/&gt;</span>
-</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">label</span><span class="p">}</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="err">/label&gt;</span>
-</span><span class='line'>    <span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">RadioGroup</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">renderChildren</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Children</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">child</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">child</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="nx">RadioOption</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">addons</span><span class="p">.</span><span class="nx">cloneWithProps</span><span class="p">(</span><span class="nx">child</span><span class="p">,</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">name</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span>
-</span><span class='line'>        <span class="p">})</span>
-</span><span class='line'>      <span class="k">else</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nx">child</span>
-</span><span class='line'>    <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">))</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;radio-group&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">renderChildren</span><span class="p">()}</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
-</span><span class='line'>    <span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">})</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">WhereImUsingRadioGroups</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="nx">RadioGroup</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;blizzard-games&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Warcraft 2&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;wc2&quot;</span> <span class="o">/&gt;</span>
-</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Warcraft 3&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;wc3&quot;</span> <span class="o">/&gt;</span>
-</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Starcraft 1&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;sc1&quot;</span> <span class="o">/&gt;</span>
-</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Starcraft 2&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;sc2&quot;</span> <span class="o">/&gt;</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="err">/RadioGroup&gt;</span>
-</span><span class='line'>    <span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">})</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>In this example, where the parent <code>RadioGroup</code> has the <code>name</code> prop, it will be given to each of the children so their <code>name</code> prop will match and the radio group will work as expected.  Thus, the hearts of the children are turned toward their fathers.</p>
-
-<p>Is there a better way to do this?  How have you been sending <code>props</code> to children?</p>
 ]]></content>
   </entry>
   
