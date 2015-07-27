@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-07-17T08:21:06-06:00</updated>
+  <updated>2015-07-27T08:46:14-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,175 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Animating a Line in D3]]></title>
+    <link href="http://jaketrent.com/post/animating-d3-line/"/>
+    <updated>2015-07-27T07:01:00-06:00</updated>
+    <id>http://jaketrent.com/post/animating-d3-line</id>
+    <content type="html"><![CDATA[<p>You can make some awesome charts in D3.  Animate your charts, and they&#8217;re made even awesomerer.  To animate lines, such as those found in line charts, try out the following methods.</p>
+
+<p><img src="http://i.imgur.com/94JQ8N8.jpg" alt="d3 line animation" /></p>
+
+<!--more-->
+
+
+<h2>D3 Transition</h2>
+
+<p>In order to animate in D3, you call the <code>transition</code> function on a <code>d3.selection</code>.  The transition essentially creates a tween from the starting point of the animation to the specified ending point.  So, to specify an animation:</p>
+
+<ol>
+<li>Set the starting state</li>
+<li>Specify that you are transitioning</li>
+<li>Set the ending state</li>
+</ol>
+
+
+<p>Then D3 will handle the animation on the diff between the starting and ending state.</p>
+
+<h2>SVG Line Animation</h2>
+
+<p>An SVG line element has 4 required attributes, <code>x1</code>, <code>y1</code>, <code>x2</code>, and <code>y2</code>.  These required attributes specify where the line begins and ends in a 2D space.  When choosing your coordinates, remember that the SVG coordinate plane starts at (0,0) in the top-left of the SVG element.</p>
+
+<p>For our line animation, we want the line to look like it&#8217;s being drawing from the beginning to the ending point.  We will follow the general formula for defining a D3 transition as stated above.  Assuming we have an <code>svg</code> element from the DOM selected, the remaining code might look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;line&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">attr</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">x1</span><span class="o">:</span> <span class="mi">25</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">y1</span><span class="o">:</span> <span class="mi">15</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">x2</span><span class="o">:</span> <span class="mi">25</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">y2</span><span class="o">:</span> <span class="mi">15</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">duration</span><span class="p">(</span><span class="mi">1500</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">attr</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">x2</span><span class="o">:</span> <span class="mi">400</span><span class="p">,</span>
+</span><span class='line'>    <span class="nx">y2</span><span class="o">:</span> <span class="mi">15</span>
+</span><span class='line'>  <span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the code above, the line&#8217;s starting state shows the line beginning and end at the same point, (25, 15).  This is so that the line appears to be <code>15px</code> long when first seen in the UI.  Then, over time it will grow.  Note that the <code>attr</code>s set after the <code>transition</code> call specify the end of the line as being <code>400px</code> to the right.  Thus, over the duration of the transition (set to 1500ms in order to observe it), the line will appear to grow to its final length of 400px in the horizontal direction.</p>
+
+<p data-height="266" data-theme-id="1749" data-slug-hash="Pqyvqo" data-default-tab="result" data-user="jaketrent" class='codepen'>See the Pen <a href='http://codepen.io/jaketrent/pen/Pqyvqo/'>Pqyvqo</a> by Jake Trent (<a href='http://codepen.io/jaketrent'>@jaketrent</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+
+
+<script async src="http://jaketrent.com//assets.codepen.io/assets/embed/ei.js"></script>
+
+
+<h2>D3 Line Function</h2>
+
+<p>D3 line functions are specified differently than SVG lines.  An SVG line is guaranteed to be a straight edge from the beginning to the ending point.  On the other hand, a D3 line function can describe a line through many different points, and can thus be anything but straight.  Think of a zig-zaggy line chart, and this is what a D3 line function is meant to accomplish.  Thus, a D3 line function is often used to generate the data needed for an SVG <code>path</code>, not a <code>line</code> element.  There will still be an SVG <code>stroke</code> on a path, but we will use a different technique to animate it.</p>
+
+<h4>Strokes with Dashes</h4>
+
+<p>There are two attributes to of a <code>stroke</code> in SVG that we will use:</p>
+
+<ul>
+<li><code>stroke-dasharray</code> - a set of 2 numbers.  The first number is the length of the dash.  The second number is the length between the dashes.</li>
+<li><code>stroke-dashoffset</code> - a dash pattern is repeated, according to the <code>stroke-dasharray</code> attribute.  But this attribute specifies where to start in that repeating pattern.  In other words, how many pixels offset <em>into</em> that pattern should the first iteration of the pattern begin.  The default is 0px.</li>
+</ul>
+
+
+<p>To see these numbers change and how they affect a line, check out the following SVG lines:</p>
+
+<p data-height="266" data-theme-id="1749" data-slug-hash="GJYaqK" data-default-tab="result" data-user="jaketrent" class='codepen'>See the Pen <a href='http://codepen.io/jaketrent/pen/GJYaqK/'>SVG Stroke Dasharray Grows a Line</a> by Jake Trent (<a href='http://codepen.io/jaketrent'>@jaketrent</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+
+
+<script async src="http://jaketrent.com//assets.codepen.io/assets/embed/ei.js"></script>
+
+
+<p>In each of the above cases, the <code>stroke-dasharray</code> is set so the dash line length and the dash space length are equal to the total length of the total line.  Note that the <code>stroke-dashoffset</code> is the only attribute that changes between the 3 lines.</p>
+
+<ol>
+<li>In the first, the <code>stroke-dashoffset</code> is set to the length of the total line.  This means that the <code>stroke-dasharray</code> pattern begins at the point where the space between the dashes begins.  Thus, the line appears invisible &#8211; it&#8217;s just the line-length space between the dashes.</li>
+<li>In the second, the <code>stroke-dashoffset</code> is set to the mid-length of the total line.  Thus, the 2nd half of the first dash is visible, making the line seem half as long as its total intended length.</li>
+<li>Finally, the <code>stroke-dashoffset</code> is set to 0, meaning that the total line-length dash is now fully visible.</li>
+</ol>
+
+
+<h4>Animating with <code>stroke-dasharray</code></h4>
+
+<p>One could imagine that were the <code>stroke-dashoffset</code> to tween from the full line length to 0, the line would appear to grow from the left to the right.  At first, the space between the dash would be fully visible, slowly, backing off the <code>stroke-dashoffset</code> until the pattern, which begins with a dash be fully visible.  Let&#8217;s try it:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>  <span class="p">{</span> <span class="nx">x</span><span class="o">:</span> <span class="mi">15</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="mi">15</span> <span class="p">},</span>
+</span><span class='line'>  <span class="p">{</span> <span class="nx">x</span><span class="o">:</span> <span class="mi">400</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="mi">15</span> <span class="p">}</span>
+</span><span class='line'><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">line</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">x</span><span class="p">(</span><span class="nx">d</span> <span class="o">=&gt;</span> <span class="nx">d</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">y</span><span class="p">(</span><span class="nx">d</span> <span class="o">=&gt;</span> <span class="nx">d</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">datum</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="nx">attr</span><span class="p">({</span>
+</span><span class='line'>      <span class="s1">&#39;d&#39;</span><span class="o">:</span> <span class="nx">line</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;stroke-dasharray&#39;</span><span class="o">:</span> <span class="s1">&#39;385 385&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;stroke-dashoffset&#39;</span><span class="o">:</span> <span class="mi">385</span>
+</span><span class='line'>    <span class="p">})</span>
+</span><span class='line'>  <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">.</span><span class="nx">duration</span><span class="p">(</span><span class="mi">1500</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;stroke-dashoffset&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<p data-height="266" data-theme-id="1749" data-slug-hash="JdmqRm" data-default-tab="result" data-user="jaketrent" class='codepen'>See the Pen <a href='http://codepen.io/jaketrent/pen/JdmqRm/'>JdmqRm</a> by Jake Trent (<a href='http://codepen.io/jaketrent'>@jaketrent</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+
+
+<script async src="http://jaketrent.com//assets.codepen.io/assets/embed/ei.js"></script>
+
+
+<p>The above is the simplest possible example of how to make this happen.  In real life, you&#8217;re going to have:</p>
+
+<ul>
+<li>No foreknowledge of the data domain or maybe even the visual space range and will need a d3 scale (eg, <code>d3.scale.linear</code>)</li>
+<li>A more complicated set of data which is going to lead to a more complicated line and the actual need for the line function used above</li>
+<li>A more complicated line where the length is not immediately obvious and where <code>path.node().getTotalLength()</code> will be useful as a way to use the browser&#8217;s distance-along-a-path algorithm</li>
+</ul>
+
+
+<p>In the example above, note that the total length of the line is <code>385px</code>.  We make the line dashed.  We set the dash length and the space between the dash length to both be <code>385px</code> using <code>stroke-dasharray</code>.  We define the animation by making the starting state have a <code>stroke-dashoffset</code> of <code>385px</code>, showing nothing but the invisible space between the dash to start.  Then we tween to a <code>stroke-dashoffset</code> of <code>0</code>, causing the offset window to shrink until we see the dash, which is the length of the total line, grow into view.</p>
+
+<p>Frankly, this dash-based solution feels like a hack.  It doesn&#8217;t seem like someone sat back and thought much about how to animate a non-linear path.  But this solution works well all the times I&#8217;ve used it.</p>
+
+<p>What are some other solutions that you&#8217;ve found for animating lines or creating other interesting line animations?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Slack Survival Guide]]></title>
@@ -2205,93 +2374,6 @@
 <p>The best scenario would be the one where we avoid duplicate tests.  Teams with clear guidelines will be able to coordinate better.  Useful information might include which classes of tests exist in the project and what each is intended for.  We might describe which kinds of tests we prefer, in which order, for certain kinds of verifications.  Having clean, well-organized tests will also encourage the team to read each others’ tests and familiarize themselves with what’s already written and know where to find existing cases and where to properly categorize new cases.</p>
 
 <p>So have fun testing, and destroy the duplicate tests!  Yay for test doubles, but boo for double tests.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Expose HTTP Headers in CORS]]></title>
-    <link href="http://jaketrent.com/post/expose-http-headers-in-cors/"/>
-    <updated>2014-09-15T09:42:00-06:00</updated>
-    <id>http://jaketrent.com/post/expose-http-headers-in-cors</id>
-    <content type="html"><![CDATA[<p>For APIs, it seems more and more data is making its way into the HTTP headers.  Recently, whilst adding a <code>Link</code> header, for paging data, into the HTTP response, I realized that my browser code couldn&#8217;t see it.  Who was the culprit?  CORS, of course.</p>
-
-<p><img src="http://i.imgur.com/JAce7py.jpg" alt="Cors" /></p>
-
-<!--more-->
-
-
-<h2>Headers in Browser</h2>
-
-<p>It was just another day, and I was developing in my browser of choice, Chrome, known, in part, for its unequaled developer tools.  The <code>Link</code> header that I had added onto my HTTP responses for my API were viewable from the Network tab.  It looked good.  The browser could see it, curl could even see it.</p>
-
-<p>In the browser client code, I was using <code>superagent</code>, but the code failed to see it.  I&#8217;d run:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;superagent&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="nx">request</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;myApi&#39;</span><span class="p">).</span><span class="nx">end</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">res</span><span class="p">.</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">getResponseHeader</span><span class="p">(</span><span class="s1">&#39;Link&#39;</span><span class="p">)</span> <span class="c1">// nothing</span>
-</span><span class='line'>  <span class="nx">res</span><span class="p">.</span><span class="nx">headers</span><span class="p">.</span><span class="nx">link</span> <span class="c1">// nothing</span>
-</span><span class='line'><span class="p">})</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And the header was not coming through.  I ran the same command in the console, <code>res.xhr.getResponseHeader('Link')</code>, and got the error response:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">Refused</span> <span class="nx">to</span> <span class="nx">get</span> <span class="nx">unsafe</span> <span class="nx">header</span> <span class="err">‘</span><span class="nx">Link</span><span class="err">’</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>These are a classic CORS symptoms.</p>
-
-<h2>CORS Spec</h2>
-
-<p>Well, a few great <a href="http://blog.import.io/tech-blog/exposing-headers-over-cors-with-access-control-expose-headers">google results</a> later, I ended up at the <a href="http://www.w3.org/TR/cors/#simple-response-header">CORS spec</a>, which drones on that only simple headers are allowable in CORS requests by default.  These headers include:</p>
-
-<ul>
-<li>Cache-Control</li>
-<li>Content-Language</li>
-<li>Content-Type</li>
-<li>Expires</li>
-<li>Last-Modified</li>
-<li>Pragma</li>
-</ul>
-
-
-<p><code>Link</code> is definitely not on that list.  So, how to add it?</p>
-
-<h2>Access-Control-Expose-Headers in rack-cors</h2>
-
-<p>Like the other CORS headers, the <code>Access-Control-</code> prefix is present.  The one you&#8217;re looking for is <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS"><code>Access-Control-Expose-Headers</code></a>.  It is a comma-separated list of header names. You can add this header manually to your response, or depending on the library you&#8217;re using, it might be added differently.</p>
-
-<p>I was using <code>rack-cors</code>.  Thus, my addition ended up looking something like:</p>
-
-<figure class='code'><figcaption><span>config/application.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># ...</span>
-</span><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">use</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Cors</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">allow</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">origins</span> <span class="s1">&#39;*&#39;</span>
-</span><span class='line'>    <span class="n">resource</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="ss">:headers</span> <span class="o">=&gt;</span> <span class="ss">:any</span><span class="p">,</span> <span class="ss">:methods</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:get</span><span class="p">,</span> <span class="ss">:post</span><span class="p">,</span> <span class="ss">:put</span><span class="p">,</span> <span class="ss">:delete</span><span class="p">,</span> <span class="ss">:options</span><span class="o">]</span><span class="p">,</span> <span class="ss">:expose</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;Link&#39;</span><span class="o">]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Can you see that the <code>expose</code> key was the key for me?  Once that was added, the browser let the client code read the link, and all was safe and well.</p>
-
-<h2>Bonus:</h2>
-
-<p>As a bonus, here&#8217;s a great client library for consuming a <a href="https://developer.github.com/v3/#link-header">GitHub API-style</a> <code>Link</code> header, called <a href="https://www.npmjs.org/package/parse-link-header">parse-link-header</a></p>
 ]]></content>
   </entry>
   

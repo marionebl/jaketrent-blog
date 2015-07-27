@@ -1,12 +1,12 @@
 /*
 Syntax error: Undefined mixin 'border-radius'.
-        on line 38 of /Users/jaketrent/dev/jaketrent-blog/sass/entry/_base.scss, in `border-radius'
-        from line 38 of /Users/jaketrent/dev/jaketrent-blog/sass/entry/_base.scss
+        on line 39 of /Users/jaketrent/dev/jaketrent-blog/sass/entry/_base.scss, in `border-radius'
+        from line 39 of /Users/jaketrent/dev/jaketrent-blog/sass/entry/_base.scss
         from line 1 of /Users/jaketrent/dev/jaketrent-blog/sass/entry/index.scss
 
 Backtrace:
-/Users/jaketrent/dev/jaketrent-blog/sass/entry/_base.scss:38:in `border-radius'
-/Users/jaketrent/dev/jaketrent-blog/sass/entry/_base.scss:38
+/Users/jaketrent/dev/jaketrent-blog/sass/entry/_base.scss:39:in `border-radius'
+/Users/jaketrent/dev/jaketrent-blog/sass/entry/_base.scss:39
 /Users/jaketrent/dev/jaketrent-blog/sass/entry/index.scss:1
 /Users/jaketrent/.rvm/gems/ruby-2.1.5/gems/sass-3.2.3/lib/sass/tree/visitors/perform.rb:251:in `visit_mixin'
 /Users/jaketrent/.rvm/gems/ruby-2.1.5/gems/sass-3.2.3/lib/sass/tree/visitors/base.rb:37:in `visit'
@@ -77,4 +77,4 @@ Backtrace:
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Syntax error: Undefined mixin 'border-radius'.\A         on line 38 of /Users/jaketrent/dev/jaketrent-blog/sass/entry/_base.scss, in `border-radius'\A         from line 38 of /Users/jaketrent/dev/jaketrent-blog/sass/entry/_base.scss\A         from line 1 of /Users/jaketrent/dev/jaketrent-blog/sass/entry/index.scss"; }
+  content: "Syntax error: Undefined mixin 'border-radius'.\A         on line 39 of /Users/jaketrent/dev/jaketrent-blog/sass/entry/_base.scss, in `border-radius'\A         from line 39 of /Users/jaketrent/dev/jaketrent-blog/sass/entry/_base.scss\A         from line 1 of /Users/jaketrent/dev/jaketrent-blog/sass/entry/index.scss"; }

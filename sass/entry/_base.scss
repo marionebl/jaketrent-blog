@@ -23,12 +23,13 @@
   ul {
     list-style: circle;
     list-style-position: outside;
-    margin-left: 17px;
+    margin-left: 24px;
   }
 
   ol {
     list-style: decimal;
-    list-style-position: inside;
+    list-style-position: outside;
+    margin-left: 37px;
   }
 
   img,
