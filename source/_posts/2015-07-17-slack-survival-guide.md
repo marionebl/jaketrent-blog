@@ -32,6 +32,12 @@ Assume that others are doing the above only listening for certain keywords, incl
 
 ![mentions](http://i.imgur.com/VlzhTua.png)
 
+## Mute Channels
+
+Normally, when chatter happens in a channel, the channel nav in the left of the UI will appear white and bold, indicating you have unread chats in the channel.  If you mute a channel, this indicator doesn't happen.  It always appears that there is nothing to read.  The great exception is when someone mentions you particularly.  In that case, you still get the red badge, indicating your number of unread mentions.
+
+![mute slack channel](http://i.imgur.com/Ef6BHV2.png)
+
 ## Mention without Notifying
 
 Sometimes you want to speak about someone in a message without notifying them.  For instance, you could be explaining to another questioning team member what Jake's schedule is for that day.  Jake doesn't necessarily need notified that you're talking about him, and he's probably being notified of mentions of his name.  So, we can break up his name so it doesn't match his keywords.  For instance:
@@ -45,6 +51,12 @@ If no one is involved on Slack, it has no value.  So if you team or company want
 ## The Digest Version
 
 Slack is always on, the clock is always ticking, and things are always being said.  Were you to always be keeping up, you'd never leave the tool.  So embrace "falling behind".  Actually plan on catching up later and experiencing the past minutes, hours, or days in digest version.  Take advantage of down time and catch up then, being careful not to get sucked in past the actual down time.
+
+## Leave Channels
+
+If you find yourself not being interested or engaged by the unread chats in an channel, leave it.  If the digest doesn't catch your attention, don't read it.  If it provides no value, it's just taking up time.  You probably joined that channel for a long-forgotten reason, and there's no present reason compelling you to be there.  Leave.  If someone wants you in there, she can invite you back, sharing relevant conversations at any time.
+
+![invite to slack](http://i.imgur.com/nNu09rw.png)
 
 ## Bankruptcy is Ok
 

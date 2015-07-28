@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-07-27T08:46:14-06:00</updated>
+  <updated>2015-07-28T07:58:00-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -210,6 +210,12 @@
 
 <p><img src="http://i.imgur.com/VlzhTua.png" alt="mentions" /></p>
 
+<h2>Mute Channels</h2>
+
+<p>Normally, when chatter happens in a channel, the channel nav in the left of the UI will appear white and bold, indicating you have unread chats in the channel.  If you mute a channel, this indicator doesn&#8217;t happen.  It always appears that there is nothing to read.  The great exception is when someone mentions you particularly.  In that case, you still get the red badge, indicating your number of unread mentions.</p>
+
+<p><img src="http://i.imgur.com/Ef6BHV2.png" alt="mute slack channel" /></p>
+
 <h2>Mention without Notifying</h2>
 
 <p>Sometimes you want to speak about someone in a message without notifying them.  For instance, you could be explaining to another questioning team member what Jake&#8217;s schedule is for that day.  Jake doesn&#8217;t necessarily need notified that you&#8217;re talking about him, and he&#8217;s probably being notified of mentions of his name.  So, we can break up his name so it doesn&#8217;t match his keywords.  For instance:</p>
@@ -223,6 +229,12 @@
 <h2>The Digest Version</h2>
 
 <p>Slack is always on, the clock is always ticking, and things are always being said.  Were you to always be keeping up, you&#8217;d never leave the tool.  So embrace &#8220;falling behind&#8221;.  Actually plan on catching up later and experiencing the past minutes, hours, or days in digest version.  Take advantage of down time and catch up then, being careful not to get sucked in past the actual down time.</p>
+
+<h2>Leave Channels</h2>
+
+<p>If you find yourself not being interested or engaged by the unread chats in an channel, leave it.  If the digest doesn&#8217;t catch your attention, don&#8217;t read it.  If it provides no value, it&#8217;s just taking up time.  You probably joined that channel for a long-forgotten reason, and there&#8217;s no present reason compelling you to be there.  Leave.  If someone wants you in there, she can invite you back, sharing relevant conversations at any time.</p>
+
+<p><img src="http://i.imgur.com/nNu09rw.png" alt="invite to slack" /></p>
 
 <h2>Bankruptcy is Ok</h2>
 
