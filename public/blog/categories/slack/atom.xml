@@ -4,7 +4,7 @@
   <title><![CDATA[Category: slack | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/slack/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-07-28T07:58:00-06:00</updated>
+  <updated>2015-07-28T08:00:52-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -45,7 +45,7 @@
 
 <p>Normally, when chatter happens in a channel, the channel nav in the left of the UI will appear white and bold, indicating you have unread chats in the channel.  If you mute a channel, this indicator doesn't happen.  It always appears that there is nothing to read.  The great exception is when someone mentions you particularly.  In that case, you still get the red badge, indicating your number of unread mentions.</p>
 
-<p><img src="http://i.imgur.com/Ef6BHV2.png" alt="mute slack channel" /></p>
+<p><img src="http://i.imgur.com/5dEVlty.png" alt="mute slack channel" /></p>
 
 <h2>Mention without Notifying</h2>
 
