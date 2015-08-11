@@ -50,7 +50,7 @@ Of course, it's *your* Vision Quest.  So think about what you want and need.  In
 
 The Big 3 will help guide your most important work for the next 3 months.  You will have another guide by which you decide what work you should or shouldn't focus on.  If a task will help you accomplish your Big 3 or fits well within the things listed there, that should encourage you to take it on where possible.  If there is something vying for your attention that doesn't fit in The Big 3, you should likely be hesitant to take it on.  What is the cost to your Big 3 if you do this new thing instead?
 
-Hours of writing, questioning and answering, given my eclectic thought process, can lead to sundry topics.  A few that might fit into your Vision Walk are:
+Hours of writing, questioning and answering, given my eclectic thought process, can lead to sundry topics.  A few that might fit into your Vision Quest are:
 
 - What's important to me?
 - How do I want to grow?
