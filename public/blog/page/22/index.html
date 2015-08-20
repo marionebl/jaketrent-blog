@@ -9,7 +9,7 @@
 
   <meta name="author" content="https://plus.google.com/115032056022257436849">
   
-  <meta name="description" content="Mark Logic Server seems to be the latest, greatest in content serve-up. At least it is generating a lot of excitement at the LDS Church, where it&# &hellip;">
+  <meta name="description" content="For unit testing purposes, I often want to set field values in objects so that I can setup for the test conditions. One of most annoying things about &hellip;">
   
   <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
 
@@ -22,11 +22,11 @@
   <meta property="og:type" content="article" />
   
   <meta property="og:url" content="http://jaketrent.com/blog/page/22/index.html" />
-  <meta property="og:description" content="Mark Logic Server seems to be the latest, greatest in content serve-up. At least it is generating a lot of excitement at the LDS Church, where it&# &hellip;" />
+  <meta property="og:description" content="For unit testing purposes, I often want to set field values in objects so that I can setup for the test conditions. One of most annoying things about &hellip;" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="" />
-  <meta name="twitter:description" content="Mark Logic Server seems to be the latest, greatest in content serve-up. At least it is generating a lot of excitement at the LDS Church, where it&# &hellip;" />
+  <meta name="twitter:description" content="For unit testing purposes, I often want to set field values in objects so that I can setup for the test conditions. One of most annoying things about &hellip;" />
   
 
   
@@ -89,6 +89,49 @@
     <div class="content">
       <div class="blog-index">
   
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/expose-fields-java-reflection/">Expose Fields via Java Reflection</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-06-08T13:29:00-06:00" pubdate data-updated="true">Jun 8<span>th</span>, 2009</time>
+        
+         | <a href="/post/expose-fields-java-reflection/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>For unit testing purposes, I often want to set field values in objects so that I can setup for the test conditions.  One of most annoying things about testing is the urge to change code design for just the sake of testing &#8211; especially if it&#8217;s in a way that is considered less safe, like exposing elements or lessening accessibility.  (This is not to say that trying to test code can reveal certain code smells and prompt refactoring).  I, myself, have a number of setter methods with this comment prepended: &#8220;// for test only comments&#8221;.  Stinkers!  Well, sometimes enough becomes enough.  So, here&#8217;s a way to set any field on an object w/o exposing it.  This is done via reflection.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/expose-fields-java-reflection/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article class="entry">
@@ -473,49 +516,6 @@
   
     <footer>
       <a class="full-article-link" rel="full-article" href="/post/replace-text-css-defined-image/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article class="entry">
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/post/context-processors-put-content-multiple-pages/">Context Processors Put Content on Multiple Pages</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-02-28T14:55:00-07:00" pubdate data-updated="true">Feb 28<span>th</span>, 2009</time>
-        
-         | <a href="/post/context-processors-put-content-multiple-pages/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In software development, be <a href="http://en.wikipedia.org/wiki/Don%27t_repeat_yourself">dry</a>, and define data once.  But, what if that data needs to be used in many places?  This is the case with parts of a web page, for instance, that are common to many different pages.  Django has a great mechanism for this: it is context processors.</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="full-article-link" rel="full-article" href="/post/context-processors-put-content-multiple-pages/">Read on &rarr;</a>
     </footer>
   
 
