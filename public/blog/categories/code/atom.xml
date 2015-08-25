@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-08-20T10:13:33-06:00</updated>
+  <updated>2015-08-25T11:13:26-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[I Love CSS Modules]]></title>
+    <link href="http://jaketrent.com/post/i-love-css-modules/"/>
+    <updated>2015-08-25T11:03:00-06:00</updated>
+    <id>http://jaketrent.com/post/i-love-css-modules</id>
+    <content type="html"><![CDATA[<p>I heard a fantastic yesterday by <a href="https://twitter.com/glenmaddern">Glen Maddern</a> where Interoperable CSS was well-illustrated as the fantastic CSS language advancement that it is.  I was happy to hear hushed ooo's and ahh's from the audience as they realized the power of what they were seeing.  I have been enjoying the benefits of CSS modules myself and my team and would share some of my favorite features in hopes that others will be inclined to use this feature as well.  Cleanse the world of global stylesheets!</p>
+
+<p><img src="http://i.imgur.com/MtjAduk.jpg" alt="i love css modules" /></p>
+
+<!--more-->
+
+
+<h2>Local Variables</h2>
+
+<p>With CSS modules, your selector names are truly local.  They are FRD local variables!  They won't clash with any var names outside your module.  For You don't have to invent a giant namespace.  There's no BEM-style naming to describe a hierarchy.  There's no repetition in those names.  You can name it something much more simple, just related to what the component is.</p>
+
+<p>For instance, if you're creating <code>Link</code> component, you'd previously have something like <code>.nav__item__link</code> selectors to apply style.  Knowledge of global markup structure would seep into your component through this selector and its name.  Now with a combination of encapsulated components and css modules,  you don't have to worry about the outside world.</p>
+
+<p>Now, what would you call your <code>Link</code> component's outer-most <code>a</code> tag?  Well, maybe <code>.link</code> or <code>.root</code>...  Nothing fancy.  Just what it is.  You aren't required to think about the global stylesheet.  You can focus your mind on just the component stylesheet at hand.  The naming game, which can already be challenging, is made much easier.</p>
+
+<h2>Explicit Dependencies</h2>
+
+<p>Now that all the CSS you write is, by default, local to the module you write it in, you have to explicitly pull in dependencies.  You have to explicitly import the stylesheet you are writing where you'll eventually want to use it.  You can write styles without fear that it might influence something else -- until you explicitly ask it to!</p>
+
+<h2>Still CSS</h2>
+
+<p>I've tried some of the inlining styling techniques and libraries that are being made popular in the React community.  <a href="https://github.com/FormidableLabs/radium">Radium</a> is my favorite there.  What makes me happy about CSS modules is that they're still CSS.  It's a language that was invented in order to create declarative styles.  It's not wonderful in many ways, but it's still the best tool available for this.</p>
+
+<p>You can use all the selectors, strategies, and css abilities you're used to.  Pseudo selectors are all available.  Media queries work as expected.  Keyframe animations are easy to declare.  There is also a great ecosystem of CSS enhancements and transforms available from the PostCSS community.  No one should ever write a vendor prefix again with <a href="https://github.com/postcss/autoprefixer">autoprefixer</a>.</p>
+
+<h2>Consistency for Components</h2>
+
+<p>Another thing I'd like to see in the web component community, specifically React for now, is a pattern around how to override CSS in reusable components.  This pattern would be well-used by component developers and well-known by component consumers.  This would help components be more immediately useful -- default styles could be included with components and custom styles would be easily applied.</p>
+
+<p>My favorite solution to this so far is <a href="https://github.com/pluralsight/react-styleable">react-styleable</a> -- full disclosure, I helped write it.  (Anything like this that gains steam, has broad appeal, and is used by many will make me happy.)  I love that CSS modules enable this and provide a foundation for this consistency.  I'll likely write more about this in the future.</p>
+
+<p>CSS modules have changed the styling game for me.  It makes it so, so much better.  Who knows, maybe it'll change the world.</p>
+
+<p>So, how have CSS modules changed your life?  What do you love?  What could still be better?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Animating a Line in D3]]></title>
@@ -563,123 +605,6 @@ historyApiFallback: {
 <p>So, you don't need to write your own proxy.  The option is built in for you.  webpack excites again!</p>
 
 <p>What other things have you been surprised that webpack already does for you?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[List Npm Scripts]]></title>
-    <link href="http://jaketrent.com/post/list-npm-scripts/"/>
-    <updated>2015-03-02T07:44:00-07:00</updated>
-    <id>http://jaketrent.com/post/list-npm-scripts</id>
-    <content type="html"><![CDATA[<p>Tools for storing and then later easily running scripts alias names are awesome.  Npm is one of those tools.  Rake is another.  Rake has a cool feature of allowing you to list the scripts available to you.  Npm has not -- until now.</p>
-
-<p><img src="http://i.imgur.com/ZDCd9u1.png" alt="npm" /></p>
-
-<!--more-->
-
-
-<h2>Npm Scripts</h2>
-
-<p>You can specify scripts in your <code>package.json</code> for later use.  They go in the <code>scripts</code> attribute:</p>
-
-<p>```json package.json
-{
-  "scripts": {</p>
-
-<pre><code>"start": "node server.js",
-"dist": "webpack -p"
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>To run these scripts, you use the <a href="https://docs.npmjs.com/cli/run-script"><code>npm run</code></a> command.  For example, type <code>npm run build</code> to actually execute the <code>webpack -p</code> command in your terminal.  <code>start</code> and <code>test</code> are specially commands to npm and do not require <code>run</code>.  Instead, you can use <code>npm start</code>.</p>
-
-<h2>Npm List Scripts</h2>
-
-<p>In Rake, you run <code>rake -T</code> in your terminal and all the available scripts for your project are displayed.  This allows you to see the what's potentially helpful.  You can't be expected to remember all of them, especially months later, right?</p>
-
-<p>I certainly was having a hard time remembering all of my scripts and getting tired of typing <code>cat package.json</code>.  It didn't feel as cool as the <code>rake -T</code> experience.  I wrote a library called <a href="https://www.npmjs.com/package/npm-ls-scripts"><code>npm-ls-scripts</code></a>.  To install, run:</p>
-
-<p><code>bash
-npm install npm-ls-scripts -g
-</code></p>
-
-<p>I like installing this package globally because then the CLI binary is available globally -- it does seem applicable to all projects.  You could instead include it under project <code>devDependencies</code> if you'd like.</p>
-
-<p>If installed globally, you can then run it with:</p>
-
-<p><code>bash
-ls-scripts
-</code></p>
-
-<p>If I was to run this in the above project, it would print:</p>
-
-<p>```bash</p>
-
-<h2>NPM - ls scripts</h2>
-
-<p>start - node server.js</p>
-
-<h2>dist - webpack -p</h2>
-
-<p>```</p>
-
-<p>This prints the exact code that can be executed for each script.  If I would like to add some prose around any or all of the available scripts, I can do so by adding more config data to my <code>package.json</code> that will print when I run <code>ls-scripts</code>:</p>
-
-<p>```json package.json
-{
-  "config": {</p>
-
-<pre><code>"scripts: {
-   "dist": "Builds project for distribution"
-}
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>Now if I were to run the <code>ls-scripts</code> command, I would see:</p>
-
-<p>```bash</p>
-
-<h2>NPM - ls scripts</h2>
-
-<p>start - node server.js</p>
-
-<h2>dist - Builds project for distribution</h2>
-
-<p>```</p>
-
-<p>Cool, right?  Complete with Shakespearean prose.</p>
-
-<h2>New: Npm Run</h2>
-
-<p>After I had developed the above <code>npm-ls-scripts</code> tool, Npm built this feature natively into the core tool -- finally!  Now, to list available scripts, the command is intuitively to leave off the target script and instead simply type:</p>
-
-<p><code>bash
-npm run
-</code></p>
-
-<p>On the above example, this would yield:</p>
-
-<p>```bash
-Available scripts in the package:
-  start</p>
-
-<pre><code>node server.js
-</code></pre>
-
-<p>  dist</p>
-
-<pre><code>webpack -p
-</code></pre>
-
-<p>```</p>
-
-<p>So, they work about the same, and now it's built in!  What other cool features could you imagine this having?</p>
 ]]></content>
   </entry>
   

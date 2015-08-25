@@ -4,7 +4,7 @@
   <title><![CDATA[Category: css | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/css/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-08-20T10:13:33-06:00</updated>
+  <updated>2015-08-25T11:13:26-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[I Love CSS Modules]]></title>
+    <link href="http://jaketrent.com/post/i-love-css-modules/"/>
+    <updated>2015-08-25T11:03:00-06:00</updated>
+    <id>http://jaketrent.com/post/i-love-css-modules</id>
+    <content type="html"><![CDATA[<p>I heard a fantastic yesterday by <a href="https://twitter.com/glenmaddern">Glen Maddern</a> where Interoperable CSS was well-illustrated as the fantastic CSS language advancement that it is.  I was happy to hear hushed ooo's and ahh's from the audience as they realized the power of what they were seeing.  I have been enjoying the benefits of CSS modules myself and my team and would share some of my favorite features in hopes that others will be inclined to use this feature as well.  Cleanse the world of global stylesheets!</p>
+
+<p><img src="http://i.imgur.com/MtjAduk.jpg" alt="i love css modules" /></p>
+
+<!--more-->
+
+
+<h2>Local Variables</h2>
+
+<p>With CSS modules, your selector names are truly local.  They are FRD local variables!  They won't clash with any var names outside your module.  For You don't have to invent a giant namespace.  There's no BEM-style naming to describe a hierarchy.  There's no repetition in those names.  You can name it something much more simple, just related to what the component is.</p>
+
+<p>For instance, if you're creating <code>Link</code> component, you'd previously have something like <code>.nav__item__link</code> selectors to apply style.  Knowledge of global markup structure would seep into your component through this selector and its name.  Now with a combination of encapsulated components and css modules,  you don't have to worry about the outside world.</p>
+
+<p>Now, what would you call your <code>Link</code> component's outer-most <code>a</code> tag?  Well, maybe <code>.link</code> or <code>.root</code>...  Nothing fancy.  Just what it is.  You aren't required to think about the global stylesheet.  You can focus your mind on just the component stylesheet at hand.  The naming game, which can already be challenging, is made much easier.</p>
+
+<h2>Explicit Dependencies</h2>
+
+<p>Now that all the CSS you write is, by default, local to the module you write it in, you have to explicitly pull in dependencies.  You have to explicitly import the stylesheet you are writing where you'll eventually want to use it.  You can write styles without fear that it might influence something else -- until you explicitly ask it to!</p>
+
+<h2>Still CSS</h2>
+
+<p>I've tried some of the inlining styling techniques and libraries that are being made popular in the React community.  <a href="https://github.com/FormidableLabs/radium">Radium</a> is my favorite there.  What makes me happy about CSS modules is that they're still CSS.  It's a language that was invented in order to create declarative styles.  It's not wonderful in many ways, but it's still the best tool available for this.</p>
+
+<p>You can use all the selectors, strategies, and css abilities you're used to.  Pseudo selectors are all available.  Media queries work as expected.  Keyframe animations are easy to declare.  There is also a great ecosystem of CSS enhancements and transforms available from the PostCSS community.  No one should ever write a vendor prefix again with <a href="https://github.com/postcss/autoprefixer">autoprefixer</a>.</p>
+
+<h2>Consistency for Components</h2>
+
+<p>Another thing I'd like to see in the web component community, specifically React for now, is a pattern around how to override CSS in reusable components.  This pattern would be well-used by component developers and well-known by component consumers.  This would help components be more immediately useful -- default styles could be included with components and custom styles would be easily applied.</p>
+
+<p>My favorite solution to this so far is <a href="https://github.com/pluralsight/react-styleable">react-styleable</a> -- full disclosure, I helped write it.  (Anything like this that gains steam, has broad appeal, and is used by many will make me happy.)  I love that CSS modules enable this and provide a foundation for this consistency.  I'll likely write more about this in the future.</p>
+
+<p>CSS modules have changed the styling game for me.  It makes it so, so much better.  Who knows, maybe it'll change the world.</p>
+
+<p>So, how have CSS modules changed your life?  What do you love?  What could still be better?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Style File Input]]></title>
@@ -287,153 +329,6 @@ ng-style="{ 'background-image': 'url(' + tool.icon + ')' }"
 <p>We really only have these CSS preprocessors because CSS is too strict, flat, unflexible, and verbose for the amazing things being written for the web today.  Wouldn't it be nice if these styling languages or some new, similar version of CSS was available natively in the browser?</p>
 
 <p>Meanwhile, we'll use these tools.  What have you found your greatest challenge to be using a CSS preprocessor?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Responsive Table with Scrolling]]></title>
-    <link href="http://jaketrent.com/post/responsive-table-with-scrolling/"/>
-    <updated>2012-11-07T17:06:00-07:00</updated>
-    <id>http://jaketrent.com/post/responsive-table-with-scrolling</id>
-    <content type="html"><![CDATA[<p>Sometimes a <code>table</code> element is the most semantic element one can use in markup.  It is true.  If you're displaying tabular data, a <code>table</code> is a likely option.  If you're on a responsive site, however, you'll cringe at this option.  It turns out that tables aren't very responsive web design-friendly.  One way to create a more responsive table is with scrolling.</p>
-
-<p><img src="http://i.imgur.com/GeuZe.png" alt="Responsive Table with Scrolling" /></p>
-
-<!--more-->
-
-
-<h2>Responsive Table Options</h2>
-
-<p>I love the article by Chris Coyier that describes <a href="http://css-tricks.com/responsive-data-tables/">responsive tables</a>.  Some of his ideas and those of the commenters on his post a great at thinking outside the box on what the options include for responsive tables:</p>
-
-<ol>
-<li>Orient the table vertically when there's not enough room for all the columns.</li>
-<li>Replace tabular data with a graphic, such as a pie graph, that communicates the same gist.</li>
-<li>Replace the table with a link that opens a scrollable view large enough for the regular-sized table.</li>
-</ol>
-
-
-<p>My favorite option is the first.  But, in my case, it didn't seem to work extremely well because I have two headers.  The example had column headers only.  I have row headers as well.  After a bit more looking, I ran across this <a href="http://www.zurb.com/playground/playground/responsive-tables/">Zurb scrolling table css and js example</a>.  The best solution, it seemed for now, was scrolling.  (My example code is based on the markup and styles of the Zurb code with a few things taken out and a few things added.)</p>
-
-<h2>Table Horizontal Scrolling</h2>
-
-<p>On the web, vertical scrolling is a part of the full meal deal.  So, the only thing to solve is the horizontal scrolling.  Normally, we don't want content flowing off the right side of the screen when browsing.  So, we when there's scrolling required, we're going to do it within the table only and for the columns we want.</p>
-
-<h4>Divide table in two</h4>
-
-<p>We want some columns to scroll and others to remain pinned whilst scrolling.  We'll duplicate the table in the markup and wrap each, a la:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;table-wrapper&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;pinned&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="c">&lt;!-- table here with pinned columns only--&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;scrollable&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="c">&lt;!-- table here with scrollable columns only--&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h4>Line up the rows</h4>
-
-<p>Now we have two tables.  The flexibility we've given ourself is that we can make some columns stick and others scroll easily.  Our new challenge is keeping the row height lined up so the two tables look like one.</p>
-
-<p>Put the two tables next to each other with a float left and a float right.  Make the widths percentage-based as with any <a href="http://en.wikipedia.org/wiki/Responsive_web_design">rwd</a>.</p>
-
-<p>Now we have a few options to make our rows line up:</p>
-
-<ol>
-<li>Explicitly set all table cells to the same height</li>
-<li>Use JavaScript to make each cell in a row be the same height as the tallest cell in that row</li>
-<li>Put similar content in each cell on a row (eg, just text with the same attributes that will not wrap for longer text)</li>
-</ol>
-
-
-<p>Turns out that I will choose option 1 for the table cells (<code>td</code>) and option 3 for the table headers (<code>th</code>).</p>
-
-<p>This is my least favorite feature of this solution.  Anyone have a better idea on lining up the rows?</p>
-
-<h4>Set column width</h4>
-
-<p>I want some of my columns to have a set width.  Well, as <em>set</em> as anything is in rwd.  An html <code>table</code> will usually expand and contract columns across the table to give optimum spacing based on the content.</p>
-
-<p>I want to make my pinned table columns allow extra-long content, but I don't want their widths to change at all.  A bit of StackOverflow love yielded this answer on why <code>overflow: hidden</code> doesn't work when <a href="http://stackoverflow.com/a/7570613/118561">constraining table cell width</a>.</p>
-
-<p>In short, the solution is to wrap the content inside of the <code>td</code> with two <code>divs</code>:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;outer&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inner&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    Row 4 longer than lotr
-</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;p&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>And sprinkle with a bit of stylesheet:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nt">td</span> <span class="nc">.outer</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nt">td</span> <span class="nc">.inner</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">white-space</span><span class="o">:</span> <span class="k">nowrap</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">width</span><span class="o">:</span> <span class="m">100</span><span class="o">%</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>This style will let the column width remain and the content overflow.  It will also keep the cell text on one line, and it will be hidden as it flows off the right-hand side of the cell.  To wrap and hide as it flows off the bottom of the cell, remove the <code>white-space: nowrap</code> attribute.</p>
-
-<h2>Responsive Table with Scrolling</h2>
-
-<p>For the final result, check out the <a href="http://codepen.io/jaketrent/pen/CcboI">CodePen for the responsive table</a> below:</p>
-
-<p><pre class="codepen" data-height="400" data-type="result" data-href="CcboI" data-user="jaketrent"><code></code></pre>
-<script async src="http://codepen.io:/assets/embed/ei.js"></script></p>
-
-<p>What are your suggestions for making this better?  How have you solved the responsive table challenge?</p>
 ]]></content>
   </entry>
   

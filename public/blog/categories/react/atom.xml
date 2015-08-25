@@ -4,7 +4,7 @@
   <title><![CDATA[Category: react | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/react/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-08-20T10:13:33-06:00</updated>
+  <updated>2015-08-25T11:13:26-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[I Love CSS Modules]]></title>
+    <link href="http://jaketrent.com/post/i-love-css-modules/"/>
+    <updated>2015-08-25T11:03:00-06:00</updated>
+    <id>http://jaketrent.com/post/i-love-css-modules</id>
+    <content type="html"><![CDATA[<p>I heard a fantastic yesterday by <a href="https://twitter.com/glenmaddern">Glen Maddern</a> where Interoperable CSS was well-illustrated as the fantastic CSS language advancement that it is.  I was happy to hear hushed ooo's and ahh's from the audience as they realized the power of what they were seeing.  I have been enjoying the benefits of CSS modules myself and my team and would share some of my favorite features in hopes that others will be inclined to use this feature as well.  Cleanse the world of global stylesheets!</p>
+
+<p><img src="http://i.imgur.com/MtjAduk.jpg" alt="i love css modules" /></p>
+
+<!--more-->
+
+
+<h2>Local Variables</h2>
+
+<p>With CSS modules, your selector names are truly local.  They are FRD local variables!  They won't clash with any var names outside your module.  For You don't have to invent a giant namespace.  There's no BEM-style naming to describe a hierarchy.  There's no repetition in those names.  You can name it something much more simple, just related to what the component is.</p>
+
+<p>For instance, if you're creating <code>Link</code> component, you'd previously have something like <code>.nav__item__link</code> selectors to apply style.  Knowledge of global markup structure would seep into your component through this selector and its name.  Now with a combination of encapsulated components and css modules,  you don't have to worry about the outside world.</p>
+
+<p>Now, what would you call your <code>Link</code> component's outer-most <code>a</code> tag?  Well, maybe <code>.link</code> or <code>.root</code>...  Nothing fancy.  Just what it is.  You aren't required to think about the global stylesheet.  You can focus your mind on just the component stylesheet at hand.  The naming game, which can already be challenging, is made much easier.</p>
+
+<h2>Explicit Dependencies</h2>
+
+<p>Now that all the CSS you write is, by default, local to the module you write it in, you have to explicitly pull in dependencies.  You have to explicitly import the stylesheet you are writing where you'll eventually want to use it.  You can write styles without fear that it might influence something else -- until you explicitly ask it to!</p>
+
+<h2>Still CSS</h2>
+
+<p>I've tried some of the inlining styling techniques and libraries that are being made popular in the React community.  <a href="https://github.com/FormidableLabs/radium">Radium</a> is my favorite there.  What makes me happy about CSS modules is that they're still CSS.  It's a language that was invented in order to create declarative styles.  It's not wonderful in many ways, but it's still the best tool available for this.</p>
+
+<p>You can use all the selectors, strategies, and css abilities you're used to.  Pseudo selectors are all available.  Media queries work as expected.  Keyframe animations are easy to declare.  There is also a great ecosystem of CSS enhancements and transforms available from the PostCSS community.  No one should ever write a vendor prefix again with <a href="https://github.com/postcss/autoprefixer">autoprefixer</a>.</p>
+
+<h2>Consistency for Components</h2>
+
+<p>Another thing I'd like to see in the web component community, specifically React for now, is a pattern around how to override CSS in reusable components.  This pattern would be well-used by component developers and well-known by component consumers.  This would help components be more immediately useful -- default styles could be included with components and custom styles would be easily applied.</p>
+
+<p>My favorite solution to this so far is <a href="https://github.com/pluralsight/react-styleable">react-styleable</a> -- full disclosure, I helped write it.  (Anything like this that gains steam, has broad appeal, and is used by many will make me happy.)  I love that CSS modules enable this and provide a foundation for this consistency.  I'll likely write more about this in the future.</p>
+
+<p>CSS modules have changed the styling game for me.  It makes it so, so much better.  Who knows, maybe it'll change the world.</p>
+
+<p>So, how have CSS modules changed your life?  What do you love?  What could still be better?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Using JavaScript's Function Bind]]></title>
@@ -532,158 +574,6 @@ var { State } = require('react-router')</p>
 <p>When the url params change, <code>componentWillReceiveProps</code> is called.  But this is not called on the first render, thus we implement <code>componentWillMount</code>.  Both these functions save the <code>range</code> from the url to the component state.  Now, as <code>shouldComponentUpdate</code> is called on future <code>this.props</code> and <code>this.state</code> changes, current and next <code>range</code> values can be compared and used in "should re-render" calculation.</p>
 
 <p>What other ways have you found to accomplish this tracking of previous state in the url?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[React-Router with Flux]]></title>
-    <link href="http://jaketrent.com/post/react-router-with-flux/"/>
-    <updated>2015-01-15T09:21:00-07:00</updated>
-    <id>http://jaketrent.com/post/react-router-with-flux</id>
-    <content type="html"><![CDATA[<p>react-router provides great route handling with route params and query params.  Flux provides a pattern for building React apps, including a pattern from providing data to your components.  Here's a straightforward way to make route changes trigger data changes in your components.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react" /></p>
-
-<!--more-->
-
-
-<p>Note: Code here reflects usage of react-router 0.11.x.</p>
-
-<p>It is often the case that we'll need to trigger data changes in a react component in our Flux app because of a route transition.  A prime example of this would be on an object show page, where the details of a particular object are being shown.  In our example, let's say that we're showing the details of a book, such as title, author, and description.</p>
-
-<p>The route to our book detail page is likely defined as:</p>
-
-<p><code>js routes.js
-// ...
-&lt;Route name="book" path="/books/:id" handler={require('./books-show')} /&gt;
-</code></p>
-
-<p>The handler is just a controller-component that defines the view.  It might look simply like:</p>
-
-<p>```js books-show.js
-const React = require('react')
-const {State} = require('react-router')</p>
-
-<p>const BooksStore = require('./books-store')</p>
-
-<p>module.exports = React.createClass({</p>
-
-<p>  displayName: 'BooksShow',</p>
-
-<p>  mixins: [ State ],</p>
-
-<p>  getInitialState() {</p>
-
-<pre><code>return this.getStateFromStores()
-</code></pre>
-
-<p>  },</p>
-
-<p>  getStateFromStores() {</p>
-
-<pre><code>return {
-  book: BooksStore.find({ id: this.getParams().id })
-}
-</code></pre>
-
-<p>  },</p>
-
-<p>  componentDidMount() {</p>
-
-<pre><code>BooksStore.addChangeListener(this._onChange)
-</code></pre>
-
-<p>  },</p>
-
-<p>  componentWillUnmount() {</p>
-
-<pre><code>BooksStore.removeChangeListener(this._onChange)
-</code></pre>
-
-<p>  },</p>
-
-<p>  _onChange: function() {</p>
-
-<pre><code>this.setState(this.getStateFromStores())
-</code></pre>
-
-<p>  },</p>
-
-<p>  render() {</p>
-
-<pre><code>return (
-  &lt;ul&gt;
-    &lt;li&gt;{this.state.book.title}&lt;/li&gt;
-    &lt;li&gt;{this.state.book.author}&lt;/li&gt;
-    &lt;li&gt;{this.state.book.description}&lt;/li&gt;
-  &lt;/ul&gt;
-)
-</code></pre>
-
-<p>  }</p>
-
-<p>})
-```</p>
-
-<p>Note that the view component references a <code>BooksStore</code> for getting its initial state.  The state of <code>book</code> will also be updated as the <code>BooksStore</code> emits that its data has changed and <code>this._onChange</code> is called.</p>
-
-<p>Every time a route transitions, react-router has a <code>Router.run</code> callback that will also run in order to render the matching route.  This will also be a great place to put our action to signal to our Flux app that routes are transitioning and therefore other stuff like data in the display might need to change as well.</p>
-
-<p><code>js
-Router.run(routes, (Handler, state) =&gt; {
-  React.render(&lt;Handler /&gt;, document.body)
-  BooksAction.transition(state.params)
-})
-</code></p>
-
-<p><strong>Important note</strong>: Make sure the transition action is called after <code>React.render</code> so that the change emission will be detected after render, otherwise you'll be one route transition behind.</p>
-
-<p>The <code>BooksAction.transition</code> definition is something very simple -- something that can trigger events on the dispatcher:</p>
-
-<p>```js books-actions.js
-exports.transition = () => {
-  AppDispatcher.handleViewAction({</p>
-
-<pre><code>type: ActionTypes.TRANSITION
-</code></pre>
-
-<p>  })
-}
-```</p>
-
-<p>The final connection is in the store, where the dispatched action can be listened for an then trigger the store event, updating the component views:</p>
-
-<p>```js books-store.js
-var BooksStore = merge(EventEmitter.prototype, {
-  find(filter) {</p>
-
-<pre><code>// ...
-</code></pre>
-
-<p>  }
-})</p>
-
-<p>BooksStore.dispatchToken = AppDispatcher.register((payload) => {
-  var action = payload.action
-  switch(action.type) {</p>
-
-<pre><code>// ...
-
-case ActionTypes.TRANSITION:
-  BooksStore.emitChange()
-  break
-</code></pre>
-
-<p>  }
-})</p>
-
-<p>module.exports = BooksStore</p>
-
-<p>```</p>
-
-<p>At this point, all the route transitions should trigger data changes in views.  Visiting the url <code>/books/1</code> and then the url <code>/books/2</code> should display different data on screen according to which book id was in the route.  <code>Router.Link</code> should work correctly, usable instead of buttons with actions being triggered on click.</p>
-
-<p>react-router and Flux make for a great combo in this way, right?  What adjustments would you make?</p>
 ]]></content>
   </entry>
   

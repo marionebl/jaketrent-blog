@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-08-20T10:13:33-06:00</updated>
+  <updated>2015-08-25T11:13:26-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[I Love CSS Modules]]></title>
+    <link href="http://jaketrent.com/post/i-love-css-modules/"/>
+    <updated>2015-08-25T11:03:00-06:00</updated>
+    <id>http://jaketrent.com/post/i-love-css-modules</id>
+    <content type="html"><![CDATA[<p>I heard a fantastic yesterday by <a href="https://twitter.com/glenmaddern">Glen Maddern</a> where Interoperable CSS was well-illustrated as the fantastic CSS language advancement that it is.  I was happy to hear hushed ooo&#8217;s and ahh&#8217;s from the audience as they realized the power of what they were seeing.  I have been enjoying the benefits of CSS modules myself and my team and would share some of my favorite features in hopes that others will be inclined to use this feature as well.  Cleanse the world of global stylesheets!</p>
+
+<p><img src="http://i.imgur.com/MtjAduk.jpg" alt="i love css modules" /></p>
+
+<!--more-->
+
+
+<h2>Local Variables</h2>
+
+<p>With CSS modules, your selector names are truly local.  They are FRD local variables!  They won&#8217;t clash with any var names outside your module.  For You don&#8217;t have to invent a giant namespace.  There&#8217;s no BEM-style naming to describe a hierarchy.  There&#8217;s no repetition in those names.  You can name it something much more simple, just related to what the component is.</p>
+
+<p>For instance, if you&#8217;re creating <code>Link</code> component, you&#8217;d previously have something like <code>.nav__item__link</code> selectors to apply style.  Knowledge of global markup structure would seep into your component through this selector and its name.  Now with a combination of encapsulated components and css modules,  you don&#8217;t have to worry about the outside world.</p>
+
+<p>Now, what would you call your <code>Link</code> component&#8217;s outer-most <code>a</code> tag?  Well, maybe <code>.link</code> or <code>.root</code>&#8230;  Nothing fancy.  Just what it is.  You aren&#8217;t required to think about the global stylesheet.  You can focus your mind on just the component stylesheet at hand.  The naming game, which can already be challenging, is made much easier.</p>
+
+<h2>Explicit Dependencies</h2>
+
+<p>Now that all the CSS you write is, by default, local to the module you write it in, you have to explicitly pull in dependencies.  You have to explicitly import the stylesheet you are writing where you&#8217;ll eventually want to use it.  You can write styles without fear that it might influence something else &#8211; until you explicitly ask it to!</p>
+
+<h2>Still CSS</h2>
+
+<p>I&#8217;ve tried some of the inlining styling techniques and libraries that are being made popular in the React community.  <a href="https://github.com/FormidableLabs/radium">Radium</a> is my favorite there.  What makes me happy about CSS modules is that they&#8217;re still CSS.  It&#8217;s a language that was invented in order to create declarative styles.  It&#8217;s not wonderful in many ways, but it&#8217;s still the best tool available for this.</p>
+
+<p>You can use all the selectors, strategies, and css abilities you&#8217;re used to.  Pseudo selectors are all available.  Media queries work as expected.  Keyframe animations are easy to declare.  There is also a great ecosystem of CSS enhancements and transforms available from the PostCSS community.  No one should ever write a vendor prefix again with <a href="https://github.com/postcss/autoprefixer">autoprefixer</a>.</p>
+
+<h2>Consistency for Components</h2>
+
+<p>Another thing I&#8217;d like to see in the web component community, specifically React for now, is a pattern around how to override CSS in reusable components.  This pattern would be well-used by component developers and well-known by component consumers.  This would help components be more immediately useful &#8211; default styles could be included with components and custom styles would be easily applied.</p>
+
+<p>My favorite solution to this so far is <a href="https://github.com/pluralsight/react-styleable">react-styleable</a> &#8211; full disclosure, I helped write it.  (Anything like this that gains steam, has broad appeal, and is used by many will make me happy.)  I love that CSS modules enable this and provide a foundation for this consistency.  I&#8217;ll likely write more about this in the future.</p>
+
+<p>CSS modules have changed the styling game for me.  It makes it so, so much better.  Who knows, maybe it&#8217;ll change the world.</p>
+
+<p>So, how have CSS modules changed your life?  What do you love?  What could still be better?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Make Software in the Estuary]]></title>
@@ -93,7 +135,7 @@
 
 <h2>The Medici Effect</h2>
 
-<p>The Medici Effect is named for the family living in Italy in the 14th century who had a great effect on the area and history.  They invited many experts from diverse disciplines and had the effect of making Florence, Italy a center of advancement and innovation, catapulting forward the Italian Renaissance.  What can we do let our cross-functional teams really cross functions?</p>
+<p>The Medici Effect is named for the family living in Italy in the 14th century who had a great effect on the area and history.  They invited many experts from diverse disciplines and had the effect of making Florence, Italy a center of advancement and innovation, catapulting forward the Italian Renaissance.  The same effect of new and more ideas can be seen by us as we bring many disciplines together in a common cause.  What can we do to encourage our cross-functional teams really cross functions?</p>
 
 <p>People have different tastes and exposures.  Associative thinking is making connections between different ideas.  Naturally, people of different backgrounds and trainings will be more able to make more and varied associations.  New, fun, and unusual combinations will result.</p>
 
@@ -2197,128 +2239,6 @@
 <p>At this point, all the route transitions should trigger data changes in views.  Visiting the url <code>/books/1</code> and then the url <code>/books/2</code> should display different data on screen according to which book id was in the route.  <code>Router.Link</code> should work correctly, usable instead of buttons with actions being triggered on click.</p>
 
 <p>react-router and Flux make for a great combo in this way, right?  What adjustments would you make?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[D3 Class Operations]]></title>
-    <link href="http://jaketrent.com/post/d3-class-operations/"/>
-    <updated>2014-12-24T10:58:00-07:00</updated>
-    <id>http://jaketrent.com/post/d3-class-operations</id>
-    <content type="html"><![CDATA[<p>D3 has operations for class name manipulation that you&#8217;re used to from jQuery.  These include addClass, removeClass, hasClass, and toggleClass.  They just go by different names.</p>
-
-<p><img src="http://i.imgur.com/94JQ8N8.jpg" alt="d3 class names" /></p>
-
-<!--more-->
-
-
-<h2>selection.classed</h2>
-
-<p>The magic all comes in the form of the <code>selection.classed</code> method from d3.  It is going to be the api that is used to accomplish all the operations listed below.  From the <a href="https://github.com/mbostock/d3/wiki/Selections#classed">docs</a>:</p>
-
-<blockquote><p>This operator is a convenience routine for setting the &#8220;class&#8221; attribute; it understands that the &#8220;class&#8221; attribute is a set of tokens separated by spaces. Under the hood, it will use the classList if available, for convenient adding, removing and toggling of CSS classes.</p></blockquote>
-
-<p>It knows how to handle one or many classes on an element, and it will be performant.</p>
-
-<p>Also note that this method is only available on a selection.</p>
-
-<h2>d3 addClass</h2>
-
-<p>To add a class, the second parameter to <code>classed</code> must be true, as in this code:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
-</span><span class='line'> <span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>d3 removeClass</h2>
-
-<p>To remove a class, the second parameter to <code>classed</code> must be false.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>d3 hasClass</h2>
-
-<p>To check for the existence of a class, just leave off the second parameter and pass the class name you&#8217;re querying for.  This will return true if it exists, false if it does not.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
-</span><span class='line'> <span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This will return true if any element in the selection has the class.  Use <code>d3.select</code> for single element selection.</p>
-
-<h2>d3 toggleClass</h2>
-
-<p>To flip a class to the opposite state  &#8211; remove it if it exists already, add it if it does not yet exist &#8211; you can do one of the following.</p>
-
-<p>For a single element, the code might look like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">oneBar</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="nx">oneBar</span><span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">,</span> <span class="o">!</span><span class="nx">oneBar</span><span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">));</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>For multiple elements, one will want to pass in a callback.  The callback function takes as parameters <code>d</code>, the datum, <code>i</code>, the index in the selection, and <code>this</code> is the current DOM element.</p>
-
-<p>It&#8217;s also important to note that the <a href="https://github.com/mbostock/d3/wiki/Selections#classed">docs</a> inform us that:</p>
-
-<blockquote><p>The function&#8217;s return value is then used to assign or unassign the specified class on each element.</p></blockquote>
-
-<p>The code for toggling multiple elements in a selection at once might look like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;bar&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">d</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="o">!</span><span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">classed</span><span class="p">(</span><span class="s2">&quot;my-selector&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Here&#8217;s a <a href="http://jsbin.com/qeyawa/1/edit?html,js,output">jsbin</a> that provides some toggle functionality.  Ees for fun.</p>
-
-<p><a class="jsbin-embed" href="http://jsbin.com/qeyawa/1/embed?output">d3 toggleClass</a><script src="http://static.jsbin.com/js/embed.js"></script></p>
-
-<h2>Bonus: A note on single active classes</h2>
-
-<p>Here&#8217;s a fun tip for that oft-encountered situation where you want a single element in a selection to have a class, like an <code>active</code> class, and the rest of the selection should not:</p>
-
-<p>Make sure that you detect the active class in the selection previous to the clearing of the active classes.</p>
-
-<p>A sample of what that might look like could be:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">d3</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">activeClass</span> <span class="o">=</span> <span class="s2">&quot;active&quot;</span><span class="p">;</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">alreadyIsActive</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">classed</span><span class="p">(</span><span class="nx">activeClass</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">svg</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;.reports-chart__bar&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">.</span><span class="nx">classed</span><span class="p">(</span><span class="nx">activeClass</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">classed</span><span class="p">(</span><span class="nx">activeClass</span><span class="p">,</span> <span class="o">!</span><span class="nx">alreadyIsActive</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now, unleash the power of your creativity!  Kazaam!</p>
 ]]></content>
   </entry>
   

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: icss | Jake Trent]]></title>
+  <link href="http://jaketrent.com/blog/categories/icss/atom.xml" rel="self"/>
+  <link href="http://jaketrent.com/"/>
+  <updated>2015-08-25T11:13:26-06:00</updated>
+  <id>http://jaketrent.com/</id>
+  <author>
+    <name><![CDATA[Jake Trent]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[I Love CSS Modules]]></title>
+    <link href="http://jaketrent.com/post/i-love-css-modules/"/>
+    <updated>2015-08-25T11:03:00-06:00</updated>
+    <id>http://jaketrent.com/post/i-love-css-modules</id>
+    <content type="html"><![CDATA[<p>I heard a fantastic yesterday by <a href="https://twitter.com/glenmaddern">Glen Maddern</a> where Interoperable CSS was well-illustrated as the fantastic CSS language advancement that it is.  I was happy to hear hushed ooo's and ahh's from the audience as they realized the power of what they were seeing.  I have been enjoying the benefits of CSS modules myself and my team and would share some of my favorite features in hopes that others will be inclined to use this feature as well.  Cleanse the world of global stylesheets!</p>
+
+<p><img src="http://i.imgur.com/MtjAduk.jpg" alt="i love css modules" /></p>
+
+<!--more-->
+
+
+<h2>Local Variables</h2>
+
+<p>With CSS modules, your selector names are truly local.  They are FRD local variables!  They won't clash with any var names outside your module.  For You don't have to invent a giant namespace.  There's no BEM-style naming to describe a hierarchy.  There's no repetition in those names.  You can name it something much more simple, just related to what the component is.</p>
+
+<p>For instance, if you're creating <code>Link</code> component, you'd previously have something like <code>.nav__item__link</code> selectors to apply style.  Knowledge of global markup structure would seep into your component through this selector and its name.  Now with a combination of encapsulated components and css modules,  you don't have to worry about the outside world.</p>
+
+<p>Now, what would you call your <code>Link</code> component's outer-most <code>a</code> tag?  Well, maybe <code>.link</code> or <code>.root</code>...  Nothing fancy.  Just what it is.  You aren't required to think about the global stylesheet.  You can focus your mind on just the component stylesheet at hand.  The naming game, which can already be challenging, is made much easier.</p>
+
+<h2>Explicit Dependencies</h2>
+
+<p>Now that all the CSS you write is, by default, local to the module you write it in, you have to explicitly pull in dependencies.  You have to explicitly import the stylesheet you are writing where you'll eventually want to use it.  You can write styles without fear that it might influence something else -- until you explicitly ask it to!</p>
+
+<h2>Still CSS</h2>
+
+<p>I've tried some of the inlining styling techniques and libraries that are being made popular in the React community.  <a href="https://github.com/FormidableLabs/radium">Radium</a> is my favorite there.  What makes me happy about CSS modules is that they're still CSS.  It's a language that was invented in order to create declarative styles.  It's not wonderful in many ways, but it's still the best tool available for this.</p>
+
+<p>You can use all the selectors, strategies, and css abilities you're used to.  Pseudo selectors are all available.  Media queries work as expected.  Keyframe animations are easy to declare.  There is also a great ecosystem of CSS enhancements and transforms available from the PostCSS community.  No one should ever write a vendor prefix again with <a href="https://github.com/postcss/autoprefixer">autoprefixer</a>.</p>
+
+<h2>Consistency for Components</h2>
+
+<p>Another thing I'd like to see in the web component community, specifically React for now, is a pattern around how to override CSS in reusable components.  This pattern would be well-used by component developers and well-known by component consumers.  This would help components be more immediately useful -- default styles could be included with components and custom styles would be easily applied.</p>
+
+<p>My favorite solution to this so far is <a href="https://github.com/pluralsight/react-styleable">react-styleable</a> -- full disclosure, I helped write it.  (Anything like this that gains steam, has broad appeal, and is used by many will make me happy.)  I love that CSS modules enable this and provide a foundation for this consistency.  I'll likely write more about this in the future.</p>
+
+<p>CSS modules have changed the styling game for me.  It makes it so, so much better.  Who knows, maybe it'll change the world.</p>
+
+<p>So, how have CSS modules changed your life?  What do you love?  What could still be better?</p>
+]]></content>
+  </entry>
+  
+</feed>

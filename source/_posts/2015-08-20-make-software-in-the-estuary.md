@@ -69,7 +69,7 @@ Good people are required.  Self esteem from all is required.  Courage to potenti
 
 ## The Medici Effect
 
-The Medici Effect is named for the family living in Italy in the 14th century who had a great effect on the area and history.  They invited many experts from diverse disciplines and had the effect of making Florence, Italy a center of advancement and innovation, catapulting forward the Italian Renaissance.  What can we do let our cross-functional teams really cross functions?
+The Medici Effect is named for the family living in Italy in the 14th century who had a great effect on the area and history.  They invited many experts from diverse disciplines and had the effect of making Florence, Italy a center of advancement and innovation, catapulting forward the Italian Renaissance.  The same effect of new and more ideas can be seen by us as we bring many disciplines together in a common cause.  What can we do to encourage our cross-functional teams really cross functions?
 
 People have different tastes and exposures.  Associative thinking is making connections between different ideas.  Naturally, people of different backgrounds and trainings will be more able to make more and varied associations.  New, fun, and unusual combinations will result.
 
