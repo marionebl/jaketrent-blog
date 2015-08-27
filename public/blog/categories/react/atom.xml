@@ -4,7 +4,7 @@
   <title><![CDATA[Category: react | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/react/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-08-25T11:13:26-06:00</updated>
+  <updated>2015-08-27T09:15:38-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[React Rally Review]]></title>
+    <link href="http://jaketrent.com/post/react-rally-review/"/>
+    <updated>2015-08-27T09:03:00-06:00</updated>
+    <id>http://jaketrent.com/post/react-rally-review</id>
+    <content type="html"><![CDATA[<p>React Rally is a developer conference created around the library of <a href="http://facebook.github.io/react/">React.js</a> and the community that uses it.  It was the first of its name.  It was the first React-centric conference in Salt Lake City.  I had a great time.  Here are a few of reasons I liked it.</p>
+
+<p><img src="http://i.imgur.com/B8fFS4J.jpg" alt="react rally" /></p>
+
+<!--more-->
+
+
+<h2>People Breakouts</h2>
+
+<p>It was a happy conference.  A great mood was set by <a href="https://twitter.com/jergason">Jamison</a> on stage, who MC'ed most of the conference.  He's a fun, quirky guy who's not self-important and who did a great job putting speakers and the audience at ease.  There were a ton of participants and attendees at the conference that also fit this (good!) description.  This led to great conversation between sessions.  There were plenty of breaks, some 30 or 60 minutes at a time.  They were well-spaced, allowing plenty of time.  There was a pleasant <a href="http://rangle.io/">Rangle.io</a>-sponsored lounge to gather in.</p>
+
+<p>There were no on-stage questions and answers portions at the end of the talks.  I wondered how I'd like this, since who doesn't like answer to their questions, right?  It turned out to be refreshing.  Speakers finished their talks at the appointed time.  No one had to wait around uncomfortably wondering when either the speaker or the audience would let everyone else off the hook.  No embarrassing questions.  It was nice.  All the speakers were great anyway, but I think this feature also helped prime the conversations that were expected to happen after the talks in the breakouts, giving extra motivation for everyone to be available and approachable.</p>
+
+<h2>The Spoken Word</h2>
+
+<p>I was excited going into the conference because of the solid lineup of speakers.  Not all the talks were the best I had heard or the best treatment of every subject.  There were some highlights thought, and on the whole it was really, really good.  Each of the speakers had obviously prepared a great deal and had taken their time on stage seriously (or not seriously in the case of <a href="https://twitter.com/djsmith42">Dave Smith</a>, whose talk was memorable and awesome as well, btw).</p>
+
+<p>The conference wasn't wholly about React.  There's just so much <em>around</em> React that is exciting.  The community is pushing boundaries all over the place.  (And <em>still</em> all the content in the conference was appropriate, yay! :)  For instance, there were a great many mentions of <a href="http://elm-lang.org/">Elm</a>.  For my part, I spent much of the conference tinkering with that very thing.</p>
+
+<h2>Fun Design</h2>
+
+<p>It'll reveal how much art does for me, but when I first learned about the conference, one of the things that excited me the most was the <a href="http://www.reactrally.com/">website</a>.  It had a fun design!  There were illustrations, interesting colors, and it looked like a fun theme.  (Of course, at the time there was literally nothing else to be excited about outside the mailing list input box.)</p>
+
+<p>We need more illustrations.  We need more mascots.  A menacing purple squid with a React symbol on its forehead?  Yes, please!  My previously bare brushed metal laptop lid is now bestickered with the sweetest conference stickers I have.  So fun!</p>
+
+<p>I'm still not sure what the theme was intended to be.  My interpretation was Creatures of the Black Lagoon in Space.  Right?!</p>
+
+<h2>Feels Like the First Time</h2>
+
+<p>The organizers did a great job.  The preparation was obvious.  They assured me they were putting out fires for the duration of the two days.  That was not apparent.  The thing went off without a hitch.  I can only poke at the annoying AV glitch of a blinky project screen in some talks.</p>
+
+<p>Everything seemed in its place.  The conference was small, about 250 participants, and it seemed like a large house party most of the time.  The venue was prepped very well.  I'm glad they opened up the downstairs lounge.  The food was great.  The breakfast trucks were a wonderful touch, especially <a href="http://saturdayswaffle.com/">Saturdays Waffles</a> day.  Mmmmm, waffles.  The gift card for lunch was a thoughtful touch.  <a href="http://www.yelp.com/biz/atlantic-caf%C3%A9-and-market-salt-lake-city-4">Atlantic Cafe</a> provided my delicious cevapi sausage on the 2nd day.</p>
+
+<p>I have many thanks for the great speakers, the effort of the organizers, and everyone in between that made the 2 days great.  I felt inspired.  I left more informed.  I met a group of fantastic people.  It's been my favorite conference in Salt Lake City so far.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[I Love CSS Modules]]></title>
@@ -492,88 +534,6 @@ render() {
 <p>You can also check out this <a href="http://jsbin.com/buwoqod/22/edit?js,output">slightly modified jsbin</a> which does the test assertion.</p>
 
 <p>What methods have you used to test Components that use either <code>componentWillReceiveProps</code> or other interesting lifecycle methods?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Test React-Router Previous Params for Component Update]]></title>
-    <link href="http://jaketrent.com/post/test-react-router-params-component-update/"/>
-    <updated>2015-02-09T15:39:00-07:00</updated>
-    <id>http://jaketrent.com/post/test-react-router-params-component-update</id>
-    <content type="html"><![CDATA[<p>Once upon a time, react-router transferred params and query params from the url via props into components.  It doesn't happen this way any more.  So, let's say you have a need in your component like overriding <code>shouldComponentUpdate</code> in your component which only has access to <code>this.props</code> and <code>this.state</code>.   How can you use the url data to affect the component re-render or not?</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react" /></p>
-
-<!--more-->
-
-
-<h2>Why control rendering with the url?</h2>
-
-<p>There are two instances that come to mind when considering the scenarios that it might be needful to control the update of your component based on the url:</p>
-
-<ol>
-<li><p><strong>Avoid re-render</strong>: Of course, if the component we're talking about is a page-level component, you'll most likely always be wanting to re-render as the url changes.  But, if you're a little widget component that cares about the url, you might not need to always re-render on url change.</p></li>
-<li><p><strong>Trigger re-render when it might not otherwise happen</strong>: For whatever reason, you may have already needed to implement <code>shouldComponentUpdate</code> in your component.  This function returns true or false to flag a "should" or "should not" re-render.  You'll need to access url state and likely previous url state in this method to make re-renders happen that otherwise wouldn't if you had no logic in this function for it.</p></li>
-</ol>
-
-
-<p>Of course, beyond these re-render scenarios, there are many other situations in which knowing previous and current states in the url could come in handy.</p>
-
-<h2>React-Router in shouldComponentUpdate</h2>
-
-<p><code>shouldComponentUpdate</code> determines if component should re-render.  It's called whenever <code>this.props</code> or <code>this.state</code> changes.  It has access to incoming props and state via the function parameters.</p>
-
-<p>React-router gives your component access to params and query params by requiring you to mix in the <code>State</code> param from react-router.  Then you have access to new functions, <code>this.getParams()</code> and <code>this.getQuery()</code>.  If you only need to know current url state, this is enough.  If you want to compare current url state to previous url state, you'll have to save the parts that you care about.  We'll do that in <code>this.state</code>.</p>
-
-<p>Let's say that we want to trigger a redraw on changes to a <code>range</code> query parameter.  The component might, in part, look like this:</p>
-
-<p>```
-var { State } = require('react-router')</p>
-
-<p>module.exports = React.createClass({</p>
-
-<p>  mixins: [ State ],</p>
-
-<p>  getInitialState() {</p>
-
-<pre><code>range: nul
-</code></pre>
-
-<p>  },</p>
-
-<p>  componentWillReceiveProps() {</p>
-
-<pre><code>this.setState({
-  range: this.getQuery().range
-})
-</code></pre>
-
-<p>  },</p>
-
-<p>  componentWillMount() {</p>
-
-<pre><code>this.setState({
-  range: this.getQuery().range
-})
-</code></pre>
-
-<p>  }</p>
-
-<p>  shouldComponentUpdate() {</p>
-
-<pre><code>return this.state.range !== nextState.range
-</code></pre>
-
-<p>  }</p>
-
-<p>  // ...</p>
-
-<p>})
-```</p>
-
-<p>When the url params change, <code>componentWillReceiveProps</code> is called.  But this is not called on the first render, thus we implement <code>componentWillMount</code>.  Both these functions save the <code>range</code> from the url to the component state.  Now, as <code>shouldComponentUpdate</code> is called on future <code>this.props</code> and <code>this.state</code> changes, current and next <code>range</code> values can be compared and used in "should re-render" calculation.</p>
-
-<p>What other ways have you found to accomplish this tracking of previous state in the url?</p>
 ]]></content>
   </entry>
   

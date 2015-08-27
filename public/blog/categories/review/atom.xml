@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Review | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/review/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-08-25T11:13:26-06:00</updated>
+  <updated>2015-08-27T09:15:38-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[React Rally Review]]></title>
+    <link href="http://jaketrent.com/post/react-rally-review/"/>
+    <updated>2015-08-27T09:03:00-06:00</updated>
+    <id>http://jaketrent.com/post/react-rally-review</id>
+    <content type="html"><![CDATA[<p>React Rally is a developer conference created around the library of <a href="http://facebook.github.io/react/">React.js</a> and the community that uses it.  It was the first of its name.  It was the first React-centric conference in Salt Lake City.  I had a great time.  Here are a few of reasons I liked it.</p>
+
+<p><img src="http://i.imgur.com/B8fFS4J.jpg" alt="react rally" /></p>
+
+<!--more-->
+
+
+<h2>People Breakouts</h2>
+
+<p>It was a happy conference.  A great mood was set by <a href="https://twitter.com/jergason">Jamison</a> on stage, who MC'ed most of the conference.  He's a fun, quirky guy who's not self-important and who did a great job putting speakers and the audience at ease.  There were a ton of participants and attendees at the conference that also fit this (good!) description.  This led to great conversation between sessions.  There were plenty of breaks, some 30 or 60 minutes at a time.  They were well-spaced, allowing plenty of time.  There was a pleasant <a href="http://rangle.io/">Rangle.io</a>-sponsored lounge to gather in.</p>
+
+<p>There were no on-stage questions and answers portions at the end of the talks.  I wondered how I'd like this, since who doesn't like answer to their questions, right?  It turned out to be refreshing.  Speakers finished their talks at the appointed time.  No one had to wait around uncomfortably wondering when either the speaker or the audience would let everyone else off the hook.  No embarrassing questions.  It was nice.  All the speakers were great anyway, but I think this feature also helped prime the conversations that were expected to happen after the talks in the breakouts, giving extra motivation for everyone to be available and approachable.</p>
+
+<h2>The Spoken Word</h2>
+
+<p>I was excited going into the conference because of the solid lineup of speakers.  Not all the talks were the best I had heard or the best treatment of every subject.  There were some highlights thought, and on the whole it was really, really good.  Each of the speakers had obviously prepared a great deal and had taken their time on stage seriously (or not seriously in the case of <a href="https://twitter.com/djsmith42">Dave Smith</a>, whose talk was memorable and awesome as well, btw).</p>
+
+<p>The conference wasn't wholly about React.  There's just so much <em>around</em> React that is exciting.  The community is pushing boundaries all over the place.  (And <em>still</em> all the content in the conference was appropriate, yay! :)  For instance, there were a great many mentions of <a href="http://elm-lang.org/">Elm</a>.  For my part, I spent much of the conference tinkering with that very thing.</p>
+
+<h2>Fun Design</h2>
+
+<p>It'll reveal how much art does for me, but when I first learned about the conference, one of the things that excited me the most was the <a href="http://www.reactrally.com/">website</a>.  It had a fun design!  There were illustrations, interesting colors, and it looked like a fun theme.  (Of course, at the time there was literally nothing else to be excited about outside the mailing list input box.)</p>
+
+<p>We need more illustrations.  We need more mascots.  A menacing purple squid with a React symbol on its forehead?  Yes, please!  My previously bare brushed metal laptop lid is now bestickered with the sweetest conference stickers I have.  So fun!</p>
+
+<p>I'm still not sure what the theme was intended to be.  My interpretation was Creatures of the Black Lagoon in Space.  Right?!</p>
+
+<h2>Feels Like the First Time</h2>
+
+<p>The organizers did a great job.  The preparation was obvious.  They assured me they were putting out fires for the duration of the two days.  That was not apparent.  The thing went off without a hitch.  I can only poke at the annoying AV glitch of a blinky project screen in some talks.</p>
+
+<p>Everything seemed in its place.  The conference was small, about 250 participants, and it seemed like a large house party most of the time.  The venue was prepped very well.  I'm glad they opened up the downstairs lounge.  The food was great.  The breakfast trucks were a wonderful touch, especially <a href="http://saturdayswaffle.com/">Saturdays Waffles</a> day.  Mmmmm, waffles.  The gift card for lunch was a thoughtful touch.  <a href="http://www.yelp.com/biz/atlantic-caf%C3%A9-and-market-salt-lake-city-4">Atlantic Cafe</a> provided my delicious cevapi sausage on the 2nd day.</p>
+
+<p>I have many thanks for the great speakers, the effort of the organizers, and everyone in between that made the 2 days great.  I felt inspired.  I left more informed.  I met a group of fantastic people.  It's been my favorite conference in Salt Lake City so far.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA["12-Factor App" Summary]]></title>
@@ -430,48 +472,6 @@
 <h2>Style and Read</h2>
 
 <p>Switch is a pretty short book.  The sheer amount of anecdotal and interesting examples of people chaning their lives and communities made it fun and inspiring to read.  I think I'd have to re-read it to have the strategies and tactics for change sink in deep enough to pull them out in the midst of change, but it does seems small enough to remember and powerful enough to be useful.  At the least, it's a great reference.  I'd recommend the book.  And since everyone has encountered and/or wants to change, it seems like an applicable read.  Chip and Dan have several other books I'm going to go check out now.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ng-Conf Review]]></title>
-    <link href="http://jaketrent.com/post/ng-conf-review/"/>
-    <updated>2014-01-24T07:22:00-07:00</updated>
-    <id>http://jaketrent.com/post/ng-conf-review</id>
-    <content type="html"><![CDATA[<p>Ng-Conf just happened last week in Salt Lake City, Utah.  It was awesome.  Oh blast, I blew the punch line.  Anyway, here's my take.</p>
-
-<p><img src="http://i.imgur.com/4swtO6x.jpg" alt="ng-conf" /></p>
-
-<!--more-->
-
-
-<h2>Format</h2>
-
-<p>Two days.  Early 'til late.  One track.  20-40 min talks virtually back to back.  Lightning'y?  When we broke for lunch, I felt relieved.  My brain could go into some low-power mode.  Breaks between talks were mostly announced as anywhere from 30 seconds to 3 minutes, this whilst yammering off a short list of swag winners.  The format encouraged content, and there was a lot of it!</p>
-
-<h2>Line Up</h2>
-
-<p>The conference was easy to look forward to.  Looking at the speaker list, I was immediately impressed.  At one point during the event, Aaron Frost said that they hoped if the Angular team would come that they'd get more attendees.  Yes, that was a draw.  It was fun having them there.  Core.  Very core.  I believe that about each member of the team took the stage over the two days.</p>
-
-<p>The speaker list in total was very impressive.  There was a good mix of local and remote talent who came together to cover a broad array of Angular and JavaScript-related topics.</p>
-
-<h2>Talk Quality</h2>
-
-<p>Talk for talk, just numbers-wise, it was definitely one of the most high quality conferences I've attended.  Of course, there were some less-than-stellar presentations.  But, on the whole, I was more than impressed by the subject mastery and teaching ability of the speakers.  Thank you to everyone who prepared.</p>
-
-<p>There were also some definite highlights: Dave Smith on directives, Vojta Jina on DI, Brian Ford on zone.js, and Julie Ralph on Protractor.</p>
-
-<p>And one of the best parts is that each of these talks was recorded on video for a livestream and <a href="http://www.youtube.com/user/ngconfvideos">on youtube for later viewing</a>.</p>
-
-<h2>Venue</h2>
-
-<p>The conference was held at the Little America hotel in Salt Lake City.  It was a beautiful location.  The combined main ballrooms that the talks were held in were awesome.  Plenty of marble.  The food was great.  There weren't tons of snacks, but that was probably good for my health.  The air quality in Salt Lake during the conference wasn't good.  In fact, oobleck!  But, I didn't get food poisoning -- plus!</p>
-
-<h2>Smooth</h2>
-
-<p>I heard it said by multiple people during the conference that it was the best first-time conference they had attended.  Indeed, everything went Domo smooth.  The content was the star.  It was fun.  It was energetic (minus some confusing lack of screaming for all the sweet swag -- probably had something to do with the sheer amount, like clapping for the 3rd curtain call).  The AV crew did a fantastic job.  Usually, it's annoying to sit in an audience as video or audio problems plague the start of a talk.  That simply did not happen here, and it was oh, so refreshing.</p>
-
-<p>Oh yeah, and sweet jacket!</p>
 ]]></content>
   </entry>
   
