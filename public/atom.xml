@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-08-27T09:15:38-06:00</updated>
+  <updated>2015-09-03T09:49:42-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,66 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[In Favor of Codenames]]></title>
+    <link href="http://jaketrent.com/post/in-favor-codenames/"/>
+    <updated>2015-09-03T09:29:00-06:00</updated>
+    <id>http://jaketrent.com/post/in-favor-codenames</id>
+    <content type="html"><![CDATA[<p>It seems to be a recurring discussion in the companies I have worked for: should we use a codename for this project or not?  These are software projects.  The codenames are used on things as basic as the repository name or slack channel.  Later, they might be used in many other project-related things like the build server configuration.  The alternative for a codename is calling the thing exactly what it is.  Where&#8217;s the fun in that?</p>
+
+<p><img src="http://i.imgur.com/gpqydff.jpg" alt="project codenames" /></p>
+
+<!--more-->
+
+
+<h2>The Argument Against Codenames</h2>
+
+<p>The argument is that if you call the project what it is, people will know what you&#8217;re referring to when you talk about it or when you see it in your version control or on the build server or hear about it at lunch.</p>
+
+<h2>It&#8217;s Fun</h2>
+
+<p>I think codenames are fun.  They add identity and character to your project.  They contribute to team spirit.  You have marketing options in a codename via logos, mascots, and themes.  Most things you can do to increase the cohesiveness of a team around a shared identity, sense of belonging, and to increase their enthusiasm will be worth it.  Why not let codenames help you with this?</p>
+
+<p>An environment where codenames are enjoyed is one that is <em>not</em> sterile and colorless.  There are people and product markets that specifically enjoy things and places that are not organized in clean, labelled boxes.  Bring some color to your environment, learn to stop worrying, and love having fun together.</p>
+
+<h2>They Encourage Learning</h2>
+
+<p>When you hear a codename for the first time, you might not know what it means.  Is that an unusual or bad thing?  Not knowing what it means should encourage you to ask what it means or look it up.</p>
+
+<p>After you do, you&#8217;ll then have learned it.  You&#8217;ll have connected with people that know about it.  You&#8217;ll have found the documentation detailing what it <em>really</em> is, not just what you can fit into a name.  I like the idea of each project having a root readme file that describes the core &#8216;What&#8217; and &#8216;Why&#8217; of the project.</p>
+
+<h2>They&#8217;re Short</h2>
+
+<p>Codenames are usually shorter than any presumably more descriptive name.  This is great because we usually are talking about our projects or teams <em>all</em> the time.  Thus something long and descriptive, like a bloated government agency name, is likely to be shortened into an acronym instead (which is just a codename constrained by odd letter combinations).  Worse still, as people tire of saying the longer name, they start making up their own easier-to-get-out versions which will not be consistent.</p>
+
+<h2>We Speak a Specialized Language With Each Other</h2>
+
+<p>Codenames are great for the usually-specialized teams that end up working together.  These teams speak a common language that they learn because of the domain they all work in together.  It&#8217;s a specialized language.  This is common for other technical and specialized groups: For example, air traffic controllers speaking to pilots on the radio will use terse, specific terms that others outside the domain don&#8217;t necessarily recognize but which the two parties have learned to use together.  If your teams are cross-functional, you should learn the lingo common to your domain.</p>
+
+<h2>They Needs Discoverability Help</h2>
+
+<p>Codenames do not help with discoverability.  In the age of search, however, this point is lessened.  We often put important domain-related keywords next to content.  I&#8217;m all for including bylines next to codenames as a one-line explanation of what it is.  Using a combo like this when it makes sense will give you the best of both words: exact consistency via the codename and some discoverable verbiage via an accompanying byline.</p>
+
+<h2>They&#8217;re New Words</h2>
+
+<p>A codename a variable name.  It&#8217;s an abstraction.  It represents a project, team, codebase, or something else.  It hides the internals.  It will outlive your company&#8217;s pivot from the original project scope and meaning so you can keep your codename even as your mission changes.  It usually doesn&#8217;t leak the internal implementation details.</p>
+
+<p>Codenames are singletons within the universe of your company.  No one else will have the same team name, repo name, or slack channel.  Codenames are the keys in the dictionary of values.</p>
+
+<p>After you learn a codename once, when it&#8217;s mentioned, you&#8217;ll know what it is.  Nbd.</p>
+
+<h2>They&#8217;re All Around Us</h2>
+
+<p>Codenames are all around us, thankfully.  Who really wants to call Kleenex, &#8220;facial tissue&#8221;, anyway?</p>
+
+<p>You&#8217;ve heard of Python, React, maybe even <a href="https://github.com/Netflix/SimianArmy/wiki/Chaos-Monkey">Chaos Monkey</a> (and check it out, they even have a &#8216;What&#8217; and &#8216;Why&#8217; in their readme!).  You&#8217;ve probably also heard of Microsoft SQL Server.  Blegh.  Doesn&#8217;t that fill your soul with the emptiness of corporate sterility.  Though, there are codenames in their too, right?  &#8220;Microsoft&#8221;.  &#8220;SQL&#8221; (one of those weird descriptive-things-turned-acronym).</p>
+
+<p>So, embrace codenames.  You use them anyway.  It&#8217;ll be more fun for most.  It&#8217;ll bring color to your world.  It&#8217;ll bring life and character to your team identity and the discussions you have about what you do.</p>
+
+<p>What are some of your favorite codenames, and what are some of your favorite reasons for using them?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[React Rally Review]]></title>
@@ -1913,177 +1973,6 @@
 
 
 <p>Is this the easiest or best way to set cookies on requests when testing Rack apps?  What do you do?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Pagination Headers with Kaminari]]></title>
-    <link href="http://jaketrent.com/post/pagination-headers-with-kaminari/"/>
-    <updated>2015-01-15T14:07:00-07:00</updated>
-    <id>http://jaketrent.com/post/pagination-headers-with-kaminari</id>
-    <content type="html"><![CDATA[<p><a href="https://github.com/amatsuda/kaminari">Kaminari</a> provides easy pagination in a rails app.  It&#8217;s great to use.  We&#8217;ll make it better by adding a little function to your controllers to provide useful pagination headers.</p>
-
-<p><img src="http://i.imgur.com/XOUecnw.jpg" alt="kaminari pagination" /></p>
-
-<!--more-->
-
-
-<h2>Pagination from Kaminari</h2>
-
-<p>Installation is easy with an addition to your <code>Gemfile</code>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>gem 'kaminari'</span></code></pre></td></tr></table></div></figure>
-
-
-<p>and an install:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now, you have a magical <code>page</code> method available on your models.  It works like a charm right out of the box.</p>
-
-<p>Let&#8217;s say that I have a <code>germs_controller.rb</code> (because it&#8217;s a great time of year for that), where I have a list of germs that I want to paginate.  I could easily request <code>/api/v1/germs?page=2</code> and get the second page with this code in the controller:</p>
-
-<figure class='code'><figcaption><span>germs_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Api</span>
-</span><span class='line'>  <span class="k">module</span> <span class="nn">V1</span>
-</span><span class='line'>    <span class="k">class</span> <span class="nc">GermsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">index</span>
-</span><span class='line'>        <span class="vi">@germs</span> <span class="o">=</span> <span class="no">Germ</span><span class="o">.</span><span class="n">page</span> <span class="n">params</span><span class="o">[</span><span class="ss">:page</span><span class="o">]</span>
-</span><span class='line'>        <span class="n">render</span> <span class="n">json</span><span class="p">:</span> <span class="vi">@germs</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you want to control the default page size, you can do that in the initializers:</p>
-
-<figure class='code'><figcaption><span>kaminari_config.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Kaminari</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">default_per_page</span> <span class="o">=</span> <span class="mi">20</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Pagination Headers</h2>
-
-<p>There&#8217;s another feature that we want to add, and that&#8217;s pagination headers.  These are going to be HTTP headers that come back in the response that indicate to clients where the relative pages are located in our API.  For instance, we asked for page 2, but where might one request the previous and next pages, 1 and 3?</p>
-
-<p>Putting the pagination info into the header follows a pattern used in the <a href="https://developer.github.com/guides/traversing-with-pagination/">github api</a>.</p>
-
-<p>We&#8217;ll add a function to our <code>ApplicationController</code> to helps us out:</p>
-
-<figure class='code'><figcaption><span>application_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">API</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kp">protected</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">set_pagination_header</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
-</span><span class='line'>    <span class="n">scope</span> <span class="o">=</span> <span class="nb">instance_variable_get</span><span class="p">(</span><span class="s2">&quot;@</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">request_params</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_parameters</span>
-</span><span class='line'>    <span class="n">url_without_params</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">original_url</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">original_url</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="k">unless</span> <span class="n">request_params</span><span class="o">.</span><span class="n">empty?</span>
-</span><span class='line'>    <span class="n">url_without_params</span> <span class="o">||=</span> <span class="n">request</span><span class="o">.</span><span class="n">original_url</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">page</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span class='line'>    <span class="n">page</span><span class="o">[</span><span class="ss">:first</span><span class="o">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">scope</span><span class="o">.</span><span class="n">total_pages</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">scope</span><span class="o">.</span><span class="n">first_page?</span>
-</span><span class='line'>    <span class="n">page</span><span class="o">[</span><span class="ss">:last</span><span class="o">]</span> <span class="o">=</span> <span class="n">scope</span><span class="o">.</span><span class="n">total_pages</span>  <span class="k">if</span> <span class="n">scope</span><span class="o">.</span><span class="n">total_pages</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">scope</span><span class="o">.</span><span class="n">last_page?</span>
-</span><span class='line'>    <span class="n">page</span><span class="o">[</span><span class="ss">:next</span><span class="o">]</span> <span class="o">=</span> <span class="n">scope</span><span class="o">.</span><span class="n">current_page</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">unless</span> <span class="n">scope</span><span class="o">.</span><span class="n">last_page?</span>
-</span><span class='line'>    <span class="n">page</span><span class="o">[</span><span class="ss">:prev</span><span class="o">]</span> <span class="o">=</span> <span class="n">scope</span><span class="o">.</span><span class="n">current_page</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">unless</span> <span class="n">scope</span><span class="o">.</span><span class="n">first_page?</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">pagination_links</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>    <span class="n">page</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">new_request_hash</span><span class="o">=</span> <span class="n">request_params</span><span class="o">.</span><span class="n">merge</span><span class="p">({</span><span class="ss">:page</span> <span class="o">=&gt;</span> <span class="n">v</span><span class="p">})</span>
-</span><span class='line'>      <span class="n">pagination_links</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;&lt;</span><span class="si">#{</span><span class="n">url_without_params</span><span class="si">}</span><span class="s2">?</span><span class="si">#{</span><span class="n">new_request_hash</span><span class="o">.</span><span class="n">to_param</span><span class="si">}</span><span class="s2">&gt;; rel=</span><span class="se">\&quot;</span><span class="si">#{</span><span class="n">k</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>    <span class="n">headers</span><span class="o">[</span><span class="s2">&quot;Link&quot;</span><span class="o">]</span> <span class="o">=</span> <span class="n">pagination_links</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This code will provide a <code>Link</code> header in the HTTP response.  Its value might look something like this:</p>
-
-<figure class='code'><figcaption><span>Link</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>&lt;http://myapi.com/api/v1/germs?page=1&gt;; rel=&quot;prev&quot;, &lt;http://myapi.com/api/v1/germs?page=3&gt;; rel=&quot;next&quot;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The values of <code>first</code>, <code>last</code>, <code>next</code>, etc are populated from calls to <a href="http://www.rubydoc.info/github/amatsuda/kaminari/Kaminari/PageScopeMethods">Kaminari methods</a> such as <code>first_page?</code>.</p>
-
-<p>In order to have this header set on a response, we need to add it to a callback in our controller:</p>
-
-<figure class='code'><figcaption><span>germs_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Api</span>
-</span><span class='line'>  <span class="k">module</span> <span class="nn">V1</span>
-</span><span class='line'>    <span class="k">class</span> <span class="nc">GermsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">after_filter</span> <span class="n">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:index</span><span class="o">]</span> <span class="p">{</span> <span class="n">set_pagination_header</span><span class="p">(</span><span class="ss">:germs</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">def</span> <span class="nf">index</span>
-</span><span class='line'>        <span class="vi">@germs</span> <span class="o">=</span> <span class="no">Germ</span><span class="o">.</span><span class="n">page</span> <span class="n">params</span><span class="o">[</span><span class="ss">:page</span><span class="o">]</span>
-</span><span class='line'>        <span class="n">render</span> <span class="n">json</span><span class="p">:</span> <span class="vi">@germs</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now, a fresh request to <code>/api/v1/germs</code> with or without the <code>page</code> query parameter should return back the <code>Link</code> header in the HTTP response which your client can use to traverse the other pages of data available in your API.</p>
-
-<p>So, there&#8217;s one way to get pagination info from Kaminari into your HTTP headers.  What would you improve?</p>
 ]]></content>
   </entry>
   
