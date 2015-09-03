@@ -35,7 +35,7 @@ Codenames are usually shorter than any presumably more descriptive name.  This i
 ## We Speak a Specialized Language With Each Other
 Codenames are great for the usually-specialized teams that end up working together.  These teams speak a common language that they learn because of the domain they all work in together.  It's a specialized language.  This is common for other technical and specialized groups: For example, air traffic controllers speaking to pilots on the radio will use terse, specific terms that others outside the domain don't necessarily recognize but which the two parties have learned to use together.  If your teams are cross-functional, you should learn the lingo common to your domain.
 
-## They Needs Discoverability Help
+## They Need Discoverability Help
 Codenames do not help with discoverability.  In the age of search, however, this point is lessened.  We often put important domain-related keywords next to content.  I'm all for including bylines next to codenames as a one-line explanation of what it is.  Using a combo like this when it makes sense will give you the best of both words: exact consistency via the codename and some discoverable verbiage via an accompanying byline.
 
 ## They're New Words
