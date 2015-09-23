@@ -4,7 +4,7 @@
   <title><![CDATA[Category: css | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/css/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-09-03T11:49:41-06:00</updated>
+  <updated>2015-09-23T16:23:11-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,95 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Update Body Class in React]]></title>
+    <link href="http://jaketrent.com/post/update-body-class-react/"/>
+    <updated>2015-09-23T15:31:00-06:00</updated>
+    <id>http://jaketrent.com/post/update-body-class-react</id>
+    <content type="html"><![CDATA[<p>React gives us a great component abstraction.  Each of these components represents a node in the DOM.  Each component is self contained, doesn't talk up the component hierarchy directly and passes explicit data and code down the hierarchy.  But what about when you have a React app that wants to reach out and modify something it doesn't control?</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react modify body tag" /></p>
+
+<!--more-->
+
+
+<h2>A Couple Use Cases</h2>
+
+<p>There are potentially a few use cases for this.  For instance, modals that need to render outside your application's potentially <code>position: relative</code> containers.  Or, as we'll see below, your app wants to modify the <code>body</code> tag in your html document.</p>
+
+<p>The most common reason I've found for messing with the body tag is to provide some style attribute.  It's not uncommon to have full-page style differences between pages in our apps.  If you have a "single page" js app in the browser, you need to be able to modify the body tag in code.</p>
+
+<p>Let's use an example where on some pages in your app, the theme is "dark", where the body background color should be black.  On other pages, the entire body background color should be the default white.  We'll make a component that lives high in the hierarchy and takes an <code>isDark</code> property to determine if the rendered page is dark or light.</p>
+
+<h2>Body is Outside Your React App</h2>
+
+<p>You can't mount your React app directly on <code>document.body</code>, at least without warnings.  This is considered bad practice, because other scripts or browser plugins often modify the document body directly.  So you'll have to reach <em>out</em> of your React app and modify the body directly.</p>
+
+<h2>Tie Into the React Lifecycle</h2>
+
+<p>First, you just need a point in time in your app's lifecycle where you know you want to modify the <code>body</code> class.  React has a bunch of <a href="https://facebook.github.io/react/docs/component-specs.html">lifecycle hooks</a> that will come in handy.  A great early-lifecycle hook for modifying the DOM is <code>componentDidMount</code>.  Usually, we would be accessing DOM nodes that are children of our Component.  Again, in this case, we're reaching out beyond where a React component usually should.  The usual <code>React.findDOMNode</code> functions will not be needed, because React isn't managing the body node.  Instead, we'll just use the <code>document.body</code> api directly.</p>
+
+<h2>Use JavaScript to Modify the Class</h2>
+
+<p>If you have some utility for modifying class names, use it.  If not, it's small and simple enough in <a href="http://jaketrent.com/post/addremove-classes-raw-javascript/">plain old JavaScript</a>.</p>
+
+<p>With these two bits in hand, you have the pieces necessary for your body-modifying component:</p>
+
+<p>```js
+import React from 'react'</p>
+
+<p>class BodyColor extends React.Component {
+  static propTypes = {</p>
+
+<pre><code>isDark: React.PropTypes.bool
+</code></pre>
+
+<p>  }
+  static defaultProps = {</p>
+
+<pre><code>isDark: false
+</code></pre>
+
+<p>  }
+  componentDidMount() {</p>
+
+<pre><code>document.body.toggle('darkClass', this.props.isDark)
+</code></pre>
+
+<p>  }
+  componentWillReceiveProps(nextProps) {</p>
+
+<pre><code>document.body.toggle('darkClass', nextProps.isDark)
+</code></pre>
+
+<p>  }
+  componentWillUnmount() {</p>
+
+<pre><code>document.body.remove('darkClass')
+</code></pre>
+
+<p>  }
+  render() {</p>
+
+<pre><code>return this.props.children
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>To use, pass an <code>isDark</code> attribute to activate the <code>darkClass</code> class on the body tag:</p>
+
+<p><code>html
+&lt;BodyColor isDark={true}&gt;
+  &lt;h1&gt;A Very Dark App&lt;/h1&gt;
+&lt;/BodyColor&gt;
+</code></p>
+
+<p>Are there any other ways you've found to reach out of React and modify the DOM directly.  What have been your use cases?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[I Love CSS Modules]]></title>
@@ -272,63 +361,6 @@ ng-style="{ 'background-image': 'url(' + tool.icon + ')' }"
 <li><code>vertical-align</code>, as in most things, does nothing.</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Cons of CSS Preprocessors]]></title>
-    <link href="http://jaketrent.com/post/cons-css-preprocessors/"/>
-    <updated>2012-11-14T09:20:00-07:00</updated>
-    <id>http://jaketrent.com/post/cons-css-preprocessors</id>
-    <content type="html"><![CDATA[<p>If you have any sizeable stylesheet these days, you should use a CSS preprocessor.  They're awesome, but they come with a few cons.  The pros still definitely out-weigh the cons.  Use the preprocessor.  The cons are just things you'll want to look out for to make your experience with CSS preprocessors better.</p>
-
-<p><img src="http://i.imgur.com/Mzozm.jpg" alt="CSS Preprocessors" /></p>
-
-<!--more-->
-
-
-<h2>CSS Preprocessors are Popular</h2>
-
-<p>Chris Coyier recently <a href="http://css-tricks.com/poll-results-popularity-of-css-preprocessors/">took a poll on the usage of CSS preprocessors</a>.  About half use one of the preprocessor options available to them.  Of the languages used, <a href="http://lesscss.org/">LESS</a> is the most popular.  (<a href="http://learnboost.github.com/stylus/">Stylus</a> is my current favorite.  I like the HAML-style syntax.)</p>
-
-<p>This means that half of the people who write CSS aren't, in fact, writing CSS.  They're writing in <a href="http://net.tutsplus.com/tutorials/html-css-techniques/sass-vs-less-vs-stylus-a-preprocessor-shootout/">some language</a> that transpiles to CSS.  So, half of these developers are getting the pros, but there's a bit of baggage too.</p>
-
-<h2>Cons of a CSS Preprocessor</h2>
-
-<h4>File Size is Deceiving</h4>
-
-<p>When you're writing in a higher-level styling language, it's often much smaller than the generated CSS will be.  Thus, you could be deceiving yourself thinking that your resulting CSS will be just as a small as what you're editing.  Why?</p>
-
-<ol>
-<li>Hiearchy will be flattened in the resulting CSS.  And the tree of selectors will be duplicated for every selector.</li>
-<li>You can loop in a preprocessor, generating n items where you only see one.  All those items will be listed in the final, static CSS file.</li>
-<li>In some of these languages, you don't have to write vendor prefixes.  This is a fantastic feature, but it makes you tend to forget that one attribut will expand into 5 or 6 in the resulting CSS. (Stylus' <a href="https://github.com/visionmedia/nib">nib</a> is great for this, btw.)</li>
-</ol>
-
-
-<p>Maybe not a big deal.  Remove an image from your site, and you've made up the difference in bits on the wire.</p>
-
-<h4>More Process</h4>
-
-<p>Because you usually won't be deploying your .less or .styl file, you'll need to have a point in your development lifecycle where the .css gets generated.  This can potentially slow you down, but there are great tools like <a href="https://github.com/gruntjs/grunt-contrib-stylus/">Grunt</a> or <a href="http://incident57.com/codekit/">CodeKit</a> to make this quite automagic.  These tools have good, logical defaults, but still require configuration for your specific project.</p>
-
-<h4>Hard to Go Back</h4>
-
-<p>After working with Stylus or another language for a while, you'll meet a project that is straight CSS, and the RoI on conversion to a preprocessor is small.  So, you'll be back in CSS land.  This will be hard.  You'll realize how nice you've had it.  The mechanisms you've grown to rely on won't be there.</p>
-
-<h4>Variety of Syntax</h4>
-
-<p>Each CSS Processor's syntax is different.  The features largely overlap, but they're implemented differently.  It's a polyglot world, so it's no big deal.  Still, it can be confusing switching between projects that have different styling syntax.  You'll write your styles twice after you realize that Stylus syntax doesn't work in a LESS file.</p>
-
-<h4>Team Coordination</h4>
-
-<p>You need to get everyone on your team on board when using a CSS preprocessor.  If someone starts editing a .css file, their changes will be overwritten.  Minify the generated .css.  That should make it less savory to edit.  It'll be a deterrent, but I can almost guarantee someone will edit it anyway. :)  Make the stylesheet workflow very clear.</p>
-
-<h2>The Native Future</h2>
-
-<p>We really only have these CSS preprocessors because CSS is too strict, flat, unflexible, and verbose for the amazing things being written for the web today.  Wouldn't it be nice if these styling languages or some new, similar version of CSS was available natively in the browser?</p>
-
-<p>Meanwhile, we'll use these tools.  What have you found your greatest challenge to be using a CSS preprocessor?</p>
 ]]></content>
   </entry>
   

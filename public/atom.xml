@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-09-03T11:49:41-06:00</updated>
+  <updated>2015-09-23T16:22:43-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,102 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Update Body Class in React]]></title>
+    <link href="http://jaketrent.com/post/update-body-class-react/"/>
+    <updated>2015-09-23T15:31:00-06:00</updated>
+    <id>http://jaketrent.com/post/update-body-class-react</id>
+    <content type="html"><![CDATA[<p>React gives us a great component abstraction.  Each of these components represents a node in the DOM.  Each component is self contained, doesn&#8217;t talk up the component hierarchy directly and passes explicit data and code down the hierarchy.  But what about when you have a React app that wants to reach out and modify something it doesn&#8217;t control?</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react modify body tag" /></p>
+
+<!--more-->
+
+
+<h2>A Couple Use Cases</h2>
+
+<p>There are potentially a few use cases for this.  For instance, modals that need to render outside your application&#8217;s potentially <code>position: relative</code> containers.  Or, as we&#8217;ll see below, your app wants to modify the <code>body</code> tag in your html document.</p>
+
+<p>The most common reason I&#8217;ve found for messing with the body tag is to provide some style attribute.  It&#8217;s not uncommon to have full-page style differences between pages in our apps.  If you have a &#8220;single page&#8221; js app in the browser, you need to be able to modify the body tag in code.</p>
+
+<p>Let&#8217;s use an example where on some pages in your app, the theme is &#8220;dark&#8221;, where the body background color should be black.  On other pages, the entire body background color should be the default white.  We&#8217;ll make a component that lives high in the hierarchy and takes an <code>isDark</code> property to determine if the rendered page is dark or light.</p>
+
+<h2>Body is Outside Your React App</h2>
+
+<p>You can&#8217;t mount your React app directly on <code>document.body</code>, at least without warnings.  This is considered bad practice, because other scripts or browser plugins often modify the document body directly.  So you&#8217;ll have to reach <em>out</em> of your React app and modify the body directly.</p>
+
+<h2>Tie Into the React Lifecycle</h2>
+
+<p>First, you just need a point in time in your app&#8217;s lifecycle where you know you want to modify the <code>body</code> class.  React has a bunch of <a href="https://facebook.github.io/react/docs/component-specs.html">lifecycle hooks</a> that will come in handy.  A great early-lifecycle hook for modifying the DOM is <code>componentDidMount</code>.  Usually, we would be accessing DOM nodes that are children of our Component.  Again, in this case, we&#8217;re reaching out beyond where a React component usually should.  The usual <code>React.findDOMNode</code> functions will not be needed, because React isn&#8217;t managing the body node.  Instead, we&#8217;ll just use the <code>document.body</code> api directly.</p>
+
+<h2>Use JavaScript to Modify the Class</h2>
+
+<p>If you have some utility for modifying class names, use it.  If not, it&#8217;s small and simple enough in <a href="http://jaketrent.com/post/addremove-classes-raw-javascript/">plain old JavaScript</a>.</p>
+
+<p>With these two bits in hand, you have the pieces necessary for your body-modifying component:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">class</span> <span class="nx">BodyColor</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kr">static</span> <span class="nx">propTypes</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">isDark</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">bool</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="kr">static</span> <span class="nx">defaultProps</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">isDark</span><span class="o">:</span> <span class="kc">false</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">componentDidMount</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">toggle</span><span class="p">(</span><span class="s1">&#39;darkClass&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">isDark</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">componentWillReceiveProps</span><span class="p">(</span><span class="nx">nextProps</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">toggle</span><span class="p">(</span><span class="s1">&#39;darkClass&#39;</span><span class="p">,</span> <span class="nx">nextProps</span><span class="p">.</span><span class="nx">isDark</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">componentWillUnmount</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="s1">&#39;darkClass&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To use, pass an <code>isDark</code> attribute to activate the <code>darkClass</code> class on the body tag:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;BodyColor</span> <span class="na">isDark=</span><span class="s">{true}</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;h1&gt;</span>A Very Dark App<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'><span class="nt">&lt;/BodyColor&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Are there any other ways you&#8217;ve found to reach out of React and modify the DOM directly.  What have been your use cases?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[In Favor of Codenames]]></title>
@@ -1909,70 +2005,6 @@
 <p>When the url params change, <code>componentWillReceiveProps</code> is called.  But this is not called on the first render, thus we implement <code>componentWillMount</code>.  Both these functions save the <code>range</code> from the url to the component state.  Now, as <code>shouldComponentUpdate</code> is called on future <code>this.props</code> and <code>this.state</code> changes, current and next <code>range</code> values can be compared and used in &#8220;should re-render&#8221; calculation.</p>
 
 <p>What other ways have you found to accomplish this tracking of previous state in the url?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Set Cookie on Rack Mock Request]]></title>
-    <link href="http://jaketrent.com/post/set-cookie-on-rack-mock-request/"/>
-    <updated>2015-01-21T10:58:00-07:00</updated>
-    <id>http://jaketrent.com/post/set-cookie-on-rack-mock-request</id>
-    <content type="html"><![CDATA[<p>Rack apps are generally straightforward to test because of their very basic public interface.  But where do we put specific things, in this case, a cookie for the request, on that <code>env</code> argument it takes?  Here&#8217;s one way.</p>
-
-<p><img src="http://i.imgur.com/044x6s6.jpg" alt="rack mock request" /></p>
-
-<!--more-->
-
-
-<h1>env</h1>
-
-<p>The <code>env</code> argument that is sent to <code>#call</code> in a Rack app is an variable that represents the <a href="http://www.rubydoc.info/github/rack/rack/master/file/SPEC#The_Environment">environment of the request</a>.  It is a hash of CGI-like headers: request method, query params, http headers &#8211; that sort of thing.</p>
-
-<p>The <code>HTTP_*</code> keys on the hash will be <a href="https://tools.ietf.org/html/rfc3875#section-4.1.18">read as request headers from the environment</a>.</p>
-
-<h1>Rack MockRequest Cookies</h1>
-
-<p>Rack provides a great little <code>Rack::MockRequest</code> helper object in its library that will help us test our app.  This object has a class method called <code>env_for</code> which allows for quick construction of an <code>env</code> var that is a request to a specified url.</p>
-
-<p>On the returned <code>env</code> we will continue to make modifications before passing it to our Rack app.  We&#8217;ll add our cookie header with a key of <code>HTTP_COOKIE</code>.  The value will be of the format <code>cookieName=cookieValue</code>.  We can handle multiple cookies by separating the cookies with <code>;</code>.</p>
-
-<p>Let&#8217;s say we&#8217;re testing a token authentication middleware with rspec.  Our spec may look something like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">it</span> <span class="s2">&quot;accepts an cookie token in the request&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">middleware</span> <span class="o">=</span> <span class="c1"># ... instantiate rack middleware</span>
-</span><span class='line'>  <span class="n">env</span> <span class="o">=</span> <span class="no">Rack</span><span class="o">::</span><span class="no">MockRequest</span><span class="o">.</span><span class="n">env_for</span><span class="p">(</span><span class="s2">&quot;/protected&quot;</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">env</span><span class="o">[</span><span class="s2">&quot;HTTP_COOKIE&quot;</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;AUTH_COOKIE=123&quot;</span>
-</span><span class='line'>  <span class="n">status</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">middleware</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">expect</span><span class="p">(</span><span class="n">status</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then in our Rack app source, we can code for the availability of a cookie on the request.  It might look like:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># ...</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">request</span> <span class="o">=</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Request</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">cookies</span><span class="o">[</span><span class="s2">&quot;AUTH_TOKEN&quot;</span><span class="o">]</span>
-</span><span class='line'>  <span class="c1"># ...</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Is this the easiest or best way to set cookies on requests when testing Rack apps?  What do you do?</p>
 ]]></content>
   </entry>
   
