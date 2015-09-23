@@ -4,7 +4,7 @@
   <title><![CDATA[Category: souit | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/souit/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-09-23T16:23:11-06:00</updated>
+  <updated>2015-09-23T16:30:25-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -101,13 +101,13 @@ $(document).ready(function() {
 
 <p>So what's the key?  Embed the data that you want in id, class, or just any attribute of any element that has a per-item/row presence.  That explains the substring() calls.  My attributes look like this:</p>
 
-<p>{% raw %}
+<p>
 <code>html
 &lt;a class="voter-up" id="link-hymn-u-{{ h.id }}" href="#"&gt;...something...&lt;/a&gt;
 </code></p>
 
 <p>The {{ curlies }} are for django templates, which are awesome, btw.
-{% endraw %}</p>
+</p>
 ]]></content>
   </entry>
   

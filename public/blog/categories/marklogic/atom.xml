@@ -4,7 +4,7 @@
   <title><![CDATA[Category: marklogic | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/marklogic/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-09-23T16:23:11-06:00</updated>
+  <updated>2015-09-23T16:30:25-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -346,7 +346,7 @@ else
 
 <p>The XQuery expression that renders the html page includes a call to populate the Javascript "lang" object with the json:</p>
 
-<p>{% raw %}
+<p>
 ```
 declare function lang-dictionary($lang as xs:string?) as element(script) {
   <script type="text/javascript"></p>
@@ -361,7 +361,7 @@ declare function lang-dictionary($lang as xs:string?) as element(script) {
 <p>  </script>
 };
 ```
-{% endraw %}</p>
+</p>
 
 <p>Note that if you provide a pre-known set of i18n string $keys to the get-lang-dict() function, it will only add those resources to the dictionary.  Otherwsie, all the resources in your bundle are added.</p>
 

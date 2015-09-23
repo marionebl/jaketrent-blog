@@ -117,7 +117,7 @@
   </header>
 
 
-<div class="entry-content"><p>Jquery and other sweeto js frameworks have some awesomeness to help you change the css classes of various elements on the page with ease and grace.  They have some very convenient functions to add and remove classes.  These are uber-useful and highly recommended for saving you precious time and jiggawatts, but if you don&#8217;t have jquery available to you, sometimes you may want to do this in raw javascript.</p>
+<div class="entry-content"><p>Jquery and other sweeto js frameworks have some awesomeness to help you change the css classes of various elements on the page with ease and grace.  They have some very convenient functions to add and remove classes.  These are uber-useful and highly recommended for saving you precious time and gigawatts, but if you don&#8217;t have one of these tools available to you, sometimes you may want to do this in raw JavaScript.</p>
 
 <!--more-->
 
@@ -127,20 +127,20 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#peace&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;be-still&#39;</span><span class="p">);</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#peace&quot;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;be-still&#39;</span><span class="p">)</span>
 </span><span class='line'><span class="c1">// or</span>
-</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#peace&quot;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;be-still&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#peace&quot;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;be-still&#39;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>And now for raw power and lack of ease and grace:</p>
+<p>And now for raw power:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;peace&quot;</span><span class="p">).</span><span class="nx">className</span> <span class="o">=</span> <span class="s2">&quot;be-still&quot;</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;peace&quot;</span><span class="p">).</span><span class="nx">className</span> <span class="o">=</span> <span class="s2">&quot;be-still&quot;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>If you want to add or remove your own, you have to write that goodness, and here&#8217;s one implementation example for your sweet pleasure:</p>
+<p>If you want to add or remove your own, you have to write that goodness, and here&#8217;s one implementation example for your sweet pleasure.  Note that this implementation uses <code>classList</code> first, which is a great feature to use if it&#8217;s available.  As of this writing, <a href="http://caniuse.com/#search=classList">IE still has some support problems</a>.  Thus, there&#8217;s also a fallback.  You could also <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/classList">write your own classList shim</a> if you&#8217;d like.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -156,18 +156,32 @@
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">hasClass</span><span class="p">(</span><span class="nx">ele</span><span class="p">,</span><span class="nx">cls</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="o">!!</span><span class="nx">ele</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;(\\s|^)&#39;</span><span class="o">+</span><span class="nx">cls</span><span class="o">+</span><span class="s1">&#39;(\\s|$)&#39;</span><span class="p">));</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">hasClass</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">classList</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">el</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">className</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="k">return</span> <span class="o">!!</span><span class="nx">el</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;(\\s|^)&#39;</span> <span class="o">+</span> <span class="nx">className</span> <span class="o">+</span> <span class="s1">&#39;(\\s|$)&#39;</span><span class="p">))</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="kd">function</span> <span class="nx">addClass</span><span class="p">(</span><span class="nx">ele</span><span class="p">,</span><span class="nx">cls</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">ele</span><span class="p">,</span><span class="nx">cls</span><span class="p">))</span> <span class="nx">ele</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">+</span><span class="nx">cls</span><span class="p">;</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">addClass</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">classList</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">el</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">className</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">className</span><span class="p">))</span> <span class="nx">el</span><span class="p">.</span><span class="nx">className</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nx">className</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="kd">function</span> <span class="nx">removeClass</span><span class="p">(</span><span class="nx">ele</span><span class="p">,</span><span class="nx">cls</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">ele</span><span class="p">,</span><span class="nx">cls</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">reg</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;(\\s|^)&#39;</span><span class="o">+</span><span class="nx">cls</span><span class="o">+</span><span class="s1">&#39;(\\s|$)&#39;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nx">ele</span><span class="p">.</span><span class="nx">className</span><span class="o">=</span><span class="nx">ele</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">reg</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">removeClass</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">className</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">classList</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">el</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">className</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="nx">className</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">reg</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;(\\s|^)&#39;</span> <span class="o">+</span> <span class="nx">className</span> <span class="o">+</span> <span class="s1">&#39;(\\s|$)&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">el</span><span class="p">.</span><span class="nx">className</span><span class="o">=</span><span class="nx">el</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">reg</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -179,10 +193,10 @@
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">ele</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;peace&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">addClass</span><span class="p">(</span><span class="nx">ele</span><span class="p">,</span> <span class="s2">&quot;be-still&quot;</span><span class="p">);</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;peace&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">addClass</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="s1">&#39;be-still&#39;</span><span class="p">)</span>
 </span><span class='line'><span class="c1">// or</span>
-</span><span class='line'><span class="nx">removeClass</span><span class="p">(</span><span class="nx">ele</span><span class="p">,</span> <span class="s2">&quot;be-still&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">removeClass</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="s1">&#39;be-still&#39;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
