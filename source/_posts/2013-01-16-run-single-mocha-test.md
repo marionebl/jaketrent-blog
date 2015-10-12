@@ -40,7 +40,7 @@ describe(function () {
   // these tests will be skipped
 });
 describe.only(function () {
-  // these tests will run 
+  // these tests will run
 });
 {% endcodeblock %}
 
@@ -59,7 +59,9 @@ it(function () {
 });
 {% endcodeblock %}
 
-**Note!** that by putting the `.only()` on a test, all other functions in the spec are skipped.  This means that your `before`, `beforeEach`, `after`, and `afterEach` functions are *not* called.  Sometimes it's hard to remember when that matters, so I usually end up running single specs instead of single tests.
+**Update 12 Oct 2015**: The following note now does not apply.  `before`, etc hooks are now verified to be run when running a single test.
+
+~~Note! that by putting the .only() on a test, all other functions in the spec are skipped.  This means that your before, beforeEach, after, and afterEach functions are *not* called.  Sometimes it's hard to remember when that matters, so I usually end up running single specs instead of single tests.~~
 
 ## Skip Something
 

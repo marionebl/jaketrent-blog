@@ -4,7 +4,7 @@
   <title><![CDATA[Category: mocha | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/mocha/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-09-23T16:30:25-06:00</updated>
+  <updated>2015-10-12T07:46:02-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -242,7 +242,9 @@ $ mocha --grep login-*.js
 </span><span class='line'><span class="p">});</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p><strong>Note!</strong> that by putting the <code>.only()</code> on a test, all other functions in the spec are skipped.  This means that your <code>before</code>, <code>beforeEach</code>, <code>after</code>, and <code>afterEach</code> functions are <em>not</em> called.  Sometimes it's hard to remember when that matters, so I usually end up running single specs instead of single tests.</p>
+<p><strong>Update 12 Oct 2015</strong>: The following note now does not apply.  <code>before</code>, etc hooks are now verified to be run when running a single test.</p>
+
+<p><del>Note! that by putting the .only() on a test, all other functions in the spec are skipped.  This means that your before, beforeEach, after, and afterEach functions are <em>not</em> called.  Sometimes it's hard to remember when that matters, so I usually end up running single specs instead of single tests.</del></p>
 
 <h2>Skip Something</h2>
 
