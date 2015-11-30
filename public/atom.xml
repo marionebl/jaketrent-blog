@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-10-12T07:46:02-06:00</updated>
+  <updated>2015-11-30T09:16:01-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,88 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Debug Locally in Elm]]></title>
+    <link href="http://jaketrent.com/post/debug-locally-elm/"/>
+    <updated>2015-11-28T14:39:00-07:00</updated>
+    <id>http://jaketrent.com/post/debug-locally-elm</id>
+    <content type="html"><![CDATA[<p>Debugging in Elm is easy once you know where to look.  You need an in-browser tool to help you.  It&#8217;s almost as simple as just calling <code>console.log</code>, but you can&#8217;t just put your logging statement anywhere.</p>
+
+<p><img src="http://i.imgur.com/1c6FH0f.png" alt="elm debug locally" /></p>
+
+<!--more-->
+
+
+<h2>The Online Option</h2>
+
+<p>There&#8217;s a debugger available online as a part of the elm-lang site at <a href="http://debug.elm-lang.org/">debug.elm-lang.org</a>.  This page explains the principles behind why the debugger works and has the properties it does.  The <a href="http://debug.elm-lang.org/try">debugger is found</a> via clicking the &#8220;Debug&#8221; button in the top-right corner.</p>
+
+<p>But you don&#8217;t want to paste your code into the Try Elm page in order to walk through your Elm code.  You need a local option.</p>
+
+<h2>Debugging Locally</h2>
+
+<p>Thankfully you already have the tools to debug locally after you&#8217;ve <a href="http://elm-lang.org/install">installed Elm</a> on your machine.   It comes with <code>elm-reactor</code>.</p>
+
+<p>In order to run your Elm code, go to your shell, <code>cd</code> into your project directory, and type:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ elm reactor</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will serve up your project directory at <code>http://localhost:8000</code> by default.</p>
+
+<p><img src="http://i.imgur.com/yE93W9g.png" alt="screenshot of elm reactor" /></p>
+
+<p>You will be able to see the project files listed.  There are two links for each Elm program.  Unfortunately, the debug mode link is pretty subtle, looked over by me as just a bullet in the UI.</p>
+
+<ol>
+<li>Click the file name, get the run mode</li>
+<li>Click the wrench to the left of the file name, get the debug mode</li>
+</ol>
+
+
+<p>Alternately, type your own <code>?debug</code> at the end of any Reactor url to enter debug mode for that file.</p>
+
+<p>Once in debug mode, you should see your code in action in the browser as usual, now with a sidebar for the debugger overlayed on your UI.</p>
+
+<h2>Setting up Watches</h2>
+
+<p>Poor man&#8217;s debugging has traditionally been logging. When variables are in scope, interrogate them and print the value on the screen.  Elm&#8217;s debugging story feels about like that, with some cool bells and whistles around it &#8211; like <em>time-traveling</em> debugging, oh my.</p>
+
+<p>In time-travel mode, your debug method of choice will probably be <code>Debug.watch</code>.  In the <a href="http://package.elm-lang.org/packages/elm-lang/core/2.0.1/Debug#watch">docs</a>, it is shown to take 2 arguments:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>watch : String -&gt; a -&gt; a</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first argument is the label for the watched data in the debugger.  The second argument is the actual data value.  If I wanted to watch a dimensions tuple, I could write:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Debug.watch "myDimensions" (w, h)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Also note that you have to make your debug expression compile wherever you end up writing it.  I find that the easiest place to put a debug statement into my already-working code is in a <code>let</code> expression.  (Well, &#8220;already-working&#8221; is used loosely here &#8211; we&#8217;re debugging after all.)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>let
+</span><span class='line'>  log = Debug.watch "myDimensions" (w, h)
+</span><span class='line'>in
+</span><span class='line'>  doStuff myDimensions</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now the watched value will show up in the debugger sidebar.</p>
+
+<p><img src="http://i.imgur.com/PlI83Kq.png" alt="screenshot of elm watched code" /></p>
+
+<p>If you pause the debugger and step backward, you can see the value as it has changed over time.  It&#8217;s pretty neat, and now you&#8217;re debugging Elm on your own box!</p>
+
+<p>What other Elm debug tips do you have?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Update Body Class in React]]></title>
@@ -1907,104 +1989,6 @@
 
 
 <p>This gives you the basic tools.  It&#8217;s very easy, and it&#8217;s built in!  To do more, you might take required options first through the CLI options and then read them interactively from the console.  What other neat additions do you see that we could add?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Test React-Router Previous Params for Component Update]]></title>
-    <link href="http://jaketrent.com/post/test-react-router-params-component-update/"/>
-    <updated>2015-02-09T15:39:00-07:00</updated>
-    <id>http://jaketrent.com/post/test-react-router-params-component-update</id>
-    <content type="html"><![CDATA[<p>Once upon a time, react-router transferred params and query params from the url via props into components.  It doesn&#8217;t happen this way any more.  So, let&#8217;s say you have a need in your component like overriding <code>shouldComponentUpdate</code> in your component which only has access to <code>this.props</code> and <code>this.state</code>.   How can you use the url data to affect the component re-render or not?</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react" /></p>
-
-<!--more-->
-
-
-<h2>Why control rendering with the url?</h2>
-
-<p>There are two instances that come to mind when considering the scenarios that it might be needful to control the update of your component based on the url:</p>
-
-<ol>
-<li><p><strong>Avoid re-render</strong>: Of course, if the component we&#8217;re talking about is a page-level component, you&#8217;ll most likely always be wanting to re-render as the url changes.  But, if you&#8217;re a little widget component that cares about the url, you might not need to always re-render on url change.</p></li>
-<li><p><strong>Trigger re-render when it might not otherwise happen</strong>: For whatever reason, you may have already needed to implement <code>shouldComponentUpdate</code> in your component.  This function returns true or false to flag a &#8220;should&#8221; or &#8220;should not&#8221; re-render.  You&#8217;ll need to access url state and likely previous url state in this method to make re-renders happen that otherwise wouldn&#8217;t if you had no logic in this function for it.</p></li>
-</ol>
-
-
-<p>Of course, beyond these re-render scenarios, there are many other situations in which knowing previous and current states in the url could come in handy.</p>
-
-<h2>React-Router in shouldComponentUpdate</h2>
-
-<p><code>shouldComponentUpdate</code> determines if component should re-render.  It&#8217;s called whenever <code>this.props</code> or <code>this.state</code> changes.  It has access to incoming props and state via the function parameters.</p>
-
-<p>React-router gives your component access to params and query params by requiring you to mix in the <code>State</code> param from react-router.  Then you have access to new functions, <code>this.getParams()</code> and <code>this.getQuery()</code>.  If you only need to know current url state, this is enough.  If you want to compare current url state to previous url state, you&#8217;ll have to save the parts that you care about.  We&#8217;ll do that in <code>this.state</code>.</p>
-
-<p>Let&#8217;s say that we want to trigger a redraw on changes to a <code>range</code> query parameter.  The component might, in part, look like this:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>var { State } = require('react-router')
-</span><span class='line'>
-</span><span class='line'>module.exports = React.createClass({
-</span><span class='line'>
-</span><span class='line'>  mixins: [ State ],
-</span><span class='line'>
-</span><span class='line'>  getInitialState() {
-</span><span class='line'>    range: nul
-</span><span class='line'>  },
-</span><span class='line'>
-</span><span class='line'>  componentWillReceiveProps() {
-</span><span class='line'>    this.setState({
-</span><span class='line'>      range: this.getQuery().range
-</span><span class='line'>    })
-</span><span class='line'>  },
-</span><span class='line'>
-</span><span class='line'>  componentWillMount() {
-</span><span class='line'>    this.setState({
-</span><span class='line'>      range: this.getQuery().range
-</span><span class='line'>    })
-</span><span class='line'>  }
-</span><span class='line'>
-</span><span class='line'>  shouldComponentUpdate() {
-</span><span class='line'>    return this.state.range !== nextState.range
-</span><span class='line'>  }
-</span><span class='line'>
-</span><span class='line'>  // ...
-</span><span class='line'>
-</span><span class='line'>})</span></code></pre></td></tr></table></div></figure>
-
-
-<p>When the url params change, <code>componentWillReceiveProps</code> is called.  But this is not called on the first render, thus we implement <code>componentWillMount</code>.  Both these functions save the <code>range</code> from the url to the component state.  Now, as <code>shouldComponentUpdate</code> is called on future <code>this.props</code> and <code>this.state</code> changes, current and next <code>range</code> values can be compared and used in &#8220;should re-render&#8221; calculation.</p>
-
-<p>What other ways have you found to accomplish this tracking of previous state in the url?</p>
 ]]></content>
   </entry>
   

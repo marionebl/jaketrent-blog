@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-10-12T07:46:02-06:00</updated>
+  <updated>2015-11-30T09:16:01-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,85 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Debug Locally in Elm]]></title>
+    <link href="http://jaketrent.com/post/debug-locally-elm/"/>
+    <updated>2015-11-28T14:39:00-07:00</updated>
+    <id>http://jaketrent.com/post/debug-locally-elm</id>
+    <content type="html"><![CDATA[<p>Debugging in Elm is easy once you know where to look.  You need an in-browser tool to help you.  It's almost as simple as just calling <code>console.log</code>, but you can't just put your logging statement anywhere.</p>
+
+<p><img src="http://i.imgur.com/1c6FH0f.png" alt="elm debug locally" /></p>
+
+<!--more-->
+
+
+<h2>The Online Option</h2>
+
+<p>There's a debugger available online as a part of the elm-lang site at <a href="http://debug.elm-lang.org/">debug.elm-lang.org</a>.  This page explains the principles behind why the debugger works and has the properties it does.  The <a href="http://debug.elm-lang.org/try">debugger is found</a> via clicking the "Debug" button in the top-right corner.</p>
+
+<p>But you don't want to paste your code into the Try Elm page in order to walk through your Elm code.  You need a local option.</p>
+
+<h2>Debugging Locally</h2>
+
+<p>Thankfully you already have the tools to debug locally after you've <a href="http://elm-lang.org/install">installed Elm</a> on your machine.   It comes with <code>elm-reactor</code>.</p>
+
+<p>In order to run your Elm code, go to your shell, <code>cd</code> into your project directory, and type:</p>
+
+<p><code>
+$ elm reactor
+</code></p>
+
+<p>This will serve up your project directory at <code>http://localhost:8000</code> by default.</p>
+
+<p><img src="http://i.imgur.com/yE93W9g.png" alt="screenshot of elm reactor" /></p>
+
+<p>You will be able to see the project files listed.  There are two links for each Elm program.  Unfortunately, the debug mode link is pretty subtle, looked over by me as just a bullet in the UI.</p>
+
+<ol>
+<li>Click the file name, get the run mode</li>
+<li>Click the wrench to the left of the file name, get the debug mode</li>
+</ol>
+
+
+<p>Alternately, type your own <code>?debug</code> at the end of any Reactor url to enter debug mode for that file.</p>
+
+<p>Once in debug mode, you should see your code in action in the browser as usual, now with a sidebar for the debugger overlayed on your UI.</p>
+
+<h2>Setting up Watches</h2>
+
+<p>Poor man's debugging has traditionally been logging. When variables are in scope, interrogate them and print the value on the screen.  Elm's debugging story feels about like that, with some cool bells and whistles around it -- like <em>time-traveling</em> debugging, oh my.</p>
+
+<p>In time-travel mode, your debug method of choice will probably be <code>Debug.watch</code>.  In the <a href="http://package.elm-lang.org/packages/elm-lang/core/2.0.1/Debug#watch">docs</a>, it is shown to take 2 arguments:</p>
+
+<p><code>
+watch : String -&gt; a -&gt; a
+</code></p>
+
+<p>The first argument is the label for the watched data in the debugger.  The second argument is the actual data value.  If I wanted to watch a dimensions tuple, I could write:</p>
+
+<p><code>
+Debug.watch "myDimensions" (w, h)
+</code></p>
+
+<p>Also note that you have to make your debug expression compile wherever you end up writing it.  I find that the easiest place to put a debug statement into my already-working code is in a <code>let</code> expression.  (Well, "already-working" is used loosely here -- we're debugging after all.)</p>
+
+<p><code>
+let
+  log = Debug.watch "myDimensions" (w, h)
+in
+  doStuff myDimensions
+</code></p>
+
+<p>Now the watched value will show up in the debugger sidebar.</p>
+
+<p><img src="http://i.imgur.com/PlI83Kq.png" alt="screenshot of elm watched code" /></p>
+
+<p>If you pause the debugger and step backward, you can see the value as it has changed over time.  It's pretty neat, and now you're debugging Elm on your own box!</p>
+
+<p>What other Elm debug tips do you have?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Update Body Class in React]]></title>
@@ -442,169 +521,6 @@ return &lt;Item text={item} onRemove={this.handleClickRemove.bind(this, i)} key=
 <p>Isn't that awesome and useful?</p>
 
 <p>So <code>bind</code> can help make <code>this</code> more predictable for you.  It will help you send new functions with pre-filled parameters.  What else have you used <code>bind</code> for?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Testing React on jsdom]]></title>
-    <link href="http://jaketrent.com/post/testing-react-with-jsdom/"/>
-    <updated>2015-06-18T07:13:00-06:00</updated>
-    <id>http://jaketrent.com/post/testing-react-with-jsdom</id>
-    <content type="html"><![CDATA[<p>React allows you to create components that will render UI for your application.  If your UI is of any complexity, you'll likely want to test that it functions correctly and allows for future refactors.  There are numerous ways to do this.  One way that you might appreciate is using <a href="https://github.com/tmpvar/jsdom">jsdom</a>, an in-JavaScript implementation of the DOM.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react on jsdom" /></p>
-
-<!--more-->
-
-
-<h2>What is jsdom?</h2>
-
-<p>Jsdom is an in-JavaScript implementation of the DOM.  The DOM is the document object model, which is the tree of nodes that make up the UI for documents shown in web browsers.</p>
-
-<p>Because jsdom is implemented in JavaScript, we can have a DOM-like API to work with without needing a browser.  That means that we don't have to capture a browser in order test, a la <a href="http://karma-runner.github.io/">Karma</a>.  That means that we can run our tests in environments without browsers, like in Node or in continuous integration environments.</p>
-
-<p>By not using real browsers, we're also essentially saying that we believe the problems in our client JavaScript will not be browser-dependent (again, because we're not capturing <em>real</em> browsers).</p>
-
-<h2>jsdom Requirements</h2>
-
-<p>The <a href="https://github.com/tmpvar/jsdom">latest version of jsdom</a>, as of this writing, requires <a href="https://iojs.org/en/index.html">io.js</a> instead of Node to run.  If you'd like to run in Node.js instead, the <a href="https://github.com/tmpvar/jsdom/tree/3.x">3.x series of jsdom</a> is required.</p>
-
-<p>As <a href="http://thenextweb.com/dd/2015/06/16/node-js-and-io-js-are-settling-their-differences-merging-back-together/">Node and io.js merge in the future</a>, I expect the new versions of jsdom to support the one, unified platform.</p>
-
-<h2>The Test Runner</h2>
-
-<p>In my JavaScript tests, I prefer to use the <a href="http://mochajs.org/">Mocha</a> test runner.  It's usable in Node or browser environments.  It has great async test support.  It has the familiar behavior-style syntax of <code>describe</code> and <code>it</code> and all the normal test setup hooks that you like.  Most importantly, it features the Nyan cat test reporter:</p>
-
-<p><img src="http://mochajs.org/images/reporter-nyan.png" alt="nyan cat test reporter" /></p>
-
-<p>Mocha lets you choose your own assertion library.  I like <a href="http://shouldjs.github.io/">should.js</a>.</p>
-
-<p>To install both:</p>
-
-<p><code>
-npm install mocha should --save-dev
-</code></p>
-
-<h2>Configuring Mocha</h2>
-
-<p>By default, Mocha wants a <code>/test</code> directory in your project root in which to put its configuration and potentially your spec files, depending on how you like to organize your projects:</p>
-
-<p><code>
-mkdir test
-</code></p>
-
-<p>Inside of the <code>/test</code> dir, let's <code>vim mocha.opts</code> and give it a place to configure jsdom and our other libs:</p>
-
-<p><code>text mocha.opts
---require test/utils/dom.js
---require should
---reporter nyan
-</code></p>
-
-<p>We have yet to write the <code>test/utils/dom.js</code> file.  We will.  This file includes options for mocha.  Line by line, we're saying that before mocha runs tests, we want to load our <code>dom.js</code> config, the <code>should.js</code> library, and specify our reporter as <code>nyan</code>.</p>
-
-<h2>Configuring jsdom</h2>
-
-<p>I've tried to come up with several configurations that will make jsdom work well with my React projects.  This is the best/simplest that I've come up with.  I'd be interested to hear if you have any suggestions on the approach.</p>
-
-<p>Here's the full configuration with explanatory comments inline, as it would appear in <code>test/utils/dom.js</code>:</p>
-
-<p>```js dom.js
-var jsdom = require('jsdom')</p>
-
-<p>// setup the simplest document possible
-var doc = jsdom.jsdom('&lt;!doctype html><html><body></body></html>')</p>
-
-<p>// get the window object out of the document
-var win = doc.defaultView</p>
-
-<p>// set globals for mocha that make access to document and window feel
-// natural in the test environment
-global.document = doc
-global.window = win</p>
-
-<p>// take all properties of the window object and also attach it to the
-// mocha global object
-propagateToGlobal(win)</p>
-
-<p>// from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80
-function propagateToGlobal (window) {
-  for (let key in window) {</p>
-
-<pre><code>if (!window.hasOwnProperty(key)) continue
-if (key in global) continue
-
-global[key] = window[key]
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>The reason that we want to attach all the <code>window</code> properties to the mocha <code>global</code> object is because developers often write code that is meant for the browser without explicitly using the global environment object.  For instance, in React the developers write:</p>
-
-<p><code>js
-navigator.userAgent.indexOf('Chrome') &gt; -1
-</code></p>
-
-<p>instead of:</p>
-
-<p><code>js
-window.navigator.userAgent.indexOf('Chrome') &gt; -1
-</code></p>
-
-<p>Withing taking <code>window.navigator</code> and putting it on <code>global.navigator</code>, you'd get an error like this when running your tests:</p>
-
-<p><code>
-ReferenceError: navigator is not defined
-</code></p>
-
-<h2>The React Test</h2>
-
-<p>You are now ready to render React components into a document in your tests.  The document will be provided by jsdom.  You don't need a browser environment to run this.</p>
-
-<p>```js mycomponent.spec.js
-var React = require('react/addons')
-var should = require('should')
-var TestUtils = React.addons.TestUtils
-var MyComponent = // a React.Component with a <button/> ...
-describe('MyComponent', function () {
-  it('has button that fires a dom event for click', function (done) {</p>
-
-<pre><code>function handleClick() { done() }
-var detachedComp = TestUtils.renderIntoDocument(&lt;MyComponent onClick={handleClick}/&gt;)
-var button = TestUtils.findRenderedDOMComponentWithTag(detachedComp, 'button')
-var buttonNode = React.findDOMNode(button)
-should.exist(buttonNode)
-TestUtils.Simulate.click(buttonNode)
-</code></pre>
-
-<p>  })
-})
-```</p>
-
-<p>To run mocha with the configuration above, I like to add an npm script in <code>package.json</code>:</p>
-
-<p>```json package.json
-{
-   "scripts": {</p>
-
-<pre><code> "test": "mocha test/**/*.spec.js"
-</code></pre>
-
-<p>   }
-}
-```</p>
-
-<p>And then type:</p>
-
-<p><code>bash
-npm test
-</code></p>
-
-<p>Write the source to satisfy your test, and the lights should go green.  Your DOM is happy.  Your test is happy.</p>
-
-<p>Does it work well for you?  How might you improve on it?  Enjoy testing!</p>
 ]]></content>
   </entry>
   
