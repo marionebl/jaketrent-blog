@@ -13,12 +13,12 @@ $header-subtitle-font-family: $heading-font-family !default;
 .mono { font-family: $mono; }
 
 h1, h2, h3, h4, h5, h6 { font-family: $header-title-font-family }
-h1 { font-size: 36px; font-weight: 400 }
-h2 { font-size: 32px; font-weight: 300; }
-h3 { font-size: 28px; font-weight: 300; }
-h4 { font-size: 26px; font-weight: 300; }
-h5 { font-size: 24px; font-weight: 300; }
-h6 { font-size: 22px; font-weight: 300; }
+h1 { font-size: 36px; line-height: 41px; font-weight: 400 }
+h2 { font-size: 32px; line-height: 37px; font-weight: 300; }
+h3 { font-size: 28px; line-height: 33px; font-weight: 300; }
+h4 { font-size: 26px; line-height: 31px; font-weight: 300; }
+h5 { font-size: 24px; line-height: 29px; font-weight: 300; }
+h6 { font-size: 22px; line-height: 27px; font-weight: 300; }
 
 /* TODO: move out */
 a {
