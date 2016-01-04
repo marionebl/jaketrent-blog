@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2015-11-30T09:16:01-07:00</updated>
+  <updated>2016-01-04T13:31:51-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,59 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[What React Stateless Components are Missing]]></title>
+    <link href="http://jaketrent.com/post/react-stateless-components-missing/"/>
+    <updated>2016-01-04T12:59:00-07:00</updated>
+    <id>http://jaketrent.com/post/react-stateless-components-missing</id>
+    <content type="html"><![CDATA[<p>Stateless React components got a new syntax in React 0.14.  It&#8217;s much simpler.  It&#8217;s just a function call.  Besides it just looking simpler, there are some major differences in what is available in a stateless component written this way.  There are some things missing &#8211; purposefully not included &#8211; that you may be used to.  Let&#8217;s look at a few things.</p>
+
+<p><img src="http://i.imgur.com/DXuSNbw.png" alt="http://i.imgur.com/DXuSNbw.png" /></p>
+
+<!--more-->
+
+
+<p>Stateless components are now specifically not just components where you don&#8217;t use <code>this.state</code>.  They&#8217;re componets that are written in the form of a function:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">Chips</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span><span class="nx">In</span> <span class="nx">the</span> <span class="nx">secret</span> <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">place</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The observations made in this article will not apply to components that are created using the <code>class Chips extends React.Component</code> or <code>React.createClass</code> syntax, whether they use state or not.</p>
+
+<h2>No Backing Instance</h2>
+
+<p>A React component&#8217;s backing instance is the object in memory that represents the node in the view.  This backing instance is the place where state is usually stored (using React&#8217;s <code>this.state</code>).  Well now there&#8217;s no <code>this</code> in stateless components.  Thus, there&#8217;s not going to be a place for <code>this.state</code>.  Stateless, remember?  Data just passes through the pure function and into the resulting view.</p>
+
+<h2>No Lifecycle Methods</h2>
+
+<p>Because there&#8217;s no backing instance as a place to put hooks for your code in the component lifecycle, you can not use any of the lifecycle methods from <code>React.Component</code>.  Methods such as <code>componentDidMount</code> and <code>componentWillReceiveProps</code> are out.  And since the stateless component is a pure function that just reproduces its view state on <code>props</code> change, why would you need lifecycle methods anyway?</p>
+
+<h2>No Reference to the Component</h2>
+
+<p>Often when testing, it&#8217;s useful to get a reference to the component itself.  In the case of stateless components, they&#8217;re just fired and forgotten, rendered into the view without the ability to get a handle on them.  They&#8217;re just UI at this point, just in the DOM.  You can go to the DOM to do your testing.</p>
+
+<p>Depending on your test environment setup, you may want to wrap your stateless components in a <code>class</code>-based component you <em>can</em> get a reference to.</p>
+
+<p>Note that for stateless components, <code>ReactDOM.render</code> and <code>TestUtils.renderIntoDocument</code> will return <code>null</code>.</p>
+
+<h2>No refs</h2>
+
+<p>Stateless components can&#8217;t be the target of a <code>ref</code>.  There&#8217;s no backing instance.  You can&#8217;t have <code>refs</code> internally to children either.  Remember, <code>this</code> and <code>this.refs</code> aren&#8217;t around.  If your stateless component has a child that is a <code>class</code>-based component, <em>it</em> may have <code>refs</code>.  <a href="https://facebook.github.io/react/docs/more-about-refs.html">The docs</a> are another good reference on <code>refs</code>.</p>
+
+<h2>No null Returns</h2>
+
+<p>A <code>class</code>-based component may return <code>null</code> as its value in the view.  But a stateless component may not.  To get around this, return <code>&lt;noscript&gt;&lt;/noscript&gt;</code>.  This will be fully invisible in the view.</p>
+
+<p>So what else have you found that is unavailable in stateless functions?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Debug Locally in Elm]]></title>
@@ -1900,95 +1953,6 @@
 
 
 <p>When do you find yourself most often using spies vs. stubs vs. mocks?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby CLI Options Parsing]]></title>
-    <link href="http://jaketrent.com/post/ruby-cli-options-parsing/"/>
-    <updated>2015-02-24T07:21:00-07:00</updated>
-    <id>http://jaketrent.com/post/ruby-cli-options-parsing</id>
-    <content type="html"><![CDATA[<p>Ruby&#8217;s stdlib never ceases to amaze.  If you&#8217;re making a CLI tool in Ruby, your efforts are made more straightforward by the existence of the <a href="http://ruby-doc.org/stdlib-2.2.0/libdoc/optparse/rdoc/OptionParser.html">OptionParser</a> class.  Use it, and let happiness fill your heart.</p>
-
-<p><img src="http://i.imgur.com/Z7WWtL0.jpg" alt="Ruby" /></p>
-
-<!--more-->
-
-
-<p>We&#8217;re used to some nice CLI tools these days &#8211; ones that have many useful options that allow for easier scripting and more powerful, quick usage.  Ruby&#8217;s <code>OptionParser</code> will help us make our own and not disappoint the masses of fevered CLI users.</p>
-
-<p>All terminal input from initial execution will enter our Ruby program via the <code>ARGV</code> variable.</p>
-
-<p>To have the <code>OptionParser</code> class available to us, we must require the <code>optsparse</code> package.</p>
-
-<p><code>OptionParser</code> options are defined similar to how you&#8217;d expect event handlers to be defined: with the <code>on</code> keyword.  You can pass it a string to match a short option, a string to match the verbose option, and finally a block to be executed when the option is detected.  In the block, we generally will want to store the option state.  We&#8217;ll choose to use an <code>OpenStruct</code> for that (and will need the <code>ostruct</code> package).</p>
-
-<p>For example:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s2">&quot;optsparse&quot;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;ostruct&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">options</span> <span class="o">=</span> <span class="no">OpenStruct</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">opt_parser</span> <span class="o">=</span> <span class="no">OptionParser</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">opts</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">opts</span><span class="o">.</span><span class="n">banner</span> <span class="o">=</span> <span class="s2">&quot;Usage: luchador [options]&quot;</span>
-</span><span class='line'>    <span class="n">opts</span><span class="o">.</span><span class="n">separator</span> <span class="s2">&quot;&quot;</span>
-</span><span class='line'>    <span class="n">opts</span><span class="o">.</span><span class="n">separator</span> <span class="s2">&quot;Options:&quot;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">opts</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s2">&quot;-t, &quot;</span><span class="o">--</span><span class="n">twist</span><span class="s2">&quot;, &quot;</span><span class="no">Apply</span> <span class="n">the</span> <span class="n">nipple</span> <span class="n">twist</span><span class="s2">&quot;) do |t|</span>
-</span><span class='line'><span class="s2">      options.twist = true</span>
-</span><span class='line'><span class="s2">    end</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">    opts.on(&quot;</span><span class="o">-</span><span class="n">a</span> <span class="n">a</span><span class="s2">&quot;, &quot;</span><span class="o">--</span><span class="n">anaconda</span><span class="o">-</span><span class="n">squeeze</span> <span class="n">a</span><span class="s2">&quot;, &quot;</span><span class="no">The</span> <span class="n">degrees</span> <span class="n">of</span> <span class="n">anaconda</span> <span class="n">squeeze</span> <span class="n">pressure</span><span class="s2">&quot;) do |a|</span>
-</span><span class='line'><span class="s2">      options.anaconda_squeeze = a</span>
-</span><span class='line'><span class="s2">    end</span>
-</span><span class='line'>
-</span><span class='line'><span class="s2">    opt_parser.parse!(ARGV)</span>
-</span><span class='line'><span class="s2">    options</span>
-</span><span class='line'><span class="s2">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now we can we might run CLI tool something like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">luchador</span> <span class="o">-</span><span class="n">t</span> <span class="o">--</span><span class="n">anaconda</span><span class="o">-</span><span class="n">squeeze</span> <span class="mi">130</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And run with both options engaged for ultimate luchador power.  Notice we used both short and verbose-style options (choosing to write out the longest of the options for its added poetic punch on that whopping 130 degrees of pure squeeze pressure!).</p>
-
-<p>A few more points to note:</p>
-
-<ul>
-<li><code>opts.banner</code> and <code>opts.separator</code> can be used to format usage information.</li>
-<li>Usage information, stored in <code>opts</code> can be <code>put</code> to the screen.  A <code>-h</code>/<code>--help</code> option is automatically built in for this purpose.</li>
-<li>Remember to call <code>parse!</code> after configuring the options so the input is actually processed.</li>
-<li>Here, the <code>--anaconda-squeeze</code> option is defined differently than the first: there is a trailing <code>a</code>.  For options that require a non-boolean, this is required.  Otherwise, the argument to your handling block will always be a boolean <code>true</code>.</li>
-<li>Note that this example code only shows option parsing &#8211; nothing about the <code>luchador</code> binary itself.</li>
-</ul>
-
-
-<p>This gives you the basic tools.  It&#8217;s very easy, and it&#8217;s built in!  To do more, you might take required options first through the CLI options and then read them interactively from the console.  What other neat additions do you see that we could add?</p>
 ]]></content>
   </entry>
   
