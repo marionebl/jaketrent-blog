@@ -1021,12 +1021,16 @@
         <lastmod>2016-01-04T13:31:10-07:00</lastmod>
     </url>
     <url>
+        <loc>http://jaketrent.com/post/test-apis-failing-from-client/</loc>
+        <lastmod>2016-01-25T14:36:06-07:00</lastmod>
+    </url>
+    <url>
         <loc>http://jaketrent.com/blog/archives/</loc>
-        <lastmod>2016-01-04T13:31:10-07:00</lastmod>
+        <lastmod>2016-01-25T14:36:06-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/</loc>
-        <lastmod>2016-01-04T13:31:10-07:00</lastmod>
+        <lastmod>2016-01-25T14:36:06-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/robots.txt</loc>
@@ -1034,6 +1038,6 @@
     </url>
     <url>
         <loc>http://jaketrent.com/work/</loc>
-        <lastmod>2016-01-04T13:31:10-07:00</lastmod>
+        <lastmod>2016-01-25T14:36:06-07:00</lastmod>
     </url>
 </urlset>

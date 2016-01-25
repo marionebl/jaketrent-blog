@@ -9,7 +9,7 @@
 
   <meta name="author" content="https://plus.google.com/115032056022257436849">
   
-  <meta name="description" content="Often when coding, we use a single local variable multiple times, overwriting the value many times. It is considered good practice to move the &hellip;">
+  <meta name="description" content="In developing an email notification system recently, we became interested in code acting differently depending on what environment we were in. A &hellip;">
   
   <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
 
@@ -22,11 +22,11 @@
   <meta property="og:type" content="article" />
   
   <meta property="og:url" content="http://jaketrent.com/blog/page/22/index.html" />
-  <meta property="og:description" content="Often when coding, we use a single local variable multiple times, overwriting the value many times. It is considered good practice to move the &hellip;" />
+  <meta property="og:description" content="In developing an email notification system recently, we became interested in code acting differently depending on what environment we were in. A &hellip;" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="" />
-  <meta name="twitter:description" content="Often when coding, we use a single local variable multiple times, overwriting the value many times. It is considered good practice to move the &hellip;" />
+  <meta name="twitter:description" content="In developing an email notification system recently, we became interested in code acting differently depending on what environment we were in. A &hellip;" />
   
 
   
@@ -89,6 +89,49 @@
     <div class="content">
       <div class="blog-index">
   
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/environment-based-dependency-injection/">Environment-based Dependency Injection</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-02T13:22:00-06:00" pubdate data-updated="true">Sep 2<span>nd</span>, 2009</time>
+        
+         | <a href="/post/environment-based-dependency-injection/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In developing an email notification system recently, we became interested in code acting differently depending on what environment we were in.  A potentially good solution for this is environment-based dependency injection.  This means that different Spring beans, for instance, will be used depending on the environment, ie dev, test, etc.  This is useful for something like emailing, because we may not want real emails hitting the mail server in dev or test environments, but we do in prod.  With some Spring constructs, it&#8217;s pretty easy.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/environment-based-dependency-injection/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article class="entry">
@@ -485,49 +528,6 @@
   
     <footer>
       <a class="full-article-link" rel="full-article" href="/post/concurrentmodificationexception-within-one-thread/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article class="entry">
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/post/count-number-characters-w-sql/">Count Number of Characters W/ SQL</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-04-30T07:12:00-06:00" pubdate data-updated="true">Apr 30<span>th</span>, 2009</time>
-        
-         | <a href="/post/count-number-characters-w-sql/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>There&#8217;s no pre-defined method to count the number of occurrences of a certain character in a database table column using SQL.  There&#8217;s a quick and dirty way to get it done however.  In my case, I wanted to figure out how many lines existed in a column that held address information, separated by line breaks.  Here&#8217;s a spot of code that helped from the friendly neighborhood DBA, Reed.</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="full-article-link" rel="full-article" href="/post/count-number-characters-w-sql/">Read on &rarr;</a>
     </footer>
   
 

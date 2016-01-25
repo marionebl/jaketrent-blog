@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-01-04T13:35:22-07:00</updated>
+  <updated>2016-01-25T14:36:25-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,119 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Test APIs Failing from Client]]></title>
+    <link href="http://jaketrent.com/post/test-apis-failing-from-client/"/>
+    <updated>2016-01-25T13:54:00-07:00</updated>
+    <id>http://jaketrent.com/post/test-apis-failing-from-client</id>
+    <content type="html"><![CDATA[<p>In the case where you can&#8217;t edit a local version of your APIs in order to cause them to fail, you need to be able to edit your client so that it <em>looks</em> like the API request fails.  Here&#8217;s a quick code change that should make this easy for you.</p>
+
+<p><img src="http://i.imgur.com/8Fm1cn2.jpg" alt="We have a problem" /></p>
+
+<!--more-->
+
+
+<p>This is one of many possible manual testing techniques.  This allow you to see the change in your running app as you work through it.  For instance, I like to use this as I&#8217;m testing through the error alerting features that are common in an app when an API request fails.</p>
+
+<p>Go to the point in your app where your bits touch the network.  This is usually the place where you use your HTTP wrapper or, if you&#8217;re a free spirit, call some XHR goodness yourself.  These days, I like using the venerable <a href="https://github.com/mzabriskie/axios">axios</a> library.  Axios is promise based, so that means that we can use async/await as well, which is like a fine chocolate next to a warm fire in winter (which is good).</p>
+
+<p>So, all my http code might look in essence like this:</p>
+
+<figure class='code'><figcaption><span>api.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">axios</span> <span class="nx">from</span> <span class="s1">&#39;axios&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">export</span> <span class="kr">const</span> <span class="nx">fetch</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// deserialize, etc ...</span>
+</span><span class='line'>  <span class="nx">request</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">axios</span><span class="p">({</span>
+</span><span class='line'>      <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">url</span>
+</span><span class='line'>    <span class="p">})</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So, this <code>request</code> function returns a Promise.  The logic around the request might look like:</p>
+
+<figure class='code'><figcaption><span>actions.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="o">*</span> <span class="nx">as</span> <span class="nx">api</span> <span class="nx">from</span> <span class="s1">&#39;./api&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">async</span> <span class="kd">function</span> <span class="nx">fetchWater</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kr">const</span> <span class="p">{</span> <span class="nx">request</span><span class="p">}</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">fetch</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kr">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">request</span><span class="p">(</span><span class="s1">&#39;/my/own/home&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1">// ... handle success response</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// ... handle error response, where failure code should execute (what we want to TEST!)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To make this request fail, we need only make the Promise fail, rejecting it like a mouthful of stewed tomatoes.  So, just change <code>api.js</code>:</p>
+
+<figure class='code'><figcaption><span>api.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">axios</span> <span class="nx">from</span> <span class="s1">&#39;axios&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">export</span> <span class="kr">const</span> <span class="nx">fetch</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'>  <span class="nx">request</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">reject</span><span class="p">({</span>
+</span><span class='line'>        <span class="nx">status</span><span class="o">:</span> <span class="mi">500</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">errors</span><span class="o">:</span> <span class="p">[{</span> <span class="nx">detail</span><span class="o">:</span> <span class="s1">&#39;Shere Khan is back!&#39;</span> <span class="p">}]</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>      <span class="p">})</span>
+</span><span class='line'>    <span class="p">})</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now note that you must be aware of what your format HTTP library, in this case axios, uses in its responses.  What you <code>reject</code> manually must be exactly the same format that usually is returned in an error situation (eg, <code>status</code> and <code>data</code>).  You must also know what your server is designed to return as an error response (eg, <code>errors</code>).  The above application code is using the <a href="http://jsonapi.org/format/#error-objects">JSON API</a> format.</p>
+
+<p>What other little tricks do you find useful in getting APIs to fail?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[What React Stateless Components are Missing]]></title>
@@ -1833,126 +1946,6 @@
 </footer>
 </blockquote>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Sinon Spies vs. Stubs]]></title>
-    <link href="http://jaketrent.com/post/sinon-spies-vs-stubs/"/>
-    <updated>2015-02-25T07:35:00-07:00</updated>
-    <id>http://jaketrent.com/post/sinon-spies-vs-stubs</id>
-    <content type="html"><![CDATA[<p><a href="http://sinonjs.org/">Sinon</a> provides spies, stubs, and mocks.  They&#8217;re all useful as fakes in tests.  They come with essential differences for what they&#8217;re helpful in doing and how they work.</p>
-
-<p><img src="http://i.imgur.com/yuKcrP9.jpg" alt="spies vs stubs" /></p>
-
-<!--more-->
-
-
-<h2>Why Use Fakes?</h2>
-
-<p>In a unit test, you might want to avoid having to test the unit&#8217;s dependencies.  This is especially true in <a href="http://en.wikipedia.org/wiki/White-box_testing">white-box testing</a>.  In this case, test fakes are going to be very helpful.  Sinon provides several fakes, notably spies, stubs, and mocks.  Let&#8217;s compare and contrast the three:</p>
-
-<h2>Sinon Spies</h2>
-
-<p>Spies sound like what they do &#8211; they watch your functions and report back on how they are called.  They generally avoid the violence and mayhem of a Hollywood spy, but depending on your application, this could vary.</p>
-
-<p>They don&#8217;t change the functionality of your application.  They simply report what they see.  The <a href="http://sinonjs.org/docs/#spies-api">sinon API for spies</a> is fairly large, but it essentially centers around the <code>called</code> attribute (of which there are many variations).</p>
-
-<p>I first setup that I want to spy on something.  Then I call my subject under test (src code).  Then I verify with the spy what was actually called and stop spying.  That might look like this in a test:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;#fight&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;calls prayForStrength for fight success&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">sinon</span><span class="p">.</span><span class="nx">spy</span><span class="p">(</span><span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">,</span> <span class="s2">&quot;prayForStrength&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">fight</span><span class="p">();</span>
-</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">.</span><span class="nx">called</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
-</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><em>Note: this example is in <a href="http://mochajs.org/">mocha</a> using a <a href="https://www.npmjs.com/package/should">should.js</a> assertion style</em></p>
-
-<p>The dependency&#8217;s <code>prayForStrength</code> method is referred to by name in a string to setup the spy.  When <code>fight</code> is called here, <code>strengthDep.prayForStrength</code> will be called as normal &#8211; but there will be someone watching.  Finally, we call <code>restore</code> on the function we spied on so that all spies are called off.  If you want to do more than watch as dependencies work as described, you might want to use a stub.</p>
-
-<h2>Sinon Stubs</h2>
-
-<p>Stubs are more hands-on than spies (though they sound more useless, don&#8217;t they).  With a stub, you will actually change how functions are called in your test.  You don&#8217;t want to change the subject under test, thus changing the accuracy of your test.  But you may want to test several ways that dependencies of your unit could be expected to act.</p>
-
-<p>For instance, if you had a function that returned a boolean that your code used to do different things, you might want to use a stub in two different tests to verify conditions when returning different values (ie, guarantee one run of <code>true</code> and one of <code>false</code> return).</p>
-
-<p>To continue the <code>fight</code> example from above, let&#8217;s assume that if <code>prayForStrength</code> returns true, we are guaranteed to win the fight for the orphans (ie, <code>fight()</code> should return <code>true</code>).  That might look like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;#fight&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;always wins when prayForStrength is true&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">sinon</span><span class="p">.</span><span class="nx">stub</span><span class="p">(</span><span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">,</span> <span class="s2">&quot;prayForStrength&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="p">});</span>
-</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">fight</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
-</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Notice that we use a different <code>sinon.stub</code> API.  For the 3rd parameter, we&#8217;re supplying our own version of <code>prayForStrength</code>.  For our test, all we care about is the return value, so that&#8217;s all we supply.  We&#8217;re not testing this dependency.  We&#8217;re instead testing how our subject <code>fight</code>s in a certain circumstance.  There are many ways you can use <a href="http://sinonjs.org/docs/#stubs">sinon stubs</a> to control how functions are called.  Also note that you can still use the <code>called</code> verifications with stubs.  But if you do verify a stub was called, you may want to use a mock.</p>
-
-<h2>Sinon Mocks</h2>
-
-<p><a href="http://sinonjs.org/docs/#mocks">Mocks</a> take the attributes of spies and stubs, smashes them together and changes the style a bit.  A mock will both observe the calling of functions and verify that they were called in some specific way.  And all this setup happens <em>previous</em> to calling your subject under test.  After the call, mocks are simply asked if all went to plan.</p>
-
-<p>So the previous test could be rewritten to use a mock:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;#fight&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;always wins when prayForStrength is true&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">sinon</span><span class="p">.</span><span class="nx">mock</span><span class="p">(</span><span class="nx">subject</span><span class="p">.</span><span class="nx">strengthDep</span><span class="p">)</span>
-</span><span class='line'>    <span class="nx">mock</span><span class="p">.</span><span class="nx">expects</span><span class="p">(</span><span class="s2">&quot;prayForStrength&quot;</span><span class="p">).</span><span class="nx">returns</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-</span><span class='line'>    <span class="nx">subject</span><span class="p">.</span><span class="nx">fight</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
-</span><span class='line'>    <span class="nx">mock</span><span class="p">.</span><span class="nx">verify</span><span class="p">();</span>
-</span><span class='line'>    <span class="nx">mock</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The <code>expects</code> and <code>returns</code> line is where the combo magic happens.  <code>expects</code> is verifying a call (like <code>spies</code> can), and <code>returns</code> is specifying functionality (like <code>stubs</code> can).  The <code>verify</code> call is the line that will fail (essentially the mock assertion) if things in the subject didn&#8217;t go exactly according to plan.</p>
-
-<h2>Spies vs. Stubs vs. Mocks</h2>
-
-<p>So when should I use spies or stubs or mocks?  As with most art, there are many ways to accomplish what you want.  Much of your choice will depend on your own style and what you become proficient in.</p>
-
-<p>Some basic rules might be:</p>
-
-<ul>
-<li><strong><em>Use Spies</em></strong> - if you simply want to watch and verify somethings happens in your test case.</li>
-<li><strong><em>Use Stubs</em></strong> - if you simply want to specify how something will work to help your test case.</li>
-<li><strong><em>Use Mocks</em></strong> - if you want to both of the above on a single dependency in your test case.</li>
-</ul>
-
-
-<p>When do you find yourself most often using spies vs. stubs vs. mocks?</p>
 ]]></content>
   </entry>
   

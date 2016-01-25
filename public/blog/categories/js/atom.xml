@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-01-04T13:35:22-07:00</updated>
+  <updated>2016-01-25T14:37:00-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,93 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Test APIs Failing from Client]]></title>
+    <link href="http://jaketrent.com/post/test-apis-failing-from-client/"/>
+    <updated>2016-01-25T13:54:00-07:00</updated>
+    <id>http://jaketrent.com/post/test-apis-failing-from-client</id>
+    <content type="html"><![CDATA[<p>In the case where you can't edit a local version of your APIs in order to cause them to fail, you need to be able to edit your client so that it <em>looks</em> like the API request fails.  Here's a quick code change that should make this easy for you.</p>
+
+<p><img src="http://i.imgur.com/8Fm1cn2.jpg" alt="We have a problem" /></p>
+
+<!--more-->
+
+
+<p>This is one of many possible manual testing techniques.  This allow you to see the change in your running app as you work through it.  For instance, I like to use this as I'm testing through the error alerting features that are common in an app when an API request fails.</p>
+
+<p>Go to the point in your app where your bits touch the network.  This is usually the place where you use your HTTP wrapper or, if you're a free spirit, call some XHR goodness yourself.  These days, I like using the venerable <a href="https://github.com/mzabriskie/axios">axios</a> library.  Axios is promise based, so that means that we can use async/await as well, which is like a fine chocolate next to a warm fire in winter (which is good).</p>
+
+<p>So, all my http code might look in essence like this:</p>
+
+<p>```js api.js
+import axios from 'axios'</p>
+
+<p>export const fetch = {
+  // deserialize, etc ...
+  request(url) {</p>
+
+<pre><code>return axios({
+  method: 'get',
+  url
+})
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>So, this <code>request</code> function returns a Promise.  The logic around the request might look like:</p>
+
+<p>```js actions.js
+import * as api from './api'</p>
+
+<p>async function fetchWater() {
+  const { request} = api.fetch</p>
+
+<p>  try {</p>
+
+<pre><code>const res = await request('/my/own/home')
+// ... handle success response
+</code></pre>
+
+<p>  } catch (res) {</p>
+
+<pre><code>// ... handle error response, where failure code should execute (what we want to TEST!)
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>To make this request fail, we need only make the Promise fail, rejecting it like a mouthful of stewed tomatoes.  So, just change <code>api.js</code>:</p>
+
+<p>```js api.js
+import axios from 'axios'</p>
+
+<p>export const fetch = {
+  // ...
+  request(url) {</p>
+
+<pre><code>return Promise((resolve, reject) =&gt; {
+  reject({
+    status: 500,
+    data: {
+      errors: [{ detail: 'Shere Khan is back!' }]
+    }
+  })
+})
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Now note that you must be aware of what your format HTTP library, in this case axios, uses in its responses.  What you <code>reject</code> manually must be exactly the same format that usually is returned in an error situation (eg, <code>status</code> and <code>data</code>).  You must also know what your server is designed to return as an error response (eg, <code>errors</code>).  The above application code is using the <a href="http://jsonapi.org/format/#error-objects">JSON API</a> format.</p>
+
+<p>What other little tricks do you find useful in getting APIs to fail?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[What React Stateless Components are Missing]]></title>
@@ -450,169 +537,6 @@ return &lt;Item text={item} onRemove={this.handleClickRemove.bind(this, i)} key=
 <p>Isn't that awesome and useful?</p>
 
 <p>So <code>bind</code> can help make <code>this</code> more predictable for you.  It will help you send new functions with pre-filled parameters.  What else have you used <code>bind</code> for?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Testing React on jsdom]]></title>
-    <link href="http://jaketrent.com/post/testing-react-with-jsdom/"/>
-    <updated>2015-06-18T07:13:00-06:00</updated>
-    <id>http://jaketrent.com/post/testing-react-with-jsdom</id>
-    <content type="html"><![CDATA[<p>React allows you to create components that will render UI for your application.  If your UI is of any complexity, you'll likely want to test that it functions correctly and allows for future refactors.  There are numerous ways to do this.  One way that you might appreciate is using <a href="https://github.com/tmpvar/jsdom">jsdom</a>, an in-JavaScript implementation of the DOM.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react on jsdom" /></p>
-
-<!--more-->
-
-
-<h2>What is jsdom?</h2>
-
-<p>Jsdom is an in-JavaScript implementation of the DOM.  The DOM is the document object model, which is the tree of nodes that make up the UI for documents shown in web browsers.</p>
-
-<p>Because jsdom is implemented in JavaScript, we can have a DOM-like API to work with without needing a browser.  That means that we don't have to capture a browser in order test, a la <a href="http://karma-runner.github.io/">Karma</a>.  That means that we can run our tests in environments without browsers, like in Node or in continuous integration environments.</p>
-
-<p>By not using real browsers, we're also essentially saying that we believe the problems in our client JavaScript will not be browser-dependent (again, because we're not capturing <em>real</em> browsers).</p>
-
-<h2>jsdom Requirements</h2>
-
-<p>The <a href="https://github.com/tmpvar/jsdom">latest version of jsdom</a>, as of this writing, requires <a href="https://iojs.org/en/index.html">io.js</a> instead of Node to run.  If you'd like to run in Node.js instead, the <a href="https://github.com/tmpvar/jsdom/tree/3.x">3.x series of jsdom</a> is required.</p>
-
-<p>As <a href="http://thenextweb.com/dd/2015/06/16/node-js-and-io-js-are-settling-their-differences-merging-back-together/">Node and io.js merge in the future</a>, I expect the new versions of jsdom to support the one, unified platform.</p>
-
-<h2>The Test Runner</h2>
-
-<p>In my JavaScript tests, I prefer to use the <a href="http://mochajs.org/">Mocha</a> test runner.  It's usable in Node or browser environments.  It has great async test support.  It has the familiar behavior-style syntax of <code>describe</code> and <code>it</code> and all the normal test setup hooks that you like.  Most importantly, it features the Nyan cat test reporter:</p>
-
-<p><img src="http://mochajs.org/images/reporter-nyan.png" alt="nyan cat test reporter" /></p>
-
-<p>Mocha lets you choose your own assertion library.  I like <a href="http://shouldjs.github.io/">should.js</a>.</p>
-
-<p>To install both:</p>
-
-<p><code>
-npm install mocha should --save-dev
-</code></p>
-
-<h2>Configuring Mocha</h2>
-
-<p>By default, Mocha wants a <code>/test</code> directory in your project root in which to put its configuration and potentially your spec files, depending on how you like to organize your projects:</p>
-
-<p><code>
-mkdir test
-</code></p>
-
-<p>Inside of the <code>/test</code> dir, let's <code>vim mocha.opts</code> and give it a place to configure jsdom and our other libs:</p>
-
-<p><code>text mocha.opts
---require test/utils/dom.js
---require should
---reporter nyan
-</code></p>
-
-<p>We have yet to write the <code>test/utils/dom.js</code> file.  We will.  This file includes options for mocha.  Line by line, we're saying that before mocha runs tests, we want to load our <code>dom.js</code> config, the <code>should.js</code> library, and specify our reporter as <code>nyan</code>.</p>
-
-<h2>Configuring jsdom</h2>
-
-<p>I've tried to come up with several configurations that will make jsdom work well with my React projects.  This is the best/simplest that I've come up with.  I'd be interested to hear if you have any suggestions on the approach.</p>
-
-<p>Here's the full configuration with explanatory comments inline, as it would appear in <code>test/utils/dom.js</code>:</p>
-
-<p>```js dom.js
-var jsdom = require('jsdom')</p>
-
-<p>// setup the simplest document possible
-var doc = jsdom.jsdom('&lt;!doctype html><html><body></body></html>')</p>
-
-<p>// get the window object out of the document
-var win = doc.defaultView</p>
-
-<p>// set globals for mocha that make access to document and window feel
-// natural in the test environment
-global.document = doc
-global.window = win</p>
-
-<p>// take all properties of the window object and also attach it to the
-// mocha global object
-propagateToGlobal(win)</p>
-
-<p>// from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80
-function propagateToGlobal (window) {
-  for (let key in window) {</p>
-
-<pre><code>if (!window.hasOwnProperty(key)) continue
-if (key in global) continue
-
-global[key] = window[key]
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>The reason that we want to attach all the <code>window</code> properties to the mocha <code>global</code> object is because developers often write code that is meant for the browser without explicitly using the global environment object.  For instance, in React the developers write:</p>
-
-<p><code>js
-navigator.userAgent.indexOf('Chrome') &gt; -1
-</code></p>
-
-<p>instead of:</p>
-
-<p><code>js
-window.navigator.userAgent.indexOf('Chrome') &gt; -1
-</code></p>
-
-<p>Withing taking <code>window.navigator</code> and putting it on <code>global.navigator</code>, you'd get an error like this when running your tests:</p>
-
-<p><code>
-ReferenceError: navigator is not defined
-</code></p>
-
-<h2>The React Test</h2>
-
-<p>You are now ready to render React components into a document in your tests.  The document will be provided by jsdom.  You don't need a browser environment to run this.</p>
-
-<p>```js mycomponent.spec.js
-var React = require('react/addons')
-var should = require('should')
-var TestUtils = React.addons.TestUtils
-var MyComponent = // a React.Component with a <button/> ...
-describe('MyComponent', function () {
-  it('has button that fires a dom event for click', function (done) {</p>
-
-<pre><code>function handleClick() { done() }
-var detachedComp = TestUtils.renderIntoDocument(&lt;MyComponent onClick={handleClick}/&gt;)
-var button = TestUtils.findRenderedDOMComponentWithTag(detachedComp, 'button')
-var buttonNode = React.findDOMNode(button)
-should.exist(buttonNode)
-TestUtils.Simulate.click(buttonNode)
-</code></pre>
-
-<p>  })
-})
-```</p>
-
-<p>To run mocha with the configuration above, I like to add an npm script in <code>package.json</code>:</p>
-
-<p>```json package.json
-{
-   "scripts": {</p>
-
-<pre><code> "test": "mocha test/**/*.spec.js"
-</code></pre>
-
-<p>   }
-}
-```</p>
-
-<p>And then type:</p>
-
-<p><code>bash
-npm test
-</code></p>
-
-<p>Write the source to satisfy your test, and the lights should go green.  Your DOM is happy.  Your test is happy.</p>
-
-<p>Does it work well for you?  How might you improve on it?  Enjoy testing!</p>
 ]]></content>
   </entry>
   
