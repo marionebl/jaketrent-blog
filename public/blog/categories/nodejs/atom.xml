@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-01-25T14:37:00-07:00</updated>
+  <updated>2016-01-26T10:27:09-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,91 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Some Node Skills to Explore]]></title>
+    <link href="http://jaketrent.com/post/node-skills-explore/"/>
+    <updated>2016-01-26T10:00:00-07:00</updated>
+    <id>http://jaketrent.com/post/node-skills-explore</id>
+    <content type="html"><![CDATA[<p>We are hiring a bunch of Node.js developers at the moment.  You may be as well.  I'm sure you have a good list of skills that you're looking for in developers that join your posse.  Here are a few <em>technical</em> things I think about when getting the opportunity  to sit down with a Node developer.</p>
+
+<p><img src="http://i.imgur.com/9WglUIw.jpg" alt="Exploring Node Skills" /></p>
+
+<!--more-->
+
+
+<p>What might you add to the list?</p>
+
+<h2>Async Programming</h2>
+
+<ul>
+<li>What are options for async flow control?  Favorites?  Least?  Pros?  Cons?</li>
+<li>Node event loop -- How does it work?  What applications does it fit?</li>
+</ul>
+
+
+<h2>Error Handling</h2>
+
+<ul>
+<li>Limitations/advantages in handling async errors?</li>
+<li>Handle errors in Promises?</li>
+<li>Handle errors in callbacks?</li>
+<li>What errors should be thrown?</li>
+</ul>
+
+
+<h2>Functional</h2>
+
+<ul>
+<li>What is immutability?  Why want it?</li>
+<li>Basic Array.prototype methods?</li>
+<li>What does shared state give you?</li>
+<li>Advantages to pure functions?</li>
+<li>Applications of higher-order functions?</li>
+</ul>
+
+
+<h2>API</h2>
+
+<ul>
+<li>Specifically, how does CORS work?</li>
+<li>Familiar with which request and response formats?  Favorite?  Worst?  Why?</li>
+<li>How does middleware work?  When do you like to use it?</li>
+</ul>
+
+
+<h2>Ops</h2>
+
+<ul>
+<li>How can you use all CPUs on a server?</li>
+<li>How to associate logs together with a single request path?</li>
+<li>How to recover from fatal errors?</li>
+<li>How do you load per-environment configuration?</li>
+<li>How do you handle versioning of your apps and libs?</li>
+</ul>
+
+
+<h2>Modules</h2>
+
+<ul>
+<li>Why use modules?</li>
+<li>How do you organize your API apps' modules?</li>
+<li>Flavors of exports?  When do use each?</li>
+</ul>
+
+
+<h2>ES Next</h2>
+
+<ul>
+<li>Which new features have you used?  Like, not like?</li>
+<li>async/await - Used instead of what?</li>
+<li>Object literal extensions - How used?</li>
+<li>Spread operator - Helpful usecases?</li>
+<li>Arrow functions - What do they help with?</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[List Npm Scripts]]></title>
@@ -460,10 +545,11 @@ npm install connect-livereload --save-dev
 
 <p>Next, import:</p>
 
-<p>{% codeblock lang:coffeescript %}
-app.configure 'development', ->
-  app.use require('connect-livereload') 35729
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span> <span class="s">&#39;development&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">require</span><span class="p">(</span><span class="s">&#39;connect-livereload&#39;</span><span class="p">)</span> <span class="mi">35729</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Note that we only want to import and use the middleware when in development.  This matches the fact that we are only declaring this package as in <code>devDependencies</code>.</p>
 
@@ -487,20 +573,31 @@ npm install grunt grunt-regarde grunt-contrib-livereload --save-dev
 
 <p>Next setup the <code>Gruntfile.coffee</code>:</p>
 
-<p>{% codeblock lang:coffeescript %}
-module.exports = (grunt) ->
-  grunt.initConfig</p>
-
-<pre><code>regarde:
-  style:
-    files: ['app/static/css/*.css']
-    tasks: ['livereload']
-</code></pre>
-
-<p>  grunt.loadNpmTasks 'grunt-contrib-livereload'</p>
-
-<p>  grunt.registerTask 'be-lively', [ 'livereload-start', 'regarde' ]
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(grunt) -&gt;</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nv">regarde:</span>
+</span><span class='line'>  <span class="nv">style:</span>
+</span><span class='line'>    <span class="nv">files: </span><span class="p">[</span><span class="s">&#39;app/static/css/*.css&#39;</span><span class="p">]</span>
+</span><span class='line'>    <span class="nv">tasks: </span><span class="p">[</span><span class="s">&#39;livereload&#39;</span><span class="p">]</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span> <span class="s">&#39;grunt-contrib-livereload&#39;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span> <span class="s">&#39;be-lively&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s">&#39;livereload-start&#39;</span><span class="p">,</span> <span class="s">&#39;regarde&#39;</span> <span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Now when you run:</p>
 
@@ -515,101 +612,6 @@ grunt be-lively
 <h2>LiveReload all the Things</h2>
 
 <p>There are many ways to make this happen.  There are numerous Node libraries, Grunt plugins, and browser plugins.  Do what works for you.  Just make it happen fast and tend it well from the beginning to the end of your project.  Almost every solution I've found is somewhat high maintenance.  This one has proven to be the same.  What have you found to be your favorite LiveReload solution, and in what environment?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Access NodeJs App on Xip.io]]></title>
-    <link href="http://jaketrent.com/post/nodejs-app-on-xipio/"/>
-    <updated>2013-04-23T07:22:00-06:00</updated>
-    <id>http://jaketrent.com/post/nodejs-app-on-xipio</id>
-    <content type="html"><![CDATA[<p>Xip.io is a DNS wildcard domain that was initially created for use on Ruby projects.  But its application is desirable across platforms.  Recently, I wanted to use Xip.io on a NodeJs project.  It was easy to make happen.</p>
-
-<p><img src="http://i.imgur.com/PJTnZmM.jpg" alt="xip.io" /></p>
-
-<!--more-->
-
-
-<h2>Update: Proxying is Built Into Pow</h2>
-
-<p>After having a handful of problems with these home-grown proxies, my search eventually led me to know that Pow 0.4.0+ includes proxying as a built-in feature.  So, you don't need your own <code>config.ru</code> any more.  Once you install pow, choose the port that your app will run on and at what pow address you want to access your app, and run one command in your terminal:</p>
-
-<p><code>
-echo 3000 &gt; ~/.pow/myapp
-</code></p>
-
-<p>Then you'll access your app, running in the background on port 3000 via the web browser at <code>http://myapp.dev</code>.  Way better.  Skip the rest of this article.</p>
-
-<h2>Install Pow and Powder</h2>
-
-<p>Pow is a development server that uses Xip.io.  Powder is a cli that makes working with Pow even easier.  To start, make sure that <a href="http://www.ruby-lang.org/en/downloads/">Ruby</a> is setup with <a href="http://rubygems.org">Rubygems</a> in your environment.  Then install Pow.  They have a short little install script you can run, as <a href="http://pow.cx/">referenced on the Pow site</a>.</p>
-
-<p>Then install Powder:</p>
-
-<p><code>
-gem install powder
-</code></p>
-
-<h2>Proxy your NodeJs app</h2>
-
-<p>Pow only knows how to handle Rack apps, so we have to create one to be loaded into Pow.  Since we're writing the guts of our app on another platform -- in this case, Node -- we'll just create a proxy Rack app.</p>
-
-<p>I found a bit of <a href="https://github.com/linjunpop/node-with-pow">proxy app code</a>, which you should save in your project root as <code>config.ru</code>, and which I paste here:</p>
-
-<p>{% codeblock lang:ruby %}
-require "net/http"</p>
-
-<p>class ProxyApp
-  def call(env)</p>
-
-<pre><code>begin
-  request = Rack::Request.new(env)
-  headers = {}
-  env.each do |key, value|
-    if key =~ /^http_(.*)/i
-      headers[$1] = value
-    end
-  end
-  http = Net::HTTP.new("localhost", 3000)
-  http.start do |http|
-    response = http.send_request(request.request_method, request.fullpath, request.body.read, headers)
-    [response.code, response.to_hash, [response.body]]
-  end
-rescue Errno::ECONNREFUSED
-  [500, {}, ["Server is down, try $npm start"]]
-end
-</code></pre>
-
-<p>  end
-end
-run ProxyApp.new
-{% endcodeblock %}</p>
-
-<p>The only change you might have to make is the port number for your app (line 13).  In this case, I'm using port 3000 for my NodeJs app.</p>
-
-<h2>Link Your App</h2>
-
-<p>Now all we have to do is link our app to Pow.  Powder helps us do this easily.  Go to your project root directory and type:</p>
-
-<p><code>
-powder link &lt;project_name&gt;
-</code></p>
-
-<p>Now run your app with whatever command starts NodeJs.  It's probably something like this:</p>
-
-<p><code>
-node app.js
-</code></p>
-
-<p>Now you should be able to access your app via your web browser at <code>http://&lt;project_name&gt;.dev</code>.  One of the great things about Xip.io is that it makes running your local app <a href="http://jaketrent.com/post/run-pow-server-on-vm/">extremely easy from a local Virtual machine</a> as well.  To get the address of your app to use in your VM, type this from your native terminal:</p>
-
-<p><code>
-powder open --xip
-</code></p>
-
-<p>And copy the resulting URL into your VM web browser.</p>
-
-<p>Ah, the fusion of Node and Ruby is pretty sweet.</p>
 ]]></content>
   </entry>
   

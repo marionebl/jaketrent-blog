@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-01-25T14:36:25-07:00</updated>
+  <updated>2016-01-26T10:27:09-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,91 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Some Node Skills to Explore]]></title>
+    <link href="http://jaketrent.com/post/node-skills-explore/"/>
+    <updated>2016-01-26T10:00:00-07:00</updated>
+    <id>http://jaketrent.com/post/node-skills-explore</id>
+    <content type="html"><![CDATA[<p>We are hiring a bunch of Node.js developers at the moment.  You may be as well.  I&#8217;m sure you have a good list of skills that you&#8217;re looking for in developers that join your posse.  Here are a few <em>technical</em> things I think about when getting the opportunity  to sit down with a Node developer.</p>
+
+<p><img src="http://i.imgur.com/9WglUIw.jpg" alt="Exploring Node Skills" /></p>
+
+<!--more-->
+
+
+<p>What might you add to the list?</p>
+
+<h2>Async Programming</h2>
+
+<ul>
+<li>What are options for async flow control?  Favorites?  Least?  Pros?  Cons?</li>
+<li>Node event loop &#8211; How does it work?  What applications does it fit?</li>
+</ul>
+
+
+<h2>Error Handling</h2>
+
+<ul>
+<li>Limitations/advantages in handling async errors?</li>
+<li>Handle errors in Promises?</li>
+<li>Handle errors in callbacks?</li>
+<li>What errors should be thrown?</li>
+</ul>
+
+
+<h2>Functional</h2>
+
+<ul>
+<li>What is immutability?  Why want it?</li>
+<li>Basic Array.prototype methods?</li>
+<li>What does shared state give you?</li>
+<li>Advantages to pure functions?</li>
+<li>Applications of higher-order functions?</li>
+</ul>
+
+
+<h2>API</h2>
+
+<ul>
+<li>Specifically, how does CORS work?</li>
+<li>Familiar with which request and response formats?  Favorite?  Worst?  Why?</li>
+<li>How does middleware work?  When do you like to use it?</li>
+</ul>
+
+
+<h2>Ops</h2>
+
+<ul>
+<li>How can you use all CPUs on a server?</li>
+<li>How to associate logs together with a single request path?</li>
+<li>How to recover from fatal errors?</li>
+<li>How do you load per-environment configuration?</li>
+<li>How do you handle versioning of your apps and libs?</li>
+</ul>
+
+
+<h2>Modules</h2>
+
+<ul>
+<li>Why use modules?</li>
+<li>How do you organize your API apps&#8217; modules?</li>
+<li>Flavors of exports?  When do use each?</li>
+</ul>
+
+
+<h2>ES Next</h2>
+
+<ul>
+<li>Which new features have you used?  Like, not like?</li>
+<li>async/await - Used instead of what?</li>
+<li>Object literal extensions - How used?</li>
+<li>Spread operator - Helpful usecases?</li>
+<li>Arrow functions - What do they help with?</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Test APIs Failing from Client]]></title>
@@ -1930,22 +2015,6 @@
 <p>You can also check out this <a href="http://jsbin.com/buwoqod/22/edit?js,output">slightly modified jsbin</a> which does the test assertion.</p>
 
 <p>What methods have you used to test Components that use either <code>componentWillReceiveProps</code> or other interesting lifecycle methods?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Programmer Struggle]]></title>
-    <link href="http://jaketrent.com/post/programmer-struggle/"/>
-    <updated>2015-02-25T09:39:00-07:00</updated>
-    <id>http://jaketrent.com/post/programmer-struggle</id>
-    <content type="html"><![CDATA[<blockquote class="quote large">
-<p>The life of a programmer is mostly a never-ending struggle.  Solving problems in an always-changing technical landscape means that programmers are always learning new things.  In this case, &#8220;learning new things&#8221; is a euphemism for &#8220;battling against our own ignorance.&#8221;  Even if a programmer is just fixing a bug in code that uses a familiar technology, sometimes the software we create is so complex that simply understanding what is going on can take an entire day.</p>
-<p>If you write code, you will struggle.  Most professional programmers learn to struggle hour after hour, day after day, without getting (too) frustrated.  This is another skill that will serve you well.</p>
-<footer>
-<cite>Aaron Hillegass, in <a target="_blank" href="https://books.google.com/books?id=yxwiAgAAQBAJ&pg=PA4&lpg=PA4&ots=MYkju-O5W3&sig=u4R8RZ1EhemFcQcD-3CCwllcEcw&hl=en&sa=X&ei=W5jsVOiuEsG7ogSG2YGADw&ved=0CDAQ6AEwAw#v=onepage">Objective-C Programming: The Big Nerd Ranch Guide</a></cite>
-</footer>
-</blockquote>
-
 ]]></content>
   </entry>
   
