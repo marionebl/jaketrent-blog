@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Leadership | Jake Trent]]></title>
+  <title><![CDATA[Category: leadership | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/leadership/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-02-18T09:08:17-07:00</updated>
+  <updated>2016-02-18T16:55:52-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -14,221 +14,101 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Make Software in the Estuary]]></title>
-    <link href="http://jaketrent.com/post/make-software-in-the-estuary/"/>
-    <updated>2015-08-20T10:06:00-06:00</updated>
-    <id>http://jaketrent.com/post/make-software-in-the-estuary</id>
-    <content type="html"><![CDATA[<p>An estuary is where the sea meets the river.  Here, there is a mix of fresh water and salt water, sediment from the rivers and marine life from the sea.  The effects of both sea and river are seen in many ways.  It's a swirl -- there's no upstream or downstream.  It's considered to be one of the most nutrient-rich, productive ecosystems on the planet.  So really, who <em>wouldn't</em> want to make software in an estuary?</p>
+    <title type="html"><![CDATA[Working More Might Not Help]]></title>
+    <link href="http://jaketrent.com/post/work-more-might-not-help/"/>
+    <updated>2016-02-18T16:50:00-07:00</updated>
+    <id>http://jaketrent.com/post/work-more-might-not-help</id>
+    <content type="html"><![CDATA[<p>Some have surmised that working more will help their team.  It may.  It may not.  It depends.  Here's just one collection of thoughts on how working significantly <em>more</em> than the <em>rest</em> of our team might not help and may actually hinder.</p>
 
-<p><img src="http://i.imgur.com/3XrFyZS.jpg" alt="the software estuary" /></p>
-
-<!--more-->
-
-
-<h2>The Traditional Production Flow</h2>
-
-<p>Here's a software production flow with disciplines and responsibilities represented:</p>
-
-<ol>
-<li>Company leadership - develops a strategy and business model</li>
-<li>Product management - identifies customers and products that could realize the business model</li>
-<li>Design - visualizes information, interfaces, and flows for the product</li>
-<li>Project management - manages a team in execution of production</li>
-<li>Engineering - implements the design for the product</li>
-<li>Quality assurance - verifies the correctness of the implementation</li>
-<li>Operations - release and maintains the finished product</li>
-</ol>
-
-
-<p>This is a simplified, constricted view -- a bit on purpose.  More or less, the traditional production flow is there.  It's very structured.  It feels like a factory assembly line.  I can imagine a lot of wall-throwing.  There are lots silos.  There's a lot of specialization.  The streams do not cross.  It does not feel like an estuary.</p>
-
-<h2>No More Strangers, Upstream and Downstream</h2>
-
-<p>In the traditional production flow, there are specific orders and directions.  Arrows flow between neat boxes.  It might feel like a spotless production facility, clean and robotic.  It may even be really efficient.  But you likely have some uneasiness considering such a creative endeavor as software production being made in such an environment.</p>
-
-<p>I think we should not think of ourselves as being in an upstream or downstream position, sitting somewhere in this traditional flow.  Rather, we are a full participant at any and all points.  We shouldn't think of our contributions in terms of our titles.  We should think of what we can offer of substance and then offer it.  In the estuary, things are messy, and we like it because of what we trust will be a better experience in the end.</p>
-
-<p>It might be worth asking yourself if you really believe in the power of collaboration.  As in, are you really ready to participate in such a mix of people, ideas, and varied contributions?  It might be worth considering:</p>
-
-<h4>When previously downstream...</h4>
-
-<ul>
-<li>Did it ever feel like you were expected to just do what you were told, completing your well-defined job on the assembly line?</li>
-<li>Did you ever lack an understanding of why you were making what you were being asked to make?</li>
-</ul>
-
-
-<h4>When downstream comes to the estuary...</h4>
-
-<ul>
-<li>Do you feel comfortable deviating from and adjusting the plan?</li>
-<li>Are you ready to feel uncomfortable and contribute outside your wheelhouse?</li>
-<li>Are you ready to have your work critiqued and changed?</li>
-</ul>
-
-
-<h4>When previously upstream...</h4>
-
-<ul>
-<li>Did you ever feel like you were the one mainly responsible for the thinking on the project?</li>
-<li>Did you ever feel like those downstream from you weren't being responsive enough to your ideas or instructions?</li>
-<li>Did you ever feel like you were in command and control mode all the time?</li>
-</ul>
-
-
-<h4>When upstream comes to the estuary...</h4>
-
-<ul>
-<li>Are you ready for others to contribute to or push back on ideas that you create?</li>
-<li>Are you ready to relinquish some control on "your ideas"?</li>
-<li>Are you ready to stay engaged for the entirety of the project and care about the production experience end-to-end?</li>
-</ul>
-
-
-<h2>Good People Required</h2>
-
-<p>Collaboration in the estuary isn't easy.  Work done here is done at a different level than work done on a pristine factory production floor.  It's more engaging, creative, demanding, evolving, and innovative.</p>
-
-<p>Good people are required.  Self esteem from all is required.  Courage to potentially look stupid is required when you ask fundamental questions, question why, or challenge the status quo.  Courage to get something wrong means that you're contributing even if there's someone who might be "better" at a particular activity than you most of the time.  Humility is required to allow space for others to influence your work and defer to those who don't share your title or field of expertise.  Trust is required when others want to take part in something that you see as very important.</p>
-
-<h2>The Medici Effect</h2>
-
-<p>The Medici Effect is named for the family living in Italy in the 14th century who had a great effect on the area and history.  They invited many experts from diverse disciplines and had the effect of making Florence, Italy a center of advancement and innovation, catapulting forward the Italian Renaissance.  The same effect of new and more ideas can be seen by us as we bring many disciplines together in a common cause.  What can we do to encourage our cross-functional teams really cross functions?</p>
-
-<p>People have different tastes and exposures.  Associative thinking is making connections between different ideas.  Naturally, people of different backgrounds and trainings will be more able to make more and varied associations.  New, fun, and unusual combinations will result.</p>
-
-<p>Steve Jobs often expressed that his passions lived at the intersection of the arts and technology.  That sounds like a cool estuary.  Now think of the intersection of the passions, knowledge, and abilities of entire teams really working together.</p>
-
-<p>So swim in the estuary.  It's a great way to make software.  Don't think of your roles in terms of upstream and downstream disciplines.  You can have a rich, productive team and a better product by truly working together, not just being on the same team in name, location, or project.  Pay the price of the messiness of collaboration.  It's challenging, of course.  But who doesn't want to do great work with people of courage, humility, and trust?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[This Isn't Your Magnum Opus]]></title>
-    <link href="http://jaketrent.com/post/this-isnt-your-magnum-opus/"/>
-    <updated>2015-08-15T15:46:00-06:00</updated>
-    <id>http://jaketrent.com/post/this-isnt-your-magnum-opus</id>
-    <content type="html"><![CDATA[<p>Sometimes it seems like we feel everything we produce must be our magnum opus -- not just great work, but <em>the</em> great work of our career.  Somehow we end up thinking that this thing we're working on is the final act, the thing that will dwarf all our previous work.  The thing that won't -- in fact, shouldn't -- be toppable.  We tell ourselves that we'll forever be judged by this one artifact.  Is that the case?  Probably not.</p>
-
-<p><img src="http://i.imgur.com/4yimUZ1.jpg" alt="a magnum opus in the making" /></p>
+<p><img src="http://i.imgur.com/xRlumnh.jpg" alt="Rise together as a team" /></p>
 
 <!--more-->
 
 
-<p>Of course we should do great work.  But sometimes our view of how great it needs to be, in a real way, gets in the way of its actual greatness.  We are slow to start.  We are intimidated by the blank page.  We shy away from production because we already don't know how to measure up to the expectation we've given ourselves in our head.  Stop expecting, and start doing.</p>
+<h2>What is "More"?</h2>
 
-<h2>Why you should start now</h2>
+<p>Working "more" than the team may mean many things.  Perhaps it means <em>more time</em> -- more time in the office, more time in certain worthy activities.  Perhaps it means <em>more skill</em> -- more productive, better at the things I care about.  Perhaps it means <em>more quality</em> -- produce better work at better rates.  Perhaps it means <em>more commitment</em> -- more focus, more sense of purpose, more of an innate sense of urgency.</p>
 
-<p>You're probably just wasting time on stuff you don't care about while you stew about how to complete this great work by which you'll be forever judged.  Mustn't mess up now, musn't we?  Of course, you're probably snoozin' in front of Netflix right now in order to escape what you're putting off.</p>
+<p>"More", for purposes of these thoughts also means <em>unevenly</em> more -- as in one person or subset of the team doing significantly more than the rest of the team.  I won't address it further here, but I think that generally if the whole team can do <em>more together</em>, within their capabilities, teams will get more better [sic].</p>
 
-<p>Life is filled with opportunities.  Opportunities don't sit still.  Time moves on.  There are windows to when things are possible or more likely.  Life will pass us by one way or the other.  Will we be involved in it in the ways we want?</p>
+<h2>Carrying the Burden of the Team</h2>
 
-<p>There is something to be said for producing in high volumes.  I read in a C.S. Lewis biography once that Lewis' friend J.R.R. Tolkien, who worked in detail at a snail's pace, thought his friend sloppy and not as careful an author as himself (17 years of production for the 3 Lord of the Rings books vs. 7 years of production for the 7 Chronicles of Narnia books).  Yet C.S. Lewis authored <a href="https://en.wikipedia.org/wiki/C._S._Lewis_bibliography"><em>many</em> great works</a> that have touched many people.  (J.R.R. Tolkien's works have spread to an even wider acclaim, btw.)  The more of your actualized ideas that appear in the wild, the more people will be touched in ways that you care about.  The more brains of your consumers that are activated by what you produce, the more ripple effect you're likely to have.  You may find a diamond in the rough eventually.  You're more likely to find diamonds if there are many scattered around for the finding.</p>
+<p>When we work significantly more than others, it can be easy to feel like we're carrying the brunt of the workload of the team.  The team has work to do, and we're doing the most of it.  We come in first.  We leave last.  Others on the team come and go in between.</p>
 
-<h2>The Road to Perfection</h2>
+<p>If we were to work similar hours to the reset of the team, we'd be less likely to feel that we were unduly burdened.  If we looked less at when people were in their seats, we'd feel less like a bean-counting manager.  We'd allow others to make their own time management choices.  We'd allow ourselves to focus more on our purpose for being on the team.</p>
 
-<p>The only constant is change --right?!  So why do you expect things to be <em>just so</em>, now?  This year's car model has somehow managed to look better than last year's.  But they shipped one last year anyway.  It may have even had something to do with with year's being as good as it was.</p>
+<h4>What Can We Do?</h4>
 
-<p>Iterate!  There will be time to repair or even replace. Often our ideas get better over time.  Often we do too much in the beginning.  We clutter the palette and crowd out great with good.  "Half baked" is just a comment with a negative connotation that means we still have work to do.  Of course we do.  When don't we?</p>
-
-<h2>Those Marketing Events</h2>
-
-<p>Ah, those marketing events.  You know the ones.  The company is turning over new leaves and wants to make a big splash.  They want to use all that ad budget to great effect and capture all the headlines in all the outlets.</p>
-
-<p>We might build something new and shiny from the ground up.  We stack as much pizzazz into the new product as we can.  We cringe that one of our favorite new features won't make it.  We endless tweak to get things just as we imagine "right" is for the big reveal.  We want it all, and it must be grand, fresh, and unified from the moment of the big press conference.</p>
-
-<p>These are big events.  Sometimes they work out.  They're easy to get wrong.  They're very easy to be disappointed by.  Have you heard advice like, "Don't make 20 new New Year's resolutions.  You'll drown in them.  Focus on <a href="http://jaketrent.com/post/vision-questing/">1 or 3 most important things</a> at a time."?  You'll be more likely to hit the mark you're aiming for.  And then after those first 3 months of 1 or 3 big things, your life will better in those 1 or 3 big ways.  Your product might benefit from the same focus.  And your customers will appreciate some benefits that you could provide in their lives before the appointed marketing hour.</p>
-
-<p>These marketing events are kind of cool in a way.  Who doesn't like a fireworks display?  (Hehe, but if you're like me, you're thinking about the cost per firework at the same time.)  But who likes waiting for things these days either?  Do you remember the days (not far distant) where web browser releases were tied to infrequent OS releases?  Was it fun to wait a year to be able to use that new browser feature?  Thankfully, browsers are released a lot more frequently now.  Small, online patches are common.</p>
-
-<p>I've never really enjoyed working toward these marketing events either.  Usually unrealistic timelines mixed with a sense of responsibility and urgency create additional stress.  Ironically, product quality and pride often suffer <em>anyway</em>, even after waiting until the big day.  The date usually moves anyway.  It's a potentially risky business move to wait on value so long, giving scrappier competitors a way to get in before you.  Things you thought would be done don't get done and you are left to create accommodations around legacy and next-gen systems existing simultaneously.  If you would have embraced iteration and expected a constant messiness, at least you would have been able to plan for this from the beginning.</p>
-
-<h2>Peer in the Future</h2>
-
-<p>Of course you want to achieve your product vision.  You are genuinely excited by the prospects of that future that you behold.  You still can.  But if you don't release now (or at least sooner than you're comfortable), it's likely you'll never bring yourself to release, being stalled, scared of judgement, in the grips of analysis paralysis, not wanting to blow it.  Then eventually, at the end of the long and winding road, you will release what you <em>thought</em> was your vision, often missing the mark anyway.  You're more likely to hit 5 free throws than you are to hit 1 full-court shot.  And if you miss one free throw, you have another 80% of your opportunities in front of you to adjust for and get right.</p>
-
-<p>It has been said that the best way to predict the future is to invent it.  A lot can change in months, days, and years.  Help guide the future one day at a time, continuously.  The best way to test your invention is to release it and let people try it.  The best time to release is as soon as possible.</p>
-
-<p>Don't worry about this product being your magnum opus.  Maybe it will, maybe it won't.  Let other decide that after you're dead and all your works are done.  Make the world a better place as best you can as soon as you can, and make some opuses!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[A Vision Questing We Will Go]]></title>
-    <link href="http://jaketrent.com/post/vision-questing/"/>
-    <updated>2015-08-10T20:34:00-06:00</updated>
-    <id>http://jaketrent.com/post/vision-questing</id>
-    <content type="html"><![CDATA[<p>Do you ever get home and not remember what you did for the whole day at work?  You were always on the move.  You were always doing something for someone.  Obviously you were a much-valued member of the team to have so much required of you.  So then why can't you remember what you actually did?  And if you can't remember that, surely you can't remember <em>why</em> you were doing it!</p>
-
-<p><img src="http://i.imgur.com/kEjGTZc.jpg" alt="the vision quest" /></p>
-
-<!--more-->
-
-
-<h2>My Last Job</h2>
-
-<p>I have been privileged to work with some fantastic teams at great companies.  I am so grateful to say that each has been a great experience and opportunity for me that I wouldn't exchange for a different past.  My current job is no different.</p>
-
-<p>I usually make it a point to be open to new opportunities, including new jobs.  Thus, when I was approached about a new opportunity, even though I was very engaged in my current employment, I said I was willing to see what the opportunity was, to meet new people, and talk stuff through.</p>
-
-<p>As I began to chat about the new opportunity, my sights were raised a little higher than they had been.  I had been involved in the daily work of making a new, awesome product -- one that I was and am proud of.  But I must have been lost in the daily grind of cranking this thing out because I found the chats about a new opportunity refreshing.  But still I had such a great gig going, and I was really torn between two solid places to work.</p>
-
-<p>As I tried to work things out, I was super distracted for a few days while trying to do my daily work.  I finally just took a day off.  I knew I had to figure things out so I could decide what I was going to do and go forward.  I woke up that day and wrote about the situation.  I had breakfast with my family.  I played soccer with my kids in the backyard.  I went on a walk.  I wrote some more.  I thought a lot about life, about my vision for the future.  I talked with my wife.  It was an awesome day.</p>
-
-<p>In the end, I decided to make a job change.  I took the new job, leaving what was also a great job.  As I left, I couldn't help but feel that if I had done more to create more clarity for myself around my previous job, I may have made better changes to my work, focusing on what was important to me, potentially <em>without</em> changing jobs.  I resolved to do more thinking about these kinds of things in the future.  This not in an effort to avoid new jobs and opportunities, but rather to always be focused on what <em>I</em> really care about within <em>each</em> great job that I have the pleasure to be a part of.</p>
-
-<h2>Vision Quest</h2>
-
-<p>Thus the Vision Quest was born.  Why "Vision Quest"?  Well, it sounds awesome, sounds epic, is something that looks good capitalized, and it's fun to say.  It also alludes to what it actually means (So it's not from the same naming book as most tech startups).  I also have some vague memory of an illustrated children's book I read as a child about this <a href="https://en.wikipedia.org/wiki/Vision_quest">Native American tradition</a>.</p>
-
-<p>Liz Wiseman, in her book Rookie Smarts, talks about a Think Day.  I love that idea too.  This is similar.  But where she encourages that day to be mostly focused on innovation, I believe the focus of the Vision Quest day is mostly on one's broad vision and most important work.</p>
-
-<h2>A Questing We Will Go</h2>
-
-<p>Ah, questing.  So invigorating.  A Vision Quest can take the shape that best suits you and the needs that you have.  For what it's worth, this is what I do -- at least until the point where I figure out how to do my questing in the Caribbean for a full week.</p>
-
-<p>I take the whole day off from work.  I use it as a PTO day.  It definitely is a personal day, but in reality, it's usually some serious investment in one's work.  Your employer would rather you took a day off for this than started thinking about it anyway in terms of finding a new job.  I think the best employers already encourage this kind of behavior.</p>
-
-<p>I try to find different places and paces to think.  I go outside.  I see my children at times of day that I usually don't.  I go to the library.  I turn off social media.  I turn off most music.  I spend a lot of time alone.  And I write.  I write a lot in order to organize my thoughts.  I mostly just let it flow.  I spend most of the day, usually an hour at a time, writing.  I don't worry about format, punctuation, and that sort of thing (which cries against my OCD).  I just try to get thoughts out.  Toward the end of the day, I try to summarize what I'm thinking.  I discuss it with my wife.  I adjust per her insights and feedback.  Then I relax with the family and let it simmer.</p>
-
-<p>I wanted to take my Vision Quest regularly.  It feels to me like it needs to be recurring, spaced far enough apart to be a long-term thing but not so far apart as to forget about it, have large changes in priorities, or feel it an irrelevant exercise.  The cost is really quite low for the added clarity, happiness, and impact on the work you value the most.  I came up with an every-3 months recurring schedule.</p>
-
-<h2>Alone With Your Thoughts</h2>
-
-<p>Of course, it's <em>your</em> Vision Quest.  So think about what you want and need.  In the end, I try to end up with 3 main areas that I want to focus on until my next Vision Quest, 3 months from now.  This is more or less the idea that Todd Henry calls <a href="http://jaketrent.com/post/ideas-from-accidental-creative/">The Big 3 in his book, The Accidental Creative</a>.</p>
-
-<p>The Big 3 will help guide your most important work for the next 3 months.  You will have another guide by which you decide what work you should or shouldn't focus on.  If a task will help you accomplish your Big 3 or fits well within the things listed there, that should encourage you to take it on where possible.  If there is something vying for your attention that doesn't fit in The Big 3, you should likely be hesitant to take it on.  What is the cost to your Big 3 if you do this new thing instead?</p>
-
-<p>Hours of writing, questioning and answering, given my eclectic thought process, can lead to sundry topics.  A few that might fit into your Vision Quest are:</p>
+<p>Each situation likely requires thought and consideration of the team and those involved.  But here are some ideas on how we might overcome issues of uneven team contribution.</p>
 
 <ul>
-<li>What's important to me?</li>
-<li>How do I want to grow?</li>
-<li>How can I take advantage of my strengths?</li>
-<li>What are opportunities I foresee?</li>
-<li>What are some current opportunities that I should take advantage of?</li>
-<li>What do I want for myself and my family?</li>
-<li>What is my value to my team and company?</li>
-<li>What makes me excited to go to work?</li>
-<li>What makes me want to stay home?  What do I want to do instead?</li>
-<li>How can I be the kind of person I want to work with every day?</li>
-<li>What am I interested in that I might not be doing at work?</li>
-<li>What do I waste time on?</li>
-<li>What do I want to spend more time on?</li>
-<li>What are some of my greatest recent successes?</li>
-<li>Where will I find my next big challenge?</li>
-<li>How do I feel about X?  Do I care about X?</li>
-<li>How would I rate my current performance?</li>
+<li>If we must count, count hours less, count contribution more.  Hard.</li>
+<li>Focus on ourselves.  Put expectations on ourselves.  We can control those things.</li>
+<li>Life's never fair.  Sometimes we <em>do</em> carry more burden.  Sometimes we are carried.</li>
+<li>Share what we're doing on the team.  Transparency may help dispel myth.</li>
 </ul>
 
 
-<h2>The Next 3 Months</h2>
+<h2>Rise Together</h2>
 
-<p>Now you have a long list of thoughts of various importance.  You have drawn out and summarized the essence of what you currently feel is your most important focus.  You've chosen just a few items, remembering that these are the <em>most</em> important things you want to move the needle on, and that you can't do everything.  You've shared your Big 3 with people that you trust and from whom you will need support.</p>
+<p>Part of our purpose for being on the team is to help the <em>entire</em> team be better.  If the team completes the work together and we need every person on the team, sometimes we need to specifically focus on helping our team grow in capability, focus, happiness, quality, output, or whatever it is that we feel the team is lacking.</p>
 
-<p>Now there's a lot of work to do.  Way to go!  All that important work that you've clarified for your future represents a lot of growing and a lot of impact on what you value.  You have quested for a vision, and now the real questing begins as you seek out and accomplish the work that you have pinpointed.</p>
+<p>We may not really be addressing the issue that needs addressed -- whether a real challenge of the team or something we have conjured in our mind -- by just hammering out more work.  If we take this course of just pressing on with greater speed, time commitment, and effort, we may actually make the problem worse, encouraging ourselves to believe more deeply that we are carrying the weight of the team.</p>
 
-<p>It's fantastic to make your life what you want of it.  If you don't, it's likely that you'll make it to a grand old age, look back and realize that your life could have been so much more than you made it.  Or perhaps less epicly, you'll just change jobs.</p>
+<h4>What Can We Do?</h4>
+
+<ul>
+<li>Consider how we might lift the total capability of the team.</li>
+<li>Be constructive and helpful to others.  In order to get here, we need to stop feeling sorry for ourselves.</li>
+<li>Sometimes we might slow down and invest in the team itself.</li>
+</ul>
+
+
+<h2>False Heroism</h2>
+
+<p>Once we are working significantly more than the rest of the team, we can come to believe that the team relies on us above all others.  We may attract praise and be singled out.  This may lead us to do more of the thing -- the potentially unhealthy thing -- that we're doing in order to attract more praise.</p>
+
+<p>Soon, to keep up this pattern of addictive praise incoming, we may begin to create more situations where we can swoop in, do significantly more than others and hopefully be held up as an example of adoration for others to aspire to.  This is a cycle that makes things worse.</p>
+
+<p>Lifting ourselves above our teammates leads to rampant comparison.  We cultivate pride in ourselves.  We start to feel like we need to prove our continuing contribution.  We speak up about what we individually have done to save and push forward our projects.  We use a lot of "I..."-subject phrases.  We are quick to point out after-hours or extended contributions.  The focus becomes me instead of the team.  The product becomes my own personal activities instead of the team output.</p>
+
+<h4>What Can We Do?</h4>
+
+<ul>
+<li>Make comparisons for the purpose of helping and filling the deficit of others.</li>
+<li>See our strengths as opportunities to help others weak in those areas, not a chance to shine above them.</li>
+<li>Be judicious in public praise.  We get more of the thing we praise.  Praise can have side effects.</li>
+</ul>
+
+
+<h2>Stories We Tell Ourselves</h2>
+
+<p>When we're so focused on ourselves, it's easy to be very out of touch with others.  We're often uncomfortable in approaching others about our shared contribution because, of course, we believe that we're doing so much than the rest of the group and are likely upset in some ways with the team.</p>
+
+<p>So we're left to ourselves.  We tell ourselves stories about why the rest of the team just can't or won't keep up.  We create reasons in our mind to explain the source of their lesser commitment.  Some of it actually might be true, but the story is left to us to tell, and it's likely embellished and unfair.</p>
+
+<h4>What Can We Do?</h4>
+
+<ul>
+<li>Notice when we're telling ourselves things in our mind that we don't actually know are true.  Practice distinguishing actual fact from yet-unproved fact.</li>
+<li>Give people the benefit of the doubt.  Trust in usually-good intentions.</li>
+<li>Talk with others.  Tell them our concerns.  Hear their perspective.  We'll probably be surprised with new appreciation.</li>
+</ul>
+
+
+<h2>It is a "We" Problem</h2>
+
+<p>I use "we" in this article because I believe we all can suffer at different times and degrees from this malady.  We value what we bring to the table, and we should.  It's the comparison with our teammates that's the problem.  Pride is universal.</p>
+
+<p>I also use "we" because this problem and its children problems are issues that we, <em>as a team</em>, need to help one another overcome.  I also believe that every one of us has the ability, hopefully with the help of help of our concerned teammates, to overcome this and other problems that keep us from being better teams.</p>
+
+<h2>Great Teams Aren't Perfect</h2>
+
+<p>I hope everyone has some number of opportunities to work with great teams.  It's an awesome feeling to feel united in a purpose.  It's awesome to feel supported by others around us.  It's awesome to see our efforts magnified in a greater whole.</p>
+
+<p>Even great teams have troubles.  It's never going to be perfect.  Don't lose heart.  Great teams will be able to have patience, see each other as human beings doing their best, and find a way to make it work and work well.</p>
+
+<p>I think some of this has felt familiar as we've read through it together.  We are all still growing on our teams.  What have you done to make your teams work better together and not make any one person feel overburdened?</p>
 ]]></content>
   </entry>
   
