@@ -4,7 +4,7 @@
   <title><![CDATA[Category: css | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/css/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-02-17T09:53:44-07:00</updated>
+  <updated>2016-02-18T09:08:17-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -65,19 +65,19 @@ import React from 'react'</p>
 <p>  }
   componentDidMount() {</p>
 
-<pre><code>document.body.toggle('darkClass', this.props.isDark)
+<pre><code>document.body.classList.toggle('darkClass', this.props.isDark)
 </code></pre>
 
 <p>  }
   componentWillReceiveProps(nextProps) {</p>
 
-<pre><code>document.body.toggle('darkClass', nextProps.isDark)
+<pre><code>document.body.classList.toggle('darkClass', nextProps.isDark)
 </code></pre>
 
 <p>  }
   componentWillUnmount() {</p>
 
-<pre><code>document.body.remove('darkClass')
+<pre><code>document.body.classList.remove('darkClass')
 </code></pre>
 
 <p>  }

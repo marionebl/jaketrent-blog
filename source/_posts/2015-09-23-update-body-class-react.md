@@ -48,13 +48,13 @@ class BodyColor extends React.Component {
     isDark: false
   }
   componentDidMount() {
-    document.body.toggle('darkClass', this.props.isDark)
+    document.body.classList.toggle('darkClass', this.props.isDark)
   }
   componentWillReceiveProps(nextProps) {
-    document.body.toggle('darkClass', nextProps.isDark)
+    document.body.classList.toggle('darkClass', nextProps.isDark)
   }
   componentWillUnmount() {
-    document.body.remove('darkClass')
+    document.body.classList.remove('darkClass')
   }
   render() {
     return this.props.children
@@ -71,4 +71,3 @@ To use, pass an `isDark` attribute to activate the `darkClass` class on the body
 ```
 
 Are there any other ways you've found to reach out of React and modify the DOM directly.  What have been your use cases?
-
