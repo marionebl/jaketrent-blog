@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Working More Might Not Help"
+title: "Working More Might Not Help Our Team"
 date: 2016-02-18 16:50
 comments: true
 categories: [Productivity, leadership, teams, time-management]
