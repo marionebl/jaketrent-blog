@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-02-18T18:16:02-07:00</updated>
+  <updated>2016-03-14T15:03:04-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,46 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Gitignore System Files]]></title>
+    <link href="http://jaketrent.com/post/gitignore-system-files/"/>
+    <updated>2016-03-14T14:43:00-06:00</updated>
+    <id>http://jaketrent.com/post/gitignore-system-files</id>
+    <content type="html"><![CDATA[<p>There are many files that you don't want to store in your project's Git repo.  Some of these are even specific to the project.  Some are definitely not.  How do you ignore these that aren't related to the project?</p>
+
+<p><img src="http://i.imgur.com/ZYiky6R.png" alt="Git ignore" /></p>
+
+<!--more-->
+
+
+<h2>.gitignore For the Project</h2>
+
+<p>In your project directory, you likely have a <code>.gitignore</code> file.  Here, you keep things that might show up in that directory out of the project's version-controlled source tree.  There's not much to it.  On each line of the file, list the file names, directory names, or partial patterns that you don't want Git to track or even know about.</p>
+
+<p>For instance, if you're doing a Node.js project, you probably want to track all your own <code>.js</code> files, found in <code>src/</code>.  But you don't want to track all those 3rd-party modules in <code>node_modules</code>.  You probably don't want to track your code compiled for distribution either.  So, your project's <code>.gitignore</code> file might look like this:</p>
+
+<p><code>text project/.gitignore
+node_modules
+dist
+</code></p>
+
+<h2>.gitignore For Your System</h2>
+
+<p>Everything that goes in the project's <code>.gitignore</code> file should relate to the project.  And it should relate to everyone.</p>
+
+<p>There are many people and systems interacting with your project.  For instance, some developers might be on Mac OSX and get those nasty Finder thumbnail files, <code>.DS_Store</code> that end up popping up all over the place.  Others on the project might use the venerable Jetbrains editors which drop an <code>.idea/</code> directory in every project they edit.  These facts should be transparent to your project.  Every time someone picks up a new editor or switches an OS, the project shouldn't have another commit updating the <code>.gitignore</code> with yet another thing.</p>
+
+<p>You can make Git ignore files that appear on your system but are unrelated to the project.</p>
+
+<p>Edit your top-level <code>~/.gitgnore</code>.  Add all your system-related things there.  It might end up look like:</p>
+
+<p><code>text ~/.gitignore
+.DS_Store
+.idea
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Smart and Dumb Components in React]]></title>
@@ -394,85 +434,6 @@ function Chips(props) {
 <p>A <code>class</code>-based component may return <code>null</code> as its value in the view.  But a stateless component may not.  To get around this, return <code>&lt;noscript&gt;&lt;/noscript&gt;</code>.  This will be fully invisible in the view.</p>
 
 <p>So what else have you found that is unavailable in stateless functions?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Debug Locally in Elm]]></title>
-    <link href="http://jaketrent.com/post/debug-locally-elm/"/>
-    <updated>2015-11-28T14:39:00-07:00</updated>
-    <id>http://jaketrent.com/post/debug-locally-elm</id>
-    <content type="html"><![CDATA[<p>Debugging in Elm is easy once you know where to look.  You need an in-browser tool to help you.  It's almost as simple as just calling <code>console.log</code>, but you can't just put your logging statement anywhere.</p>
-
-<p><img src="http://i.imgur.com/1c6FH0f.png" alt="elm debug locally" /></p>
-
-<!--more-->
-
-
-<h2>The Online Option</h2>
-
-<p>There's a debugger available online as a part of the elm-lang site at <a href="http://debug.elm-lang.org/">debug.elm-lang.org</a>.  This page explains the principles behind why the debugger works and has the properties it does.  The <a href="http://debug.elm-lang.org/try">debugger is found</a> via clicking the "Debug" button in the top-right corner.</p>
-
-<p>But you don't want to paste your code into the Try Elm page in order to walk through your Elm code.  You need a local option.</p>
-
-<h2>Debugging Locally</h2>
-
-<p>Thankfully you already have the tools to debug locally after you've <a href="http://elm-lang.org/install">installed Elm</a> on your machine.   It comes with <code>elm-reactor</code>.</p>
-
-<p>In order to run your Elm code, go to your shell, <code>cd</code> into your project directory, and type:</p>
-
-<p><code>
-$ elm reactor
-</code></p>
-
-<p>This will serve up your project directory at <code>http://localhost:8000</code> by default.</p>
-
-<p><img src="http://i.imgur.com/yE93W9g.png" alt="screenshot of elm reactor" /></p>
-
-<p>You will be able to see the project files listed.  There are two links for each Elm program.  Unfortunately, the debug mode link is pretty subtle, looked over by me as just a bullet in the UI.</p>
-
-<ol>
-<li>Click the file name, get the run mode</li>
-<li>Click the wrench to the left of the file name, get the debug mode</li>
-</ol>
-
-
-<p>Alternately, type your own <code>?debug</code> at the end of any Reactor url to enter debug mode for that file.</p>
-
-<p>Once in debug mode, you should see your code in action in the browser as usual, now with a sidebar for the debugger overlayed on your UI.</p>
-
-<h2>Setting up Watches</h2>
-
-<p>Poor man's debugging has traditionally been logging. When variables are in scope, interrogate them and print the value on the screen.  Elm's debugging story feels about like that, with some cool bells and whistles around it -- like <em>time-traveling</em> debugging, oh my.</p>
-
-<p>In time-travel mode, your debug method of choice will probably be <code>Debug.watch</code>.  In the <a href="http://package.elm-lang.org/packages/elm-lang/core/2.0.1/Debug#watch">docs</a>, it is shown to take 2 arguments:</p>
-
-<p><code>
-watch : String -&gt; a -&gt; a
-</code></p>
-
-<p>The first argument is the label for the watched data in the debugger.  The second argument is the actual data value.  If I wanted to watch a dimensions tuple, I could write:</p>
-
-<p><code>
-Debug.watch "myDimensions" (w, h)
-</code></p>
-
-<p>Also note that you have to make your debug expression compile wherever you end up writing it.  I find that the easiest place to put a debug statement into my already-working code is in a <code>let</code> expression.  (Well, "already-working" is used loosely here -- we're debugging after all.)</p>
-
-<p><code>
-let
-  log = Debug.watch "myDimensions" (w, h)
-in
-  doStuff myDimensions
-</code></p>
-
-<p>Now the watched value will show up in the debugger sidebar.</p>
-
-<p><img src="http://i.imgur.com/PlI83Kq.png" alt="screenshot of elm watched code" /></p>
-
-<p>If you pause the debugger and step backward, you can see the value as it has changed over time.  It's pretty neat, and now you're debugging Elm on your own box!</p>
-
-<p>What other Elm debug tips do you have?</p>
 ]]></content>
   </entry>
   
