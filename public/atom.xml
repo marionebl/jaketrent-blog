@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-03-14T15:03:04-06:00</updated>
+  <updated>2016-03-14T16:24:09-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,128 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Console.log Deep Objects]]></title>
+    <link href="http://jaketrent.com/post/console-log-deep-objects/"/>
+    <updated>2016-03-14T15:13:00-06:00</updated>
+    <id>http://jaketrent.com/post/console-log-deep-objects</id>
+    <content type="html"><![CDATA[<p>With deep object structures, <code>console.log</code> can leave you wondering what&#8217;s down in the depths of the objects you&#8217;re printing out.  Here&#8217;s a quick help from Node stdlib.</p>
+
+<p><img src="http://i.imgur.com/00WAox4.jpg" alt="Git ignore" /></p>
+
+<!--more-->
+
+
+<p>You can usually see the objects that you&#8217;re <code>console.log</code>ing, and life is good:</p>
+
+<p>Given:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">stickers</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">are</span><span class="o">:</span> <span class="s1">&#39;fun&#39;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;stickers&#39;</span><span class="p">,</span> <span class="nx">stickers</span><span class="p">)</span>
+</span><span class='line'><span class="c1">// Outputs: stickers { are: &#39;fun&#39; }</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can see the whole object, and we&#8217;re happy.  We can even do objects up to a depth of 3 sub objects, and it works great:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">stickers</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">are</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">even</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">more</span><span class="o">:</span> <span class="s1">&#39;fun&#39;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;stickers&#39;</span><span class="p">,</span> <span class="nx">stickers</span><span class="p">)</span>
+</span><span class='line'><span class="c1">// Outputs: stickers { are: { even: { more: &#39;fun&#39; } } }</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If, however, we have a potentially deeply-nested object, we&#8217;ll get some of our data truncated:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">stickers</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">are</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">even</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">more</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">than</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">outrageously</span><span class="o">:</span> <span class="s1">&#39;fun&#39;</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;stickers&#39;</span><span class="p">,</span> <span class="nx">stickers</span><span class="p">)</span>
+</span><span class='line'><span class="c1">// Outputs: stickers { are: { even: { more: [Object] } } }</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>[Object]</code>s are cool and all, but not very informative.</p>
+
+<p>To get at this information, use <a href="https://nodejs.org/api/util.html#util_util_inspect_object_options"><code>util.inspect</code></a> from the <a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">stdlib</a>.  Here, you can set a depth option to be higher, letting you peer into those deep objects in the console:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">util</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;util&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kr">const</span> <span class="nx">stickers</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">are</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">even</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">more</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">than</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="nx">outrageously</span><span class="o">:</span> <span class="s1">&#39;fun&#39;</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;stickers&#39;</span><span class="p">,</span> <span class="nx">util</span><span class="p">.</span><span class="nx">inspect</span><span class="p">(</span><span class="nx">stickers</span><span class="p">,</span> <span class="p">{</span> <span class="nx">depth</span><span class="o">:</span> <span class="mi">4</span> <span class="p">}))</span>
+</span><span class='line'><span class="c1">// Outputs: stickers { are: { even: { more: { than: { outrageously: &#39;fun&#39; } } } } }</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Your data is yours again!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Gitignore System Files]]></title>
@@ -1871,66 +1993,6 @@
 <p>So, you don&#8217;t need to write your own proxy.  The option is built in for you.  webpack excites again!</p>
 
 <p>What other things have you been surprised that webpack already does for you?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[The Power of Liking]]></title>
-    <link href="http://jaketrent.com/post/the-power-of-liking/"/>
-    <updated>2015-04-23T21:50:00-06:00</updated>
-    <id>http://jaketrent.com/post/the-power-of-liking</id>
-    <content type="html"><![CDATA[<p>When there is a new software product to write, there&#8217;s a decision to be made on what to write it in.  In other words, what tech should we use?  Technologists have technology they &#8220;like&#8221;.  So then, what tech should they choose for the new project?  Does it matter what they like?</p>
-
-<p><img src="http://i.imgur.com/HmNq6Xz.jpg" alt="Like!" /></p>
-
-<!--more-->
-
-
-<h2>We Like Different Tech</h2>
-
-<p>Obviously, there are differences in people&#8217;s opinions.  Take a look at one current hot arena: in-browser MV* JavaScript frameworks.  They essentially are all made for the same purpose.  And years of different approaches and techs have been taken before each of them.</p>
-
-<p>They have many stylistic and substantive differences.  There are many acolytes assembled in each camp.  Each likes what they have.  Differences are real and perceived.  They&#8217;re here to stay.  That&#8217;s ok and probably better than ok.</p>
-
-<h2>On the Origins of Liking</h2>
-
-<p>Different people have different reasons for liking certain things.  Just like the subject of the liking, the origins of liking can be stylistic or substantive.</p>
-
-<p>Perhaps they have a long, storied background in a tech and want to cash in on their investment in the future.  Perhaps they had good experiences with successfully shipping product in the past in certain tech and bad experiences in others.  Perhaps the public perception and community uptake around a tech excites them to join in the merriment.</p>
-
-<p>They may, in fact, be drawn to something quite superficial &#8211; something as unaffecting the actual tech as liking the tech project&#8217;s logo.  More substantively, perhaps they&#8217;ve grown to like a tech after trying it out on a problem space and discovering and predicting great payoffs as they develop a particular product.</p>
-
-<h2>Of Course, Like the Product</h2>
-
-<p>If you like your product and you&#8217;re good at creating and supporting a product, of course you won&#8217;t choose a tech for just the tech&#8217;s sake.  You can do that inside your own github account.  There is time and space to simply explore tech as a technologist.  Here there are real products to ship to support great causes in real companies.</p>
-
-<p>I believe that choosing a tech should support the main goal of delivering value via an experience or service in software to real people.  I also believe that there is a power in liking a tech as the product creator.  Can we have both?  Often, I believe we can.</p>
-
-<h2>OK to Like</h2>
-
-<p>When is it appropriate to use a tech you want to write in?  There are insufficient blogosphere bits to enumerate all the permutations of appropriateness and inappropriateness factors.  You will need to use your judgement.  Often these issues are complicated in deciding how to support a product.  Believing that your personal desires have a place in product tech decisions, should what you like seem very complicated to you?</p>
-
-<p>I would ask, &#8220;What&#8217;s the alternative writing software in something you like?   Writing a product in a tech you <em>don&#8217;t</em> want to write in?&#8221;  And why would you do that?</p>
-
-<p>Sometimes I think we almost lead ourselves to think that something we don&#8217;t like to write in must have some power to do us good.  How, we&#8217;re not sure.  But just as our parents told us the veggies on our plates were good all those years ago, perhaps some tech austerity measure might do us some good now, right?</p>
-
-<p>Is a bad taste required for health?  Choosing the disliked option doesn&#8217;t necessarily mean that the outcome will be better just because it feels more responsible.</p>
-
-<h2>The Advantage of Liking</h2>
-
-<p>Are there advantages to writing in a tech you like?  Probably, yes.  And probably disadvantages, I&#8217;m sure.  Again, this isn&#8217;t meant to over simplify one&#8217;s analysis of tech options and problem fit.  Separate and in addition to that, what are the advantages of writing in something you like?</p>
-
-<p>An advantage is that you must already have some level of mastery in the tech you like.  I don&#8217;t think you&#8217;ll like things that you aren&#8217;t terribly good at.  You don&#8217;t have as much of a sense of accomplishment with those.  You have a strength in some tech that you can offer your company and your team.  You should play to that and use it to your advantage.  That&#8217;s what you, your leader, your team, and your customers want &#8211; your best productivity.</p>
-
-<p>If you&#8217;re a software creator, it&#8217;s likely that a good portion of your day is writing code for your product.  If you like the everyday experience, focus and flow time will come more easily to you.  You&#8217;ll be able to dig deep into your time and energy more easily to muster extra effort when needed.  The extra mile will not seem so laborious to you.</p>
-
-<h2>Like More Than the Tech</h2>
-
-<p>There is a lot of tech and a lot of product to be experienced out there.  It&#8217;s likely that you&#8217;ll be writing in a tech that you don&#8217;t fully like soon if you haven&#8217;t already.  There are many reasons to be a part of a software project beyond the tech.  It will be stabilizing and satisfying for you to find extra facets of your project to like.</p>
-
-<p>Like the team you work with.  Like the people you work for.  Like the purpose and aim of your company.  Like the product you&#8217;re making.  Like the values you&#8217;re living by.  Like the impact you&#8217;re making.  Like the relationships you&#8217;re building.  Like the skills you&#8217;re gaining.</p>
-
-<p>And if you have the choice &#8211; and we all do to one degree or another &#8211; why not like the tech you&#8217;re using!</p>
 ]]></content>
   </entry>
   

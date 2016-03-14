@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-03-14T15:03:04-06:00</updated>
+  <updated>2016-03-14T16:24:09-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,96 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Console.log Deep Objects]]></title>
+    <link href="http://jaketrent.com/post/console-log-deep-objects/"/>
+    <updated>2016-03-14T15:13:00-06:00</updated>
+    <id>http://jaketrent.com/post/console-log-deep-objects</id>
+    <content type="html"><![CDATA[<p>With deep object structures, <code>console.log</code> can leave you wondering what's down in the depths of the objects you're printing out.  Here's a quick help from Node stdlib.</p>
+
+<p><img src="http://i.imgur.com/00WAox4.jpg" alt="Git ignore" /></p>
+
+<!--more-->
+
+
+<p>You can usually see the objects that you're <code>console.log</code>ing, and life is good:</p>
+
+<p>Given:</p>
+
+<p><code>js
+const stickers = {
+  are: 'fun'
+}
+console.log('stickers', stickers)
+// Outputs: stickers { are: 'fun' }
+</code></p>
+
+<p>We can see the whole object, and we're happy.  We can even do objects up to a depth of 3 sub objects, and it works great:</p>
+
+<p>```js
+const stickers = {
+  are: {</p>
+
+<pre><code>even: {
+  more: 'fun'
+}
+</code></pre>
+
+<p>  }
+}
+console.log('stickers', stickers)
+// Outputs: stickers { are: { even: { more: 'fun' } } }
+```</p>
+
+<p>If, however, we have a potentially deeply-nested object, we'll get some of our data truncated:</p>
+
+<p>```js
+const stickers = {
+  are: {</p>
+
+<pre><code>even: {
+  more: {
+            than: {
+                outrageously: 'fun'
+            }
+        }
+}
+</code></pre>
+
+<p>  }
+}
+console.log('stickers', stickers)
+// Outputs: stickers { are: { even: { more: [Object] } } }
+```</p>
+
+<p><code>[Object]</code>s are cool and all, but not very informative.</p>
+
+<p>To get at this information, use <a href="https://nodejs.org/api/util.html#util_util_inspect_object_options"><code>util.inspect</code></a> from the <a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">stdlib</a>.  Here, you can set a depth option to be higher, letting you peer into those deep objects in the console:</p>
+
+<p>```js
+const util = require('util')
+const stickers = {
+  are: {</p>
+
+<pre><code>even: {
+  more: {
+            than: {
+                outrageously: 'fun'
+            }
+        }
+}
+</code></pre>
+
+<p>  }
+}
+console.log('stickers', util.inspect(stickers, { depth: 4 }))
+// Outputs: stickers { are: { even: { more: { than: { outrageously: 'fun' } } } } }
+```</p>
+
+<p>Your data is yours again!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Gitignore System Files]]></title>
@@ -384,56 +474,6 @@ import axios from 'axios'</p>
 <p>Now note that you must be aware of what your format HTTP library, in this case axios, uses in its responses.  What you <code>reject</code> manually must be exactly the same format that usually is returned in an error situation (eg, <code>status</code> and <code>data</code>).  You must also know what your server is designed to return as an error response (eg, <code>errors</code>).  The above application code is using the <a href="http://jsonapi.org/format/#error-objects">JSON API</a> format.</p>
 
 <p>What other little tricks do you find useful in getting APIs to fail?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[What React Stateless Components are Missing]]></title>
-    <link href="http://jaketrent.com/post/react-stateless-components-missing/"/>
-    <updated>2016-01-04T12:59:00-07:00</updated>
-    <id>http://jaketrent.com/post/react-stateless-components-missing</id>
-    <content type="html"><![CDATA[<p>Stateless React components got a new syntax in React 0.14.  It's much simpler.  It's just a function call.  Besides it just looking simpler, there are some major differences in what is available in a stateless component written this way.  There are some things missing -- purposefully not included -- that you may be used to.  Let's look at a few things.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="http://i.imgur.com/DXuSNbw.png" /></p>
-
-<!--more-->
-
-
-<p>Stateless components are now specifically not just components where you don't use <code>this.state</code>.  They're componets that are written in the form of a function:</p>
-
-<p><code>js
-function Chips(props) {
-  return &lt;div&gt;In the secret {props.place}&lt;/div&gt;
-}
-</code></p>
-
-<p>The observations made in this article will not apply to components that are created using the <code>class Chips extends React.Component</code> or <code>React.createClass</code> syntax, whether they use state or not.</p>
-
-<h2>No Backing Instance</h2>
-
-<p>A React component's backing instance is the object in memory that represents the node in the view.  This backing instance is the place where state is usually stored (using React's <code>this.state</code>).  Well now there's no <code>this</code> in stateless components.  Thus, there's not going to be a place for <code>this.state</code>.  Stateless, remember?  Data just passes through the pure function and into the resulting view.</p>
-
-<h2>No Lifecycle Methods</h2>
-
-<p>Because there's no backing instance as a place to put hooks for your code in the component lifecycle, you can not use any of the lifecycle methods from <code>React.Component</code>.  Methods such as <code>componentDidMount</code> and <code>componentWillReceiveProps</code> are out.  And since the stateless component is a pure function that just reproduces its view state on <code>props</code> change, why would you need lifecycle methods anyway?</p>
-
-<h2>No Reference to the Component</h2>
-
-<p>Often when testing, it's useful to get a reference to the component itself.  In the case of stateless components, they're just fired and forgotten, rendered into the view without the ability to get a handle on them.  They're just UI at this point, just in the DOM.  You can go to the DOM to do your testing.</p>
-
-<p>Depending on your test environment setup, you may want to wrap your stateless components in a <code>class</code>-based component you <em>can</em> get a reference to.</p>
-
-<p>Note that for stateless components, <code>ReactDOM.render</code> and <code>TestUtils.renderIntoDocument</code> will return <code>null</code>.</p>
-
-<h2>No refs</h2>
-
-<p>Stateless components can't be the target of a <code>ref</code>.  There's no backing instance.  You can't have <code>refs</code> internally to children either.  Remember, <code>this</code> and <code>this.refs</code> aren't around.  If your stateless component has a child that is a <code>class</code>-based component, <em>it</em> may have <code>refs</code>.  <a href="https://facebook.github.io/react/docs/more-about-refs.html">The docs</a> are another good reference on <code>refs</code>.</p>
-
-<h2>No null Returns</h2>
-
-<p>A <code>class</code>-based component may return <code>null</code> as its value in the view.  But a stateless component may not.  To get around this, return <code>&lt;noscript&gt;&lt;/noscript&gt;</code>.  This will be fully invisible in the view.</p>
-
-<p>So what else have you found that is unavailable in stateless functions?</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-03-14T15:03:04-06:00</updated>
+  <updated>2016-03-14T16:24:09-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,96 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Console.log Deep Objects]]></title>
+    <link href="http://jaketrent.com/post/console-log-deep-objects/"/>
+    <updated>2016-03-14T15:13:00-06:00</updated>
+    <id>http://jaketrent.com/post/console-log-deep-objects</id>
+    <content type="html"><![CDATA[<p>With deep object structures, <code>console.log</code> can leave you wondering what's down in the depths of the objects you're printing out.  Here's a quick help from Node stdlib.</p>
+
+<p><img src="http://i.imgur.com/00WAox4.jpg" alt="Git ignore" /></p>
+
+<!--more-->
+
+
+<p>You can usually see the objects that you're <code>console.log</code>ing, and life is good:</p>
+
+<p>Given:</p>
+
+<p><code>js
+const stickers = {
+  are: 'fun'
+}
+console.log('stickers', stickers)
+// Outputs: stickers { are: 'fun' }
+</code></p>
+
+<p>We can see the whole object, and we're happy.  We can even do objects up to a depth of 3 sub objects, and it works great:</p>
+
+<p>```js
+const stickers = {
+  are: {</p>
+
+<pre><code>even: {
+  more: 'fun'
+}
+</code></pre>
+
+<p>  }
+}
+console.log('stickers', stickers)
+// Outputs: stickers { are: { even: { more: 'fun' } } }
+```</p>
+
+<p>If, however, we have a potentially deeply-nested object, we'll get some of our data truncated:</p>
+
+<p>```js
+const stickers = {
+  are: {</p>
+
+<pre><code>even: {
+  more: {
+            than: {
+                outrageously: 'fun'
+            }
+        }
+}
+</code></pre>
+
+<p>  }
+}
+console.log('stickers', stickers)
+// Outputs: stickers { are: { even: { more: [Object] } } }
+```</p>
+
+<p><code>[Object]</code>s are cool and all, but not very informative.</p>
+
+<p>To get at this information, use <a href="https://nodejs.org/api/util.html#util_util_inspect_object_options"><code>util.inspect</code></a> from the <a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">stdlib</a>.  Here, you can set a depth option to be higher, letting you peer into those deep objects in the console:</p>
+
+<p>```js
+const util = require('util')
+const stickers = {
+  are: {</p>
+
+<pre><code>even: {
+  more: {
+            than: {
+                outrageously: 'fun'
+            }
+        }
+}
+</code></pre>
+
+<p>  }
+}
+console.log('stickers', util.inspect(stickers, { depth: 4 }))
+// Outputs: stickers { are: { even: { more: { than: { outrageously: 'fun' } } } } }
+```</p>
+
+<p>Your data is yours again!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Smart and Dumb Components in React]]></title>
@@ -394,95 +484,6 @@ function Chips(props) {
 <p>A <code>class</code>-based component may return <code>null</code> as its value in the view.  But a stateless component may not.  To get around this, return <code>&lt;noscript&gt;&lt;/noscript&gt;</code>.  This will be fully invisible in the view.</p>
 
 <p>So what else have you found that is unavailable in stateless functions?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Update Body Class in React]]></title>
-    <link href="http://jaketrent.com/post/update-body-class-react/"/>
-    <updated>2015-09-23T15:31:00-06:00</updated>
-    <id>http://jaketrent.com/post/update-body-class-react</id>
-    <content type="html"><![CDATA[<p>React gives us a great component abstraction.  Each of these components represents a node in the DOM.  Each component is self contained, doesn't talk up the component hierarchy directly and passes explicit data and code down the hierarchy.  But what about when you have a React app that wants to reach out and modify something it doesn't control?</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react modify body tag" /></p>
-
-<!--more-->
-
-
-<h2>A Couple Use Cases</h2>
-
-<p>There are potentially a few use cases for this.  For instance, modals that need to render outside your application's potentially <code>position: relative</code> containers.  Or, as we'll see below, your app wants to modify the <code>body</code> tag in your html document.</p>
-
-<p>The most common reason I've found for messing with the body tag is to provide some style attribute.  It's not uncommon to have full-page style differences between pages in our apps.  If you have a "single page" js app in the browser, you need to be able to modify the body tag in code.</p>
-
-<p>Let's use an example where on some pages in your app, the theme is "dark", where the body background color should be black.  On other pages, the entire body background color should be the default white.  We'll make a component that lives high in the hierarchy and takes an <code>isDark</code> property to determine if the rendered page is dark or light.</p>
-
-<h2>Body is Outside Your React App</h2>
-
-<p>You can't mount your React app directly on <code>document.body</code>, at least without warnings.  This is considered bad practice, because other scripts or browser plugins often modify the document body directly.  So you'll have to reach <em>out</em> of your React app and modify the body directly.</p>
-
-<h2>Tie Into the React Lifecycle</h2>
-
-<p>First, you just need a point in time in your app's lifecycle where you know you want to modify the <code>body</code> class.  React has a bunch of <a href="https://facebook.github.io/react/docs/component-specs.html">lifecycle hooks</a> that will come in handy.  A great early-lifecycle hook for modifying the DOM is <code>componentDidMount</code>.  Usually, we would be accessing DOM nodes that are children of our Component.  Again, in this case, we're reaching out beyond where a React component usually should.  The usual <code>React.findDOMNode</code> functions will not be needed, because React isn't managing the body node.  Instead, we'll just use the <code>document.body</code> api directly.</p>
-
-<h2>Use JavaScript to Modify the Class</h2>
-
-<p>If you have some utility for modifying class names, use it.  If not, it's small and simple enough in <a href="http://jaketrent.com/post/addremove-classes-raw-javascript/">plain old JavaScript</a>.</p>
-
-<p>With these two bits in hand, you have the pieces necessary for your body-modifying component:</p>
-
-<p>```js
-import React from 'react'</p>
-
-<p>class BodyColor extends React.Component {
-  static propTypes = {</p>
-
-<pre><code>isDark: React.PropTypes.bool
-</code></pre>
-
-<p>  }
-  static defaultProps = {</p>
-
-<pre><code>isDark: false
-</code></pre>
-
-<p>  }
-  componentDidMount() {</p>
-
-<pre><code>document.body.classList.toggle('darkClass', this.props.isDark)
-</code></pre>
-
-<p>  }
-  componentWillReceiveProps(nextProps) {</p>
-
-<pre><code>document.body.classList.toggle('darkClass', nextProps.isDark)
-</code></pre>
-
-<p>  }
-  componentWillUnmount() {</p>
-
-<pre><code>document.body.classList.remove('darkClass')
-</code></pre>
-
-<p>  }
-  render() {</p>
-
-<pre><code>return this.props.children
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>To use, pass an <code>isDark</code> attribute to activate the <code>darkClass</code> class on the body tag:</p>
-
-<p><code>html
-&lt;BodyColor isDark={true}&gt;
-  &lt;h1&gt;A Very Dark App&lt;/h1&gt;
-&lt;/BodyColor&gt;
-</code></p>
-
-<p>Are there any other ways you've found to reach out of React and modify the DOM directly.  What have been your use cases?</p>
 ]]></content>
   </entry>
   
