@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-03-14T16:24:09-06:00</updated>
+  <updated>2016-03-15T07:22:39-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -14,13 +14,65 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Fluent Conf Review]]></title>
+    <link href="http://jaketrent.com/post/fluent-conf-review/"/>
+    <updated>2016-03-15T06:37:00-06:00</updated>
+    <id>http://jaketrent.com/post/fluent-conf-review</id>
+    <content type="html"><![CDATA[<p>I went to my first <a href="http://conferences.oreilly.com/fluent/javascript-html-us">Fluent conf</a> this year.  It was a generally good experience.  I enjoyed the company and the topics.  Maybe I&#8217;ll go again.</p>
+
+<p><img src="http://i.imgur.com/aG1CC3U.jpg" alt="Fluent Conf" /></p>
+
+<!--more-->
+
+
+<h2>Training</h2>
+
+<p>I went to the one-day training before the conference, where there were half and quarter day sessions around a single topic.  I went to an awesome &#8220;Building a desktop app with Electron&#8221; training, where the content was great, the teacher, Steve Kinney, was exceptional, and I felt accomplished as we learned new things and got to create something together with my own typing fingers.  It went very quickly and probably could have been a bit more solid with even a full day of training.</p>
+
+<p>I did two other trainings that weren&#8217;t nearly as good.  The people were smart, imparting what obviously took some brains to figure out, but they weren&#8217;t engaging as teachers and couldn&#8217;t capture my attention well enough to make me feel like I was along for the ride.  Pre-conference prep material suggested that we&#8217;d be producing something together in these sessions as in the Electron session.  That would have been awesome.  I am a kinetic learner.  Unfortunately, there was no attempt to build upon pre-session work, and both other sessions felt dull in comparison to the morning&#8217;s ride.</p>
+
+<h2>Keynotes</h2>
+
+<p>The mix of keynotes was great at the conference.  There were some heavy hitters: Brendan Eich and Doug Crockford.  There were some new, refreshing faces and topics from the likes of Laurie Voss and Alex Russell.  The keynotes were shorter than others I&#8217;ve seen &#8211; shorter than even the other sessions.  They felt almost like lightning talks, but from big web tech personalities.  The content was varied.  The delivery was all very good.  These were high points in the conference.</p>
+
+<h2>Sessions</h2>
+
+<p>The sessions were mostly good.  I have a general like-dislike relationship with conference talks.  I have to remember that the point is not to be permanently changed at the end of the talk or to have immediately picked up some great new skill.  The probable best place that I can be at the end of a session is inspired, pointed in a new, interesting direction, with enough information to know what I don&#8217;t know and go figure it out.</p>
+
+<p>There was a ton of content, with 6 tracks most hours.  Some of the highlight talks that I went to were: &#8220;This talk is not available offline&#8221;, by Alex Rickabaugh, talking about &#8220;Progressive Web Apps&#8221;, Service Workers, and how to create a more native-like web experience; &#8220;How to write a worthwhile test&#8221;, by Justin Searls, which was chock full of valuable insight for test creation and tooling; and &#8220;Building our reactive future&#8221;, by Matthew Podwysocki, talking about Rx.js and how Observables are expressive coding constructs &#8211; he was hilarious too.  I&#8217;m sure I missed some other great ones.  Should I have bought that expensive &#8220;watch the recorded videos later&#8221; package?</p>
+
+<p>I did attend a few less-than-stellar sessions, during which I read all the docs on <a href="http://cycle.js.org/">Cycle.js</a> and worked through all the examples.  It&#8217;s a super interesting framework and fit in with a large tech theme from the conference, <a href="http://reactivex.io/documentation/observable.html">Observables</a>.</p>
+
+<h2>Venue</h2>
+
+<p>San Fransisco is a fun city.  I love walking around the city.  It was unfortunately unusually overcast and drizzly weather while we were there.  We had less rain than was forecast, so that was good, and we were able to get out into the city at night.  Perhaps because of all the cloud cover, it seemed like it was always super late by the time we got out.</p>
+
+<p>The conference was all held inside the Marriot Marquee.  It was held in the basement.  There were no windows.  Thankfully, they had good HVAC to mostly evacuate all the nerd smell.  It was funny going in the first time, because you go down about 3 flights of escalators, making it feel like you&#8217;re on your way to the subway.  I don&#8217;t know how many 1000+ attendees there were, but it was amazing that the hotel had that much space.  The basement must have extended underground underneath the adjoining plaza.  The Marriot was nice.  The staff were very friendly.  There was the strict policing of badge checking at most entrances &#8211; that was annoying.</p>
+
+<p>Getting to and from San Fransisco proved laborious with a hefty layover on the way in and a hefty delay getting out, due to weather.  This task alone made me consider just buying the virtual conference option next time.  It was fun to meet a bunch of people from all over the globe though.  Perhaps they could all come visit me in the Rocky Mountains next time, and we could party here.</p>
+
+<h2>Food</h2>
+
+<p>Lunches were good.  The food was good and interesting.  The lines went quickly, especially on day 2, where it seemed that they had 12 independent lines for lunch.  That was awesome.  Apparently I just got lucky the first day.  There were enough people that a proper dinner and after party didn&#8217;t happen.  There was a reception the first night, which consisted of an hour of other people drinking alcohol.  I had a water.  Water from Norway never tasted so good.</p>
+
+<h2>Swag</h2>
+
+<p>The conference gave out water bottles.  They were on a shelf in the hall.  Oh, and they gave out name tags.  Beyond that, there was an exhibition hall with vendors giving out the usual &#8211; stickers, t-shirts, and trinkets.  I love a good sticker and found quite a few.  Github had the best.  Codeschool had some awesome ones too, such as 80s neon &#8220;Staying Sharp with Angular&#8221;.  So good.  I also replenished my summer wardrobe of T-shirts.  Heroku did go beyond T-shirts, which is a trend we should encourage, and now I have some rockin&#8217; purple socks.</p>
+
+<h2>Going Again</h2>
+
+<p>Fluent was a great experience and a highlight web conference for the year.  I&#8217;ve heard it has been even better in years past.  It&#8217;s probable that I&#8217;d go again to try it out again and hope for an even better experience.  Thanks, Fluent, and I&#8217;ll see you next time.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Console.log Deep Objects]]></title>
     <link href="http://jaketrent.com/post/console-log-deep-objects/"/>
     <updated>2016-03-14T15:13:00-06:00</updated>
     <id>http://jaketrent.com/post/console-log-deep-objects</id>
     <content type="html"><![CDATA[<p>With deep object structures, <code>console.log</code> can leave you wondering what&#8217;s down in the depths of the objects you&#8217;re printing out.  Here&#8217;s a quick help from Node stdlib.</p>
 
-<p><img src="http://i.imgur.com/00WAox4.jpg" alt="Git ignore" /></p>
+<p><img src="http://i.imgur.com/00WAox4.jpg" alt="console.log deep objects" /></p>
 
 <!--more-->
 
@@ -1891,108 +1943,6 @@
 <p>Write the source to satisfy your test, and the lights should go green.  Your DOM is happy.  Your test is happy.</p>
 
 <p>Does it work well for you?  How might you improve on it?  Enjoy testing!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[pushState with webpack-dev-server]]></title>
-    <link href="http://jaketrent.com/post/pushstate-webpack-dev-server/"/>
-    <updated>2015-05-20T07:17:00-06:00</updated>
-    <id>http://jaketrent.com/post/pushstate-webpack-dev-server</id>
-    <content type="html"><![CDATA[<p>Webpack has a jolly little server for your development environment called <a href="http://webpack.github.io/docs/webpack-dev-server.html"><code>webpack-dev-server</code></a>.  With a touch of configuration, it can be convinced to handle JavaScript history API pushState.</p>
-
-<p><img src="http://i.imgur.com/x0m2sTq.jpg" alt="webpack" /></p>
-
-<!--more-->
-
-
-<h2>webpack-dev-server</h2>
-
-<p>Webpack is fast.  But once you have a growing number of static assets to process and a increasily-complex asset pipeline, you may wish for a faster build lifecycle in development mode.  <a href="http://webpack.github.io/docs/webpack-dev-server.html"><code>webpack-dev-server</code></a> was created for such a purpose.</p>
-
-<p>It is a small <code>express</code> app that handles building your assets according to your webpack configuration, keeping them in memory, and doing so automatically as you change your source files.</p>
-
-<h2>html-webpack-plugin</h2>
-
-<p>In addition to webpack taking care of static assets like css and js for me, in dev mode I&#8217;ll often include the <a href="https://www.npmjs.com/package/html-webpack-plugin"><code>html-webpack-plugin</code></a>.</p>
-
-<p>This plugin generates an <code>index.html</code> file for you that will keep up to date with the correct references to your assets built inside of <code>webpack-dev-server</code>.  Use of this plugin is perfect in situations where you&#8217;re building a client-side app that just needs a single html file to bootstrap on top of.</p>
-
-<h2>History API</h2>
-
-<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history#Adding_and_modifying_history_entries">history API</a> allows the browser to locally handle url changes that would usually signal a need to go back to the server for resources.  This allows client-side apps to include routers that can navigate from urls like <code>http://localhost:3000/one-place</code> to <code>http://localhost:3000/another</code> instead of having to use the url hash (eg, <code>http://localhost:3000#/one-place</code>).</p>
-
-<h2>All routes to <code>index.html</code></h2>
-
-<p>By default, <code>webpack-dev-server</code> is setup to serve assets directly from the http requests received.  For instance, if my <code>webpack-dev-server</code> was running on port <code>3000</code>, and my <code>webpack.config.js</code> was setup so that I was building a <code>main.js</code> for my application, I could make a request to get that build asset via <code>http://localhost:3000/main.js</code>.</p>
-
-<p>Likewise, if I&#8217;m using the <code>html-webpack-plugin</code>, I can make a request to <code>http://localhost:3000/</code> to get my <code>index.html</code> file, which contains the <code>script</code> tag to bootstrap my app &#8211; again, likely something like <code>main.js</code>.</p>
-
-<p>But if my app has a client-side router that is using the history API, how do I get <code>webpack-dev-server</code> to differentiate a client-side route from an asset request to <code>http://localhost:3000</code>?</p>
-
-<h2><code>historyApiFallback</code> Option</h2>
-
-<p>It turns out that we&#8217;re in luck.  <code>webpack-dev-server</code> includes a useful option named <code>historyApiFallback</code>.  If this boolean flag is set to true, all requests to the <code>webpack-dev-server</code> that do not map to an existing asset will instead by routed straight to <code>/</code>, that is, the <code>index.html</code> file.</p>
-
-<p>This is exactly what we want.  If we want more customization in the fallback routes, we can specify that as well.  Internally, <code>webpack-dev-server</code> uses <a href="https://github.com/bripkens/connect-history-api-fallback"><code>connect-history-api-fallback</code></a> which takes several options.</p>
-
-<p>These options include overriding the name of the index file or rerouting certain request url patterns to different html files in the case you have multiples.  These options can be set by passing an object to <code>historyApiFallback</code> instead of a boolean flag.</p>
-
-<p>Finally, in order to not have to type this every time you want to run the <code>webpack-dev-server</code> cli, you can specify all of these options in the <code>webpack-config.js</code> under the <code>devServer</code> attribute.</p>
-
-<p>The simple example looks like:</p>
-
-<figure class='code'><figcaption><span>webpack-config.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="c1">//...</span>
-</span><span class='line'>  <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">port</span><span class="o">:</span> <span class="mi">3000</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">historyApiFallback</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>A more complex example might look something like:</p>
-
-<figure class='code'><figcaption><span>webpack-config.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="c1">//...</span>
-</span><span class='line'>  <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">port</span><span class="o">:</span> <span class="mi">3000</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">historyApiFallback</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">index</span><span class="o">:</span> <span class="s1">&#39;default.html&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">rewrites</span><span class="o">:</span> <span class="p">[</span>
-</span><span class='line'>        <span class="p">{</span> <span class="nx">from</span><span class="o">:</span> <span class="sr">/\/soccer/</span><span class="p">,</span> <span class="nx">to</span><span class="o">:</span> <span class="s1">&#39;/soccer.html&#39;</span><span class="p">}</span>
-</span><span class='line'>      <span class="p">]</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Given the above configuration, routes like <code>/one-place</code> and <code>/another</code> would go to <code>/</code>, which is backed by the <code>default.html</code> markup.  Routes like <code>/soccer/schedule</code> or <code>/soccer/games/123</code> would go to <code>soccer.html</code>.</p>
-
-<p>So, you don&#8217;t need to write your own proxy.  The option is built in for you.  webpack excites again!</p>
-
-<p>What other things have you been surprised that webpack already does for you?</p>
 ]]></content>
   </entry>
   

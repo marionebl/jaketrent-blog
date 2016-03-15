@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-03-14T16:24:09-06:00</updated>
+  <updated>2016-03-15T07:22:39-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -20,7 +20,7 @@
     <id>http://jaketrent.com/post/console-log-deep-objects</id>
     <content type="html"><![CDATA[<p>With deep object structures, <code>console.log</code> can leave you wondering what's down in the depths of the objects you're printing out.  Here's a quick help from Node stdlib.</p>
 
-<p><img src="http://i.imgur.com/00WAox4.jpg" alt="Git ignore" /></p>
+<p><img src="http://i.imgur.com/00WAox4.jpg" alt="console.log deep objects" /></p>
 
 <!--more-->
 
