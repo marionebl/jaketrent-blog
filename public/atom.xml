@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-03-15T07:22:39-06:00</updated>
+  <updated>2016-03-20T16:28:36-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Bring Your Listeners With You]]></title>
+    <link href="http://jaketrent.com/post/bring-your-listeners-with-you/"/>
+    <updated>2016-03-20T09:03:00-06:00</updated>
+    <id>http://jaketrent.com/post/bring-your-listeners-with-you</id>
+    <content type="html"><![CDATA[<p>Remember that last time that you spoke at a conference and really felt like you had connected with your audience?  You were able to keep them with you for the length of your journey.  You felt like they grew and were enlightened with you.  There&#8217;s a certain magic to that, and there&#8217;s also some deliberate thought you can give the experience that will help it happen more often.</p>
+
+<p><img src="http://i.imgur.com/keI6970.jpg" alt="Speaking" /></p>
+
+<!--more-->
+
+
+<h2>Set Expectations</h2>
+
+<p>Start settings expectations in the abstract for your talk.  If you set accurate expectations, you&#8217;ll be more likely to get the right audience.  I&#8217;m all for fun descriptions.  Also make sure it is very clear what the subject is, the format of the talk, and the desired outcome.  Use keywords that will be tipoffs, such as &#8220;with code&#8221;, &#8220;high-level concepts&#8221;, &#8220;preview of pre-release tech&#8221;, or &#8220;soft skill&#8221;.</p>
+
+<p>Set expectations at the beginning of the talk.  This will help focus the learners on what is to be accomplished.  Even if your talk wasn&#8217;t what they had originally imagined, they will be able to adjust to a mindset more aligned with the topics that you are to cover.  They&#8217;ll setup a mental bin for the new information to go in.  They&#8217;ll create mental hooks that they can connect the new information you&#8217;re sharing to their previous experience.</p>
+
+<p>Set expectations in the topic or activity transitions.  When you change gears, state that you&#8217;re doing so.  By doing this, you&#8217;ll be less likely to lose learners along the way.  Just as in the beginning, you&#8217;ll set up a context for what&#8217;s coming.</p>
+
+<h2>Clear Definitions</h2>
+
+<p>The ground that you&#8217;re about to cover in your talk will be very alien to some.  They may have no background in your topic.  The broad spectrum of learner backgrounds is a challenge in any talk.  If you want to bring as many learners as possible into unknown territory, be willing to take a moment and establish clear definitions.  You don&#8217;t have to teach advanced topics from the ground up every time.  Again, expectations in your talk&#8217;s abstract will help with this.  But if you want to allow new learners the opportunity to file away as much useful information as possible, give some basic definitions to serve as a mental foundation.</p>
+
+<p>Even though it may be repetitive for the advanced learner, it may still be useful for them as a reminder or showing some nuance in your own perspective that they didn&#8217;t have before.  Once you establish the definitions and use that language consistently as you glob on new concepts in your talk, it will be easier to listeners to keep up and associate concepts more easily.</p>
+
+<h2>Show Variety</h2>
+
+<p>You will need to be able to keep attention in addition to just sharing pure information.  If people aren&#8217;t willing to put down their twitter stream and pay attention, the information you are speaking into the air will go straight to /dev/null.</p>
+
+<p>There is an entertainment value that can increase the total effectiveness of your talk.  It shouldn&#8217;t usually be the core of your talk or main reason for people to come hear you, but it can help.  Be light-hearted.  Help people laugh.  Smiling, laughing people learn better.  Vary your voice in volume, speed, and expression to recapture attention.  Spend time on engaging visual aids (the good ones really do take a fair amount of time to produce).</p>
+
+<h2>Let Them Go</h2>
+
+<p>Your learners must trust you to come with you to the conceptual place that you&#8217;re going.  Be worthy of that trust.  Get to assigned room and start on time.  When the session time is over, end.  This is the respectful thing to do.  Prepare for the eventuality of bad timing estimates or technical difficulties or venue problems.  Have your material available online for later.</p>
+
+<p>It is good to say, &#8220;I&#8217;m over time.  We have just a little more to cover.  You can get up and leave if you&#8217;d like.  It&#8217;ll be ok.  I&#8217;m going to go quickly.&#8221;  It&#8217;s better to say, &#8220;We&#8217;re at time.  The material is available at jaketrent.com/blogPost.  Please talk to me afterward and on Twitter @jaketrent.  Thank you for coming.&#8221;  When time is up, wrap it up and end.</p>
+
+<p>Being able to take listeners with you on a mutual teaching and learning experience is a great privilege.  It takes preparation, work, and a bit of jit magic.  These are a few ideas.  What other ideas do you have for helping learners come along with you in that experience?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Fluent Conf Review]]></title>
@@ -1737,212 +1779,6 @@
 <p>Isn&#8217;t that awesome and useful?</p>
 
 <p>So <code>bind</code> can help make <code>this</code> more predictable for you.  It will help you send new functions with pre-filled parameters.  What else have you used <code>bind</code> for?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Testing React on jsdom]]></title>
-    <link href="http://jaketrent.com/post/testing-react-with-jsdom/"/>
-    <updated>2015-06-18T07:13:00-06:00</updated>
-    <id>http://jaketrent.com/post/testing-react-with-jsdom</id>
-    <content type="html"><![CDATA[<p>React allows you to create components that will render UI for your application.  If your UI is of any complexity, you&#8217;ll likely want to test that it functions correctly and allows for future refactors.  There are numerous ways to do this.  One way that you might appreciate is using <a href="https://github.com/tmpvar/jsdom">jsdom</a>, an in-JavaScript implementation of the DOM.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react on jsdom" /></p>
-
-<!--more-->
-
-
-<h2>What is jsdom?</h2>
-
-<p>Jsdom is an in-JavaScript implementation of the DOM.  The DOM is the document object model, which is the tree of nodes that make up the UI for documents shown in web browsers.</p>
-
-<p>Because jsdom is implemented in JavaScript, we can have a DOM-like API to work with without needing a browser.  That means that we don&#8217;t have to capture a browser in order test, a la <a href="http://karma-runner.github.io/">Karma</a>.  That means that we can run our tests in environments without browsers, like in Node or in continuous integration environments.</p>
-
-<p>By not using real browsers, we&#8217;re also essentially saying that we believe the problems in our client JavaScript will not be browser-dependent (again, because we&#8217;re not capturing <em>real</em> browsers).</p>
-
-<h2>jsdom Requirements</h2>
-
-<p>The <a href="https://github.com/tmpvar/jsdom">latest version of jsdom</a>, as of this writing, requires <a href="https://iojs.org/en/index.html">io.js</a> instead of Node to run.  If you&#8217;d like to run in Node.js instead, the <a href="https://github.com/tmpvar/jsdom/tree/3.x">3.x series of jsdom</a> is required.</p>
-
-<p>As <a href="http://thenextweb.com/dd/2015/06/16/node-js-and-io-js-are-settling-their-differences-merging-back-together/">Node and io.js merge in the future</a>, I expect the new versions of jsdom to support the one, unified platform.</p>
-
-<h2>The Test Runner</h2>
-
-<p>In my JavaScript tests, I prefer to use the <a href="http://mochajs.org/">Mocha</a> test runner.  It&#8217;s usable in Node or browser environments.  It has great async test support.  It has the familiar behavior-style syntax of <code>describe</code> and <code>it</code> and all the normal test setup hooks that you like.  Most importantly, it features the Nyan cat test reporter:</p>
-
-<p><img src="http://mochajs.org/images/reporter-nyan.png" alt="nyan cat test reporter" /></p>
-
-<p>Mocha lets you choose your own assertion library.  I like <a href="http://shouldjs.github.io/">should.js</a>.</p>
-
-<p>To install both:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>npm install mocha should --save-dev</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Configuring Mocha</h2>
-
-<p>By default, Mocha wants a <code>/test</code> directory in your project root in which to put its configuration and potentially your spec files, depending on how you like to organize your projects:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir test</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Inside of the <code>/test</code> dir, let&#8217;s <code>vim mocha.opts</code> and give it a place to configure jsdom and our other libs:</p>
-
-<figure class='code'><figcaption><span>mocha.opts</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>--require test/utils/dom.js
-</span><span class='line'>--require should
-</span><span class='line'>--reporter nyan
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>We have yet to write the <code>test/utils/dom.js</code> file.  We will.  This file includes options for mocha.  Line by line, we&#8217;re saying that before mocha runs tests, we want to load our <code>dom.js</code> config, the <code>should.js</code> library, and specify our reporter as <code>nyan</code>.</p>
-
-<h2>Configuring jsdom</h2>
-
-<p>I&#8217;ve tried to come up with several configurations that will make jsdom work well with my React projects.  This is the best/simplest that I&#8217;ve come up with.  I&#8217;d be interested to hear if you have any suggestions on the approach.</p>
-
-<p>Here&#8217;s the full configuration with explanatory comments inline, as it would appear in <code>test/utils/dom.js</code>:</p>
-
-<figure class='code'><figcaption><span>dom.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">jsdom</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jsdom&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// setup the simplest document possible</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">doc</span> <span class="o">=</span> <span class="nx">jsdom</span><span class="p">.</span><span class="nx">jsdom</span><span class="p">(</span><span class="s1">&#39;&lt;!doctype html&gt;&lt;html&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// get the window object out of the document</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">win</span> <span class="o">=</span> <span class="nx">doc</span><span class="p">.</span><span class="nx">defaultView</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// set globals for mocha that make access to document and window feel </span>
-</span><span class='line'><span class="c1">// natural in the test environment</span>
-</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nb">document</span> <span class="o">=</span> <span class="nx">doc</span>
-</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nb">window</span> <span class="o">=</span> <span class="nx">win</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// take all properties of the window object and also attach it to the </span>
-</span><span class='line'><span class="c1">// mocha global object</span>
-</span><span class='line'><span class="nx">propagateToGlobal</span><span class="p">(</span><span class="nx">win</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80</span>
-</span><span class='line'><span class="kd">function</span> <span class="nx">propagateToGlobal</span> <span class="p">(</span><span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="k">in</span> <span class="nb">window</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">window</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="k">continue</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">global</span><span class="p">)</span> <span class="k">continue</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">global</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">window</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The reason that we want to attach all the <code>window</code> properties to the mocha <code>global</code> object is because developers often write code that is meant for the browser without explicitly using the global environment object.  For instance, in React the developers write:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;Chrome&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>instead of:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nb">window</span><span class="p">.</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;Chrome&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Withing taking <code>window.navigator</code> and putting it on <code>global.navigator</code>, you&#8217;d get an error like this when running your tests:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">ReferenceError</span><span class="o">:</span> <span class="nx">navigator</span> <span class="nx">is</span> <span class="nx">not</span> <span class="nx">defined</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>The React Test</h2>
-
-<p>You are now ready to render React components into a document in your tests.  The document will be provided by jsdom.  You don&#8217;t need a browser environment to run this.</p>
-
-<figure class='code'><figcaption><span>mycomponent.spec.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">React</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;react/addons&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">should</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;should&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">TestUtils</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">addons</span><span class="p">.</span><span class="nx">TestUtils</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">MyComponent</span> <span class="o">=</span> <span class="c1">// a React.Component with a &lt;button/&gt; ...</span>
-</span><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;MyComponent&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;has button that fires a dom event for click&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">function</span> <span class="nx">handleClick</span><span class="p">()</span> <span class="p">{</span> <span class="nx">done</span><span class="p">()</span> <span class="p">}</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">detachedComp</span> <span class="o">=</span> <span class="nx">TestUtils</span><span class="p">.</span><span class="nx">renderIntoDocument</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">MyComponent</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">handleClick</span><span class="p">}</span><span class="o">/&gt;</span><span class="p">)</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">button</span> <span class="o">=</span> <span class="nx">TestUtils</span><span class="p">.</span><span class="nx">findRenderedDOMComponentWithTag</span><span class="p">(</span><span class="nx">detachedComp</span><span class="p">,</span> <span class="s1">&#39;button&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">buttonNode</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">findDOMNode</span><span class="p">(</span><span class="nx">button</span><span class="p">)</span>
-</span><span class='line'>    <span class="nx">should</span><span class="p">.</span><span class="nx">exist</span><span class="p">(</span><span class="nx">buttonNode</span><span class="p">)</span>
-</span><span class='line'>    <span class="nx">TestUtils</span><span class="p">.</span><span class="nx">Simulate</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">buttonNode</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">})</span>
-</span><span class='line'><span class="p">})</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To run mocha with the configuration above, I like to add an npm script in <code>package.json</code>:</p>
-
-<figure class='code'><figcaption><span>package.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
-</span><span class='line'>   <span class="nt">&quot;scripts&quot;</span><span class="p">:</span> <span class="p">{</span>
-</span><span class='line'>     <span class="nt">&quot;test&quot;</span><span class="p">:</span> <span class="s2">&quot;mocha test/**/*.spec.js&quot;</span>
-</span><span class='line'>   <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>And then type:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>npm <span class="nb">test</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Write the source to satisfy your test, and the lights should go green.  Your DOM is happy.  Your test is happy.</p>
-
-<p>Does it work well for you?  How might you improve on it?  Enjoy testing!</p>
 ]]></content>
   </entry>
   

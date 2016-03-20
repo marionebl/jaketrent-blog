@@ -4,7 +4,7 @@
   <title><![CDATA[Category: conf | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/conf/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-03-15T07:22:39-06:00</updated>
+  <updated>2016-03-20T16:28:36-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Bring Your Listeners With You]]></title>
+    <link href="http://jaketrent.com/post/bring-your-listeners-with-you/"/>
+    <updated>2016-03-20T09:03:00-06:00</updated>
+    <id>http://jaketrent.com/post/bring-your-listeners-with-you</id>
+    <content type="html"><![CDATA[<p>Remember that last time that you spoke at a conference and really felt like you had connected with your audience?  You were able to keep them with you for the length of your journey.  You felt like they grew and were enlightened with you.  There's a certain magic to that, and there's also some deliberate thought you can give the experience that will help it happen more often.</p>
+
+<p><img src="http://i.imgur.com/keI6970.jpg" alt="Speaking" /></p>
+
+<!--more-->
+
+
+<h2>Set Expectations</h2>
+
+<p>Start settings expectations in the abstract for your talk.  If you set accurate expectations, you'll be more likely to get the right audience.  I'm all for fun descriptions.  Also make sure it is very clear what the subject is, the format of the talk, and the desired outcome.  Use keywords that will be tipoffs, such as "with code", "high-level concepts", "preview of pre-release tech", or "soft skill".</p>
+
+<p>Set expectations at the beginning of the talk.  This will help focus the learners on what is to be accomplished.  Even if your talk wasn't what they had originally imagined, they will be able to adjust to a mindset more aligned with the topics that you are to cover.  They'll setup a mental bin for the new information to go in.  They'll create mental hooks that they can connect the new information you're sharing to their previous experience.</p>
+
+<p>Set expectations in the topic or activity transitions.  When you change gears, state that you're doing so.  By doing this, you'll be less likely to lose learners along the way.  Just as in the beginning, you'll set up a context for what's coming.</p>
+
+<h2>Clear Definitions</h2>
+
+<p>The ground that you're about to cover in your talk will be very alien to some.  They may have no background in your topic.  The broad spectrum of learner backgrounds is a challenge in any talk.  If you want to bring as many learners as possible into unknown territory, be willing to take a moment and establish clear definitions.  You don't have to teach advanced topics from the ground up every time.  Again, expectations in your talk's abstract will help with this.  But if you want to allow new learners the opportunity to file away as much useful information as possible, give some basic definitions to serve as a mental foundation.</p>
+
+<p>Even though it may be repetitive for the advanced learner, it may still be useful for them as a reminder or showing some nuance in your own perspective that they didn't have before.  Once you establish the definitions and use that language consistently as you glob on new concepts in your talk, it will be easier to listeners to keep up and associate concepts more easily.</p>
+
+<h2>Show Variety</h2>
+
+<p>You will need to be able to keep attention in addition to just sharing pure information.  If people aren't willing to put down their twitter stream and pay attention, the information you are speaking into the air will go straight to /dev/null.</p>
+
+<p>There is an entertainment value that can increase the total effectiveness of your talk.  It shouldn't usually be the core of your talk or main reason for people to come hear you, but it can help.  Be light-hearted.  Help people laugh.  Smiling, laughing people learn better.  Vary your voice in volume, speed, and expression to recapture attention.  Spend time on engaging visual aids (the good ones really do take a fair amount of time to produce).</p>
+
+<h2>Let Them Go</h2>
+
+<p>Your learners must trust you to come with you to the conceptual place that you're going.  Be worthy of that trust.  Get to assigned room and start on time.  When the session time is over, end.  This is the respectful thing to do.  Prepare for the eventuality of bad timing estimates or technical difficulties or venue problems.  Have your material available online for later.</p>
+
+<p>It is good to say, "I'm over time.  We have just a little more to cover.  You can get up and leave if you'd like.  It'll be ok.  I'm going to go quickly."  It's better to say, "We're at time.  The material is available at jaketrent.com/blogPost.  Please talk to me afterward and on Twitter @jaketrent.  Thank you for coming."  When time is up, wrap it up and end.</p>
+
+<p>Being able to take listeners with you on a mutual teaching and learning experience is a great privilege.  It takes preparation, work, and a bit of jit magic.  These are a few ideas.  What other ideas do you have for helping learners come along with you in that experience?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Fluent Conf Review]]></title>
@@ -308,52 +350,6 @@
 <p>I'm glad that this event has shown some perpetuity.  I hope it continues next year.  I think they have a good formula.  The price, the locale, the speaker lineup, and the associated activities make for a good one-day experience each Spring.  I would focus on improving one bit next year: the website.  It was the least well-done part of the conference.  I find that extremely ironic given the target market for the event.</p>
 
 <p>So next Spring, come to Utah and attend the JsConf.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mountain West Ruby Conf 2013 Review]]></title>
-    <link href="http://jaketrent.com/post/mountain-west-ruby-conf-2013-review/"/>
-    <updated>2013-04-05T15:23:00-06:00</updated>
-    <id>http://jaketrent.com/post/mountain-west-ruby-conf-2013-review</id>
-    <content type="html"><![CDATA[<p>I recently attended the Mountain West Ruby Conference.  It was my first time going.  I was pleasantly surprised by the quality of the conference.  I would recommend it.</p>
-
-<p><img src="http://i.imgur.com/ABNr5MC.jpg" alt="Mountain West Ruby Conf" /></p>
-
-<!--more-->
-
-
-<h2>Peeps</h2>
-
-<p>I'm new to the Ruby community.  I get to use it more in my current job than I ever have before.  Whenever entering a new community, it's good to find some friends.  I was pleased to notice that everyone I encountered at the conference was very friendly and welcoming.</p>
-
-<p>About the coolest thing about the community is one of the slogans: MINSWAN, which means "Matz is nice, so we are nice."  How cool is that?  Matz is the Ruby creator.  Wait, who am I kidding.  You already know that.</p>
-
-<p>I was very impressed with the blatant lack of trolling other communities.  This even with the live stream video cameras rolling (people can tend to do weird things when put on camera).</p>
-
-<p>The conference attracted speakers and attendees from as far away as Australia.</p>
-
-<h2>Speakers</h2>
-
-<p>I didn't look too closely at the schedule previous to attending.  Once I got there, I was surprised at the caliber of those people and companies who were represented.  These were big names in the tech community, such as Matz, himself, Github, Heroku, and others.</p>
-
-<p>The conference is single track, so that meant I got to see everyone speak.  I mostly like that but kind of hate that.  I believe it also meant fewer speaking slots, so everyone was pretty top notch.</p>
-
-<p>I was impressed with the stage presence of most speakers.  A few were pretty droning, but in general everyone was very polished, had good slide decks, and shared engaging and useful content.</p>
-
-<p>Devops was the stated subject matter of an entire day of the conference.  This was cool.  We can use that kind of focus on the subject.  But then it bled into the next days as well.  I want some pure code, pure Ruby'ness.  I got some of that, but not as much as I would like.  I paid my devops dues the first day.  I was ready to not hear any more of it on days 2 and 3.</p>
-
-<h2>Venue</h2>
-
-<p>It was in my back yard!  I loved the lack of a hotel requirement!  Apparently some visitors even camped in the wilderness, Nacho style.</p>
-
-<p>The Salt Lake City Public Library is a great downtown location for a small conference.  In this case, with the conference being single track, the single largest room, the amphitheatre, was the only room required for all attendees.  It featured plenty of seating -- at the cost of no leg room.</p>
-
-<p>The wifi also held up better than it has for similar gatherings in this space.  It was announced that "the city and Xmission are working feverishly" to maintain connectivity several times over the 3 days.  It still didn't stay up.  This is a common tech conf occurrence.</p>
-
-<p>I was sorely disappointed with the lack of sugary confections meant to encourage the jollyness and attentiveness of the conference-goers.  At one point, it was necessary to slip out and find a good bakery downtown.  I was not disappointed.  I was happy to see at least the vendors' vinyl stickers come out on the last day.  We need more of that!</p>
-
-<p>In all, it was a good use of my couple days.  It wasn't too pricey, but then, I wasn't paying.</p>
 ]]></content>
   </entry>
   
