@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-03-20T16:28:36-06:00</updated>
+  <updated>2016-03-22T06:31:35-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,102 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Selecting a Directory in Electron]]></title>
+    <link href="http://jaketrent.com/post/select-directory-in-electron/"/>
+    <updated>2016-03-21T10:12:00-06:00</updated>
+    <id>http://jaketrent.com/post/select-directory-in-electron</id>
+    <content type="html"><![CDATA[<p>Electron will help you make some sweet native desktop apps using web tech.  Now that you're on the desktop, one of the cool things you can do is access the filesystem.  There are a couple ways to access the filesystem via the file open dialog using user input events.</p>
+
+<p><img src="http://i.imgur.com/Vp8Zuix.jpg" alt="Electron" /></p>
+
+<!--more-->
+
+
+<h2>From HTML</h2>
+
+<p>In Electron, you use HTML for your views.  Thus, if you want the user to select a directory from the UI, you can use a <code>&lt;input type="file" /&gt;</code>, just like in a normal web app.</p>
+
+<h4>Select Only Directories</h4>
+
+<p>To select only directories, there is an attribute you can add to the <code>input</code> tag:</p>
+
+<p>```html
+&lt;input type="file"</p>
+
+<pre><code>   webkitdirectory /&gt;
+</code></pre>
+
+<p>```</p>
+
+<p>This wouldn't be reliable in a cross-browser environment.  But since, on Electron, you're only targeting Chrome, you're golden with whatever Chrome has available to you.</p>
+
+<h4>Bonus: Programmatically click on <code>input[type="file"]</code></h4>
+
+<p>As a bonus, Electron doesn't have the sandbox security restrictions that you would have in a standalone browser like Chrome.  In browsers, sometimes the file open dialog will fail if anything triggers the dialog besides the user clicking with their own mouse on the file input field.  Sometimes getting at the contents of the file will fail.  I'm too lazy to test which browsers do what at this point, but sad past experience has determined that this is unreliable.</p>
+
+<p>But in Electron, you are again liberated.  For instance, <code>input[type="file"]</code> is ugly and sometimes hard to style into exactly what you want.  So, it's often that you'll want to create a custom widget, that when <em>it's</em> clicked, the <code>input[type="file"]</code> is clicked and the file open dialog is popped.</p>
+
+<p>Given:</p>
+
+<p><code>html
+&lt;button id="party" class="very-sweet-looking"&gt;Open&lt;/button&gt;
+&lt;input id="business" type="file" style="display: none" /&gt;
+</code></p>
+
+<p>This totally works:</p>
+
+<p><code>js
+document.getElementById('party').addEventListener('click', _ =&gt; {
+  document.getElementById('business').click()
+})
+</code></p>
+
+<h2>From Electron API</h2>
+
+<p>In the main process, you have access to an Electron API, <code>dialog</code>.  <a href="http://electron.atom.io/docs/v0.37.2/api/dialog/#dialogshowopendialogbrowserwindow-options-callback"><code>dialog#showOpenDialog</code></a> is a programmatic API that allows you to open the same open file dialog that you're used to in the browser.  What's even better is that here you can set that only directories should be openable rather easily:</p>
+
+<p>```js
+// mainWindow is your instance of BrowserWindow
+const electron = require('electron')
+const dialog = electrong.dialog
+function selectDirectory() {
+  dialog.showOpenDialog(mainWindow, {</p>
+
+<pre><code>properties: ['openDirectory']
+</code></pre>
+
+<p>  })
+}
+```</p>
+
+<p>In order to integrate this main process code with user interaction, we need to do a few things.</p>
+
+<p>First, export the code from your main process module:</p>
+
+<p><code>js main.js
+exports.selectDirectory = function () {
+  // dialog.showOpenDialog as before
+}
+</code></p>
+
+<p>And then in the renderer process, capture user events as before and call the main process function, <code>selectDirectory</code>:</p>
+
+<p><code>js renderer.js
+const electron = require('electron')
+const remote = electron.remote
+const mainProcess = remote.require('./main')
+document.getElementById('party').addEventListener('click', _ =&gt; {
+  mainProcess.selectDirectory()
+})
+</code></p>
+
+<p>Works pretty nicely, but feels weird that you have to go back to the main process to access a view-related API (as of Electron 0.37).</p>
+
+<p>So, if there are two ways to do this, there has to be another, right?  What are you doing to select a directory in Electron?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Console.log Deep Objects]]></title>
@@ -387,93 +483,6 @@ class MyComponent extends React.Component {
 <li>Arrow functions - What do they help with?</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Test APIs Failing from Client]]></title>
-    <link href="http://jaketrent.com/post/test-apis-failing-from-client/"/>
-    <updated>2016-01-25T13:54:00-07:00</updated>
-    <id>http://jaketrent.com/post/test-apis-failing-from-client</id>
-    <content type="html"><![CDATA[<p>In the case where you can't edit a local version of your APIs in order to cause them to fail, you need to be able to edit your client so that it <em>looks</em> like the API request fails.  Here's a quick code change that should make this easy for you.</p>
-
-<p><img src="http://i.imgur.com/8Fm1cn2.jpg" alt="We have a problem" /></p>
-
-<!--more-->
-
-
-<p>This is one of many possible manual testing techniques.  This allow you to see the change in your running app as you work through it.  For instance, I like to use this as I'm testing through the error alerting features that are common in an app when an API request fails.</p>
-
-<p>Go to the point in your app where your bits touch the network.  This is usually the place where you use your HTTP wrapper or, if you're a free spirit, call some XHR goodness yourself.  These days, I like using the venerable <a href="https://github.com/mzabriskie/axios">axios</a> library.  Axios is promise based, so that means that we can use async/await as well, which is like a fine chocolate next to a warm fire in winter (which is good).</p>
-
-<p>So, all my http code might look in essence like this:</p>
-
-<p>```js api.js
-import axios from 'axios'</p>
-
-<p>export const fetch = {
-  // deserialize, etc ...
-  request(url) {</p>
-
-<pre><code>return axios({
-  method: 'get',
-  url
-})
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>So, this <code>request</code> function returns a Promise.  The logic around the request might look like:</p>
-
-<p>```js actions.js
-import * as api from './api'</p>
-
-<p>async function fetchWater() {
-  const { request} = api.fetch</p>
-
-<p>  try {</p>
-
-<pre><code>const res = await request('/my/own/home')
-// ... handle success response
-</code></pre>
-
-<p>  } catch (res) {</p>
-
-<pre><code>// ... handle error response, where failure code should execute (what we want to TEST!)
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>To make this request fail, we need only make the Promise fail, rejecting it like a mouthful of stewed tomatoes.  So, just change <code>api.js</code>:</p>
-
-<p>```js api.js
-import axios from 'axios'</p>
-
-<p>export const fetch = {
-  // ...
-  request(url) {</p>
-
-<pre><code>return Promise((resolve, reject) =&gt; {
-  reject({
-    status: 500,
-    data: {
-      errors: [{ detail: 'Shere Khan is back!' }]
-    }
-  })
-})
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>Now note that you must be aware of what your format HTTP library, in this case axios, uses in its responses.  What you <code>reject</code> manually must be exactly the same format that usually is returned in an error situation (eg, <code>status</code> and <code>data</code>).  You must also know what your server is designed to return as an error response (eg, <code>errors</code>).  The above application code is using the <a href="http://jsonapi.org/format/#error-objects">JSON API</a> format.</p>
-
-<p>What other little tricks do you find useful in getting APIs to fail?</p>
 ]]></content>
   </entry>
   

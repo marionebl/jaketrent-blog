@@ -9,7 +9,7 @@
 
   <meta name="author" content="https://plus.google.com/115032056022257436849">
   
-  <meta name="description" content="First-class objects are the norm in the code that I usually write and edit, but every now and then I run across a method with a primitive parameter. &hellip;">
+  <meta name="description" content="I&#8217;m working on a project that utilizes JPA/Hibernate as its ORM. I was writing a few named queries for an JPQL/HQL delete and was getting an &hellip;">
   
   <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
 
@@ -22,11 +22,11 @@
   <meta property="og:type" content="article" />
   
   <meta property="og:url" content="http://jaketrent.com/blog/page/24/index.html" />
-  <meta property="og:description" content="First-class objects are the norm in the code that I usually write and edit, but every now and then I run across a method with a primitive parameter. &hellip;" />
+  <meta property="og:description" content="I&#8217;m working on a project that utilizes JPA/Hibernate as its ORM. I was writing a few named queries for an JPQL/HQL delete and was getting an &hellip;" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="" />
-  <meta name="twitter:description" content="First-class objects are the norm in the code that I usually write and edit, but every now and then I run across a method with a primitive parameter. &hellip;" />
+  <meta name="twitter:description" content="I&#8217;m working on a project that utilizes JPA/Hibernate as its ORM. I was writing a few named queries for an JPQL/HQL delete and was getting an &hellip;" />
   
 
   
@@ -89,6 +89,92 @@
     <div class="content">
       <div class="blog-index">
   
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/inner-joins-jpql-delete-statements/">Inner Joins in JPQL Delete Statements</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-29T11:46:00-06:00" pubdate data-updated="true">Apr 29<span>th</span>, 2009</time>
+        
+         | <a href="/post/inner-joins-jpql-delete-statements/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I&#8217;m working on a project that utilizes JPA/Hibernate as its ORM.  I was writing a few named queries for an JPQL/HQL delete and was getting an SQLGrammarException.  I soon found out that I couldn&#8217;t use inner joins on a delete statement, even at the SQL level.  Here&#8217;s the query transformation:</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/inner-joins-jpql-delete-statements/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/arraysaslist-returns-immutable-list/">Arrays.asList Returns Immutable List</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-04-29T08:29:00-06:00" pubdate data-updated="true">Apr 29<span>th</span>, 2009</time>
+        
+         | <a href="/post/arraysaslist-returns-immutable-list/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I was having problems doing operations on a java.util.List object returned by Arrays.asList() method call.   The specific exception was a java.lang.UnsupportedOperationException.  I soon found out why this was a problem.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/arraysaslist-returns-immutable-list/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article class="entry">
@@ -428,92 +514,6 @@
   
     <footer>
       <a class="full-article-link" rel="full-article" href="/post/create-custom-facelets-component/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article class="entry">
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/post/use-java-reflection-get-field-w-accessor/">Use Java Reflection to Get Field W/ Accessor</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-02-20T12:36:00-07:00" pubdate data-updated="true">Feb 20<span>th</span>, 2009</time>
-        
-         | <a href="/post/use-java-reflection-get-field-w-accessor/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Java is about objects.  Reflection is about knowing things about those objects generally without have specific fields and methods in hand.  I must get to one of those field values via its accessor, allowing me to keep the fields private and abstracted away&#8230; of course, until I start unit testing.  Here&#8217;s one method&#8230;</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="full-article-link" rel="full-article" href="/post/use-java-reflection-get-field-w-accessor/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article class="entry">
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/post/jsf-validationerror-custom-converters/">JSF ValidationError With Custom Converters</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-02-10T07:27:00-07:00" pubdate data-updated="true">Feb 10<span>th</span>, 2009</time>
-        
-         | <a href="/post/jsf-validationerror-custom-converters/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Here&#8217;s an important tidbit&#8230;  JSF does not give any default validators for your data if you use a custom converter.  If you&#8217;re getting a ValidationError exception, overriding equals and hashcode methods might be a good idea.  For more, read on&#8230;</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="full-article-link" rel="full-article" href="/post/jsf-validationerror-custom-converters/">Read on &rarr;</a>
     </footer>
   
 

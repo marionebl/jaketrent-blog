@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-03-20T16:28:36-06:00</updated>
+  <updated>2016-03-22T06:31:35-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,102 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Selecting a Directory in Electron]]></title>
+    <link href="http://jaketrent.com/post/select-directory-in-electron/"/>
+    <updated>2016-03-21T10:12:00-06:00</updated>
+    <id>http://jaketrent.com/post/select-directory-in-electron</id>
+    <content type="html"><![CDATA[<p>Electron will help you make some sweet native desktop apps using web tech.  Now that you're on the desktop, one of the cool things you can do is access the filesystem.  There are a couple ways to access the filesystem via the file open dialog using user input events.</p>
+
+<p><img src="http://i.imgur.com/Vp8Zuix.jpg" alt="Electron" /></p>
+
+<!--more-->
+
+
+<h2>From HTML</h2>
+
+<p>In Electron, you use HTML for your views.  Thus, if you want the user to select a directory from the UI, you can use a <code>&lt;input type="file" /&gt;</code>, just like in a normal web app.</p>
+
+<h4>Select Only Directories</h4>
+
+<p>To select only directories, there is an attribute you can add to the <code>input</code> tag:</p>
+
+<p>```html
+&lt;input type="file"</p>
+
+<pre><code>   webkitdirectory /&gt;
+</code></pre>
+
+<p>```</p>
+
+<p>This wouldn't be reliable in a cross-browser environment.  But since, on Electron, you're only targeting Chrome, you're golden with whatever Chrome has available to you.</p>
+
+<h4>Bonus: Programmatically click on <code>input[type="file"]</code></h4>
+
+<p>As a bonus, Electron doesn't have the sandbox security restrictions that you would have in a standalone browser like Chrome.  In browsers, sometimes the file open dialog will fail if anything triggers the dialog besides the user clicking with their own mouse on the file input field.  Sometimes getting at the contents of the file will fail.  I'm too lazy to test which browsers do what at this point, but sad past experience has determined that this is unreliable.</p>
+
+<p>But in Electron, you are again liberated.  For instance, <code>input[type="file"]</code> is ugly and sometimes hard to style into exactly what you want.  So, it's often that you'll want to create a custom widget, that when <em>it's</em> clicked, the <code>input[type="file"]</code> is clicked and the file open dialog is popped.</p>
+
+<p>Given:</p>
+
+<p><code>html
+&lt;button id="party" class="very-sweet-looking"&gt;Open&lt;/button&gt;
+&lt;input id="business" type="file" style="display: none" /&gt;
+</code></p>
+
+<p>This totally works:</p>
+
+<p><code>js
+document.getElementById('party').addEventListener('click', _ =&gt; {
+  document.getElementById('business').click()
+})
+</code></p>
+
+<h2>From Electron API</h2>
+
+<p>In the main process, you have access to an Electron API, <code>dialog</code>.  <a href="http://electron.atom.io/docs/v0.37.2/api/dialog/#dialogshowopendialogbrowserwindow-options-callback"><code>dialog#showOpenDialog</code></a> is a programmatic API that allows you to open the same open file dialog that you're used to in the browser.  What's even better is that here you can set that only directories should be openable rather easily:</p>
+
+<p>```js
+// mainWindow is your instance of BrowserWindow
+const electron = require('electron')
+const dialog = electrong.dialog
+function selectDirectory() {
+  dialog.showOpenDialog(mainWindow, {</p>
+
+<pre><code>properties: ['openDirectory']
+</code></pre>
+
+<p>  })
+}
+```</p>
+
+<p>In order to integrate this main process code with user interaction, we need to do a few things.</p>
+
+<p>First, export the code from your main process module:</p>
+
+<p><code>js main.js
+exports.selectDirectory = function () {
+  // dialog.showOpenDialog as before
+}
+</code></p>
+
+<p>And then in the renderer process, capture user events as before and call the main process function, <code>selectDirectory</code>:</p>
+
+<p><code>js renderer.js
+const electron = require('electron')
+const remote = electron.remote
+const mainProcess = remote.require('./main')
+document.getElementById('party').addEventListener('click', _ =&gt; {
+  mainProcess.selectDirectory()
+})
+</code></p>
+
+<p>Works pretty nicely, but feels weird that you have to go back to the main process to access a view-related API (as of Electron 0.37).</p>
+
+<p>So, if there are two ways to do this, there has to be another, right?  What are you doing to select a directory in Electron?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Console.log Deep Objects]]></title>
@@ -434,56 +530,6 @@ import axios from 'axios'</p>
 <p>Now note that you must be aware of what your format HTTP library, in this case axios, uses in its responses.  What you <code>reject</code> manually must be exactly the same format that usually is returned in an error situation (eg, <code>status</code> and <code>data</code>).  You must also know what your server is designed to return as an error response (eg, <code>errors</code>).  The above application code is using the <a href="http://jsonapi.org/format/#error-objects">JSON API</a> format.</p>
 
 <p>What other little tricks do you find useful in getting APIs to fail?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[What React Stateless Components are Missing]]></title>
-    <link href="http://jaketrent.com/post/react-stateless-components-missing/"/>
-    <updated>2016-01-04T12:59:00-07:00</updated>
-    <id>http://jaketrent.com/post/react-stateless-components-missing</id>
-    <content type="html"><![CDATA[<p>Stateless React components got a new syntax in React 0.14.  It's much simpler.  It's just a function call.  Besides it just looking simpler, there are some major differences in what is available in a stateless component written this way.  There are some things missing -- purposefully not included -- that you may be used to.  Let's look at a few things.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="http://i.imgur.com/DXuSNbw.png" /></p>
-
-<!--more-->
-
-
-<p>Stateless components are now specifically not just components where you don't use <code>this.state</code>.  They're componets that are written in the form of a function:</p>
-
-<p><code>js
-function Chips(props) {
-  return &lt;div&gt;In the secret {props.place}&lt;/div&gt;
-}
-</code></p>
-
-<p>The observations made in this article will not apply to components that are created using the <code>class Chips extends React.Component</code> or <code>React.createClass</code> syntax, whether they use state or not.</p>
-
-<h2>No Backing Instance</h2>
-
-<p>A React component's backing instance is the object in memory that represents the node in the view.  This backing instance is the place where state is usually stored (using React's <code>this.state</code>).  Well now there's no <code>this</code> in stateless components.  Thus, there's not going to be a place for <code>this.state</code>.  Stateless, remember?  Data just passes through the pure function and into the resulting view.</p>
-
-<h2>No Lifecycle Methods</h2>
-
-<p>Because there's no backing instance as a place to put hooks for your code in the component lifecycle, you can not use any of the lifecycle methods from <code>React.Component</code>.  Methods such as <code>componentDidMount</code> and <code>componentWillReceiveProps</code> are out.  And since the stateless component is a pure function that just reproduces its view state on <code>props</code> change, why would you need lifecycle methods anyway?</p>
-
-<h2>No Reference to the Component</h2>
-
-<p>Often when testing, it's useful to get a reference to the component itself.  In the case of stateless components, they're just fired and forgotten, rendered into the view without the ability to get a handle on them.  They're just UI at this point, just in the DOM.  You can go to the DOM to do your testing.</p>
-
-<p>Depending on your test environment setup, you may want to wrap your stateless components in a <code>class</code>-based component you <em>can</em> get a reference to.</p>
-
-<p>Note that for stateless components, <code>ReactDOM.render</code> and <code>TestUtils.renderIntoDocument</code> will return <code>null</code>.</p>
-
-<h2>No refs</h2>
-
-<p>Stateless components can't be the target of a <code>ref</code>.  There's no backing instance.  You can't have <code>refs</code> internally to children either.  Remember, <code>this</code> and <code>this.refs</code> aren't around.  If your stateless component has a child that is a <code>class</code>-based component, <em>it</em> may have <code>refs</code>.  <a href="https://facebook.github.io/react/docs/more-about-refs.html">The docs</a> are another good reference on <code>refs</code>.</p>
-
-<h2>No null Returns</h2>
-
-<p>A <code>class</code>-based component may return <code>null</code> as its value in the view.  But a stateless component may not.  To get around this, return <code>&lt;noscript&gt;&lt;/noscript&gt;</code>.  This will be fully invisible in the view.</p>
-
-<p>So what else have you found that is unavailable in stateless functions?</p>
 ]]></content>
   </entry>
   
