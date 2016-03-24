@@ -4,7 +4,7 @@
   <title><![CDATA[Category: npm | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/npm/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-03-22T06:31:35-06:00</updated>
+  <updated>2016-03-24T16:04:29-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,64 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Change Default NPM License]]></title>
+    <link href="http://jaketrent.com/post/change-default-npm-license/"/>
+    <updated>2016-03-24T15:45:00-06:00</updated>
+    <id>http://jaketrent.com/post/change-default-npm-license</id>
+    <content type="html"><![CDATA[<p>Npm has a fantastic init tool for creating the descriptor for your project.  It will gladly provide defaults for you.  These are sometimes helpful.  Wouldn't it be more better to define your own defaults?</p>
+
+<p><img src="http://i.imgur.com/P34k4L5.png" alt="NPM" /></p>
+
+<!--more-->
+
+
+<h2>Npm Init</h2>
+
+<p>If you're doing any JavaScript development, NPM is likely a helpful tool for your toolbox.  To add a descriptor with meta information, including things like 3rd-party project dependencies, you need a <code>package.json</code> for your project.  To get this file, you can edit it by hand or have one generated for you.  To generate it, run:</p>
+
+<p><code>
+npm init
+</code></p>
+
+<p>You will then be prompted to answer a series of relevant questions, such as:</p>
+
+<p><code>
+name: (hello-riot)
+version: (1.0.0)
+description:
+entry point: (index.js)
+test command:
+git repository:
+keywords:
+author:
+license: (ISC)
+...
+</code></p>
+
+<p>The values in parenthesis are the defaults.  Defaults are determined from things like the directory you're in, the git repository you're in, etc.</p>
+
+<h2>Set Npm Init Defaults</h2>
+
+<p>Some defaults are just the NPM-provided conventions.  They don't know much more to provide.  But you can provide your own defaults for your system by editing <code>~/.npmrc</code>.  Or you can use the cli to add to this file from the terminal.  For instance, the two I like to change are my author name and the license:</p>
+
+<p><code>
+npm config set init-author-name "jaketrent"
+npm config set init-license "MIT"
+</code></p>
+
+<p>Now, you can init and just take the defaults without pressing enter to answer the question with:</p>
+
+<p><code>
+npm -y
+</code></p>
+
+<p>And what you get are the defaults you've already decided you like.</p>
+
+<p>To know what other things you can change as defaults, use <code>npm help 7 config</code> and grep for <code>init-</code>-prefixed values.  Happy npm'ing!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[List Npm Scripts]]></title>

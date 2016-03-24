@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-03-22T06:31:35-06:00</updated>
+  <updated>2016-03-24T16:04:29-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,64 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Change Default NPM License]]></title>
+    <link href="http://jaketrent.com/post/change-default-npm-license/"/>
+    <updated>2016-03-24T15:45:00-06:00</updated>
+    <id>http://jaketrent.com/post/change-default-npm-license</id>
+    <content type="html"><![CDATA[<p>Npm has a fantastic init tool for creating the descriptor for your project.  It will gladly provide defaults for you.  These are sometimes helpful.  Wouldn't it be more better to define your own defaults?</p>
+
+<p><img src="http://i.imgur.com/P34k4L5.png" alt="NPM" /></p>
+
+<!--more-->
+
+
+<h2>Npm Init</h2>
+
+<p>If you're doing any JavaScript development, NPM is likely a helpful tool for your toolbox.  To add a descriptor with meta information, including things like 3rd-party project dependencies, you need a <code>package.json</code> for your project.  To get this file, you can edit it by hand or have one generated for you.  To generate it, run:</p>
+
+<p><code>
+npm init
+</code></p>
+
+<p>You will then be prompted to answer a series of relevant questions, such as:</p>
+
+<p><code>
+name: (hello-riot)
+version: (1.0.0)
+description:
+entry point: (index.js)
+test command:
+git repository:
+keywords:
+author:
+license: (ISC)
+...
+</code></p>
+
+<p>The values in parenthesis are the defaults.  Defaults are determined from things like the directory you're in, the git repository you're in, etc.</p>
+
+<h2>Set Npm Init Defaults</h2>
+
+<p>Some defaults are just the NPM-provided conventions.  They don't know much more to provide.  But you can provide your own defaults for your system by editing <code>~/.npmrc</code>.  Or you can use the cli to add to this file from the terminal.  For instance, the two I like to change are my author name and the license:</p>
+
+<p><code>
+npm config set init-author-name "jaketrent"
+npm config set init-license "MIT"
+</code></p>
+
+<p>Now, you can init and just take the defaults without pressing enter to answer the question with:</p>
+
+<p><code>
+npm -y
+</code></p>
+
+<p>And what you get are the defaults you've already decided you like.</p>
+
+<p>To know what other things you can change as defaults, use <code>npm help 7 config</code> and grep for <code>init-</code>-prefixed values.  Happy npm'ing!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Selecting a Directory in Electron]]></title>
@@ -443,93 +501,6 @@ class MyComponent extends React.Component {
 <li>Arrow functions - What do they help with?</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Test APIs Failing from Client]]></title>
-    <link href="http://jaketrent.com/post/test-apis-failing-from-client/"/>
-    <updated>2016-01-25T13:54:00-07:00</updated>
-    <id>http://jaketrent.com/post/test-apis-failing-from-client</id>
-    <content type="html"><![CDATA[<p>In the case where you can't edit a local version of your APIs in order to cause them to fail, you need to be able to edit your client so that it <em>looks</em> like the API request fails.  Here's a quick code change that should make this easy for you.</p>
-
-<p><img src="http://i.imgur.com/8Fm1cn2.jpg" alt="We have a problem" /></p>
-
-<!--more-->
-
-
-<p>This is one of many possible manual testing techniques.  This allow you to see the change in your running app as you work through it.  For instance, I like to use this as I'm testing through the error alerting features that are common in an app when an API request fails.</p>
-
-<p>Go to the point in your app where your bits touch the network.  This is usually the place where you use your HTTP wrapper or, if you're a free spirit, call some XHR goodness yourself.  These days, I like using the venerable <a href="https://github.com/mzabriskie/axios">axios</a> library.  Axios is promise based, so that means that we can use async/await as well, which is like a fine chocolate next to a warm fire in winter (which is good).</p>
-
-<p>So, all my http code might look in essence like this:</p>
-
-<p>```js api.js
-import axios from 'axios'</p>
-
-<p>export const fetch = {
-  // deserialize, etc ...
-  request(url) {</p>
-
-<pre><code>return axios({
-  method: 'get',
-  url
-})
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>So, this <code>request</code> function returns a Promise.  The logic around the request might look like:</p>
-
-<p>```js actions.js
-import * as api from './api'</p>
-
-<p>async function fetchWater() {
-  const { request} = api.fetch</p>
-
-<p>  try {</p>
-
-<pre><code>const res = await request('/my/own/home')
-// ... handle success response
-</code></pre>
-
-<p>  } catch (res) {</p>
-
-<pre><code>// ... handle error response, where failure code should execute (what we want to TEST!)
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>To make this request fail, we need only make the Promise fail, rejecting it like a mouthful of stewed tomatoes.  So, just change <code>api.js</code>:</p>
-
-<p>```js api.js
-import axios from 'axios'</p>
-
-<p>export const fetch = {
-  // ...
-  request(url) {</p>
-
-<pre><code>return Promise((resolve, reject) =&gt; {
-  reject({
-    status: 500,
-    data: {
-      errors: [{ detail: 'Shere Khan is back!' }]
-    }
-  })
-})
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>Now note that you must be aware of what your format HTTP library, in this case axios, uses in its responses.  What you <code>reject</code> manually must be exactly the same format that usually is returned in an error situation (eg, <code>status</code> and <code>data</code>).  You must also know what your server is designed to return as an error response (eg, <code>errors</code>).  The above application code is using the <a href="http://jsonapi.org/format/#error-objects">JSON API</a> format.</p>
-
-<p>What other little tricks do you find useful in getting APIs to fail?</p>
 ]]></content>
   </entry>
   
