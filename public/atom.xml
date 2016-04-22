@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-04-06T07:18:31-06:00</updated>
+  <updated>2016-04-22T06:26:53-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,118 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[react-dnd With Text Drag Preview]]></title>
+    <link href="http://jaketrent.com/post/react-dnd-text-drag-preview/"/>
+    <updated>2016-04-21T08:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/react-dnd-text-drag-preview</id>
+    <content type="html"><![CDATA[<p><a href="http://gaearon.github.io/react-dnd/">react-dnd</a> is a fantastic library for implementing drag and drop features in a React application.  In browsers, you have the ability to specify a drag preview for the thing your dragging.  Images are easy.  Text takes more work &#8211; because you need to generate an image.</p>
+
+<p><img src="http://i.imgur.com/E5NwBek.png" alt="react-dnd text drag previews" /></p>
+
+<!--more-->
+
+
+<p>I love the abstractions in react-dnd.  They seem very elegant.  We&#8217;re going to need another abstraction here, because there&#8217;s a short list of things that we need to do in order to get a text-based drag preview showing up in our app.  These things are required because drag previews in browsers only support images.  Thus we will need to take source text from our app code and convert it into an image in order to hand it off to the drag and drop api.</p>
+
+<h2>Drag Text from a Canvas</h2>
+
+<p>To convert text to an image, we must:</p>
+
+<ol>
+<li>Create a canvas element</li>
+<li>Fit the canvas to our text</li>
+<li>Style the canvas</li>
+<li>Create a new image element with the canvas data as src</li>
+</ol>
+
+
+<h4>Create a Canvas Element</h4>
+
+<p>We choose a canvas element because we can write text onto it and eventually export its bytes.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;canvas&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">ctx</span> <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Fit Canvas to the Text</h4>
+
+<p>We want the drag preview to be dynamically sized.  This is because the text can change in length.   The key to our success is available on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/measureText">Canvas 2D context as <code>measureText</code></a>.  This function is available in IE9+.  In case you don&#8217;t have access to this function, you can attempt a crude fallback.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">getTextWidth</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">fontSize</span><span class="p">,</span> <span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">ctx</span><span class="p">.</span><span class="nx">measureText</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">ctx</span><span class="p">.</span><span class="nx">measureText</span><span class="p">(</span><span class="nx">text</span><span class="p">).</span><span class="nx">width</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">perCharWidth</span> <span class="o">=</span> <span class="nx">fontSize</span> <span class="o">/</span> <span class="mf">1.7</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">text</span><span class="p">.</span><span class="nx">length</span> <span class="o">*</span> <span class="nx">perCharWidth</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Style the Canvas</h4>
+
+<p>Once you know how big to make your drag preview, draw a rectangle upon which you can then draw your text.</p>
+
+<p>In addition to drawing the main content, there are also other stylistic adjustments that you can make via <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D">attributes on <code>CanvasRenderingContext2D</code></a>.  Attributes like <code>fillStyle</code>, <code>strokeStyle</code>, and <code>font</code> are available.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">rectWidth</span><span class="p">,</span> <span class="nx">rectHeight</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">save</span><span class="p">()</span>
+</span><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillStyle</span> <span class="o">=</span> <span class="nx">backgroundColor</span>
+</span><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">strokeStyle</span> <span class="o">=</span> <span class="nx">borderColor</span>
+</span><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">fill</span><span class="p">()</span>
+</span><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">stroke</span><span class="p">()</span>
+</span><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">restore</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">ctx</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Create a new Image Element</h4>
+
+<p>Remember, drag preview requires an image to render when the user is dragging.  Set the <code>src</code> of the image to the data from the canvas.  This will transfer everything you just created in the canvas into an image.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">img</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Image</span><span class="p">()</span>
+</span><span class='line'><span class="nx">img</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">toDataURL</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This image should be ready to use in react-dnd&#8217;s <a href="http://gaearon.github.io/react-dnd/docs-drag-source-connector.html"><code>connect#dragPreview</code></a>.</p>
+
+<h2>A Library to Help</h2>
+
+<p>When making a React drag and drop app, I usually don&#8217;t look forward to using the sometimes-arcane API of the <code>canvas</code> element.  So, I wrapped it up so I wouldn&#8217;t have to look at it as often.</p>
+
+<p>If you think this might help you, take a look at <a href="http://npm.im/react-dnd-text-dragpreview">react-dnd-text-dragpreview</a>.</p>
+
+<p>How do you go about doing text-based drag previews?  Any other good tips?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Make Your Project Fun]]></title>
@@ -1517,56 +1629,6 @@
 <p>Steve Jobs often expressed that his passions lived at the intersection of the arts and technology.  That sounds like a cool estuary.  Now think of the intersection of the passions, knowledge, and abilities of entire teams really working together.</p>
 
 <p>So swim in the estuary.  It&#8217;s a great way to make software.  Don&#8217;t think of your roles in terms of upstream and downstream disciplines.  You can have a rich, productive team and a better product by truly working together, not just being on the same team in name, location, or project.  Pay the price of the messiness of collaboration.  It&#8217;s challenging, of course.  But who doesn&#8217;t want to do great work with people of courage, humility, and trust?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[This Isn't Your Magnum Opus]]></title>
-    <link href="http://jaketrent.com/post/this-isnt-your-magnum-opus/"/>
-    <updated>2015-08-15T15:46:00-06:00</updated>
-    <id>http://jaketrent.com/post/this-isnt-your-magnum-opus</id>
-    <content type="html"><![CDATA[<p>Sometimes it seems like we feel everything we produce must be our magnum opus &#8211; not just great work, but <em>the</em> great work of our career.  Somehow we end up thinking that this thing we&#8217;re working on is the final act, the thing that will dwarf all our previous work.  The thing that won&#8217;t &#8211; in fact, shouldn&#8217;t &#8211; be toppable.  We tell ourselves that we&#8217;ll forever be judged by this one artifact.  Is that the case?  Probably not.</p>
-
-<p><img src="http://i.imgur.com/4yimUZ1.jpg" alt="a magnum opus in the making" /></p>
-
-<!--more-->
-
-
-<p>Of course we should do great work.  But sometimes our view of how great it needs to be, in a real way, gets in the way of its actual greatness.  We are slow to start.  We are intimidated by the blank page.  We shy away from production because we already don&#8217;t know how to measure up to the expectation we&#8217;ve given ourselves in our head.  Stop expecting, and start doing.</p>
-
-<h2>Why you should start now</h2>
-
-<p>You&#8217;re probably just wasting time on stuff you don&#8217;t care about while you stew about how to complete this great work by which you&#8217;ll be forever judged.  Mustn&#8217;t mess up now, musn&#8217;t we?  Of course, you&#8217;re probably snoozin&#8217; in front of Netflix right now in order to escape what you&#8217;re putting off.</p>
-
-<p>Life is filled with opportunities.  Opportunities don&#8217;t sit still.  Time moves on.  There are windows to when things are possible or more likely.  Life will pass us by one way or the other.  Will we be involved in it in the ways we want?</p>
-
-<p>There is something to be said for producing in high volumes.  I read in a C.S. Lewis biography once that Lewis&#8217; friend J.R.R. Tolkien, who worked in detail at a snail&#8217;s pace, thought his friend sloppy and not as careful an author as himself (17 years of production for the 3 Lord of the Rings books vs. 7 years of production for the 7 Chronicles of Narnia books).  Yet C.S. Lewis authored <a href="https://en.wikipedia.org/wiki/C._S._Lewis_bibliography"><em>many</em> great works</a> that have touched many people.  (J.R.R. Tolkien&#8217;s works have spread to an even wider acclaim, btw.)  The more of your actualized ideas that appear in the wild, the more people will be touched in ways that you care about.  The more brains of your consumers that are activated by what you produce, the more ripple effect you&#8217;re likely to have.  You may find a diamond in the rough eventually.  You&#8217;re more likely to find diamonds if there are many scattered around for the finding.</p>
-
-<h2>The Road to Perfection</h2>
-
-<p>The only constant is change &#8211;right?!  So why do you expect things to be <em>just so</em>, now?  This year&#8217;s car model has somehow managed to look better than last year&#8217;s.  But they shipped one last year anyway.  It may have even had something to do with with year&#8217;s being as good as it was.</p>
-
-<p>Iterate!  There will be time to repair or even replace. Often our ideas get better over time.  Often we do too much in the beginning.  We clutter the palette and crowd out great with good.  &#8220;Half baked&#8221; is just a comment with a negative connotation that means we still have work to do.  Of course we do.  When don&#8217;t we?</p>
-
-<h2>Those Marketing Events</h2>
-
-<p>Ah, those marketing events.  You know the ones.  The company is turning over new leaves and wants to make a big splash.  They want to use all that ad budget to great effect and capture all the headlines in all the outlets.</p>
-
-<p>We might build something new and shiny from the ground up.  We stack as much pizzazz into the new product as we can.  We cringe that one of our favorite new features won&#8217;t make it.  We endless tweak to get things just as we imagine &#8220;right&#8221; is for the big reveal.  We want it all, and it must be grand, fresh, and unified from the moment of the big press conference.</p>
-
-<p>These are big events.  Sometimes they work out.  They&#8217;re easy to get wrong.  They&#8217;re very easy to be disappointed by.  Have you heard advice like, &#8220;Don&#8217;t make 20 new New Year&#8217;s resolutions.  You&#8217;ll drown in them.  Focus on <a href="http://jaketrent.com/post/vision-questing/">1 or 3 most important things</a> at a time.&#8221;?  You&#8217;ll be more likely to hit the mark you&#8217;re aiming for.  And then after those first 3 months of 1 or 3 big things, your life will better in those 1 or 3 big ways.  Your product might benefit from the same focus.  And your customers will appreciate some benefits that you could provide in their lives before the appointed marketing hour.</p>
-
-<p>These marketing events are kind of cool in a way.  Who doesn&#8217;t like a fireworks display?  (Hehe, but if you&#8217;re like me, you&#8217;re thinking about the cost per firework at the same time.)  But who likes waiting for things these days either?  Do you remember the days (not far distant) where web browser releases were tied to infrequent OS releases?  Was it fun to wait a year to be able to use that new browser feature?  Thankfully, browsers are released a lot more frequently now.  Small, online patches are common.</p>
-
-<p>I&#8217;ve never really enjoyed working toward these marketing events either.  Usually unrealistic timelines mixed with a sense of responsibility and urgency create additional stress.  Ironically, product quality and pride often suffer <em>anyway</em>, even after waiting until the big day.  The date usually moves anyway.  It&#8217;s a potentially risky business move to wait on value so long, giving scrappier competitors a way to get in before you.  Things you thought would be done don&#8217;t get done and you are left to create accommodations around legacy and next-gen systems existing simultaneously.  If you would have embraced iteration and expected a constant messiness, at least you would have been able to plan for this from the beginning.</p>
-
-<h2>Peer in the Future</h2>
-
-<p>Of course you want to achieve your product vision.  You are genuinely excited by the prospects of that future that you behold.  You still can.  But if you don&#8217;t release now (or at least sooner than you&#8217;re comfortable), it&#8217;s likely you&#8217;ll never bring yourself to release, being stalled, scared of judgement, in the grips of analysis paralysis, not wanting to blow it.  Then eventually, at the end of the long and winding road, you will release what you <em>thought</em> was your vision, often missing the mark anyway.  You&#8217;re more likely to hit 5 free throws than you are to hit 1 full-court shot.  And if you miss one free throw, you have another 80% of your opportunities in front of you to adjust for and get right.</p>
-
-<p>It has been said that the best way to predict the future is to invent it.  A lot can change in months, days, and years.  Help guide the future one day at a time, continuously.  The best way to test your invention is to release it and let people try it.  The best time to release is as soon as possible.</p>
-
-<p>Don&#8217;t worry about this product being your magnum opus.  Maybe it will, maybe it won&#8217;t.  Let other decide that after you&#8217;re dead and all your works are done.  Make the world a better place as best you can as soon as you can, and make some opuses!</p>
 ]]></content>
   </entry>
   

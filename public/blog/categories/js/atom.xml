@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-04-06T07:18:31-06:00</updated>
+  <updated>2016-04-22T06:26:53-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,102 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[react-dnd With Text Drag Preview]]></title>
+    <link href="http://jaketrent.com/post/react-dnd-text-drag-preview/"/>
+    <updated>2016-04-21T08:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/react-dnd-text-drag-preview</id>
+    <content type="html"><![CDATA[<p><a href="http://gaearon.github.io/react-dnd/">react-dnd</a> is a fantastic library for implementing drag and drop features in a React application.  In browsers, you have the ability to specify a drag preview for the thing your dragging.  Images are easy.  Text takes more work -- because you need to generate an image.</p>
+
+<p><img src="http://i.imgur.com/E5NwBek.png" alt="react-dnd text drag previews" /></p>
+
+<!--more-->
+
+
+<p>I love the abstractions in react-dnd.  They seem very elegant.  We're going to need another abstraction here, because there's a short list of things that we need to do in order to get a text-based drag preview showing up in our app.  These things are required because drag previews in browsers only support images.  Thus we will need to take source text from our app code and convert it into an image in order to hand it off to the drag and drop api.</p>
+
+<h2>Drag Text from a Canvas</h2>
+
+<p>To convert text to an image, we must:</p>
+
+<ol>
+<li>Create a canvas element</li>
+<li>Fit the canvas to our text</li>
+<li>Style the canvas</li>
+<li>Create a new image element with the canvas data as src</li>
+</ol>
+
+
+<h4>Create a Canvas Element</h4>
+
+<p>We choose a canvas element because we can write text onto it and eventually export its bytes.</p>
+
+<p><code>js
+var c = document.createElement('canvas')
+var ctx = c.getContext('2d')
+</code></p>
+
+<h4>Fit Canvas to the Text</h4>
+
+<p>We want the drag preview to be dynamically sized.  This is because the text can change in length.   The key to our success is available on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/measureText">Canvas 2D context as <code>measureText</code></a>.  This function is available in IE9+.  In case you don't have access to this function, you can attempt a crude fallback.</p>
+
+<p>```js
+function getTextWidth(ctx, fontSize, text) {
+  if (typeof ctx.measureText === 'function') {</p>
+
+<pre><code>return ctx.measureText(text).width
+</code></pre>
+
+<p>  } else {</p>
+
+<pre><code>var perCharWidth = fontSize / 1.7
+return text.length * perCharWidth
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<h4>Style the Canvas</h4>
+
+<p>Once you know how big to make your drag preview, draw a rectangle upon which you can then draw your text.</p>
+
+<p>In addition to drawing the main content, there are also other stylistic adjustments that you can make via <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D">attributes on <code>CanvasRenderingContext2D</code></a>.  Attributes like <code>fillStyle</code>, <code>strokeStyle</code>, and <code>font</code> are available.</p>
+
+<p>```js
+ctx.rect(0, 0, rectWidth, rectHeight)</p>
+
+<p>ctx.save()
+ctx.fillStyle = backgroundColor
+ctx.strokeStyle = borderColor
+ctx.fill()
+ctx.stroke()
+ctx.restore()</p>
+
+<p>ctx.fillText(text)
+```</p>
+
+<h4>Create a new Image Element</h4>
+
+<p>Remember, drag preview requires an image to render when the user is dragging.  Set the <code>src</code> of the image to the data from the canvas.  This will transfer everything you just created in the canvas into an image.</p>
+
+<p><code>js
+var img = new Image()
+img.src = c.toDataURL()
+</code></p>
+
+<p>This image should be ready to use in react-dnd's <a href="http://gaearon.github.io/react-dnd/docs-drag-source-connector.html"><code>connect#dragPreview</code></a>.</p>
+
+<h2>A Library to Help</h2>
+
+<p>When making a React drag and drop app, I usually don't look forward to using the sometimes-arcane API of the <code>canvas</code> element.  So, I wrapped it up so I wouldn't have to look at it as often.</p>
+
+<p>If you think this might help you, take a look at <a href="http://npm.im/react-dnd-text-dragpreview">react-dnd-text-dragpreview</a>.</p>
+
+<p>How do you go about doing text-based drag previews?  Any other good tips?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Change Default NPM License]]></title>
@@ -415,91 +511,6 @@ class MyComponent extends React.Component {
 <p><em>Adapted from a meetup talk:</em></p>
 
 <script async class="speakerdeck-embed" data-id="26cce4743e5540b48188a35f49de3c4d" data-ratio="1.33333333333333" src="http://jaketrent.com//speakerdeck.com/assets/embed.js"></script>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Some Node Skills to Explore]]></title>
-    <link href="http://jaketrent.com/post/node-skills-explore/"/>
-    <updated>2016-01-26T10:00:00-07:00</updated>
-    <id>http://jaketrent.com/post/node-skills-explore</id>
-    <content type="html"><![CDATA[<p>We are hiring a bunch of Node.js developers at the moment.  You may be as well.  I'm sure you have a good list of skills that you're looking for in developers that join your posse.  Here are a few <em>technical</em> things I think about when getting the opportunity  to sit down with a Node developer.</p>
-
-<p><img src="http://i.imgur.com/9WglUIw.jpg" alt="Exploring Node Skills" /></p>
-
-<!--more-->
-
-
-<p>What might you add to the list?</p>
-
-<h2>Async Programming</h2>
-
-<ul>
-<li>What are options for async flow control?  Favorites?  Least?  Pros?  Cons?</li>
-<li>Node event loop -- How does it work?  What applications does it fit?</li>
-</ul>
-
-
-<h2>Error Handling</h2>
-
-<ul>
-<li>Limitations/advantages in handling async errors?</li>
-<li>Handle errors in Promises?</li>
-<li>Handle errors in callbacks?</li>
-<li>What errors should be thrown?</li>
-</ul>
-
-
-<h2>Functional</h2>
-
-<ul>
-<li>What is immutability?  Why want it?</li>
-<li>Basic Array.prototype methods?</li>
-<li>What does shared state give you?</li>
-<li>Advantages to pure functions?</li>
-<li>Applications of higher-order functions?</li>
-</ul>
-
-
-<h2>API</h2>
-
-<ul>
-<li>Specifically, how does CORS work?</li>
-<li>Familiar with which request and response formats?  Favorite?  Worst?  Why?</li>
-<li>How does middleware work?  When do you like to use it?</li>
-</ul>
-
-
-<h2>Ops</h2>
-
-<ul>
-<li>How can you use all CPUs on a server?</li>
-<li>How to associate logs together with a single request path?</li>
-<li>How to recover from fatal errors?</li>
-<li>How do you load per-environment configuration?</li>
-<li>How do you handle versioning of your apps and libs?</li>
-</ul>
-
-
-<h2>Modules</h2>
-
-<ul>
-<li>Why use modules?</li>
-<li>How do you organize your API apps' modules?</li>
-<li>Flavors of exports?  When do use each?</li>
-</ul>
-
-
-<h2>ES Next</h2>
-
-<ul>
-<li>Which new features have you used?  Like, not like?</li>
-<li>async/await - Used instead of what?</li>
-<li>Object literal extensions - How used?</li>
-<li>Spread operator - Helpful usecases?</li>
-<li>Arrow functions - What do they help with?</li>
-</ul>
 
 ]]></content>
   </entry>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: react | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/react/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-04-06T07:18:31-06:00</updated>
+  <updated>2016-04-22T06:26:53-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,102 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[react-dnd With Text Drag Preview]]></title>
+    <link href="http://jaketrent.com/post/react-dnd-text-drag-preview/"/>
+    <updated>2016-04-21T08:04:00-06:00</updated>
+    <id>http://jaketrent.com/post/react-dnd-text-drag-preview</id>
+    <content type="html"><![CDATA[<p><a href="http://gaearon.github.io/react-dnd/">react-dnd</a> is a fantastic library for implementing drag and drop features in a React application.  In browsers, you have the ability to specify a drag preview for the thing your dragging.  Images are easy.  Text takes more work -- because you need to generate an image.</p>
+
+<p><img src="http://i.imgur.com/E5NwBek.png" alt="react-dnd text drag previews" /></p>
+
+<!--more-->
+
+
+<p>I love the abstractions in react-dnd.  They seem very elegant.  We're going to need another abstraction here, because there's a short list of things that we need to do in order to get a text-based drag preview showing up in our app.  These things are required because drag previews in browsers only support images.  Thus we will need to take source text from our app code and convert it into an image in order to hand it off to the drag and drop api.</p>
+
+<h2>Drag Text from a Canvas</h2>
+
+<p>To convert text to an image, we must:</p>
+
+<ol>
+<li>Create a canvas element</li>
+<li>Fit the canvas to our text</li>
+<li>Style the canvas</li>
+<li>Create a new image element with the canvas data as src</li>
+</ol>
+
+
+<h4>Create a Canvas Element</h4>
+
+<p>We choose a canvas element because we can write text onto it and eventually export its bytes.</p>
+
+<p><code>js
+var c = document.createElement('canvas')
+var ctx = c.getContext('2d')
+</code></p>
+
+<h4>Fit Canvas to the Text</h4>
+
+<p>We want the drag preview to be dynamically sized.  This is because the text can change in length.   The key to our success is available on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/measureText">Canvas 2D context as <code>measureText</code></a>.  This function is available in IE9+.  In case you don't have access to this function, you can attempt a crude fallback.</p>
+
+<p>```js
+function getTextWidth(ctx, fontSize, text) {
+  if (typeof ctx.measureText === 'function') {</p>
+
+<pre><code>return ctx.measureText(text).width
+</code></pre>
+
+<p>  } else {</p>
+
+<pre><code>var perCharWidth = fontSize / 1.7
+return text.length * perCharWidth
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<h4>Style the Canvas</h4>
+
+<p>Once you know how big to make your drag preview, draw a rectangle upon which you can then draw your text.</p>
+
+<p>In addition to drawing the main content, there are also other stylistic adjustments that you can make via <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D">attributes on <code>CanvasRenderingContext2D</code></a>.  Attributes like <code>fillStyle</code>, <code>strokeStyle</code>, and <code>font</code> are available.</p>
+
+<p>```js
+ctx.rect(0, 0, rectWidth, rectHeight)</p>
+
+<p>ctx.save()
+ctx.fillStyle = backgroundColor
+ctx.strokeStyle = borderColor
+ctx.fill()
+ctx.stroke()
+ctx.restore()</p>
+
+<p>ctx.fillText(text)
+```</p>
+
+<h4>Create a new Image Element</h4>
+
+<p>Remember, drag preview requires an image to render when the user is dragging.  Set the <code>src</code> of the image to the data from the canvas.  This will transfer everything you just created in the canvas into an image.</p>
+
+<p><code>js
+var img = new Image()
+img.src = c.toDataURL()
+</code></p>
+
+<p>This image should be ready to use in react-dnd's <a href="http://gaearon.github.io/react-dnd/docs-drag-source-connector.html"><code>connect#dragPreview</code></a>.</p>
+
+<h2>A Library to Help</h2>
+
+<p>When making a React drag and drop app, I usually don't look forward to using the sometimes-arcane API of the <code>canvas</code> element.  So, I wrapped it up so I wouldn't have to look at it as often.</p>
+
+<p>If you think this might help you, take a look at <a href="http://npm.im/react-dnd-text-dragpreview">react-dnd-text-dragpreview</a>.</p>
+
+<p>How do you go about doing text-based drag previews?  Any other good tips?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Smart and Dumb Components in React]]></title>
@@ -353,48 +449,6 @@ import React from 'react'</p>
 <p>Everything seemed in its place.  The conference was small, about 250 participants, and it seemed like a large house party most of the time.  The venue was prepped very well.  I'm glad they opened up the downstairs lounge.  The food was great.  The breakfast trucks were a wonderful touch, especially <a href="http://saturdayswaffle.com/">Saturdays Waffles</a> day.  Mmmmm, waffles.  The gift card for lunch was a thoughtful touch.  <a href="http://www.yelp.com/biz/atlantic-caf%C3%A9-and-market-salt-lake-city-4">Atlantic Cafe</a> provided my delicious cevapi sausage on the 2nd day.</p>
 
 <p>I have many thanks for the great speakers, the effort of the organizers, and everyone in between that made the 2 days great.  I felt inspired.  I left more informed.  I met a group of fantastic people.  It's been my favorite conference in Salt Lake City so far.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[I Love CSS Modules]]></title>
-    <link href="http://jaketrent.com/post/i-love-css-modules/"/>
-    <updated>2015-08-25T11:03:00-06:00</updated>
-    <id>http://jaketrent.com/post/i-love-css-modules</id>
-    <content type="html"><![CDATA[<p>I heard a fantastic yesterday by <a href="https://twitter.com/glenmaddern">Glen Maddern</a> where Interoperable CSS was well-illustrated as the fantastic CSS language advancement that it is.  I was happy to hear hushed ooo's and ahh's from the audience as they realized the power of what they were seeing.  I have been enjoying the benefits of CSS modules myself and my team and would share some of my favorite features in hopes that others will be inclined to use this feature as well.  Cleanse the world of global stylesheets!</p>
-
-<p><img src="http://i.imgur.com/MtjAduk.jpg" alt="i love css modules" /></p>
-
-<!--more-->
-
-
-<h2>Local Variables</h2>
-
-<p>With CSS modules, your selector names are truly local.  They are FRD local variables!  They won't clash with any var names outside your module.  For You don't have to invent a giant namespace.  There's no BEM-style naming to describe a hierarchy.  There's no repetition in those names.  You can name it something much more simple, just related to what the component is.</p>
-
-<p>For instance, if you're creating <code>Link</code> component, you'd previously have something like <code>.nav__item__link</code> selectors to apply style.  Knowledge of global markup structure would seep into your component through this selector and its name.  Now with a combination of encapsulated components and css modules,  you don't have to worry about the outside world.</p>
-
-<p>Now, what would you call your <code>Link</code> component's outer-most <code>a</code> tag?  Well, maybe <code>.link</code> or <code>.root</code>...  Nothing fancy.  Just what it is.  You aren't required to think about the global stylesheet.  You can focus your mind on just the component stylesheet at hand.  The naming game, which can already be challenging, is made much easier.</p>
-
-<h2>Explicit Dependencies</h2>
-
-<p>Now that all the CSS you write is, by default, local to the module you write it in, you have to explicitly pull in dependencies.  You have to explicitly import the stylesheet you are writing where you'll eventually want to use it.  You can write styles without fear that it might influence something else -- until you explicitly ask it to!</p>
-
-<h2>Still CSS</h2>
-
-<p>I've tried some of the inlining styling techniques and libraries that are being made popular in the React community.  <a href="https://github.com/FormidableLabs/radium">Radium</a> is my favorite there.  What makes me happy about CSS modules is that they're still CSS.  It's a language that was invented in order to create declarative styles.  It's not wonderful in many ways, but it's still the best tool available for this.</p>
-
-<p>You can use all the selectors, strategies, and css abilities you're used to.  Pseudo selectors are all available.  Media queries work as expected.  Keyframe animations are easy to declare.  There is also a great ecosystem of CSS enhancements and transforms available from the PostCSS community.  No one should ever write a vendor prefix again with <a href="https://github.com/postcss/autoprefixer">autoprefixer</a>.</p>
-
-<h2>Consistency for Components</h2>
-
-<p>Another thing I'd like to see in the web component community, specifically React for now, is a pattern around how to override CSS in reusable components.  This pattern would be well-used by component developers and well-known by component consumers.  This would help components be more immediately useful -- default styles could be included with components and custom styles would be easily applied.</p>
-
-<p>My favorite solution to this so far is <a href="https://github.com/pluralsight/react-styleable">react-styleable</a> -- full disclosure, I helped write it.  (Anything like this that gains steam, has broad appeal, and is used by many will make me happy.)  I love that CSS modules enable this and provide a foundation for this consistency.  I'll likely write more about this in the future.</p>
-
-<p>CSS modules have changed the styling game for me.  It makes it so, so much better.  Who knows, maybe it'll change the world.</p>
-
-<p>So, how have CSS modules changed your life?  What do you love?  What could still be better?</p>
 ]]></content>
   </entry>
   

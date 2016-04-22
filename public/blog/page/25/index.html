@@ -9,7 +9,7 @@
 
   <meta name="author" content="https://plus.google.com/115032056022257436849">
   
-  <meta name="description" content="Sometimes it&#8217;s useful to know what the invariant value is for your loop within a facelets loop. I use ui:repeat a lot, but have seen some &hellip;">
+  <meta name="description" content="Hibernate&#8217;s @Enumerated annotation seems much too brittle in the case of using it with EnumType.ORDINAL. If you&#8217;re using EnumType.STRING &hellip;">
   
   <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
 
@@ -22,11 +22,11 @@
   <meta property="og:type" content="article" />
   
   <meta property="og:url" content="http://jaketrent.com/blog/page/25/index.html" />
-  <meta property="og:description" content="Sometimes it&#8217;s useful to know what the invariant value is for your loop within a facelets loop. I use ui:repeat a lot, but have seen some &hellip;" />
+  <meta property="og:description" content="Hibernate&#8217;s @Enumerated annotation seems much too brittle in the case of using it with EnumType.ORDINAL. If you&#8217;re using EnumType.STRING &hellip;" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="" />
-  <meta name="twitter:description" content="Sometimes it&#8217;s useful to know what the invariant value is for your loop within a facelets loop. I use ui:repeat a lot, but have seen some &hellip;" />
+  <meta name="twitter:description" content="Hibernate&#8217;s @Enumerated annotation seems much too brittle in the case of using it with EnumType.ORDINAL. If you&#8217;re using EnumType.STRING &hellip;" />
   
 
   
@@ -89,6 +89,49 @@
     <div class="content">
       <div class="blog-index">
   
+  
+  
+    <article class="entry">
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/post/hibernates-enumerated-annotation-brittle/">Hibernate&#8217;s @Enumerated Annotation Is Brittle</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-02-23T08:27:00-07:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2009</time>
+        
+         | <a href="/post/hibernates-enumerated-annotation-brittle/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Hibernate&#8217;s @Enumerated annotation seems much too brittle in the case of using it with EnumType.ORDINAL.   If you&#8217;re using EnumType.STRING, I think it works beautifully.  This is because the annotation can use the name of the enum to make the mapping.  In the case of ORDINAL, the value of the enum is used.  This presents a couple problems&#8230;</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="full-article-link" rel="full-article" href="/post/hibernates-enumerated-annotation-brittle/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article class="entry">
@@ -477,49 +520,6 @@
   
     <footer>
       <a class="full-article-link" rel="full-article" href="/post/svn-comment-editor/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article class="entry">
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/post/null-selectitem-option/">Null SelectItem Option</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-11-24T14:04:00-07:00" pubdate data-updated="true">Nov 24<span>th</span>, 2008</time>
-        
-         | <a href="/post/null-selectitem-option/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Sometimes it&#8217;s desirable to be able to have a null or &#8220;none of these&#8221; option for a dropdown.  I&#8217;ve gotten tripped up on the syntax a couple times and have found enough variance in &#8220;solutions&#8221; listed on forums that I&#8217;ll just add to the mix and record what works well for me here.</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="full-article-link" rel="full-article" href="/post/null-selectitem-option/">Read on &rarr;</a>
     </footer>
   
 
