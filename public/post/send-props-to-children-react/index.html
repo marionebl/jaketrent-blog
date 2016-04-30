@@ -124,6 +124,8 @@
 <!--more-->
 
 
+<p><em>Updated: 29 Apr 2016 for React 15.x.</em></p>
+
 <h2>Children Components</h2>
 
 <p>When parent components are rendered, they have access to a special property, <code>this.props.children</code>.  It&#8217;s like an Angular <code>ng-transclude</code> or an Ember <code>yield</code>.  Children components are generally rendered something like this:</p>
@@ -163,7 +165,7 @@
 
 <h2>Functional Modifications</h2>
 
-<p>Immutable data is a big part of functional programming.  This means that when we &#8216;mutate&#8217; the props, we want to mutate on a clone of the child component without affecting the original.  There&#8217;s an input, there&#8217;s an output, and the input is untouched.  Once we have our cloned children components as we want them, we&#8217;ll render those instead.  React offers another great helper for cloning components and setting properties in a single function, <code>React.addons.cloneWithProps</code>.  Note that in order to use this function, you need to <code>require('react/addons')</code>.</p>
+<p>Immutable data is a big part of functional programming.  This means that when we &#8216;mutate&#8217; the props, we want to mutate on a clone of the child component without affecting the original.  There&#8217;s an input, there&#8217;s an output, and the input is untouched.  Once we have our cloned children components as we want them, we&#8217;ll render those instead.  React offers another great helper for cloning components and setting properties in a single function, <code>React.cloneElement</code>.</p>
 
 <h2>Checking Child Type</h2>
 
@@ -213,62 +215,50 @@
 <span class='line-number'>38</span>
 <span class='line-number'>39</span>
 <span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="cm">/** @jsx React.DOM */</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span>
 </span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">React</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;react/addons&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">RadioOption</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;radio&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">value</span><span class="p">}</span> <span class="nx">name</span><span class="o">=</span><span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span> <span class="o">/&gt;</span>
+</span><span class='line'>      <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">label</span><span class="p">}</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="err">/label&gt;</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">RadioOption</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span>
-</span><span class='line'>        <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;radio&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">value</span><span class="p">}</span> <span class="nx">name</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span> <span class="o">/&gt;</span>
-</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">label</span><span class="p">}</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="err">/label&gt;</span>
-</span><span class='line'>    <span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">})</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">renderChildren</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Children</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span><span class="p">,</span> <span class="nx">child</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">child</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="nx">RadioOption</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">cloneElement</span><span class="p">(</span><span class="nx">child</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">name</span><span class="o">:</span> <span class="nx">props</span><span class="p">.</span><span class="nx">name</span>
+</span><span class='line'>      <span class="p">})</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">child</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">RadioGroup</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">renderChildren</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Children</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">child</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">child</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="nx">RadioOption</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">addons</span><span class="p">.</span><span class="nx">cloneWithProps</span><span class="p">(</span><span class="nx">child</span><span class="p">,</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">name</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span>
-</span><span class='line'>        <span class="p">})</span>
-</span><span class='line'>      <span class="k">else</span>
-</span><span class='line'>        <span class="k">return</span> <span class="nx">child</span>
-</span><span class='line'>    <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">))</span>
-</span><span class='line'>  <span class="p">},</span>
-</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;radio-group&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>        <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">renderChildren</span><span class="p">()}</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="err">/div&gt;</span>
-</span><span class='line'>    <span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">})</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">RadioGroup</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;radio-group&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="p">{</span><span class="nx">renderChildren</span><span class="p">(</span><span class="nx">props</span><span class="p">)}</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">WhereImUsingRadioGroups</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="p">(</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="nx">RadioGroup</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;blizzard-games&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Warcraft 2&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;wc2&quot;</span> <span class="o">/&gt;</span>
-</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Warcraft 3&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;wc3&quot;</span> <span class="o">/&gt;</span>
-</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Starcraft 1&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;sc1&quot;</span> <span class="o">/&gt;</span>
-</span><span class='line'>        <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Starcraft 2&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;sc2&quot;</span> <span class="o">/&gt;</span>
-</span><span class='line'>      <span class="o">&lt;</span><span class="err">/RadioGroup&gt;</span>
-</span><span class='line'>    <span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">})</span>
+</span><span class='line'><span class="kd">function</span> <span class="nx">WhereImUsingRadioGroups</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="p">(</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nx">RadioGroup</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;blizzard-games&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Warcraft 2&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;wc2&quot;</span> <span class="o">/&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Warcraft 3&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;wc3&quot;</span> <span class="o">/&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Starcraft 1&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;sc1&quot;</span> <span class="o">/&gt;</span>
+</span><span class='line'>      <span class="o">&lt;</span><span class="nx">RadioOption</span> <span class="nx">label</span><span class="o">=</span><span class="s2">&quot;Starcraft 2&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;sc2&quot;</span> <span class="o">/&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="err">/RadioGroup&gt;</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p><a class="jsbin-embed" href="http://react.jsbin.com/jahekimigi/embed?js,output">Example on jsbin.com</a><script src="http://static.jsbin.com/js/embed.min.js?3.35.12"></script></p>
 
 <p>In this example, where the parent <code>RadioGroup</code> has the <code>name</code> prop, it will be given to each of the children so their <code>name</code> prop will match and the radio group will work as expected.  Thus, the hearts of the children are turned toward their fathers.</p>
 

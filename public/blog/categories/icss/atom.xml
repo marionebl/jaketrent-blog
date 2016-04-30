@@ -4,7 +4,7 @@
   <title><![CDATA[Category: icss | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/icss/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-04-22T06:26:53-06:00</updated>
+  <updated>2016-04-30T08:24:45-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -52,6 +52,14 @@
 <p>CSS modules have changed the styling game for me.  It makes it so, so much better.  Who knows, maybe it'll change the world.</p>
 
 <p>So, how have CSS modules changed your life?  What do you love?  What could still be better?</p>
+
+<h2>Course on Styling React Components with CSS Modules</h2>
+
+<p>I've published a <a href="https://www.pluralsight.com/courses/react-styling-components">course on Pluralsight on CSS Modules in React</a>.  In the course, you'll learn the supporting toolset.  You'll experience the difference of using CSS modules in a project compared to other solutions with a hands-on demo.  If you're interested, <a href="https://www.pluralsight.com/courses/react-styling-components">check it out</a>.  Hopefully it's helpful for you.</p>
+
+<p><img src="http://i.imgur.com/3mxagk7.png" alt="Styling React Components course screenshot" /></p>
+
+<p><a href="https://www.pluralsight.com/courses/react-styling-components">Styling React Components course</a></p>
 ]]></content>
   </entry>
   

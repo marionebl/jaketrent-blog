@@ -44,3 +44,10 @@ CSS modules have changed the styling game for me.  It makes it so, so much bette
 
 So, how have CSS modules changed your life?  What do you love?  What could still be better?
 
+## Course on Styling React Components with CSS Modules
+
+I've published a [course on Pluralsight on CSS Modules in React](https://www.pluralsight.com/courses/react-styling-components).  In the course, you'll learn the supporting toolset.  You'll experience the difference of using CSS modules in a project compared to other solutions with a hands-on demo.  If you're interested, [check it out](https://www.pluralsight.com/courses/react-styling-components).  Hopefully it's helpful for you.
+
+![Styling React Components course screenshot](http://i.imgur.com/3mxagk7.png)
+
+[Styling React Components course](https://www.pluralsight.com/courses/react-styling-components)

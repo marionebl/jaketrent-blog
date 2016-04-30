@@ -46,8 +46,10 @@ Note that for stateless components, `ReactDOM.render` and `TestUtils.renderIntoD
 
 Stateless components can't be the target of a `ref`.  There's no backing instance.  You can't have `refs` internally to children either.  Remember, `this` and `this.refs` aren't around.  If your stateless component has a child that is a `class`-based component, *it* may have `refs`.  [The docs](https://facebook.github.io/react/docs/more-about-refs.html) are another good reference on `refs`.
 
-## No null Returns
+## Updated: Null Returns
 
-A `class`-based component may return `null` as its value in the view.  But a stateless component may not.  To get around this, return `<noscript></noscript>`.  This will be fully invisible in the view.
+As of [react@15.0.0](https://facebook.github.io/react/blog/2016/04/07/react-v15.html#functional-components-can-now-return-null-too), now stateless component functions *can* return null.  
+
+~~A `class`-based component may return `null` as its value in the view.  But a stateless component may not.  To get around this, return `<noscript></noscript>`.  This will be fully invisible in the view.~~
 
 So what else have you found that is unavailable in stateless functions?  

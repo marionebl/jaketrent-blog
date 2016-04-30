@@ -10,16 +10,18 @@ published: true
 image: http://i.imgur.com/DXuSNbw.png
 ---
 
-In React, you're always making components.  Sometimes components are standalone.  Other times, you'll have components that can nest children components.  Sometimes you'll want to send properties to the children components from the parent as often as a doting parent wants to send packages to a child missionary.  It's possible, it's simple, and it's not documented super well.  Here's one method. 
+In React, you're always making components.  Sometimes components are standalone.  Other times, you'll have components that can nest children components.  Sometimes you'll want to send properties to the children components from the parent as often as a doting parent wants to send packages to a child missionary.  It's possible, it's simple, and it's not documented super well.  Here's one method.
 
 ![React](http://i.imgur.com/DXuSNbw.png)
 
 <!--more-->
 
+*Updated: 29 Apr 2016 for React 15.x.*
+
 ## Children Components
 
 When parent components are rendered, they have access to a special property, `this.props.children`.  It's like an Angular `ng-transclude` or an Ember `yield`.  Children components are generally rendered something like this:
-  
+
 ```js
 React.createClass({
   render: function () {
@@ -46,65 +48,60 @@ Deep breath.  It's ok.  The children that we'll loop through aren't mounted comp
 
 ## Functional Modifications
 
-Immutable data is a big part of functional programming.  This means that when we 'mutate' the props, we want to mutate on a clone of the child component without affecting the original.  There's an input, there's an output, and the input is untouched.  Once we have our cloned children components as we want them, we'll render those instead.  React offers another great helper for cloning components and setting properties in a single function, `React.addons.cloneWithProps`.  Note that in order to use this function, you need to `require('react/addons')`. 
+Immutable data is a big part of functional programming.  This means that when we 'mutate' the props, we want to mutate on a clone of the child component without affecting the original.  There's an input, there's an output, and the input is untouched.  Once we have our cloned children components as we want them, we'll render those instead.  React offers another great helper for cloning components and setting properties in a single function, `React.cloneElement`.
 
 ## Checking Child Type
 
 It's a generally-useful thing to be able to tell what the React class type of a component object is.  It's an applicable skill in terms of looping through child components because we might not want to modify the properties of all types of children.  Each React component class has a `type` attribute accessible via `MyComponent.type`.  This attribute is also available on component descriptors.
 
 ## A Child CheckOption Example
- 
+
 To bring this all together and illustrate the concepts, let's say we created a `RadioGroup` component that could take one or many `RadioOption` child components.  In raw html, which is what our component will eventually render, `input`s with type `checkbox` need to all have the same `name` attribute value to work well as toggles within the group.  But this is something that React can help us not have to duplicate.  We'll instead put a `name` property on the parent `RadioGroup` and have it transfer it as a property on all its children.  The implementation might look like this:
 
 ```js
-/** @jsx React.DOM */
+import React from 'react'
 
-var React = require('react/addons')
+function RadioOption(props) {
+  return (
+    <label>
+      <input type="radio" value={props.value} name={props.name} />
+      {props.label}
+    </label>
+  )
+}
 
-var RadioOption = React.createClass({
-  render: function () {
-    return (
-      <label>
-        <input type="radio" value={this.props.value} name={this.props.name} />
-        {this.props.label}
-      </label>
-    )
-  }
-})
+function renderChildren(props) {
+  return React.Children.map(props.children, child => {
+    if (child.type === RadioOption)
+      return React.cloneElement(child, {
+        name: props.name
+      })
+    else
+      return child
+  })
+}
 
-var RadioGroup = React.createClass({
-  renderChildren: function () {
-    return React.Children.map(this.props.children, function (child) {
-      if (child.type === RadioOption.type)
-        return React.addons.cloneWithProps(child, {
-          name: this.props.name
-        })
-      else
-        return child
-    }.bind(this))
-  },
-  render: function () {
-    return (
-      <div class="radio-group">
-        {this.renderChildren()}
-      </div>
-    )
-  }
-})
+function RadioGroup(props) {
+  return (
+    <div class="radio-group">
+      {renderChildren(props)}
+    </div>
+  )
+}
 
-var WhereImUsingRadioGroups = React.createClass({
-  render: function () {
-    return (
-      <RadioGroup name="blizzard-games">
-        <RadioOption label="Warcraft 2" value="wc2" />
-        <RadioOption label="Warcraft 3" value="wc3" />
-        <RadioOption label="Starcraft 1" value="sc1" />
-        <RadioOption label="Starcraft 2" value="sc2" />
-      </RadioGroup>
-    )
-  }
-})
+function WhereImUsingRadioGroups() {
+  return (
+    <RadioGroup name="blizzard-games">
+      <RadioOption label="Warcraft 2" value="wc2" />
+      <RadioOption label="Warcraft 3" value="wc3" />
+      <RadioOption label="Starcraft 1" value="sc1" />
+      <RadioOption label="Starcraft 2" value="sc2" />
+    </RadioGroup>
+  )
+}
 ```
+
+<a class="jsbin-embed" href="http://react.jsbin.com/jahekimigi/embed?js,output">Example on jsbin.com</a><script src="http://static.jsbin.com/js/embed.min.js?3.35.12"></script>
 
 In this example, where the parent `RadioGroup` has the `name` prop, it will be given to each of the children so their `name` prop will match and the radio group will work as expected.  Thus, the hearts of the children are turned toward their fathers.
 

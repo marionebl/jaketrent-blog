@@ -4,7 +4,7 @@
   <title><![CDATA[Category: react | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/react/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-04-22T06:26:53-06:00</updated>
+  <updated>2016-04-30T08:24:45-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -313,9 +313,11 @@ function Chips(props) {
 
 <p>Stateless components can't be the target of a <code>ref</code>.  There's no backing instance.  You can't have <code>refs</code> internally to children either.  Remember, <code>this</code> and <code>this.refs</code> aren't around.  If your stateless component has a child that is a <code>class</code>-based component, <em>it</em> may have <code>refs</code>.  <a href="https://facebook.github.io/react/docs/more-about-refs.html">The docs</a> are another good reference on <code>refs</code>.</p>
 
-<h2>No null Returns</h2>
+<h2>Updated: Null Returns</h2>
 
-<p>A <code>class</code>-based component may return <code>null</code> as its value in the view.  But a stateless component may not.  To get around this, return <code>&lt;noscript&gt;&lt;/noscript&gt;</code>.  This will be fully invisible in the view.</p>
+<p>As of <a href="https://facebook.github.io/react/blog/2016/04/07/react-v15.html#functional-components-can-now-return-null-too">react@15.0.0</a>, now stateless component functions <em>can</em> return null.</p>
+
+<p><del>A <code>class</code>-based component may return <code>null</code> as its value in the view.  But a stateless component may not.  To get around this, return <code>&lt;noscript&gt;&lt;/noscript&gt;</code>.  This will be fully invisible in the view.</del></p>
 
 <p>So what else have you found that is unavailable in stateless functions?</p>
 ]]></content>
