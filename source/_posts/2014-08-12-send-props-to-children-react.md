@@ -23,15 +23,13 @@ In React, you're always making components.  Sometimes components are standalone.
 When parent components are rendered, they have access to a special property, `this.props.children`.  It's like an Angular `ng-transclude` or an Ember `yield`.  Children components are generally rendered something like this:
 
 ```js
-React.createClass({
-  render: function () {
-    return (
-      <div id="iAmParentHearMeRoar">
-        {this.props.children}
-      </div>
-    )
-  }
-})
+function Parent(props) {
+  return (
+    <div id="iAmParentHearMeRoar">
+      {props.children}
+    </div>
+  )
+}
 ```
 
 The generic example above shows simply how to render children, `props` untouched, within a parent component.  Sometimes, however, a parent wants to bequeath its children with extra properties.  How will we make that happen?

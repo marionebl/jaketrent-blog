@@ -4,7 +4,7 @@
   <title><![CDATA[Category: npm | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/npm/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-04-30T08:24:45-06:00</updated>
+  <updated>2016-05-03T10:48:30-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -283,25 +283,20 @@ npm install http://localServer/my-pkg-0.0.1.tgz
 
 <p>Grunt supports a number of <a href="https://github.com/gruntjs/grunt/blob/master/docs/helpers_directives.md">directives</a> out of the box.  These are callable from within you <code>grunt.js</code> file.  The gruntfile template uses one of these directives like so:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
-</span><span class='line'>  <span class="nx">pkg</span><span class="o">:</span> <span class="s1">&#39;&amp;lt;json:package.json&gt;&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="err">/&lt;em&gt; ... &lt;/em&gt;/</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}
+grunt.initConfig({
+  pkg: '&lt;json:package.json>',
+  /<em> ... </em>/
+});
+{% endcodeblock %}</p>
 
 <p>This is making the contents of your <code>package.json</code> file available to your grunt config.  And this is what we wanted!  So, if I want to put the version of my app into some grunt task config, I can use it like so:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">someTask</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">options</span><span class="o">:</span> <span class="s1">&#39;doStuff &amp;lt;%= pkg.version %&gt;&#39;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}
+someTask: {
+  options: 'doStuff &lt;%= pkg.version %>'
+}
+{% endcodeblock %}</p>
 
 <p>This would already be enough -- it it worked all the time!  Turns out it doesn't [tear].</p>
 
@@ -329,15 +324,12 @@ npm install http://localServer/my-pkg-0.0.1.tgz
 
 <p>Thusly, I just require the <code>package.json</code> file, and it is available.  Voila.  Who needs a stinkin template directive?  And it looks like:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">pkgJson</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./package.json&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="err">/&lt;em&gt; use as desired &lt;/em&gt;/</span>
-</span><span class='line'><span class="kd">var</span> <span class="nx">version</span> <span class="o">=</span> <span class="nx">pkgJson</span><span class="p">.</span><span class="nx">version</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}
+var pkgJson = require('./package.json');</p>
+
+<p>/<em> use as desired </em>/
+var version = pkgJson.version;
+{% endcodeblock %}</p>
 
 <p>My one departure from the Stack Overflow suggestion was to use a different variable name on the require statement ('package' -> 'pkgJson').  'package' is a keyword that doesn't pass linting.</p>
 

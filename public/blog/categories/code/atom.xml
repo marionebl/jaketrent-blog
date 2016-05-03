@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-04-30T08:24:45-06:00</updated>
+  <updated>2016-05-03T10:48:30-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -104,6 +104,8 @@ img.src = c.toDataURL()
 <p>When making a React drag and drop app, I usually don't look forward to using the sometimes-arcane API of the <code>canvas</code> element.  So, I wrapped it up so I wouldn't have to look at it as often.</p>
 
 <p>If you think this might help you, take a look at <a href="http://npm.im/react-dnd-text-dragpreview">react-dnd-text-dragpreview</a>.</p>
+
+<p><a href="http://npm.im/react-dnd-text-dragpreview"><img src="http://i.imgur.com/glegZVc.gif" /></a></p>
 
 <p>How do you go about doing text-based drag previews?  Any other good tips?</p>
 ]]></content>

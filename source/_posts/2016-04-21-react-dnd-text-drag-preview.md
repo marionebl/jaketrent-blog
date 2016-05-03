@@ -87,4 +87,6 @@ When making a React drag and drop app, I usually don't look forward to using the
 
 If you think this might help you, take a look at [react-dnd-text-dragpreview](http://npm.im/react-dnd-text-dragpreview).
 
+<a href="http://npm.im/react-dnd-text-dragpreview"><img src="http://i.imgur.com/glegZVc.gif" /></a>
+
 How do you go about doing text-based drag previews?  Any other good tips?
