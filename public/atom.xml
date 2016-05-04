@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-05-03T10:47:35-06:00</updated>
+  <updated>2016-05-04T10:06:03-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Depending on a Shared Lib]]></title>
+    <link href="http://jaketrent.com/post/depending-on-shared-lib/"/>
+    <updated>2016-05-04T09:49:00-06:00</updated>
+    <id>http://jaketrent.com/post/depending-on-shared-lib</id>
+    <content type="html"><![CDATA[<p>You build a product.  Someone else builds a shared lib.  You want to use the shared lib in your app for its apparent utility.  There come <em>new</em> features that the product team wants to adjust and add to your product.  The shared lib provides utility that is <em>related</em> to these new features but does not provide these new features per se.</p>
+
+<p><img src="http://i.imgur.com/6TDbI7O.png" alt="a shared lib" /></p>
+
+<!--more-->
+
+
+<h2>Wishing the Shared Lib Did More</h2>
+
+<p>You think to yourself, &#8220;I wish this shared lib did this for me too.&#8221;</p>
+
+<p>You might even go further to start adjusting your expectations and timeline around the shared lib. &#8220;I might just <em>wait</em> until the shared lib does this for me.  It&#8217;s already doing stuff in this area.  It should do it the related stuff too.&#8221;</p>
+
+<p>After all, you have a lot of other stuff you&#8217;d rather do.</p>
+
+<h2>The Feature I Need</h2>
+
+<p>If you wait, you may get lucky and get what you want.  Or, by the nature of the lib being shared, other constituents of the shared lib may have their own sway on it, pushgin it in a direction that doesn&#8217;t match the feature you need.   Or, the designer of the shared lib might not <em>want</em> to add in the new features that are expedient for your product, thinking them ill-fitting of the shared lib.</p>
+
+<h2>Independence to Move</h2>
+
+<p>You&#8217;re already waiting, and you say, &#8220;Let&#8217;s give the shared lib <em>more</em> to do.&#8221;  This seems like an equation for waiting more and shipping less.  You&#8217;re putting your product in the hands of someone else.  That someone else may mean well, and you may trust him to eventually deliver on what you want in your product.  But you are reducing your independence by simply relying on the shared lib and its author.</p>
+
+<p>You&#8217;re already waiting.  There&#8217;s probably a reason for that.  What makes you think that if you continue <em>or increase</em> reliance on this lib that you&#8217;ll be waiting <em>less</em> in the future?  In practice, many shared libs have simply less manpower than full product teams.</p>
+
+<p>Is it possible for you to affect the development timeline by your own effort and contribution to the shared lib?  If you&#8217;re willing and have time to contribute to the shared lib, why not use that time and effort to further the needs of your specific product?  If you&#8217;re not willing, then you really shouldn&#8217;t be picky about what you get and when you get it, right?</p>
+
+<h2>Owning Your Product</h2>
+
+<p>In the end you own and ship a product.  End users don&#8217;t care if you use this shared lib.  You can get the job done many ways.  A shared lib that solves some of your problems isn&#8217;t on the hook to solve all your future problems.  It&#8217;s <em>your</em> project.  Owning it is a mindset:  &#8220;I&#8217;m going to ship this thing as well and as quickly as I can.  I&#8217;ll do what I can to gather helpful resources, such shared libs, and ask for help in order to make this happen.  But in the end, I&#8217;ll make it work one way or another.&#8221;</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[react-dnd With Text Drag Preview]]></title>
@@ -1551,96 +1589,6 @@
 <p><img src="http://i.imgur.com/3mxagk7.png" alt="Styling React Components course screenshot" /></p>
 
 <p><a href="https://www.pluralsight.com/courses/react-styling-components">Styling React Components course</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Make Software in the Estuary]]></title>
-    <link href="http://jaketrent.com/post/make-software-in-the-estuary/"/>
-    <updated>2015-08-20T10:06:00-06:00</updated>
-    <id>http://jaketrent.com/post/make-software-in-the-estuary</id>
-    <content type="html"><![CDATA[<p>An estuary is where the sea meets the river.  Here, there is a mix of fresh water and salt water, sediment from the rivers and marine life from the sea.  The effects of both sea and river are seen in many ways.  It&#8217;s a swirl &#8211; there&#8217;s no upstream or downstream.  It&#8217;s considered to be one of the most nutrient-rich, productive ecosystems on the planet.  So really, who <em>wouldn&#8217;t</em> want to make software in an estuary?</p>
-
-<p><img src="http://i.imgur.com/3XrFyZS.jpg" alt="the software estuary" /></p>
-
-<!--more-->
-
-
-<h2>The Traditional Production Flow</h2>
-
-<p>Here&#8217;s a software production flow with disciplines and responsibilities represented:</p>
-
-<ol>
-<li>Company leadership - develops a strategy and business model</li>
-<li>Product management - identifies customers and products that could realize the business model</li>
-<li>Design - visualizes information, interfaces, and flows for the product</li>
-<li>Project management - manages a team in execution of production</li>
-<li>Engineering - implements the design for the product</li>
-<li>Quality assurance - verifies the correctness of the implementation</li>
-<li>Operations - release and maintains the finished product</li>
-</ol>
-
-
-<p>This is a simplified, constricted view &#8211; a bit on purpose.  More or less, the traditional production flow is there.  It&#8217;s very structured.  It feels like a factory assembly line.  I can imagine a lot of wall-throwing.  There are lots silos.  There&#8217;s a lot of specialization.  The streams do not cross.  It does not feel like an estuary.</p>
-
-<h2>No More Strangers, Upstream and Downstream</h2>
-
-<p>In the traditional production flow, there are specific orders and directions.  Arrows flow between neat boxes.  It might feel like a spotless production facility, clean and robotic.  It may even be really efficient.  But you likely have some uneasiness considering such a creative endeavor as software production being made in such an environment.</p>
-
-<p>I think we should not think of ourselves as being in an upstream or downstream position, sitting somewhere in this traditional flow.  Rather, we are a full participant at any and all points.  We shouldn&#8217;t think of our contributions in terms of our titles.  We should think of what we can offer of substance and then offer it.  In the estuary, things are messy, and we like it because of what we trust will be a better experience in the end.</p>
-
-<p>It might be worth asking yourself if you really believe in the power of collaboration.  As in, are you really ready to participate in such a mix of people, ideas, and varied contributions?  It might be worth considering:</p>
-
-<h4>When previously downstream&#8230;</h4>
-
-<ul>
-<li>Did it ever feel like you were expected to just do what you were told, completing your well-defined job on the assembly line?</li>
-<li>Did you ever lack an understanding of why you were making what you were being asked to make?</li>
-</ul>
-
-
-<h4>When downstream comes to the estuary&#8230;</h4>
-
-<ul>
-<li>Do you feel comfortable deviating from and adjusting the plan?</li>
-<li>Are you ready to feel uncomfortable and contribute outside your wheelhouse?</li>
-<li>Are you ready to have your work critiqued and changed?</li>
-</ul>
-
-
-<h4>When previously upstream&#8230;</h4>
-
-<ul>
-<li>Did you ever feel like you were the one mainly responsible for the thinking on the project?</li>
-<li>Did you ever feel like those downstream from you weren&#8217;t being responsive enough to your ideas or instructions?</li>
-<li>Did you ever feel like you were in command and control mode all the time?</li>
-</ul>
-
-
-<h4>When upstream comes to the estuary&#8230;</h4>
-
-<ul>
-<li>Are you ready for others to contribute to or push back on ideas that you create?</li>
-<li>Are you ready to relinquish some control on &#8220;your ideas&#8221;?</li>
-<li>Are you ready to stay engaged for the entirety of the project and care about the production experience end-to-end?</li>
-</ul>
-
-
-<h2>Good People Required</h2>
-
-<p>Collaboration in the estuary isn&#8217;t easy.  Work done here is done at a different level than work done on a pristine factory production floor.  It&#8217;s more engaging, creative, demanding, evolving, and innovative.</p>
-
-<p>Good people are required.  Self esteem from all is required.  Courage to potentially look stupid is required when you ask fundamental questions, question why, or challenge the status quo.  Courage to get something wrong means that you&#8217;re contributing even if there&#8217;s someone who might be &#8220;better&#8221; at a particular activity than you most of the time.  Humility is required to allow space for others to influence your work and defer to those who don&#8217;t share your title or field of expertise.  Trust is required when others want to take part in something that you see as very important.</p>
-
-<h2>The Medici Effect</h2>
-
-<p>The Medici Effect is named for the family living in Italy in the 14th century who had a great effect on the area and history.  They invited many experts from diverse disciplines and had the effect of making Florence, Italy a center of advancement and innovation, catapulting forward the Italian Renaissance.  The same effect of new and more ideas can be seen by us as we bring many disciplines together in a common cause.  What can we do to encourage our cross-functional teams really cross functions?</p>
-
-<p>People have different tastes and exposures.  Associative thinking is making connections between different ideas.  Naturally, people of different backgrounds and trainings will be more able to make more and varied associations.  New, fun, and unusual combinations will result.</p>
-
-<p>Steve Jobs often expressed that his passions lived at the intersection of the arts and technology.  That sounds like a cool estuary.  Now think of the intersection of the passions, knowledge, and abilities of entire teams really working together.</p>
-
-<p>So swim in the estuary.  It&#8217;s a great way to make software.  Don&#8217;t think of your roles in terms of upstream and downstream disciplines.  You can have a rich, productive team and a better product by truly working together, not just being on the same team in name, location, or project.  Pay the price of the messiness of collaboration.  It&#8217;s challenging, of course.  But who doesn&#8217;t want to do great work with people of courage, humility, and trust?</p>
 ]]></content>
   </entry>
   
