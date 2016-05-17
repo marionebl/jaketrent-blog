@@ -24,7 +24,7 @@ You might even go further to start adjusting your expectations and timeline arou
 After all, you have a lot of other stuff you'd rather do.
 
 ## The Feature I Need
-If you wait, you may get lucky and get what you want.  Or, by the nature of the lib being shared, other constituents of the shared lib may have their own sway on it, pushgin it in a direction that doesn't match the feature you need.   Or, the designer of the shared lib might not _want_ to add in the new features that are expedient for your product, thinking them ill-fitting of the shared lib.
+If you wait, you may get lucky and get what you want.  Or, by the nature of the lib being shared, other constituents of the shared lib may have their own sway on it, pushing it in a direction that doesn't match the feature you need.   Or, the designer of the shared lib might not _want_ to add in the new features that are expedient for your product, thinking them ill-fitting of the shared lib.
 
 ## Independence to Move
 You're already waiting, and you say, "Let's give the shared lib _more_ to do."  This seems like an equation for waiting more and shipping less.  You're putting your product in the hands of someone else.  That someone else may mean well, and you may trust him to eventually deliver on what you want in your product.  But you are reducing your independence by simply relying on the shared lib and its author.  
