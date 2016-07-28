@@ -1,0 +1,614 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Testing es2015 Riot Tags - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="How to test Riot.js tags that are written in es2015.">
+  <meta name="keywords" content="es2015, riot, riotjs, riot.js, riot tags, testing, unit test, ava, avajs, jsdom">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Testing es2015 Riot Tags" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://i.imgur.com/EF2IK3G.png" />
+  <meta property="og:url" content="http://jaketrent.com/post/testing-es2015-riot-tags/" />
+  <meta property="og:description" content="How to test Riot.js tags that are written in es2015." />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Testing es2015 Riot Tags" />
+  <meta name="twitter:description" content="How to test Riot.js tags that are written in es2015." />
+  <meta name="twitter:image" content="http://i.imgur.com/EF2IK3G.png" />
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/testing-es2015-riot-tags/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <section class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">
+        <span class="logo-img"></span>
+      </a>
+    </h2>
+  </header>
+</section>
+
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://books.jaketrent.com">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Testing Es2015 Riot Tags</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-07-28T09:45:00-06:00" pubdate data-updated="true">Jul 28<span>th</span>, 2016</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Getting riot.js setup for development isn&#8217;t too bad.  But the combo of language features, testing tools, and riot templates made setting up the test environment a bit trickier than I expected.  Here are some of the details.</p>
+
+<p><img src="http://i.imgur.com/EF2IK3G.png" alt="riot tag testing" /></p>
+
+<!--more-->
+
+
+<h2>Es2015 in Src</h2>
+
+<p>For this project, I am using <a href="http://riotjs.com/">riotjs</a>, which is a React-like library for writing UI components.  The library is designed to look for Riot components in <code>.tag</code> files.  These files look like HTML fragments, like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;div&gt;
+</span><span class='line'>  &lt;!-- my component markup... --&gt;
+</span><span class='line'>&lt;/div&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;script&gt;
+</span><span class='line'>  // my component scripts...
+</span><span class='line'>&lt;/script&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I am using <a href="https://babeljs.io/">Babel</a> to transpile the es2015 code in my project.  I also want es2015 available in the tags.  So, instead of just using the <code>babel-preset-es2015</code> preset, I&#8217;m using <a href="https://github.com/riot/babel-preset-es2015-riot"><code>babel-preset-es2015-riot</code></a>.  I also want default module export support, so I&#8217;m using <code>babel-plugin-add-module-exports</code>.  The <code>.babelrc</code> file looks like:</p>
+
+<figure class='code'><figcaption><span>.babelrc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;presets&quot;</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s2">&quot;es2015-riot&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;stage-1&quot;</span>
+</span><span class='line'>  <span class="p">],</span>
+</span><span class='line'>  <span class="s2">&quot;plugins&quot;</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s2">&quot;add-module-exports&quot;</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For in-browser module support, I&#8217;m using webpack.  So, for <code>.js</code>, I&#8217;m using <code>babel-loader</code>.  For <code>.tag</code> riot files, I&#8217;m using <code>babel-loader</code> <em>plus</em> <code>riotjs-loader</code>.  The useful snippet for the loaders is here:</p>
+
+<figure class='code'><figcaption><span>webpack.config.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'>  <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">loaders</span><span class="o">:</span> <span class="p">[{</span>
+</span><span class='line'>      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">loaders</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;babel&#39;</span><span class="p">],</span>
+</span><span class='line'>      <span class="nx">excludes</span><span class="o">:</span> <span class="sr">/node_modules/</span>
+</span><span class='line'>    <span class="p">},</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.tag$/</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">loaders</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;babel&#39;</span><span class="p">,</span> <span class="s1">&#39;riotjs?type=babel&#39;</span><span class="p">],</span>
+</span><span class='line'>      <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span>
+</span><span class='line'>    <span class="p">}]</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that the riotjs plugin takes a query parameter for determining what type of code lives in the <code>&lt;script/&gt;</code> section of the <code>.tag</code> files.</p>
+
+<p>Now a simple app might look like this:</p>
+
+<figure class='code'><figcaption><span>app.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">riot</span> <span class="nx">from</span> <span class="s1">&#39;riot&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">import</span> <span class="s1">&#39;./app.tag&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s importing the top-most riot component for the app, called <code>app.tag</code>:</p>
+
+<figure class='code'><figcaption><span>app.tag</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>import &#39;./header.tag&#39;
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;app&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;header&gt;&lt;/header&gt;</span>
+</span><span class='line'>  <span class="c">&lt;!-- more app stuff --&gt;</span>
+</span><span class='line'><span class="nt">&lt;/app&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>header.tag</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;header&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;h1&gt;</span>Wow<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'><span class="nt">&lt;/header&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that the tag file imports other tag files.  To me, this seems to be the right place to do this, since the parent tag has dependencies on children tags.  But it presents a problem that requires extra configuration in the test environment.</p>
+
+<h2>Es2015 in Test</h2>
+
+<p>In test land, we are using <a href="https://github.com/avajs/ava">ava</a> as our test runner.  We configure it in the <code>package.json</code> file:</p>
+
+<figure class='code'><figcaption><span>package.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;ava&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;babel&quot;</span><span class="p">:</span> <span class="s2">&quot;inherit&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;files&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>      <span class="s2">&quot;src/**/*.spec.js&quot;</span>
+</span><span class='line'>    <span class="p">],</span>
+</span><span class='line'>    <span class="nt">&quot;require&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>      <span class="s2">&quot;babel-register&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s2">&quot;./test/utils/node-extensions&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s2">&quot;./test/utils/dom&quot;</span>
+</span><span class='line'>    <span class="p">]</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A few explanations about the test setup above&#8230;</p>
+
+<p>Ava supports es2015 out of the box.  But it also allows you to specify your own <code>.babelrc</code> configuration using the &#8216;inherit&#8217; value.</p>
+
+<p>With <code>files</code>, we are telling ava to find all the specs in the <code>src/</code> subdir that have the <code>.spec.js</code> filename suffix.</p>
+
+<p>The <code>require</code> section is used to specify what code needs loaded before the specs run:</p>
+
+<ul>
+<li><code>babel-register</code> - so we can use es2015 in test setup code.</li>
+<li><code>./test/utils/node-extensions</code> - so we can tell node (running ava) how to load the <code>.tag</code> files that it encounters (remember, we don&#8217;t have webpack in this test environment).</li>
+<li><code>./test/utils/dom</code> - sets up a jsdom for doing our UI test</li>
+</ul>
+
+
+<p>The <code>node-extensions.js</code> file is pretty interesting.  It is providing node a new function for how to handle the <code>.tag</code> files.  For these files, we&#8217;ll compile using the riot compiler and then compile that output using babel.  In the end, we should have ready code.  You&#8217;ll also notice that this custom file loader requires that we load up our <code>.babelrc</code> file manually because we&#8217;re acting outside of ava at this point.</p>
+
+<figure class='code'><figcaption><span>test/utils/node-extensions.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">babel</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;babel-core&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kr">const</span> <span class="nx">riot</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;riot&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Add riot to node env so compilation works - per https://github.com/riot/riot/issues/895</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nx">riot</span> <span class="o">=</span> <span class="nx">riot</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">getBabelRc</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kr">const</span> <span class="nx">contents</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;.babelrc&#39;</span><span class="p">),</span> <span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">contents</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Error loading .babelrc&#39;</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">{}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// override behavior for riot tag import - per https://github.com/mochajs/mocha/issues/1458</span>
+</span><span class='line'><span class="nx">require</span><span class="p">.</span><span class="nx">extensions</span><span class="p">[</span><span class="s1">&#39;.tag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="nx">filename</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">content</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">riotCompiled</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;babel&#39;</span> <span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">babelCompiled</span> <span class="o">=</span> <span class="nx">babel</span><span class="p">.</span><span class="nx">transform</span><span class="p">(</span><span class="nx">riotCompiled</span><span class="p">,</span> <span class="nx">getBabelRc</span><span class="p">())</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">module</span><span class="p">.</span><span class="nx">_compile</span><span class="p">(</span><span class="nx">babelCompiled</span><span class="p">.</span><span class="nx">code</span><span class="p">,</span> <span class="nx">filename</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, we have our dom setup, which is pretty straightforward jsdom:</p>
+
+<figure class='code'><figcaption><span>test/utils/dom.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">jsdom</span> <span class="nx">from</span> <span class="s1">&#39;jsdom&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">const</span> <span class="nx">doc</span> <span class="o">=</span> <span class="nx">jsdom</span><span class="p">.</span><span class="nx">jsdom</span><span class="p">(</span><span class="s1">&#39;&lt;!doctype html&gt;&lt;html&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kr">const</span> <span class="nx">win</span> <span class="o">=</span> <span class="nx">doc</span><span class="p">.</span><span class="nx">defaultView</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nb">document</span> <span class="o">=</span> <span class="nx">doc</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nb">window</span> <span class="o">=</span> <span class="nx">win</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nx">navigator</span> <span class="o">=</span> <span class="nx">win</span><span class="p">.</span><span class="nx">navigator</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nx">history</span> <span class="o">=</span> <span class="nx">win</span><span class="p">.</span><span class="nx">history</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we have a dom with a body tag we can render into, so let&#8217;s try to test out our <code>app.js</code> render code &#8211; finally, the test:</p>
+
+<figure class='code'><figcaption><span>app.spec.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">test</span> <span class="nx">from</span> <span class="s1">&#39;ava&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">import</span> <span class="nx">subject</span> <span class="nx">from</span> <span class="s1">&#39;../app&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">test</span><span class="p">.</span><span class="nx">before</span><span class="p">(</span><span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">test</span><span class="p">.</span><span class="nx">after</span><span class="p">.</span><span class="nx">always</span><span class="p">(</span><span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">body</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">while</span> <span class="p">(</span><span class="nx">body</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">body</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">body</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">test</span><span class="p">(</span><span class="s1">&#39;#render displays a header&#39;</span><span class="p">,</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">subject</span><span class="p">.</span><span class="nx">render</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">t</span><span class="p">.</span><span class="nx">truthy</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;h1&#39;</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">===</span> <span class="s1">&#39;Wow&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So much work for such a benign test. :)</p>
+
+<p>It&#8217;s a cool combo of technologies.  But it takes a fair bit of wrangling and that interesting bit of <code>node-extensions.js</code> code to get it working.</p>
+
+<p>Have you used this combo of tech before or something similar?  Any better setups that you&#8217;ve found?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-07-28T09:45:00-06:00" pubdate data-updated="true">Jul 28<span>th</span>, 2016</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/js/'>js</a>, <a class='category' href='/blog/categories/riot/'>riot</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+
+  <ul class="rrssb-buttons">
+    <li class="rrssb-twitter">
+      <!-- Replace href with your Meta and URL information  -->
+      <a href="http://twitter.com/home?status=Testing es2015 Riot Tags%20by%20@jaketrent%20%20http://jaketrent.com/post/testing-es2015-riot-tags/" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                 width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+            <path d="M24.253,8.756C24.689,17.08,18.297,24.182,9.97,24.62c-3.122,0.162-6.219-0.646-8.861-2.32
+                c2.703,0.179,5.376-0.648,7.508-2.321c-2.072-0.247-3.818-1.661-4.489-3.638c0.801,0.128,1.62,0.076,2.399-0.155
+                C4.045,15.72,2.215,13.6,2.115,11.077c0.688,0.275,1.426,0.407,2.168,0.386c-2.135-1.65-2.729-4.621-1.394-6.965
+                C5.575,7.816,9.54,9.84,13.803,10.071c-0.842-2.739,0.694-5.64,3.434-6.482c2.018-0.623,4.212,0.044,5.546,1.683
+                c1.186-0.213,2.318-0.662,3.329-1.317c-0.385,1.256-1.247,2.312-2.399,2.942c1.048-0.106,2.069-0.394,3.019-0.851
+                C26.275,7.229,25.39,8.196,24.253,8.756z"/>
+            </svg>
+        </span>
+      </a>
+    </li>
+    <li class="rrssb-linkedin">
+      <!-- Replace href with your meta and URL information -->
+      <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://jaketrent.com/post/testing-es2015-riot-tags/&amp;title=Testing es2015 Riot Tags&amp;summary=from jaketrent.com" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                <path d="M25.424,15.887v8.447h-4.896v-7.882c0-1.979-0.709-3.331-2.48-3.331c-1.354,0-2.158,0.911-2.514,1.803
+                    c-0.129,0.315-0.162,0.753-0.162,1.194v8.216h-4.899c0,0,0.066-13.349,0-14.731h4.899v2.088c-0.01,0.016-0.023,0.032-0.033,0.048
+                    h0.033V11.69c0.65-1.002,1.812-2.435,4.414-2.435C23.008,9.254,25.424,11.361,25.424,15.887z M5.348,2.501
+                    c-1.676,0-2.772,1.092-2.772,2.539c0,1.421,1.066,2.538,2.717,2.546h0.032c1.709,0,2.771-1.132,2.771-2.546
+                    C8.054,3.593,7.019,2.501,5.343,2.501H5.348z M2.867,24.334h4.897V9.603H2.867V24.334z"/>
+            </svg>
+        </span>
+      </a>
+    </li>
+    <li class="rrssb-googleplus">
+      <!-- Replace href with your meta and URL information.  -->
+      <a href="https://plus.google.com/share?url=http://jaketrent.com/post/testing-es2015-riot-tags/" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                <g>
+                    <g>
+                        <path d="M14.703,15.854l-1.219-0.948c-0.372-0.308-0.88-0.715-0.88-1.459c0-0.748,0.508-1.223,0.95-1.663
+                            c1.42-1.119,2.839-2.309,2.839-4.817c0-2.58-1.621-3.937-2.399-4.581h2.097l2.202-1.383h-6.67c-1.83,0-4.467,0.433-6.398,2.027
+                            C3.768,4.287,3.059,6.018,3.059,7.576c0,2.634,2.022,5.328,5.604,5.328c0.339,0,0.71-0.033,1.083-0.068
+                            c-0.167,0.408-0.336,0.748-0.336,1.324c0,1.04,0.551,1.685,1.011,2.297c-1.524,0.104-4.37,0.273-6.467,1.562
+                            c-1.998,1.188-2.605,2.916-2.605,4.137c0,2.512,2.358,4.84,7.289,4.84c5.822,0,8.904-3.223,8.904-6.41
+                            c0.008-2.327-1.359-3.489-2.829-4.731H14.703z M10.269,11.951c-2.912,0-4.231-3.765-4.231-6.037c0-0.884,0.168-1.797,0.744-2.511
+                            c0.543-0.679,1.489-1.12,2.372-1.12c2.807,0,4.256,3.798,4.256,6.242c0,0.612-0.067,1.694-0.845,2.478
+                            c-0.537,0.55-1.438,0.948-2.295,0.951V11.951z M10.302,25.609c-3.621,0-5.957-1.732-5.957-4.142c0-2.408,2.165-3.223,2.911-3.492
+                            c1.421-0.479,3.25-0.545,3.555-0.545c0.338,0,0.52,0,0.766,0.034c2.574,1.838,3.706,2.757,3.706,4.479
+                            c-0.002,2.073-1.736,3.665-4.982,3.649L10.302,25.609z"/>
+                        <polygon points="23.254,11.89 23.254,8.521 21.569,8.521 21.569,11.89 18.202,11.89 18.202,13.604 21.569,13.604 21.569,17.004
+                            23.254,17.004 23.254,13.604 26.653,13.604 26.653,11.89      "/>
+                    </g>
+                </g>
+            </svg>
+        </span>
+      </a>
+    </li>
+    <li class="rrssb-facebook">
+      <!-- Replace with your URL. For best results, make sure you page has the proper FB Open Graph tags in header:
+      https://developers.facebook.com/docs/opengraph/howtos/maximizing-distribution-media-content/ -->
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://jaketrent.com/post/testing-es2015-riot-tags/" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                <path d="M27.825,4.783c0-2.427-2.182-4.608-4.608-4.608H4.783c-2.422,0-4.608,2.182-4.608,4.608v18.434
+                    c0,2.427,2.181,4.608,4.608,4.608H14V17.379h-3.379v-4.608H14v-1.795c0-3.089,2.335-5.885,5.192-5.885h3.718v4.608h-3.726
+                    c-0.408,0-0.884,0.492-0.884,1.236v1.836h4.609v4.608h-4.609v10.446h4.916c2.422,0,4.608-2.188,4.608-4.608V4.783z"/>
+            </svg>
+        </span>
+      </a>
+    </li>
+  </ul>
+
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/depending-on-shared-lib/" title="Previous Post: Depending on a Shared Lib">&laquo; Depending on a Shared Lib</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="footer-container">
+    <footer class="main-footer" role="contentinfo"><div class="main-footer-logo"></div>
+<ul class="main-footer-links-list">
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Content licensed</span> 2016 <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a>
+  </li>
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Authored by </span><a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a>
+  </li>
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Subscribe to the </span><a href="/atom.xml">Feed</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <a href="/sitemap.xml">Sitemap</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues/new">Report a Bug</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <span class="main-footer-verbage">Chat on </span><a href="https://keybase.io/jaketrent">Keybase</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <span class="main-footer-verbage">Powered by </span><a href="http://octopress.org">Octopress</a>
+  </li>
+</ul>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/testing-es2015-riot-tags/';
+        var disqus_url = 'http://jaketrent.com/post/testing-es2015-riot-tags/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

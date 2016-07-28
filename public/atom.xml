@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-05-17T07:37:36-06:00</updated>
+  <updated>2016-07-28T14:55:38-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,328 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Testing es2015 Riot Tags]]></title>
+    <link href="http://jaketrent.com/post/testing-es2015-riot-tags/"/>
+    <updated>2016-07-28T09:45:00-06:00</updated>
+    <id>http://jaketrent.com/post/testing-es2015-riot-tags</id>
+    <content type="html"><![CDATA[<p>Getting riot.js setup for development isn&#8217;t too bad.  But the combo of language features, testing tools, and riot templates made setting up the test environment a bit trickier than I expected.  Here are some of the details.</p>
+
+<p><img src="http://i.imgur.com/EF2IK3G.png" alt="riot tag testing" /></p>
+
+<!--more-->
+
+
+<h2>Es2015 in Src</h2>
+
+<p>For this project, I am using <a href="http://riotjs.com/">riotjs</a>, which is a React-like library for writing UI components.  The library is designed to look for Riot components in <code>.tag</code> files.  These files look like HTML fragments, like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;div&gt;
+</span><span class='line'>  &lt;!-- my component markup... --&gt;
+</span><span class='line'>&lt;/div&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;script&gt;
+</span><span class='line'>  // my component scripts...
+</span><span class='line'>&lt;/script&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I am using <a href="https://babeljs.io/">Babel</a> to transpile the es2015 code in my project.  I also want es2015 available in the tags.  So, instead of just using the <code>babel-preset-es2015</code> preset, I&#8217;m using <a href="https://github.com/riot/babel-preset-es2015-riot"><code>babel-preset-es2015-riot</code></a>.  I also want default module export support, so I&#8217;m using <code>babel-plugin-add-module-exports</code>.  The <code>.babelrc</code> file looks like:</p>
+
+<figure class='code'><figcaption><span>.babelrc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;presets&quot;</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s2">&quot;es2015-riot&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;stage-1&quot;</span>
+</span><span class='line'>  <span class="p">],</span>
+</span><span class='line'>  <span class="s2">&quot;plugins&quot;</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s2">&quot;add-module-exports&quot;</span>
+</span><span class='line'>  <span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For in-browser module support, I&#8217;m using webpack.  So, for <code>.js</code>, I&#8217;m using <code>babel-loader</code>.  For <code>.tag</code> riot files, I&#8217;m using <code>babel-loader</code> <em>plus</em> <code>riotjs-loader</code>.  The useful snippet for the loaders is here:</p>
+
+<figure class='code'><figcaption><span>webpack.config.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'>  <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">loaders</span><span class="o">:</span> <span class="p">[{</span>
+</span><span class='line'>      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.js$/</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">loaders</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;babel&#39;</span><span class="p">],</span>
+</span><span class='line'>      <span class="nx">excludes</span><span class="o">:</span> <span class="sr">/node_modules/</span>
+</span><span class='line'>    <span class="p">},</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.tag$/</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">loaders</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;babel&#39;</span><span class="p">,</span> <span class="s1">&#39;riotjs?type=babel&#39;</span><span class="p">],</span>
+</span><span class='line'>      <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span>
+</span><span class='line'>    <span class="p">}]</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that the riotjs plugin takes a query parameter for determining what type of code lives in the <code>&lt;script/&gt;</code> section of the <code>.tag</code> files.</p>
+
+<p>Now a simple app might look like this:</p>
+
+<figure class='code'><figcaption><span>app.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">riot</span> <span class="nx">from</span> <span class="s1">&#39;riot&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">import</span> <span class="s1">&#39;./app.tag&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">riot</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s importing the top-most riot component for the app, called <code>app.tag</code>:</p>
+
+<figure class='code'><figcaption><span>app.tag</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>import &#39;./header.tag&#39;
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;app&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;header&gt;&lt;/header&gt;</span>
+</span><span class='line'>  <span class="c">&lt;!-- more app stuff --&gt;</span>
+</span><span class='line'><span class="nt">&lt;/app&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>header.tag</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;header&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;h1&gt;</span>Wow<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'><span class="nt">&lt;/header&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note that the tag file imports other tag files.  To me, this seems to be the right place to do this, since the parent tag has dependencies on children tags.  But it presents a problem that requires extra configuration in the test environment.</p>
+
+<h2>Es2015 in Test</h2>
+
+<p>In test land, we are using <a href="https://github.com/avajs/ava">ava</a> as our test runner.  We configure it in the <code>package.json</code> file:</p>
+
+<figure class='code'><figcaption><span>package.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;ava&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;babel&quot;</span><span class="p">:</span> <span class="s2">&quot;inherit&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="nt">&quot;files&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>      <span class="s2">&quot;src/**/*.spec.js&quot;</span>
+</span><span class='line'>    <span class="p">],</span>
+</span><span class='line'>    <span class="nt">&quot;require&quot;</span><span class="p">:</span> <span class="p">[</span>
+</span><span class='line'>      <span class="s2">&quot;babel-register&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s2">&quot;./test/utils/node-extensions&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s2">&quot;./test/utils/dom&quot;</span>
+</span><span class='line'>    <span class="p">]</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A few explanations about the test setup above&#8230;</p>
+
+<p>Ava supports es2015 out of the box.  But it also allows you to specify your own <code>.babelrc</code> configuration using the &#8216;inherit&#8217; value.</p>
+
+<p>With <code>files</code>, we are telling ava to find all the specs in the <code>src/</code> subdir that have the <code>.spec.js</code> filename suffix.</p>
+
+<p>The <code>require</code> section is used to specify what code needs loaded before the specs run:</p>
+
+<ul>
+<li><code>babel-register</code> - so we can use es2015 in test setup code.</li>
+<li><code>./test/utils/node-extensions</code> - so we can tell node (running ava) how to load the <code>.tag</code> files that it encounters (remember, we don&#8217;t have webpack in this test environment).</li>
+<li><code>./test/utils/dom</code> - sets up a jsdom for doing our UI test</li>
+</ul>
+
+
+<p>The <code>node-extensions.js</code> file is pretty interesting.  It is providing node a new function for how to handle the <code>.tag</code> files.  For these files, we&#8217;ll compile using the riot compiler and then compile that output using babel.  In the end, we should have ready code.  You&#8217;ll also notice that this custom file loader requires that we load up our <code>.babelrc</code> file manually because we&#8217;re acting outside of ava at this point.</p>
+
+<figure class='code'><figcaption><span>test/utils/node-extensions.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">babel</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;babel-core&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kr">const</span> <span class="nx">riot</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;riot&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Add riot to node env so compilation works - per https://github.com/riot/riot/issues/895</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nx">riot</span> <span class="o">=</span> <span class="nx">riot</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">getBabelRc</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kr">const</span> <span class="nx">contents</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;.babelrc&#39;</span><span class="p">),</span> <span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">contents</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Error loading .babelrc&#39;</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">{}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// override behavior for riot tag import - per https://github.com/mochajs/mocha/issues/1458</span>
+</span><span class='line'><span class="nx">require</span><span class="p">.</span><span class="nx">extensions</span><span class="p">[</span><span class="s1">&#39;.tag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="nx">filename</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">content</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">filename</span><span class="p">,</span> <span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">riotCompiled</span> <span class="o">=</span> <span class="nx">riot</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;babel&#39;</span> <span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">babelCompiled</span> <span class="o">=</span> <span class="nx">babel</span><span class="p">.</span><span class="nx">transform</span><span class="p">(</span><span class="nx">riotCompiled</span><span class="p">,</span> <span class="nx">getBabelRc</span><span class="p">())</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">module</span><span class="p">.</span><span class="nx">_compile</span><span class="p">(</span><span class="nx">babelCompiled</span><span class="p">.</span><span class="nx">code</span><span class="p">,</span> <span class="nx">filename</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next, we have our dom setup, which is pretty straightforward jsdom:</p>
+
+<figure class='code'><figcaption><span>test/utils/dom.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">jsdom</span> <span class="nx">from</span> <span class="s1">&#39;jsdom&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">const</span> <span class="nx">doc</span> <span class="o">=</span> <span class="nx">jsdom</span><span class="p">.</span><span class="nx">jsdom</span><span class="p">(</span><span class="s1">&#39;&lt;!doctype html&gt;&lt;html&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kr">const</span> <span class="nx">win</span> <span class="o">=</span> <span class="nx">doc</span><span class="p">.</span><span class="nx">defaultView</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nb">document</span> <span class="o">=</span> <span class="nx">doc</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nb">window</span> <span class="o">=</span> <span class="nx">win</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nx">navigator</span> <span class="o">=</span> <span class="nx">win</span><span class="p">.</span><span class="nx">navigator</span>
+</span><span class='line'><span class="nx">global</span><span class="p">.</span><span class="nx">history</span> <span class="o">=</span> <span class="nx">win</span><span class="p">.</span><span class="nx">history</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we have a dom with a body tag we can render into, so let&#8217;s try to test out our <code>app.js</code> render code &#8211; finally, the test:</p>
+
+<figure class='code'><figcaption><span>app.spec.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">test</span> <span class="nx">from</span> <span class="s1">&#39;ava&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">import</span> <span class="nx">subject</span> <span class="nx">from</span> <span class="s1">&#39;../app&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">test</span><span class="p">.</span><span class="nx">before</span><span class="p">(</span><span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">))</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">test</span><span class="p">.</span><span class="nx">after</span><span class="p">.</span><span class="nx">always</span><span class="p">(</span><span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">body</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">while</span> <span class="p">(</span><span class="nx">body</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">body</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">body</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">test</span><span class="p">(</span><span class="s1">&#39;#render displays a header&#39;</span><span class="p">,</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">subject</span><span class="p">.</span><span class="nx">render</span><span class="p">()</span>
+</span><span class='line'>  <span class="nx">t</span><span class="p">.</span><span class="nx">truthy</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;h1&#39;</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">===</span> <span class="s1">&#39;Wow&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So much work for such a benign test. :)</p>
+
+<p>It&#8217;s a cool combo of technologies.  But it takes a fair bit of wrangling and that interesting bit of <code>node-extensions.js</code> code to get it working.</p>
+
+<p>Have you used this combo of tech before or something similar?  Any better setups that you&#8217;ve found?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Depending on a Shared Lib]]></title>
@@ -1539,56 +1861,6 @@
 <p>Everything seemed in its place.  The conference was small, about 250 participants, and it seemed like a large house party most of the time.  The venue was prepped very well.  I&#8217;m glad they opened up the downstairs lounge.  The food was great.  The breakfast trucks were a wonderful touch, especially <a href="http://saturdayswaffle.com/">Saturdays Waffles</a> day.  Mmmmm, waffles.  The gift card for lunch was a thoughtful touch.  <a href="http://www.yelp.com/biz/atlantic-caf%C3%A9-and-market-salt-lake-city-4">Atlantic Cafe</a> provided my delicious cevapi sausage on the 2nd day.</p>
 
 <p>I have many thanks for the great speakers, the effort of the organizers, and everyone in between that made the 2 days great.  I felt inspired.  I left more informed.  I met a group of fantastic people.  It&#8217;s been my favorite conference in Salt Lake City so far.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[I Love CSS Modules]]></title>
-    <link href="http://jaketrent.com/post/i-love-css-modules/"/>
-    <updated>2015-08-25T11:03:00-06:00</updated>
-    <id>http://jaketrent.com/post/i-love-css-modules</id>
-    <content type="html"><![CDATA[<p>I heard a fantastic yesterday by <a href="https://twitter.com/glenmaddern">Glen Maddern</a> where Interoperable CSS was well-illustrated as the fantastic CSS language advancement that it is.  I was happy to hear hushed ooo&#8217;s and ahh&#8217;s from the audience as they realized the power of what they were seeing.  I have been enjoying the benefits of CSS modules myself and my team and would share some of my favorite features in hopes that others will be inclined to use this feature as well.  Cleanse the world of global stylesheets!</p>
-
-<p><img src="http://i.imgur.com/MtjAduk.jpg" alt="i love css modules" /></p>
-
-<!--more-->
-
-
-<h2>Local Variables</h2>
-
-<p>With CSS modules, your selector names are truly local.  They are FRD local variables!  They won&#8217;t clash with any var names outside your module.  For You don&#8217;t have to invent a giant namespace.  There&#8217;s no BEM-style naming to describe a hierarchy.  There&#8217;s no repetition in those names.  You can name it something much more simple, just related to what the component is.</p>
-
-<p>For instance, if you&#8217;re creating <code>Link</code> component, you&#8217;d previously have something like <code>.nav__item__link</code> selectors to apply style.  Knowledge of global markup structure would seep into your component through this selector and its name.  Now with a combination of encapsulated components and css modules,  you don&#8217;t have to worry about the outside world.</p>
-
-<p>Now, what would you call your <code>Link</code> component&#8217;s outer-most <code>a</code> tag?  Well, maybe <code>.link</code> or <code>.root</code>&#8230;  Nothing fancy.  Just what it is.  You aren&#8217;t required to think about the global stylesheet.  You can focus your mind on just the component stylesheet at hand.  The naming game, which can already be challenging, is made much easier.</p>
-
-<h2>Explicit Dependencies</h2>
-
-<p>Now that all the CSS you write is, by default, local to the module you write it in, you have to explicitly pull in dependencies.  You have to explicitly import the stylesheet you are writing where you&#8217;ll eventually want to use it.  You can write styles without fear that it might influence something else &#8211; until you explicitly ask it to!</p>
-
-<h2>Still CSS</h2>
-
-<p>I&#8217;ve tried some of the inlining styling techniques and libraries that are being made popular in the React community.  <a href="https://github.com/FormidableLabs/radium">Radium</a> is my favorite there.  What makes me happy about CSS modules is that they&#8217;re still CSS.  It&#8217;s a language that was invented in order to create declarative styles.  It&#8217;s not wonderful in many ways, but it&#8217;s still the best tool available for this.</p>
-
-<p>You can use all the selectors, strategies, and css abilities you&#8217;re used to.  Pseudo selectors are all available.  Media queries work as expected.  Keyframe animations are easy to declare.  There is also a great ecosystem of CSS enhancements and transforms available from the PostCSS community.  No one should ever write a vendor prefix again with <a href="https://github.com/postcss/autoprefixer">autoprefixer</a>.</p>
-
-<h2>Consistency for Components</h2>
-
-<p>Another thing I&#8217;d like to see in the web component community, specifically React for now, is a pattern around how to override CSS in reusable components.  This pattern would be well-used by component developers and well-known by component consumers.  This would help components be more immediately useful &#8211; default styles could be included with components and custom styles would be easily applied.</p>
-
-<p>My favorite solution to this so far is <a href="https://github.com/pluralsight/react-styleable">react-styleable</a> &#8211; full disclosure, I helped write it.  (Anything like this that gains steam, has broad appeal, and is used by many will make me happy.)  I love that CSS modules enable this and provide a foundation for this consistency.  I&#8217;ll likely write more about this in the future.</p>
-
-<p>CSS modules have changed the styling game for me.  It makes it so, so much better.  Who knows, maybe it&#8217;ll change the world.</p>
-
-<p>So, how have CSS modules changed your life?  What do you love?  What could still be better?</p>
-
-<h2>Course on Styling React Components with CSS Modules</h2>
-
-<p>I&#8217;ve published a <a href="https://www.pluralsight.com/courses/react-styling-components">course on Pluralsight on CSS Modules in React</a>.  In the course, you&#8217;ll learn the supporting toolset.  You&#8217;ll experience the difference of using CSS modules in a project compared to other solutions with a hands-on demo.  If you&#8217;re interested, <a href="https://www.pluralsight.com/courses/react-styling-components">check it out</a>.  Hopefully it&#8217;s helpful for you.</p>
-
-<p><img src="http://i.imgur.com/3mxagk7.png" alt="Styling React Components course screenshot" /></p>
-
-<p><a href="https://www.pluralsight.com/courses/react-styling-components">Styling React Components course</a></p>
 ]]></content>
   </entry>
   

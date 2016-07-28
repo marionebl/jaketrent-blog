@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-05-17T07:37:36-06:00</updated>
+  <updated>2016-07-28T14:55:38-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,242 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Testing es2015 Riot Tags]]></title>
+    <link href="http://jaketrent.com/post/testing-es2015-riot-tags/"/>
+    <updated>2016-07-28T09:45:00-06:00</updated>
+    <id>http://jaketrent.com/post/testing-es2015-riot-tags</id>
+    <content type="html"><![CDATA[<p>Getting riot.js setup for development isn't too bad.  But the combo of language features, testing tools, and riot templates made setting up the test environment a bit trickier than I expected.  Here are some of the details.</p>
+
+<p><img src="http://i.imgur.com/EF2IK3G.png" alt="riot tag testing" /></p>
+
+<!--more-->
+
+
+<h2>Es2015 in Src</h2>
+
+<p>For this project, I am using <a href="http://riotjs.com/">riotjs</a>, which is a React-like library for writing UI components.  The library is designed to look for Riot components in <code>.tag</code> files.  These files look like HTML fragments, like:</p>
+
+<p>```</p>
+
+<div>
+  <!-- my component markup... -->
+</div>
+
+
+
+
+<script>
+  // my component scripts...
+</script>
+
+
+<p>```</p>
+
+<p>I am using <a href="https://babeljs.io/">Babel</a> to transpile the es2015 code in my project.  I also want es2015 available in the tags.  So, instead of just using the <code>babel-preset-es2015</code> preset, I'm using <a href="https://github.com/riot/babel-preset-es2015-riot"><code>babel-preset-es2015-riot</code></a>.  I also want default module export support, so I'm using <code>babel-plugin-add-module-exports</code>.  The <code>.babelrc</code> file looks like:</p>
+
+<p>```js .babelrc
+{
+  "presets": [</p>
+
+<pre><code>"es2015-riot",
+"stage-1"
+</code></pre>
+
+<p>  ],
+  "plugins": [</p>
+
+<pre><code>"add-module-exports"
+</code></pre>
+
+<p>  ]
+}
+```</p>
+
+<p>For in-browser module support, I'm using webpack.  So, for <code>.js</code>, I'm using <code>babel-loader</code>.  For <code>.tag</code> riot files, I'm using <code>babel-loader</code> <em>plus</em> <code>riotjs-loader</code>.  The useful snippet for the loaders is here:</p>
+
+<p>```js webpack.config.js
+{
+  // ...
+  module: {</p>
+
+<pre><code>loaders: [{
+  test: /\.js$/,
+  loaders: ['babel'],
+  excludes: /node_modules/
+}, {
+  test: /\.tag$/,
+  loaders: ['babel', 'riotjs?type=babel'],
+  exclude: /node_modules/
+}]
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Note that the riotjs plugin takes a query parameter for determining what type of code lives in the <code>&lt;script/&gt;</code> section of the <code>.tag</code> files.</p>
+
+<p>Now a simple app might look like this:</p>
+
+<p>```js app.js
+import riot from 'riot'</p>
+
+<p>import './app.tag'</p>
+
+<p>export default {
+  render() {</p>
+
+<pre><code>riot.mount('app')
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>It's importing the top-most riot component for the app, called <code>app.tag</code>:</p>
+
+<p>```html app.tag
+import './header.tag'</p>
+
+<p><app>
+  <header></header>
+  <!-- more app stuff -->
+</app>
+```</p>
+
+<p><code>html header.tag
+&lt;header&gt;
+  &lt;h1&gt;Wow&lt;/h1&gt;
+&lt;/header&gt;
+</code></p>
+
+<p>Note that the tag file imports other tag files.  To me, this seems to be the right place to do this, since the parent tag has dependencies on children tags.  But it presents a problem that requires extra configuration in the test environment.</p>
+
+<h2>Es2015 in Test</h2>
+
+<p>In test land, we are using <a href="https://github.com/avajs/ava">ava</a> as our test runner.  We configure it in the <code>package.json</code> file:</p>
+
+<p>```json package.json
+{
+  "ava": {</p>
+
+<pre><code>"babel": "inherit",
+"files": [
+  "src/**/*.spec.js"
+],
+"require": [
+  "babel-register",
+  "./test/utils/node-extensions",
+  "./test/utils/dom"
+]
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>A few explanations about the test setup above...</p>
+
+<p>Ava supports es2015 out of the box.  But it also allows you to specify your own <code>.babelrc</code> configuration using the 'inherit' value.</p>
+
+<p>With <code>files</code>, we are telling ava to find all the specs in the <code>src/</code> subdir that have the <code>.spec.js</code> filename suffix.</p>
+
+<p>The <code>require</code> section is used to specify what code needs loaded before the specs run:</p>
+
+<ul>
+<li><code>babel-register</code> - so we can use es2015 in test setup code.</li>
+<li><code>./test/utils/node-extensions</code> - so we can tell node (running ava) how to load the <code>.tag</code> files that it encounters (remember, we don't have webpack in this test environment).</li>
+<li><code>./test/utils/dom</code> - sets up a jsdom for doing our UI test</li>
+</ul>
+
+
+<p>The <code>node-extensions.js</code> file is pretty interesting.  It is providing node a new function for how to handle the <code>.tag</code> files.  For these files, we'll compile using the riot compiler and then compile that output using babel.  In the end, we should have ready code.  You'll also notice that this custom file loader requires that we load up our <code>.babelrc</code> file manually because we're acting outside of ava at this point.</p>
+
+<p>```js test/utils/node-extensions.js
+const babel = require('babel-core')
+const fs = require('fs')
+const path = require('path')
+const riot = require('riot')</p>
+
+<p>// Add riot to node env so compilation works - per https://github.com/riot/riot/issues/895
+global.riot = riot</p>
+
+<p>function getBabelRc() {
+  try {</p>
+
+<pre><code>const contents = fs.readFileSync(path.join('..', '..', '.babelrc'), 'utf8')
+return JSON.parse(contents)
+</code></pre>
+
+<p>  } catch (e) {</p>
+
+<pre><code>console.log('Error loading .babelrc', e)
+return {}
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>// override behavior for riot tag import - per https://github.com/mochajs/mocha/issues/1458
+require.extensions['.tag'] = function (module, filename) {
+  const content = fs.readFileSync(filename, 'utf8')
+  const riotCompiled = riot.compile(content, { type: 'babel' })</p>
+
+<p>  const babelCompiled = babel.transform(riotCompiled, getBabelRc())</p>
+
+<p>  return module._compile(babelCompiled.code, filename)
+}
+```</p>
+
+<p>Next, we have our dom setup, which is pretty straightforward jsdom:</p>
+
+<p>```js test/utils/dom.js
+import jsdom from 'jsdom'</p>
+
+<p>const doc = jsdom.jsdom('&lt;!doctype html><html><body></body></html>')
+const win = doc.defaultView
+global.document = doc
+global.window = win
+global.navigator = win.navigator
+global.history = win.history
+```</p>
+
+<p>Now we have a dom with a body tag we can render into, so let's try to test out our <code>app.js</code> render code -- finally, the test:</p>
+
+<p>```js app.spec.js
+import test from 'ava'</p>
+
+<p>import subject from '../app'</p>
+
+<p>test.before(t => {
+  document.querySelector('body').appendChild(document.createElement('app'))
+})</p>
+
+<p>test.after.always(t => {
+  const body = document.querySelector('body')
+  while (body.firstChild) {</p>
+
+<pre><code>body.removeChild(body.firstChild)
+</code></pre>
+
+<p>  }
+})</p>
+
+<p>test('#render displays a header', t => {
+  subject.render()
+  t.truthy(document.querySelector('h1').innerHTML === 'Wow')
+})
+```</p>
+
+<p>So much work for such a benign test. :)</p>
+
+<p>It's a cool combo of technologies.  But it takes a fair bit of wrangling and that interesting bit of <code>node-extensions.js</code> code to get it working.</p>
+
+<p>Have you used this combo of tech before or something similar?  Any better setups that you've found?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[react-dnd With Text Drag Preview]]></title>
@@ -352,46 +588,6 @@ console.log('stickers', util.inspect(stickers, { depth: 4 }))
 ```</p>
 
 <p>Your data is yours again!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Gitignore System Files]]></title>
-    <link href="http://jaketrent.com/post/gitignore-system-files/"/>
-    <updated>2016-03-14T14:43:00-06:00</updated>
-    <id>http://jaketrent.com/post/gitignore-system-files</id>
-    <content type="html"><![CDATA[<p>There are many files that you don't want to store in your project's Git repo.  Some of these are even specific to the project.  Some are definitely not.  How do you ignore these that aren't related to the project?</p>
-
-<p><img src="http://i.imgur.com/ZYiky6R.png" alt="Git ignore" /></p>
-
-<!--more-->
-
-
-<h2>.gitignore For the Project</h2>
-
-<p>In your project directory, you likely have a <code>.gitignore</code> file.  Here, you keep things that might show up in that directory out of the project's version-controlled source tree.  There's not much to it.  On each line of the file, list the file names, directory names, or partial patterns that you don't want Git to track or even know about.</p>
-
-<p>For instance, if you're doing a Node.js project, you probably want to track all your own <code>.js</code> files, found in <code>src/</code>.  But you don't want to track all those 3rd-party modules in <code>node_modules</code>.  You probably don't want to track your code compiled for distribution either.  So, your project's <code>.gitignore</code> file might look like this:</p>
-
-<p><code>text project/.gitignore
-node_modules
-dist
-</code></p>
-
-<h2>.gitignore For Your System</h2>
-
-<p>Everything that goes in the project's <code>.gitignore</code> file should relate to the project.  And it should relate to everyone.</p>
-
-<p>There are many people and systems interacting with your project.  For instance, some developers might be on Mac OSX and get those nasty Finder thumbnail files, <code>.DS_Store</code> that end up popping up all over the place.  Others on the project might use the venerable Jetbrains editors which drop an <code>.idea/</code> directory in every project they edit.  These facts should be transparent to your project.  Every time someone picks up a new editor or switches an OS, the project shouldn't have another commit updating the <code>.gitignore</code> with yet another thing.</p>
-
-<p>You can make Git ignore files that appear on your system but are unrelated to the project.</p>
-
-<p>Edit your top-level <code>~/.gitgnore</code>.  Add all your system-related things there.  It might end up look like:</p>
-
-<p><code>text ~/.gitignore
-.DS_Store
-.idea
-</code></p>
 ]]></content>
   </entry>
   
