@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-07-28T14:55:38-06:00</updated>
+  <updated>2016-08-16T10:52:36-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,142 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Return an Array in GraphQL]]></title>
+    <link href="http://jaketrent.com/post/return-array-graphql/"/>
+    <updated>2016-08-16T10:15:00-06:00</updated>
+    <id>http://jaketrent.com/post/return-array-graphql</id>
+    <content type="html"><![CDATA[<p><a href="http://graphql.org/">GraphQL</a> provides a query language to define the shape of data you&#8217;d like returned from an HTTP API on a server and a library to help make it happen.  It&#8217;s easy to return a single item or multiple items.</p>
+
+<p><img src="http://i.imgur.com/RitF21I.jpg" alt="graphql" /></p>
+
+<!--more-->
+
+
+<h1>Query Many Items</h1>
+
+<p>To <a href="http://graphql.org/docs/queries/">query in graphql</a>, you setup what looks like a json payload without the values.  For example, to get the <code>id</code> and <code>title</code> fields of <em>all</em> books in your API, you might write:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{
+</span><span class='line'>  books {
+</span><span class='line'>    id,
+</span><span class='line'>    title
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Query a Single Item</h1>
+
+<p>To query a single item, filtered by a unique id, you&#8217;d add a predicate to the books query:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{
+</span><span class='line'>  books(id: 123) {
+</span><span class='line'>    id,
+</span><span class='line'>    title
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Otherwise, everything remains the same.</p>
+
+<p>The sameness or similarity with the single item query feels good from someone coming from a REST API, where resources similar to the above would be queried from URIs something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/books          # single
+</span><span class='line'>/books/123      # multiple</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But keeping the same query field, <code>books</code>, for both queries will provide a challenge because we will have to support both the single and multiple query from the same place.</p>
+
+<h1>Define a Schema</h1>
+
+<p>On the server, you need to define a schema for possible supported shapes of data you can query.  We currently have one field that we can query &#8211; <code>books</code>.  In the case where we provide no filter (known as args in a schema), we want to return all books.  If there is a filter, we want to use it, and return a single book.  The schema might look like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="p">{</span> <span class="nx">GraphQLID</span><span class="p">,</span> <span class="nx">GraphQLList</span><span class="p">,</span> <span class="nx">GraphQLObjectType</span><span class="p">,</span> <span class="nx">GraphQLSchema</span><span class="p">,</span> <span class="nx">GraphQLString</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;graphql&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">const</span> <span class="nx">bookType</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">GraphQLObjectType</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;book&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">fields</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">id</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nx">GraphQLID</span> <span class="p">},</span>
+</span><span class='line'>    <span class="nx">title</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nx">GraphQLString</span> <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">const</span> <span class="nx">schema</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">GraphQLSchema</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">fields</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">books</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">type</span><span class="o">:</span> <span class="k">new</span> <span class="nx">GraphQLList</span><span class="p">(</span><span class="nx">bookType</span><span class="p">),</span> <span class="c1">// &lt;-- note type</span>
+</span><span class='line'>      <span class="nx">args</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">id</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="nx">GraphQLID</span> <span class="p">}</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="nx">resolve</span><span class="p">(</span><span class="nx">_</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// &lt;-- the interesting part</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">args</span><span class="p">.</span><span class="nx">id</span>
+</span><span class='line'>          <span class="o">?</span> <span class="nx">repo</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
+</span><span class='line'>          <span class="o">:</span> <span class="nx">repo</span><span class="p">.</span><span class="nx">findAll</span><span class="p">()</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The decision to return a single item or multiple items happens in the <code>resolve</code> function for <code>books</code>.  And the <code>books</code> field config shows that the return type will always be a <code>GraphQLList</code> of <code>bookType</code>.  This means that whether a single item or multiple items, an array will always be returned.  This doesn&#8217;t feel to terrible &#8211; even familiar when comparing to things like JSON-API.  More importantly, it&#8217;s <em>required</em> for this return type to work.</p>
+
+<p>At one point, I attempted to use <a href="http://graphql.org/docs/api-reference-type-system/#graphqluniontype"><code>GraphQLUnionType</code></a> to have two potential return types, but I got an error like:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">books</span> <span class="nx">may</span> <span class="nx">only</span> <span class="nx">contain</span> <span class="nb">Object</span> <span class="nx">types</span><span class="p">,</span> <span class="nx">it</span> <span class="nx">cannot</span> <span class="nx">contain</span> <span class="p">[</span><span class="nx">the</span> <span class="nx">array</span> <span class="nx">type</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&#8230;meaning that I couldn&#8217;t mix a single object type with an array type in the unioned return type.</p>
+
+<p>So in our chosen, working solution above where we always return an array, any consuming client will query with the<code>books</code> field.  An array of one or many items will be returned.  In the case of returning an array of a single item, the deserialization code will probably want to unwrap the item from the array and expose it as a single object, but obviously this is up to your preference.</p>
+
+<p>There it is.  Have you learned how to do this in a better or more elegant way?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Testing es2015 Riot Tags]]></title>
@@ -1819,48 +1955,6 @@
 <p>So, embrace codenames.  You use them anyway.  It&#8217;ll be more fun for most.  It&#8217;ll bring color to your world.  It&#8217;ll bring life and character to your team identity and the discussions you have about what you do.</p>
 
 <p>What are some of your favorite codenames, and what are some of your favorite reasons for using them?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[React Rally Review]]></title>
-    <link href="http://jaketrent.com/post/react-rally-review/"/>
-    <updated>2015-08-27T09:03:00-06:00</updated>
-    <id>http://jaketrent.com/post/react-rally-review</id>
-    <content type="html"><![CDATA[<p>React Rally is a developer conference created around the library of <a href="http://facebook.github.io/react/">React.js</a> and the community that uses it.  It was the first of its name.  It was the first React-centric conference in Salt Lake City.  I had a great time.  Here are a few of reasons I liked it.</p>
-
-<p><img src="http://i.imgur.com/B8fFS4J.jpg" alt="react rally" /></p>
-
-<!--more-->
-
-
-<h2>People Breakouts</h2>
-
-<p>It was a happy conference.  A great mood was set by <a href="https://twitter.com/jergason">Jamison</a> on stage, who MC&#8217;ed most of the conference.  He&#8217;s a fun, quirky guy who&#8217;s not self-important and who did a great job putting speakers and the audience at ease.  There were a ton of participants and attendees at the conference that also fit this (good!) description.  This led to great conversation between sessions.  There were plenty of breaks, some 30 or 60 minutes at a time.  They were well-spaced, allowing plenty of time.  There was a pleasant <a href="http://rangle.io/">Rangle.io</a>-sponsored lounge to gather in.</p>
-
-<p>There were no on-stage questions and answers portions at the end of the talks.  I wondered how I&#8217;d like this, since who doesn&#8217;t like answer to their questions, right?  It turned out to be refreshing.  Speakers finished their talks at the appointed time.  No one had to wait around uncomfortably wondering when either the speaker or the audience would let everyone else off the hook.  No embarrassing questions.  It was nice.  All the speakers were great anyway, but I think this feature also helped prime the conversations that were expected to happen after the talks in the breakouts, giving extra motivation for everyone to be available and approachable.</p>
-
-<h2>The Spoken Word</h2>
-
-<p>I was excited going into the conference because of the solid lineup of speakers.  Not all the talks were the best I had heard or the best treatment of every subject.  There were some highlights thought, and on the whole it was really, really good.  Each of the speakers had obviously prepared a great deal and had taken their time on stage seriously (or not seriously in the case of <a href="https://twitter.com/djsmith42">Dave Smith</a>, whose talk was memorable and awesome as well, btw).</p>
-
-<p>The conference wasn&#8217;t wholly about React.  There&#8217;s just so much <em>around</em> React that is exciting.  The community is pushing boundaries all over the place.  (And <em>still</em> all the content in the conference was appropriate, yay! :)  For instance, there were a great many mentions of <a href="http://elm-lang.org/">Elm</a>.  For my part, I spent much of the conference tinkering with that very thing.</p>
-
-<h2>Fun Design</h2>
-
-<p>It&#8217;ll reveal how much art does for me, but when I first learned about the conference, one of the things that excited me the most was the <a href="http://www.reactrally.com/">website</a>.  It had a fun design!  There were illustrations, interesting colors, and it looked like a fun theme.  (Of course, at the time there was literally nothing else to be excited about outside the mailing list input box.)</p>
-
-<p>We need more illustrations.  We need more mascots.  A menacing purple squid with a React symbol on its forehead?  Yes, please!  My previously bare brushed metal laptop lid is now bestickered with the sweetest conference stickers I have.  So fun!</p>
-
-<p>I&#8217;m still not sure what the theme was intended to be.  My interpretation was Creatures of the Black Lagoon in Space.  Right?!</p>
-
-<h2>Feels Like the First Time</h2>
-
-<p>The organizers did a great job.  The preparation was obvious.  They assured me they were putting out fires for the duration of the two days.  That was not apparent.  The thing went off without a hitch.  I can only poke at the annoying AV glitch of a blinky project screen in some talks.</p>
-
-<p>Everything seemed in its place.  The conference was small, about 250 participants, and it seemed like a large house party most of the time.  The venue was prepped very well.  I&#8217;m glad they opened up the downstairs lounge.  The food was great.  The breakfast trucks were a wonderful touch, especially <a href="http://saturdayswaffle.com/">Saturdays Waffles</a> day.  Mmmmm, waffles.  The gift card for lunch was a thoughtful touch.  <a href="http://www.yelp.com/biz/atlantic-caf%C3%A9-and-market-salt-lake-city-4">Atlantic Cafe</a> provided my delicious cevapi sausage on the 2nd day.</p>
-
-<p>I have many thanks for the great speakers, the effort of the organizers, and everyone in between that made the 2 days great.  I felt inspired.  I left more informed.  I met a group of fantastic people.  It&#8217;s been my favorite conference in Salt Lake City so far.</p>
 ]]></content>
   </entry>
   

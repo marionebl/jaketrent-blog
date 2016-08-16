@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-07-28T14:55:38-06:00</updated>
+  <updated>2016-08-16T10:52:36-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,116 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Return an Array in GraphQL]]></title>
+    <link href="http://jaketrent.com/post/return-array-graphql/"/>
+    <updated>2016-08-16T10:15:00-06:00</updated>
+    <id>http://jaketrent.com/post/return-array-graphql</id>
+    <content type="html"><![CDATA[<p><a href="http://graphql.org/">GraphQL</a> provides a query language to define the shape of data you'd like returned from an HTTP API on a server and a library to help make it happen.  It's easy to return a single item or multiple items.</p>
+
+<p><img src="http://i.imgur.com/RitF21I.jpg" alt="graphql" /></p>
+
+<!--more-->
+
+
+<h1>Query Many Items</h1>
+
+<p>To <a href="http://graphql.org/docs/queries/">query in graphql</a>, you setup what looks like a json payload without the values.  For example, to get the <code>id</code> and <code>title</code> fields of <em>all</em> books in your API, you might write:</p>
+
+<p>```
+{
+  books {</p>
+
+<pre><code>id,
+title
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<h1>Query a Single Item</h1>
+
+<p>To query a single item, filtered by a unique id, you'd add a predicate to the books query:</p>
+
+<p>```
+{
+  books(id: 123) {</p>
+
+<pre><code>id,
+title
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Otherwise, everything remains the same.</p>
+
+<p>The sameness or similarity with the single item query feels good from someone coming from a REST API, where resources similar to the above would be queried from URIs something like:</p>
+
+<p><code>
+/books          # single
+/books/123      # multiple
+</code></p>
+
+<p>But keeping the same query field, <code>books</code>, for both queries will provide a challenge because we will have to support both the single and multiple query from the same place.</p>
+
+<h1>Define a Schema</h1>
+
+<p>On the server, you need to define a schema for possible supported shapes of data you can query.  We currently have one field that we can query -- <code>books</code>.  In the case where we provide no filter (known as args in a schema), we want to return all books.  If there is a filter, we want to use it, and return a single book.  The schema might look like:</p>
+
+<p>```js
+const { GraphQLID, GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } = require('graphql')</p>
+
+<p>const bookType = new GraphQLObjectType({
+  name: 'book',
+  fields: {</p>
+
+<pre><code>id: { type: GraphQLID },
+title: { type: GraphQLString }
+</code></pre>
+
+<p>  }
+})</p>
+
+<p>const schema = new GraphQLSchema({
+  name: 'root',
+  fields: {</p>
+
+<pre><code>books: {
+  type: new GraphQLList(bookType), // &lt;-- note type
+  args: {
+    id: { type: GraphQLID }
+  },
+  resolve(_, args) { // &lt;-- the interesting part
+    return args.id
+      ? repo.find(args.id)
+      : repo.findAll()
+  }
+}
+</code></pre>
+
+<p>  }
+})
+```</p>
+
+<p>The decision to return a single item or multiple items happens in the <code>resolve</code> function for <code>books</code>.  And the <code>books</code> field config shows that the return type will always be a <code>GraphQLList</code> of <code>bookType</code>.  This means that whether a single item or multiple items, an array will always be returned.  This doesn't feel to terrible -- even familiar when comparing to things like JSON-API.  More importantly, it's <em>required</em> for this return type to work.</p>
+
+<p>At one point, I attempted to use <a href="http://graphql.org/docs/api-reference-type-system/#graphqluniontype"><code>GraphQLUnionType</code></a> to have two potential return types, but I got an error like:</p>
+
+<p><code>
+books may only contain Object types, it cannot contain [the array type]
+</code></p>
+
+<p>...meaning that I couldn't mix a single object type with an array type in the unioned return type.</p>
+
+<p>So in our chosen, working solution above where we always return an array, any consuming client will query with the<code>books</code> field.  An array of one or many items will be returned.  In the case of returning an array of a single item, the deserialization code will probably want to unwrap the item from the array and expose it as a single object, but obviously this is up to your preference.</p>
+
+<p>There it is.  Have you learned how to do this in a better or more elegant way?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Testing es2015 Riot Tags]]></title>
@@ -498,96 +608,6 @@ document.getElementById('party').addEventListener('click', _ =&gt; {
 <p>Works pretty nicely, but feels weird that you have to go back to the main process to access a view-related API (as of Electron 0.37).</p>
 
 <p>So, if there are two ways to do this, there has to be another, right?  What are you doing to select a directory in Electron?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Console.log Deep Objects]]></title>
-    <link href="http://jaketrent.com/post/console-log-deep-objects/"/>
-    <updated>2016-03-14T15:13:00-06:00</updated>
-    <id>http://jaketrent.com/post/console-log-deep-objects</id>
-    <content type="html"><![CDATA[<p>With deep object structures, <code>console.log</code> can leave you wondering what's down in the depths of the objects you're printing out.  Here's a quick help from Node stdlib.</p>
-
-<p><img src="http://i.imgur.com/00WAox4.jpg" alt="console.log deep objects" /></p>
-
-<!--more-->
-
-
-<p>You can usually see the objects that you're <code>console.log</code>ing, and life is good:</p>
-
-<p>Given:</p>
-
-<p><code>js
-const stickers = {
-  are: 'fun'
-}
-console.log('stickers', stickers)
-// Outputs: stickers { are: 'fun' }
-</code></p>
-
-<p>We can see the whole object, and we're happy.  We can even do objects up to a depth of 3 sub objects, and it works great:</p>
-
-<p>```js
-const stickers = {
-  are: {</p>
-
-<pre><code>even: {
-  more: 'fun'
-}
-</code></pre>
-
-<p>  }
-}
-console.log('stickers', stickers)
-// Outputs: stickers { are: { even: { more: 'fun' } } }
-```</p>
-
-<p>If, however, we have a potentially deeply-nested object, we'll get some of our data truncated:</p>
-
-<p>```js
-const stickers = {
-  are: {</p>
-
-<pre><code>even: {
-  more: {
-            than: {
-                outrageously: 'fun'
-            }
-        }
-}
-</code></pre>
-
-<p>  }
-}
-console.log('stickers', stickers)
-// Outputs: stickers { are: { even: { more: [Object] } } }
-```</p>
-
-<p><code>[Object]</code>s are cool and all, but not very informative.</p>
-
-<p>To get at this information, use <a href="https://nodejs.org/api/util.html#util_util_inspect_object_options"><code>util.inspect</code></a> from the <a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">stdlib</a>.  Here, you can set a depth option to be higher, letting you peer into those deep objects in the console:</p>
-
-<p>```js
-const util = require('util')
-const stickers = {
-  are: {</p>
-
-<pre><code>even: {
-  more: {
-            than: {
-                outrageously: 'fun'
-            }
-        }
-}
-</code></pre>
-
-<p>  }
-}
-console.log('stickers', util.inspect(stickers, { depth: 4 }))
-// Outputs: stickers { are: { even: { more: { than: { outrageously: 'fun' } } } } }
-```</p>
-
-<p>Your data is yours again!</p>
 ]]></content>
   </entry>
   
