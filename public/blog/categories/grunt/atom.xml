@@ -4,7 +4,7 @@
   <title><![CDATA[Category: grunt | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/grunt/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-08-16T10:52:36-06:00</updated>
+  <updated>2016-08-22T15:56:20-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -204,11 +204,10 @@ npm install connect-livereload --save-dev
 
 <p>Next, import:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">configure</span> <span class="s">&#39;development&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
-</span><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">require</span><span class="p">(</span><span class="s">&#39;connect-livereload&#39;</span><span class="p">)</span> <span class="mi">35729</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:coffeescript %}
+app.configure 'development', ->
+  app.use require('connect-livereload') 35729
+{% endcodeblock %}</p>
 
 <p>Note that we only want to import and use the middleware when in development.  This matches the fact that we are only declaring this package as in <code>devDependencies</code>.</p>
 
@@ -232,31 +231,20 @@ npm install grunt grunt-regarde grunt-contrib-livereload --save-dev
 
 <p>Next setup the <code>Gruntfile.coffee</code>:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">module.exports = </span><span class="nf">(grunt) -&gt;</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nv">regarde:</span>
-</span><span class='line'>  <span class="nv">style:</span>
-</span><span class='line'>    <span class="nv">files: </span><span class="p">[</span><span class="s">&#39;app/static/css/*.css&#39;</span><span class="p">]</span>
-</span><span class='line'>    <span class="nv">tasks: </span><span class="p">[</span><span class="s">&#39;livereload&#39;</span><span class="p">]</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nx">code</span><span class="o">&gt;&lt;/</span><span class="nx">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span> <span class="s">&#39;grunt-contrib-livereload&#39;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span> <span class="s">&#39;be-lively&#39;</span><span class="p">,</span> <span class="p">[</span> <span class="s">&#39;livereload-start&#39;</span><span class="p">,</span> <span class="s">&#39;regarde&#39;</span> <span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:coffeescript %}
+module.exports = (grunt) ->
+  grunt.initConfig</p>
+
+<pre><code>regarde:
+  style:
+    files: ['app/static/css/*.css']
+    tasks: ['livereload']
+</code></pre>
+
+<p>  grunt.loadNpmTasks 'grunt-contrib-livereload'</p>
+
+<p>  grunt.registerTask 'be-lively', [ 'livereload-start', 'regarde' ]
+{% endcodeblock %}</p>
 
 <p>Now when you run:</p>
 
@@ -324,21 +312,15 @@ npm install gzippo express coffee-script --save
 
 <p>Now create your app server, <code>web.coffee</code>.  It's about as light as they come:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">gzippo = </span><span class="nx">require</span> <span class="s">&#39;gzippo&#39;</span>
-</span><span class='line'><span class="nv">express = </span><span class="nx">require</span> <span class="s">&#39;express&#39;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">app = </span><span class="nx">express</span><span class="p">()</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">logger</span> <span class="s">&#39;dev&#39;</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">gzippo</span><span class="p">.</span><span class="nx">staticGzip</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">__dirname</span><span class="si">}</span><span class="s">/dist&quot;</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span> <span class="o">||</span> <span class="mi">5000</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:coffeescript %}
+gzippo = require 'gzippo'
+express = require 'express'</p>
+
+<p>app = express()
+app.use express.logger 'dev'
+app.use gzippo.staticGzip "#{__dirname}/dist"
+app.listen process.env.PORT || 5000
+{% endcodeblock %}</p>
 
 <p>It's going to be serving the static resources that you build w/ Yeoman/Grunt that end up in the <code>dist</code> directory.  In order for code to get to Heroku, it needs to be commited to your git repo.  Thus, you need to remove the "dist" line from your <code>.gitignore</code> file, and don't forget to add and commit the files to git as you build them.  You may also have to add more tasks to the <code>Gruntfile.js</code> to copy over any other assets to <code>dist</code> that your app needs to run.</p>
 
@@ -418,21 +400,18 @@ git push heroku master
 
 <p>When I end up doing custom things in my Grunt build, it tends to be that I'm trying to get to the shell and execute something.  If I have a shell script, I can just execute it with <a href="https://github.com/jharding/grunt-exec">grunt-exec</a>.  If I'm trying to keep all logic in Grunt, I'll use <a href="https://github.com/arturadib/shelljs">shelljs</a>.  The thing that gets me with both of these solutions is that I'm in Node, constantly trying to get out of Node to run something in the shell, like a git command.  So my code ends up looking like lots of these:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">shell</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;shelljs&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">writeln</span><span class="p">(</span><span class="s1">&#39;Cloning repo&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">shell</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="s1">&#39;git clone &#39;</span> <span class="o">+</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">repo</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}
+var shell = require('shelljs');
+grunt.log.writeln('Cloning repo');
+shell.exec('git clone ' + opts.repo);
+{% endcodeblock %}</p>
 
 <p>There's a bit of cruft to recreate bash in Node.  It's not as clean and does not read as well as a vanilla shell script might:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">echo</span> <span class="s1">&#39;Cloning repo&#39;</span>;
-</span><span class='line'>git clone <span class="nv">$repo</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:bash %}
+echo 'Cloning repo';
+git clone $repo
+{% endcodeblock %}</p>
 
 <h2>New APIs</h2>
 

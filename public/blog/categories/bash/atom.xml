@@ -4,7 +4,7 @@
   <title><![CDATA[Category: bash | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/bash/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-08-16T10:52:36-06:00</updated>
+  <updated>2016-08-22T15:56:20-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -75,22 +75,23 @@ myProcess.stderr.on('data', function (data) {
 <!--more-->
 
 
+<p>(Updated 22 Aug 2016)</p>
+
 <p>The <a href="http://nodejs.org/api/child_process.html">docs</a> indicate a number of ways you can kick off child processes.  In my case, I wanted to use <a href="http://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options"><code>spawn</code></a>.</p>
 
 <p>Import the <code>child_process</code> library:</p>
 
 <p><code>js
-var spawn = require('child_process').spawn;
+const { spawn } = require('child_process')
 </code></p>
 
 <p>Now you have <code>spawn</code> available to call.  Just send it the right stuff.  I have a <code>deploy.sh</code> script that I want to run.  The command I'll actually run is <code>sh</code>, and I'll pass the name of the script to it in the 2nd parameter.  I can also specify other options in the 3rd parameter.  For instance, I want this to execute in a certain directory and with certain commands available to it via the <code>PATH</code> variable.  And so:</p>
 
 <p><code>js
-var _ = require('underscore'); // for some utility goodness
-var deploySh = spawn('sh', [ 'deploy.sh' ], {
+const deploySh = spawn('sh', [ 'deploy.sh' ], {
   cwd: process.env.HOME + '/myProject',
-  env:_.extend(process.env, { PATH: process.env.PATH + ':/usr/local/bin' })
-});
+  env: Object.assign({}, process.env, { PATH: process.env.PATH + ':/usr/local/bin' })
+})
 </code></p>
 
 <p>This will execute the shell script.  There are other callback events that you may/not want to set to grab the data that comes back from the process, such as 'data', 'end', or 'exit'.</p>
