@@ -4,7 +4,7 @@
   <title><![CDATA[Category: social | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/social/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-08-22T15:56:20-06:00</updated>
+  <updated>2016-08-24T10:33:30-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -47,63 +47,109 @@
 
 <p>Here's the final solution in all its glory.  This snippet only includes only the code inside the Express route.</p>
 
-<p>{% codeblock lang:javascript %}
-// request is a library for making http requests
-var request = require('request');</p>
-
-<p>// cheerio is a lib for screen scraping
-var cheerio = require('cheerio');</p>
-
-<p>// req and res are express vars for the request and response
-exports.list = function (req, res) {</p>
-
-<p>  // this is the actual request to the pinterest page I care about
-  request('http://pinterest.com/jaketrent/pins/', function(err, resp, body){</p>
-
-<pre><code>// get ready for scraping
-var $ = cheerio.load(body);
-var pins = [];
-var $pin;
-var $pins = $('.pin');
-
-var i = 0;
-
-// scraping only the 1st 10 pins;  you could get them all
-for (i; i &lt; 10; ++i) {
-  $pin = $pins.eq(i);
-
-  // Finding the bits on the page we care about based on class names
-  pins.push({
-    img: $pin.find('.PinImageImg').attr('src'),
-    url: 'http://pinterest.com' + $pin.find('.ImgLink').attr('href'),
-    desc: $pin.find('.description').text()
-  });
-}
-
-// respond with the final json
-res.send(pins);
-</code></pre>
-
-<p>  });
-};
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// request is a library for making http requests</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="c1">// cheerio is a lib for screen scraping</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">cheerio</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;cheerio&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="c1">// req and res are express vars for the request and response</span>
+</span><span class='line'><span class="nx">exports</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// this is the actual request to the pinterest page I care about</span>
+</span><span class='line'>  <span class="nx">request</span><span class="p">(</span><span class="s1">&#39;http://pinterest.com/jaketrent/pins/&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">resp</span><span class="p">,</span> <span class="nx">body</span><span class="p">){</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="c1">// get ready for scraping</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">cheerio</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">pins</span> <span class="o">=</span> <span class="p">[];</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">$pin</span><span class="p">;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">$pins</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.pin&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// scraping only the 1st 10 pins;  you could get them all</span>
+</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="nx">i</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$pin</span> <span class="o">=</span> <span class="nx">$pins</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Finding the bits on the page we care about based on class names</span>
+</span><span class='line'>  <span class="nx">pins</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">img</span><span class="o">:</span> <span class="nx">$pin</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.PinImageImg&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://pinterest.com&#39;</span> <span class="o">+</span> <span class="nx">$pin</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.ImgLink&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="nx">desc</span><span class="o">:</span> <span class="nx">$pin</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.description&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// respond with the final json</span>
+</span><span class='line'><span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">pins</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>When I wrote it out for my own use, I was surprised at the brevity.  I love it.  Given, there's no handling of any errors or attempts to make this semi-robust.  This just gets us the data on a good day.</p>
 
 <p>The final json that's exposed at our chosen Express endpoint looks like it this:</p>
 
-<p>{% codeblock lang:javascript %}
-[ {</p>
-
-<pre><code>"img": "http://myimg.jpg",
-"url": "http://pinterest.com/pin/mypin",
-"desc": "Sweetest pin ever"
-</code></pre>
-
-<p>  }, {
-  // ...
-]
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">[</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="s2">&quot;img&quot;</span><span class="o">:</span> <span class="s2">&quot;http://myimg.jpg&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="s2">&quot;http://pinterest.com/pin/mypin&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="s2">&quot;desc&quot;</span><span class="o">:</span> <span class="s2">&quot;Sweetest pin ever&quot;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">},</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>It's ready for use by a json-ready client.  So stinkin easy.  We're connecting the web together, and it's awesome!  Now the world will know of the baked goods and flower arrangements that we love the most.</p>
 ]]></content>
