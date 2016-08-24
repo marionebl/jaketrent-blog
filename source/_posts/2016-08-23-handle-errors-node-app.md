@@ -146,7 +146,7 @@ router.get('/debug/crash', (req, res, next) => {
 And now there's really nothing that Express can do to help us.  The `Error` will instead bubble up to the Node process running our app.  That process gives us one final opportunity to know about the occurrence of such a fatal error.  Once we know about it, we can log it.  Perhaps we can get off a call to our monitoring service.  After that, we should assume our process is compromised, potentially unstable, and just crash.  Then use a tool like [forever](https://github.com/foreverjs/forever) to detect the downed process and restart it.  Such a crash handler might look like:
 
 ```js
-  proc.on('uncaughtException', err => {
+  process.on('uncaughtException', err => {
     log.fatal({ err }, 'uncaught exception')
 
     process.nextTick(_ => process.exit(1))

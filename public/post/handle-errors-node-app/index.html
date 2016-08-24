@@ -301,7 +301,7 @@
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">proc</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;uncaughtException&#39;</span><span class="p">,</span> <span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">process</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;uncaughtException&#39;</span><span class="p">,</span> <span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
 </span><span class='line'>    <span class="nx">log</span><span class="p">.</span><span class="nx">fatal</span><span class="p">({</span> <span class="nx">err</span> <span class="p">},</span> <span class="s1">&#39;uncaught exception&#39;</span><span class="p">)</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="nx">process</span><span class="p">.</span><span class="nx">nextTick</span><span class="p">(</span><span class="nx">_</span> <span class="o">=&gt;</span> <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
