@@ -4,7 +4,7 @@
   <title><![CDATA[Category: conf | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/conf/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-08-24T10:37:40-06:00</updated>
+  <updated>2016-09-20T13:51:59-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Strange Loop and Elm Conf 2016 Review]]></title>
+    <link href="http://jaketrent.com/post/strange-loop-elm-conf-2016-review/"/>
+    <updated>2016-09-20T11:38:00-06:00</updated>
+    <id>http://jaketrent.com/post/strange-loop-elm-conf-2016-review</id>
+    <content type="html"><![CDATA[<p>Here's a quick conference review and some highlight bullets from some of my favorite parts.  It was my first time going to Strange Loop.  It was also host to the first Elm Conf ever.  I was excited to go to both.  I was looking for new, eclectic content to consider.  I was not disappointed.</p>
+
+<p><img src="http://i.imgur.com/SusCISQ.jpg" alt="strange loop and elm-conf" /></p>
+
+<!--more-->
+
+
+<h2>Venue</h2>
+
+<p>The city was awesome.  I got to hang out and explore St. Louis quite a bit.  I hadn't been there since I was a small child.  There's a great, historic downtown area.  The stonework is inescapable and very impressive.  Great craftsmanship on display from a fun era of architecture.  Highlights were the many elegant cathedrals and churches, including the <a href="https://en.wikipedia.org/wiki/Cathedral_Basilica_of_Saint_Louis_(St._Louis">Cathedral Basilica</a>).</p>
+
+<p><img src="http://i.imgur.com/6RHY7b6l.jpg" alt="cathedral bascillica" /></p>
+
+<p>I had a good time visiting Forest Park, which is host to some great parks and a cool art museum which houses a wide variety of impressive paintings, sculpture, pottery, artifacts, etc.</p>
+
+<p><img src="http://i.imgur.com/nIufoSal.jpg" alt="cool art representing america, wish I captured the info plaque better" /></p>
+
+<p>Union Station was the site of Elm Conf and the hotel for the conference.  It's built in a historic train station.  Parking was under the open rafters of the apparent train yard.  The lobby is in the grand hall of the main station where they do light shows on the ceiling on the hour after 6pm.</p>
+
+<p><img src="http://i.imgur.com/lT2TcbTl.jpg" alt="union station hotel" /></p>
+
+<p>The Peabody Opera House was the site of all sessions for Strange Loop proper.  It's also an impressive venue, with an especially beautiful stage and impressive hall.  I could actually fit in the theatre seats too, so I was impressed.</p>
+
+<p><img src="http://i.imgur.com/5uo4devl.jpg" alt="peabody opera house stage" /></p>
+
+<h2>Content</h2>
+
+<p>The content was interesting and engaging.  The speakers were all quite good.  As with any conf, there are low points, but the average here was high and the lows few.  The talks were mostly technical, some deep, a few shallower.  There were a couple good soft and thought talks as well.  What I was going for, I got, which was <em>variety</em>.  I feel like my exposure at this conference was broad.</p>
+
+<p>Language themes emerged around Elm, Clojure, Scala, and I think I was getting a general Java vibe there as well.  As a top tech, distributed commit logs in the form of Kafka and Kinesis were mentioned multiple times.</p>
+
+<h2>Hosting</h2>
+
+<h4>Food</h4>
+
+<p>Elm-conf had coffee and a few small snacks provided.  It didn't provide meals.  Somehow this was unclear to me.  Apparently there was a way to tack this on to your experience at registration that I missed.  In the end, I enjoyed going out to the city and finding something good with new friends, but that wasn't my initial expectation.  At Strange Loop, the Peabody Opera House provided breakfast, lunch, and snacks.  They were all solid and good.  In the end, I was made more solid and good.  Best food in the city I had was the day before the conf, when we visited Blues City Deli, and I ordered the Aporkalypse, a drippingly-delicious sandwhich of pork and more pork in the form of bacon.  Mmmm!, so good.</p>
+
+<p><img src="http://i.imgur.com/AAdpY4Dl.jpg" alt="blues city deli" /></p>
+
+<h4>Swag</h4>
+
+<p>There was eventually a conference T-shirt.  Black.  With a coolish logo on it, that I had to ask about.  I'm still one of three people in the country who have not seen Stranger Things.  Apparently the logo was based on that show's logo.  There were a few vendors.  I got lucky with one of the contests.  That was awesome.  But holy cow, where were the stickers?  Apparently that's not a strong part of this conference's culture.  I got one cool sticker from Netflix -- Chaos Monkey :D.</p>
+
+<h4>Party</h4>
+
+<p>The conference party was at the singular City Museum.  It's not really a museum?  It's more like an anything-goes, go explore this, based on psychonauts concept art, adult playground.  I say adult because no where are predictable, little tikes-sized, plastic-covered platforms and slides.  Everything's made out of exposed rebar, inconvenient, twisted, gnarly, mixed with random art installments, and generally evoking of my laughter.  If you go to St. Louis, you just need to experience it.</p>
+
+<p><img src="http://i.imgur.com/55iusyGl.jpg" alt="city museum st louis" /></p>
+
+<p>In addition to the general review, here are some learnings that stood out to me:</p>
+
+<h2>Some Favorite Talks</h2>
+
+<h4><a href="https://youtu.be/DSjbTC-hvqQ">"Code is the Easy Part"</a> - Evan C - NoRedInk</h4>
+
+<ul>
+<li>Alternatives make each community stronger - we can gravitate around things we thing are good, beautiful, and we don't have to partake in what we don't like.  We don't have to rain on those parades either.</li>
+<li>Are bigger teams better? "Not really" Some things that are great about Elm haven't really been matched over even long time periods and with many resources.  (eg, great error messages, fast rendering)  Can have great products from small teams.</li>
+<li>Most people would judge a great open source project by those that get issues and resolve them immediately, keeping open issues at 0.  But Evan batches issues, letting them pile up, then designing around trends to maximize value and consider good design.</li>
+<li>Upcoming versions of Elm will focus on: debugger, code swapping, server render, packages improvements</li>
+</ul>
+
+
+<h4><a href="https://youtu.be/IcgmSRJHu_8?list=PLglJM3BYAMPH2zuz1nbKHQyeawE4SN0Cd">"Making Impossible States Impossible"</a> - Richard Feldman - NoRedInk</h4>
+
+<ul>
+<li>Less to test is good. Nothing to test is better because it's impossible.</li>
+<li>Expose functions to access data - can control data access, structure for upgrades and refactor</li>
+<li>Make new types as combos of new fields are added to a data structure</li>
+<li>Spend time to design data structures and types to only allow valid states</li>
+</ul>
+
+
+<p>Strange Loop and Elm Conf both did a great job hiring some solid videographers who did good video capture work and had it up incredibly fast.  I was browsing videos on Youtube at lunch that were just presented in the morning!</p>
+
+<ul>
+<li><a href="https://www.youtube.com/channel/UC_QIfHvN9auy2CoOdSfMWDw/videos">Strange Loop on YouTube</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLglJM3BYAMPH2zuz1nbKHQyeawE4SN0Cd">Elm Conf on YouTube</a></li>
+</ul>
+
+
+<h2>Some Cool Ideas</h2>
+
+<ul>
+<li>NoRedInk - Hiring after Elm adoption expanded greatly - "python paradox" - no programmers, but easier to hire/find a team because of tech interest and niche. (segment from <a href="https://www.youtube.com/watch?v=LCNs92YQjhw&amp;feature=youtu.be&amp;t=7m55s">"Elm conf Q&amp;A panel"</a> by Evan Czaplicki and Richard Feldman)</li>
+<li>In elm, most things not be a component, but a "triplet" - model view update - (segment from <a href="https://www.youtube.com/watch?v=LCNs92YQjhw&amp;feature=youtu.be&amp;t=21m09s">"Elm conf Q&amp;A panel"</a> by Ossi)</li>
+<li>Local concision is nice - I don't have to visit tons of files to make a change (eg, EJB) (somewhere in <a href="https://www.youtube.com/watch?v=VNTQ-M_uSo8&amp;feature=youtu.be">"Agility and Robustness: Clojure spec"</a> by Stuart Holloway)</li>
+<li>Clojure spec attempts to find a best-of-both world approach, being a thing kind of like typings and kind of like example testing.  Maintains generalized systems, dynamic types of clojure.  But allows for specificity, such as data shape definitions where desired.  Seems like it could be really cool.  A bit of a mind blow.  (segment from <a href="https://www.youtube.com/watch?v=VNTQ-M_uSo8&amp;feature=youtu.be&amp;t=9m09s">"Agility and Robustness: Clojure spec"</a> by Stuart Holloway)</li>
+<li>Some well-loved tools (eg, React, Gemfile, and Git) are loved by us because they use pure functions leading to better mental models.  Obvious looking back, but was non-obvious to start.  We should build more tools this way. (<a href="https://mobile.twitter.com/garybernhardt/status/777901423220490240">tweet</a> about "Reproducability" by Gary Bernhardt)</li>
+<li>Parable of pumpkin carver (segment from <a href="https://www.youtube.com/watch?v=_1rh_s1WmRA&amp;feature=youtu.be&amp;t=22m25s">"A Frontend Server, Front to Back"</a> by Zach Tellman)</li>
+<li>Nice to have abstractions, but it might be too much work to build a "big tower of abstraction" with a bunch of new terms and concepts just for 300 lines of well-factored code. (somewhere in <a href="https://www.youtube.com/watch?v=_1rh_s1WmRA&amp;feature=youtu.be">"A Frontend Server, Front to Back"</a> by Zach Tellman)</li>
+</ul>
+
+
+<h2>Some Cool Projects</h2>
+
+<ul>
+<li><a href="https://github.com/sporto/hop">hop</a> - elm router</li>
+<li><a href="https://github.com/mdgriffith/elm-style-animation">elm-style-animation</a> - tweeing values for animation</li>
+<li><a href="https://github.com/abadi199/elm-horizon">elm-horizon</a> - serverless realtime frontend experiment</li>
+<li><a href="https://www.atomist.com/">atomist</a> - yet-to-be-released  project for elm code gen <a href="https://youtu.be/jJ4e6cIBgYM">demo talk</a></li>
+<li><a href="http://petstore.swagger.io/#/">swagger.io</a> - API documentation</li>
+<li><a href="http://johnny-five.io/">johnny-five</a> - write nodejs on top of arduinos</li>
+<li><a href="https://ravichugh.github.io/sketch-n-sketch/">sketch-n-sketch</a> - prototype tool for syncing code and direct manipulation tools for making vector art <a href="https://www.youtube.com/watch?v=YuGVC8VqXz0">demo talk</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Bring Your Listeners With You]]></title>
@@ -312,44 +426,6 @@
 <p>I heard it said by multiple people during the conference that it was the best first-time conference they had attended.  Indeed, everything went Domo smooth.  The content was the star.  It was fun.  It was energetic (minus some confusing lack of screaming for all the sweet swag -- probably had something to do with the sheer amount, like clapping for the 3rd curtain call).  The AV crew did a fantastic job.  Usually, it's annoying to sit in an audience as video or audio problems plague the start of a talk.  That simply did not happen here, and it was oh, so refreshing.</p>
 
 <p>Oh yeah, and sweet jacket!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[UtahJS Conf 2013 Review]]></title>
-    <link href="http://jaketrent.com/post/utahjs-conf-2013-review/"/>
-    <updated>2013-05-20T06:59:00-06:00</updated>
-    <id>http://jaketrent.com/post/utahjs-conf-2013-review</id>
-    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/G3BBShC.png" alt="UtahJS" /></p>
-
-<!--more-->
-
-
-<h2>The Schedule</h2>
-
-<p>The conference covered a single day.  Keynote in the morning by Tom Dale, co-creator of Emberjs.  3 tracks thereafter with 5 talks each.  There was a specialized track, all focused on Angular, which was nice for anyone that wanted to focus on that framework.  There was less Node focus overall compared to last year, which was disappointing.  There were 3 talks focused on testing.  We need more good testing talks.</p>
-
-<p>My impression on the talks overall was that they were well done and that the speakers were generally engaging.  The topics focused a little much on browser-side MV* frameworks, but I guess that's hot right now.  Every talk I went to was meant for beginners at a very introductory level.  That was disappointing.  Of the topics presented, I found myself surprisingly most interested in Emberjs.  I have been tinkering with it since then and need to build something with it.</p>
-
-<h2>The Food</h2>
-
-<p>There was a plentitude of simple carbohydrates ready to serve to all learners at all times.  That was awesome.  Pastries appeared for breakfast, un-advertised.  They didn't do a boxed lunch this year.  Some didn't cry.  I almost did.  But I was pointed to a great gryo at a nearby Greek eatery instead.  Apparently the host venue, the Salt Lake City Public Library, didn't approve of serving food.  This, I don't understand, given that there was plenty of food floating around.  Apparenly pastries are ok, and sandwiches are not.</p>
-
-<h2>The People</h2>
-
-<p>Always a fun flavor to a conference, the attendees were great to mingle with.  The JavaScript community is a fun group to be with.  In Utah, we're a fairly small, tight group.  It was fun to have Tom Dale show up.  It was even said by some that the Ember folks were "actually nice" as opposed to what was thought to be observed by some on Twitter.  Haha.  I smiled quite a bit when I heard that.</p>
-
-<h2>The Afterparty</h2>
-
-<p>The party was put on by O.C. Tanner and Domo.  O.C. Tanner is my current home base.  We were in charge of prepping the space.  It was like a classic text adventure trying to guide party-comers through the labyrinth of the O.C. Tanner building to the eventual pot of gold that was the party.</p>
-
-<p>The food never stopped coming, even after my stomach had taken on its full capacity.  Marvelous Catering (gotta love that name) provided a delicious "luau pork dinner".  I heard "luau" and assumed pineapple, of which there was none, which disappointed me just a little.  The owner of Fongo Bongo, a local game shop supplied a great collection of board and card games.  We had a couple Xboxen humming whilst TVs blasted fighting games to which I knew no combos.  We had a great time.</p>
-
-<h2>Next Year</h2>
-
-<p>I'm glad that this event has shown some perpetuity.  I hope it continues next year.  I think they have a good formula.  The price, the locale, the speaker lineup, and the associated activities make for a good one-day experience each Spring.  I would focus on improving one bit next year: the website.  It was the least well-done part of the conference.  I find that extremely ironic given the target market for the event.</p>
-
-<p>So next Spring, come to Utah and attend the JsConf.</p>
 ]]></content>
   </entry>
   

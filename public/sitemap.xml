@@ -1002,7 +1002,7 @@
     </url>
     <url>
         <loc>http://jaketrent.com/post/react-rally-review/</loc>
-        <lastmod>2015-08-27T09:14:44-06:00</lastmod>
+        <lastmod>2016-09-20T13:19:06-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/post/in-favor-codenames/</loc>
@@ -1089,12 +1089,16 @@
         <lastmod>2016-08-24T10:37:32-06:00</lastmod>
     </url>
     <url>
+        <loc>http://jaketrent.com/post/strange-loop-elm-conf-2016-review/</loc>
+        <lastmod>2016-09-20T13:51:47-06:00</lastmod>
+    </url>
+    <url>
         <loc>http://jaketrent.com/blog/archives/</loc>
-        <lastmod>2016-08-24T10:37:32-06:00</lastmod>
+        <lastmod>2016-09-20T13:51:47-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/</loc>
-        <lastmod>2016-08-24T10:37:32-06:00</lastmod>
+        <lastmod>2016-09-20T13:51:47-06:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/robots.txt</loc>
@@ -1102,6 +1106,6 @@
     </url>
     <url>
         <loc>http://jaketrent.com/work/</loc>
-        <lastmod>2016-08-24T10:37:32-06:00</lastmod>
+        <lastmod>2016-09-20T13:51:47-06:00</lastmod>
     </url>
 </urlset>

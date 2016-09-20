@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-08-24T10:37:40-06:00</updated>
+  <updated>2016-09-20T13:51:59-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Strange Loop and Elm Conf 2016 Review]]></title>
+    <link href="http://jaketrent.com/post/strange-loop-elm-conf-2016-review/"/>
+    <updated>2016-09-20T11:38:00-06:00</updated>
+    <id>http://jaketrent.com/post/strange-loop-elm-conf-2016-review</id>
+    <content type="html"><![CDATA[<p>Here&#8217;s a quick conference review and some highlight bullets from some of my favorite parts.  It was my first time going to Strange Loop.  It was also host to the first Elm Conf ever.  I was excited to go to both.  I was looking for new, eclectic content to consider.  I was not disappointed.</p>
+
+<p><img src="http://i.imgur.com/SusCISQ.jpg" alt="strange loop and elm-conf" /></p>
+
+<!--more-->
+
+
+<h2>Venue</h2>
+
+<p>The city was awesome.  I got to hang out and explore St. Louis quite a bit.  I hadn&#8217;t been there since I was a small child.  There&#8217;s a great, historic downtown area.  The stonework is inescapable and very impressive.  Great craftsmanship on display from a fun era of architecture.  Highlights were the many elegant cathedrals and churches, including the <a href="https://en.wikipedia.org/wiki/Cathedral_Basilica_of_Saint_Louis_(St._Louis">Cathedral Basilica</a>).</p>
+
+<p><img src="http://i.imgur.com/6RHY7b6l.jpg" alt="cathedral bascillica" /></p>
+
+<p>I had a good time visiting Forest Park, which is host to some great parks and a cool art museum which houses a wide variety of impressive paintings, sculpture, pottery, artifacts, etc.</p>
+
+<p><img src="http://i.imgur.com/nIufoSal.jpg" alt="cool art representing america, wish I captured the info plaque better" /></p>
+
+<p>Union Station was the site of Elm Conf and the hotel for the conference.  It&#8217;s built in a historic train station.  Parking was under the open rafters of the apparent train yard.  The lobby is in the grand hall of the main station where they do light shows on the ceiling on the hour after 6pm.</p>
+
+<p><img src="http://i.imgur.com/lT2TcbTl.jpg" alt="union station hotel" /></p>
+
+<p>The Peabody Opera House was the site of all sessions for Strange Loop proper.  It&#8217;s also an impressive venue, with an especially beautiful stage and impressive hall.  I could actually fit in the theatre seats too, so I was impressed.</p>
+
+<p><img src="http://i.imgur.com/5uo4devl.jpg" alt="peabody opera house stage" /></p>
+
+<h2>Content</h2>
+
+<p>The content was interesting and engaging.  The speakers were all quite good.  As with any conf, there are low points, but the average here was high and the lows few.  The talks were mostly technical, some deep, a few shallower.  There were a couple good soft and thought talks as well.  What I was going for, I got, which was <em>variety</em>.  I feel like my exposure at this conference was broad.</p>
+
+<p>Language themes emerged around Elm, Clojure, Scala, and I think I was getting a general Java vibe there as well.  As a top tech, distributed commit logs in the form of Kafka and Kinesis were mentioned multiple times.</p>
+
+<h2>Hosting</h2>
+
+<h4>Food</h4>
+
+<p>Elm-conf had coffee and a few small snacks provided.  It didn&#8217;t provide meals.  Somehow this was unclear to me.  Apparently there was a way to tack this on to your experience at registration that I missed.  In the end, I enjoyed going out to the city and finding something good with new friends, but that wasn&#8217;t my initial expectation.  At Strange Loop, the Peabody Opera House provided breakfast, lunch, and snacks.  They were all solid and good.  In the end, I was made more solid and good.  Best food in the city I had was the day before the conf, when we visited Blues City Deli, and I ordered the Aporkalypse, a drippingly-delicious sandwhich of pork and more pork in the form of bacon.  Mmmm!, so good.</p>
+
+<p><img src="http://i.imgur.com/AAdpY4Dl.jpg" alt="blues city deli" /></p>
+
+<h4>Swag</h4>
+
+<p>There was eventually a conference T-shirt.  Black.  With a coolish logo on it, that I had to ask about.  I&#8217;m still one of three people in the country who have not seen Stranger Things.  Apparently the logo was based on that show&#8217;s logo.  There were a few vendors.  I got lucky with one of the contests.  That was awesome.  But holy cow, where were the stickers?  Apparently that&#8217;s not a strong part of this conference&#8217;s culture.  I got one cool sticker from Netflix &#8211; Chaos Monkey :D.</p>
+
+<h4>Party</h4>
+
+<p>The conference party was at the singular City Museum.  It&#8217;s not really a museum?  It&#8217;s more like an anything-goes, go explore this, based on psychonauts concept art, adult playground.  I say adult because no where are predictable, little tikes-sized, plastic-covered platforms and slides.  Everything&#8217;s made out of exposed rebar, inconvenient, twisted, gnarly, mixed with random art installments, and generally evoking of my laughter.  If you go to St. Louis, you just need to experience it.</p>
+
+<p><img src="http://i.imgur.com/55iusyGl.jpg" alt="city museum st louis" /></p>
+
+<p>In addition to the general review, here are some learnings that stood out to me:</p>
+
+<h2>Some Favorite Talks</h2>
+
+<h4><a href="https://youtu.be/DSjbTC-hvqQ">&#8220;Code is the Easy Part&#8221;</a> - Evan C - NoRedInk</h4>
+
+<ul>
+<li>Alternatives make each community stronger - we can gravitate around things we thing are good, beautiful, and we don&#8217;t have to partake in what we don&#8217;t like.  We don&#8217;t have to rain on those parades either.</li>
+<li>Are bigger teams better? &#8220;Not really&#8221; Some things that are great about Elm haven&#8217;t really been matched over even long time periods and with many resources.  (eg, great error messages, fast rendering)  Can have great products from small teams.</li>
+<li>Most people would judge a great open source project by those that get issues and resolve them immediately, keeping open issues at 0.  But Evan batches issues, letting them pile up, then designing around trends to maximize value and consider good design.</li>
+<li>Upcoming versions of Elm will focus on: debugger, code swapping, server render, packages improvements</li>
+</ul>
+
+
+<h4><a href="https://youtu.be/IcgmSRJHu_8?list=PLglJM3BYAMPH2zuz1nbKHQyeawE4SN0Cd">&#8220;Making Impossible States Impossible&#8221;</a> - Richard Feldman - NoRedInk</h4>
+
+<ul>
+<li>Less to test is good. Nothing to test is better because it&#8217;s impossible.</li>
+<li>Expose functions to access data - can control data access, structure for upgrades and refactor</li>
+<li>Make new types as combos of new fields are added to a data structure</li>
+<li>Spend time to design data structures and types to only allow valid states</li>
+</ul>
+
+
+<p>Strange Loop and Elm Conf both did a great job hiring some solid videographers who did good video capture work and had it up incredibly fast.  I was browsing videos on Youtube at lunch that were just presented in the morning!</p>
+
+<ul>
+<li><a href="https://www.youtube.com/channel/UC_QIfHvN9auy2CoOdSfMWDw/videos">Strange Loop on YouTube</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLglJM3BYAMPH2zuz1nbKHQyeawE4SN0Cd">Elm Conf on YouTube</a></li>
+</ul>
+
+
+<h2>Some Cool Ideas</h2>
+
+<ul>
+<li>NoRedInk - Hiring after Elm adoption expanded greatly - &#8220;python paradox&#8221; - no programmers, but easier to hire/find a team because of tech interest and niche. (segment from <a href="https://www.youtube.com/watch?v=LCNs92YQjhw&amp;feature=youtu.be&amp;t=7m55s">&#8220;Elm conf Q&amp;A panel&#8221;</a> by Evan Czaplicki and Richard Feldman)</li>
+<li>In elm, most things not be a component, but a &#8220;triplet&#8221; - model view update - (segment from <a href="https://www.youtube.com/watch?v=LCNs92YQjhw&amp;feature=youtu.be&amp;t=21m09s">&#8220;Elm conf Q&amp;A panel&#8221;</a> by Ossi)</li>
+<li>Local concision is nice - I don&#8217;t have to visit tons of files to make a change (eg, EJB) (somewhere in <a href="https://www.youtube.com/watch?v=VNTQ-M_uSo8&amp;feature=youtu.be">&#8220;Agility and Robustness: Clojure spec&#8221;</a> by Stuart Holloway)</li>
+<li>Clojure spec attempts to find a best-of-both world approach, being a thing kind of like typings and kind of like example testing.  Maintains generalized systems, dynamic types of clojure.  But allows for specificity, such as data shape definitions where desired.  Seems like it could be really cool.  A bit of a mind blow.  (segment from <a href="https://www.youtube.com/watch?v=VNTQ-M_uSo8&amp;feature=youtu.be&amp;t=9m09s">&#8220;Agility and Robustness: Clojure spec&#8221;</a> by Stuart Holloway)</li>
+<li>Some well-loved tools (eg, React, Gemfile, and Git) are loved by us because they use pure functions leading to better mental models.  Obvious looking back, but was non-obvious to start.  We should build more tools this way. (<a href="https://mobile.twitter.com/garybernhardt/status/777901423220490240">tweet</a> about &#8220;Reproducability&#8221; by Gary Bernhardt)</li>
+<li>Parable of pumpkin carver (segment from <a href="https://www.youtube.com/watch?v=_1rh_s1WmRA&amp;feature=youtu.be&amp;t=22m25s">&#8220;A Frontend Server, Front to Back&#8221;</a> by Zach Tellman)</li>
+<li>Nice to have abstractions, but it might be too much work to build a &#8220;big tower of abstraction&#8221; with a bunch of new terms and concepts just for 300 lines of well-factored code. (somewhere in <a href="https://www.youtube.com/watch?v=_1rh_s1WmRA&amp;feature=youtu.be">&#8220;A Frontend Server, Front to Back&#8221;</a> by Zach Tellman)</li>
+</ul>
+
+
+<h2>Some Cool Projects</h2>
+
+<ul>
+<li><a href="https://github.com/sporto/hop">hop</a> - elm router</li>
+<li><a href="https://github.com/mdgriffith/elm-style-animation">elm-style-animation</a> - tweeing values for animation</li>
+<li><a href="https://github.com/abadi199/elm-horizon">elm-horizon</a> - serverless realtime frontend experiment</li>
+<li><a href="https://www.atomist.com/">atomist</a> - yet-to-be-released  project for elm code gen <a href="https://youtu.be/jJ4e6cIBgYM">demo talk</a></li>
+<li><a href="http://petstore.swagger.io/#/">swagger.io</a> - API documentation</li>
+<li><a href="http://johnny-five.io/">johnny-five</a> - write nodejs on top of arduinos</li>
+<li><a href="https://ravichugh.github.io/sketch-n-sketch/">sketch-n-sketch</a> - prototype tool for syncing code and direct manipulation tools for making vector art <a href="https://www.youtube.com/watch?v=YuGVC8VqXz0">demo talk</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Handle Errors in a Node App]]></title>
@@ -2014,102 +2128,6 @@
 <p>If you pause the debugger and step backward, you can see the value as it has changed over time.  It&#8217;s pretty neat, and now you&#8217;re debugging Elm on your own box!</p>
 
 <p>What other Elm debug tips do you have?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Update Body Class in React]]></title>
-    <link href="http://jaketrent.com/post/update-body-class-react/"/>
-    <updated>2015-09-23T15:31:00-06:00</updated>
-    <id>http://jaketrent.com/post/update-body-class-react</id>
-    <content type="html"><![CDATA[<p>React gives us a great component abstraction.  Each of these components represents a node in the DOM.  Each component is self contained, doesn&#8217;t talk up the component hierarchy directly and passes explicit data and code down the hierarchy.  But what about when you have a React app that wants to reach out and modify something it doesn&#8217;t control?</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="react modify body tag" /></p>
-
-<!--more-->
-
-
-<h2>A Couple Use Cases</h2>
-
-<p>There are potentially a few use cases for this.  For instance, modals that need to render outside your application&#8217;s potentially <code>position: relative</code> containers.  Or, as we&#8217;ll see below, your app wants to modify the <code>body</code> tag in your html document.</p>
-
-<p>The most common reason I&#8217;ve found for messing with the body tag is to provide some style attribute.  It&#8217;s not uncommon to have full-page style differences between pages in our apps.  If you have a &#8220;single page&#8221; js app in the browser, you need to be able to modify the body tag in code.</p>
-
-<p>Let&#8217;s use an example where on some pages in your app, the theme is &#8220;dark&#8221;, where the body background color should be black.  On other pages, the entire body background color should be the default white.  We&#8217;ll make a component that lives high in the hierarchy and takes an <code>isDark</code> property to determine if the rendered page is dark or light.</p>
-
-<h2>Body is Outside Your React App</h2>
-
-<p>You can&#8217;t mount your React app directly on <code>document.body</code>, at least without warnings.  This is considered bad practice, because other scripts or browser plugins often modify the document body directly.  So you&#8217;ll have to reach <em>out</em> of your React app and modify the body directly.</p>
-
-<h2>Tie Into the React Lifecycle</h2>
-
-<p>First, you just need a point in time in your app&#8217;s lifecycle where you know you want to modify the <code>body</code> class.  React has a bunch of <a href="https://facebook.github.io/react/docs/component-specs.html">lifecycle hooks</a> that will come in handy.  A great early-lifecycle hook for modifying the DOM is <code>componentDidMount</code>.  Usually, we would be accessing DOM nodes that are children of our Component.  Again, in this case, we&#8217;re reaching out beyond where a React component usually should.  The usual <code>React.findDOMNode</code> functions will not be needed, because React isn&#8217;t managing the body node.  Instead, we&#8217;ll just use the <code>document.body</code> api directly.</p>
-
-<h2>Use JavaScript to Modify the Class</h2>
-
-<p>If you have some utility for modifying class names, use it.  If not, it&#8217;s small and simple enough in <a href="http://jaketrent.com/post/addremove-classes-raw-javascript/">plain old JavaScript</a>.</p>
-
-<p>With these two bits in hand, you have the pieces necessary for your body-modifying component:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kr">class</span> <span class="nx">BodyColor</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
-</span><span class='line'>  <span class="kr">static</span> <span class="nx">propTypes</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">isDark</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">bool</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="kr">static</span> <span class="nx">defaultProps</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">isDark</span><span class="o">:</span> <span class="kc">false</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="nx">componentDidMount</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">toggle</span><span class="p">(</span><span class="s1">&#39;darkClass&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">isDark</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="nx">componentWillReceiveProps</span><span class="p">(</span><span class="nx">nextProps</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">toggle</span><span class="p">(</span><span class="s1">&#39;darkClass&#39;</span><span class="p">,</span> <span class="nx">nextProps</span><span class="p">.</span><span class="nx">isDark</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="nx">componentWillUnmount</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="s1">&#39;darkClass&#39;</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To use, pass an <code>isDark</code> attribute to activate the <code>darkClass</code> class on the body tag:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;BodyColor</span> <span class="na">isDark=</span><span class="s">{true}</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;h1&gt;</span>A Very Dark App<span class="nt">&lt;/h1&gt;</span>
-</span><span class='line'><span class="nt">&lt;/BodyColor&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Are there any other ways you&#8217;ve found to reach out of React and modify the DOM directly.  What have been your use cases?</p>
 ]]></content>
   </entry>
   
