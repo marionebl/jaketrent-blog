@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-09-20T13:51:59-06:00</updated>
+  <updated>2016-09-27T10:39:52-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,100 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Notify NewRelic of Error on UncaughtException]]></title>
+    <link href="http://jaketrent.com/post/notify-error-to-newrelic-on-uncaughtexception/"/>
+    <updated>2016-09-27T09:50:00-06:00</updated>
+    <id>http://jaketrent.com/post/notify-error-to-newrelic-on-uncaughtexception</id>
+    <content type="html"><![CDATA[<p>NewRelic is a monitoring vendor that has good support for Node.js apps.  When your Node app goes down, you&#8217;ll want to tell NewRelic about it.  It&#8217;s surprisingly easy.</p>
+
+<p><img src="http://i.imgur.com/ApNvY7f.jpg" alt="newrelic" /></p>
+
+<!--more-->
+
+
+<h2><code>newrelic</code> npm Package</h2>
+
+<p>The <code>newrelic</code> npm package is super easy to integrate with.  First install:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install newrelic</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Call it from early in your program (before errors can start to occur).  NewRelic docs say on the first line of your program.  I load config first.  Everything is fine.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;newrelic&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then in order to let NewRelic have the data that it needs to run, you&#8217;ll need to setup the config file.  The lib gives you a seed file to start from.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">cd</span> <span class="o">&lt;</span><span class="nx">proj_root</span><span class="o">&gt;</span>
+</span><span class='line'><span class="nx">cp</span> <span class="nx">node_modules</span><span class="o">/</span><span class="nx">newrelic</span><span class="o">/</span><span class="nx">newrelic</span><span class="p">.</span><span class="nx">js</span> <span class="p">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Make sure to edit it with your changes.  With that file, you&#8217;ll want to set your app name, your license key, and any other <a href="https://github.com/newrelic/node-newrelic/blob/master/lib/config.default.js">options you desire</a>.</p>
+
+<h2>Calling NewRelic on <code>uncaughtException</code></h2>
+
+<p>When your Node app goes down, you have <a href="post/handle-errors-node-app/">one final moment</a> to send out your SOS signal &#8211; this is in the <code>uncaughtException</code> handler.</p>
+
+<p>Usually NewRelic will detect errors automatically, such as those that you return as HTTP responses to your clients of status 500 with some error json.  But in this case, we&#8217;ll need to send the error manually.  The <code>newrelic</code> lib gives us a way to do this with the <code>notifyError</code> function.  It takes the error object and optionally some custom parameters.</p>
+
+<p>So, at first glace, we&#8217;d do this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">newrelic</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;newrelic&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">process</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;uncaughtException&#39;</span><span class="p">,</span> <span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">log</span><span class="p">.</span><span class="nx">fatal</span><span class="p">({</span> <span class="nx">err</span> <span class="p">},</span> <span class="s1">&#39;unhandled error&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">newrelic</span><span class="p">.</span><span class="nx">noticeError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But this doesn&#8217;t deterministically give NewRelic time enough to send the error off to their server.  The lib apparently sends errors on some sort of &#8220;harvest&#8221; cadence.  <code>process.nextTick</code> doesn&#8217;t seem to provide enough time either.  But NewRelic does give another API that should help.  The <code>shutdown</code> function cleans up the agent.  It also allows to flush all the pending notifications via <code>collectPendingData</code> option previous to shutdown, which is what we want.</p>
+
+<p>So to make this reliable, we change to:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">process</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;uncaughtException&#39;</span><span class="p">,</span> <span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">log</span><span class="p">.</span><span class="nx">fatal</span><span class="p">({</span> <span class="nx">err</span> <span class="p">},</span> <span class="s1">&#39;unhandled error&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">newrelic</span><span class="p">.</span><span class="nx">noticeError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">newrelic</span><span class="p">.</span><span class="nx">shutdown</span><span class="p">({</span> <span class="nx">collectPendingData</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span> <span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">log</span><span class="p">.</span><span class="nx">error</span><span class="p">({</span> <span class="nx">err</span> <span class="p">},</span> <span class="s1">&#39;error shutting down newrelic agent&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">proc</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">})</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And it works like a charm.  Any additional data that you send to monitoring when your app crashes?  Any ways that you know to make this more reliable?  Have fun logging those crashes!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Strange Loop and Elm Conf 2016 Review]]></title>
@@ -2046,88 +2140,6 @@
 <p><del>A <code>class</code>-based component may return <code>null</code> as its value in the view.  But a stateless component may not.  To get around this, return <code>&lt;noscript&gt;&lt;/noscript&gt;</code>.  This will be fully invisible in the view.</del></p>
 
 <p>So what else have you found that is unavailable in stateless functions?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Debug Locally in Elm]]></title>
-    <link href="http://jaketrent.com/post/debug-locally-elm/"/>
-    <updated>2015-11-28T14:39:00-07:00</updated>
-    <id>http://jaketrent.com/post/debug-locally-elm</id>
-    <content type="html"><![CDATA[<p>Debugging in Elm is easy once you know where to look.  You need an in-browser tool to help you.  It&#8217;s almost as simple as just calling <code>console.log</code>, but you can&#8217;t just put your logging statement anywhere.</p>
-
-<p><img src="http://i.imgur.com/1c6FH0f.png" alt="elm debug locally" /></p>
-
-<!--more-->
-
-
-<h2>The Online Option</h2>
-
-<p>There&#8217;s a debugger available online as a part of the elm-lang site at <a href="http://debug.elm-lang.org/">debug.elm-lang.org</a>.  This page explains the principles behind why the debugger works and has the properties it does.  The <a href="http://debug.elm-lang.org/try">debugger is found</a> via clicking the &#8220;Debug&#8221; button in the top-right corner.</p>
-
-<p>But you don&#8217;t want to paste your code into the Try Elm page in order to walk through your Elm code.  You need a local option.</p>
-
-<h2>Debugging Locally</h2>
-
-<p>Thankfully you already have the tools to debug locally after you&#8217;ve <a href="http://elm-lang.org/install">installed Elm</a> on your machine.   It comes with <code>elm-reactor</code>.</p>
-
-<p>In order to run your Elm code, go to your shell, <code>cd</code> into your project directory, and type:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ elm reactor</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This will serve up your project directory at <code>http://localhost:8000</code> by default.</p>
-
-<p><img src="http://i.imgur.com/yE93W9g.png" alt="screenshot of elm reactor" /></p>
-
-<p>You will be able to see the project files listed.  There are two links for each Elm program.  Unfortunately, the debug mode link is pretty subtle, looked over by me as just a bullet in the UI.</p>
-
-<ol>
-<li>Click the file name, get the run mode</li>
-<li>Click the wrench to the left of the file name, get the debug mode</li>
-</ol>
-
-
-<p>Alternately, type your own <code>?debug</code> at the end of any Reactor url to enter debug mode for that file.</p>
-
-<p>Once in debug mode, you should see your code in action in the browser as usual, now with a sidebar for the debugger overlayed on your UI.</p>
-
-<h2>Setting up Watches</h2>
-
-<p>Poor man&#8217;s debugging has traditionally been logging. When variables are in scope, interrogate them and print the value on the screen.  Elm&#8217;s debugging story feels about like that, with some cool bells and whistles around it &#8211; like <em>time-traveling</em> debugging, oh my.</p>
-
-<p>In time-travel mode, your debug method of choice will probably be <code>Debug.watch</code>.  In the <a href="http://package.elm-lang.org/packages/elm-lang/core/2.0.1/Debug#watch">docs</a>, it is shown to take 2 arguments:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>watch : String -&gt; a -&gt; a</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The first argument is the label for the watched data in the debugger.  The second argument is the actual data value.  If I wanted to watch a dimensions tuple, I could write:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Debug.watch "myDimensions" (w, h)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Also note that you have to make your debug expression compile wherever you end up writing it.  I find that the easiest place to put a debug statement into my already-working code is in a <code>let</code> expression.  (Well, &#8220;already-working&#8221; is used loosely here &#8211; we&#8217;re debugging after all.)</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>let
-</span><span class='line'>  log = Debug.watch "myDimensions" (w, h)
-</span><span class='line'>in
-</span><span class='line'>  doStuff myDimensions</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now the watched value will show up in the debugger sidebar.</p>
-
-<p><img src="http://i.imgur.com/PlI83Kq.png" alt="screenshot of elm watched code" /></p>
-
-<p>If you pause the debugger and step backward, you can see the value as it has changed over time.  It&#8217;s pretty neat, and now you&#8217;re debugging Elm on your own box!</p>
-
-<p>What other Elm debug tips do you have?</p>
 ]]></content>
   </entry>
   
