@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-09-27T10:39:52-06:00</updated>
+  <updated>2016-09-29T07:58:13-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,223 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Stub Dependencies in Node Without Proxyquire]]></title>
+    <link href="http://jaketrent.com/post/stub-dependencies-node-without-proxyquire/"/>
+    <updated>2016-09-29T06:30:00-06:00</updated>
+    <id>http://jaketrent.com/post/stub-dependencies-node-without-proxyquire</id>
+    <content type="html"><![CDATA[<p>When testing a unit, often you&#8217;ll want to stub out that unit&#8217;s dependencies.  Some libraries will help you do this.  But you can do it with plain JavaScript, and it works quite well.</p>
+
+<p><img src="http://i.imgur.com/1arT8Ho.jpg" alt="nodejs testing" /></p>
+
+<!--more-->
+
+
+<h2>Stubbing Dependencies</h2>
+
+<p>We&#8217;re unit testing a module in Node.  That unit has dependencies on some other sub-unit.  For our example, these units are modules. The subject under test is <code>prep-for-fight.js</code>.  It has a dependency on <code>eat-corn.js</code>.  We want to eventually stub out <code>eat-corn.js</code> within our unit test for <code>prep-for-fight.js</code>.</p>
+
+<figure class='code'><figcaption><span>prep-for-fight.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">eatCorn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./eat-corn&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">prepForFight</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">nutrients</span> <span class="o">=</span> <span class="nx">eatCorn</span><span class="p">()</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">nutrients</span> <span class="o">&gt;</span> <span class="nx">NUTRIENT_LEVELS</span><span class="p">.</span><span class="nx">EAGLE_EMPOWERMENT</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">{</span> <span class="nx">hasCape</span><span class="o">:</span> <span class="nx">donHomemadeCape</span><span class="p">()</span> <span class="p">}</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A <a href="http://jaketrent.com/post/sinon-spies-vs-stubs/">stub</a> is a testing fake that you create in place of the real thing.  While testing our module <code>prepForFight</code>, we&#8217;ll stub out the sub-unit module <code>eatCorn</code>.  That module is tested elsewhere in another unit test.  We don&#8217;t want to conflate the two tests, coupling them strongly together.  This is because if the sub-unit&#8217;s implementation changes, we don&#8217;t want to have to change our current unit&#8217;s test.</p>
+
+<p>The tradeoff is that we are going to couple our <code>prepForFight</code> unit test to the implementation of that module.  This is generally known as white box testing, where we care about the internal implementation of our source code within our tests.  If we did the opposite, and treated <code>prepForFight</code> as a black box and just tested its final output, there really is no need to stub anything or ever care about implementation as long as <code>prepForFight</code> continues to do its job.  For today&#8217;s example, we&#8217;ll choose to stub so that we can have a more isolated unit and focused test, drawing our unit boundaries strictly around code that exists in <code>prepForFight</code> proper.</p>
+
+<h2>Stubbing Libraries</h2>
+
+<p>There are libraries that help us stub.  Since we have a <code>require</code>d module for <code>eat-corn.js</code>, there is one in particular that would do well for us called <a href="https://github.com/thlorenz/proxyquire">proxyquire</a>.  It allows targeting the <code>./eat-corn.js</code> import path and replacing it with your own module at test runtime.  With a couple caveats, it usually works quite well.  We&#8217;re going to <em>not</em> use it and see how we fare.</p>
+
+<h2>Stub by Passing the Dependency</h2>
+
+<p>An easy way to get a dependency into <code>prepForFight</code> is to pass it as a function argument.  The rewrite might look like this:</p>
+
+<figure class='code'><figcaption><span>prep-for-fight.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">prepForFight</span><span class="p">(</span><span class="nx">eatCorn</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">nutrients</span> <span class="o">=</span> <span class="nx">eatCorn</span><span class="p">()</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">nutrients</span> <span class="o">&gt;</span> <span class="nx">NUTRIENT_LEVELS</span><span class="p">.</span><span class="nx">EAGLE_EMPOWERMENT</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">{</span> <span class="nx">hasCape</span><span class="o">:</span> <span class="nx">donHomemadeCape</span><span class="p">()</span> <span class="p">}</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we have no <code>require</code> statement, and <code>prepForFight</code> gets the dependency it needs.  Given this implementation, we can exercise our two code paths in our test:</p>
+
+<figure class='code'><figcaption><span>prep-for-fight.spec.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">test</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;ava&#39;</span><span class="p">)</span> <span class="c1">// or whatevs</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">const</span> <span class="nx">subject</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./prep-for-fight&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">test</span><span class="p">(</span><span class="s1">&#39;many nutrients dons cape&#39;</span><span class="p">,</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">eatCornStub</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">NUTRIENT_LEVELS</span><span class="p">.</span><span class="nx">EAGLE_EMPOWERMENT</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">t</span><span class="p">.</span><span class="nx">truthy</span><span class="p">(</span><span class="nx">subject</span><span class="p">(</span><span class="nx">eatCornStub</span><span class="p">).</span><span class="nx">hasCape</span><span class="p">)</span>
+</span><span class='line'><span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">test</span><span class="p">(</span><span class="s1">&#39;fewer nutrients remains cape-less&#39;</span><span class="p">,</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">eatCornStub</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">NUTRIENT_LEVELS</span><span class="p">.</span><span class="nx">EAGLE_EMPOWERMENT</span> <span class="o">-</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">t</span><span class="p">.</span><span class="nx">falsy</span><span class="p">(</span><span class="nx">subject</span><span class="p">(</span><span class="nx">eatCornStub</span><span class="p">).</span><span class="nx">hasCape</span><span class="p">)</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>By passing in our stub directly, we control the branching inside the function.</p>
+
+<h2>Leaking Dependencies</h2>
+
+<p>By exposing <code>eatCorn</code> as a function parameter, we&#8217;re telling all consumers that we rely on <code>eatCorn</code>.  We&#8217;ve leaked our dependency, lessening our encapsulation.  For the function to work as written, it always needs the consumer to send it the <code>eatCorn</code> argument when <code>prepForFight</code> is called.  Let&#8217;s give it a default, and make the consumer code care about our dependencies a bit less.  The default will be our original <code>require</code>d module.</p>
+
+<figure class='code'><figcaption><span>prep-for-fight.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">defaultEatCorn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./eat-corn&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">prepForFight</span><span class="p">(</span><span class="nx">eatCorn</span> <span class="o">=</span> <span class="nx">defaultEatCorn</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">nutrients</span> <span class="o">=</span> <span class="nx">eatCorn</span><span class="p">()</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">nutrients</span> <span class="o">&gt;</span> <span class="nx">NUTRIENT_LEVELS</span><span class="p">.</span><span class="nx">EAGLE_EMPOWERMENT</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">{</span> <span class="nx">hasCape</span><span class="o">:</span> <span class="nx">donHomemadeCape</span><span class="p">()</span> <span class="p">}</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now if <code>eatCorn</code> is <em>passed</em> as an argument, it will be used.  Otherwise, <code>defaultEatCorn</code>, which is the normal imported dependency, will be used.  This is great because now consumers don&#8217;t necessarily have to care about the dependency, except to override, which for now is just a thing our test wants to be able to do.</p>
+
+<h2>Stub Without Changing Your Signature</h2>
+
+<p>If putting <code>eatCorn</code> in your function parameter list bothers you, here&#8217;s another potential solution.</p>
+
+<figure class='code'><figcaption><span>prep-for-fight.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">eatCorn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./eat-corn&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">exports</span><span class="p">.</span><span class="nx">prepForFight</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">prepForFight</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">nutrients</span> <span class="o">=</span> <span class="nx">eatCorn</span><span class="p">()</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">nutrients</span> <span class="o">&gt;</span> <span class="nx">NUTRIENT_LEVELS</span><span class="p">.</span><span class="nx">EAGLE_EMPOWERMENT</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">{</span> <span class="nx">hasCape</span><span class="o">:</span> <span class="nx">donHomemadeCape</span><span class="p">()</span> <span class="p">}</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">exports</span><span class="p">.</span><span class="nx">withEatCornForTest</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">withEatCornForTest</span><span class="p">(</span><span class="nx">eatCornOverride</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">eatCorn</span> <span class="o">=</span> <span class="nx">eatCornOverride</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can call <code>withEatCornForTest</code> before you exercise your subject under test:</p>
+
+<figure class='code'><figcaption><span>prep-for-fight.spec.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">test</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;ava&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">const</span> <span class="nx">subject</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./prep-for-fight&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">test</span><span class="p">(</span><span class="s1">&#39;many nutrients dons cape&#39;</span><span class="p">,</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">eatCornStub</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">NUTRIENT_LEVELS</span><span class="p">.</span><span class="nx">EAGLE_EMPOWERMENT</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">subject</span><span class="p">.</span><span class="nx">withEatCornForTest</span><span class="p">(</span><span class="nx">eatCornStub</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">t</span><span class="p">.</span><span class="nx">truthy</span><span class="p">(</span><span class="nx">subject</span><span class="p">.</span><span class="nx">prepForFight</span><span class="p">().</span><span class="nx">hasCape</span><span class="p">)</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This overrides the imported <code>eatCorn</code> module much like proxyquire does.  This is nice because your <code>prepForFight</code> function remains untouched, but I think there are a few drawbacks.</p>
+
+<ul>
+<li>We had to change our single export module to a multiple named export module in order to add the extra API for setting the dependency.</li>
+<li>We have code in our src that is there specifically for testing.  The <code>*ForTest</code> suffix is a particularly clear flag of that.  But if we remove the <code>*ForTest</code> suffix, we simply cloud that fact and make something still test-specific look like it&#8217;s for general use.</li>
+<li>We have made our <code>prepForFight</code> function impure, because now its output can change depending on when or if we call the <code>withEatCornForTest</code>, creating a module-global side effect.</li>
+<li><code>withEatCornForTest</code> is further away from the <code>eatCorn</code> usage inside of <code>prepForFight</code>.  Thus, we could read <code>prepForFight</code> and never know that it&#8217;s possible for the <code>eatCorn</code> implementation to be switched out from under us without examination of more code outside that function.</li>
+</ul>
+
+
+<h2>Decouple Function Parameter Order</h2>
+
+<p>Previous to reading Sandi Metz&#8217; <a href="http://www.poodr.com/">POODR</a> book, I hadn&#8217;t considered this, but she posits that a parameter list has coupling because of the order of the parameters.  To lessen the coupling, she proposes changing the function signature to take an argument hash instead.  This has the benefits of not requiring a specific order, letting consumers name the arguments, creating clarity on the consuming side, and having the consistency of a single argument for most/if not all functions that take input.</p>
+
+<p>We can take advantage of these attributes and realize one of our own in our <code>prepForFight</code> function.  If we have multiple dependencies, we can put these dependencies and their defaults inside the argument hash, and no consumer has to know anything about it.  There&#8217;s no ordering problem.  There&#8217;s no null arugment passing.  We just specify the keys that we care to specify and have defaults for the rest.  A minor refactor might yield some destructuring of a single object sent to the function:</p>
+
+<figure class='code'><figcaption><span>prep-for-fight.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">defaultEatCorn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./eat-corn&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">prepForFight</span><span class="p">({</span> <span class="nx">eatCorn</span> <span class="o">=</span> <span class="nx">defaultEatCorn</span> <span class="cm">/*, more... */</span> <span class="p">})</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kr">const</span> <span class="nx">nutrients</span> <span class="o">=</span> <span class="nx">eatCorn</span><span class="p">()</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">nutrients</span> <span class="o">&gt;</span> <span class="nx">NUTRIENT_LEVELS</span><span class="p">.</span><span class="nx">EAGLE_EMPOWERMENT</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">{</span> <span class="nx">hasCape</span><span class="o">:</span> <span class="nx">donHomemadeCape</span><span class="p">()</span> <span class="p">}</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I think that&#8217;s probably our final refactor for now.  What could we do to make this better?  What are other stubbing methods that you&#8217;ve gotten a lot of mileage out of?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Notify NewRelic of Error on UncaughtException]]></title>
@@ -2085,61 +2302,6 @@
 <p>Now note that you must be aware of what your format HTTP library, in this case axios, uses in its responses.  What you <code>reject</code> manually must be exactly the same format that usually is returned in an error situation (eg, <code>status</code> and <code>data</code>).  You must also know what your server is designed to return as an error response (eg, <code>errors</code>).  The above application code is using the <a href="http://jsonapi.org/format/#error-objects">JSON API</a> format.</p>
 
 <p>What other little tricks do you find useful in getting APIs to fail?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[What React Stateless Components are Missing]]></title>
-    <link href="http://jaketrent.com/post/react-stateless-components-missing/"/>
-    <updated>2016-01-04T12:59:00-07:00</updated>
-    <id>http://jaketrent.com/post/react-stateless-components-missing</id>
-    <content type="html"><![CDATA[<p>Stateless React components got a new syntax in React 0.14.  It&#8217;s much simpler.  It&#8217;s just a function call.  Besides it just looking simpler, there are some major differences in what is available in a stateless component written this way.  There are some things missing &#8211; purposefully not included &#8211; that you may be used to.  Let&#8217;s look at a few things.</p>
-
-<p><img src="http://i.imgur.com/DXuSNbw.png" alt="http://i.imgur.com/DXuSNbw.png" /></p>
-
-<!--more-->
-
-
-<p>Stateless components are now specifically not just components where you don&#8217;t use <code>this.state</code>.  They&#8217;re componets that are written in the form of a function:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">Chips</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span><span class="nx">In</span> <span class="nx">the</span> <span class="nx">secret</span> <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">place</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/div&gt;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The observations made in this article will not apply to components that are created using the <code>class Chips extends React.Component</code> or <code>React.createClass</code> syntax, whether they use state or not.</p>
-
-<h2>No Backing Instance</h2>
-
-<p>A React component&#8217;s backing instance is the object in memory that represents the node in the view.  This backing instance is the place where state is usually stored (using React&#8217;s <code>this.state</code>).  Well now there&#8217;s no <code>this</code> in stateless components.  Thus, there&#8217;s not going to be a place for <code>this.state</code>.  Stateless, remember?  Data just passes through the pure function and into the resulting view.</p>
-
-<h2>No Lifecycle Methods</h2>
-
-<p>Because there&#8217;s no backing instance as a place to put hooks for your code in the component lifecycle, you can not use any of the lifecycle methods from <code>React.Component</code>.  Methods such as <code>componentDidMount</code> and <code>componentWillReceiveProps</code> are out.  And since the stateless component is a pure function that just reproduces its view state on <code>props</code> change, why would you need lifecycle methods anyway?</p>
-
-<h2>No Reference to the Component</h2>
-
-<p>Often when testing, it&#8217;s useful to get a reference to the component itself.  In the case of stateless components, they&#8217;re just fired and forgotten, rendered into the view without the ability to get a handle on them.  They&#8217;re just UI at this point, just in the DOM.  You can go to the DOM to do your testing.</p>
-
-<p>Depending on your test environment setup, you may want to wrap your stateless components in a <code>class</code>-based component you <em>can</em> get a reference to.</p>
-
-<p>Note that for stateless components, <code>ReactDOM.render</code> and <code>TestUtils.renderIntoDocument</code> will return <code>null</code>.</p>
-
-<h2>No refs</h2>
-
-<p>Stateless components can&#8217;t be the target of a <code>ref</code>.  There&#8217;s no backing instance.  You can&#8217;t have <code>refs</code> internally to children either.  Remember, <code>this</code> and <code>this.refs</code> aren&#8217;t around.  If your stateless component has a child that is a <code>class</code>-based component, <em>it</em> may have <code>refs</code>.  <a href="https://facebook.github.io/react/docs/more-about-refs.html">The docs</a> are another good reference on <code>refs</code>.</p>
-
-<h2>Updated: Null Returns</h2>
-
-<p>As of <a href="https://facebook.github.io/react/blog/2016/04/07/react-v15.html#functional-components-can-now-return-null-too">react@15.0.0</a>, now stateless component functions <em>can</em> return null.</p>
-
-<p><del>A <code>class</code>-based component may return <code>null</code> as its value in the view.  But a stateless component may not.  To get around this, return <code>&lt;noscript&gt;&lt;/noscript&gt;</code>.  This will be fully invisible in the view.</del></p>
-
-<p>So what else have you found that is unavailable in stateless functions?</p>
 ]]></content>
   </entry>
   

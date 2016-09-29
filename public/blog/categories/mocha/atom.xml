@@ -4,7 +4,7 @@
   <title><![CDATA[Category: mocha | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/mocha/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-09-27T10:41:57-06:00</updated>
+  <updated>2016-09-29T07:58:13-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -208,14 +208,19 @@ $ mocha --grep login-*.js
 
 <p>Often we're in the test code making changes, and it's easy to make adjustments to what subset of tests you run from here as well.  If I want to run a single <code>describe()</code> function, I can add a <code>.only()</code> to the function call, like this:</p>
 
-<p>{% codeblock lang:javascript %}
-describe(function () {
-  // these tests will be skipped
-});
-describe.only(function () {
-  // these tests will run
-});
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// these tests will be skipped</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">describe</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// these tests will run</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>You can stick the <code>.only()</code> on any <code>describe</code>, no matter if it's first or last in the list of specs.</p>
 
@@ -223,14 +228,19 @@ describe.only(function () {
 
 <p>Just as you can with <code>describe</code>, the tests can be specified to exclusively run if you attach <code>.only()</code> to the function call.</p>
 
-<p>{% codeblock lang:javascript %}
-it.only(function () {
-  // this test will run
-});
-it(function () {
-  // this test will be skipped
-});
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">it</span><span class="p">.</span><span class="nx">only</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// this test will run</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">it</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// this test will be skipped</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p><strong>Update 12 Oct 2015</strong>: The following note now does not apply.  <code>before</code>, etc hooks are now verified to be run when running a single test.</p>
 
@@ -272,30 +282,51 @@ it(function () {
 
 <p>Supertest has no cookiejar for holding cookies like the sessionid.  But, superagent does.  So, we're going to need to import it explicitly.  A login helper could look something like this:</p>
 
-<p>{% codeblock lang:javascript %}
-var superagent = require('superagent');
-var agent = superagent.agent();
-var theAccount = {
-  "username": "nacho",
-  "password": "iamtheluchadore"
-};</p>
-
-<p>exports.login = function (request, done) {
-  request</p>
-
-<pre><code>.post('/login')
-.send(theAccount)
-.end(function (err, res) {
-  if (err) {
-    throw err;
-  }
-  agent.saveCookies(res);
-  done(agent);
-});
-</code></pre>
-
-<p>};
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">superagent</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;superagent&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">agent</span> <span class="o">=</span> <span class="nx">superagent</span><span class="p">.</span><span class="nx">agent</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">theAccount</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;nacho&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s2">&quot;password&quot;</span><span class="o">:</span> <span class="s2">&quot;iamtheluchadore&quot;</span>
+</span><span class='line'><span class="p">};</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">exports</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">request</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">theAccount</span><span class="p">)</span>
+</span><span class='line'><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="nx">agent</span><span class="p">.</span><span class="nx">saveCookies</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">done</span><span class="p">(</span><span class="nx">agent</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>A few points:</p>
 
@@ -310,35 +341,61 @@ var theAccount = {
 
 <p>Now that we've made login request and saved the cookies, it's time to make our authenticated request(s).  Easy cheesy.  A simple test to see if the login worked might look like this:</p>
 
-<p>{% codeblock lang:javascript %}
-var request = require('supertest')(app);
-var login = require('./login');</p>
-
-<p>describe('MyApp', function () {</p>
-
-<p>  var agent;</p>
-
-<p>  before(function (done) {</p>
-
-<pre><code>login.login(request, function (loginAgent) {
-  agent = loginAgent;
-  done();
-});
-</code></pre>
-
-<p>  });</p>
-
-<p>  it('should allow access to admin when logged in', function (done) {</p>
-
-<pre><code>var req = request.get('/admin');
-agent.attachCookies(req);
-req.expect(200, done);
-</code></pre>
-
-<p>  });</p>
-
-<p>});
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;supertest&#39;</span><span class="p">)(</span><span class="nx">app</span><span class="p">);</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">login</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./login&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;MyApp&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="kd">var</span> <span class="nx">agent</span><span class="p">;</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">before</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">login</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">loginAgent</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">agent</span> <span class="o">=</span> <span class="nx">loginAgent</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">done</span><span class="p">();</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should allow access to admin when logged in&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/admin&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">agent</span><span class="p">.</span><span class="nx">attachCookies</span><span class="p">(</span><span class="nx">req</span><span class="p">);</span>
+</span><span class='line'><span class="nx">req</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nx">done</span><span class="p">);</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>More jabber about the code:</p>
 
@@ -377,24 +434,39 @@ req.expect(200, done);
 
 <p>The final Mocha code to test our simple controller should look something like this:</p>
 
-<p>{% codeblock lang:javascript %}
-  var assert = chai.assert,</p>
-
-<pre><code>expect = chai.expect,
-should = chai.should();
-</code></pre>
-
-<p>  it('should be available', inject(function($rootScope, $controller) {</p>
-
-<pre><code>var scope = $rootScope.$new();
-var ctrl = $controller(MyController, {
-  $scope: scope
-});
-expect(ctrl).to.not.be.undefined;
-</code></pre>
-
-<p>  }));
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">assert</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">expect</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">expect</span><span class="p">,</span>
+</span><span class='line'><span class="nx">should</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">should</span><span class="p">();</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be available&#39;</span><span class="p">,</span> <span class="nx">inject</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$rootScope</span><span class="p">,</span> <span class="nx">$controller</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">scope</span> <span class="o">=</span> <span class="nx">$rootScope</span><span class="p">.</span><span class="nx">$new</span><span class="p">();</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">ctrl</span> <span class="o">=</span> <span class="nx">$controller</span><span class="p">(</span><span class="nx">MyController</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$scope</span><span class="o">:</span> <span class="nx">scope</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="nx">expect</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">undefined</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">}));</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>A couple of points:</p>
 
@@ -414,28 +486,41 @@ expect(ctrl).to.not.be.undefined;
 
 <p>My controller looked somewhat like this:</p>
 
-<p>{% codeblock lang:javascript %}
-function MyController($scope) {
-  $scope.$on('$viewContentLoaded', function () {</p>
-
-<pre><code>// ... stuff when dom in the controller is ready
-</code></pre>
-
-<p>  });
-}
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">MyController</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">$on</span><span class="p">(</span><span class="s1">&#39;$viewContentLoaded&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="c1">// ... stuff when dom in the controller is ready</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>And this was the start of my test:</p>
 
-<p>{% codeblock lang:javascript %}
-  it('should be available', function() {</p>
-
-<pre><code>var ctrl = new MyController();
-// ... assertions
-</code></pre>
-
-<p>  });
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be available&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="kd">var</span> <span class="nx">ctrl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyController</span><span class="p">();</span>
+</span><span class='line'><span class="c1">// ... assertions</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Ths <code>$scope.$on()</code> line couldn't run because <code>$scope</code> was simply not injected and undefined.
 blah - scope is not there</p>
@@ -444,12 +529,19 @@ blah - scope is not there</p>
 
 <p>In Mocha, you'll need to import an assertion library of your choice.  Otherwise, <code>expect()</code> and other assertions will not be available to use.  I prefer Chai for its should-style assertions.  They read as a sentence really well:</p>
 
-<p>{% codeblock lang:javascript %}</p>
-
-<pre><code>expect(ctrl).to.not.be.undefined;
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">expect</span><span class="p">(</span><span class="nx">ctrl</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">undefined</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   
@@ -541,33 +633,57 @@ testacular.conf.js
 
 <p>So, finally, here is the 'file' excerpt of <code>testacular.conf.js</code>:</p>
 
-<p>{% codeblock lang:js %}
-files = [
-  MOCHA,
-  MOCHA_ADAPTER,
-  REQUIRE,
-  REQUIRE_ADAPTER,</p>
-
-<p>  // !! libs required for test framework
-  {pattern: 'node_modules/chai/chai.js', included: false},</p>
-
-<p>  // !! put what used to be in your requirejs 'shim' config here
-  'lib/jquery.js',
-  'lib/underscore.js',
-  'lib/backbone.js',
-  'lib/handlebars.js',</p>
-
-<p>  // !! put all libs in requirejs 'paths' config here (included: false)
-  {pattern: 'lib/<em>*/</em>.js', included: false},</p>
-
-<p>  // !! all src and test modules (included: false)
-  {pattern: 'src/<strong>/*', included: false},
-  {pattern: 'test/</strong>/*.test.js', included: false},</p>
-
-<p>  // !! test main require module last
-  'test/test-main.js'
-];
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">files</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>  <span class="nx">MOCHA</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">MOCHA_ADAPTER</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">REQUIRE</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">REQUIRE_ADAPTER</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! libs required for test framework</span>
+</span><span class='line'>  <span class="p">{</span><span class="nx">pattern</span><span class="o">:</span> <span class="s1">&#39;node_modules/chai/chai.js&#39;</span><span class="p">,</span> <span class="nx">included</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! put what used to be in your requirejs &#39;shim&#39; config here</span>
+</span><span class='line'>  <span class="s1">&#39;lib/jquery.js&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;lib/underscore.js&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;lib/backbone.js&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;lib/handlebars.js&#39;</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! put all libs in requirejs &#39;paths&#39; config here (included: false)</span>
+</span><span class='line'>  <span class="p">{</span><span class="nx">pattern</span><span class="o">:</span> <span class="s1">&#39;lib/&lt;em&gt;*/&lt;/em&gt;.js&#39;</span><span class="p">,</span> <span class="nx">included</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! all src and test modules (included: false)</span>
+</span><span class='line'>  <span class="p">{</span><span class="nx">pattern</span><span class="o">:</span> <span class="s1">&#39;src/&lt;strong&gt;/*&#39;</span><span class="p">,</span> <span class="nx">included</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span>
+</span><span class='line'>  <span class="p">{</span><span class="nx">pattern</span><span class="o">:</span> <span class="s1">&#39;test/&lt;/strong&gt;/*.test.js&#39;</span><span class="p">,</span> <span class="nx">included</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! test main require module last</span>
+</span><span class='line'>  <span class="s1">&#39;test/test-main.js&#39;</span>
+</span><span class='line'><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>This config is awesome.  It replaces an html test runner that you would otherwise have to build.</p>
 
@@ -589,22 +705,35 @@ files = [
 
 <p>The <code>main-test.js</code> file ends up looking like this:</p>
 
-<p>{% codeblock lang:js %}
-require({</p>
-
-<p>  // !! Testacular serves files from '/base'
-  baseUrl: '/base/src',
-  paths: {</p>
-
-<pre><code>require: '../lib/require',
-text: '../lib/text'
-</code></pre>
-
-<p>  },
-}, ['../test/MyModule.test'], function() {
-  window.<strong>testacular</strong>.start();
-});
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">require</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! Testacular serves files from &#39;/base&#39;</span>
+</span><span class='line'>  <span class="nx">baseUrl</span><span class="o">:</span> <span class="s1">&#39;/base/src&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">require</span><span class="o">:</span> <span class="s1">&#39;../lib/require&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="nx">text</span><span class="o">:</span> <span class="s1">&#39;../lib/text&#39;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">},</span>
+</span><span class='line'><span class="p">},</span> <span class="p">[</span><span class="s1">&#39;../test/MyModule.test&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="o">&lt;</span><span class="nx">strong</span><span class="o">&gt;</span><span class="nx">testacular</span><span class="o">&lt;</span><span class="err">/strong&gt;.start();</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>RequireJs Test in Testacular</h2>
 
@@ -618,29 +747,49 @@ text: '../lib/text'
 
 <p>So, a simple test will look like:</p>
 
-<p>{% codeblock lang:js %}
-define(['../node_modules/chai/chai', 'MyModule'],
-  function(chai, MyModule) {</p>
-
-<p>  var assert = chai.assert,</p>
-
-<pre><code>expect = chai.expect,
-should = chai.should();
-</code></pre>
-
-<p>  describe('MyModule', function () {</p>
-
-<pre><code>describe('#initialize()', function () {
-  it('should be a stinkin object', function () {
-    var yippee = new MyModule();
-    yippee.should.be.an('object');
-  });
-});
-</code></pre>
-
-<p>  });
-});
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;../node_modules/chai/chai&#39;</span><span class="p">,</span> <span class="s1">&#39;MyModule&#39;</span><span class="p">],</span>
+</span><span class='line'>  <span class="kd">function</span><span class="p">(</span><span class="nx">chai</span><span class="p">,</span> <span class="nx">MyModule</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">assert</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">expect</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">expect</span><span class="p">,</span>
+</span><span class='line'><span class="nx">should</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">should</span><span class="p">();</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;MyModule&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;#initialize()&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be a stinkin object&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">yippee</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyModule</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">yippee</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">an</span><span class="p">(</span><span class="s1">&#39;object&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>Run the Tests in Testacular</h2>
 

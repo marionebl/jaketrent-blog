@@ -4,7 +4,7 @@
   <title><![CDATA[Category: unit-testing | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/unit-testing/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-09-27T10:41:57-06:00</updated>
+  <updated>2016-09-29T07:58:13-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,181 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Stub Dependencies in Node Without Proxyquire]]></title>
+    <link href="http://jaketrent.com/post/stub-dependencies-node-without-proxyquire/"/>
+    <updated>2016-09-29T06:30:00-06:00</updated>
+    <id>http://jaketrent.com/post/stub-dependencies-node-without-proxyquire</id>
+    <content type="html"><![CDATA[<p>When testing a unit, often you'll want to stub out that unit's dependencies.  Some libraries will help you do this.  But you can do it with plain JavaScript, and it works quite well.</p>
+
+<p><img src="http://i.imgur.com/1arT8Ho.jpg" alt="nodejs testing" /></p>
+
+<!--more-->
+
+
+<h2>Stubbing Dependencies</h2>
+
+<p>We're unit testing a module in Node.  That unit has dependencies on some other sub-unit.  For our example, these units are modules. The subject under test is <code>prep-for-fight.js</code>.  It has a dependency on <code>eat-corn.js</code>.  We want to eventually stub out <code>eat-corn.js</code> within our unit test for <code>prep-for-fight.js</code>.</p>
+
+<p>```js prep-for-fight.js
+const eatCorn = require('./eat-corn')
+module.exports = function prepForFight() {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}
+```</p>
+
+<p>A <a href="/post/sinon-spies-vs-stubs/">stub</a> is a testing fake that you create in place of the real thing.  While testing our module <code>prepForFight</code>, we'll stub out the sub-unit module <code>eatCorn</code>.  That module is tested elsewhere in another unit test.  We don't want to conflate the two tests, coupling them strongly together.  This is because if the sub-unit's implementation changes, we don't want to have to change our current unit's test.</p>
+
+<p>The tradeoff is that we are going to couple our <code>prepForFight</code> unit test to the implementation of that module.  This is generally known as white box testing, where we care about the internal implementation of our source code within our tests.  If we did the opposite, and treated <code>prepForFight</code> as a black box and just tested its final output, there really is no need to stub anything or ever care about implementation as long as <code>prepForFight</code> continues to do its job.  For today's example, we'll choose to stub so that we can have a more isolated unit and focused test, drawing our unit boundaries strictly around code that exists in <code>prepForFight</code> proper.</p>
+
+<h2>Stubbing Libraries</h2>
+
+<p>There are libraries that help us stub.  Since we have a <code>require</code>d module for <code>eat-corn.js</code>, there is one in particular that would do well for us called <a href="https://github.com/thlorenz/proxyquire">proxyquire</a>.  It allows targeting the <code>./eat-corn.js</code> import path and replacing it with your own module at test runtime.  With a couple caveats, it usually works quite well.  We're going to <em>not</em> use it and see how we fare.</p>
+
+<h2>Stub by Passing the Dependency</h2>
+
+<p>An easy way to get a dependency into <code>prepForFight</code> is to pass it as a function argument.  The rewrite might look like this:</p>
+
+<p>```js prep-for-fight.js
+module.exports = function prepForFight(eatCorn) {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}
+```</p>
+
+<p>Now we have no <code>require</code> statement, and <code>prepForFight</code> gets the dependency it needs.  Given this implementation, we can exercise our two code paths in our test:</p>
+
+<p>```js prep-for-fight.spec.js
+const test = require('ava') // or whatevs</p>
+
+<p>const subject = require('./prep-for-fight')</p>
+
+<p>test('many nutrients dons cape', t => {
+  function eatCornStub() {</p>
+
+<pre><code>return NUTRIENT_LEVELS.EAGLE_EMPOWERMENT + 1
+</code></pre>
+
+<p>  }
+  t.truthy(subject(eatCornStub).hasCape)
+})</p>
+
+<p>test('fewer nutrients remains cape-less', t => {
+  function eatCornStub() {</p>
+
+<pre><code>return NUTRIENT_LEVELS.EAGLE_EMPOWERMENT - 1
+</code></pre>
+
+<p>  }
+  t.falsy(subject(eatCornStub).hasCape)
+})
+```</p>
+
+<p>By passing in our stub directly, we control the branching inside the function.</p>
+
+<h2>Leaking Dependencies</h2>
+
+<p>By exposing <code>eatCorn</code> as a function parameter, we're telling all consumers that we rely on <code>eatCorn</code>.  We've leaked our dependency, lessening our encapsulation.  For the function to work as written, it always needs the consumer to send it the <code>eatCorn</code> argument when <code>prepForFight</code> is called.  Let's give it a default, and make the consumer code care about our dependencies a bit less.  The default will be our original <code>require</code>d module.</p>
+
+<p>```js prep-for-fight.js
+const defaultEatCorn = require('./eat-corn')
+module.exports = function prepForFight(eatCorn = defaultEatCorn) {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}
+```</p>
+
+<p>Now if <code>eatCorn</code> is <em>passed</em> as an argument, it will be used.  Otherwise, <code>defaultEatCorn</code>, which is the normal imported dependency, will be used.  This is great because now consumers don't necessarily have to care about the dependency, except to override, which for now is just a thing our test wants to be able to do.</p>
+
+<h2>Stub Without Changing Your Signature</h2>
+
+<p>If putting <code>eatCorn</code> in your function parameter list bothers you, here's another potential solution.</p>
+
+<p>```js prep-for-fight.js
+const eatCorn = require('./eat-corn')
+exports.prepForFight = function prepForFight() {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}</p>
+
+<p>exports.withEatCornForTest = function withEatCornForTest(eatCornOverride) {
+  eatCorn = eatCornOverride
+}
+```</p>
+
+<p>Now you can call <code>withEatCornForTest</code> before you exercise your subject under test:</p>
+
+<p>```js prep-for-fight.spec.js
+const test = require('ava')</p>
+
+<p>const subject = require('./prep-for-fight')</p>
+
+<p>test('many nutrients dons cape', t => {
+  function eatCornStub() {</p>
+
+<pre><code>return NUTRIENT_LEVELS.EAGLE_EMPOWERMENT + 1
+</code></pre>
+
+<p>  }
+  subject.withEatCornForTest(eatCornStub)
+  t.truthy(subject.prepForFight().hasCape)
+})
+```</p>
+
+<p>This overrides the imported <code>eatCorn</code> module much like proxyquire does.  This is nice because your <code>prepForFight</code> function remains untouched, but I think there are a few drawbacks.</p>
+
+<ul>
+<li>We had to change our single export module to a multiple named export module in order to add the extra API for setting the dependency.</li>
+<li>We have code in our src that is there specifically for testing.  The <code>*ForTest</code> suffix is a particularly clear flag of that.  But if we remove the <code>*ForTest</code> suffix, we simply cloud that fact and make something still test-specific look like it's for general use.</li>
+<li>We have made our <code>prepForFight</code> function impure, because now its output can change depending on when or if we call the <code>withEatCornForTest</code>, creating a module-global side effect.</li>
+<li><code>withEatCornForTest</code> is further away from the <code>eatCorn</code> usage inside of <code>prepForFight</code>.  Thus, we could read <code>prepForFight</code> and never know that it's possible for the <code>eatCorn</code> implementation to be switched out from under us without examination of more code outside that function.</li>
+</ul>
+
+
+<h2>Decouple Function Parameter Order</h2>
+
+<p>Previous to reading Sandi Metz' <a href="http://www.poodr.com/">POODR</a> book, I hadn't considered this, but she posits that a parameter list has coupling because of the order of the parameters.  To lessen the coupling, she proposes changing the function signature to take an argument hash instead.  This has the benefits of not requiring a specific order, letting consumers name the arguments, creating clarity on the consuming side, and having the consistency of a single argument for most/if not all functions that take input.</p>
+
+<p>We can take advantage of these attributes and realize one of our own in our <code>prepForFight</code> function.  If we have multiple dependencies, we can put these dependencies and their defaults inside the argument hash, and no consumer has to know anything about it.  There's no ordering problem.  There's no null arugment passing.  We just specify the keys that we care to specify and have defaults for the rest.  A minor refactor might yield some destructuring of a single object sent to the function:</p>
+
+<p>```js prep-for-fight.js
+const defaultEatCorn = require('./eat-corn')
+module.exports = function prepForFight({ eatCorn = defaultEatCorn /<em>, more... </em>/ }) {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}
+```</p>
+
+<p>I think that's probably our final refactor for now.  What could we do to make this better?  What are other stubbing methods that you've gotten a lot of mileage out of?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Testing React on jsdom]]></title>
@@ -454,50 +629,6 @@ end
 ```</p>
 
 <p>Is this the easiest or best way to set cookies on requests when testing Rack apps?  What do you do?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Destroy Duplicate Tests]]></title>
-    <link href="http://jaketrent.com/post/destroy-duplicate-tests/"/>
-    <updated>2014-11-05T16:59:00-07:00</updated>
-    <id>http://jaketrent.com/post/destroy-duplicate-tests</id>
-    <content type="html"><![CDATA[<p>As soon as we begin to write a test for our code, it is natural for us to think that we are doing a good thing, and often, we are.  Yet, I believe there are times that we’re writing tests when we’re hurting more than helping — and, of course, this is not on purpose.  To clarify, I’m an advocate for testing in general, and this is a short thought on how to make it better.</p>
-
-<p><img src="http://i.imgur.com/ozzuTNQ.png" alt="Double tests are not fine" /></p>
-
-<!--more-->
-
-
-<p>As soon as we begin to write a test for our code, it is natural for us to think that we are doing a good thing, and often, we are.  Yet, I believe there are times that we’re writing tests when we’re hurting more than helping — and, of course, this is not on purpose.  To clarify, I’m an advocate for testing in general, and this is a short thought on how to make it better.</p>
-
-<h2>Verify It, and Be Done</h2>
-
-<p>One of the main goals of testing is to verify that what you have written is correct.  So, if we’ve met that goal, there’s no need to go around the track one more time and see the checkered flag again.  The second time around produces no extra glory and no extra benefit.</p>
-
-<p>If we cover a section of code many times, it isn’t more helpful than the first time we covered it.  To verify twice isn’t to verify any better.  If the second attempt does happen to verify the same thing in an obviously better way, remove the first attempt and keep the second.</p>
-
-<p>If it’s a variation of a certain case that you’re verifying, that’s different.  Adding new cases based on slight permutations of previous cases can be a good thing.  But covering the exact same thing provides no value.  In fact, multiple verification of code is just a type of debt.  It should be a smell in your test code that alerts you to clean things up.</p>
-
-<h2>The Debt of Duplicate Tests</h2>
-
-<p>If you have multiples of something, it just increases the maintenance over time.  Why would you want to update two tests instead of one?  Now that you have duplicate tests, you also have to keep them in sync.  Of course, if they cover the exact same case, if you change source code to fix the one test, the other will still be broken and be apparent and easy to fix.</p>
-
-<p>The more tests you have, the longer your feedback loop in development or in a continuous build environment will be.  Multiply that extra wait time across your life on the project, and it has the possibility of being a non-trivial product.  Of course we need to wait for the tests that are needful and provide added value, but we shouldn’t wait needlessly.</p>
-
-<p>Sometimes you do see duplicate tests within the same file — for instance, within the same unit.  This might happen when different developers approach the unit at different times to add tests.</p>
-
-<p>I think it’s probably more often the case that duplicate tests are found across test classes -- meaning across the different types of tests.  For instance, a developer might write a unit test that covers a case.  Later, someone else might add an integration test that adds the same case.  Later still, someone else might add a functional test that adds the same case yet again.  All these developers are well-intentioned in adding tests.  They all need to think, communicate, investigate, and coordinate a little more to avoid the duplicate test problem.</p>
-
-<h2>Deleting Duplicate Tests</h2>
-
-<p>When duplicate tests are found, we should delete them.  Again, this might require some thinking.  We might want to consider which of the duplicate cases is the best test and therefore the one to keep.  This consideration might include which test is most stable, runs the fastest, is most readable, best designed, latest, earliest, etc.</p>
-
-<h2>Avoiding Duplicate Tests</h2>
-
-<p>The best scenario would be the one where we avoid duplicate tests.  Teams with clear guidelines will be able to coordinate better.  Useful information might include which classes of tests exist in the project and what each is intended for.  We might describe which kinds of tests we prefer, in which order, for certain kinds of verifications.  Having clean, well-organized tests will also encourage the team to read each others’ tests and familiarize themselves with what’s already written and know where to find existing cases and where to properly categorize new cases.</p>
-
-<p>So have fun testing, and destroy the duplicate tests!  Yay for test doubles, but boo for double tests.</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nodejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/nodejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-09-27T10:41:57-06:00</updated>
+  <updated>2016-09-29T07:58:13-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,181 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Stub Dependencies in Node Without Proxyquire]]></title>
+    <link href="http://jaketrent.com/post/stub-dependencies-node-without-proxyquire/"/>
+    <updated>2016-09-29T06:30:00-06:00</updated>
+    <id>http://jaketrent.com/post/stub-dependencies-node-without-proxyquire</id>
+    <content type="html"><![CDATA[<p>When testing a unit, often you'll want to stub out that unit's dependencies.  Some libraries will help you do this.  But you can do it with plain JavaScript, and it works quite well.</p>
+
+<p><img src="http://i.imgur.com/1arT8Ho.jpg" alt="nodejs testing" /></p>
+
+<!--more-->
+
+
+<h2>Stubbing Dependencies</h2>
+
+<p>We're unit testing a module in Node.  That unit has dependencies on some other sub-unit.  For our example, these units are modules. The subject under test is <code>prep-for-fight.js</code>.  It has a dependency on <code>eat-corn.js</code>.  We want to eventually stub out <code>eat-corn.js</code> within our unit test for <code>prep-for-fight.js</code>.</p>
+
+<p>```js prep-for-fight.js
+const eatCorn = require('./eat-corn')
+module.exports = function prepForFight() {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}
+```</p>
+
+<p>A <a href="/post/sinon-spies-vs-stubs/">stub</a> is a testing fake that you create in place of the real thing.  While testing our module <code>prepForFight</code>, we'll stub out the sub-unit module <code>eatCorn</code>.  That module is tested elsewhere in another unit test.  We don't want to conflate the two tests, coupling them strongly together.  This is because if the sub-unit's implementation changes, we don't want to have to change our current unit's test.</p>
+
+<p>The tradeoff is that we are going to couple our <code>prepForFight</code> unit test to the implementation of that module.  This is generally known as white box testing, where we care about the internal implementation of our source code within our tests.  If we did the opposite, and treated <code>prepForFight</code> as a black box and just tested its final output, there really is no need to stub anything or ever care about implementation as long as <code>prepForFight</code> continues to do its job.  For today's example, we'll choose to stub so that we can have a more isolated unit and focused test, drawing our unit boundaries strictly around code that exists in <code>prepForFight</code> proper.</p>
+
+<h2>Stubbing Libraries</h2>
+
+<p>There are libraries that help us stub.  Since we have a <code>require</code>d module for <code>eat-corn.js</code>, there is one in particular that would do well for us called <a href="https://github.com/thlorenz/proxyquire">proxyquire</a>.  It allows targeting the <code>./eat-corn.js</code> import path and replacing it with your own module at test runtime.  With a couple caveats, it usually works quite well.  We're going to <em>not</em> use it and see how we fare.</p>
+
+<h2>Stub by Passing the Dependency</h2>
+
+<p>An easy way to get a dependency into <code>prepForFight</code> is to pass it as a function argument.  The rewrite might look like this:</p>
+
+<p>```js prep-for-fight.js
+module.exports = function prepForFight(eatCorn) {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}
+```</p>
+
+<p>Now we have no <code>require</code> statement, and <code>prepForFight</code> gets the dependency it needs.  Given this implementation, we can exercise our two code paths in our test:</p>
+
+<p>```js prep-for-fight.spec.js
+const test = require('ava') // or whatevs</p>
+
+<p>const subject = require('./prep-for-fight')</p>
+
+<p>test('many nutrients dons cape', t => {
+  function eatCornStub() {</p>
+
+<pre><code>return NUTRIENT_LEVELS.EAGLE_EMPOWERMENT + 1
+</code></pre>
+
+<p>  }
+  t.truthy(subject(eatCornStub).hasCape)
+})</p>
+
+<p>test('fewer nutrients remains cape-less', t => {
+  function eatCornStub() {</p>
+
+<pre><code>return NUTRIENT_LEVELS.EAGLE_EMPOWERMENT - 1
+</code></pre>
+
+<p>  }
+  t.falsy(subject(eatCornStub).hasCape)
+})
+```</p>
+
+<p>By passing in our stub directly, we control the branching inside the function.</p>
+
+<h2>Leaking Dependencies</h2>
+
+<p>By exposing <code>eatCorn</code> as a function parameter, we're telling all consumers that we rely on <code>eatCorn</code>.  We've leaked our dependency, lessening our encapsulation.  For the function to work as written, it always needs the consumer to send it the <code>eatCorn</code> argument when <code>prepForFight</code> is called.  Let's give it a default, and make the consumer code care about our dependencies a bit less.  The default will be our original <code>require</code>d module.</p>
+
+<p>```js prep-for-fight.js
+const defaultEatCorn = require('./eat-corn')
+module.exports = function prepForFight(eatCorn = defaultEatCorn) {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}
+```</p>
+
+<p>Now if <code>eatCorn</code> is <em>passed</em> as an argument, it will be used.  Otherwise, <code>defaultEatCorn</code>, which is the normal imported dependency, will be used.  This is great because now consumers don't necessarily have to care about the dependency, except to override, which for now is just a thing our test wants to be able to do.</p>
+
+<h2>Stub Without Changing Your Signature</h2>
+
+<p>If putting <code>eatCorn</code> in your function parameter list bothers you, here's another potential solution.</p>
+
+<p>```js prep-for-fight.js
+const eatCorn = require('./eat-corn')
+exports.prepForFight = function prepForFight() {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}</p>
+
+<p>exports.withEatCornForTest = function withEatCornForTest(eatCornOverride) {
+  eatCorn = eatCornOverride
+}
+```</p>
+
+<p>Now you can call <code>withEatCornForTest</code> before you exercise your subject under test:</p>
+
+<p>```js prep-for-fight.spec.js
+const test = require('ava')</p>
+
+<p>const subject = require('./prep-for-fight')</p>
+
+<p>test('many nutrients dons cape', t => {
+  function eatCornStub() {</p>
+
+<pre><code>return NUTRIENT_LEVELS.EAGLE_EMPOWERMENT + 1
+</code></pre>
+
+<p>  }
+  subject.withEatCornForTest(eatCornStub)
+  t.truthy(subject.prepForFight().hasCape)
+})
+```</p>
+
+<p>This overrides the imported <code>eatCorn</code> module much like proxyquire does.  This is nice because your <code>prepForFight</code> function remains untouched, but I think there are a few drawbacks.</p>
+
+<ul>
+<li>We had to change our single export module to a multiple named export module in order to add the extra API for setting the dependency.</li>
+<li>We have code in our src that is there specifically for testing.  The <code>*ForTest</code> suffix is a particularly clear flag of that.  But if we remove the <code>*ForTest</code> suffix, we simply cloud that fact and make something still test-specific look like it's for general use.</li>
+<li>We have made our <code>prepForFight</code> function impure, because now its output can change depending on when or if we call the <code>withEatCornForTest</code>, creating a module-global side effect.</li>
+<li><code>withEatCornForTest</code> is further away from the <code>eatCorn</code> usage inside of <code>prepForFight</code>.  Thus, we could read <code>prepForFight</code> and never know that it's possible for the <code>eatCorn</code> implementation to be switched out from under us without examination of more code outside that function.</li>
+</ul>
+
+
+<h2>Decouple Function Parameter Order</h2>
+
+<p>Previous to reading Sandi Metz' <a href="http://www.poodr.com/">POODR</a> book, I hadn't considered this, but she posits that a parameter list has coupling because of the order of the parameters.  To lessen the coupling, she proposes changing the function signature to take an argument hash instead.  This has the benefits of not requiring a specific order, letting consumers name the arguments, creating clarity on the consuming side, and having the consistency of a single argument for most/if not all functions that take input.</p>
+
+<p>We can take advantage of these attributes and realize one of our own in our <code>prepForFight</code> function.  If we have multiple dependencies, we can put these dependencies and their defaults inside the argument hash, and no consumer has to know anything about it.  There's no ordering problem.  There's no null arugment passing.  We just specify the keys that we care to specify and have defaults for the rest.  A minor refactor might yield some destructuring of a single object sent to the function:</p>
+
+<p>```js prep-for-fight.js
+const defaultEatCorn = require('./eat-corn')
+module.exports = function prepForFight({ eatCorn = defaultEatCorn /<em>, more... </em>/ }) {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}
+```</p>
+
+<p>I think that's probably our final refactor for now.  What could we do to make this better?  What are other stubbing methods that you've gotten a lot of mileage out of?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Notify NewRelic of Error on UncaughtException]]></title>
@@ -450,123 +625,6 @@ console.log('stickers', util.inspect(stickers, { depth: 4 }))
 <li>Arrow functions - What do they help with?</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[List Npm Scripts]]></title>
-    <link href="http://jaketrent.com/post/list-npm-scripts/"/>
-    <updated>2015-03-02T07:44:00-07:00</updated>
-    <id>http://jaketrent.com/post/list-npm-scripts</id>
-    <content type="html"><![CDATA[<p>Tools for storing and then later easily running scripts alias names are awesome.  Npm is one of those tools.  Rake is another.  Rake has a cool feature of allowing you to list the scripts available to you.  Npm has not -- until now.</p>
-
-<p><img src="http://i.imgur.com/ZDCd9u1.png" alt="npm" /></p>
-
-<!--more-->
-
-
-<h2>Npm Scripts</h2>
-
-<p>You can specify scripts in your <code>package.json</code> for later use.  They go in the <code>scripts</code> attribute:</p>
-
-<p>```json package.json
-{
-  "scripts": {</p>
-
-<pre><code>"start": "node server.js",
-"dist": "webpack -p"
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>To run these scripts, you use the <a href="https://docs.npmjs.com/cli/run-script"><code>npm run</code></a> command.  For example, type <code>npm run build</code> to actually execute the <code>webpack -p</code> command in your terminal.  <code>start</code> and <code>test</code> are specially commands to npm and do not require <code>run</code>.  Instead, you can use <code>npm start</code>.</p>
-
-<h2>Npm List Scripts</h2>
-
-<p>In Rake, you run <code>rake -T</code> in your terminal and all the available scripts for your project are displayed.  This allows you to see the what's potentially helpful.  You can't be expected to remember all of them, especially months later, right?</p>
-
-<p>I certainly was having a hard time remembering all of my scripts and getting tired of typing <code>cat package.json</code>.  It didn't feel as cool as the <code>rake -T</code> experience.  I wrote a library called <a href="https://www.npmjs.com/package/npm-ls-scripts"><code>npm-ls-scripts</code></a>.  To install, run:</p>
-
-<p><code>bash
-npm install npm-ls-scripts -g
-</code></p>
-
-<p>I like installing this package globally because then the CLI binary is available globally -- it does seem applicable to all projects.  You could instead include it under project <code>devDependencies</code> if you'd like.</p>
-
-<p>If installed globally, you can then run it with:</p>
-
-<p><code>bash
-ls-scripts
-</code></p>
-
-<p>If I was to run this in the above project, it would print:</p>
-
-<p>```bash</p>
-
-<h2>NPM - ls scripts</h2>
-
-<p>start - node server.js</p>
-
-<h2>dist - webpack -p</h2>
-
-<p>```</p>
-
-<p>This prints the exact code that can be executed for each script.  If I would like to add some prose around any or all of the available scripts, I can do so by adding more config data to my <code>package.json</code> that will print when I run <code>ls-scripts</code>:</p>
-
-<p>```json package.json
-{
-  "config": {</p>
-
-<pre><code>"scripts: {
-   "dist": "Builds project for distribution"
-}
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>Now if I were to run the <code>ls-scripts</code> command, I would see:</p>
-
-<p>```bash</p>
-
-<h2>NPM - ls scripts</h2>
-
-<p>start - node server.js</p>
-
-<h2>dist - Builds project for distribution</h2>
-
-<p>```</p>
-
-<p>Cool, right?  Complete with Shakespearean prose.</p>
-
-<h2>New: Npm Run</h2>
-
-<p>After I had developed the above <code>npm-ls-scripts</code> tool, Npm built this feature natively into the core tool -- finally!  Now, to list available scripts, the command is intuitively to leave off the target script and instead simply type:</p>
-
-<p><code>bash
-npm run
-</code></p>
-
-<p>On the above example, this would yield:</p>
-
-<p>```bash
-Available scripts in the package:
-  start</p>
-
-<pre><code>node server.js
-</code></pre>
-
-<p>  dist</p>
-
-<pre><code>webpack -p
-</code></pre>
-
-<p>```</p>
-
-<p>So, they work about the same, and now it's built in!  What other cool features could you imagine this having?</p>
 ]]></content>
   </entry>
   

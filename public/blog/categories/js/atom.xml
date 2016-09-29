@@ -4,7 +4,7 @@
   <title><![CDATA[Category: js | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/js/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-09-27T10:41:57-06:00</updated>
+  <updated>2016-09-29T07:58:13-06:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,181 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Stub Dependencies in Node Without Proxyquire]]></title>
+    <link href="http://jaketrent.com/post/stub-dependencies-node-without-proxyquire/"/>
+    <updated>2016-09-29T06:30:00-06:00</updated>
+    <id>http://jaketrent.com/post/stub-dependencies-node-without-proxyquire</id>
+    <content type="html"><![CDATA[<p>When testing a unit, often you'll want to stub out that unit's dependencies.  Some libraries will help you do this.  But you can do it with plain JavaScript, and it works quite well.</p>
+
+<p><img src="http://i.imgur.com/1arT8Ho.jpg" alt="nodejs testing" /></p>
+
+<!--more-->
+
+
+<h2>Stubbing Dependencies</h2>
+
+<p>We're unit testing a module in Node.  That unit has dependencies on some other sub-unit.  For our example, these units are modules. The subject under test is <code>prep-for-fight.js</code>.  It has a dependency on <code>eat-corn.js</code>.  We want to eventually stub out <code>eat-corn.js</code> within our unit test for <code>prep-for-fight.js</code>.</p>
+
+<p>```js prep-for-fight.js
+const eatCorn = require('./eat-corn')
+module.exports = function prepForFight() {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}
+```</p>
+
+<p>A <a href="/post/sinon-spies-vs-stubs/">stub</a> is a testing fake that you create in place of the real thing.  While testing our module <code>prepForFight</code>, we'll stub out the sub-unit module <code>eatCorn</code>.  That module is tested elsewhere in another unit test.  We don't want to conflate the two tests, coupling them strongly together.  This is because if the sub-unit's implementation changes, we don't want to have to change our current unit's test.</p>
+
+<p>The tradeoff is that we are going to couple our <code>prepForFight</code> unit test to the implementation of that module.  This is generally known as white box testing, where we care about the internal implementation of our source code within our tests.  If we did the opposite, and treated <code>prepForFight</code> as a black box and just tested its final output, there really is no need to stub anything or ever care about implementation as long as <code>prepForFight</code> continues to do its job.  For today's example, we'll choose to stub so that we can have a more isolated unit and focused test, drawing our unit boundaries strictly around code that exists in <code>prepForFight</code> proper.</p>
+
+<h2>Stubbing Libraries</h2>
+
+<p>There are libraries that help us stub.  Since we have a <code>require</code>d module for <code>eat-corn.js</code>, there is one in particular that would do well for us called <a href="https://github.com/thlorenz/proxyquire">proxyquire</a>.  It allows targeting the <code>./eat-corn.js</code> import path and replacing it with your own module at test runtime.  With a couple caveats, it usually works quite well.  We're going to <em>not</em> use it and see how we fare.</p>
+
+<h2>Stub by Passing the Dependency</h2>
+
+<p>An easy way to get a dependency into <code>prepForFight</code> is to pass it as a function argument.  The rewrite might look like this:</p>
+
+<p>```js prep-for-fight.js
+module.exports = function prepForFight(eatCorn) {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}
+```</p>
+
+<p>Now we have no <code>require</code> statement, and <code>prepForFight</code> gets the dependency it needs.  Given this implementation, we can exercise our two code paths in our test:</p>
+
+<p>```js prep-for-fight.spec.js
+const test = require('ava') // or whatevs</p>
+
+<p>const subject = require('./prep-for-fight')</p>
+
+<p>test('many nutrients dons cape', t => {
+  function eatCornStub() {</p>
+
+<pre><code>return NUTRIENT_LEVELS.EAGLE_EMPOWERMENT + 1
+</code></pre>
+
+<p>  }
+  t.truthy(subject(eatCornStub).hasCape)
+})</p>
+
+<p>test('fewer nutrients remains cape-less', t => {
+  function eatCornStub() {</p>
+
+<pre><code>return NUTRIENT_LEVELS.EAGLE_EMPOWERMENT - 1
+</code></pre>
+
+<p>  }
+  t.falsy(subject(eatCornStub).hasCape)
+})
+```</p>
+
+<p>By passing in our stub directly, we control the branching inside the function.</p>
+
+<h2>Leaking Dependencies</h2>
+
+<p>By exposing <code>eatCorn</code> as a function parameter, we're telling all consumers that we rely on <code>eatCorn</code>.  We've leaked our dependency, lessening our encapsulation.  For the function to work as written, it always needs the consumer to send it the <code>eatCorn</code> argument when <code>prepForFight</code> is called.  Let's give it a default, and make the consumer code care about our dependencies a bit less.  The default will be our original <code>require</code>d module.</p>
+
+<p>```js prep-for-fight.js
+const defaultEatCorn = require('./eat-corn')
+module.exports = function prepForFight(eatCorn = defaultEatCorn) {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}
+```</p>
+
+<p>Now if <code>eatCorn</code> is <em>passed</em> as an argument, it will be used.  Otherwise, <code>defaultEatCorn</code>, which is the normal imported dependency, will be used.  This is great because now consumers don't necessarily have to care about the dependency, except to override, which for now is just a thing our test wants to be able to do.</p>
+
+<h2>Stub Without Changing Your Signature</h2>
+
+<p>If putting <code>eatCorn</code> in your function parameter list bothers you, here's another potential solution.</p>
+
+<p>```js prep-for-fight.js
+const eatCorn = require('./eat-corn')
+exports.prepForFight = function prepForFight() {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}</p>
+
+<p>exports.withEatCornForTest = function withEatCornForTest(eatCornOverride) {
+  eatCorn = eatCornOverride
+}
+```</p>
+
+<p>Now you can call <code>withEatCornForTest</code> before you exercise your subject under test:</p>
+
+<p>```js prep-for-fight.spec.js
+const test = require('ava')</p>
+
+<p>const subject = require('./prep-for-fight')</p>
+
+<p>test('many nutrients dons cape', t => {
+  function eatCornStub() {</p>
+
+<pre><code>return NUTRIENT_LEVELS.EAGLE_EMPOWERMENT + 1
+</code></pre>
+
+<p>  }
+  subject.withEatCornForTest(eatCornStub)
+  t.truthy(subject.prepForFight().hasCape)
+})
+```</p>
+
+<p>This overrides the imported <code>eatCorn</code> module much like proxyquire does.  This is nice because your <code>prepForFight</code> function remains untouched, but I think there are a few drawbacks.</p>
+
+<ul>
+<li>We had to change our single export module to a multiple named export module in order to add the extra API for setting the dependency.</li>
+<li>We have code in our src that is there specifically for testing.  The <code>*ForTest</code> suffix is a particularly clear flag of that.  But if we remove the <code>*ForTest</code> suffix, we simply cloud that fact and make something still test-specific look like it's for general use.</li>
+<li>We have made our <code>prepForFight</code> function impure, because now its output can change depending on when or if we call the <code>withEatCornForTest</code>, creating a module-global side effect.</li>
+<li><code>withEatCornForTest</code> is further away from the <code>eatCorn</code> usage inside of <code>prepForFight</code>.  Thus, we could read <code>prepForFight</code> and never know that it's possible for the <code>eatCorn</code> implementation to be switched out from under us without examination of more code outside that function.</li>
+</ul>
+
+
+<h2>Decouple Function Parameter Order</h2>
+
+<p>Previous to reading Sandi Metz' <a href="http://www.poodr.com/">POODR</a> book, I hadn't considered this, but she posits that a parameter list has coupling because of the order of the parameters.  To lessen the coupling, she proposes changing the function signature to take an argument hash instead.  This has the benefits of not requiring a specific order, letting consumers name the arguments, creating clarity on the consuming side, and having the consistency of a single argument for most/if not all functions that take input.</p>
+
+<p>We can take advantage of these attributes and realize one of our own in our <code>prepForFight</code> function.  If we have multiple dependencies, we can put these dependencies and their defaults inside the argument hash, and no consumer has to know anything about it.  There's no ordering problem.  There's no null arugment passing.  We just specify the keys that we care to specify and have defaults for the rest.  A minor refactor might yield some destructuring of a single object sent to the function:</p>
+
+<p>```js prep-for-fight.js
+const defaultEatCorn = require('./eat-corn')
+module.exports = function prepForFight({ eatCorn = defaultEatCorn /<em>, more... </em>/ }) {
+  const nutrients = eatCorn()
+  if (nutrients > NUTRIENT_LEVELS.EAGLE_EMPOWERMENT)</p>
+
+<pre><code>return { hasCape: donHomemadeCape() }
+</code></pre>
+
+<p>  // ...
+}
+```</p>
+
+<p>I think that's probably our final refactor for now.  What could we do to make this better?  What are other stubbing methods that you've gotten a lot of mileage out of?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Notify NewRelic of Error on UncaughtException]]></title>
@@ -621,104 +796,6 @@ import test from 'ava'</p>
 <p>It's a cool combo of technologies.  But it takes a fair bit of wrangling and that interesting bit of <code>node-extensions.js</code> code to get it working.</p>
 
 <p>Have you used this combo of tech before or something similar?  Any better setups that you've found?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[react-dnd With Text Drag Preview]]></title>
-    <link href="http://jaketrent.com/post/react-dnd-text-drag-preview/"/>
-    <updated>2016-04-21T08:04:00-06:00</updated>
-    <id>http://jaketrent.com/post/react-dnd-text-drag-preview</id>
-    <content type="html"><![CDATA[<p><a href="http://gaearon.github.io/react-dnd/">react-dnd</a> is a fantastic library for implementing drag and drop features in a React application.  In browsers, you have the ability to specify a drag preview for the thing your dragging.  Images are easy.  Text takes more work -- because you need to generate an image.</p>
-
-<p><img src="http://i.imgur.com/E5NwBek.png" alt="react-dnd text drag previews" /></p>
-
-<!--more-->
-
-
-<p>I love the abstractions in react-dnd.  They seem very elegant.  We're going to need another abstraction here, because there's a short list of things that we need to do in order to get a text-based drag preview showing up in our app.  These things are required because drag previews in browsers only support images.  Thus we will need to take source text from our app code and convert it into an image in order to hand it off to the drag and drop api.</p>
-
-<h2>Drag Text from a Canvas</h2>
-
-<p>To convert text to an image, we must:</p>
-
-<ol>
-<li>Create a canvas element</li>
-<li>Fit the canvas to our text</li>
-<li>Style the canvas</li>
-<li>Create a new image element with the canvas data as src</li>
-</ol>
-
-
-<h4>Create a Canvas Element</h4>
-
-<p>We choose a canvas element because we can write text onto it and eventually export its bytes.</p>
-
-<p><code>js
-var c = document.createElement('canvas')
-var ctx = c.getContext('2d')
-</code></p>
-
-<h4>Fit Canvas to the Text</h4>
-
-<p>We want the drag preview to be dynamically sized.  This is because the text can change in length.   The key to our success is available on the <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/measureText">Canvas 2D context as <code>measureText</code></a>.  This function is available in IE9+.  In case you don't have access to this function, you can attempt a crude fallback.</p>
-
-<p>```js
-function getTextWidth(ctx, fontSize, text) {
-  if (typeof ctx.measureText === 'function') {</p>
-
-<pre><code>return ctx.measureText(text).width
-</code></pre>
-
-<p>  } else {</p>
-
-<pre><code>var perCharWidth = fontSize / 1.7
-return text.length * perCharWidth
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<h4>Style the Canvas</h4>
-
-<p>Once you know how big to make your drag preview, draw a rectangle upon which you can then draw your text.</p>
-
-<p>In addition to drawing the main content, there are also other stylistic adjustments that you can make via <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D">attributes on <code>CanvasRenderingContext2D</code></a>.  Attributes like <code>fillStyle</code>, <code>strokeStyle</code>, and <code>font</code> are available.</p>
-
-<p>```js
-ctx.rect(0, 0, rectWidth, rectHeight)</p>
-
-<p>ctx.save()
-ctx.fillStyle = backgroundColor
-ctx.strokeStyle = borderColor
-ctx.fill()
-ctx.stroke()
-ctx.restore()</p>
-
-<p>ctx.fillText(text)
-```</p>
-
-<h4>Create a new Image Element</h4>
-
-<p>Remember, drag preview requires an image to render when the user is dragging.  Set the <code>src</code> of the image to the data from the canvas.  This will transfer everything you just created in the canvas into an image.</p>
-
-<p><code>js
-var img = new Image()
-img.src = c.toDataURL()
-</code></p>
-
-<p>This image should be ready to use in react-dnd's <a href="http://gaearon.github.io/react-dnd/docs-drag-source-connector.html"><code>connect#dragPreview</code></a>.</p>
-
-<h2>A Library to Help</h2>
-
-<p>When making a React drag and drop app, I usually don't look forward to using the sometimes-arcane API of the <code>canvas</code> element.  So, I wrapped it up so I wouldn't have to look at it as often.</p>
-
-<p>If you think this might help you, take a look at <a href="http://npm.im/react-dnd-text-dragpreview">react-dnd-text-dragpreview</a>.</p>
-
-<p><a href="http://npm.im/react-dnd-text-dragpreview"><img src="http://i.imgur.com/glegZVc.gif" /></a></p>
-
-<p>How do you go about doing text-based drag previews?  Any other good tips?</p>
 ]]></content>
   </entry>
   
