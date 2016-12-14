@@ -126,18 +126,23 @@
 
 <h2>Run a Single Test File</h2>
 
-<p>Using the mocha cli, you can easily specify an exact or wildcarded pattern that you want to run.  This is accomplished with the <code>grep</code> option when running the <code>mocha</code> command.</p>
+<p>Using the mocha cli, you can easily specify an exact or wildcarded pattern that you want to run.  This is accomplished with the <a href="https://mochajs.org/#g---grep-pattern"><code>grep</code></a> option when running the <code>mocha</code> command.</p>
 
-<p>If you wanted to run only the login-failure.js suite, the command would look like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ mocha --grep login-failiure.js</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you happen to have multiple suites that match a filename pattern that you wanted to run, exclusive to all others, you would run:</p>
+<p>If you wanted to run only the test suite that tests the &#8220;api&#8221;, the command would look like:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ mocha --grep login-*.js</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ mocha --grep api</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The spec must have some <code>describe</code> or <code>it</code> that matches the grep pattern, as in:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;api&#39;</span><span class="p">,</span> <span class="nx">_</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <h2>Run a Single Spec</h2>

@@ -17,18 +17,20 @@ When working inside your test suite, it's often the case that you don't want to 
 
 ## Run a Single Test File
 
-Using the mocha cli, you can easily specify an exact or wildcarded pattern that you want to run.  This is accomplished with the `grep` option when running the `mocha` command.
+Using the mocha cli, you can easily specify an exact or wildcarded pattern that you want to run.  This is accomplished with the [`grep`](https://mochajs.org/#g---grep-pattern) option when running the `mocha` command.
 
-If you wanted to run only the login-failure.js suite, the command would look like:
-
-```
-$ mocha --grep login-failiure.js
-```
-
-If you happen to have multiple suites that match a filename pattern that you wanted to run, exclusive to all others, you would run:
+If you wanted to run only the test suite that tests the "api", the command would look like:
 
 ```
-$ mocha --grep login-*.js
+$ mocha --grep api
+```
+
+The spec must have some `describe` or `it` that matches the grep pattern, as in:
+
+```js
+describe('api', _ => {
+  // ...
+})
 ```
 
 ## Run a Single Spec

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: mocha | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/mocha/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-09-29T07:58:13-06:00</updated>
+  <updated>2016-12-14T14:23:12-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -190,18 +190,20 @@ npm test
 
 <h2>Run a Single Test File</h2>
 
-<p>Using the mocha cli, you can easily specify an exact or wildcarded pattern that you want to run.  This is accomplished with the <code>grep</code> option when running the <code>mocha</code> command.</p>
+<p>Using the mocha cli, you can easily specify an exact or wildcarded pattern that you want to run.  This is accomplished with the <a href="https://mochajs.org/#g---grep-pattern"><code>grep</code></a> option when running the <code>mocha</code> command.</p>
 
-<p>If you wanted to run only the login-failure.js suite, the command would look like:</p>
+<p>If you wanted to run only the test suite that tests the "api", the command would look like:</p>
 
 <p><code>
-$ mocha --grep login-failiure.js
+$ mocha --grep api
 </code></p>
 
-<p>If you happen to have multiple suites that match a filename pattern that you wanted to run, exclusive to all others, you would run:</p>
+<p>The spec must have some <code>describe</code> or <code>it</code> that matches the grep pattern, as in:</p>
 
-<p><code>
-$ mocha --grep login-*.js
+<p><code>js
+describe('api', _ =&gt; {
+  // ...
+})
 </code></p>
 
 <h2>Run a Single Spec</h2>
