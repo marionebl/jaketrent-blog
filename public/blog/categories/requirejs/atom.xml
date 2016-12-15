@@ -4,7 +4,7 @@
   <title><![CDATA[Category: requirejs | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/requirejs/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-12-14T14:23:12-07:00</updated>
+  <updated>2016-12-15T09:53:49-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -31,13 +31,11 @@
 
 <p>Because the widgets live on other domains, those widgets' subdependencies needed a path that would be relative to that other widget domain and not the portal domain.  In order to accomplish this, widget dependencies were specified in this way:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;./widgetDependency.js&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dep</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// my widget code</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}
+define(['./widgetDependency.js'], function (dep) {
+  // my widget code
+});
+{% endcodeblock %}</p>
 
 <p>The <code>.js</code> extension tells RequireJs to load the dependency <a href="https://github.com/jrburke/r.js/blob/2.1.1/require.js#L1521">as a URL</a>.  The <code>./</code> makes the URL relative to the widget domain.</p>
 
@@ -47,9 +45,9 @@
 
 <p>In prod, I needed the <code>.js</code> extension.  But, in test I didn't want to load modules from URLs.  So, I need to make the test environment ignore the extension.  The solution?  Override the regular expression that checks for the extension in my test runner to be something that was never matched:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">require</span><span class="p">.</span><span class="nx">jsExtRegExp</span> <span class="o">=</span> <span class="sr">/&lt;sup&gt;pileOTest/</span><span class="p">;</span><span class="o">&lt;</span><span class="err">/sup&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}
+require.jsExtRegExp = /<sup>pileOTest/;</sup>
+{% endcodeblock %}</p>
 
 <p>This allows RequireJs to load the module by module name.</p>
 
@@ -63,13 +61,11 @@
 
 <p>So now your module dependencies will look like this:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;./widgetDependency.js?&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dep</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// my widget code</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}
+define(['./widgetDependency.js?'], function (dep) {
+  // my widget code
+});
+{% endcodeblock %}</p>
 
 <p>And in your test environment they will load, and you will be happy.  Until...</p>
 
@@ -94,23 +90,19 @@ In module tree:</p>
 
 <p>The <code>r.js</code> configuration in <code>app.build.js</code> includes an function called <code>onBuildRead()</code>'.  Call it to transform the code as it goes out the door for optimization.  We want to strip out the '?' question marks from our dependency arrays.  Stripping out all '?'s might be a bit too dangerous.  So, let's make a benign adjustment that will help us identify exactly what we're trying to strip out and replace our '?' string in our dependency paths with '?test', finally:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;./widgetDependency.js?test&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">dep</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// my widget code</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}
+define(['./widgetDependency.js?test'], function (dep) {
+  // my widget code
+});
+{% endcodeblock %}</p>
 
 <p>And <a href="https://github.com/jrburke/r.js/blob/2.1.1/build/example.build.js#L417">implement <code>onBuildRead</code></a> as:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">onBuildRead</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">moduleName</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">contents</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="nx">br</span><span class="o">/&gt;</span>
-</span><span class='line'>  <span class="k">return</span> <span class="nx">contents</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\?test/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}
+onBuildRead: function (moduleName, path, contents) {<br/>
+  return contents.replace(/\?test/g, '');
+}
+{% endcodeblock %}</p>
 
 <h4>"Shut off all the garbage smashers on the detention level!"</h4>
 
@@ -215,57 +207,33 @@ testacular.conf.js
 
 <p>So, finally, here is the 'file' excerpt of <code>testacular.conf.js</code>:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">files</span> <span class="o">=</span> <span class="p">[</span>
-</span><span class='line'>  <span class="nx">MOCHA</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">MOCHA_ADAPTER</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">REQUIRE</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">REQUIRE_ADAPTER</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! libs required for test framework</span>
-</span><span class='line'>  <span class="p">{</span><span class="nx">pattern</span><span class="o">:</span> <span class="s1">&#39;node_modules/chai/chai.js&#39;</span><span class="p">,</span> <span class="nx">included</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! put what used to be in your requirejs &#39;shim&#39; config here</span>
-</span><span class='line'>  <span class="s1">&#39;lib/jquery.js&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;lib/underscore.js&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;lib/backbone.js&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;lib/handlebars.js&#39;</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! put all libs in requirejs &#39;paths&#39; config here (included: false)</span>
-</span><span class='line'>  <span class="p">{</span><span class="nx">pattern</span><span class="o">:</span> <span class="s1">&#39;lib/&lt;em&gt;*/&lt;/em&gt;.js&#39;</span><span class="p">,</span> <span class="nx">included</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! all src and test modules (included: false)</span>
-</span><span class='line'>  <span class="p">{</span><span class="nx">pattern</span><span class="o">:</span> <span class="s1">&#39;src/&lt;strong&gt;/*&#39;</span><span class="p">,</span> <span class="nx">included</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span>
-</span><span class='line'>  <span class="p">{</span><span class="nx">pattern</span><span class="o">:</span> <span class="s1">&#39;test/&lt;/strong&gt;/*.test.js&#39;</span><span class="p">,</span> <span class="nx">included</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! test main require module last</span>
-</span><span class='line'>  <span class="s1">&#39;test/test-main.js&#39;</span>
-</span><span class='line'><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}
+files = [
+  MOCHA,
+  MOCHA_ADAPTER,
+  REQUIRE,
+  REQUIRE_ADAPTER,</p>
+
+<p>  // !! libs required for test framework
+  {pattern: 'node_modules/chai/chai.js', included: false},</p>
+
+<p>  // !! put what used to be in your requirejs 'shim' config here
+  'lib/jquery.js',
+  'lib/underscore.js',
+  'lib/backbone.js',
+  'lib/handlebars.js',</p>
+
+<p>  // !! put all libs in requirejs 'paths' config here (included: false)
+  {pattern: 'lib/<em>*/</em>.js', included: false},</p>
+
+<p>  // !! all src and test modules (included: false)
+  {pattern: 'src/<strong>/*', included: false},
+  {pattern: 'test/</strong>/*.test.js', included: false},</p>
+
+<p>  // !! test main require module last
+  'test/test-main.js'
+];
+{% endcodeblock %}</p>
 
 <p>This config is awesome.  It replaces an html test runner that you would otherwise have to build.</p>
 
@@ -287,35 +255,22 @@ testacular.conf.js
 
 <p>The <code>main-test.js</code> file ends up looking like this:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">require</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! Testacular serves files from &#39;/base&#39;</span>
-</span><span class='line'>  <span class="nx">baseUrl</span><span class="o">:</span> <span class="s1">&#39;/base/src&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">require</span><span class="o">:</span> <span class="s1">&#39;../lib/require&#39;</span><span class="p">,</span>
-</span><span class='line'><span class="nx">text</span><span class="o">:</span> <span class="s1">&#39;../lib/text&#39;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">},</span>
-</span><span class='line'><span class="p">},</span> <span class="p">[</span><span class="s1">&#39;../test/MyModule.test&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nb">window</span><span class="p">.</span><span class="o">&lt;</span><span class="nx">strong</span><span class="o">&gt;</span><span class="nx">testacular</span><span class="o">&lt;</span><span class="err">/strong&gt;.start();</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}
+require({</p>
+
+<p>  // !! Testacular serves files from '/base'
+  baseUrl: '/base/src',
+  paths: {</p>
+
+<pre><code>require: '../lib/require',
+text: '../lib/text'
+</code></pre>
+
+<p>  },
+}, ['../test/MyModule.test'], function() {
+  window.<strong>testacular</strong>.start();
+});
+{% endcodeblock %}</p>
 
 <h2>RequireJs Test in Testacular</h2>
 
@@ -329,49 +284,29 @@ testacular.conf.js
 
 <p>So, a simple test will look like:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">define</span><span class="p">([</span><span class="s1">&#39;../node_modules/chai/chai&#39;</span><span class="p">,</span> <span class="s1">&#39;MyModule&#39;</span><span class="p">],</span>
-</span><span class='line'>  <span class="kd">function</span><span class="p">(</span><span class="nx">chai</span><span class="p">,</span> <span class="nx">MyModule</span><span class="p">)</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">assert</span><span class="p">,</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">expect</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">expect</span><span class="p">,</span>
-</span><span class='line'><span class="nx">should</span> <span class="o">=</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">should</span><span class="p">();</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;MyModule&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;#initialize()&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be a stinkin object&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">yippee</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyModule</span><span class="p">();</span>
-</span><span class='line'>    <span class="nx">yippee</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">an</span><span class="p">(</span><span class="s1">&#39;object&#39;</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}
+define(['../node_modules/chai/chai', 'MyModule'],
+  function(chai, MyModule) {</p>
+
+<p>  var assert = chai.assert,</p>
+
+<pre><code>expect = chai.expect,
+should = chai.should();
+</code></pre>
+
+<p>  describe('MyModule', function () {</p>
+
+<pre><code>describe('#initialize()', function () {
+  it('should be a stinkin object', function () {
+    var yippee = new MyModule();
+    yippee.should.be.an('object');
+  });
+});
+</code></pre>
+
+<p>  });
+});
+{% endcodeblock %}</p>
 
 <h2>Run the Tests in Testacular</h2>
 
@@ -438,81 +373,45 @@ testacular.conf.js
 
 <p>Add the requirejs config to your grunt.js file:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span><span class="cm">/* ... */</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// !! This is the name of the task (&#39;requirejs&#39;)</span>
-</span><span class='line'><span class="nx">requirejs</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">compile</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// !! You can drop your app.build.js config wholesale into &#39;options&#39;</span>
-</span><span class='line'>    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">appDir</span><span class="o">:</span> <span class="s2">&quot;src/&quot;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">baseUrl</span><span class="o">:</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">dir</span><span class="o">:</span> <span class="s2">&quot;target/&quot;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">optimize</span><span class="o">:</span> <span class="s1">&#39;uglify&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">mainConfigFile</span><span class="o">:</span><span class="s1">&#39;./src/main.js&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">modules</span><span class="o">:</span><span class="p">[</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>          <span class="nx">name</span><span class="o">:</span><span class="s1">&#39;MyModule&#39;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">],</span>
-</span><span class='line'>      <span class="nx">logLevel</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">findNestedDependencies</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">fileExclusionRegExp</span><span class="o">:</span> <span class="sr">/^\./</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">inlineText</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="cm">/* ... */</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="p">});</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>  <span class="c1">// !! This loads the plugin into grunt</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-requirejs&#39;</span><span class="p">);</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:js %}
+module.exports = function(grunt) {
+  grunt.initConfig({</p>
+
+<pre><code>/* ... */
+
+// !! This is the name of the task ('requirejs')
+requirejs: {
+  compile: {
+
+    // !! You can drop your app.build.js config wholesale into 'options'
+    options: {
+      appDir: "src/",
+      baseUrl: ".",
+      dir: "target/",
+      optimize: 'uglify',
+      mainConfigFile:'./src/main.js',
+      modules:[
+        {
+          name:'MyModule'
+        }
+      ],
+      logLevel: 0,
+      findNestedDependencies: true,
+      fileExclusionRegExp: /^\./,
+      inlineText: true
+    }
+  }
+}
+/* ... */
+</code></pre>
+
+<p>  });</p>
+
+<p>  // !! This loads the plugin into grunt
+  grunt.loadNpmTasks('grunt-contrib-requirejs');</p>
+
+<p>};
+{% endcodeblock %}</p>
 
 <p>And run the task:</p>
 

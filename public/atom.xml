@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-12-14T14:23:12-07:00</updated>
+  <updated>2016-12-15T09:50:16-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Debug.log in Elm Pipes]]></title>
+    <link href="http://jaketrent.com/post/debug-log-in-elm-pipes/"/>
+    <updated>2016-12-15T09:32:00-07:00</updated>
+    <id>http://jaketrent.com/post/debug-log-in-elm-pipes</id>
+    <content type="html"><![CDATA[<p>There aren&#8217;t many functions in the standard lib for elm that create side effects.  Elm&#8217;s <code>Debug.log</code> is one of those exceptions.  It logs to the console.  Here&#8217;s how it&#8217;s setup to make console logging whilst piping easier that patting your head whilst rubbing your tummy.</p>
+
+<p><img src="http://i.imgur.com/1c6FH0f.png" alt="elm debug.log" /></p>
+
+<!--more-->
+
+
+<h2>The signature of Debug.log</h2>
+
+<p>The coolest thing about <code>Debug.log</code> is its type signature:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>String -&gt; a -&gt; a</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The first parameter is <code>String</code> and traditionally takes some label to identify what you&#8217;re printing in the log.</p>
+
+<p>The 2nd parameter is <code>a</code>, meaning it can be generically anything.   It&#8217;s worth noticing that <code>a</code> as the 2nd parameter is required.  This means you&#8217;ll have to print a value there whether you want to or not.  Otherwise, you won&#8217;t be fully applying the <code>Debug.log</code> function.</p>
+
+<p>The <em>coolest</em> part is that <code>a</code> is also returned.  This helps with piping because you can just insert <code>Debug.log</code> in your pipe chain.</p>
+
+<h2>Logging in Elm</h2>
+
+<p>Here&#8217;s a little example.  In this <code>encode</code> function there are several pipes.  There are two helper functions, <code>keyIndex</code> and <code>keyValue</code> that return values that I&#8217;d like to investigate.  After each of those values are returned in the pipe chain, a <code>Debug.log</code> is inserted next in the chain with the associated &#8220;indexes&#8221; or &#8220;values&#8221; label for log clarity.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">encode</span> <span class="kt">:</span> <span class="kt">String</span> <span class="ow">-&gt;</span> <span class="kt">String</span>
+</span><span class='line'><span class="nf">encode</span> <span class="n">phrase</span> <span class="ow">=</span>
+</span><span class='line'>    <span class="n">phrase</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="kt">String</span><span class="o">.</span><span class="n">toLower</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="kt">String</span><span class="o">.</span><span class="n">split</span> <span class="s">&quot;&quot;</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="kt">List</span><span class="o">.</span><span class="n">map</span> <span class="p">(</span><span class="nf">\</span><span class="n">l</span> <span class="ow">-&gt;</span> <span class="n">l</span> <span class="o">|&gt;</span> <span class="n">keyIndex</span><span class="p">)</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="kt">Debug</span><span class="o">.</span><span class="n">log</span> <span class="s">&quot;indexes&quot;</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="kt">List</span><span class="o">.</span><span class="n">map</span> <span class="p">(</span><span class="nf">\</span><span class="n">i</span> <span class="ow">-&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">i</span><span class="p">)</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="kt">List</span><span class="o">.</span><span class="n">map</span> <span class="n">keyValue</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="kt">Debug</span><span class="o">.</span><span class="n">log</span> <span class="s">&quot;values&quot;</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="kt">String</span><span class="o">.</span><span class="n">join</span> <span class="s">&quot;&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The resulting log for a test run of this code is:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='haskell'><span class='line'><span class="nf">indexes</span><span class="kt">:</span> <span class="p">[</span><span class="mi">24</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">18</span><span class="p">]</span>
+</span><span class='line'><span class="nf">values</span><span class="kt">:</span> <span class="p">[</span><span class="s">&quot;b&quot;</span><span class="p">,</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="s">&quot;h&quot;</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This can be super nice when you&#8217;re not in a live debug-ready environment.  What are some other ways to gain insight into your code for debugging that you use?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Stub Dependencies in Node Without Proxyquire]]></title>
@@ -2189,119 +2257,6 @@
 <li>Arrow functions - What do they help with?</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Test APIs Failing from Client]]></title>
-    <link href="http://jaketrent.com/post/test-apis-failing-from-client/"/>
-    <updated>2016-01-25T13:54:00-07:00</updated>
-    <id>http://jaketrent.com/post/test-apis-failing-from-client</id>
-    <content type="html"><![CDATA[<p>In the case where you can&#8217;t edit a local version of your APIs in order to cause them to fail, you need to be able to edit your client so that it <em>looks</em> like the API request fails.  Here&#8217;s a quick code change that should make this easy for you.</p>
-
-<p><img src="http://i.imgur.com/8Fm1cn2.jpg" alt="We have a problem" /></p>
-
-<!--more-->
-
-
-<p>This is one of many possible manual testing techniques.  This allow you to see the change in your running app as you work through it.  For instance, I like to use this as I&#8217;m testing through the error alerting features that are common in an app when an API request fails.</p>
-
-<p>Go to the point in your app where your bits touch the network.  This is usually the place where you use your HTTP wrapper or, if you&#8217;re a free spirit, call some XHR goodness yourself.  These days, I like using the venerable <a href="https://github.com/mzabriskie/axios">axios</a> library.  Axios is promise based, so that means that we can use async/await as well, which is like a fine chocolate next to a warm fire in winter (which is good).</p>
-
-<p>So, all my http code might look in essence like this:</p>
-
-<figure class='code'><figcaption><span>api.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">axios</span> <span class="nx">from</span> <span class="s1">&#39;axios&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kr">export</span> <span class="kr">const</span> <span class="nx">fetch</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// deserialize, etc ...</span>
-</span><span class='line'>  <span class="nx">request</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">axios</span><span class="p">({</span>
-</span><span class='line'>      <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span><span class="p">,</span>
-</span><span class='line'>      <span class="nx">url</span>
-</span><span class='line'>    <span class="p">})</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So, this <code>request</code> function returns a Promise.  The logic around the request might look like:</p>
-
-<figure class='code'><figcaption><span>actions.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="o">*</span> <span class="nx">as</span> <span class="nx">api</span> <span class="nx">from</span> <span class="s1">&#39;./api&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nx">async</span> <span class="kd">function</span> <span class="nx">fetchWater</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="kr">const</span> <span class="p">{</span> <span class="nx">request</span><span class="p">}</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">fetch</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">try</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kr">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">request</span><span class="p">(</span><span class="s1">&#39;/my/own/home&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="c1">// ... handle success response</span>
-</span><span class='line'>  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// ... handle error response, where failure code should execute (what we want to TEST!)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>To make this request fail, we need only make the Promise fail, rejecting it like a mouthful of stewed tomatoes.  So, just change <code>api.js</code>:</p>
-
-<figure class='code'><figcaption><span>api.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">axios</span> <span class="nx">from</span> <span class="s1">&#39;axios&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kr">export</span> <span class="kr">const</span> <span class="nx">fetch</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// ...</span>
-</span><span class='line'>  <span class="nx">request</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">reject</span><span class="p">({</span>
-</span><span class='line'>        <span class="nx">status</span><span class="o">:</span> <span class="mi">500</span><span class="p">,</span>
-</span><span class='line'>        <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>          <span class="nx">errors</span><span class="o">:</span> <span class="p">[{</span> <span class="nx">detail</span><span class="o">:</span> <span class="s1">&#39;Shere Khan is back!&#39;</span> <span class="p">}]</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>      <span class="p">})</span>
-</span><span class='line'>    <span class="p">})</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now note that you must be aware of what your format HTTP library, in this case axios, uses in its responses.  What you <code>reject</code> manually must be exactly the same format that usually is returned in an error situation (eg, <code>status</code> and <code>data</code>).  You must also know what your server is designed to return as an error response (eg, <code>errors</code>).  The above application code is using the <a href="http://jsonapi.org/format/#error-objects">JSON API</a> format.</p>
-
-<p>What other little tricks do you find useful in getting APIs to fail?</p>
 ]]></content>
   </entry>
   
