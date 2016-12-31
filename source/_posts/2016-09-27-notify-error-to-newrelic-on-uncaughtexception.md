@@ -69,7 +69,7 @@ process.on('uncaughtException', err => {
   newrelic.noticeError(err)
   newrelic.shutdown({ collectPendingData: true }, err => {
     if (err) log.error({ err }, 'error shutting down newrelic agent')
-    proc.exit(1)
+    process.exit(1)
   })
 })
 ```

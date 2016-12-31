@@ -196,7 +196,7 @@
 </span><span class='line'>  <span class="nx">newrelic</span><span class="p">.</span><span class="nx">noticeError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
 </span><span class='line'>  <span class="nx">newrelic</span><span class="p">.</span><span class="nx">shutdown</span><span class="p">({</span> <span class="nx">collectPendingData</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span> <span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
 </span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">log</span><span class="p">.</span><span class="nx">error</span><span class="p">({</span> <span class="nx">err</span> <span class="p">},</span> <span class="s1">&#39;error shutting down newrelic agent&#39;</span><span class="p">)</span>
-</span><span class='line'>    <span class="nx">proc</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>    <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span><span class='line'>  <span class="p">})</span>
 </span><span class='line'><span class="p">})</span>
 </span></code></pre></td></tr></table></div></figure>

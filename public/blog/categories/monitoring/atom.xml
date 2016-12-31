@@ -4,7 +4,7 @@
   <title><![CDATA[Category: monitoring | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/monitoring/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-12-15T09:53:49-07:00</updated>
+  <updated>2016-12-31T16:01:30-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -79,7 +79,7 @@ process.on('uncaughtException', err => {
   newrelic.shutdown({ collectPendingData: true }, err => {</p>
 
 <pre><code>if (err) log.error({ err }, 'error shutting down newrelic agent')
-proc.exit(1)
+process.exit(1)
 </code></pre>
 
 <p>  })
