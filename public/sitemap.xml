@@ -1105,12 +1105,16 @@
         <lastmod>2016-12-15T09:50:11-07:00</lastmod>
     </url>
     <url>
+        <loc>http://jaketrent.com/post/datetime-in-fsharp/</loc>
+        <lastmod>2017-01-05T13:38:00-07:00</lastmod>
+    </url>
+    <url>
         <loc>http://jaketrent.com/blog/archives/</loc>
-        <lastmod>2016-12-31T16:01:03-07:00</lastmod>
+        <lastmod>2017-01-05T13:38:00-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/</loc>
-        <lastmod>2016-12-31T16:01:03-07:00</lastmod>
+        <lastmod>2017-01-05T13:38:00-07:00</lastmod>
     </url>
     <url>
         <loc>http://jaketrent.com/robots.txt</loc>
@@ -1118,6 +1122,6 @@
     </url>
     <url>
         <loc>http://jaketrent.com/work/</loc>
-        <lastmod>2016-12-31T16:01:03-07:00</lastmod>
+        <lastmod>2017-01-05T13:38:00-07:00</lastmod>
     </url>
 </urlset>

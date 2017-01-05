@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-12-31T16:01:30-07:00</updated>
+  <updated>2017-01-05T13:38:38-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,46 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[DateTime in F#]]></title>
+    <link href="http://jaketrent.com/post/datetime-in-fsharp/"/>
+    <updated>2017-01-04T11:11:00-07:00</updated>
+    <id>http://jaketrent.com/post/datetime-in-fsharp</id>
+    <content type="html"><![CDATA[<p>I&#8217;ve said jokingly, when coding through date/time-related problems, someone could do a PhD on this stuff.  Surely they have.  It can get complicated.  Here are a few core facts related to Utc time and the usage of .Net&#8217;s <code>System.DateTime</code> and <code>System.DateTimeOffset</code> classes that you may find useful.</p>
+
+<p><img src="http://i.imgur.com/L5olAv0.png" alt="f#" /></p>
+
+<!--more-->
+
+
+<h2>Universal vs. Local Time</h2>
+
+<p>Utc is universal time.  All hosts in the world can store a time in Utc and make comparisons between one another.  If your company had two hosts, one in Oregon and one in Hong Kong, and they did an operation at the exact same time, that time would be stored as the exact same value in Utc, or universal, time.  But the time value would be different locally, because there is a 16-hour time difference between what the local clock reads in Oregon vs Hong Kong at the moment of that operation.  If you want to make time comparisons or calculations or have interop between systems in different geographies, always use Utc time.</p>
+
+<h2>System.DateTime</h2>
+
+<p>In .Net, <code>System.DateTime</code> can represent many things.  It might be a local time construct or a Utc time or neither.  This is determined by its <a href="https://msdn.microsoft.com/en-us/library/shx7s921(v=vs.110).aspx"><code>System.DateTimeKind</code> member</a>.  When instantiated, <code>System.DateTime</code> is of kind <code>DateTimeKind.Unspecified</code>.  You must add an additional line of code, assigning the <code>DateTimeKind</code> using the static method of <code>DateTime.SpecifyKind</code>.  Using the <code>DateTimeKind</code>, you can make a <code>DateTime</code> Utc.</p>
+
+<h2>System.DateTimeOffset</h2>
+
+<p>In .Net, <code>System.DateTimeOffset</code> is a wrapper around a local <code>DateTime</code> and a <code>TimeSpan</code> offset from universal time.  (As a side note, the &#8220;Utc offset&#8221; is not the same as a time zone, even though the values might match up.  Time zone is a totally different construct with surrounding history and customs.)  The reason that it is a time <em>with</em> an offset is so that the original local time of the observer of the time (eg, Hong Kong host) can be stored <em>with</em> the offset from Utc at that moment, which allows it to represent a universal time as well.  Thus, <code>DateTimeOffset</code> can store <em>more</em> information: the local time and the offset that allows conversion to Utc time.</p>
+
+<p>Interestingly, however, one can erase this local time storage by using <code>System.DateTimeOffset.UtcNow</code> when trying to instantiate an object that is &#8220;the current time&#8221;.  The current time that will be stored is the Universal time or the time in Greenwich, England (offset of +00:00).  You lose the local time storage.  <code>System.DateTimeOffset</code> can give you the best of both worlds if you store &#8220;the current time&#8221; using <code>System.DateTimeOffset.Now</code>, keeping a local time and also the offset to Utc, allowing easy conversion to universal time.</p>
+
+<h2>Which is Best?</h2>
+
+<p>Which one you should use isn&#8217;t as clear.</p>
+
+<p><code>DateTime</code> requires 2 steps before it&#8217;s clear what time it is.  This can require discipline that we might not want to give to our developers.</p>
+
+<p><code>DateTimeOffset</code> infers a knowledge about Utc, because it includes an offset to Utc.  Thus Utc can always be determined from this object.  But transport of the <code>DateTimeOffset</code> to another system, such as a database, might not store the offset, effectively stripping it.  Before it was stripped, did you convert to Utc or is it still local time?  And after you query the data, how do you know what time it is?  So you might like the combo of <code>Sytem.DateTimeOffset</code> knowing about local time <em>and</em> the offset, but the potentially of handling this data in translation might make you think twice.</p>
+
+<p>It does seem clear that it&#8217;s easy to become unclear about what your dates mean.  Organizations, especially those with multiple systems that need to interop with dates and times, need to put forth effort to be clear about how they&#8217;ll approach this.  Interoperating systems to need to handle dates and times consistently.  This should be written down and documented.  Guides for your approach should be shared for your tech stacks.</p>
+
+<p>What date/time objects do you use and why?  How do you keep these straight between your systems?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Debug.log in Elm Pipes]]></title>
@@ -2171,91 +2211,6 @@
 <p><em>Adapted from a meetup talk:</em></p>
 
 <script async class="speakerdeck-embed" data-id="26cce4743e5540b48188a35f49de3c4d" data-ratio="1.33333333333333" src="http://jaketrent.com//speakerdeck.com/assets/embed.js"></script>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Some Node Skills to Explore]]></title>
-    <link href="http://jaketrent.com/post/node-skills-explore/"/>
-    <updated>2016-01-26T10:00:00-07:00</updated>
-    <id>http://jaketrent.com/post/node-skills-explore</id>
-    <content type="html"><![CDATA[<p>We are hiring a bunch of Node.js developers at the moment.  You may be as well.  I&#8217;m sure you have a good list of skills that you&#8217;re looking for in developers that join your posse.  Here are a few <em>technical</em> things I think about when getting the opportunity  to sit down with a Node developer.</p>
-
-<p><img src="http://i.imgur.com/9WglUIw.jpg" alt="Exploring Node Skills" /></p>
-
-<!--more-->
-
-
-<p>What might you add to the list?</p>
-
-<h2>Async Programming</h2>
-
-<ul>
-<li>What are options for async flow control?  Favorites?  Least?  Pros?  Cons?</li>
-<li>Node event loop &#8211; How does it work?  What applications does it fit?</li>
-</ul>
-
-
-<h2>Error Handling</h2>
-
-<ul>
-<li>Limitations/advantages in handling async errors?</li>
-<li>Handle errors in Promises?</li>
-<li>Handle errors in callbacks?</li>
-<li>What errors should be thrown?</li>
-</ul>
-
-
-<h2>Functional</h2>
-
-<ul>
-<li>What is immutability?  Why want it?</li>
-<li>Basic Array.prototype methods?</li>
-<li>What does shared state give you?</li>
-<li>Advantages to pure functions?</li>
-<li>Applications of higher-order functions?</li>
-</ul>
-
-
-<h2>API</h2>
-
-<ul>
-<li>Specifically, how does CORS work?</li>
-<li>Familiar with which request and response formats?  Favorite?  Worst?  Why?</li>
-<li>How does middleware work?  When do you like to use it?</li>
-</ul>
-
-
-<h2>Ops</h2>
-
-<ul>
-<li>How can you use all CPUs on a server?</li>
-<li>How to associate logs together with a single request path?</li>
-<li>How to recover from fatal errors?</li>
-<li>How do you load per-environment configuration?</li>
-<li>How do you handle versioning of your apps and libs?</li>
-</ul>
-
-
-<h2>Modules</h2>
-
-<ul>
-<li>Why use modules?</li>
-<li>How do you organize your API apps&#8217; modules?</li>
-<li>Flavors of exports?  When do use each?</li>
-</ul>
-
-
-<h2>ES Next</h2>
-
-<ul>
-<li>Which new features have you used?  Like, not like?</li>
-<li>async/await - Used instead of what?</li>
-<li>Object literal extensions - How used?</li>
-<li>Spread operator - Helpful usecases?</li>
-<li>Arrow functions - What do they help with?</li>
-</ul>
 
 ]]></content>
   </entry>

@@ -1,0 +1,332 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>DateTime in F# - Jake Trent</title>
+
+  <meta name="author" content="https://plus.google.com/115032056022257436849">
+  
+  <meta name="description" content="Should I use DateTime or DateTimeOffset for Utc or local time in F#?">
+  <meta name="keywords" content="dotnet, .net, fsharp, f#, datetime, datetimeoffset, local, universal, utc">
+  <meta name="copyright" content="http://creativecommons.org/licenses/by/3.0/us/" />
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="DateTime in F#" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://i.imgur.com/L5olAv0.png" />
+  <meta property="og:url" content="http://jaketrent.com/post/datetime-in-fsharp/" />
+  <meta property="og:description" content="Should I use DateTime or DateTimeOffset for Utc or local time in F#?" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="DateTime in F#" />
+  <meta name="twitter:description" content="Should I use DateTime or DateTimeOffset for Utc or local time in F#?" />
+  <meta name="twitter:image" content="http://i.imgur.com/L5olAv0.png" />
+
+  
+  <link rel="canonical" href="http://jaketrent.com/post/datetime-in-fsharp/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jake Trent" type="application/atom+xml">
+  <meta name="google-site-verification" content="uvx7BhaUTNz29nQgydsFPRsErfqYBhPEV_svnHvW7H0" />
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16224416-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <div class="container">
+    <div class="sidebar">
+      <section class="logo">
+  <header class="logo-header">
+    <h2 class="logo-title">
+      <a class="logo-link" href="/">
+        <span class="logo-img"></span>
+      </a>
+    </h2>
+  </header>
+</section>
+
+      <nav class="main-nav" role="navigation"><ul class="main-nav-list">
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/">Blog</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="/work">Work</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://books.jaketrent.com">Books</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="https://github.com/jaketrent">Github</a>
+  </li>
+  <li class="main-nav-item">
+    <a class="main-nav-link" href="http://www.linkedin.com/in/jaketrent">LinkedIn</a>
+  </li>
+</ul>
+</nav>
+    </div>
+    <div class="content">
+      <div>
+<article class="entry entry-detail" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">DateTime in F#</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-01-04T11:11:00-07:00" pubdate data-updated="true">Jan 4<span>th</span>, 2017</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I&#8217;ve said jokingly, when coding through date/time-related problems, someone could do a PhD on this stuff.  Surely they have.  It can get complicated.  Here are a few core facts related to Utc time and the usage of .Net&#8217;s <code>System.DateTime</code> and <code>System.DateTimeOffset</code> classes that you may find useful.</p>
+
+<p><img src="http://i.imgur.com/L5olAv0.png" alt="f#" /></p>
+
+<!--more-->
+
+
+<h2>Universal vs. Local Time</h2>
+
+<p>Utc is universal time.  All hosts in the world can store a time in Utc and make comparisons between one another.  If your company had two hosts, one in Oregon and one in Hong Kong, and they did an operation at the exact same time, that time would be stored as the exact same value in Utc, or universal, time.  But the time value would be different locally, because there is a 16-hour time difference between what the local clock reads in Oregon vs Hong Kong at the moment of that operation.  If you want to make time comparisons or calculations or have interop between systems in different geographies, always use Utc time.</p>
+
+<h2>System.DateTime</h2>
+
+<p>In .Net, <code>System.DateTime</code> can represent many things.  It might be a local time construct or a Utc time or neither.  This is determined by its <a href="https://msdn.microsoft.com/en-us/library/shx7s921(v=vs.110).aspx"><code>System.DateTimeKind</code> member</a>.  When instantiated, <code>System.DateTime</code> is of kind <code>DateTimeKind.Unspecified</code>.  You must add an additional line of code, assigning the <code>DateTimeKind</code> using the static method of <code>DateTime.SpecifyKind</code>.  Using the <code>DateTimeKind</code>, you can make a <code>DateTime</code> Utc.</p>
+
+<h2>System.DateTimeOffset</h2>
+
+<p>In .Net, <code>System.DateTimeOffset</code> is a wrapper around a local <code>DateTime</code> and a <code>TimeSpan</code> offset from universal time.  (As a side note, the &#8220;Utc offset&#8221; is not the same as a time zone, even though the values might match up.  Time zone is a totally different construct with surrounding history and customs.)  The reason that it is a time <em>with</em> an offset is so that the original local time of the observer of the time (eg, Hong Kong host) can be stored <em>with</em> the offset from Utc at that moment, which allows it to represent a universal time as well.  Thus, <code>DateTimeOffset</code> can store <em>more</em> information: the local time and the offset that allows conversion to Utc time.</p>
+
+<p>Interestingly, however, one can erase this local time storage by using <code>System.DateTimeOffset.UtcNow</code> when trying to instantiate an object that is &#8220;the current time&#8221;.  The current time that will be stored is the Universal time or the time in Greenwich, England (offset of +00:00).  You lose the local time storage.  <code>System.DateTimeOffset</code> can give you the best of both worlds if you store &#8220;the current time&#8221; using <code>System.DateTimeOffset.Now</code>, keeping a local time and also the offset to Utc, allowing easy conversion to universal time.</p>
+
+<h2>Which is Best?</h2>
+
+<p>Which one you should use isn&#8217;t as clear.</p>
+
+<p><code>DateTime</code> requires 2 steps before it&#8217;s clear what time it is.  This can require discipline that we might not want to give to our developers.</p>
+
+<p><code>DateTimeOffset</code> infers a knowledge about Utc, because it includes an offset to Utc.  Thus Utc can always be determined from this object.  But transport of the <code>DateTimeOffset</code> to another system, such as a database, might not store the offset, effectively stripping it.  Before it was stripped, did you convert to Utc or is it still local time?  And after you query the data, how do you know what time it is?  So you might like the combo of <code>Sytem.DateTimeOffset</code> knowing about local time <em>and</em> the offset, but the potentially of handling this data in translation might make you think twice.</p>
+
+<p>It does seem clear that it&#8217;s easy to become unclear about what your dates mean.  Organizations, especially those with multiple systems that need to interop with dates and times, need to put forth effort to be clear about how they&#8217;ll approach this.  Interoperating systems to need to handle dates and times consistently.  This should be written down and documented.  Guides for your approach should be shared for your tech stacks.</p>
+
+<p>What date/time objects do you use and why?  How do you keep these straight between your systems?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jake Trent</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2017-01-04T11:11:00-07:00" pubdate data-updated="true">Jan 4<span>th</span>, 2017</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/code/'>Code</a>, <a class='category' href='/blog/categories/dotnet/'>dotnet</a>, <a class='category' href='/blog/categories/fsharp/'>fsharp</a>, <a class='category' href='/blog/categories/functional-programming/'>functional-programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+
+  <ul class="rrssb-buttons">
+    <li class="rrssb-twitter">
+      <!-- Replace href with your Meta and URL information  -->
+      <a href="http://twitter.com/home?status=DateTime in F#%20by%20@jaketrent%20%20http://jaketrent.com/post/datetime-in-fsharp/" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                 width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+            <path d="M24.253,8.756C24.689,17.08,18.297,24.182,9.97,24.62c-3.122,0.162-6.219-0.646-8.861-2.32
+                c2.703,0.179,5.376-0.648,7.508-2.321c-2.072-0.247-3.818-1.661-4.489-3.638c0.801,0.128,1.62,0.076,2.399-0.155
+                C4.045,15.72,2.215,13.6,2.115,11.077c0.688,0.275,1.426,0.407,2.168,0.386c-2.135-1.65-2.729-4.621-1.394-6.965
+                C5.575,7.816,9.54,9.84,13.803,10.071c-0.842-2.739,0.694-5.64,3.434-6.482c2.018-0.623,4.212,0.044,5.546,1.683
+                c1.186-0.213,2.318-0.662,3.329-1.317c-0.385,1.256-1.247,2.312-2.399,2.942c1.048-0.106,2.069-0.394,3.019-0.851
+                C26.275,7.229,25.39,8.196,24.253,8.756z"/>
+            </svg>
+        </span>
+      </a>
+    </li>
+    <li class="rrssb-linkedin">
+      <!-- Replace href with your meta and URL information -->
+      <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://jaketrent.com/post/datetime-in-fsharp/&amp;title=DateTime in F#&amp;summary=from jaketrent.com" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                <path d="M25.424,15.887v8.447h-4.896v-7.882c0-1.979-0.709-3.331-2.48-3.331c-1.354,0-2.158,0.911-2.514,1.803
+                    c-0.129,0.315-0.162,0.753-0.162,1.194v8.216h-4.899c0,0,0.066-13.349,0-14.731h4.899v2.088c-0.01,0.016-0.023,0.032-0.033,0.048
+                    h0.033V11.69c0.65-1.002,1.812-2.435,4.414-2.435C23.008,9.254,25.424,11.361,25.424,15.887z M5.348,2.501
+                    c-1.676,0-2.772,1.092-2.772,2.539c0,1.421,1.066,2.538,2.717,2.546h0.032c1.709,0,2.771-1.132,2.771-2.546
+                    C8.054,3.593,7.019,2.501,5.343,2.501H5.348z M2.867,24.334h4.897V9.603H2.867V24.334z"/>
+            </svg>
+        </span>
+      </a>
+    </li>
+    <li class="rrssb-googleplus">
+      <!-- Replace href with your meta and URL information.  -->
+      <a href="https://plus.google.com/share?url=http://jaketrent.com/post/datetime-in-fsharp/" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                <g>
+                    <g>
+                        <path d="M14.703,15.854l-1.219-0.948c-0.372-0.308-0.88-0.715-0.88-1.459c0-0.748,0.508-1.223,0.95-1.663
+                            c1.42-1.119,2.839-2.309,2.839-4.817c0-2.58-1.621-3.937-2.399-4.581h2.097l2.202-1.383h-6.67c-1.83,0-4.467,0.433-6.398,2.027
+                            C3.768,4.287,3.059,6.018,3.059,7.576c0,2.634,2.022,5.328,5.604,5.328c0.339,0,0.71-0.033,1.083-0.068
+                            c-0.167,0.408-0.336,0.748-0.336,1.324c0,1.04,0.551,1.685,1.011,2.297c-1.524,0.104-4.37,0.273-6.467,1.562
+                            c-1.998,1.188-2.605,2.916-2.605,4.137c0,2.512,2.358,4.84,7.289,4.84c5.822,0,8.904-3.223,8.904-6.41
+                            c0.008-2.327-1.359-3.489-2.829-4.731H14.703z M10.269,11.951c-2.912,0-4.231-3.765-4.231-6.037c0-0.884,0.168-1.797,0.744-2.511
+                            c0.543-0.679,1.489-1.12,2.372-1.12c2.807,0,4.256,3.798,4.256,6.242c0,0.612-0.067,1.694-0.845,2.478
+                            c-0.537,0.55-1.438,0.948-2.295,0.951V11.951z M10.302,25.609c-3.621,0-5.957-1.732-5.957-4.142c0-2.408,2.165-3.223,2.911-3.492
+                            c1.421-0.479,3.25-0.545,3.555-0.545c0.338,0,0.52,0,0.766,0.034c2.574,1.838,3.706,2.757,3.706,4.479
+                            c-0.002,2.073-1.736,3.665-4.982,3.649L10.302,25.609z"/>
+                        <polygon points="23.254,11.89 23.254,8.521 21.569,8.521 21.569,11.89 18.202,11.89 18.202,13.604 21.569,13.604 21.569,17.004
+                            23.254,17.004 23.254,13.604 26.653,13.604 26.653,11.89      "/>
+                    </g>
+                </g>
+            </svg>
+        </span>
+      </a>
+    </li>
+    <li class="rrssb-facebook">
+      <!-- Replace with your URL. For best results, make sure you page has the proper FB Open Graph tags in header:
+      https://developers.facebook.com/docs/opengraph/howtos/maximizing-distribution-media-content/ -->
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://jaketrent.com/post/datetime-in-fsharp/" target="_blank">
+        <span class="rrssb-icon">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                <path d="M27.825,4.783c0-2.427-2.182-4.608-4.608-4.608H4.783c-2.422,0-4.608,2.182-4.608,4.608v18.434
+                    c0,2.427,2.181,4.608,4.608,4.608H14V17.379h-3.379v-4.608H14v-1.795c0-3.089,2.335-5.885,5.192-5.885h3.718v4.608h-3.726
+                    c-0.408,0-0.884,0.492-0.884,1.236v1.836h4.609v4.608h-4.609v10.446h4.916c2.422,0,4.608-2.188,4.608-4.608V4.783z"/>
+            </svg>
+        </span>
+      </a>
+    </li>
+  </ul>
+
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="prev-article-link" href="/post/debug-log-in-elm-pipes/" title="Previous Post: Debug.log in Elm Pipes">&laquo; Debug.log in Elm Pipes</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section class="comments">
+    <h2 class="comments-title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+    </div>
+  </div>
+  <div class="footer-container">
+    <footer class="main-footer" role="contentinfo"><div class="main-footer-logo"></div>
+<ul class="main-footer-links-list">
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Content licensed</span> 2017 <a href="http://creativecommons.org/licenses/by/3.0/us/">CC 3.0 Attribution</a>
+  </li>
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Authored by </span><a href="https://plus.google.com/115032056022257436849?rel=author">Jake Trent</a>
+  </li>
+  <li class="main-footer-links-item">
+    <span class="main-footer-verbage">Subscribe to the </span><a href="/atom.xml">Feed</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <a href="/sitemap.xml">Sitemap</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <a href="https://github.com/jaketrent/jaketrent-blog/issues/new">Report a Bug</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <span class="main-footer-verbage">Chat on </span><a href="https://keybase.io/jaketrent">Keybase</a>
+  </li>
+  <li class="main-footer-links-item main-footer-links-item-extra">
+    <span class="main-footer-verbage">Powered by </span><a href="http://octopress.org">Octopress</a>
+  </li>
+</ul>
+
+</footer>
+  </div>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jaketrent';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jaketrent.com/post/datetime-in-fsharp/';
+        var disqus_url = 'http://jaketrent.com/post/datetime-in-fsharp/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

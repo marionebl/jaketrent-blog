@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Code | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/code/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2016-12-31T16:01:30-07:00</updated>
+  <updated>2017-01-05T13:38:38-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,46 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[DateTime in F#]]></title>
+    <link href="http://jaketrent.com/post/datetime-in-fsharp/"/>
+    <updated>2017-01-04T11:11:00-07:00</updated>
+    <id>http://jaketrent.com/post/datetime-in-fsharp</id>
+    <content type="html"><![CDATA[<p>I've said jokingly, when coding through date/time-related problems, someone could do a PhD on this stuff.  Surely they have.  It can get complicated.  Here are a few core facts related to Utc time and the usage of .Net's <code>System.DateTime</code> and <code>System.DateTimeOffset</code> classes that you may find useful.</p>
+
+<p><img src="http://i.imgur.com/L5olAv0.png" alt="f#" /></p>
+
+<!--more-->
+
+
+<h2>Universal vs. Local Time</h2>
+
+<p>Utc is universal time.  All hosts in the world can store a time in Utc and make comparisons between one another.  If your company had two hosts, one in Oregon and one in Hong Kong, and they did an operation at the exact same time, that time would be stored as the exact same value in Utc, or universal, time.  But the time value would be different locally, because there is a 16-hour time difference between what the local clock reads in Oregon vs Hong Kong at the moment of that operation.  If you want to make time comparisons or calculations or have interop between systems in different geographies, always use Utc time.</p>
+
+<h2>System.DateTime</h2>
+
+<p>In .Net, <code>System.DateTime</code> can represent many things.  It might be a local time construct or a Utc time or neither.  This is determined by its <a href="https://msdn.microsoft.com/en-us/library/shx7s921(v=vs.110).aspx"><code>System.DateTimeKind</code> member</a>.  When instantiated, <code>System.DateTime</code> is of kind <code>DateTimeKind.Unspecified</code>.  You must add an additional line of code, assigning the <code>DateTimeKind</code> using the static method of <code>DateTime.SpecifyKind</code>.  Using the <code>DateTimeKind</code>, you can make a <code>DateTime</code> Utc.</p>
+
+<h2>System.DateTimeOffset</h2>
+
+<p>In .Net, <code>System.DateTimeOffset</code> is a wrapper around a local <code>DateTime</code> and a <code>TimeSpan</code> offset from universal time.  (As a side note, the "Utc offset" is not the same as a time zone, even though the values might match up.  Time zone is a totally different construct with surrounding history and customs.)  The reason that it is a time <em>with</em> an offset is so that the original local time of the observer of the time (eg, Hong Kong host) can be stored <em>with</em> the offset from Utc at that moment, which allows it to represent a universal time as well.  Thus, <code>DateTimeOffset</code> can store <em>more</em> information: the local time and the offset that allows conversion to Utc time.</p>
+
+<p>Interestingly, however, one can erase this local time storage by using <code>System.DateTimeOffset.UtcNow</code> when trying to instantiate an object that is "the current time".  The current time that will be stored is the Universal time or the time in Greenwich, England (offset of +00:00).  You lose the local time storage.  <code>System.DateTimeOffset</code> can give you the best of both worlds if you store "the current time" using <code>System.DateTimeOffset.Now</code>, keeping a local time and also the offset to Utc, allowing easy conversion to universal time.</p>
+
+<h2>Which is Best?</h2>
+
+<p>Which one you should use isn't as clear.</p>
+
+<p><code>DateTime</code> requires 2 steps before it's clear what time it is.  This can require discipline that we might not want to give to our developers.</p>
+
+<p><code>DateTimeOffset</code> infers a knowledge about Utc, because it includes an offset to Utc.  Thus Utc can always be determined from this object.  But transport of the <code>DateTimeOffset</code> to another system, such as a database, might not store the offset, effectively stripping it.  Before it was stripped, did you convert to Utc or is it still local time?  And after you query the data, how do you know what time it is?  So you might like the combo of <code>Sytem.DateTimeOffset</code> knowing about local time <em>and</em> the offset, but the potentially of handling this data in translation might make you think twice.</p>
+
+<p>It does seem clear that it's easy to become unclear about what your dates mean.  Organizations, especially those with multiple systems that need to interop with dates and times, need to put forth effort to be clear about how they'll approach this.  Interoperating systems to need to handle dates and times consistently.  This should be written down and documented.  Guides for your approach should be shared for your tech stacks.</p>
+
+<p>What date/time objects do you use and why?  How do you keep these straight between your systems?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Debug.log in Elm Pipes]]></title>
@@ -508,116 +548,6 @@ process.nextTick(_ =&gt; process.exit(1))
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop">MDN Event Loop</a> for basics on the message queue in the event loop</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Return an Array in GraphQL]]></title>
-    <link href="http://jaketrent.com/post/return-array-graphql/"/>
-    <updated>2016-08-16T10:15:00-06:00</updated>
-    <id>http://jaketrent.com/post/return-array-graphql</id>
-    <content type="html"><![CDATA[<p><a href="http://graphql.org/">GraphQL</a> provides a query language to define the shape of data you'd like returned from an HTTP API on a server and a library to help make it happen.  It's easy to return a single item or multiple items.</p>
-
-<p><img src="http://i.imgur.com/RitF21I.jpg" alt="graphql" /></p>
-
-<!--more-->
-
-
-<h1>Query Many Items</h1>
-
-<p>To <a href="http://graphql.org/docs/queries/">query in graphql</a>, you setup what looks like a json payload without the values.  For example, to get the <code>id</code> and <code>title</code> fields of <em>all</em> books in your API, you might write:</p>
-
-<p>```
-{
-  books {</p>
-
-<pre><code>id,
-title
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<h1>Query a Single Item</h1>
-
-<p>To query a single item, filtered by a unique id, you'd add a predicate to the books query:</p>
-
-<p>```
-{
-  books(id: 123) {</p>
-
-<pre><code>id,
-title
-</code></pre>
-
-<p>  }
-}
-```</p>
-
-<p>Otherwise, everything remains the same.</p>
-
-<p>The sameness or similarity with the single item query feels good from someone coming from a REST API, where resources similar to the above would be queried from URIs something like:</p>
-
-<p><code>
-/books          # single
-/books/123      # multiple
-</code></p>
-
-<p>But keeping the same query field, <code>books</code>, for both queries will provide a challenge because we will have to support both the single and multiple query from the same place.</p>
-
-<h1>Define a Schema</h1>
-
-<p>On the server, you need to define a schema for possible supported shapes of data you can query.  We currently have one field that we can query -- <code>books</code>.  In the case where we provide no filter (known as args in a schema), we want to return all books.  If there is a filter, we want to use it, and return a single book.  The schema might look like:</p>
-
-<p>```js
-const { GraphQLID, GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString } = require('graphql')</p>
-
-<p>const bookType = new GraphQLObjectType({
-  name: 'book',
-  fields: {</p>
-
-<pre><code>id: { type: GraphQLID },
-title: { type: GraphQLString }
-</code></pre>
-
-<p>  }
-})</p>
-
-<p>const schema = new GraphQLSchema({
-  name: 'root',
-  fields: {</p>
-
-<pre><code>books: {
-  type: new GraphQLList(bookType), // &lt;-- note type
-  args: {
-    id: { type: GraphQLID }
-  },
-  resolve(_, args) { // &lt;-- the interesting part
-    return args.id
-      ? repo.find(args.id)
-      : repo.findAll()
-  }
-}
-</code></pre>
-
-<p>  }
-})
-```</p>
-
-<p>The decision to return a single item or multiple items happens in the <code>resolve</code> function for <code>books</code>.  And the <code>books</code> field config shows that the return type will always be a <code>GraphQLList</code> of <code>bookType</code>.  This means that whether a single item or multiple items, an array will always be returned.  This doesn't feel to terrible -- even familiar when comparing to things like JSON-API.  More importantly, it's <em>required</em> for this return type to work.</p>
-
-<p>At one point, I attempted to use <a href="http://graphql.org/docs/api-reference-type-system/#graphqluniontype"><code>GraphQLUnionType</code></a> to have two potential return types, but I got an error like:</p>
-
-<p><code>
-books may only contain Object types, it cannot contain [the array type]
-</code></p>
-
-<p>...meaning that I couldn't mix a single object type with an array type in the unioned return type.</p>
-
-<p>So in our chosen, working solution above where we always return an array, any consuming client will query with the<code>books</code> field.  An array of one or many items will be returned.  In the case of returning an array of a single item, the deserialization code will probably want to unwrap the item from the array and expose it as a single object, but obviously this is up to your preference.</p>
-
-<p>There it is.  Have you learned how to do this in a better or more elegant way?</p>
 ]]></content>
   </entry>
   
