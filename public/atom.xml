@@ -4,7 +4,7 @@
   <title><![CDATA[Jake Trent]]></title>
   <link href="http://jaketrent.com/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2017-01-05T13:38:38-07:00</updated>
+  <updated>2017-01-24T07:52:54-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,123 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Deploy create-react-app to Heroku on Node.js]]></title>
+    <link href="http://jaketrent.com/post/deploy-create-react-app-heroku-node/"/>
+    <updated>2017-01-19T07:48:00-07:00</updated>
+    <id>http://jaketrent.com/post/deploy-create-react-app-heroku-node</id>
+    <content type="html"><![CDATA[<p>Create-react-app is Facebook&#8217;s no-config solution to starting a React project.  This setup does not support a server out of the box.  You can create that easily enough.  Node.js can be a good choice for your app server.  Once it&#8217;s made and functioning, you might want to deploy your static app and app server.  Here&#8217;s a few tips on getting them up onto Heroku.</p>
+
+<p><img src="http://i.imgur.com/6DUwRKt.png" alt="Create-react-app on Heroku" /></p>
+
+<!--more-->
+
+
+<h2>Two Builds</h2>
+
+<p>Create-react-app comes with two npm-scripts targets.  One is the live dev server that builds assets in a development configuration and serves them out of webpack-dev-server.  This is run with <code>npm start</code>.  When you&#8217;re ready for prod, however, there is a <code>npm run build</code> script that will build all assets for a production setting.  In this configuration, it&#8217;s up to you to provide the server to serve such assets.</p>
+
+<h2>Serving Static Assets on Koa</h2>
+
+<p>Koa is a nice web framework for Node.js that is fun to write little app servers in.  If you want to tack on web server abilities like serving static assets, that&#8217;s easy to do as well.</p>
+
+<p>Assuming that you have the basics of your koa server already going, you now want to:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>npm install koa-static --static</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you need to use the static middleware.  The main thing you need to know in order to use it is the location of your static assets.  When you previously ran <code>npm run build</code>, create-react-app puts the built files into a <code>build/</code> directory in the root of your project.  You want to point the middleware there:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">koa</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;koa&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kr">const</span> <span class="kr">static</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;koa-static&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">koa</span><span class="p">()</span>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="kr">static</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">)))</span>
+</span><span class='line'><span class="c1">// ...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now requests for static files that your app might make will route to that <code>build/</code> directory.  For instance, your main js bundle, probably called something like <code>/static/js/main.f682b6a1.js</code> will be addressable because of this middleware.</p>
+
+<p>It&#8217;s important to note that the assets in the <code>build/</code> directory will only exists (or be updated) when <code>npm run build</code> is run.  The directory does <em>not</em> contain the live-updated assets that you might be used to seeing in your development cycle of changing a file, refreshing your browser, and getting the change.</p>
+
+<h2>Serving Your React App</h2>
+
+<p>Since you&#8217;ve decided to serve all static assets via your app server, this includes the <code>index.html</code> which will bootstrap your React app.  Create-react-app is setup to build this file as well, depositing it at <code>build/index.html</code>.  You&#8217;ll want a route in your app server that can serve this as the html that will request the other js and css static assets needed to get your React program fired up.</p>
+
+<p>Koa has a nice helper for establishing route patterns.  Let&#8217;s grab that:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">koa</span><span class="o">-</span><span class="nx">route</span> <span class="o">--</span><span class="nx">save</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And then setup our index route:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="kr">const</span> <span class="nx">route</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;koa-route&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span><span class="o">*</span> <span class="nx">index</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">this</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="s1">&#39;index.html&#39;</span><span class="p">)),</span> <span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">route</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="nx">index</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The reason to map the index route to <code>*</code> instead of <code>/</code> is because your React app likely has <em>client</em>-side routes.  So if the client-side router has an <code>/about</code> route to the about page, you&#8217;ll want a user to be able to deep link straight to that experience: the user refreshes the page, makes a request to your koa server at your domain, it doesn&#8217;t have a server route for <code>/about</code>, but drops to the <code>*</code> route handler, serves the <code>index.html</code>, which invokes your React app, starting the client router, which has a route for <code>/about</code> and serves that UI via React.</p>
+
+<h2>Build When Deploying</h2>
+
+<p>Now that you have an app that is served successfully from a koa server locally, you want to get that on Heroku.  That&#8217;s one of the best things about Heroku: the ease with which you can put your app on the Internet.  Now you just need to get the deployment to automatically do what you did locally.</p>
+
+<p>After you pushed your app to Heroku, you could manually run:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">heroku</span> <span class="nx">run</span> <span class="nx">npm</span> <span class="nx">run</span> <span class="nx">build</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then your static assets would be in the expected spot.  But you don&#8217;t want to have to remember to do this every deploy.  Thankfully, Heroku gives you a nice hook to automatically do things after you run a deploy.</p>
+
+<p>In your <code>package.json</code> file, add a new script:</p>
+
+<figure class='code'><figcaption><span>package.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nt">&quot;scripts&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nt">&quot;heroku-postbuild&quot;</span><span class="p">:</span> <span class="s2">&quot;npm run build&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Commit and push this to Heroku, and you&#8217;ll get your assets building automatically on every deploy.  Create-react-app with a Node.js server on Heroku will be yours!</p>
+
+<p>Are there better or simpler ways that you&#8217;ve found to get this done?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[DateTime in F#]]></title>
@@ -2033,185 +2150,6 @@
 <p>Even great teams have troubles.  It&#8217;s never going to be perfect.  Don&#8217;t lose heart.  Great teams will be able to have patience, see each other as human beings doing their best, and find a way to make it work and work well.</p>
 
 <p>I think some of this has felt familiar as we&#8217;ve read through it together.  We are all still growing on our teams.  What have you done to make your teams work better together and not make any one person feel overburdened?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Smart and Dumb Components in React]]></title>
-    <link href="http://jaketrent.com/post/smart-dumb-components-react/"/>
-    <updated>2016-02-17T08:55:00-07:00</updated>
-    <id>http://jaketrent.com/post/smart-dumb-components-react</id>
-    <content type="html"><![CDATA[<p>Dan Abramov coined the terms <a href="https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0">Smart and Dumb components</a>.  Later, he called them Container and Presentational components.  I still call them Smart and Dumb.  It&#8217;s shorter and sits in my mind easier.  How do you identify them?  Why would you want a separation?  What might that separation look like?  Here are a few ideas.</p>
-
-<p><img src="http://i.imgur.com/9VKyXtu.png" alt="Smart and Dumb React components" /></p>
-
-<!--more-->
-
-
-<h2>Smart vs Dumb Components</h2>
-
-<p>So what sets these components apart?  Smart means &#8220;container&#8221; or &#8220;app-level&#8221;.  Some have compared it to the &#8220;C&#8221; in MVC.  Dumb means &#8220;presentational&#8221; or &#8220;ui only&#8221;, possibly comparable to the &#8220;V&#8221; in MVC.  Here&#8217;s a breakdown of a few key characteristics:</p>
-
-<h3>Smart Component Characteristics</h3>
-
-<ul>
-<li>Describe <em>how things work</em></li>
-<li>Provide no DOM markup or styles</li>
-<li>Provide application data, do data fetching</li>
-<li>Call Flux actions</li>
-<li>Named *Container by convention</li>
-</ul>
-
-
-<h3>Dumb Component Characteristics</h3>
-
-<ul>
-<li>Describe <em>how things look</em></li>
-<li>Have no app dependencies</li>
-<li>Receive only props, providing data and callbacks</li>
-<li>Rarely have own state, when they do, it&#8217;s just UI state</li>
-<li>Named anything that&#8217;s a UI noun</li>
-</ul>
-
-
-<p>Apparently you need each class of components because obviously your app has to smart to be interesting.  But if it&#8217;s more dumb, it&#8217;s more simple.  So split it.  You need both.</p>
-
-<p>If you separate concerns, your app will be easier to reason about, complexity will be mostly localized around the Smart components, and you should be left with more simple components.  UI components will be more reusable.</p>
-
-<h2>Where to Split Smart and Dumb Components?</h2>
-
-<p>If you keep all Smart characteristics on one side and the Dumb characteristics on the other, you will have made the separation and be following the guiding principles.</p>
-
-<p>But how should you make that split?  Here are a couple ideas.  These are observations of how I&#8217;ve found myself making the split and what it ends up looking like.</p>
-
-<h3>Deep Split</h3>
-
-<p>&#8220;Deep&#8221; describes what I usually observe when I split components this way.  There&#8217;s one Smart component that splits to one Dumb component.  There&#8217;s a 1:1 relationship.  This seems simple, and it is in a way.  It probably works better if the components are small, because many of the smarts from the Smart component end up getting passed down to the Dumb component.  This makes for a lot of props on the Dumb component.</p>
-
-<p>If the Dumb component does anything interesting, it usually will fan out at that point and start farming <code>props</code> off to the child components that actually need them.  Thus, the hierarchy deepens before it actually ends up doing work.</p>
-
-<p><img src="http://i.imgur.com/scfodt6.png" alt="Deep component split" /></p>
-
-<h3>Broad Split</h3>
-
-<p>&#8220;Broad&#8221; describes the transition from Smart to Dumb happening sooner.  There is one Smart component that has many Dumb component children.  There aren&#8217;t necessarily fewer interesting things here or props to pass, but they&#8217;re scattered out, going straighter to the components that need them instead of going through some Monolith Proxy Dumb component (all the bad words together).</p>
-
-<p><img src="http://i.imgur.com/hxusLJ2.png" alt="Broad component split" /></p>
-
-<p>A highlight advantage here is that there is much readier access to the Smart component&#8217;s smarts &#8211; store data, event handlers, and actions.  You don&#8217;t feel like you&#8217;re passing props <em>through</em> components only to get them to the components that really use them.</p>
-
-<p>A golden quote from Dan Abramov that highlights this is:</p>
-
-<blockquote><p>When you notice that some components don’t use the props they receive but merely forward them down and you have to rewire all those intermediate components any time the children need more data, it’s a good time to introduce some container components.</p></blockquote>
-
-<h2>Nodes as props</h2>
-
-<p>In his quote, Dan recognizes the time to introduce container components.  In my mind, &#8220;container&#8221; means Smart.  Here, I don&#8217;t think we necessarily require a Smart Container, because we usually like to get as Dumb as we can as fast as we can.  So, how about a Dumb component that just provides <em>containment</em>?</p>
-
-<p>We can provide DOM markup, component grouping, layout, or other UI abstractions with components that take <code>props.children</code>.  These children are usually components, of type <code>React.PropTypes.node</code>.  Doubtless we&#8217;ve all realized by now that there&#8217;s just one <code>props.children</code>.  But component can only wrap one thing, right?  Well, this is in the syntax of markup/JSX, but this isn&#8217;t true <em>inside</em> the Component.  We could have more attributes that pass <code>PropTypes.node</code> arguments.  This allows for <em>containing more</em> nodes and having convenient handles on them within components.</p>
-
-<p>This thought was revelatory at the time it occurred to me.  Looking back, it seems obvious.  But for some reason, probably because I still think of it as HTML sometimes, it feels funny to write something like:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">Dumb</span> <span class="nx">aProp</span><span class="o">=</span><span class="p">{</span><span class="o">&lt;</span><span class="nx">AnotherDumb</span> <span class="o">/&gt;</span><span class="p">}</span> <span class="o">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then inside the Dumb component, we can display those attributes directly:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">Dumb</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">return</span> <span class="p">(</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">css</span><span class="p">.</span><span class="nx">awesomeLayout</span><span class="p">}</span><span class="o">&gt;</span>
-</span><span class='line'>      <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">aProp</span><span class="p">}</span>
-</span><span class='line'>    <span class="o">&lt;</span><span class="err">/div&gt;</span>
-</span><span class='line'>  <span class="p">)</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>What to Pass as Props?</h2>
-
-<p>If we have a split we like, now we have to decide what <code>props</code> to send from the parent to the child components.</p>
-
-<h3>Send Them All</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">Dumb</span> <span class="p">{...</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">}</span> <span class="o">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Yes, you could just send all the parent&#8217;s props to the child.  I would do this when the parent feels just like a wrapper.  It&#8217;s a passthrough.  Perhaps it adds something small and targeted.  It&#8217;s a higher-order component.</p>
-
-<h3>Pass the Reducer/Selector</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">Dumb</span> <span class="nx">reducerName</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">reducer</span><span class="p">}</span> <span class="o">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You can pass the whole nested reducer state, sure.  Almost every time I feel myself wanting to do this, I think it&#8217;s motivated by laziness.  It has a potential downside of tying the reducer format to the view in more places than required.  Of course, if you have custom selectors for everything anyway, you make your break from reducer format coupling there.</p>
-
-<h3>Pass New Variables</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">Dumb</span> <span class="nx">newVar</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="kd">var</span><span class="p">}</span> <span class="o">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is most commonly what passing variables to children components looks like.  These values are usually primitives, but they can you can send down entire new object structures as well.  It has the advantages of being explicit and traceable.  It also avoids the coupling of passing entire nested reducers.</p>
-
-<h2>Rule of Thumb</h2>
-
-<p>In all design decisions, it&#8217;s good to have some quick guidelines in mind when making decision.  So relative to splitting Smart and Dumb components, here&#8217;s a rule of thumb.</p>
-
-<p>On many of my projects recently, I use two decorators that help identify Smart and Dumb components:</p>
-
-<p>For Smart, the <a href="https://www.npmjs.com/package/redux-react-connect-by-name">redux-react-connect-by-name</a> component facilitates data fetching from the redux store.  This is equivalent to using redux&#8217;s vanilla <code>connect</code> with some built-in niceties.</p>
-
-<p>For Dumb, the <a href="http://npmjs.com/react-styleable">react-styleable</a> component allows passing CSS modules into React components.  This is how I like to give my components styling information.</p>
-
-<p>If one is for Smart and the other for Dumb, then I can usually identify a potential split if I ever see them <em>together</em>.  For example, this is what that antipattern might look like:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">import</span> <span class="nx">connect</span> <span class="nx">from</span> <span class="s1">&#39;redux-react-connect-by-name&#39;</span>
-</span><span class='line'><span class="kr">import</span> <span class="nx">styleable</span> <span class="nx">from</span> <span class="s1">&#39;react-styleable&#39;</span>
-</span><span class='line'><span class="c1">// ...</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">@</span><span class="nx">connect</span><span class="p">([</span><span class="nx">someSelector</span><span class="p">])</span>
-</span><span class='line'><span class="err">@</span><span class="nx">styleable</span><span class="p">(</span><span class="nx">someCss</span><span class="p">)</span>
-</span><span class='line'><span class="kr">class</span> <span class="nx">MyComponent</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
-</span><span class='line'>  <span class="c1">// ...</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Split that up!</p>
-
-<h2>This Isn&#8217;t Dogma</h2>
-
-<p>The idea of Smart vs. Dumb components is, itself, just a guideline &#8211; a Pirates&#8217; Code-level of guideline.  Keep it and use it where it helps your project.  This is an art form.  No one has the best answer for how to organize your React views.  Do the best you can.  Then, next week, when you find a better way, advance to that.</p>
-
-<p>What are some other observations that you&#8217;ve made when splitting your views into Smart and Dumb components?</p>
-
-<p><em>Adapted from a meetup talk:</em></p>
-
-<script async class="speakerdeck-embed" data-id="26cce4743e5540b48188a35f49de3c4d" data-ratio="1.33333333333333" src="http://jaketrent.com//speakerdeck.com/assets/embed.js"></script>
-
 ]]></content>
   </entry>
   

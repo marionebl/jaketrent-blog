@@ -4,7 +4,7 @@
   <title><![CDATA[Category: heroku | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/heroku/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2017-01-05T13:38:38-07:00</updated>
+  <updated>2017-01-24T07:53:25-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,104 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Deploy create-react-app to Heroku on Node.js]]></title>
+    <link href="http://jaketrent.com/post/deploy-create-react-app-heroku-node/"/>
+    <updated>2017-01-19T07:48:00-07:00</updated>
+    <id>http://jaketrent.com/post/deploy-create-react-app-heroku-node</id>
+    <content type="html"><![CDATA[<p>Create-react-app is Facebook's no-config solution to starting a React project.  This setup does not support a server out of the box.  You can create that easily enough.  Node.js can be a good choice for your app server.  Once it's made and functioning, you might want to deploy your static app and app server.  Here's a few tips on getting them up onto Heroku.</p>
+
+<p><img src="http://i.imgur.com/6DUwRKt.png" alt="Create-react-app on Heroku" /></p>
+
+<!--more-->
+
+
+<h2>Two Builds</h2>
+
+<p>Create-react-app comes with two npm-scripts targets.  One is the live dev server that builds assets in a development configuration and serves them out of webpack-dev-server.  This is run with <code>npm start</code>.  When you're ready for prod, however, there is a <code>npm run build</code> script that will build all assets for a production setting.  In this configuration, it's up to you to provide the server to serve such assets.</p>
+
+<h2>Serving Static Assets on Koa</h2>
+
+<p>Koa is a nice web framework for Node.js that is fun to write little app servers in.  If you want to tack on web server abilities like serving static assets, that's easy to do as well.</p>
+
+<p>Assuming that you have the basics of your koa server already going, you now want to:</p>
+
+<p><code>
+npm install koa-static --static
+</code></p>
+
+<p>Now you need to use the static middleware.  The main thing you need to know in order to use it is the location of your static assets.  When you previously ran <code>npm run build</code>, create-react-app puts the built files into a <code>build/</code> directory in the root of your project.  You want to point the middleware there:</p>
+
+<p>```js
+const koa = require('koa')
+const path = require('path')
+const static = require('koa-static')</p>
+
+<p>const app = koa()
+app.use(static(path.resolve('build')))
+// ...
+```</p>
+
+<p>Now requests for static files that your app might make will route to that <code>build/</code> directory.  For instance, your main js bundle, probably called something like <code>/static/js/main.f682b6a1.js</code> will be addressable because of this middleware.</p>
+
+<p>It's important to note that the assets in the <code>build/</code> directory will only exists (or be updated) when <code>npm run build</code> is run.  The directory does <em>not</em> contain the live-updated assets that you might be used to seeing in your development cycle of changing a file, refreshing your browser, and getting the change.</p>
+
+<h2>Serving Your React App</h2>
+
+<p>Since you've decided to serve all static assets via your app server, this includes the <code>index.html</code> which will bootstrap your React app.  Create-react-app is setup to build this file as well, depositing it at <code>build/index.html</code>.  You'll want a route in your app server that can serve this as the html that will request the other js and css static assets needed to get your React program fired up.</p>
+
+<p>Koa has a nice helper for establishing route patterns.  Let's grab that:</p>
+
+<p><code>
+npm install koa-route --save
+</code></p>
+
+<p>And then setup our index route:</p>
+
+<p>```js
+const fs = require('fs')
+const route = require('koa-route')</p>
+
+<p>function* index() {
+  this.body = fs.readFileSync(path.resolve(path.join('build', 'index.html')), 'utf8')
+}</p>
+
+<p>app.use(route.get('*', index))
+```</p>
+
+<p>The reason to map the index route to <code>*</code> instead of <code>/</code> is because your React app likely has <em>client</em>-side routes.  So if the client-side router has an <code>/about</code> route to the about page, you'll want a user to be able to deep link straight to that experience: the user refreshes the page, makes a request to your koa server at your domain, it doesn't have a server route for <code>/about</code>, but drops to the <code>*</code> route handler, serves the <code>index.html</code>, which invokes your React app, starting the client router, which has a route for <code>/about</code> and serves that UI via React.</p>
+
+<h2>Build When Deploying</h2>
+
+<p>Now that you have an app that is served successfully from a koa server locally, you want to get that on Heroku.  That's one of the best things about Heroku: the ease with which you can put your app on the Internet.  Now you just need to get the deployment to automatically do what you did locally.</p>
+
+<p>After you pushed your app to Heroku, you could manually run:</p>
+
+<p><code>
+heroku run npm run build
+</code></p>
+
+<p>Then your static assets would be in the expected spot.  But you don't want to have to remember to do this every deploy.  Thankfully, Heroku gives you a nice hook to automatically do things after you run a deploy.</p>
+
+<p>In your <code>package.json</code> file, add a new script:</p>
+
+<p>```json package.json
+{
+  "scripts": {</p>
+
+<pre><code>"heroku-postbuild": "npm run build"
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Commit and push this to Heroku, and you'll get your assets building automatically on every deploy.  Create-react-app with a Node.js server on Heroku will be yours!</p>
+
+<p>Are there better or simpler ways that you've found to get this done?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Add Zerigo DNS to Heroku]]></title>
@@ -143,21 +241,15 @@ npm install gzippo express coffee-script --save
 
 <p>Now create your app server, <code>web.coffee</code>.  It's about as light as they come:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='coffeescript'><span class='line'><span class="nv">gzippo = </span><span class="nx">require</span> <span class="s">&#39;gzippo&#39;</span>
-</span><span class='line'><span class="nv">express = </span><span class="nx">require</span> <span class="s">&#39;express&#39;</span><span class="o">&lt;/</span><span class="nx">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nv">app = </span><span class="nx">express</span><span class="p">()</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">logger</span> <span class="s">&#39;dev&#39;</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">gzippo</span><span class="p">.</span><span class="nx">staticGzip</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">__dirname</span><span class="si">}</span><span class="s">/dist&quot;</span>
-</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span> <span class="o">||</span> <span class="mi">5000</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:coffeescript %}
+gzippo = require 'gzippo'
+express = require 'express'</p>
+
+<p>app = express()
+app.use express.logger 'dev'
+app.use gzippo.staticGzip "#{__dirname}/dist"
+app.listen process.env.PORT || 5000
+{% endcodeblock %}</p>
 
 <p>It's going to be serving the static resources that you build w/ Yeoman/Grunt that end up in the <code>dist</code> directory.  In order for code to get to Heroku, it needs to be commited to your git repo.  Thus, you need to remove the "dist" line from your <code>.gitignore</code> file, and don't forget to add and commit the files to git as you build them.  You may also have to add more tasks to the <code>Gruntfile.js</code> to copy over any other assets to <code>dist</code> that your app needs to run.</p>
 
@@ -376,99 +468,6 @@ from django.contrib.contenttypes.models import ContentType</p>
 ```</p>
 
 <p>Now you should be able to loaddata and feel the Django wind in your hair and the Heroku grass beneath your feet again.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Django loaddata on Heroku]]></title>
-    <link href="http://jaketrent.com/post/django-loaddata-heroku/"/>
-    <updated>2011-11-20T09:45:00-07:00</updated>
-    <id>http://jaketrent.com/post/django-loaddata-heroku</id>
-    <content type="html"><![CDATA[<p>Django's manage.py script comes with some great utilitarian commands.  Two of my favorites are dumpdata and loaddata.  I've used these commands recently to migrate a Django app's data to the same Django app now running on Heroku.  Here's a little taste of the glory.</p>
-
-<!--more-->
-
-
-<p><a href="https://www.djangoproject.com/">Django</a> is awesome.  <a href="http://www.heroku.com/">Heroku</a> is awesome.  <a href="http://devcenter.heroku.com/articles/django>">Combined</a> they are awesomeerest.</p>
-
-<p>First, get your data out of your existing Django app with manage.py's <a href="https://docs.djangoproject.com/en/dev/ref/django-admin/#dumpdata-appname-appname-appname-model">dumpdata</a>:</p>
-
-<p><code>bash
-python manage.py dumpddata --natural --indent 2 &gt; data.json
-</code></p>
-
-<p>By default it comes out as json, but you can <a href="https://docs.djangoproject.com/en/dev/ref/django-admin/#django-admin-option---format>">change that</a>.  The two options used above have now become common-place for me, providing:</p>
-
-<ul>
-<li>"--natural" - use this baby for when you dump contrib.contenttypes ContentType.  Since we're taking the whole db, odds are that you're using it, since most interesting django apps do.</li>
-<li>"--indent" - make it human-readable instead of a single-liner.</li>
-</ul>
-
-
-<p>The "> data.json" is just some Unix'y redirect goodness to stash the output of your dumpdata command in the data.json file.</p>
-
-<p>Now you want to get your data.json into the db of your Heroku-based Django app.  Heroku allows you the ability to run <a href="http://devcenter.heroku.com/articles/oneoff-admin-ps">one-off processes</a> such as the loaddata command.  But the next hurdle will be getting your data.json onto the Heroku server.  This is always handled in a git push.  And to make it a little bit more interesting, let's say that the code you have isn't particularly sensitive, but the data is.  So, we're going to commit the data.json, push it, remove the latest git commit, be able to push our code to the origin server, and still run loaddata on Heroku.  Sheesh.</p>
-
-<p>Ok, so commit your file:</p>
-
-<p><code>bash
-git add data.json
-git commit -m "Added data"
-</code></p>
-
-<p>Push it to Heroku:</p>
-
-<p><code>bash
-git push heroku master
-</code></p>
-
-<p><a href="http://stackoverflow.com/questions/927358/git-undo-last-commit/927386#927386">Remove commit</a>:</p>
-
-<p><code>bash
-git reset --soft HEAD^
-</code></p>
-
-<p><a href="http://stackoverflow.com/questions/1505948/how-do-i-remove-a-single-file-from-the-staging-area-of-git-but-not-remove-it-fro/1505968#1505968">Remove file</a> from staging area:</p>
-
-<p><code>bash
-git reset HEAD data.json
-</code></p>
-
-<p>Save your code w/o data included:</p>
-
-<p><code>bash
-git push origin master
-</code></p>
-
-<p>And now you should still have data.json on your Heroku server and be able to run loaddata:</p>
-
-<p><code>bash
-heroku run python manage.py loaddata data.json
-</code></p>
-
-<p>If it all works, your data fixtures should be found and you should see a confirmation message that they were loaded into the db.  Just like a dream.  The only thing that would make it better is if you never had to commit data.json at all.  Too bad Heroku couldn't pick up local file input like it can pick up STDIN in a 'heroku run' command!</p>
-
-<h2>Update: Force Next Push</h2>
-
-<p>Also note that if you continue to commit to git locally on future enhancements to your app and then want to push again to Heroku, you'll likely get an error message:</p>
-
-<p><code>bash
-git push heroku master
-To git@heroku.com:myProject.git
- ! [rejected]        master -&gt; master (non-fast-forward)
-error: failed to push some refs to 'git@heroku.com:myProject.git'
-To prevent you from losing history, non-fast-forward updates were rejected
-Merge the remote changes (e.g. 'git pull') before pushing again.  See the
-'Note about fast-forwards' section of 'git push --help' for details.
-</code></p>
-
-<p>To get around this, next time you push to Heroku, try:</p>
-
-<p><code>bash
-git push heroku master -f
-</code></p>
-
-<p>And force it to do your bidding.</p>
 ]]></content>
   </entry>
   

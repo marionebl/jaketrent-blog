@@ -4,7 +4,7 @@
   <title><![CDATA[Category: react | Jake Trent]]></title>
   <link href="http://jaketrent.com/blog/categories/react/atom.xml" rel="self"/>
   <link href="http://jaketrent.com/"/>
-  <updated>2017-01-05T13:38:38-07:00</updated>
+  <updated>2017-01-24T07:53:25-07:00</updated>
   <id>http://jaketrent.com/</id>
   <author>
     <name><![CDATA[Jake Trent]]></name>
@@ -12,6 +12,104 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Deploy create-react-app to Heroku on Node.js]]></title>
+    <link href="http://jaketrent.com/post/deploy-create-react-app-heroku-node/"/>
+    <updated>2017-01-19T07:48:00-07:00</updated>
+    <id>http://jaketrent.com/post/deploy-create-react-app-heroku-node</id>
+    <content type="html"><![CDATA[<p>Create-react-app is Facebook's no-config solution to starting a React project.  This setup does not support a server out of the box.  You can create that easily enough.  Node.js can be a good choice for your app server.  Once it's made and functioning, you might want to deploy your static app and app server.  Here's a few tips on getting them up onto Heroku.</p>
+
+<p><img src="http://i.imgur.com/6DUwRKt.png" alt="Create-react-app on Heroku" /></p>
+
+<!--more-->
+
+
+<h2>Two Builds</h2>
+
+<p>Create-react-app comes with two npm-scripts targets.  One is the live dev server that builds assets in a development configuration and serves them out of webpack-dev-server.  This is run with <code>npm start</code>.  When you're ready for prod, however, there is a <code>npm run build</code> script that will build all assets for a production setting.  In this configuration, it's up to you to provide the server to serve such assets.</p>
+
+<h2>Serving Static Assets on Koa</h2>
+
+<p>Koa is a nice web framework for Node.js that is fun to write little app servers in.  If you want to tack on web server abilities like serving static assets, that's easy to do as well.</p>
+
+<p>Assuming that you have the basics of your koa server already going, you now want to:</p>
+
+<p><code>
+npm install koa-static --static
+</code></p>
+
+<p>Now you need to use the static middleware.  The main thing you need to know in order to use it is the location of your static assets.  When you previously ran <code>npm run build</code>, create-react-app puts the built files into a <code>build/</code> directory in the root of your project.  You want to point the middleware there:</p>
+
+<p>```js
+const koa = require('koa')
+const path = require('path')
+const static = require('koa-static')</p>
+
+<p>const app = koa()
+app.use(static(path.resolve('build')))
+// ...
+```</p>
+
+<p>Now requests for static files that your app might make will route to that <code>build/</code> directory.  For instance, your main js bundle, probably called something like <code>/static/js/main.f682b6a1.js</code> will be addressable because of this middleware.</p>
+
+<p>It's important to note that the assets in the <code>build/</code> directory will only exists (or be updated) when <code>npm run build</code> is run.  The directory does <em>not</em> contain the live-updated assets that you might be used to seeing in your development cycle of changing a file, refreshing your browser, and getting the change.</p>
+
+<h2>Serving Your React App</h2>
+
+<p>Since you've decided to serve all static assets via your app server, this includes the <code>index.html</code> which will bootstrap your React app.  Create-react-app is setup to build this file as well, depositing it at <code>build/index.html</code>.  You'll want a route in your app server that can serve this as the html that will request the other js and css static assets needed to get your React program fired up.</p>
+
+<p>Koa has a nice helper for establishing route patterns.  Let's grab that:</p>
+
+<p><code>
+npm install koa-route --save
+</code></p>
+
+<p>And then setup our index route:</p>
+
+<p>```js
+const fs = require('fs')
+const route = require('koa-route')</p>
+
+<p>function* index() {
+  this.body = fs.readFileSync(path.resolve(path.join('build', 'index.html')), 'utf8')
+}</p>
+
+<p>app.use(route.get('*', index))
+```</p>
+
+<p>The reason to map the index route to <code>*</code> instead of <code>/</code> is because your React app likely has <em>client</em>-side routes.  So if the client-side router has an <code>/about</code> route to the about page, you'll want a user to be able to deep link straight to that experience: the user refreshes the page, makes a request to your koa server at your domain, it doesn't have a server route for <code>/about</code>, but drops to the <code>*</code> route handler, serves the <code>index.html</code>, which invokes your React app, starting the client router, which has a route for <code>/about</code> and serves that UI via React.</p>
+
+<h2>Build When Deploying</h2>
+
+<p>Now that you have an app that is served successfully from a koa server locally, you want to get that on Heroku.  That's one of the best things about Heroku: the ease with which you can put your app on the Internet.  Now you just need to get the deployment to automatically do what you did locally.</p>
+
+<p>After you pushed your app to Heroku, you could manually run:</p>
+
+<p><code>
+heroku run npm run build
+</code></p>
+
+<p>Then your static assets would be in the expected spot.  But you don't want to have to remember to do this every deploy.  Thankfully, Heroku gives you a nice hook to automatically do things after you run a deploy.</p>
+
+<p>In your <code>package.json</code> file, add a new script:</p>
+
+<p>```json package.json
+{
+  "scripts": {</p>
+
+<pre><code>"heroku-postbuild": "npm run build"
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Commit and push this to Heroku, and you'll get your assets building automatically on every deploy.  Create-react-app with a Node.js server on Heroku will be yours!</p>
+
+<p>Are there better or simpler ways that you've found to get this done?</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[react-dnd With Text Drag Preview]]></title>
@@ -411,48 +509,6 @@ import React from 'react'</p>
 </code></p>
 
 <p>Are there any other ways you've found to reach out of React and modify the DOM directly.  What have been your use cases?</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[React Rally Review]]></title>
-    <link href="http://jaketrent.com/post/react-rally-review/"/>
-    <updated>2015-08-27T09:03:00-06:00</updated>
-    <id>http://jaketrent.com/post/react-rally-review</id>
-    <content type="html"><![CDATA[<p>React Rally is a developer conference created around the library of <a href="http://facebook.github.io/react/">React.js</a> and the community that uses it.  It was the first of its name.  It was the first React-centric conference in Salt Lake City.  I had a great time.  Here are a few of reasons I liked it.</p>
-
-<p><img src="http://i.imgur.com/B8fFS4J.jpg" alt="react rally" /></p>
-
-<!--more-->
-
-
-<h2>People Breakouts</h2>
-
-<p>It was a happy conference.  A great mood was set by <a href="https://twitter.com/jergason">Jamison</a> on stage, who MC'ed most of the conference.  He's a fun, quirky guy who's not self-important and who did a great job putting speakers and the audience at ease.  There were a ton of participants and attendees at the conference that also fit this (good!) description.  This led to great conversation between sessions.  There were plenty of breaks, some 30 or 60 minutes at a time.  They were well-spaced, allowing plenty of time.  There was a pleasant <a href="http://rangle.io/">Rangle.io</a>-sponsored lounge to gather in.</p>
-
-<p>There were no on-stage questions and answers portions at the end of the talks.  I wondered how I'd like this, since who doesn't like answer to their questions, right?  It turned out to be refreshing.  Speakers finished their talks at the appointed time.  No one had to wait around uncomfortably wondering when either the speaker or the audience would let everyone else off the hook.  No embarrassing questions.  It was nice.  All the speakers were great anyway, but I think this feature also helped prime the conversations that were expected to happen after the talks in the breakouts, giving extra motivation for everyone to be available and approachable.</p>
-
-<h2>The Spoken Word</h2>
-
-<p>I was excited going into the conference because of the solid lineup of speakers.  Not all the talks were the best I had heard or the best treatment of every subject.  There were some highlights thought, and on the whole it was really, really good.  Each of the speakers had obviously prepared a great deal and had taken their time on stage seriously (or not seriously in the case of <a href="https://twitter.com/djsmith42">Dave Smith</a>, whose talk was memorable and awesome as well, btw).</p>
-
-<p>The conference wasn't wholly about React.  There's just so much <em>around</em> React that is exciting.  The community is pushing boundaries all over the place.  (And <em>still</em> all the content in the conference was appropriate, yay! :)  For instance, there were a great many mentions of <a href="http://elm-lang.org/">Elm</a>.  For my part, I spent much of the conference tinkering with that very thing.</p>
-
-<h2>Fun Design</h2>
-
-<p>It'll reveal how much art does for me, but when I first learned about the conference, one of the things that excited me the most was the <a href="http://www.reactrally.com/">website</a>.  It had a fun design!  There were illustrations, interesting colors, and it looked like a fun theme.  (Of course, at the time there was literally nothing else to be excited about outside the mailing list input box.)</p>
-
-<p>We need more illustrations.  We need more mascots.  A menacing purple squid with a React symbol on its forehead?  Yes, please!  My previously bare brushed metal laptop lid is now bestickered with the sweetest conference stickers I have.  So fun!</p>
-
-<p>I'm still not sure what the theme was intended to be.  My interpretation was Creatures of the Black Lagoon in Space.  Right?!</p>
-
-<h2>Feels Like the First Time</h2>
-
-<p>The organizers did a great job.  The preparation was obvious.  They assured me they were putting out fires for the duration of the two days.  That was not apparent.  The thing went off without a hitch.  I can only poke at the annoying AV glitch of a blinky project screen in some talks.</p>
-
-<p>Everything seemed in its place.  The conference was small, about 250 participants, and it seemed like a large house party most of the time.  The venue was prepped very well.  I'm glad they opened up the downstairs lounge.  The food was great.  The breakfast trucks were a wonderful touch, especially <a href="http://saturdayswaffle.com/">Saturdays Waffles</a> day.  Mmmmm, waffles.  The gift card for lunch was a thoughtful touch.  <a href="http://www.yelp.com/biz/atlantic-caf%C3%A9-and-market-salt-lake-city-4">Atlantic Cafe</a> provided my delicious cevapi sausage on the 2nd day.</p>
-
-<p>I have many thanks for the great speakers, the effort of the organizers, and everyone in between that made the 2 days great.  I felt inspired.  I left more informed.  I met a group of fantastic people.  It's been my favorite conference in Salt Lake City so far.</p>
 ]]></content>
   </entry>
   
