@@ -141,10 +141,10 @@ cover_index: /assets/work1.jpg
 
 ### Post's Detail Thumbnail
 
-Use `cover_detail` to specify an image that will be used for that post on the Detail page for that post.
+Use `image` to specify an image that will be used for that post on the Detail page for that post.
 
 ```
-cover_detail: /assets/hero_image.jpg
+image: /assets/hero_image.jpg
 ```
 
 ## Creator
