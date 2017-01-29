@@ -625,15 +625,16 @@ h5, h6          { font-weight: bolder }
 @media (max-width:1099px){
 
     header{
-        display: block;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         width: 100%;
         min-height: 100px;
         padding: 0;
         position: relative;
     }
-    header .logo{
-        margin: 40px 0 0 30px;
-        float: left;
+    header .logo {
+        margin: 0 0 0 30px;
     }
 
     header .logo a, header .logo a:active, header .logo a:visited {
@@ -654,9 +655,8 @@ h5, h6          { font-weight: bolder }
         display: none;
     }
     header #menu_icon,
-    header .close_menu{
-        float: right;
-        margin: 30px 30px 0 0;
+    header .close_menu {
+        margin: 0 30px 0 0;
     }
     
     header nav{
