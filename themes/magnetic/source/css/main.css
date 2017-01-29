@@ -110,6 +110,11 @@ h5, h6          { font-weight: bolder }
 }
 
 /*  Header  */
+.logo-img {
+  border: none;
+  max-height: 50px;
+}
+
 @media (min-width:1099px){
     header{
         display: block;
