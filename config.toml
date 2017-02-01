@@ -1,3 +1,6 @@
 languageCode = "en-us"
 title = "Jake Trent"
 baseurl = "http://jaketrent.com/"
+
+pygmentsuseclasses = true
+PygmentsCodeFences = true
