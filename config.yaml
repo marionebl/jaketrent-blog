@@ -5,3 +5,7 @@ theme: "hugo-clear-theme"
 
 pygmentsuseclasses: true
 PygmentsCodeFences: true
+
+params:
+  googleAuthor: "https://plus.google.com/115032056022257436849"
+  copyright: "http://creativecommons.org/licenses/by/3.0/us/"
