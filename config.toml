@@ -1,6 +1,7 @@
 languageCode = "en-us"
 title = "Jake Trent"
 baseurl = "http://jaketrent.com/"
+theme = "hugo-clear-theme"
 
 pygmentsuseclasses = true
 PygmentsCodeFences = true
