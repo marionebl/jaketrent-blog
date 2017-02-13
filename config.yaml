@@ -6,6 +6,8 @@ theme: "hugo-clear-theme"
 pygmentsuseclasses: true
 PygmentsCodeFences: true
 
+disqusShortname: "jaketrent"
+
 params:
   description: "Jibber jabber on tech topics around code, productivity, & leadership."
   googleAuthor: "https://plus.google.com/115032056022257436849"
