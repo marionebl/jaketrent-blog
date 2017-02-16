@@ -81,6 +81,7 @@ a {
 .main {
   position: relative;
   border-top: 8px solid #eda43a;
+  padding: 10px;
 }
 .main:before, .main:after {
   content: "";
@@ -103,7 +104,6 @@ a {
 
 /* section: home (sm) */
 .home-section {
-  padding: 0 10px;
 }
 .home-highlight {
   padding: 0 0 15px 0;
@@ -134,17 +134,16 @@ a {
 
 /* section: list */
 .list {
-  padding: 10px;
 }
 
 /* section: post */
 .post {
-  padding: 35px 10px 0 10px;
+  padding: 35px 0 0 0;
 }
 .post-header {}
 .post-subheader {
   display: flex;
-  padding: 10px;
+  padding: 10px 0;
   color: #ababab;
 }
 .post-subheader a {
@@ -160,7 +159,7 @@ a {
 .post-tags-link {}
 .post-title {
   margin: 0;
-  padding: 0 0 0 10px;
+  padding: 0;
   line-height: 1.2em;
   font-family: "Junction";
   font-weight: 100;
@@ -230,7 +229,7 @@ a {
   color: white;
 }
 .comments {
-  padding: 40px 10px 0 10px;
+  padding: 40px 0 0 0;
 }
 
 
