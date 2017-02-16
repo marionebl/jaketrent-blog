@@ -8,7 +8,7 @@ categories:
 tags:
   - "js"
   - "grunt"
-image: http://i.imgur.com/4773D.jpg
+image: https://i.imgur.com/4773D.jpg
 ---
 
 Does your project use GruntJs as a build tool?  Have you ever to customize your build to the environment you're deploying to?  It's handy to be able to specify certain commands to run or keep from running.  It's likely essential to be able to change environment-specific variables via Grunt.  It's not bad.  Most of the leg-work has been done by earlier generations -- that is, if Grunt is old enough to have earlier generations yet.

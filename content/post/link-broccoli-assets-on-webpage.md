@@ -11,7 +11,7 @@ tags:
 description: Broccoli.js is good at building assets.  Now, how do I use them on a webpage?
 keywords: js, broccoli, broccoli.js, reference, link to broccoli assets, serve broccoli
 published: true
-image: http://i.imgur.com/oYpiHcU.jpg
+image: https://i.imgur.com/oYpiHcU.jpg
 ---
 
 [Broccoli.js](https://github.com/joliss/broccoli) is good at [building assets](http://www.solitr.com/blog/2014/02/broccoli-first-release/).  But now that they're built, how does one use them on a webpage?

@@ -12,7 +12,7 @@ tags:
 description: react-router routing and flux data display needs a bit of glue to work well together.
 keywords: react, react-router, transition, data change, store
 published: true
-image: http://i.imgur.com/DXuSNbw.png
+image: https://i.imgur.com/DXuSNbw.png
 ---
 
 react-router provides great route handling with route params and query params.  Flux provides a pattern for building React apps, including a pattern from providing data to your components.  Here's a straightforward way to make route changes trigger data changes in your components.

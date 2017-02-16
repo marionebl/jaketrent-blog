@@ -11,7 +11,7 @@ tags:
 description: Change your npm defaults for npm init
 keywords: npm init, npm init defaults, npm license
 published: true
-image: http://i.imgur.com/P34k4L5.png
+image: https://i.imgur.com/P34k4L5.png
 ---
 
 Npm has a fantastic init tool for creating the descriptor for your project.  It will gladly provide defaults for you.  These are sometimes helpful.  Wouldn't it be more better to define your own defaults?

@@ -10,7 +10,7 @@ tags:
   - "conf"
 description: The Utah JavaScript user group just put on its 2nd annual conference in Salt Lake City.  It was a good time.  Here's my take.
 published: true
-image: http://i.imgur.com/G3BBShC.png
+image: https://i.imgur.com/G3BBShC.png
 ---
 
 <!--more-->

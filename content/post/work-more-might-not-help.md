@@ -12,7 +12,7 @@ tags:
 description: Working significantly more than the rest of our team may harm more than it helps.
 keywords: working more, overtime, come early, stay late, false heroism, team work, team wins, pride
 published: true
-image: http://i.imgur.com/xRlumnh.jpg
+image: https://i.imgur.com/xRlumnh.jpg
 ---
 
 Some have surmised that working more will help their team.  It may.  It may not.  It depends.  Here's just one collection of thoughts on how working significantly _more_ than the _rest_ of our team might not help and may actually hinder.

@@ -10,7 +10,7 @@ tags:
 description: React Rally was a great React.js conference in Salt Lake City, UT.
 keywords: react, conf, react.js, elm, functional programming conference
 published: true
-image: http://i.imgur.com/B8fFS4J.jpg
+image: https://i.imgur.com/B8fFS4J.jpg
 ---
 
 React Rally is a developer conference created around the library of [React.js](http://facebook.github.io/react/) and the community that uses it.  It was the first of its name.  It was the first React-centric conference in Salt Lake City.  I had a great time.  Here are a few of reasons I liked it.

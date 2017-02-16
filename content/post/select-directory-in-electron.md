@@ -11,7 +11,7 @@ tags:
 description: Two ways to select a directory to open in Electron
 keywords: electron, directory, open, file input for directory, electron.js
 published: true
-image: http://i.imgur.com/Vp8Zuix.jpg
+image: https://i.imgur.com/Vp8Zuix.jpg
 ---
 
 Electron will help you make some sweet native desktop apps using web tech.  Now that you're on the desktop, one of the cool things you can do is access the filesystem.  There are a couple ways to access the filesystem via the file open dialog using user input events.

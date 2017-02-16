@@ -10,7 +10,7 @@ tags:
 description: My take on the 12factor.net Principles
 keywords: 12 factor app, 12 factors, architecture, deployment, summary
 published: true
-image: http://i.imgur.com/8aY0qiD.jpg
+image: https://i.imgur.com/8aY0qiD.jpg
 ---
 
 I recently had a chance to go through the principles of the 12-Factor App as listed on [12factor.net](http://12factor.net/).  It's written by some of the fine folk at Heroku.  The principles describe the best practices they see for how to get a modern web app deployed properly.  It's a short read.  This summary is even shorter.

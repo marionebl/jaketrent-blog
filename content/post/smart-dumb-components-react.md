@@ -12,7 +12,7 @@ tags:
 description: Some thoughts on how to identify and split smart and dumb components in React.
 keywords: react, js, smart components, dumb components, presentational, container, design
 published: true
-image: http://i.imgur.com/9VKyXtu.png
+image: https://i.imgur.com/9VKyXtu.png
 ---
 
 Dan Abramov coined the terms [Smart and Dumb components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0).  Later, he called them Container and Presentational components.  I still call them Smart and Dumb.  It's shorter and sits in my mind easier.  How do you identify them?  Why would you want a separation?  What might that separation look like?  Here are a few ideas.
@@ -55,13 +55,13 @@ But how should you make that split?  Here are a couple ideas.  These are observa
 
 If the Dumb component does anything interesting, it usually will fan out at that point and start farming `props` off to the child components that actually need them.  Thus, the hierarchy deepens before it actually ends up doing work.
 
-![Deep component split](http://i.imgur.com/scfodt6.png)
+![Deep component split](https://i.imgur.com/scfodt6.png)
 
 ### Broad Split
 
 "Broad" describes the transition from Smart to Dumb happening sooner.  There is one Smart component that has many Dumb component children.  There aren't necessarily fewer interesting things here or props to pass, but they're scattered out, going straighter to the components that need them instead of going through some Monolith Proxy Dumb component (all the bad words together).
 
-![Broad component split](http://i.imgur.com/hxusLJ2.png)
+![Broad component split](https://i.imgur.com/hxusLJ2.png)
 
 A highlight advantage here is that there is much readier access to the Smart component's smarts -- store data, event handlers, and actions.  You don't feel like you're passing props _through_ components only to get them to the components that really use them.  
 

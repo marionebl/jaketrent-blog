@@ -12,7 +12,7 @@ tags:
 description: D3 has class operations like addClass, hasClass, removeClass, and toggleClass.
 keywords: d3, js, svg, addClass, removeClass, hasClass, toggleClass, jquery
 published: true
-image: http://i.imgur.com/94JQ8N8.jpg
+image: https://i.imgur.com/94JQ8N8.jpg
 ---
 
 D3 has operations for class name manipulation that you're used to from jQuery.  These include addClass, removeClass, hasClass, and toggleClass.  They just go by different names.

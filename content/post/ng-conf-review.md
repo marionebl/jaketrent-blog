@@ -12,7 +12,7 @@ tags:
 description: Ng-Conf was the first Angular conference.  It was rockin.  Let's do it again!
 keywords: js, javascript, conf, angular conf, angular.js, ngconf
 published: true
-image: http://i.imgur.com/4swtO6x.jpg
+image: https://i.imgur.com/4swtO6x.jpg
 ---
 
 Ng-Conf just happened last week in Salt Lake City, Utah.  It was awesome.  Oh blast, I blew the punch line.  Anyway, here's my take.

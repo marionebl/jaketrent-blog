@@ -10,7 +10,7 @@ tags:
 description: Setting up text elements to be a specific height is usually straight forward.  Here is the list of attributes that affect the height.
 keywords: js, css, vertical height, line-height, height
 published: true
-image: http://i.imgur.com/hxw13Yp.png
+image: https://i.imgur.com/hxw13Yp.png
 ---
 
 Setting text elements on a page to be a specific height is usually straight forward.  Here are the specs for a couple textual situations you'll encounter.
@@ -23,7 +23,7 @@ Setting text elements on a page to be a specific height is usually straight forw
 
 Text is likely most common just plastered across your site.  Lucky for us all, this is the most straightforward way to calculate and guarantee a vertical height.
 
-![Text height css](http://i.imgur.com/cy3HTWW.png)
+![Text height css](https://i.imgur.com/cy3HTWW.png)
 
 The formula is simple.  Here, vertical height is calculated by:
 
@@ -37,7 +37,7 @@ I will guess that most of the time you'll want your text centered vertically in 
 
 Text appearing within an input field is much more tricky and has a quite a few more caveats.  There are two main different modes that vertical height will be determined by: without a `height` or with a `height` specified:
 
-![Input height css](http://i.imgur.com/4UdHhF4.png)
+![Input height css](https://i.imgur.com/4UdHhF4.png)
 
 ### No Height Specified
 

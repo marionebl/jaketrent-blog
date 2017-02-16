@@ -12,7 +12,7 @@ tags:
 description: JavaScript's Function.prototype.bind is a great tool to give you control over the this keyword.
 keywords: js, function, bind, function.prototype.bind, partial function application, context, react
 published: true
-image: http://i.imgur.com/4huM3Xb.jpg
+image: https://i.imgur.com/4huM3Xb.jpg
 ---
 
 JavaScript's Function object has a very helpful method, `bind`.  It is a great tool to give you control of the ever-squirrely `this` keyword.  Have you ever had trouble predicting what `this` will be or making equate to what you want?  `bind` will help you do that with more power and consistency.  It can also help you with partial function application.

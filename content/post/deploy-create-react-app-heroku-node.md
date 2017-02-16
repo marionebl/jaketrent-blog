@@ -12,7 +12,7 @@ tags:
 description: Create-react-app sets up your static asset build.  Now learn how to deploy that easily to an app server on Heroku.
 keywords: heroku, react, node.js, create-react-app, create react app, webpack, koa, express, deploy
 published: true
-image: http://i.imgur.com/6DUwRKt.png
+image: https://i.imgur.com/6DUwRKt.png
 ---
 
 Create-react-app is Facebook's no-config solution to starting a React project.  This setup does not support a server out of the box.  You can create that easily enough.  Node.js can be a good choice for your app server.  Once it's made and functioning, you might want to deploy your static app and app server.  Here's a few tips on getting them up onto Heroku.

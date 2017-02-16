@@ -10,7 +10,7 @@ tags:
 description: Don't wait to make your software project fun.
 keywords: fun, have fun, project, teams, morale
 published: true
-image: http://i.imgur.com/ACkhQQK.jpg
+image: https://i.imgur.com/ACkhQQK.jpg
 ---
 
 You work every day.  It's a part of life.  It's a good part of life, and you have the power to make it better.  Ever since you were  young child, you knew what the magic ingredient was: fun!
@@ -29,7 +29,7 @@ I love the creative outlet that 404 pages have become.  There are blogs of the "
 
 Here's a 404 page that our team made before the designers had come to a conclusion on a recent project.  It's still there.  It's one of my favorite additions to the site.  
 
-![Doge 404](http://i.imgur.com/HobT77O.png)
+![Doge 404](https://i.imgur.com/HobT77O.png)
 
 You'll find that fun projects also present opportunities to do things that you wouldn't usually otherwise do.  For instance, I spent half an hour drawing vectorized Doge -- again, a favorite experience in my memory.
 
@@ -48,11 +48,11 @@ At this point in the UI design timeline, there are many, many prebuilt widgets f
 
 In a recent project, I could have thrown in any of a host of prebuilt loading spinners, but I wanted to do something different and quirky.  We had charts that relied on async data coming from a server, so we had the UI show a chart loading state.  Here's what I came up with for the line chart:
 
-![Line chart loading](http://i.imgur.com/5gCGnzk.gif)
+![Line chart loading](https://i.imgur.com/5gCGnzk.gif)
 
 It's meant to evoke a heart monitor.  And for the bar chart:
 
-![Bar chart loading](http://i.imgur.com/7WetiZ8.gif)
+![Bar chart loading](https://i.imgur.com/7WetiZ8.gif)
 
 I was going to speed it up to make it more equalizer-ish, but then slowed it down so-as to be less busy.  Feel free to [download and use it](https://github.com/jaketrent/react-chart-loading) yourself.
 
@@ -62,7 +62,7 @@ I've previously already mentioned my love for team and project [codenames](http:
 
 Make a logo.  Choose something that will be fun.  Imagine it as a sticker on the back of a laptop lid.  Will in be awesome there?  When measured in logos, the coolest frontend web framework available today is [Ember](http://emberjs.com/):
 
-![Ember logo](http://i.imgur.com/dwho9tp.png)
+![Ember logo](https://i.imgur.com/dwho9tp.png)
 
 When measured in logos, the coolest tech conference of the past year was [React Rally](http://www.reactrally.com/):
 

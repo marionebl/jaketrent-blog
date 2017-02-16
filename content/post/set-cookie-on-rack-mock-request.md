@@ -12,7 +12,7 @@ tags:
 description: Add a cookie to mock requests in order to test your Rack app.
 keywords: ruby, rack, mock, mock request, set cookie, cookie header, testing
 published: true
-image: http://i.imgur.com/044x6s6.jpg
+image: https://i.imgur.com/044x6s6.jpg
 ---
 
 Rack apps are generally straightforward to test because of their very basic public interface.  But where do we put specific things, in this case, a cookie for the request, on that `env` argument it takes?  Here's one way.

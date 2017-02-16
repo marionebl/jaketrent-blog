@@ -13,7 +13,7 @@ tags:
 description: If you don't see your HTTP response header in the browser, check your CORS policy.  It's likely the culprit.
 keywords: js, cors, http, access-control-expose-headers, superagent, expose, unsafe header, Link, github api
 published: true
-image: http://i.imgur.com/JAce7py.jpg
+image: https://i.imgur.com/JAce7py.jpg
 ---
 
 For APIs, it seems more and more data is making its way into the HTTP headers.  Recently, whilst adding a `Link` header, for paging data, into the HTTP response, I realized that my browser code couldn't see it.  Who was the culprit?  CORS, of course.

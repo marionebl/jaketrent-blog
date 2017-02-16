@@ -10,7 +10,7 @@ tags:
 description: Fluent Conf was a great mix of web tech talk and inspiration.
 keywords: fluent, fluent conf, web tech, web conf
 published: true
-image: http://i.imgur.com/aG1CC3U.jpg
+image: https://i.imgur.com/aG1CC3U.jpg
 ---
 
 I went to my first [Fluent conf](http://conferences.oreilly.com/fluent/javascript-html-us) this year.  It was a generally good experience.  I enjoyed the company and the topics.  Maybe I'll go again.

@@ -12,7 +12,7 @@ tags:
 description: How to stub your own dependencies in node without using a library like proxyquire
 keywords: js, node, stub, spy, unit testing, proxyquire, mock
 published: true
-image: http://i.imgur.com/1arT8Ho.jpg
+image: https://i.imgur.com/1arT8Ho.jpg
 ---
 
 When testing a unit, often you'll want to stub out that unit's dependencies.  Some libraries will help you do this.  But you can do it with plain JavaScript, and it works quite well.

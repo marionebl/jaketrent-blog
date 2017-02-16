@@ -9,7 +9,7 @@ tags:
   - "js"
 description: JavaScript makes mixins inherently easy.  Here are a few methods.
 published: true
-image: http://i.imgur.com/XemDUw8.jpg
+image: https://i.imgur.com/XemDUw8.jpg
 ---
 
 JavaScript makes mixins inherently easy.  Mixins are a native feature of the language without calling it that.  Here are a few methods for making this happen.

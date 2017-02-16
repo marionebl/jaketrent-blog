@@ -11,7 +11,7 @@ tags:
 description: Sometimes you'll want to pass properties from a parent component to children components.  Here's how to do it.
 keywords: js, react, components, render children, this.props.children, child props, child properties
 published: true
-image: http://i.imgur.com/DXuSNbw.png
+image: https://i.imgur.com/DXuSNbw.png
 ---
 
 In React, you're always making components.  Sometimes components are standalone.  Other times, you'll have components that can nest children components.  Sometimes you'll want to send properties to the children components from the parent as often as a doting parent wants to send packages to a child missionary.  It's possible, it's simple, and it's not documented super well.  Here's one method.

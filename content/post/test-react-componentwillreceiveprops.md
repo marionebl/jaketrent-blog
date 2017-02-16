@@ -12,7 +12,7 @@ tags:
 description: Testing the componentWillReceiveProps of a React component will take some setup.
 keywords: react, unit testing, testing, nextprops, test setup, componentWillReceiveProps, lifecycle
 published: true
-image: http://i.imgur.com/DXuSNbw.png
+image: https://i.imgur.com/DXuSNbw.png
 ---
 
 Testing React Components has been easier and more enjoyable than any previous UI unit testing I've done in the past.  Components that have interesting things happen in lifecycle methods have a little more setup to get tested.  Components that use the `componentWillReceiveProps` method are in this category.

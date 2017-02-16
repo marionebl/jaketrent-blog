@@ -11,7 +11,7 @@ tags:
 description: A quick tip to make your APIs fail and test client error handling.
 keywords: js, api, spa, axios, promise, async await
 published: true
-image: http://i.imgur.com/8Fm1cn2.jpg
+image: https://i.imgur.com/8Fm1cn2.jpg
 ---
 
 In the case where you can't edit a local version of your APIs in order to cause them to fail, you need to be able to edit your client so that it *looks* like the API request fails.  Here's a quick code change that should make this easy for you.

@@ -10,7 +10,7 @@ tags:
 description: Liking the tech you use is ok, advantageous, and desireable
 keywords: productivity, liking, differences, enjoyment, developer happiness, choosing a tech
 published: true
-image: http://i.imgur.com/HmNq6Xz.jpg
+image: https://i.imgur.com/HmNq6Xz.jpg
 ---
 
 When there is a new software product to write, there's a decision to be made on what to write it in.  In other words, what tech should we use?  Technologists have technology they "like".  So then, what tech should they choose for the new project?  Does it matter what they like?

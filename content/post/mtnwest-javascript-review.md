@@ -11,7 +11,7 @@ tags:
 description: MountainWest JavaScript was a great conference for JS last week in Utah.  Here's my take.
 keywords: js, ember, emberfire, firebase, fireplace, emberfire to fireplace, ember-data
 published: true
-image: http://i.imgur.com/VGtnQzX.png
+image: https://i.imgur.com/VGtnQzX.png
 ---
 
 MountainWest JavaScript was a great conference last week.  It was a jubilee. Well, if you can have a jubilee in the first year of a conference.   Here's my take.

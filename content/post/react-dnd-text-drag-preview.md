@@ -12,7 +12,7 @@ tags:
 description: How to create a text drag preview in react-dnd
 keywords: react, react-dnd, text, drag preview, string, drag and drop
 published: true
-image: http://i.imgur.com/E5NwBek.png
+image: https://i.imgur.com/E5NwBek.png
 ---
 
 [react-dnd](http://gaearon.github.io/react-dnd/) is a fantastic library for implementing drag and drop features in a React application.  In browsers, you have the ability to specify a drag preview for the thing your dragging.  Images are easy.  Text takes more work -- because you need to generate an image.
@@ -90,6 +90,6 @@ When making a React drag and drop app, I usually don't look forward to using the
 
 If you think this might help you, take a look at [react-dnd-text-dragpreview](http://npm.im/react-dnd-text-dragpreview).
 
-<a href="http://npm.im/react-dnd-text-dragpreview"><img src="http://i.imgur.com/glegZVc.gif" /></a>
+<a href="http://npm.im/react-dnd-text-dragpreview"><img src="https://i.imgur.com/glegZVc.gif" /></a>
 
 How do you go about doing text-based drag previews?  Any other good tips?

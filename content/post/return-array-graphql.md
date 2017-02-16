@@ -11,7 +11,7 @@ tags:
 description: How to return an array or a single item from Facebook's graphql
 keywords: js, javascript, graphql, graphqllist, array, multiple items, return array, return multiple
 published: true
-image: http://i.imgur.com/RitF21I.jpg
+image: https://i.imgur.com/RitF21I.jpg
 ---
 
 [GraphQL](http://graphql.org/) provides a query language to define the shape of data you'd like returned from an HTTP API on a server and a library to help make it happen.  It's easy to return a single item or multiple items.

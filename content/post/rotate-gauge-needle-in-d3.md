@@ -13,7 +13,7 @@ tags:
   - "svg"
 description: If you want to make a gauge chart in S3, you'll need a needle on your gauge.  It's not hard to draw a triangle, but here's the extra work to rotate it.
 published: true
-image: http://i.imgur.com/7GSyOFd.png
+image: https://i.imgur.com/7GSyOFd.png
 ---
 
 If you want to make a gauge chart in S3, you'll need a needle on your gauge.  It's not hard to draw a triangle, but here's the extra work to rotate it.
@@ -100,7 +100,7 @@ cos of angle = adjacent / hypotenuse
 tan of angle = opposite / adjacent
 ```
 
-![Needle trigonometry](http://i.imgur.com/RxoQF98.png)
+![Needle trigonometry](https://i.imgur.com/RxoQF98.png)
 
 Using these formulas, let's update our code for finding the endpoints of the triangle:
 

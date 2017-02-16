@@ -14,7 +14,7 @@ published: true
 
 It's sometimes useful to be able to preload or resolve data previous to an Angular view being displayed.  Such was the case recently for our current user object.  It simplified a lot of things in the app to have the guarantee of a loaded current user previous to displaying pages.  The Angular router has a great mechanism built in to do just this sort of thing, called `resolve`.
 
-![Angularjs](http://i.imgur.com/wVBKD.png)
+![Angularjs](https://i.imgur.com/wVBKD.png)
 
 <!--more-->
 

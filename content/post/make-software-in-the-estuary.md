@@ -12,7 +12,7 @@ tags:
 description: Make software in the estuary, in a mix of disciplines, training, and collaboration
 keywords: collaboration, cross functional, team work, medici effect, humility, productivity
 published: true
-image: http://i.imgur.com/3XrFyZS.jpg
+image: https://i.imgur.com/3XrFyZS.jpg
 ---
 
 An estuary is where the sea meets the river.  Here, there is a mix of fresh water and salt water, sediment from the rivers and marine life from the sea.  The effects of both sea and river are seen in many ways.  It's a swirl -- there's no upstream or downstream.  It's considered to be one of the most nutrient-rich, productive ecosystems on the planet.  So really, who *wouldn't* want to make software in an estuary?

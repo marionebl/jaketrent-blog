@@ -12,7 +12,7 @@ tags:
 description: This isn't your last great work.  Stop worrying, and release.
 keywords: great work, analysis paralysis, release, continuous delivery, mvp, lean
 published: true
-image: http://i.imgur.com/4yimUZ1.jpg
+image: https://i.imgur.com/4yimUZ1.jpg
 ---
 
 Sometimes it seems like we feel everything we produce must be our magnum opus -- not just great work, but *the* great work of our career.  Somehow we end up thinking that this thing we're working on is the final act, the thing that will dwarf all our previous work.  The thing that won't -- in fact, shouldn't -- be toppable.  We tell ourselves that we'll forever be judged by this one artifact.  Is that the case?  Probably not.

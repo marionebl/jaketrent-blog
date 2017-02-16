@@ -15,7 +15,7 @@ tags:
 description: Webpack's dev server for static assets can be quickly configured to handle JavaScript history api pushState.
 keywords: webpack, webpack-dev-server, pushState, history api, client router
 published: true
-image: http://i.imgur.com/DXuSNbw.png
+image: https://i.imgur.com/DXuSNbw.png
 ---
 
 React allows you to create components that will render UI for your application.  If your UI is of any complexity, you'll likely want to test that it functions correctly and allows for future refactors.  There are numerous ways to do this.  One way that you might appreciate is using [jsdom](https://github.com/tmpvar/jsdom), an in-JavaScript implementation of the DOM.

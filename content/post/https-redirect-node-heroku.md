@@ -17,7 +17,7 @@ published: true
 
 When your app requires users to be using the `https` protocol to make requests and get responses, it's helpful to have an automatic redirect so the user is always in the right place.  Here's how to do that for a Node Express app on Heroku.
 
-![NodeJs Https Redirect](http://i.imgur.com/5rZ8H.png)
+![NodeJs Https Redirect](https://i.imgur.com/5rZ8H.png)
 
 <!--more-->
 

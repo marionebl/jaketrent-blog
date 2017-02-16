@@ -11,7 +11,7 @@ tags:
 description: Jetbrains makes quality coder products.  IntelliJ 12 is no exception.  Here's what I mostly like.
 keywords: ide, jetbrains, intellij, idea, darkula, review
 published: true 
-image: http://i.imgur.com/RM3Q1.jpg
+image: https://i.imgur.com/RM3Q1.jpg
 ---
 
 I've used IntelliJ since version 6.  Now we're version 12.  It's just gotten better.  Version 12 is definitely an incremental release.  There's nothing too whiz bang here that I care about, but the quality overall is increased.  
@@ -38,7 +38,7 @@ It seems that when a non-main window is told to appear that it does so a bit qui
 
 When I switched to OSX from Linux, I was immediately disappointed by the lack of keyboard shortcuts in comparison to Linux.  The most egregious omission was the lack of alt-* combos to press buttons in the UI via the keyboard.  Alt-p to engage the 'push' button in the Git push dialog has been a long time coming.
 
-![P for Push](http://i.imgur.com/FYe1O.jpg)
+![P for Push](https://i.imgur.com/FYe1O.jpg)
 
 #### Git Integration is better
 

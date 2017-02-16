@@ -10,7 +10,7 @@ tags:
 keywords: elm, debug, time traveling, locally, watch
 description: Debugging in Elm is easy once you know where to look
 published: true
-image: http://i.imgur.com/1c6FH0f.png
+image: https://i.imgur.com/1c6FH0f.png
 ---
 
 Debugging in Elm is easy once you know where to look.  You need an in-browser tool to help you.  It's almost as simple as just calling `console.log`, but you can't just put your logging statement anywhere.  
@@ -35,7 +35,7 @@ $ elm reactor
 
 This will serve up your project directory at `http://localhost:8000` by default.  
 
-![screenshot of elm reactor](http://i.imgur.com/yE93W9g.png)
+![screenshot of elm reactor](https://i.imgur.com/yE93W9g.png)
 
 You will be able to see the project files listed.  There are two links for each Elm program.  Unfortunately, the debug mode link is pretty subtle, looked over by me as just a bullet in the UI.
 
@@ -73,7 +73,7 @@ in
 
 Now the watched value will show up in the debugger sidebar.
 
-![screenshot of elm watched code](http://i.imgur.com/PlI83Kq.png)
+![screenshot of elm watched code](https://i.imgur.com/PlI83Kq.png)
 
 If you pause the debugger and step backward, you can see the value as it has changed over time.  It's pretty neat, and now you're debugging Elm on your own box!
 

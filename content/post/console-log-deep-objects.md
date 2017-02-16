@@ -11,7 +11,7 @@ tags:
 description: Deep objects need some extra help to log all their contents
 keywords: js, console.log, inspect, depth, deep,
 published: true
-image: http://i.imgur.com/00WAox4.jpg
+image: https://i.imgur.com/00WAox4.jpg
 ---
 
 With deep object structures, `console.log` can leave you wondering what's down in the depths of the objects you're printing out.  Here's a quick help from Node stdlib.

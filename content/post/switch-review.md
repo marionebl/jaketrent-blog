@@ -11,7 +11,7 @@ tags:
 description: The book Switch shows interesting anecdotes and good strategies on how to motivate people and situations to change.
 keywords: book, productivity, switch, dan and chip health, change, change is hard
 published: true
-image: http://i.imgur.com/zjnOrqX.jpg
+image: https://i.imgur.com/zjnOrqX.jpg
 ---
 
 The book is called Switch: How to Change Things When Change is Hard.  It's by Chip Heath and Dan Heath.  It shows interesting anecdotes and good strategies on how to motivate people and situations to change.

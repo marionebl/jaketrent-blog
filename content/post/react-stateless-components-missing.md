@@ -11,7 +11,7 @@ tags:
 description: Statless components, new to React 0.14, don't have a few things that you might be used to by now.
 keywords: js, react, stateless components, statless functions, ref, backing instance, lifecycle
 published: true
-image: http://i.imgur.com/DXuSNbw.png
+image: https://i.imgur.com/DXuSNbw.png
 ---
 
 Stateless React components got a new syntax in React 0.14.  It's much simpler.  It's just a function call.  Besides it just looking simpler, there are some major differences in what is available in a stateless component written this way.  There are some things missing -- purposefully not included -- that you may be used to.  Let's look at a few things.

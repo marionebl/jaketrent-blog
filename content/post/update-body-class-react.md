@@ -11,7 +11,7 @@ tags:
   - "css"
 description: React Components are self contained.  How can I reach out and modify the body tag from a React app.
 published: true
-image: http://i.imgur.com/DXuSNbw.png
+image: https://i.imgur.com/DXuSNbw.png
 ---
 
 React gives us a great component abstraction.  Each of these components represents a node in the DOM.  Each component is self contained, doesn't talk up the component hierarchy directly and passes explicit data and code down the hierarchy.  But what about when you have a React app that wants to reach out and modify something it doesn't control?

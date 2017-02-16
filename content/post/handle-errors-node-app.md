@@ -12,7 +12,7 @@ tags:
 description: How to handle 3 types of errors in an Express API in Node.
 keywords: js, javascript, express, nodejs, node, error handling, uncaughtException, middleware
 published: true
-image: http://i.imgur.com/1arT8Ho.jpg
+image: https://i.imgur.com/1arT8Ho.jpg
 ---
 
 As with any software, here you can expect the unexpected.  Node apps experience errors as well.  Let's say that an error crops in our Node API -- what should we do about it?

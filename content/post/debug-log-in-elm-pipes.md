@@ -12,7 +12,7 @@ tags:
 description: How to print to the console when piping data in Elm
 keywords: js, elm, debug, debug.log, console.log
 published: true
-image: http://i.imgur.com/1c6FH0f.png
+image: https://i.imgur.com/1c6FH0f.png
 ---
 
 There aren't many functions in the standard lib for elm that create side effects.  Elm's `Debug.log` is one of those exceptions.  It logs to the console.  Here's how it's setup to make console logging whilst piping easier that patting your head whilst rubbing your tummy.

@@ -12,7 +12,7 @@ tags:
 description: Xip.io is a DNS wildcard initially created for use on Ruby projects.  It makes development much nicer in some respects, so it's worth a few steps to get working on a NodeJs project.
 keywords: nodejs, xip.io, pow, powder, ruby
 published: true
-image: http://i.imgur.com/PJTnZmM.jpg
+image: https://i.imgur.com/PJTnZmM.jpg
 ---
 
 Xip.io is a DNS wildcard domain that was initially created for use on Ruby projects.  But its application is desirable across platforms.  Recently, I wanted to use Xip.io on a NodeJs project.  It was easy to make happen.

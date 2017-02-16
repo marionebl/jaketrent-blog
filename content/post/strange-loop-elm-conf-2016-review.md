@@ -10,7 +10,7 @@ tags:
 description: Strange Loop and Elm conf review and highlight notes from 2016.
 keywords: elm, clojure, conf, peabody, st. louis, emerging languages, interesting conf
 published: true
-image: http://i.imgur.com/SusCISQ.jpg
+image: https://i.imgur.com/SusCISQ.jpg
 ---
 
 Here's a quick conference review and some highlight bullets from some of my favorite parts.  It was my first time going to Strange Loop.  It was also host to the first Elm Conf ever.  I was excited to go to both.  I was looking for new, eclectic content to consider.  I was not disappointed.
@@ -20,19 +20,19 @@ Here's a quick conference review and some highlight bullets from some of my favo
 ## Venue
 The city was awesome.  I got to hang out and explore St. Louis quite a bit.  I hadn't been there since I was a small child.  There's a great, historic downtown area.  The stonework is inescapable and very impressive.  Great craftsmanship on display from a fun era of architecture.  Highlights were the many elegant cathedrals and churches, including the [Cathedral Basilica](https://en.wikipedia.org/wiki/Cathedral_Basilica_of_Saint_Louis_(St._Louis)).
 
-![cathedral bascillica](http://i.imgur.com/6RHY7b6l.jpg)
+![cathedral bascillica](https://i.imgur.com/6RHY7b6l.jpg)
 
 I had a good time visiting Forest Park, which is host to some great parks and a cool art museum which houses a wide variety of impressive paintings, sculpture, pottery, artifacts, etc. 
 
-![cool art representing america, wish I captured the info plaque better](http://i.imgur.com/nIufoSal.jpg)
+![cool art representing america, wish I captured the info plaque better](https://i.imgur.com/nIufoSal.jpg)
 
 Union Station was the site of Elm Conf and the hotel for the conference.  It's built in a historic train station.  Parking was under the open rafters of the apparent train yard.  The lobby is in the grand hall of the main station where they do light shows on the ceiling on the hour after 6pm.  
 
-![union station hotel](http://i.imgur.com/lT2TcbTl.jpg)
+![union station hotel](https://i.imgur.com/lT2TcbTl.jpg)
 
 The Peabody Opera House was the site of all sessions for Strange Loop proper.  It's also an impressive venue, with an especially beautiful stage and impressive hall.  I could actually fit in the theatre seats too, so I was impressed.
 
-![peabody opera house stage](http://i.imgur.com/5uo4devl.jpg)
+![peabody opera house stage](https://i.imgur.com/5uo4devl.jpg)
 
 ## Content
 The content was interesting and engaging.  The speakers were all quite good.  As with any conf, there are low points, but the average here was high and the lows few.  The talks were mostly technical, some deep, a few shallower.  There were a couple good soft and thought talks as well.  What I was going for, I got, which was *variety*.  I feel like my exposure at this conference was broad.
@@ -44,7 +44,7 @@ Language themes emerged around Elm, Clojure, Scala, and I think I was getting a 
 #### Food
 Elm-conf had coffee and a few small snacks provided.  It didn't provide meals.  Somehow this was unclear to me.  Apparently there was a way to tack this on to your experience at registration that I missed.  In the end, I enjoyed going out to the city and finding something good with new friends, but that wasn't my initial expectation.  At Strange Loop, the Peabody Opera House provided breakfast, lunch, and snacks.  They were all solid and good.  In the end, I was made more solid and good.  Best food in the city I had was the day before the conf, when we visited Blues City Deli, and I ordered the Aporkalypse, a drippingly-delicious sandwhich of pork and more pork in the form of bacon.  Mmmm!, so good.
 
-![blues city deli](http://i.imgur.com/AAdpY4Dl.jpg)
+![blues city deli](https://i.imgur.com/AAdpY4Dl.jpg)
 
 #### Swag
 There was eventually a conference T-shirt.  Black.  With a coolish logo on it, that I had to ask about.  I'm still one of three people in the country who have not seen Stranger Things.  Apparently the logo was based on that show's logo.  There were a few vendors.  I got lucky with one of the contests.  That was awesome.  But holy cow, where were the stickers?  Apparently that's not a strong part of this conference's culture.  I got one cool sticker from Netflix -- Chaos Monkey :D.
@@ -52,7 +52,7 @@ There was eventually a conference T-shirt.  Black.  With a coolish logo on it, t
 #### Party
 The conference party was at the singular City Museum.  It's not really a museum?  It's more like an anything-goes, go explore this, based on psychonauts concept art, adult playground.  I say adult because no where are predictable, little tikes-sized, plastic-covered platforms and slides.  Everything's made out of exposed rebar, inconvenient, twisted, gnarly, mixed with random art installments, and generally evoking of my laughter.  If you go to St. Louis, you just need to experience it.
 
-![city museum st louis](http://i.imgur.com/55iusyGl.jpg)
+![city museum st louis](https://i.imgur.com/55iusyGl.jpg)
 
 In addition to the general review, here are some learnings that stood out to me:
 

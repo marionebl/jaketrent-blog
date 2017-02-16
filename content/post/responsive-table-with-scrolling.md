@@ -9,7 +9,7 @@ tags:
   - "Design"
   - "rwd"
   - "css"
-image: http://i.imgur.com/GeuZe.png
+image: https://i.imgur.com/GeuZe.png
 ---
 
 Sometimes a `table` element is the most semantic element one can use in markup.  It is true.  If you're displaying tabular data, a `table` is a likely option.  If you're on a responsive site, however, you'll cringe at this option.  It turns out that tables aren't very responsive web design-friendly.  One way to create a more responsive table is with scrolling.

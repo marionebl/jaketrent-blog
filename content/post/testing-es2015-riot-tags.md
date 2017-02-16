@@ -11,7 +11,7 @@ tags:
 description: How to test Riot.js tags that are written in es2015. 
 keywords: es2015, riot, riotjs, riot.js, riot tags, testing, unit test, ava, avajs, jsdom
 published: true
-image: http://i.imgur.com/EF2IK3G.png
+image: https://i.imgur.com/EF2IK3G.png
 ---
 
 Getting riot.js setup for development isn't too bad.  But the combo of language features, testing tools, and riot templates made setting up the test environment a bit trickier than I expected.  Here are some of the details.

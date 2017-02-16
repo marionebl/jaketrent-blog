@@ -11,7 +11,7 @@ tags:
 description: D3 makes awesome charts, made awesomer by animations.  Make your lines animate!
 keywords: js, d3, line, animating, drawing, line chart
 published: true
-image: http://i.imgur.com/94JQ8N8.jpg
+image: https://i.imgur.com/94JQ8N8.jpg
 ---
 
 You can make some awesome charts in D3.  Animate your charts, and they're made even awesomerer.  To animate lines, such as those found in line charts, try out the following methods.

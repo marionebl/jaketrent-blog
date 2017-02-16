@@ -11,7 +11,7 @@ tags:
 description: The Accidental Creative book has many good ideas for productivity and creativity
 keywords: accidental creative, creativity, productivity, schedulgin
 published: true
-image: http://i.imgur.com/S3LkEjQ.jpg
+image: https://i.imgur.com/S3LkEjQ.jpg
 ---
 
 I just finished a book about becoming a more productive and effective creative person, called “The Accidental Creative”.  It was a great book and included some thoughtful ideas that I ended up pondering and have started incorporating into my life.

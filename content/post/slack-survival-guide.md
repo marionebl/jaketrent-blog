@@ -10,7 +10,7 @@ tags:
 description: Slack can be a great help.  If you're not careful, it can be a burden.  Manage with care.
 keywords: slack, chat, ping, channels, keywords, distraction
 published: true
-image: http://i.imgur.com/gFBW4F4.jpg
+image: https://i.imgur.com/gFBW4F4.jpg
 ---
 
 Slack is a fantastic tool.  It allows always-on group chat in this spirit of Hipchat or Campfire or your friends' group text thread that just won't end.  You can create channels, public or private, to suit your purpose.  You can gather communities together to talk about specific things.  Slack can become an invaluable source of communication and information for you and your teams.  Without a bit of management and care, however, it can become a burden that distracts you from the essence of your work.
@@ -25,25 +25,25 @@ There are doubtless channels that you love and are very interested in on Slack. 
 
 Notifications are valuable, but they are an active form of the tool getting your attention and should be used judiciously.  Set a small number of keywords that would indicate to you that someone is trying to talk to you specifically.
 
-![limit notifications](http://i.imgur.com/C1fG5y5.png)
+![limit notifications](https://i.imgur.com/C1fG5y5.png)
 
 ## Use Mentions
 
 Assume that others are doing the above only listening for certain keywords, including their username.  And then realize that once you mention their name, like `@jaketrent`, in the channel, the tool will actively engage them with a notification.  Don't assume their just watching the channel for traffic.  And don't be upset if they don't respond everything said in a channel.  Don't mention unless you must.  And mention when you want someone's specific attention.
 
-![mentions](http://i.imgur.com/VlzhTua.png)
+![mentions](https://i.imgur.com/VlzhTua.png)
 
 ## Mute Channels
 
 Normally, when chatter happens in a channel, the channel nav in the left of the UI will appear white and bold, indicating you have unread chats in the channel.  If you mute a channel, this indicator doesn't happen.  It always appears that there is nothing to read.  The great exception is when someone mentions you particularly.  In that case, you still get the red badge, indicating your number of unread mentions.
 
-![mute slack channel](http://i.imgur.com/5dEVlty.png)
+![mute slack channel](https://i.imgur.com/5dEVlty.png)
 
 ## Mention without Notifying
 
 Sometimes you want to speak about someone in a message without notifying them.  For instance, you could be explaining to another questioning team member what Jake's schedule is for that day.  Jake doesn't necessarily need notified that you're talking about him, and he's probably being notified of mentions of his name.  So, we can break up his name so it doesn't match his keywords.  For instance:
 
-![@justin Yesterday Jak e said that he would test that after we merged our change.](http://i.imgur.com/YxCQ1yw.png)
+![@justin Yesterday Jak e said that he would test that after we merged our change.](https://i.imgur.com/YxCQ1yw.png)
 
 ## Expect Involvement
 
@@ -57,7 +57,7 @@ Slack is always on, the clock is always ticking, and things are always being sai
 
 If you find yourself not being interested or engaged by the unread chats in an channel, leave it.  If the digest doesn't catch your attention, don't read it.  If it provides no value, it's just taking up time.  You probably joined that channel for a long-forgotten reason, and there's no present reason compelling you to be there.  Leave.  If someone wants you in there, she can invite you back, sharing relevant conversations at any time.
 
-![invite to slack](http://i.imgur.com/nNu09rw.png)
+![invite to slack](https://i.imgur.com/nNu09rw.png)
 
 ## Bankruptcy is Ok
 

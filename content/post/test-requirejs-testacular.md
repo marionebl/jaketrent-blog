@@ -10,7 +10,7 @@ tags:
   - "requirejs"
   - "testacular"
   - "mocha"
-image: http://i.imgur.com/7gh40.jpg
+image: https://i.imgur.com/7gh40.jpg
 ---
 
 Did you write your source code as JavaScript AMD modules in [RequireJs](http://requirejs.org/)?  Do you want to test them in real browsers?  Do you want the flexibility of using [Mocha](http://visionmedia.github.com/mocha/) or [Jasmine](http://pivotal.github.com/jasmine/)?  This is the moment you've been waiting for.

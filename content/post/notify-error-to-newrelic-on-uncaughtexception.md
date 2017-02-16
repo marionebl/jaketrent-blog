@@ -12,7 +12,7 @@ tags:
 description: When your app goes down, call newrelic.notifyError with enough time to send
 keywords: js, javascript, express, nodejs, node, error handling, uncaughtException, newrelic, monitoring
 published: true
-image: http://i.imgur.com/ApNvY7f.jpg
+image: https://i.imgur.com/ApNvY7f.jpg
 ---
 
 NewRelic is a monitoring vendor that has good support for Node.js apps.  When your Node app goes down, you'll want to tell NewRelic about it.  It's surprisingly easy.

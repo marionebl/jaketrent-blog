@@ -11,7 +11,7 @@ tags:
 description: Sometimes there are different versions that bower packages rely on.  You can save your resolution choices in bower.json
 keywords: js, bower, bower.json, resolutions
 published: true
-image: http://i.imgur.com/t4XxrHn.jpg
+image: https://i.imgur.com/t4XxrHn.jpg
 ---
 
 When you specify dependencies for you app via Bower, some of the packages might rely on different versions of the same library.  You will have to resolve what version of libraries your app actually wants.  In other words, you break the tie.  But you don't want to break it every time, so save your choice.

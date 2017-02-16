@@ -12,7 +12,7 @@ tags:
 description: CSS Modules will make your styling life, maybe the world, so much better!
 keywords: css modules, webpack, css-loader, modules, local modules, icss, interoperable css
 published: true
-image: http://i.imgur.com/MtjAduk.jpg
+image: https://i.imgur.com/MtjAduk.jpg
 ---
 
 I heard a fantastic yesterday by [Glen Maddern](https://twitter.com/glenmaddern) where Interoperable CSS was well-illustrated as the fantastic CSS language advancement that it is.  I was happy to hear hushed ooo's and ahh's from the audience as they realized the power of what they were seeing.  I have been enjoying the benefits of CSS modules myself and my team and would share some of my favorite features in hopes that others will be inclined to use this feature as well.  Cleanse the world of global stylesheets!
@@ -51,6 +51,6 @@ So, how have CSS modules changed your life?  What do you love?  What could still
 
 I've published a [course on Pluralsight on CSS Modules in React](https://www.pluralsight.com/courses/react-styling-components).  In the course, you'll learn the supporting toolset.  You'll experience the difference of using CSS modules in a project compared to other solutions with a hands-on demo.  If you're interested, [check it out](https://www.pluralsight.com/courses/react-styling-components).  Hopefully it's helpful for you.
 
-![Styling React Components course screenshot](http://i.imgur.com/3mxagk7.png)
+![Styling React Components course screenshot](https://i.imgur.com/3mxagk7.png)
 
 [Styling React Components course](https://www.pluralsight.com/courses/react-styling-components)

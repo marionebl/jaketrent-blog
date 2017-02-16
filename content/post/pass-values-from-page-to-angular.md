@@ -11,7 +11,7 @@ tags:
 description: Bootstrap your Angular script with data from your page.
 keywords: angularjs, js, bootstrap, data passing, server-side page rendering
 published: true
-image: http://i.imgur.com/wVBKD.png
+image: https://i.imgur.com/wVBKD.png
 ---
 
 There are simple mechanisms for passing data from your web page to AngularJs.  One directive is called `ngInit`.  You may well need it.

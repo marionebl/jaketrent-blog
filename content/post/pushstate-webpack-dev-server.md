@@ -11,7 +11,7 @@ tags:
 description: Webpack's dev server for static assets can be quickly configured to handle JavaScript history api pushState.
 keywords: webpack, webpack-dev-server, pushState, history api, client router
 published: true
-image: http://i.imgur.com/x0m2sTq.jpg
+image: https://i.imgur.com/x0m2sTq.jpg
 ---
 
 Webpack has a jolly little server for your development environment called [`webpack-dev-server`](http://webpack.github.io/docs/webpack-dev-server.html).  With a touch of configuration, it can be convinced to handle JavaScript history API pushState.

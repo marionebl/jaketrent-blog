@@ -17,7 +17,7 @@ published: true
 
 [Sintra](http://www.sinatrarb.com/) is a light web server that's easy to start writing Ruby on.  Coming from Node/Express, I feel quite at home there.  Slim also feels like another JavaScript-world templating language, Jade, that I've had good experiences with.  [Slim](http://slim-lang.com/) makes for quick templating and feels quite nice compared to ERB if you can handle the Haml style.  It's likewise quick and easy to get working on Sinatra.
 
-![Slim templates](http://i.imgur.com/Dsnu3jA.png)
+![Slim templates](https://i.imgur.com/Dsnu3jA.png)
 
 <!--more-->
 
