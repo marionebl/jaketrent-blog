@@ -362,14 +362,12 @@ a {
   color: gray;
   font-family: Junction;
   font-weight: 100;
-  background: url("/img/readmore-bg.png") no-repeat center;
   padding: 15px 60px 15px 40px;
-  background-size: cover;
-  opacity: 0.8;
 }
 .paginator a:hover {
-  opacity: 1;
-  color: #3d3842;
+  background: url("/img/readmore.jpg") no-repeat center;
+  background-size: 100%;
+  color: #efefef;
 }
 .paginator-prev {}
 .paginator-next {}
@@ -428,7 +426,7 @@ a {
   .sun {
     position: absolute;
     top: -250px;
-    left: -490px;
+    left: -420px;
     display: block;
     width: 608px;
     height: 565px;
