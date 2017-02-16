@@ -33,8 +33,13 @@ a {
 .sun {
   display: none;
 }
+.header-inner,
+.footer-inner,
+.main {
+  padding-left: 10px;
+  padding-right: 10px;
+} 
 .header {
-  padding: 0 10px 0 10px;
   background: url(/img/topbar2-1600-40.jpg) no-repeat top center;
   background-size: 100% 100%;
   height: 43vw;
@@ -86,11 +91,11 @@ a {
 .main:before, .main:after {
   content: "";
   position: absolute;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#eda43a), to(transparent));
-  background-image: -webkit-linear-gradient(#eda43a, transparent);
-  background-image: -moz-linear-gradient(#eda43a, transparent);
-  background-image: -o-linear-gradient(#eda43a, transparent);
-  background-image: linear-gradient(#eda43a, transparent);
+  background-image: -webkit-gradient(linear, 0 0, 0 50vh, from(#eda43a), to(transparent));
+  background-image: -webkit-linear-gradient(#eda43a, transparent 50vh);
+  background-image: -moz-linear-gradient(#eda43a, transparent 50vh);
+  background-image: -o-linear-gradient(#eda43a, transparent 50vh);
+  background-image: linear-gradient(#eda43a, transparent 50vh);
   top: -8px;
   bottom: -8px;
   width: 8px;
@@ -385,7 +390,8 @@ a {
   color: #ababab;
   font-family: Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
   font-size: 12px;
-  padding: 50px 10px 30px 10px;
+  padding-top: 50px;
+  padding-bottom: 30px;
 }
 .footer-inner a {
   color: #8a8391;
@@ -540,5 +546,7 @@ a {
     margin-left: auto;
     margin-right: auto;
     max-width: 1000px;
+    padding-left: 40px;
+    padding-right: 40px;
   }
 }
