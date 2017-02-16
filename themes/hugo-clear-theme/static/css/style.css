@@ -197,18 +197,16 @@ a {
 .post-summ-link {
   display: inline-block;
   margin: 15px 0 0 0;
-  padding: 15px 60px 15px 40px;
+  padding: 25px 30px 25px 20px;
   text-decoration: none;
   color: gray;
   font-family: Junction;
   font-weight: 100;
-  background: url("/img/readmore-bg.png") no-repeat center;
-  background-size: cover;
-  opacity: 0.8;
 }
 .post-summ-link:hover {
-  opacity: 1;
-  color: #3d3842;
+  background: url("/img/readmore.jpg") no-repeat center;
+  background-size: 100%;
+  color: #efefef;
 }
 
 /* section: social */
@@ -526,6 +524,12 @@ a {
     font-size: 35px;
   }
 
+  /* section: post-summ (large) */
+  .post-summ-link {
+    padding: 25px 50px 25px 40px;
+  }
+
+  /* section: post (large) */
   .post-title {
     font-size: 50px;
   }
