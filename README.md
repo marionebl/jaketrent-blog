@@ -30,6 +30,6 @@ git push heroku-beta master
 ## Deploy to Prod
 
 ```
-heroku config:add BUILDPACK_URL="https://github.com/roperzh/heroku-buildpack-hugo.git"
+heroku buildpacks:set https://github.com/roperzh/heroku-buildpack-hugo.git -a jaketrent-blog
 git push heroku master
 ```

@@ -14,14 +14,14 @@
           In
           {{ $baseUrl := .Site.BaseURL }}
           {{ range .Params.categories }}
-            <a class="post-categories-link" href="{{ $baseUrl }}categories/{{ . | urlize }}">{{ . }}</a>
+            <a class="post-categories-link" href="{{ $baseUrl }}/categories/{{ . | urlize }}">{{ . }}</a>
           {{ end }}
         </div>
         <div class="post-tags">
           Tags
           {{ $baseUrl := .Site.BaseURL }}
           {{ range .Params.tags }}
-            <a class="post-tags-link" href="{{ $baseUrl }}tags/{{ . | urlize }}">#{{ . }}</a>
+            <a class="post-tags-link" href="{{ $baseUrl }}/tags/{{ . | urlize }}">#{{ . }}</a>
           {{ end }}
         </div>
       </div>
