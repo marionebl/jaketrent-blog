@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ .Title | default .Site.Title }}</title>
+    {{ if .Site.Params.description }}
+      <meta name="description" content="{{ .Site.Params.description }}" />
+    {{ end }}
+    {{ if .Site.Params.googleAuthor }}
+      <meta name="author" content="{{ .Site.Params.googleAuthor }}" />
+    {{ end }}
+    {{ if .Site.Params.copyright }}
+      <meta name="copyright" content="{{ .Site.Params.copyright }}" />
+    {{ end }}
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {{ .Hugo.Generator }}
+
+    {{ if .IsPage }}
+      <meta property="og:title" content="{{ .Title }}" />
+      <meta property="og:type" content="article" />
+      <meta property="og:url" content="{{ .Site.BaseURL }}{{ .URL }}" />
+      <meta property="og:description" content="{{ .Description }}" />
+      {{ if .Params.image }}
+        <meta property="og:image" content="{{ .Params.image }}" />
+      {{ end }}
+
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:title" content="{{ .Title }}" />
+      <meta name="twitter:description" content="{{ .Description }}" />
+      {{ if .Params.image }}
+        <meta name="twitter:image" content="{{ .Params.image }}" />
+      {{ end }}
+
+    {{ end }}
+
+    {{ if .IsPage }}
+      <link href="{{ .Site.BaseURL }}{{ .Section }}/index.xml" rel="alternate" title="{{ .Site.Title }} {{ .Section | pluralize | title }}" type="application/rss+xml" />
+    {{ else }}
+      <link href="{{ .Site.BaseURL }}index.xml" rel="alternate" title="{{ .Site.Title }}" type="application/rss+xml" />
+    {{ end }}
+
+    <link rel="stylesheet" href="{{ .Site.BaseURL }}/css/style.css" type="text/css" media="all" />
+  </head>

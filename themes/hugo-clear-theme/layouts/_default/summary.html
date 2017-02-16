@@ -1,0 +1,14 @@
+<article class="post-summ">
+  <header class="post-summ-header">
+    <h2 class="post-summ-title">
+      <a class="post-summ-title-link" href="{{ .URL }}">{{ .Title }}</a>
+    </h2>
+  </header>
+  <div class="post-summ-content">
+    {{ .Summary }}
+    {{ if .Params.image }}
+      <img class="post-summ-image" src="{{ .Params.image }}" />
+    {{ end }}
+  </div>
+  <a class="post-summ-link" href="{{ .URL }}">Read more<span class="post-summ-link-icon">→</span></a>
+</article>
