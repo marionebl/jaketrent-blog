@@ -1,7 +1,4 @@
----
-layout: nil
----
 User-agent: *
 Disallow: /404.html
 
-Sitemap: {{ site.url }}/sitemap.xml
+Sitemap: https://jaketrent.com/sitemap.xml
