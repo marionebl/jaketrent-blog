@@ -12,7 +12,13 @@ params:
   description: "Jibber jabber on tech topics around code, productivity, & leadership."
   googleAuthor: "https://plus.google.com/115032056022257436849"
   copyright: "http://creativecommons.org/licenses/by/3.0/us/"
+  googleAnalyticsTrackingId: "UA-16224416-4"
 
 author:
   name: "Jake Trent"
   bio: "Supes amaze"
+
+sitemap:
+  changefreq: "monthly"
+  priority: 0.5
+  filename: "sitemap.xml"
