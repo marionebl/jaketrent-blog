@@ -18,7 +18,7 @@
           {{ end }}
         </div>
         <div class="post-tags">
-          tags
+          Tags
           {{ $baseUrl := .Site.BaseURL }}
           {{ range .Params.tags }}
             <a class="post-tags-link" href="{{ $baseUrl }}tags/{{ . | urlize }}">#{{ . }}</a>

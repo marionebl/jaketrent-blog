@@ -3,7 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <title>{{ .Title | default .Site.Title }}</title>
-    {{ if .Site.Params.description }}
+    {{ if .IsPage }}
+      <meta name="description" content="{{ .Description }}" />
+    {{ else }}
       <meta name="description" content="{{ .Site.Params.description }}" />
     {{ end }}
     {{ if .Site.Params.googleAuthor }}
