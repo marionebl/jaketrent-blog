@@ -4,14 +4,12 @@
   font-weight: bold;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'Junction';
   src: url('/type/junction-light.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'Junction';
   src: url('/type/junction-regular.woff') format('woff');
@@ -214,6 +212,30 @@ a {
   background: url("/img/readmore.jpg") no-repeat center;
   background-size: 100%;
   color: #efefef;
+}
+
+/* section: book-summ */
+.book-summs {
+  display: flex;
+  flex-wrap: wrap;
+}
+.book-summ {
+  padding: 0 0 35px 0;
+}
+.book-summ-link {
+  display: inline-block;
+  margin: 15px 0 0 0;
+  padding: 25px 30px 25px 20px;
+  text-decoration: none;
+  color: gray;
+  font-family: Junction;
+  font-weight: 100;
+}
+.book-summ-image {
+  max-width: 200px;
+}
+.book-summ-link:hover .book-summ-image {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, .5);
 }
 
 /* section: social */

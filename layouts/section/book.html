@@ -1,0 +1,20 @@
+{{ partial "head.html" . }}
+
+{{ partial "header.html" . }}
+
+<main class="main">
+  <div class="list">
+    <h2 class="list-title">Books</h2>
+    <div class="book-summs">
+      {{ $paginator := .Paginate (where .Data.Pages "Section" "book") 32 }}
+      {{ range $paginator.Pages }}
+        {{ .Render "summary" }}
+      {{ end }}
+    </div>
+  </div>
+  {{ partial "paginator.html" . }}
+</main>
+
+{{ partial "footer.html" }}
+
+{{ partial "foot.html" . }}

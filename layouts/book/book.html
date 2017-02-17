@@ -1,0 +1,46 @@
+{{ partial "head.html" . }}
+
+{{ partial "header.html" . }}
+
+<main class="main">
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">{{ .Title }}</h1>
+      <div class="post-subheader">
+        <time class="post-date" pubdate datetime="{{ .Date }}">
+          {{- .Date.Format "1 Jan 2006" -}}
+        </time>
+        <div class="post-categories">
+          In
+          {{ $baseUrl := .Site.BaseURL }}
+          {{ range .Params.categories }}
+            <a class="post-categories-link" href="{{ $baseUrl }}/categories/{{ . | urlize }}">{{ . }}</a>
+          {{ end }}
+        </div>
+        <div class="post-tags">
+          Tags
+          {{ $baseUrl := .Site.BaseURL }}
+          {{ range .Params.tags }}
+            <a class="post-tags-link" href="{{ $baseUrl }}/tags/{{ . | urlize }}">#{{ . }}</a>
+          {{ end }}
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      {{ if .Params.image }}
+        <img class="post-image" src="{{ .Params.image }}" />
+      {{ end }}
+      {{ .Content }}
+    </div>
+    <footer class="post-footer">
+      {{ partial "social.html" . }}
+    </footem>
+  </article>
+  <div class="comments">
+    {{ template "_internal/disqus.html" . }}
+  </div>
+</main>
+
+{{ partial "footer.html" . }}
+
+{{ partial "foot.html" . }}
