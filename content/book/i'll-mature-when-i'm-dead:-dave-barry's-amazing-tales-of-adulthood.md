@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "http://amzn.to/1Ly5yGw"
 author: "Dave Barry"
-date: "2015-09-16"
+date: "2015-09-02"
 categories:
   - "Book"
 comments: true
-completionDate: "2015-09-02"
 description: "A funny treatment of what being an adult, a parent, and generally a person who needs to be responsible, can feel like.  A little crass at times.  "
 draft: false
 keywords: ""

@@ -1,11 +1,10 @@
 ---
 affiliateUrl: ""
 author: "Jim Gaffigan"
-date: "2015-10-07"
+date: "2014-07-29"
 categories:
   - "Book"
 comments: true
-completionDate: "2014-07-29"
 description: "Plenty of dad-related anecdotes that touch on Jim's favorite topic of food.  His jokes about parenting are at once impossible and relatable."
 draft: false
 keywords: ""

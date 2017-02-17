@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "\N"
 author: "Michael T. Nygard"
-date: "2014-10-16"
+date: "2009-08-18"
 categories:
   - "Book"
 comments: true
-completionDate: "2009-08-18"
 description: "Releasing software doesn’t just mean meeting the product feature requirements. It means meeting certain non-functional requirements that make the app "
 draft: false
 keywords: ""

@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "http://www.amazon.com/gp/product/160641898X/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=160641898X&linkCode=as2&tag=jaktre-20&linkId=Z7O2YJ7LGUZVM73P"
 author: "Heidi Swinton"
-date: "2014-10-26"
+date: "2014-06-01"
 categories:
   - "Book"
 comments: true
-completionDate: "2014-06-01"
 description: "This is the biography of Thomas Monson, President of The Church of Jesus Christ of Latter-day Saints. Reading the account of his life was super inspir"
 draft: false
 keywords: ""

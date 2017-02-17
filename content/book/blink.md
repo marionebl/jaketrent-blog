@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "http://www.amazon.com/gp/product/B003V1WTDG/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B003V1WTDG&linkCode=as2&tag=jaktre-20&linkId=GYTME3UOH4VEYSJ5"
 author: "Malcolm Gladwell"
-date: "2014-11-28"
+date: "2014-07-15"
 categories:
   - "Book"
 comments: true
-completionDate: "2014-07-15"
 description: "Ever the great story-teller, Malcolm presents several interesting episodes here.  Each is meant to prove that we make snap judgements as a part of our"
 draft: false
 keywords: ""

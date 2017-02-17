@@ -5,7 +5,6 @@ date: "2015-05-04"
 categories:
   - "Book"
 comments: true
-completionDate: "2015-05-04"
 description: "You have a unique combination of strengths.  These are the activities that make you strong.  Use them more often, and you will be more engaged and pro"
 draft: false
 keywords: ""

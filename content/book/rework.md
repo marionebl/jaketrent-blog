@@ -5,7 +5,6 @@ date: "2015-01-16"
 categories:
   - "Book"
 comments: true
-completionDate: "2015-01-16"
 description: "A bit of a rant but full of good things to say for people in small business.  Great counter-culture wisdom about being frugal, being small, and ignori"
 draft: false
 keywords: ""

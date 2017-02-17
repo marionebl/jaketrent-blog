@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "http://www.amazon.com/gp/product/B005IEGK5C/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B005IEGK5C&linkCode=as2&tag=jaktre-20&linkId=ASNSZAYC62YXE3OK"
 author: "George Dyson"
-date: "2014-11-28"
+date: "2014-09-20"
 categories:
   - "Book"
 comments: true
-completionDate: "2014-09-20"
 description: "The foundational moments of general computing are chronicled here.  The genius of those early pioneers is highlighted.  It's a little dry at times, bu"
 draft: false
 keywords: ""

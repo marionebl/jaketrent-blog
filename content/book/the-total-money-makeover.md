@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "\N"
 author: "Dave Ramsey"
-date: "2014-10-16"
+date: "2009-10-01"
 categories:
   - "Book"
 comments: true
-completionDate: "2009-10-01"
 description: "Dave went broke and vowed it would never happen to him again. He learned valuable principles in handling money and shares them with his intense person"
 draft: false
 keywords: ""

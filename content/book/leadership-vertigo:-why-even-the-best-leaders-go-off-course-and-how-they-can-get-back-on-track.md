@@ -5,7 +5,6 @@ date: "2015-05-17"
 categories:
   - "Book"
 comments: true
-completionDate: "2015-05-17"
 description: "Every leader can become distracted by false signals from the brain that can deter them from acting their best.  To minimize episodes of vertigo, refle"
 draft: false
 keywords: ""

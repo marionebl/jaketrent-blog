@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "http://amzn.to/1NCNYnz"
 author: "Liz Wiseman"
-date: "2015-08-18"
+date: "2015-08-07"
 categories:
   - "Book"
 comments: true
-completionDate: "2015-08-07"
 description: "Inspiring thoughts on not underestimating the learner.  The person in a curious, growth mindset is often going to go faster and innovate in unforeseen"
 draft: false
 keywords: ""

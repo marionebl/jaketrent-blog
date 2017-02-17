@@ -1,11 +1,10 @@
 ---
 affiliateUrl: ""
 author: "Tom Brokaw"
-date: "2015-10-07"
+date: "2015-07-10"
 categories:
   - "Book"
 comments: true
-completionDate: "2015-07-10"
 description: "Touching reflections from those involved or connected to World War II.  It is amazing to consider the real lives affected by that period marked by con"
 draft: false
 keywords: ""

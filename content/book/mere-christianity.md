@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "http://www.amazon.com/gp/product/B002BD2UR0/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B002BD2UR0&linkCode=as2&tag=jaktre-20&linkId=XN7YZCCX3CILRA3L"
 author: "C.S. Lewis"
-date: "2015-08-06"
+date: "2009-06-15"
 categories:
   - "Book"
 comments: true
-completionDate: "2009-06-15"
 description: "An inspiring work from a time that those of faith had need to support one another.  Still applicable now.  Great thoughts from a great mind and heart "
 draft: false
 keywords: ""

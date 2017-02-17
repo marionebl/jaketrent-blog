@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "http://amzn.to/1gqPVIs"
 author: "Harold S. Kushner"
-date: "2015-09-16"
+date: "2015-09-11"
 categories:
   - "Book"
 comments: true
-completionDate: "2015-09-11"
 description: "Kushner explores the societal and personal fears.  His thoughts are generally philosophical and theological.  He had some good thoughts.  With additio"
 draft: false
 keywords: ""

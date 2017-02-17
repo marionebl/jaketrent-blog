@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "http://www.amazon.com/gp/product/B002ZAJIUG/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B002ZAJIUG&linkCode=as2&tag=jaktre-20&linkId=4PGZ3KSRFIWM45KE"
 author: "Mary Buffet & David Clark"
-date: "2014-10-26"
+date: "2014-05-01"
 categories:
   - "Book"
 comments: true
-completionDate: "2014-05-01"
 description: "It turns out Warren Buffet has some real people and management skills behind his sprawling financial success. These are down-to-earth and useful insig"
 draft: false
 keywords: ""

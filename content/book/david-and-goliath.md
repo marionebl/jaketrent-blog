@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "http://www.amazon.com/gp/product/0316204374/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=0316204374&linkCode=as2&tag=jaktre-20&linkId=AJOOCGHXIU3LKGZ3"
 author: "Malcolm Gladwell"
-date: "2015-06-22"
+date: "2015-06-18"
 categories:
   - "Book"
 comments: true
-completionDate: "2015-06-18"
 description: "We often think of underdogs as having absolute disadvantages.  Often, these disadvantages lead us to compensate and learn new advantages or play by di"
 draft: false
 keywords: ""

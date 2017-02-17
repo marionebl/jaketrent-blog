@@ -5,7 +5,6 @@ date: "2015-05-16"
 categories:
   - "Book"
 comments: true
-completionDate: "2015-05-16"
 description: "Great coverage on overall React library.  Better editing than previous Bleeding Edge Press books.  Good examples.  Scattershot survey of React testing"
 draft: false
 keywords: ""

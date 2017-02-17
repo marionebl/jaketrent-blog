@@ -5,7 +5,6 @@ date: "2015-05-27"
 categories:
   - "Book"
 comments: true
-completionDate: "2015-05-27"
 description: "Awesome exhortation to work together and for one another.  We can all do little things that encourage selflessness and safety within our organizations"
 draft: false
 keywords: ""

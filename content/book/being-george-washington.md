@@ -1,11 +1,10 @@
 ---
 affiliateUrl: ""
 author: "Glenn Beck"
-date: "2015-10-09"
+date: "2014-11-11"
 categories:
   - "Book"
 comments: true
-completionDate: "2014-11-11"
 description: "George Washington was just a human.  Despite and because of his humanity, he accomplished great things personally and for our nation.  What if we all "
 draft: false
 keywords: ""

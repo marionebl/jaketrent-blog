@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "http://www.amazon.com/gp/product/B000PC0SPU/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B000PC0SPU&linkCode=as2&tag=jaktre-20&linkId=DUSVHXJNHAF32BLX"
 author: "Daniel Pink"
-date: "2014-10-26"
+date: "2010-11-08"
 categories:
   - "Book"
 comments: true
-completionDate: "2010-11-08"
 description: "Abundance, automation, and Asia have created a new world. In this world, inventors who can create and synthesize ideas into being will become more and"
 draft: false
 keywords: ""

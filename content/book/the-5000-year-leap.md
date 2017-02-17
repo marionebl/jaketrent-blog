@@ -5,7 +5,6 @@ date: "2015-01-28"
 categories:
   - "Book"
 comments: true
-completionDate: "2015-01-28"
 description: "Puts forth the principles that the founders of America espoused in their nation building.  Quoting from the words of the actual founders helps make th"
 draft: false
 keywords: ""

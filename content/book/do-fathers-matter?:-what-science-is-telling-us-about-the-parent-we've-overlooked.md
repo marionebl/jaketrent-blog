@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "http://amzn.to/1KtJg8h"
 author: "Paul Raeburn"
-date: "2015-08-18"
+date: "2015-08-13"
 categories:
   - "Book"
 comments: true
-completionDate: "2015-08-13"
 description: "Really interesting reports on issues of genetics, child development previous to, at conception, during pregnancy, in the home, and over the generation"
 draft: false
 keywords: ""

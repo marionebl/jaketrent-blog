@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "http://www.amazon.com/gp/product/B009JU6UPG/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B009JU6UPG&linkCode=as2&tag=jaktre-20&linkId=OSNWKB6EY7RCVHLK"
 author: "Chip & Dan Heath"
-date: "2014-10-26"
+date: "2014-05-10"
 categories:
   - "Book"
 comments: true
-completionDate: "2014-05-10"
 description: "There are specific traits of being human that make us not natural at making great decisions. Recognizing these weaknesses and pitfalls and learning ne"
 draft: false
 keywords: ""

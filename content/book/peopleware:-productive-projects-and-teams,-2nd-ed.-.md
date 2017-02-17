@@ -1,11 +1,10 @@
 ---
 affiliateUrl: "http://www.amazon.com/gp/product/0321934113/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=0321934113&linkCode=as2&tag=jaktre-20&linkId=ONBBIQYTS7YVXE2T"
 author: "Tom DeMarco"
-date: "2014-12-06"
+date: "2007-05-31"
 categories:
   - "Book"
 comments: true
-completionDate: "2007-05-31"
 description: "It is refreshing to remember that people are the single greatest asset in a creative business.  With intention and care, people can be treated in such"
 draft: false
 keywords: ""
