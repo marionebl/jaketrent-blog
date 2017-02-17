@@ -6,7 +6,7 @@ categories:
   - "Book"
 comments: true
 completionDate: "2009-05-06"
-description: "This is the first "Effective" style book I've read.  It was chock full of great patterns I could use in my code.  Still hold it as a standard by which"
+description: "This is the first \"Effective\" style book I've read.  It was chock full of great patterns I could use in my code.  Still hold it as a standard by which"
 draft: false
 keywords: ""
 layout: "book"
