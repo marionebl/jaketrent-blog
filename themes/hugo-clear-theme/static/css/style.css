@@ -63,13 +63,15 @@ a {
   margin: 0 4px 0 0;
   color: white;
 }
-.topnav-link__blue.active,
+/* .topnav-link__blue.active, */
 .topnav-link__blue:hover {
   color: #3b8da0;
 }
+/* .topnav-link__orange.active, */
 .topnav-link__orange:hover {
   color: #e36320;
 }
+/* .topnav-link__green.active, */
 .topnav-link__green:hover {
   color: #94c24c;
 }
