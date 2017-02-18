@@ -8,6 +8,15 @@
     {{ else }}
       <meta name="description" content="{{ .Site.Params.description }}" />
     {{ end }}
+    {{ if .IsPage }}
+      {{ if .Params.metaKeywords }}
+        <meta name="keywords" content="{{ .Params.metaKeywords }}" />
+      {{ else if .Params.tags }}
+        <meta name="keywords" content="{{ delimit .Params.tags "," }}" />
+      {{ end }}
+    {{ else }}
+      <meta name="keywords" content="{{ .Site.Params.keywords }}" />
+    {{ end }}
     {{ if .Site.Params.googleAuthor }}
       <meta name="author" content="{{ .Site.Params.googleAuthor }}" />
     {{ end }}
