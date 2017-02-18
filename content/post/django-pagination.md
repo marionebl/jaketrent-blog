@@ -54,13 +54,11 @@ def paginate(request, obj_list, num_per_page=10):
 </ul>
 
 You'll have to change your iteration of your object in your template to look for the entry.object_list.  That is because your object is really a paginator object now.
-{% raw %}
 ```python
 {% for e in entries.object_list %}
 	{{ e.stuff_to_print }}	
 {% endfor %}
 ```
-{% endraw %}
 
 Finally, we have to put the paginator UI on the page.  Again, we can use the paginator object's very nice functions to help us here.  Because I want to reuse this pagination control and use it on many different objects, I'm going to make an inclusion tag for it:
 ```python
@@ -81,7 +79,6 @@ To use it, load the custom tag for your template, place it where you want your p
 ```
 
 The included html (_paginator.html) is thus:
-{% raw %}
 ```html
 {% if object.object_list %}
 
@@ -103,7 +100,6 @@ The included html (_paginator.html) is thus:
 
 {% endif %}
 ```
-{% endraw %}
 
 <strong>Note:</strong>
 <ul>

@@ -80,7 +80,6 @@ Now we have our xml transformed into a sequence of xs:string, each a json object
 
 The XQuery expression that renders the html page includes a call to populate the Javascript "lang" object with the json:
 
-{% raw %}
 ```
 declare function lang-dictionary($lang as xs:string?) as element(script) {
   <script type="text/javascript">
@@ -92,7 +91,6 @@ declare function lang-dictionary($lang as xs:string?) as element(script) {
   </script>
 };
 ```
-{% endraw %}
 
 Note that if you provide a pre-known set of i18n string $keys to the get-lang-dict() function, it will only add those resources to the dictionary.  Otherwsie, all the resources in your bundle are added.
 

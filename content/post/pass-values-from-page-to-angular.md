@@ -37,14 +37,12 @@ $http.get('/comments')
 
 Then your template will automatically have the data in scope.  And the template ([Slim](http://slim-lang.org) syntax used below) can look like this:
 
-{% codeblock lang:ruby %}
-{% raw %}
+```ruby
 h1 Comments
 ul
   li ng-repeat="comment in comments" 
     | {{ comment }}
-{% endraw %}
-{% endcodeblock %}
+```
 
 Now when we add a new comment via Ajax, we can push it right into the comment collection, and the page is updated by Angular with the appropriate data.  Or if we want to perform an operation on a pre-existing comment, it's easy to do via an AJAX operation and display the result.
 
@@ -74,8 +72,7 @@ From the `ngInit` docs:
   
 Our server/client mixture code might look something like this:
 
-{% codeblock lang:ruby %}
-{% raw %}
+```ruby
 h1 Comments
 ul
   - comments.each_with_index do |comment, i|
@@ -83,8 +80,7 @@ ul
       = comment
       | Likes for this comment: {{commentLikeCount[i]}}
       a ng-click="like(commentLikeCount[i])"
-{% endraw %}
-{% endcodeblock %}
+```
 
 It's important to realize where data is coming from in this example.  The syntax `=` as in `= comment` and `#{}` as in `#{comment.likeCount}` are server-rendered bits.  As you know, the curlies and the ng attribute syntax is for Angular's client side rendering. 
 

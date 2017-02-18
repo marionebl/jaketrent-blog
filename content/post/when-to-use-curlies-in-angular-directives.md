@@ -23,18 +23,16 @@ Angularjs has some sweet built-in directives.  Sometimes it can be confusing whe
 By "curlies", I mean curly braces.  The difference of when to use or not use them looks like the following.
 
 Use them:
-{%codeblock lang:html%}
-{%raw%}
+
+```html
 <element ng-attribute="{{valWithCurlies}}" />
-{%endraw%}
-{%endcodeblock%}
+```
 
 Or despise them:
-{%codeblock lang:html%}
-{%raw%}
+
+```html
 <element ng-attribute="valWithNone" />
-{%endraw%}
-{%endcodeblock%}
+```
 
 ## Two Rules of Thumb
 
@@ -51,21 +49,17 @@ There are only a few examples of directives using curlies in their attributes.  
 
 As in the source of an image, such as:
 
-{%codeblock lang:html%}
-{%raw%}
+```html
 <img ng-src="/images/{{tool.icon_name}}.png" />
-{%endraw%}
-{%endcodeblock%}
+```
 
 ### ngHref
 
 As in a link to an html page, such as:
 
-{%codeblock lang:html%}
-{%raw%}
+```html
 <a ng-href="http://google.com?q={{query}}">See Google Results</a>
-{%endraw%}
-{%endcodeblock%}
+```
 
 ## Something more Precise?
 

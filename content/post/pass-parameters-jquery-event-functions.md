@@ -32,12 +32,10 @@ $(document).ready(function() {
 
 So what's the key?  Embed the data that you want in id, class, or just any attribute of any element that has a per-item/row presence.  That explains the substring() calls.  My attributes look like this:
 
-{% raw %}
 ```html
 <a class="voter-up" id="link-hymn-u-{{ h.id }}" href="#">...something...</a>
 ```
 
 The {{ curlies }} are for django templates, which are awesome, btw.
-{% endraw %}
 
   

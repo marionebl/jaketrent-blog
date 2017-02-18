@@ -113,12 +113,10 @@ But you wouldn't normally just blast out strings via your Javascript code.  At l
 
 So, if we were using a Handlebars template to blast our i18n strings plus markup to the DOM, our handlebars template could look like this:
 
-{% raw %}
 ```javascript
 <h1>{{ str.welcome }}</h1>
 <!-- you know, something super huge and inviting -->
 ```
-{% endraw %}
 
 And you could import it and use it in your module:
 

@@ -30,14 +30,12 @@ angular.module('myapp').controller 'MyCtrl', ($scope) ->
 
 Then in my template I don't know, nor do I need to know, where the attribute comes from.  I just reference it in `my-app.jade`:
 
-{% raw %}
 ```haml
 html(ng-app="myapp")
   body(ng-controller="MyCtrl")
     h1 My Var: {{myVar}}
     button(ng-click="myFun()") Does Stuff
 ```
-{% endraw %}
 
 ## Namespaced Angular Controller Attributes
 

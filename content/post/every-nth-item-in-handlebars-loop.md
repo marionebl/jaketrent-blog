@@ -11,7 +11,7 @@ tags:
 image: http://blog.teamtreehouse.com/wp-content/uploads/2011/03/handlebars.png
 ---
 
-Have you ever wanted to do something special every nth time through a Handlebars loop?  The built-in `{% raw %}{{#each}}{% endraw %}` will loop through your items just fine.  It lacks a few features.  For one, you don't have access to the loop index, though you can [find it](http://rockycode.com/blog/handlebars-loop-index/).  Without the index and simple comparisons like modulus, length of the array, and equals, you'll be creating your own Handlebars helpers.  Here's an example of one.
+Have you ever wanted to do something special every nth time through a Handlebars loop?  The built-in `{{#each}}` will loop through your items just fine.  It lacks a few features.  For one, you don't have access to the loop index, though you can [find it](http://rockycode.com/blog/handlebars-loop-index/).  Without the index and simple comparisons like modulus, length of the array, and equals, you'll be creating your own Handlebars helpers.  Here's an example of one.
 
 <!--more-->
 
@@ -49,7 +49,7 @@ Note: This implementation uses [underscore `_.extend()`](http://underscorejs.org
 
 ## Scenario: Print rows
 
-Here's a scenario where this is useful:  In twitter bootstrap, each "span" div is inside of a "row-fluid" div (if using bootstrap responsive.css).  So, if I want three things, let's say videos, per row printed in the markup, you can't just use `{% raw %}{{#each}}{% endraw %}` because all it does is iterate through the videos.  You could print the "span4"s but you wouldn't know when to print the "row-fluid".  Hence, we need our helper.
+Here's a scenario where this is useful:  In twitter bootstrap, each "span" div is inside of a "row-fluid" div (if using bootstrap responsive.css).  So, if I want three things, let's say videos, per row printed in the markup, you can't just use `{{#each}}` because all it does is iterate through the videos.  You could print the "span4"s but you wouldn't know when to print the "row-fluid".  Hence, we need our helper.
 
 ```html
 {{#everyNth myArray theNumberN}}
