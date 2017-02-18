@@ -448,6 +448,25 @@ a {
 .paginator-prev {}
 .paginator-next {}
 
+/* section: error (sm) */
+.error {
+  padding: 10vw 0;
+  text-align: center;
+}
+.error-title {
+  font-size: 20vw;
+  line-height: 22vw;
+  margin: 0;
+  color: #4e2b55;
+  font-family: "Junction";
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+.error-subtitle {
+  font-size: 3vw;
+  line-height: 4vw;
+  text-transform: uppercase;
+}
+
 /* section: footer (sm) */
 .footer-border {
   background: #151412 url(/img/footer2-1600-40.jpg) no-repeat top center;
