@@ -14,15 +14,13 @@
         </div>
         Posts
       </a>
-      {{ if getenv "FEATURE_BOOK" }}
-        <a class="topnav-link topnav-link__orange {{ if eq .Section "book" }}active{{ end }}" href="/book">
-          <div class="topnav-link-icon">
-            <div class="topnav-link-icon-line"></div>
-            <div class="topnav-link-icon-planet"></div>
-          </div>
-          Books
-        </a>
-      {{ end }}
+      <a class="topnav-link topnav-link__orange {{ if eq .Section "book" }}active{{ end }}" href="/book">
+        <div class="topnav-link-icon">
+          <div class="topnav-link-icon-line"></div>
+          <div class="topnav-link-icon-planet"></div>
+        </div>
+        Books
+      </a>
       <!-- <a class="topnav-link topnav-link__green" href="/work">
            <div class="topnav-link-icon">
            <div class="topnav-link-icon-line"></div>
