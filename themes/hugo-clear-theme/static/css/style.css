@@ -352,7 +352,7 @@ a {
   box-shadow: rgba(0,0,0,0.25) 0 1px 1px;
   border: #fff 0.2em solid;
 }
-.post-content pre {
+.post-content pre code {
   font-family: Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
   overflow: scroll;
   overflow-y: hidden;
@@ -361,7 +361,8 @@ a {
   overflow-x: auto;
   line-height: 1.45em;
   margin: 0;
-  background: #f3e2ed;
+  background: rgb(40, 44, 52);
+  color: #f3e2ed;
   border-radius: 0.3em;
   box-shadow: rgba(0,0,0,0.45) 0 1px 4px;
   border: #fff 0.5em solid;
