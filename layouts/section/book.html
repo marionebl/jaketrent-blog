@@ -6,7 +6,7 @@
   <div class="list">
     <h2 class="list-title">Books</h2>
     <div class="book-summs">
-      {{ $paginator := .Paginate (sort (where .Data.Pages "Section" "book") .Params.completionDate) 32 }}
+      {{ $paginator := .Paginate (where .Data.Pages "Section" "book") 32 }}
       {{ range $paginator.Pages }}
         {{ .Render "summary" }}
       {{ end }}
