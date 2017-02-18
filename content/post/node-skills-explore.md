@@ -10,7 +10,7 @@ tags:
   - "nodejs"
   - "interviewing"
 description: A collection of Node.js skills to explore in an interview
-keywords: nodejs, js, interview, coding interview, technical interview, nodejs interview
+metaKeywords: nodejs, js, interview, coding interview, technical interview, nodejs interview
 published: true
 image: https://i.imgur.com/9WglUIw.jpg
 ---

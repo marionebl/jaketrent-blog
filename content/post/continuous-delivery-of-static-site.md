@@ -10,7 +10,7 @@ tags:
   - "continuous-delivery"
   - "feature-toggles"
 description: A story of my migration from Octopress to Hugo static site generator
-keywords: hugo, static-site, continuous delivery, feature toggles, main line development, environment variables
+metaKeywords: hugo, static-site, continuous delivery, feature toggles, main line development, environment variables
 published: true
 image: http://i.imgur.com/9BoMtUO.jpg
 ---

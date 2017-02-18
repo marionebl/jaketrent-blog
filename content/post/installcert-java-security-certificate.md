@@ -11,7 +11,7 @@ tags:
   - "security"
   - "ubuntu"
 description: Sometimes you need to install a security certificate for authentication to work for certain services -- services that are accessed by your java application 
-keywords: java, linux, security, ubuntu
+metaKeywords: java, linux, security, ubuntu
 published: true
 ---
 

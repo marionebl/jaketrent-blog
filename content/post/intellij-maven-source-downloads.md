@@ -9,7 +9,7 @@ tags:
   - "intellij"
   - "maven"
 description: Debugging time is a blessed time in one's day where the hotkeys for continue, step into, step over, and others often grace the pads of the programmer's fing
-keywords: intellij, maven
+metaKeywords: intellij, maven
 published: true
 ---
 

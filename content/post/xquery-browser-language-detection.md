@@ -11,7 +11,7 @@ tags:
   - "marklogic"
   - "xquery"
 description: If you've created an internationalized website lately, you've probably implemented some sort of language chooser widget in your site ui to allow your users 
-keywords: browser, http, marklogic, xquery
+metaKeywords: browser, http, marklogic, xquery
 published: true
 ---
 

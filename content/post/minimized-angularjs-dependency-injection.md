@@ -9,7 +9,7 @@ tags:
   - "js"
   - "angularjs"
 description: I just minified my AngularJs code, and all my dependency injection broke.  I'm getting a "Unknown Provider" message.
-keywords: js, javascript, angular, angularjs, dependency injection, minimization, uglify
+metaKeywords: js, javascript, angular, angularjs, dependency injection, minimization, uglify
 published: true
 image: https://i.imgur.com/wVBKD.png
 ---

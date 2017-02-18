@@ -10,7 +10,7 @@ tags:
   - "angularjs"
   - "conf"
 description: Ng-Conf was the first Angular conference.  It was rockin.  Let's do it again!
-keywords: js, javascript, conf, angular conf, angular.js, ngconf
+metaKeywords: js, javascript, conf, angular conf, angular.js, ngconf
 published: true
 image: https://i.imgur.com/4swtO6x.jpg
 ---

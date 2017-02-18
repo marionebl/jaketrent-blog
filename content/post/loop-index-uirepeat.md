@@ -10,7 +10,7 @@ tags:
   - "facelets"
   - "jsf"
 description: Sometimes it's useful to know what the invariant value is for your loop within a facelets loop.  I use ui:repeat a lot, but have seen <a href="http://aprila
-keywords: a4j, facelets, jsf
+metaKeywords: a4j, facelets, jsf
 published: true
 ---
 

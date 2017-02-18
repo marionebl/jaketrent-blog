@@ -11,7 +11,7 @@ tags:
   - "slim"
   - "rails"
 description: Sinatra is quick.  Slim templates are quick.  Together, Slim fits Sinatra quite nicely.
-keywords: sinatra, ruby, slim, slim templates, rails, slim-rails
+metaKeywords: sinatra, ruby, slim, slim templates, rails, slim-rails
 published: true
 ---
 

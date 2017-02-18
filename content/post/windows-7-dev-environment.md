@@ -8,7 +8,7 @@ categories:
 tags:
   - "windows7"
 description: I recently rebuilt my dev box into a Windows 7 environment, coming from Ubuntu 10.04 Lucid Lynx.  The reasons were varied, and most weren't very significant
-keywords: windows7
+metaKeywords: windows7
 published: true
 ---
 

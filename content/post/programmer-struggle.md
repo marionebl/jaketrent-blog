@@ -8,7 +8,7 @@ categories:
 tags:
   - "learning"
 description: The life of a programmer is mostly a never-ending struggle.
-keywords: learning, struggle, programming
+metaKeywords: learning, struggle, programming
 published: true
 sourcePerson: "Aaron Hillegass"
 sourceUrl: "https://books.google.com/books?id=yxwiAgAAQBAJ&pg=PA4&lpg=PA4&ots=MYkju-O5W3&sig=u4R8RZ1EhemFcQcD-3CCwllcEcw&hl=en&sa=X&ei=W5jsVOiuEsG7ogSG2YGADw&ved=0CDAQ6AEwAw#v=onepage"

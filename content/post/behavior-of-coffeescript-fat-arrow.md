@@ -9,7 +9,7 @@ tags:
   - "js"
   - "ember"
 description: CoffeeScript functions are defined with arrows.  Fat arrow provides special function binding.
-keywords: ember model, ember view, ember, js, javascript
+metaKeywords: ember model, ember view, ember, js, javascript
 published: true
 image: https://i.imgur.com/nGd04zX.jpg
 ---

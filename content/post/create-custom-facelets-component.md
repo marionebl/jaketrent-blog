@@ -10,7 +10,7 @@ tags:
   - "java"
   - "jsf"
 description: Facelets is a great addition to jsf.  It is very extensible, and it makes creating custom components even easier.  It's fantastic.  This is almost TOO easy.
-keywords: facelets, java, jsf
+metaKeywords: facelets, java, jsf
 published: true
 ---
 

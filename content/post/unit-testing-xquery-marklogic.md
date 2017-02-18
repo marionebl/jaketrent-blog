@@ -10,7 +10,7 @@ tags:
   - "unit-testing"
   - "xquery"
 description: Unit testing is a required part of a healthy software development lifecycle.  Business logic in MarkLogic Xquery needs the same insurance of superb testing 
-keywords: marklogic, unit-testing, xquery
+metaKeywords: marklogic, unit-testing, xquery
 published: true
 ---
 

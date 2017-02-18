@@ -10,7 +10,7 @@ tags:
   - "svn"
   - "vcs"
 description: In projects that create project meta data or compiled class files in the same directory as source, svn commits can be particularly cluttered with those file
-keywords: svn, vcs
+metaKeywords: svn, vcs
 published: true
 ---
 

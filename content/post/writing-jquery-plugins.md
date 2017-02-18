@@ -10,7 +10,7 @@ tags:
   - "jquery"
   - "plugins"
 description: Jquery has made developing javascript fun and enjoyable.  It is a fantastic library that essentially allows the creation of library extensions on top of it 
-keywords: javascript, jquery, plugins
+metaKeywords: javascript, jquery, plugins
 published: true
 ---
 

@@ -10,7 +10,7 @@ tags:
   - "js"
   - "nodejs"
 description: Node can fork and run external binaries.
-keywords: bash, javascript, nodejs, shell, spawn, fork, exec
+metaKeywords: bash, javascript, nodejs, shell, spawn, fork, exec
 published: true
 ---
 

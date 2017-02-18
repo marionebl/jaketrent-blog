@@ -10,7 +10,7 @@ tags:
   - "ruby"
   - "jsonapi"
 description: You can write a custom error serializer in rails to match something like jsonapi.
-keywords: rails, ruby, jsonapi, serializer, errors, custom
+metaKeywords: rails, ruby, jsonapi, serializer, errors, custom
 published: true
 image: https://i.imgur.com/XOUecnw.jpg
 ---

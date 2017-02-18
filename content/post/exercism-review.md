@@ -9,7 +9,7 @@ tags:
   - "Productivity"
   - "ruby"
 description: Exercism.io provides a great resource for daily code exercises and review.
-keywords: exercism.io, exercism, daily exercise, ruby, javascript, objective-c, haskell, elixir
+metaKeywords: exercism.io, exercism, daily exercise, ruby, javascript, objective-c, haskell, elixir
 published: true
 image: https://i.imgur.com/2oAEqBZ.jpg
 ---

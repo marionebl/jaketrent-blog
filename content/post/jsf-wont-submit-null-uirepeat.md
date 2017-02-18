@@ -9,7 +9,7 @@ tags:
   - "facelets"
   - "jsf"
 description: It stinks when your jsf components don't do what they're supposed to or even what they usually do.    This was the case with my h:inputText field when tryin
-keywords: facelets, jsf
+metaKeywords: facelets, jsf
 published: true
 ---
 

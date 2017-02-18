@@ -10,7 +10,7 @@ tags:
   - "linux"
   - "ubuntu"
 description: On a Sun keyboard, the ctrl key is actually in the space that the caps lock key occupies on a standard qwerty keyboard nowadays.  In a program where the ctr
-keywords: customization, linux, ubuntu
+metaKeywords: customization, linux, ubuntu
 published: true
 ---
 

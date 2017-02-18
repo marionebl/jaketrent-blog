@@ -10,7 +10,7 @@ tags:
   - "jpa"
   - "orm"
 description: Hibernate's @Enumerated annotation seems much too brittle in the case of using it with EnumType.ORDINAL.   If you're using EnumType.STRING, I think it works
-keywords: hibernate, jpa, orm
+metaKeywords: hibernate, jpa, orm
 published: true
 ---
 

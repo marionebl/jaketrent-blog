@@ -10,7 +10,7 @@ tags:
   - "continuous-delivery"
   - "lean"
 description: This isn't your last great work.  Stop worrying, and release.
-keywords: great work, analysis paralysis, release, continuous delivery, mvp, lean
+metaKeywords: great work, analysis paralysis, release, continuous delivery, mvp, lean
 published: true
 image: https://i.imgur.com/4yimUZ1.jpg
 ---

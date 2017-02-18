@@ -9,7 +9,7 @@ tags:
   - "ruby"
   - "rails"
 description: Jumpstart Lab offers a Ruby and Rails training.  I participated.  Here's what I thought.
-keywords: jumpstart lab, ruby, ruby on rails, rails, training, franklin webber
+metaKeywords: jumpstart lab, ruby, ruby on rails, rails, training, franklin webber
 published: true
 image: https://i.imgur.com/DniDljD.png
 ---

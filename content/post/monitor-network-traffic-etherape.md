@@ -8,7 +8,7 @@ categories:
 tags:
   - "networking"
 description: I wanted to count packets coming back and forth while telnet'ing to test out some different email protocols on our mail server and found this nifty little u
-keywords: networking
+metaKeywords: networking
 published: true
 ---
 

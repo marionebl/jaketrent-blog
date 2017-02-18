@@ -8,7 +8,7 @@ categories:
 tags:
   - "ruby"
 description: Ruby makes it very easy to define more methods on your classes.  The syntax is easy, and it's done every day.
-keywords: ruby, define_method, define new method, dynamic method, metaprogramming
+metaKeywords: ruby, define_method, define new method, dynamic method, metaprogramming
 published: true
 image: https://i.imgur.com/Z7WWtL0.jpg
 ---

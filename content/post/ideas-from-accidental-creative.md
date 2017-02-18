@@ -9,7 +9,7 @@ tags:
   - "productivity"
   - "creativity"
 description: The Accidental Creative book has many good ideas for productivity and creativity
-keywords: accidental creative, creativity, productivity, schedulgin
+metaKeywords: accidental creative, creativity, productivity, schedulgin
 published: true
 image: https://i.imgur.com/S3LkEjQ.jpg
 ---

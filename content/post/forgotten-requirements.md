@@ -9,7 +9,7 @@ tags:
   - "project-management"
   - "requirements"
 description: Recently, I had the opportunity to look at a set of user stories on an upcoming project and apply a high level estimate to each.  These estimates were going
-keywords: project-management, requirements
+metaKeywords: project-management, requirements
 published: true
 ---
 

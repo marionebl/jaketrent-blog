@@ -10,7 +10,7 @@ tags:
   - "intellij"
   - "tomcat"
 description: One of the worst things to debug can be something that works just fine in your local development environment but does not work in a deployed environment.  I
-keywords: debugging, intellij, tomcat
+metaKeywords: debugging, intellij, tomcat
 published: true
 ---
 

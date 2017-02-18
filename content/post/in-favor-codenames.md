@@ -9,7 +9,7 @@ tags:
   - "team"
   - "passion"
 description: Be happy, use codenames on your project.
-keywords: project, coordination, codenames, team name, project name, fun
+metaKeywords: project, coordination, codenames, team name, project name, fun
 published: true
 image: https://i.imgur.com/gpqydff.jpg
 ---

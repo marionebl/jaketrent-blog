@@ -10,7 +10,7 @@ tags:
   - "blog"
   - "markdown"
 description: A story of my migration from Octopress to Hugo static site generator
-keywords: hugo, static-site, static site generator, golang, fast, octopress, migration, markdown
+metaKeywords: hugo, static-site, static site generator, golang, fast, octopress, migration, markdown
 published: true
 image: http://i.imgur.com/EksouVh.jpg
 ---

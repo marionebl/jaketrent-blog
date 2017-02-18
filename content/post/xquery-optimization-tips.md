@@ -10,7 +10,7 @@ tags:
   - "performance"
   - "xquery"
 description: My first xquery experience has been on the MarkLogic platform.  The project that we just released was written entirely in xquery and on that platform.  As o
-keywords: marklogic, performance, xquery
+metaKeywords: marklogic, performance, xquery
 published: true
 ---
 

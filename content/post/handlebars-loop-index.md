@@ -9,7 +9,7 @@ tags:
   - "js"
   - "handlebars"
 description: HandlebarsJs is a great Javascript templating engine.  It's pretty much Mustache templates on steriods -- or Rogaine or something like that.  Well, there's 
-keywords: javascript, handlebarsjs
+metaKeywords: javascript, handlebarsjs
 published: true
 ---
 

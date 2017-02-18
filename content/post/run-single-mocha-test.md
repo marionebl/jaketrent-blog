@@ -9,7 +9,7 @@ tags:
   - "js"
   - "mocha"
 description: If you have a whole suite of Mocha tests, sometimes you don't want to run all of them.  Here's how to run a subset of Mocha tests.
-keywords: js, javascript, mocha, subset, run subset, run one
+metaKeywords: js, javascript, mocha, subset, run subset, run one
 published: true
 image: https://i.imgur.com/hbcnU.png
 ---

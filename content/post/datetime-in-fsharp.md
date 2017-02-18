@@ -10,7 +10,7 @@ tags:
   - "fsharp"
   - "functional-programming"
 description: Should I use DateTime or DateTimeOffset for Utc or local time in F#?
-keywords: dotnet, .net, fsharp, f#, datetime, datetimeoffset, local, universal, utc
+metaKeywords: dotnet, .net, fsharp, f#, datetime, datetimeoffset, local, universal, utc
 published: true
 image: https://i.imgur.com/L5olAv0.png
 ---

@@ -9,7 +9,7 @@ tags:
   - "generics"
   - "java"
 description: Say words like generics, enums, or interfaces, and you've immediately transported to the realm of conjured whirlwind sandstorms and curved-sw
-keywords: generics, java
+metaKeywords: generics, java
 published: true
 ---
 

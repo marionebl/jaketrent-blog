@@ -5,7 +5,7 @@ date: "2016-03-14"
 comments: true
 categories: [Code]
 description: Ignore system files at the system level.  Keep your project clean.
-keywords: git, gitignore, idea, vscode, DS_Store
+metaKeywords: git, gitignore, idea, vscode, DS_Store
 published: true
 image: https://i.imgur.com/ZYiky6R.png
 ---

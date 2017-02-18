@@ -10,7 +10,7 @@ tags:
   - "nodejs"
   - "npm"
 description: How do you install a package with npm that's not in the npm registry?  Perhaps you're developing a package locally.  A few options.
-keywords: js, javascript, node, nodejs, npm, local install, package
+metaKeywords: js, javascript, node, nodejs, npm, local install, package
 published: true 
 image: https://i.imgur.com/xnDMm.jpg
 ---

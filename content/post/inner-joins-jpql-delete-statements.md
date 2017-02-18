@@ -11,7 +11,7 @@ tags:
   - "jpa"
   - "jpql"
 description: I'm working on a project that utilizes JPA/Hibernate as its ORM.  I was writing a few named queries for an JPQL/HQL delete and was getting an SQLGrammarExce
-keywords: hibernate, hql, jpa, jpql
+metaKeywords: hibernate, hql, jpa, jpql
 published: true
 ---
 

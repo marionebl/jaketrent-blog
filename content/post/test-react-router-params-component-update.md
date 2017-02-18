@@ -10,7 +10,7 @@ tags:
   - "react"
   - "react-router"
 description: To examine react-router's current and next url in your component, you'll have to store some state.
-keywords: react, react-router, previous params, previous state, params
+metaKeywords: react, react-router, previous params, previous state, params
 published: true
 image: https://i.imgur.com/DXuSNbw.png
 ---

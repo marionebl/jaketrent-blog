@@ -11,7 +11,7 @@ tags:
   - "heroku"
   - "postgres"
 description: Django comes with some awesome CLI tools.  Manage.py is a beast of magic and lore.  And it loves the fantastical kingdom of Heroku, where is romps with merr
-keywords: django, python, heroku, postgres
+metaKeywords: django, python, heroku, postgres
 published: true
 ---
 

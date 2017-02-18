@@ -9,7 +9,7 @@ tags:
   - "js"
   - "d3"
 description: When building a bar chart in d3, you could calculate your own bar widths and padding or you could have d3 do it for you
-keywords: d3, chart, bar chart, ordinal scale, scale, rangebands, rangeroundbands
+metaKeywords: d3, chart, bar chart, ordinal scale, scale, rangebands, rangeroundbands
 published: true
 image: https://i.imgur.com/JEniNrp.jpg
 ---

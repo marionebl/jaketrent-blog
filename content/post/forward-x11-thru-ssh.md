@@ -9,7 +9,7 @@ tags:
   - "ssh"
   - "xserver"
 description: SSH is a great protocol that allows secure connections to remote systems.  It's easy to use, gives you terminal access to the system in question and allows 
-keywords: ssh, xserver
+metaKeywords: ssh, xserver
 published: true
 ---
 

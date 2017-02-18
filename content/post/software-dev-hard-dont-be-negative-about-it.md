@@ -9,7 +9,7 @@ tags:
   - "engineering"
   - "project-management"
 description: Is negativism between developers the norm?  Probably not, but it's common.  Do developers ever compliment each other?  Yes, but it sometimes seems rare.  Wh
-keywords: engineering, project-management
+metaKeywords: engineering, project-management
 published: true
 ---
 

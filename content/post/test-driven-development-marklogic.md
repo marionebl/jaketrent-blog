@@ -11,7 +11,7 @@ tags:
   - "unit-testing"
   - "xquery"
 description: Unit testing is a required part of a healthy software development lifecycle and a balanced breakfast.  But test-driven development is a rockin' part of an *
-keywords: marklogic, tdd, unit-testing, xquery
+metaKeywords: marklogic, tdd, unit-testing, xquery
 published: true
 ---
 

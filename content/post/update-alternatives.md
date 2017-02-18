@@ -9,7 +9,7 @@ tags:
   - "java"
   - "ubuntu"
 description: It's important to understand what libraries, utilities, engines and so on that are used by your Ubuntu Linux OS.  It's easy to tell if you only have on opti
-keywords: java, ubuntu
+metaKeywords: java, ubuntu
 published: true
 ---
 

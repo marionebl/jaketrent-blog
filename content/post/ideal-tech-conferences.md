@@ -8,7 +8,7 @@ categories:
 tags:
   - "confs"
 description: It seems that in the IT, there are many, many conferences offered every year that people are invited to attend in order to glean something of use.  Which ar
-keywords: confs
+metaKeywords: confs
 published: true
 ---
 

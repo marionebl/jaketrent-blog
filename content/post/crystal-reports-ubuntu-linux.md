@@ -10,7 +10,7 @@ tags:
   - "linux"
   - "ubuntu"
 description: All over the net, there are questions asked about running Crystal Reports in Linux.  This isn't a solution for running Crystal in Linux per se, but running 
-keywords: crystal-reports, linux, ubuntu
+metaKeywords: crystal-reports, linux, ubuntu
 published: true
 ---
 

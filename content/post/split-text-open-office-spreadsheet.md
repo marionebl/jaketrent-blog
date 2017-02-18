@@ -8,7 +8,7 @@ categories:
 tags:
   - "open-office"
 description: Sometimes I paste text into a spreadsheet so that I can quickly manipulate it.  The same could be done with a small script, but this particular feature is b
-keywords: open-office
+metaKeywords: open-office
 published: true
 ---
 

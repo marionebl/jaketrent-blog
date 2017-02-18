@@ -11,7 +11,7 @@ tags:
   - "js"
   - "firebase"
 description: There are a few changes required to convert your Ember app from using EmberFire to Fireplace.  Here are those I've found.
-keywords: js, ember, emberfire, firebase, fireplace, emberfire to fireplace, ember-data
+metaKeywords: js, ember, emberfire, firebase, fireplace, emberfire to fireplace, ember-data
 published: true
 image: https://i.imgur.com/1Jg69Pf.jpg
 ---

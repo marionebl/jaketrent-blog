@@ -10,7 +10,7 @@ tags:
   - "design"
   - "evolution"
 description: Daniel Pink has written a great book, A Whole New Mind.  Here are my thoughts on the book.  
-keywords: career-building, design, evolution
+metaKeywords: career-building, design, evolution
 published: true
 ---
 

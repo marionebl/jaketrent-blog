@@ -10,7 +10,7 @@ tags:
   - "jquery"
   - "plugins"
 description: Jquery plugins are a joy to use, and they are surprisingly easy to write.  Everyone that writes lots of Jquery code should seek to take potentially-resuable
-keywords: javascript, jquery, plugins
+metaKeywords: javascript, jquery, plugins
 published: true
 ---
 

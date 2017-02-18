@@ -9,7 +9,7 @@ tags:
   - "js"
   - "npm"
 description: Change your npm defaults for npm init
-keywords: npm init, npm init defaults, npm license
+metaKeywords: npm init, npm init defaults, npm license
 published: true
 image: https://i.imgur.com/P34k4L5.png
 ---
@@ -35,7 +35,7 @@ description:
 entry point: (index.js)
 test command:
 git repository:
-keywords:
+metaKeywords:
 author:
 license: (ISC)
 ...

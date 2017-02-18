@@ -9,7 +9,7 @@ tags:
   - "css"
   - "images"
 description: Sometimes bland text on a webpage needs a little spicing up with an image.  Instead of having to mess with markup, this text can be replaced with an image. 
-keywords: css, images
+metaKeywords: css, images
 published: true
 ---
 

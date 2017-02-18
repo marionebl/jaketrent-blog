@@ -12,7 +12,7 @@ tags:
   - "backbonejs"
   - "requirejs"
 description: BackboneJS is setup to do some pretty sweet single-page app action.  And of course, a single page app will probably be wanting to talk to web services on th
-keywords: ajax, java, webservice, backbonejs, requirejs
+metaKeywords: ajax, java, webservice, backbonejs, requirejs
 published: true
 ---
 

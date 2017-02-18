@@ -10,7 +10,7 @@ tags:
   - "networking"
   - "ubuntu"
 description: When you setup your computer at the time of your initial Ubuntu installation, you assign your computer a hostname.  In my case, I gave it a hostname and the
-keywords: linux, networking, ubuntu
+metaKeywords: linux, networking, ubuntu
 published: true
 ---
 

@@ -11,7 +11,7 @@ tags:
   - "pidgin"
   - "security"
 description: Around the office, when someone security-minded finds out that I instant message (IM) over Pidgin (using Google Talk's service), there tends to be wailing a
-keywords: chat, encryption, pidgin, security
+metaKeywords: chat, encryption, pidgin, security
 published: true
 ---
 

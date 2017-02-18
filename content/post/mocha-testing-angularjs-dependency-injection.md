@@ -10,7 +10,7 @@ tags:
   - "angularjs"
   - "mocha"
 description: When you test your AngularJs code, you need to explicitly inject the services your controllers and modules require.
-keywords: js, javascript, mocha, angularjs, dependency injection, $scope
+metaKeywords: js, javascript, mocha, angularjs, dependency injection, $scope
 published: true
 image: https://i.imgur.com/wVBKD.png
 ---

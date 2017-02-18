@@ -10,7 +10,7 @@ tags:
   - "java"
   - "orm"
 description: Our goal is to create a history audit tool that fires automatically, tracks only selected fields, categorizes those fields, and saves old vs. new data.
-keywords: hibernate, java, orm
+metaKeywords: hibernate, java, orm
 published: true
 ---
 

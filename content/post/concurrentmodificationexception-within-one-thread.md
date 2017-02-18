@@ -9,7 +9,7 @@ tags:
   - "concurrency"
   - "java"
 description: I at first thought it odd that a ConcurrentModificationException could be thrown w/in the context of a single Thread.  But, what do you know, it can!  And I
-keywords: concurrency, java
+metaKeywords: concurrency, java
 published: true
 ---
 

@@ -8,7 +8,7 @@ categories:
 tags:
   - "design"
 description: You're building a project that depends on a shared lib.  How will you evolve?
-keywords: shared lib, dependencies, autonomy, independence, teams, open source
+metaKeywords: shared lib, dependencies, autonomy, independence, teams, open source
 published: true
 image: https://i.imgur.com/6TDbI7O.png
 ---

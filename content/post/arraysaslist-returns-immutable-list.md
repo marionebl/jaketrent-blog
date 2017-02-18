@@ -8,7 +8,7 @@ categories:
 tags:
   - "java"
 description: I was having problems doing operations on a java.util.List object returned by Arrays.asList() method call.   The specific exception was a java.lang.Unsuppor
-keywords: java
+metaKeywords: java
 published: true
 ---
 

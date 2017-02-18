@@ -10,7 +10,7 @@ tags:
   - "nodejs"
   - "heroku"
 description: Create-react-app sets up your static asset build.  Now learn how to deploy that easily to an app server on Heroku.
-keywords: heroku, react, node.js, create-react-app, create react app, webpack, koa, express, deploy
+metaKeywords: heroku, react, node.js, create-react-app, create react app, webpack, koa, express, deploy
 published: true
 image: https://i.imgur.com/6DUwRKt.png
 ---

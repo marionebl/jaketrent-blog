@@ -10,7 +10,7 @@ tags:
   - "react"
   - "react-dnd"
 description: How to create a text drag preview in react-dnd
-keywords: react, react-dnd, text, drag preview, string, drag and drop
+metaKeywords: react, react-dnd, text, drag preview, string, drag and drop
 published: true
 image: https://i.imgur.com/E5NwBek.png
 ---

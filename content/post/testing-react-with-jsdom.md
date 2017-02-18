@@ -13,7 +13,7 @@ tags:
   - "jsdom"
   - "unit-testing"
 description: Webpack's dev server for static assets can be quickly configured to handle JavaScript history api pushState.
-keywords: webpack, webpack-dev-server, pushState, history api, client router
+metaKeywords: webpack, webpack-dev-server, pushState, history api, client router
 published: true
 image: https://i.imgur.com/DXuSNbw.png
 ---

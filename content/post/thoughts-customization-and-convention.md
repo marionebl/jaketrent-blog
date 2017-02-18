@@ -10,7 +10,7 @@ tags:
   - "customization"
   - "project-management"
 description: There is an epic balancing act in software today, fought between customization and convention.  When to build, when to buy?  When to create new solutions or
-keywords: convention, customization, project-management
+metaKeywords: convention, customization, project-management
 published: true
 ---
 

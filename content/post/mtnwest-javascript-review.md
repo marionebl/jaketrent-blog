@@ -9,7 +9,7 @@ tags:
   - "js"
   - "conf"
 description: MountainWest JavaScript was a great conference for JS last week in Utah.  Here's my take.
-keywords: js, ember, emberfire, firebase, fireplace, emberfire to fireplace, ember-data
+metaKeywords: js, ember, emberfire, firebase, fireplace, emberfire to fireplace, ember-data
 published: true
 image: https://i.imgur.com/VGtnQzX.png
 ---

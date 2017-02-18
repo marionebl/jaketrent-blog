@@ -10,7 +10,7 @@ tags:
   - "backbonejs"
   - "requirejs"
 description: Backbone has a great inheritance mechanism.  It's as easy as Backbone.Model.extend().  This much is obvious.  Let's try a few other things.
-keywords: javascript, backbonejs, requirejs
+metaKeywords: javascript, backbonejs, requirejs
 published: true
 ---
 

@@ -9,7 +9,7 @@ tags:
   - "rails"
   - "ruby"
 description: Rails' asset pipeline provides a powerful mechanism for preparing your static assets for the web.  There are defaults.  Learn how to change them.
-keywords: asset pipeline, precompile, rails, ruby, default name, application.js, application.css
+metaKeywords: asset pipeline, precompile, rails, ruby, default name, application.js, application.css
 published: true
 image: https://i.imgur.com/HPJDXPB.jpg
 ---

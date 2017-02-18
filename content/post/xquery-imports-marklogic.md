@@ -10,7 +10,7 @@ tags:
   - "maven"
   - "xquery"
 description: When a person looks at an Xquery module import, ... um, sorry... he usually gets distracted by something else before he can get to the semicolon at the end 
-keywords: marklogic, maven, xquery
+metaKeywords: marklogic, maven, xquery
 published: true
 ---
 

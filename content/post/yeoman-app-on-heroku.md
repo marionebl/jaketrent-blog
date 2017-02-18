@@ -12,7 +12,7 @@ tags:
   - "js"
   - "grunt"
 description: Yeoman will generate a static site.  Make a few changes, and you can have it running on Heroku.
-keywords: heroku, yeoman, nodejs, javascript, grunt
+metaKeywords: heroku, yeoman, nodejs, javascript, grunt
 published: true
 image: https://i.imgur.com/1Mc2kXh.jpg
 ---

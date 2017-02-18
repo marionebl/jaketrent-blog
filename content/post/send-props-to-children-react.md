@@ -9,7 +9,7 @@ tags:
   - "js"
   - "react"
 description: Sometimes you'll want to pass properties from a parent component to children components.  Here's how to do it.
-keywords: js, react, components, render children, this.props.children, child props, child properties
+metaKeywords: js, react, components, render children, this.props.children, child props, child properties
 published: true
 image: https://i.imgur.com/DXuSNbw.png
 ---

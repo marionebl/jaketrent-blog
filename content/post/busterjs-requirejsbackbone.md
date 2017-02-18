@@ -11,7 +11,7 @@ tags:
   - "backbonejs"
   - "requirejs"
 description: BusterJs is a still-in-beta library that allows for testing your Javascript.  It's got a wealth of cool features.  The browser capturing is awesome for runn
-keywords: javascript, unit-testing, backbonejs, requirejs
+metaKeywords: javascript, unit-testing, backbonejs, requirejs
 published: true
 ---
 

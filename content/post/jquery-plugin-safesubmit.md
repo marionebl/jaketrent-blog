@@ -11,7 +11,7 @@ tags:
   - "jquery"
   - "plugins"
 description: Jquery gives a great, easy-to-use mechanism for extending its API and creating your own plugins.  For stuff that looks like it could be useful generally, yo
-keywords: ajax, javascript, jquery, plugins
+metaKeywords: ajax, javascript, jquery, plugins
 published: true
 ---
 

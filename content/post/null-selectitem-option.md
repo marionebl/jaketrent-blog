@@ -9,7 +9,7 @@ tags:
   - "java"
   - "jsf"
 description: Sometimes it's desirable to be able to have a null or "none of these" option for a dropdown.  I've gotten tripped up on the syntax a couple times and have f
-keywords: java, jsf
+metaKeywords: java, jsf
 published: true
 ---
 

@@ -11,7 +11,7 @@ tags:
   - "backbonejs"
   - "requirejs"
 description: When you start writing applications with BackboneJS, that means that you're dealing with some dynamic UI.  There are elements being pushed into and pulled o
-keywords: javascript, jquery, backbonejs, requirejs
+metaKeywords: javascript, jquery, backbonejs, requirejs
 published: true
 ---
 

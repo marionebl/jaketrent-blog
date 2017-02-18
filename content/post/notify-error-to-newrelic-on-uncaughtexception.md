@@ -10,7 +10,7 @@ tags:
   - "monitoring"
   - "nodejs"
 description: When your app goes down, call newrelic.notifyError with enough time to send
-keywords: js, javascript, express, nodejs, node, error handling, uncaughtException, newrelic, monitoring
+metaKeywords: js, javascript, express, nodejs, node, error handling, uncaughtException, newrelic, monitoring
 published: true
 image: https://i.imgur.com/ApNvY7f.jpg
 ---

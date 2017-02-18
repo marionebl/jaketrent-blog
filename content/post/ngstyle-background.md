@@ -10,7 +10,7 @@ tags:
   - "js"
   - "css"
 description: ngStyle is used to set inline style attributes with AngularJs.  Using the background style is slightly tricky here.
-keywords: angular, angularjs, background, background-image, ngstyle, ng-style
+metaKeywords: angular, angularjs, background, background-image, ngstyle, ng-style
 published: true
 image: https://i.imgur.com/wVBKD.png
 ---

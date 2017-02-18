@@ -11,7 +11,7 @@ tags:
   - "stylus"
   - "sass"
 description: They're awesome, but CSS preprocessors come with a few cons.  Don't dump your preprocessor, just work through the cons.
-keywords: css preprocessor, css, less, stylus, sass
+metaKeywords: css preprocessor, css, less, stylus, sass
 published: true
 image: https://i.imgur.com/Mzozm.jpg
 ---

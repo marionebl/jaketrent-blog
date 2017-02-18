@@ -10,7 +10,7 @@ tags:
   - "js"
   - "svg"
 description: D3 has class operations like addClass, hasClass, removeClass, and toggleClass.
-keywords: d3, js, svg, addClass, removeClass, hasClass, toggleClass, jquery
+metaKeywords: d3, js, svg, addClass, removeClass, hasClass, toggleClass, jquery
 published: true
 image: https://i.imgur.com/94JQ8N8.jpg
 ---

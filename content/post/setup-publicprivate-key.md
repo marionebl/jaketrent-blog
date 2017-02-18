@@ -10,7 +10,7 @@ tags:
   - "networking"
   - "ssh"
 description: When you connect to a remote server, you're connecting over ssh or scp or a similar protocol.  In each case, you may have to provide some authentication cre
-keywords: encryption, networking, ssh
+metaKeywords: encryption, networking, ssh
 published: true
 ---
 

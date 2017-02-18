@@ -11,7 +11,7 @@ tags:
   - "supertest"
   - "superagent"
 description: Integration tests against authenticated urls will require a login first.  Here's a way to maintain your session in your supertest tests.
-keywords: js, javascript, mocha, supertest, superagent, login, authentication, session, session cookie
+metaKeywords: js, javascript, mocha, supertest, superagent, login, authentication, session, session cookie
 published: true
 image: https://i.imgur.com/PFUGV.jpg
 ---

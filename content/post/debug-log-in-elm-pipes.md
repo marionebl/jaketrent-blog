@@ -10,7 +10,7 @@ tags:
   - "elm"
   - "debugging"
 description: How to print to the console when piping data in Elm
-keywords: js, elm, debug, debug.log, console.log
+metaKeywords: js, elm, debug, debug.log, console.log
 published: true
 image: https://i.imgur.com/1c6FH0f.png
 ---

@@ -8,7 +8,7 @@ categories:
 tags:
   - "react"
 description: React Rally was a great React.js conference in Salt Lake City, UT.
-keywords: react, conf, react.js, elm, functional programming conference
+metaKeywords: react, conf, react.js, elm, functional programming conference
 published: true
 image: https://i.imgur.com/B8fFS4J.jpg
 ---

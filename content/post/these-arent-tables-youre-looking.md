@@ -9,7 +9,7 @@ tags:
   - "oracle"
   - "sql"
 description: Sometimes you have a large database schema and a lot of tables that you're not sure what they contain.  You do know, however, the nature of the data'ific ne
-keywords: oracle, sql
+metaKeywords: oracle, sql
 published: true
 ---
 

@@ -9,7 +9,7 @@ tags:
   - "angularjs"
   - "js"
 description: Bootstrap your Angular script with data from your page.
-keywords: angularjs, js, bootstrap, data passing, server-side page rendering
+metaKeywords: angularjs, js, bootstrap, data passing, server-side page rendering
 published: true
 image: https://i.imgur.com/wVBKD.png
 ---

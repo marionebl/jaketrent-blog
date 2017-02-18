@@ -10,7 +10,7 @@ tags:
   - "requirejs"
   - "testacular"
 description: One of the hardest parts of RequireJs can be the pathing.  Making your paths work in prod and in test environments -- even more adventuresome.
-keywords: js, requirejs, testacular, testing, r.js, build, paths
+metaKeywords: js, requirejs, testacular, testing, r.js, build, paths
 published: true 
 image: https://i.imgur.com/xZqm5.png
 ---

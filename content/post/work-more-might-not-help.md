@@ -10,7 +10,7 @@ tags:
   - "teams"
   - "time-management"
 description: Working significantly more than the rest of our team may harm more than it helps.
-keywords: working more, overtime, come early, stay late, false heroism, team work, team wins, pride
+metaKeywords: working more, overtime, come early, stay late, false heroism, team work, team wins, pride
 published: true
 image: https://i.imgur.com/xRlumnh.jpg
 ---

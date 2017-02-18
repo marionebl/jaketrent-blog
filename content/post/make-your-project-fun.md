@@ -8,7 +8,7 @@ categories:
 tags:
   - "teams"
 description: Don't wait to make your software project fun.
-keywords: fun, have fun, project, teams, morale
+metaKeywords: fun, have fun, project, teams, morale
 published: true
 image: https://i.imgur.com/ACkhQQK.jpg
 ---

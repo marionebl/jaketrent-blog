@@ -9,7 +9,7 @@ tags:
   - "django"
   - "python"
 description: Make your django context processors dry.  
-keywords: django, python
+metaKeywords: django, python
 published: true
 ---
 

@@ -10,7 +10,7 @@ tags:
   - "ember"
   - "handlebars"
 description: Specific versions of Ember require specific versions of Handlebars.  Here's a way to help them match.
-keywords: js, coffeescript, javascript, ember, handlebars, version
+metaKeywords: js, coffeescript, javascript, ember, handlebars, version
 published: true
 image: https://i.imgur.com/x5HT4FN.jpg
 ---

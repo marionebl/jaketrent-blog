@@ -12,7 +12,7 @@ tags:
   - "emblem"
   - "grunt"
 description: When you're working with Ember's Handlebars templates, you're going to want to precompile them for performance reasons.
-keywords: js, coffeescript, javascript, ember, emblem, grunt, handlebars, version
+metaKeywords: js, coffeescript, javascript, ember, emblem, grunt, handlebars, version
 published: true
 image: https://i.imgur.com/x5HT4FN.jpg
 ---

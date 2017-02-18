@@ -11,7 +11,7 @@ tags:
   - "heroku"
   - "express"
 description: Make a NodeJs app on Heroku redirect to an https address when it is not using one.
-keywords: js, nodejs, node, heroku, https, https redirect, express
+metaKeywords: js, nodejs, node, heroku, https, https redirect, express
 published: true
 ---
 

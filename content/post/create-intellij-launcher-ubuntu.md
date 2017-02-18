@@ -10,7 +10,7 @@ tags:
   - "linux"
   - "ubuntu"
 description: IntelliJ IDEA is a great development environment.  I enjoy it very much.  It complements the OS of pleasure, Linux.
-keywords: intellij, linux, ubuntu
+metaKeywords: intellij, linux, ubuntu
 published: true
 ---
 

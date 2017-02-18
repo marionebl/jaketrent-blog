@@ -9,7 +9,7 @@ tags:
   - "js"
   - "jquery"
 description: Jquery and other sweeto js frameworks have some awesomeness to help you change the css classes of various elements on the page with ease and grace.  They ha
-keywords: javascript, jquery
+metaKeywords: javascript, jquery
 published: true
 ---
 

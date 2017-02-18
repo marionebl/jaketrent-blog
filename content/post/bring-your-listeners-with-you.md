@@ -8,7 +8,7 @@ categories:
 tags:
   - "conf"
 description: When speaking and teaching, make sure to remember to bring your listeners with you.
-keywords: conference, speaking, expectations, definitions, respect, attention
+metaKeywords: conference, speaking, expectations, definitions, respect, attention
 published: true
 image: https://i.imgur.com/keI6970.jpg
 ---

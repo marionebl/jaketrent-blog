@@ -12,7 +12,7 @@ tags:
   - "jquery-templates"
   - "json"
 description: Jquery, Ajax, Json, Django -- this is quite a laundry list of technologies.  In fact, it's pretty much the whole stack.
-keywords: ajax, django, django-piston, jquery-templates, json, sammyjs
+metaKeywords: ajax, django, django-piston, jquery-templates, json, sammyjs
 published: true
 ---
 

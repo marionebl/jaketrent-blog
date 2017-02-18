@@ -8,7 +8,7 @@ categories:
 tags:
   - "conf"
 description: Strange Loop and Elm conf review and highlight notes from 2016.
-keywords: elm, clojure, conf, peabody, st. louis, emerging languages, interesting conf
+metaKeywords: elm, clojure, conf, peabody, st. louis, emerging languages, interesting conf
 published: true
 image: https://i.imgur.com/SusCISQ.jpg
 ---

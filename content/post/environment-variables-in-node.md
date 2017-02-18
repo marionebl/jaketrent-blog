@@ -9,7 +9,7 @@ tags:
   - "js"
   - "nodejs"
 description: Do you need to change variables per environment in NodeJs?  There's a great nconf package that helps out.
-keywords: js, nodejs, node, environment variables, nconf
+metaKeywords: js, nodejs, node, environment variables, nconf
 published: true 
 image: https://i.imgur.com/5rZ8H.png
 ---

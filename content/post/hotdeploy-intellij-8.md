@@ -10,7 +10,7 @@ tags:
   - "ide"
   - "intellij"
 description: Development on JEE projects can be a real pain sometime.  1/2 of this (sometimes in literal minutes) is because of the need to spin up the server in order t
-keywords: deployment, ide, intellij
+metaKeywords: deployment, ide, intellij
 published: true
 ---
 

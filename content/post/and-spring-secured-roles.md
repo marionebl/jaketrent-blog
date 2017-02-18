@@ -10,7 +10,7 @@ tags:
   - "spring"
   - "aop"
 description: Spring Security (previously Acegi) gives you an awesome AOP way of locking down methods in your Java application.  And well-placed <a href="http://www.youtu
-keywords: security, spring, aop
+metaKeywords: security, spring, aop
 published: true
 ---
 

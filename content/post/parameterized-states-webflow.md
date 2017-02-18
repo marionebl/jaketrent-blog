@@ -10,7 +10,7 @@ tags:
   - "spring"
   - "webflow"
 description: My first experience with <a href="http://www.springsource.org/webflow" target="_blank">Spring Webflow</a> is on a project that uses Webflow 1.0.5.  So far, 
-keywords: java, spring, webflow
+metaKeywords: java, spring, webflow
 published: true
 ---
 

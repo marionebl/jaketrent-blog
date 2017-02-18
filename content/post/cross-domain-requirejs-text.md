@@ -12,7 +12,7 @@ tags:
   - "requirejs"
   - "cors"
 description: Through long-available browser quirks/features, javascript has been available for requests across disparate domains.  But, other resources, such as text fil
-keywords: ajax, browser, javascript, requirejs, cors
+metaKeywords: ajax, browser, javascript, requirejs, cors
 published: true
 ---
 

@@ -9,7 +9,7 @@ tags:
   - "virtualbox"
   - "vm"
 description: One of the stinky things about having a VM is that is can be difficult to transfer files to and from the host machine.  You generally have everything that y
-keywords: virtualbox, vm
+metaKeywords: virtualbox, vm
 published: true
 ---
 

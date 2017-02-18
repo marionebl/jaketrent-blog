@@ -9,7 +9,7 @@ tags:
   - "html"
   - "js"
 description: Lots of websites give you the ability to copy certain pieces of text/code/something off their website in a "copy to clipboard"-type functionality.  In the p
-keywords: html, javascript
+metaKeywords: html, javascript
 published: true
 ---
 

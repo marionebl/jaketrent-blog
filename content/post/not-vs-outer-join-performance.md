@@ -10,7 +10,7 @@ tags:
   - "performance"
   - "sql"
 description: I was running an SQL query today and it was sooooo slow.  So slow, in fact, that it never returned.  I asked the DBA, Reed, who built the table what might b
-keywords: oracle, performance, sql
+metaKeywords: oracle, performance, sql
 published: true
 ---
 

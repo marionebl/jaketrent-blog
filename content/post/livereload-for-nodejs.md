@@ -10,7 +10,7 @@ tags:
   - "js"
   - "grunt"
 description: Livereload allows you to make code changes and see your changes in the browser without refreshing.
-keywords: nodejs, js, grunt, grunt-livereload, connect-livereload
+metaKeywords: nodejs, js, grunt, grunt-livereload, connect-livereload
 published: true
 image: https://i.imgur.com/4773D.jpg
 ---

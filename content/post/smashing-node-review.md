@@ -9,7 +9,7 @@ tags:
   - "js"
   - "nodejs"
 description: Smashing Node is a pretty good book.  Here's what I thought I learned about Node.js while reading it.
-keywords: js, nodejs, smashing mag, smashing node, guillermo rauch, javascript everywhere
+metaKeywords: js, nodejs, smashing mag, smashing node, guillermo rauch, javascript everywhere
 published: true
 image: https://i.imgur.com/hQTBeAF.jpg
 ---

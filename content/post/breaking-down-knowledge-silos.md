@@ -11,7 +11,7 @@ tags:
   - "pair-programming"
   - "project-management"
 description: Barriers are created all the time on software projects (by organization layout, role definition, project management, or indiscriminately) that keep develope
-keywords: agile, pair-programming, project-management
+metaKeywords: agile, pair-programming, project-management
 published: true
 ---
 

@@ -9,7 +9,7 @@ tags:
   - "oracle"
   - "sql"
 description: There's no pre-defined method to count the number of occurrences of a certain character in a database table column using SQL.  There's a quick and dirty way
-keywords: oracle, sql
+metaKeywords: oracle, sql
 published: true
 ---
 

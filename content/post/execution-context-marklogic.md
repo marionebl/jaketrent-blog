@@ -9,7 +9,7 @@ tags:
   - "marklogic"
   - "xquery"
 description: Have you ever needed to know the location of the actual file that houses the code that's currently executing?  Well, if you have then you're not alone.  I h
-keywords: marklogic, xquery
+metaKeywords: marklogic, xquery
 published: true
 ---
 

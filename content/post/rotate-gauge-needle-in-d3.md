@@ -3,7 +3,7 @@ layout: post
 title: "Rotate Gauge Needle in D3"
 date: "2013-09-27"
 comments: true
-keywords: rotate, triangle, d3, svg
+metaKeywords: rotate, triangle, d3, svg
 categories:
   - "Code"
 tags:

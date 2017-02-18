@@ -8,7 +8,7 @@ categories:
 tags:
   - "Leadership"
 description: Find the vision of what work you think is most important to do
-keywords: ponder, focus, work, vision walk, vision quest, think day
+metaKeywords: ponder, focus, work, vision walk, vision quest, think day
 published: true
 image: https://i.imgur.com/kEjGTZc.jpg
 ---

@@ -9,7 +9,7 @@ tags:
   - "java"
   - "reflection"
 description: Java is about objects.  Reflection is about knowing things about those objects generally without have specific fields and methods in hand.  I must get to on
-keywords: java, reflection
+metaKeywords: java, reflection
 published: true
 ---
 

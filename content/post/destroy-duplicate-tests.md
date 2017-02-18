@@ -10,7 +10,7 @@ tags:
   - "functional-testing"
   - "unit-testing"
 description: Don't write duplicate tests.  If you have duplicates, destroy them.
-keywords: testing, tdd, duplicates, test code smells
+metaKeywords: testing, tdd, duplicates, test code smells
 published: true
 image: https://i.imgur.com/ozzuTNQ.png
 ---

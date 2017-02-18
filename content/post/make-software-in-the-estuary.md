@@ -10,7 +10,7 @@ tags:
   - "collaboration"
   - "team"
 description: Make software in the estuary, in a mix of disciplines, training, and collaboration
-keywords: collaboration, cross functional, team work, medici effect, humility, productivity
+metaKeywords: collaboration, cross functional, team work, medici effect, humility, productivity
 published: true
 image: https://i.imgur.com/3XrFyZS.jpg
 ---

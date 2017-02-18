@@ -10,7 +10,7 @@ tags:
   - "js"
   - "browser"
 description: In a recent admin tool I was creating, I was using SOUIT of Javascript... apparently more than I knew how to write well.  Eventually, it all worked wonderfu
-keywords: ie, javascript, web-browser
+metaKeywords: ie, javascript, web-browser
 published: true
 ---
 

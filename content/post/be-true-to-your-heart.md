@@ -9,7 +9,7 @@ tags:
   - "interviewing"
   - "passion"
 description: When you're interviewed, be honest in your interests, and stick to them.
-keywords: interviewing, software, passion, interests
+metaKeywords: interviewing, software, passion, interests
 published: true
 image: https://i.imgur.com/fYzBj.png
 ---

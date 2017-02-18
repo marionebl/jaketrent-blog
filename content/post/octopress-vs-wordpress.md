@@ -11,7 +11,7 @@ tags:
   - "ruby"
   - "octopress"
 description: Octopress vs. WordPress.  Which should I use for my blog?  I chose WordPress first, then went to Octopress.  Here are some points of comparison.
-keywords: octopress, wordpress, php, ruby, blog
+metaKeywords: octopress, wordpress, php, ruby, blog
 image: https://i.imgur.com/uACBn.jpg
 ---
 

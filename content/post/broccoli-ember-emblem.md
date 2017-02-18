@@ -11,7 +11,7 @@ tags:
   - "ember"
   - "emblem"
 description: Make broccoli compile your emblem templates so they're ready for your ember app.
-keywords: js, ember, emblem, handlebars, broccoli
+metaKeywords: js, ember, emblem, handlebars, broccoli
 published: true
 image: https://i.imgur.com/85v8PQP.png
 ---
