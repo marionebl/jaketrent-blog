@@ -33,7 +33,7 @@
       {{ .Content }}
     </div>
     <footer class="post-footer">
-      {{ partial "social.html" . }}
+      {{ .Render "social" }}
     </footem>
   </article>
   <div class="comments">

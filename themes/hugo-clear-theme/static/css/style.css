@@ -487,6 +487,15 @@ a {
   .post-content ol {
     max-width: 620px;
   }
+
+  .book {
+    overflow: auto;
+    padding-bottom: 50px;
+  }
+  .book-image {
+    float: left;
+    margin: 0 20px 20px 0;
+  }
 }
 
 /* size: large - larger header and content */
