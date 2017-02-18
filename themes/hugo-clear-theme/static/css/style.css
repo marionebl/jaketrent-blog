@@ -181,6 +181,48 @@ a {
 .post-footer {
 }
 
+/* section: book */
+.book {
+  padding: 35px 0 0 0;
+}
+.book-header {}
+.book-subheader {
+  padding: 10px 0;
+  color: #ababab;
+}
+.book-subheader a {
+  color: #ababab;
+  color: #8a8391;
+}
+.book-date {
+  margin: 0 10px 0 0;
+}
+.book-categories {
+  margin: 0 10px 0 0;
+}
+.book-categories-link {}
+.book-tags {}
+.book-tags-link {}
+.book-title {
+  margin: 0;
+  padding: 0;
+  line-height: 1.2em;
+  font-family: "Junction";
+  font-weight: 100;
+  color: #4e2b55;
+}
+.book-content {}
+.book-image {
+  display: block;
+  margin: 0 auto;
+}
+.book-words {
+  font-size: 1.3em;
+  line-height: 1.4em;
+}
+.book-footer {
+}
+
 /* section: post-summ */
 .post-summ {
   padding: 0 0 35px 0;
@@ -234,7 +276,7 @@ a {
   font-weight: 100;
 }
 .book-summ-image {
-  max-width: 200px;
+  max-width: 150px;
 }
 .book-summ-link:hover .book-summ-image {
   box-shadow: 0 5px 10px rgba(0, 0, 0, .5);
@@ -271,7 +313,9 @@ a {
 .post-summ-content img,
 .post-summ-content object,
 .post-content img,
-.post-content object {
+.post-content object,
+.book-content img,
+.book-content object {
   max-width: calc(100% - 1em);
   border-radius: 0.3em;
   box-shadow: rgba(0,0,0,0.45) 0 1px 4px;
@@ -550,13 +594,17 @@ a {
     padding: 15px 0;
   }
 
+  /* section: post-summ (large) */
   .post-summ-title {
     font-size: 35px;
   }
-
-  /* section: post-summ (large) */
   .post-summ-link {
     padding: 25px 50px 25px 40px;
+  }
+
+  /* section: book-summ (large) */
+  .book-summ-image {
+    max-width: 200px;
   }
 
   /* section: post (large) */
@@ -568,6 +616,14 @@ a {
   }
   .post-content pre {
     margin: 2em 0;
+  }
+
+  /* section: book (large) */
+  .book-subheader {
+    display: flex;
+  }
+  .book-title {
+    font-size: 50px;
   }
 
   .footer-inner {
