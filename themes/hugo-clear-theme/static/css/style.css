@@ -107,6 +107,7 @@ a {
 
 /* section: home (sm) */
 .home-section {
+  padding-bottom: 50px;
 }
 .home-highlight {
   padding: 0 0 15px 0;
