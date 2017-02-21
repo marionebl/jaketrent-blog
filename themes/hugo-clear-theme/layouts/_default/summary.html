@@ -5,10 +5,12 @@
     </h2>
   </header>
   <div class="post-summ-content">
-    {{ .Summary }}
     {{ if .Params.image }}
       <img class="post-summ-image" src="{{ .Params.image }}" />
     {{ end }}
+    <p>
+      {{ .Summary }}
+    </p>
   </div>
   <a class="post-summ-link" href="{{ .URL }}">Read more<span class="post-summ-link-icon">→</span></a>
 </article>
