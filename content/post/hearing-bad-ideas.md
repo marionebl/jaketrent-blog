@@ -33,7 +33,7 @@ Ask about any pitfalls they've experienced.  You don't have any specific lines o
 
 Now if you're feeling composed and generous enough, go a step further in your learning.  Congratulate them on the good things happening to them relative to this idea.  Then ask this person to describe how he thinks this idea might potentially be helpful to you.  Is it a generally useful idea?  Or in what contexts?  You may be surprised with some thoughts this person shares with you that you have not yet thought of.  You may be surprised at their generosity and desire to help you.
 
-## Graceful Unacceptance
+## Graceful Disagreement
 
 Even after hearing and learning, you may be unmoved in your opinion.  Or maybe you want to give yourself time to consider what you've heard and learned.  But in the end, you don't have to accept what you think is a bad idea.  It's essential to realize that your hearing and learning do not imply your acceptance.  You are not forced to agree.  By listening you are not stating or even intimating that you agree.
 
