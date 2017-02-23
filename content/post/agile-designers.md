@@ -4,10 +4,11 @@ title: "Agile Designers"
 date: "2012-10-15"
 comments: true
 categories:
-  - "Productivity"
+  - "Leadership"
 tags:
-  - "Design"
+  - "design"
   - "teams"
+  - "collaboration"
 image: https://i.imgur.com/GOXzL.jpg
 ---
 

@@ -4,7 +4,7 @@ title: "Make Your Project Fun"
 date: "2016-04-06"
 comments: true
 categories:
-  - "Productivity"
+  - "Leadership"
 tags:
   - "teams"
 description: Don't wait to make your software project fun.

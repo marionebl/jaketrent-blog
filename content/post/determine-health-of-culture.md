@@ -4,7 +4,7 @@ title: "Determining the Health of Your Culture"
 date: "2016-03-21"
 comments: true
 categories:
-  - "Productivity"
+  - "Leadership"
 tags:
   - "leadership"
   - "culture"

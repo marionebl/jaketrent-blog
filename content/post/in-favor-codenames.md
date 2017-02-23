@@ -4,7 +4,7 @@ title: "In Favor of Codenames"
 date: "2015-09-03"
 comments: true
 categories:
-  - "Productivity"
+  - "Leadership"
 tags:
   - "teams"
   - "passion"

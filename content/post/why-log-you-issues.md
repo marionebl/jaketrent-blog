@@ -4,7 +4,7 @@ title: "Why Log Your Issues"
 date: "2013-01-10"
 comments: true
 categories:
-  - "Productivity"
+  - "Code"
 tags:
   - "git"
   - "communication"

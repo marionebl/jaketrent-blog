@@ -4,7 +4,7 @@ title: "Depending on a Shared Lib"
 date: "2016-05-04"
 comments: true
 categories:
-  - "Productivity"
+  - "Code"
 tags:
   - "design"
 description: You're building a project that depends on a shared lib.  How will you evolve?

@@ -4,7 +4,7 @@ title: "Bring Your Listeners With You"
 date: "2016-03-20"
 comments: true
 categories:
-  - "Productivity"
+  - "Leadership"
 tags:
   - "conf"
 description: When speaking and teaching, make sure to remember to bring your listeners with you.

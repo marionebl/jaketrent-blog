@@ -4,7 +4,7 @@ title: "Be True to Your Heart"
 date: "2013-01-08"
 comments: true
 categories:
-  - "Productivity"
+  - "Leadership"
 tags:
   - "interviewing"
   - "passion"

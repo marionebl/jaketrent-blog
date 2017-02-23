@@ -4,7 +4,6 @@ title: "This Isn't Your Magnum Opus"
 date: "2015-08-15"
 comments: true
 categories:
-  - "Productivity"
   - "Leadership"
 tags: 
   - "continuous-delivery"

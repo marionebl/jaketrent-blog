@@ -4,9 +4,12 @@ title: "So Good They Can't Ignore You"
 date: "2013-07-17"
 comments: true
 categories:
-  - "Review"
+  - "Leadership"
 tags:
-  - "Productivity"
+  - "passion"
+  - "goals"
+  - "growth"
+  - "career"
 description: So Good They Can't Ignore You, a book by Cal Newport debunks for the follow your passion mindset and helps you find the job you'll love.
 metaKeywords: job choice, follow your passion, career capital, craftsman mentality
 published: true

@@ -4,7 +4,7 @@ title: "Developer Relations for Internal Developers"
 date: "2012-09-26"
 comments: true
 categories:
-  - "Productivity"
+  - "Leadership"
 tags:
   - "career"
 image: https://i.imgur.com/QAxW5.jpg

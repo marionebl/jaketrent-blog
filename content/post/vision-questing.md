@@ -4,9 +4,11 @@ title: "A Vision Questing We Will Go"
 date: "2015-08-10"
 comments: true
 categories:
-  - "Productivity"
-tags:
   - "Leadership"
+tags:
+  - "vision"
+  - "goals"
+  - "introspection"
 description: Find the vision of what work you think is most important to do
 metaKeywords: ponder, focus, work, vision walk, vision quest, think day
 published: true

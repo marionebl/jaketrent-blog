@@ -4,7 +4,7 @@ title: "The Power of Liking"
 date: "2015-04-23"
 comments: true
 categories:
-  - "Productivity"
+  - "Leadership"
 tags:
   - "dev-happiness"
 description: Liking the tech you use is ok, advantageous, and desireable

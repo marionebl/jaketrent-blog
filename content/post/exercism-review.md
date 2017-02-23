@@ -4,10 +4,11 @@ title: "Exercism Review"
 date: "2013-11-19"
 comments: true
 categories:
-  - "Review"
+  - "Code"
 tags:
-  - "Productivity"
+  - "learning"
   - "ruby"
+  - "elm"
 description: Exercism.io provides a great resource for daily code exercises and review.
 metaKeywords: exercism.io, exercism, daily exercise, ruby, javascript, objective-c, haskell, elixir
 published: true

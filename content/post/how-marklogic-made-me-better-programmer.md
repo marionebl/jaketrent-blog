@@ -4,7 +4,7 @@ title: "How MarkLogic Made Me a Better Programmer"
 date: "2013-08-08"
 comments: true
 categories:
-  - "Productivity"
+  - "Code"
 tags:
   - "marklogic"
   - "xquery"

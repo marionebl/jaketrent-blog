@@ -4,7 +4,6 @@ title: "Make Software in the Estuary"
 date: "2015-08-20"
 comments: true
 categories:
-  - "Productivity"
   - "Leadership"
 tags:
   - "collaboration"
