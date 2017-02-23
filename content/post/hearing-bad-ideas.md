@@ -19,6 +19,8 @@ title: "Hearing Bad Ideas"
 
 Ideas happen all the time.  Statistically, we'll hear some bad ones.  At least we think they're bad.  How can we best hear and react to these bad ideas?
 
+<!-- more -->
+
 ## Ideas Have Value
 
 First, a basic foundation for ideas:  Ideas come from people's thoughts.  People's ideas are the catalyst for innovation -- things to try, explore, and from which real progress can spring.  Progress is important.  People are even more important.  There is value in each.

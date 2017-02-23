@@ -5,10 +5,10 @@ date: "2015-08-20"
 comments: true
 categories:
   - "Productivity"
-tags:
   - "Leadership"
+tags:
   - "collaboration"
-  - "team"
+  - "teams"
 description: Make software in the estuary, in a mix of disciplines, training, and collaboration
 metaKeywords: collaboration, cross functional, team work, medici effect, humility, productivity
 published: true

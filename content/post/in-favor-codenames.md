@@ -6,7 +6,7 @@ comments: true
 categories:
   - "Productivity"
 tags:
-  - "team"
+  - "teams"
   - "passion"
 description: Be happy, use codenames on your project.
 metaKeywords: project, coordination, codenames, team name, project name, fun

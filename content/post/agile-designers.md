@@ -7,7 +7,7 @@ categories:
   - "Productivity"
 tags:
   - "Design"
-  - "team"
+  - "teams"
 image: https://i.imgur.com/GOXzL.jpg
 ---
 
