@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/2hfj0uV.jpg"
-reviewUrl: ""
 title: "Dad is Fat"
 ---
 

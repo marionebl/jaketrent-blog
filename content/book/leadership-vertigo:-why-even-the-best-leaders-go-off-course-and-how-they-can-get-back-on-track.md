@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/tTVoQlE.jpg"
-reviewUrl: ""
 title: "Leadership Vertigo: Why Even the Best Leaders Go Off Course and How They Can Get Back On Track"
 ---
 

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/z8qdQFW.jpg"
-reviewUrl: ""
 title: "Developing a React Edge"
 ---
 

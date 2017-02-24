@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/qO5w2ka.jpg"
-reviewUrl: ""
 title: "Focus: Achieving Your Highest Priorities"
 ---
 

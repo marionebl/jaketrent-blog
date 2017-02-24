@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/aOuoM4C.jpg"
-reviewUrl: ""
 title: "Wanting More: The Challenge of Enjoyment in the Age of Addiction"
 ---
 

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/RwkWphn.jpg"
-reviewUrl: ""
 title: "The Greatest Generation Speaks"
 ---
 

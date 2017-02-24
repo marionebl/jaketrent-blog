@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/8MmPYD0l.jpg"
-reviewUrl: ""
 title: "Decisive: How to Make Better Choices in Life and Work"
 ---
 

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/AyDapOdl.jpg"
-reviewUrl: ""
 title: "To the Rescue"
 ---
 

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/sg9PGKs.jpg"
-reviewUrl: ""
 title: "Well-being 2.0"
 ---
 

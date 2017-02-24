@@ -10,7 +10,6 @@ draft: false
 image: "http://i.imgur.com/gxejToi.jpg"
 layout: "book"
 metaKeywords: functional-testing, requirements
-reviewUrl: "https://jaketrent.com/post/release-it-stability-review/"
 tags:
   - "functional-testing"
   - "requirements"

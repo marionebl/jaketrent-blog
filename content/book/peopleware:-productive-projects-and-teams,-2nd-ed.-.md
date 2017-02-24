@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/1M5ld1X.jpg"
-reviewUrl: ""
 title: "Peopleware: Productive Projects and Teams, 2nd Ed. "
 ---
 

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/qPG443F.jpg"
-reviewUrl: ""
 title: "The Mythical Man-Month: Essays on Software Engineering"
 ---
 

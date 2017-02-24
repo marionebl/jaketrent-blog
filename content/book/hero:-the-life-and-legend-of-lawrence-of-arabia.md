@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/BRhH3rE.jpg"
-reviewUrl: ""
 title: "Hero: The Life and Legend of Lawrence of Arabia"
 ---
 

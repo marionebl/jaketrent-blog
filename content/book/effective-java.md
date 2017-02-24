@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/nWXQjE3.jpg"
-reviewUrl: ""
 title: "Effective Java"
 ---
 

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/f6oHYek.jpg"
-reviewUrl: ""
 title: "Jesus the Christ"
 ---
 

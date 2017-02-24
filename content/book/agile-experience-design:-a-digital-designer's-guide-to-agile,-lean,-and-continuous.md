@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/6zjjxza.jpg"
-reviewUrl: "https://jaketrent.com/post/agile-designers/"
 title: "Agile Experience Design: A Digital Designer's Guide to Agile, Lean, and Continuous"
 ---
 

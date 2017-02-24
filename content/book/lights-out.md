@@ -10,7 +10,6 @@ draft: false
 image: "http://i.imgur.com/47NXG6C.jpg"
 layout: book
 metaKeywords: "cyberattack, electrical grid, emp, transformers, preparation"
-reviewUrl: ""
 tags:
   - "preparation"
   - "cyberattack"

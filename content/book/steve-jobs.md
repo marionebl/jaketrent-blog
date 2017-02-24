@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/hpwhvgx.jpg"
-reviewUrl: ""
 title: "Steve Jobs"
 ---
 

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/exW4j8F.jpg"
-reviewUrl: ""
 title: "The Innovator’s Dilemma"
 ---
 

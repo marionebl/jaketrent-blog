@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/cIHrlp7.jpg"
-reviewUrl: ""
 title: "The Innovator's DNA: Mastering the Five Skills of Disruptive Innovators"
 ---
 

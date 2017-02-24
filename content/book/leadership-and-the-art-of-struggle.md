@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/cZwElOW.jpg"
-reviewUrl: ""
 title: "Leadership and the Art of Struggle"
 ---
 

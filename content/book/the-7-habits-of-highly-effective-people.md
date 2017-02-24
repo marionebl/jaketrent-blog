@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/hasvB6S.jpg"
-reviewUrl: ""
 title: "The 7 Habits of Highly Effective People"
 ---
 

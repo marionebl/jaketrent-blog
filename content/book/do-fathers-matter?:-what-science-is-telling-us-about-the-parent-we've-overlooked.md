@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/uFFHemF.jpg"
-reviewUrl: ""
 title: "Do Fathers Matter?: What Science Is Telling Us About the Parent We've Overlooked"
 ---
 

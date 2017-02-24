@@ -10,7 +10,6 @@ draft: false
 layout: "book"
 image: "http://i.imgur.com/RsOmHsb.jpg"
 metaKeywords: quitter, jon acuff, dream job, quitter book
-reviewUrl: "https://jaketrent.com/post/quitter-review/"
 tags:
   - "entrepreneur"
   - "dream"

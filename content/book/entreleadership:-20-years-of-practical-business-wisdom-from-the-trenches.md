@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/QvArJDV.jpg"
-reviewUrl: ""
 title: "EntreLeadership: 20 Years of Practical Business Wisdom from the Trenches"
 ---
 

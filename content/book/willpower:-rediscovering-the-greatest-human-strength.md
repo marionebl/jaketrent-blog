@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/gvySvlz.jpg"
-reviewUrl: ""
 title: "Willpower: Rediscovering the Greatest Human Strength"
 ---
 

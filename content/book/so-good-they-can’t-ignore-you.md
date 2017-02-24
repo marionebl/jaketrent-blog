@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/CzQSrjb.jpg"
-reviewUrl: "https://jaketrent.com/post/so-good-they-cant-ignore-you/"
 title: "So Good They Can’t Ignore You"
 ---
 

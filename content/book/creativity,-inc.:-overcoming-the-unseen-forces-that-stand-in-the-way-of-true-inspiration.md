@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/v1CZ0Lb.jpg"
-reviewUrl: ""
 title: "Creativity, Inc.: Overcoming the Unseen Forces That Stand in the Way of True Inspiration"
 ---
 

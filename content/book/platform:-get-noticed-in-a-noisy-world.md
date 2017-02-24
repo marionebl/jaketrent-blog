@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/hv7KVWp.jpg"
-reviewUrl: "https://jaketrent.com/post/book-review-for-platform/"
 tags:
   - "blog"
   - "entrepreneur"

@@ -10,7 +10,6 @@ draft: false
 layout: "book"
 image: "http://i.imgur.com/lguzP61.jpg"
 metaKeywords: career-building, design, evolution
-reviewUrl: "https://jaketrent.com/post/growing-a-whole-new-mind/"
 tags:
   - "career"
   - "design"

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/PooQk8z.jpg"
-reviewUrl: ""
 title: "Launch!: The Critical 90 Days from Idea to Market"
 ---
 

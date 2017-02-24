@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/1AdhMVb.jpg"
-reviewUrl: ""
 title: "Mere Christianity"
 ---
 

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/i4p2Jm3.jpg"
-reviewUrl: ""
 title: "The Narnian: The Life and Imagination of C.S. Lewis"
 ---
 

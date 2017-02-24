@@ -10,7 +10,6 @@ draft: false
 image: "http://i.imgur.com/5icSwsE.jpg"
 layout: book
 metaKeywords: "talent is overrated, it takes practice, focus, growth"
-reviewUrl: ""
 tags:
   - "growth"
   - "talent"

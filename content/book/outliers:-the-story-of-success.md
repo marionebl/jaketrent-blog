@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/D0LTIbk.jpg"
-reviewUrl: ""
 title: "Outliers: The Story of Success"
 ---
 

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/Z3NWpSA.jpg"
-reviewUrl: ""
 title: "A Short History of Nearly Everything"
 ---
 

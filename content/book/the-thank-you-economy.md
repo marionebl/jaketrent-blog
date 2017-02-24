@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/okkACz5.jpg"
-reviewUrl: ""
 title: "The Thank You Economy"
 ---
 

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/YgL9ye0.jpg"
-reviewUrl: ""
 title: "The Prince"
 ---
 

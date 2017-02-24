@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/o9ATfaY.jpg"
-reviewUrl: ""
 title: "I'll Mature When I'm Dead: Dave Barry's Amazing Tales of Adulthood"
 ---
 

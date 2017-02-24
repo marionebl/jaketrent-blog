@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/yramlDL.jpg"
-reviewUrl: ""
 title: "The One Minute Negotiator: Simple Steps to Reach Better Agreements"
 ---
 

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/9QTgcjg.jpg"
-reviewUrl: ""
 title: "Made to Stick: Why Some Ideas Survive and Others Die"
 ---
 

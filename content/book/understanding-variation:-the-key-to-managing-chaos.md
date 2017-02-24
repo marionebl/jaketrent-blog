@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/gn9qPZV.jpg"
-reviewUrl: ""
 title: "Understanding Variation: The Key to Managing Chaos"
 ---
 

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/PDyQ47N.png"
-reviewUrl: ""
 title: "Never Eat Alone: And Other Secrets to Success, One Relationship at a Time"
 ---
 

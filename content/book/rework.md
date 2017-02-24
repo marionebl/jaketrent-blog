@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/xdzGcxQ.jpg"
-reviewUrl: ""
 title: "Rework"
 ---
 

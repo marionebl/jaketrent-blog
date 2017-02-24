@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/9jXue7K.jpg"
-reviewUrl: ""
 title: "Turing's Cathedral"
 ---
 

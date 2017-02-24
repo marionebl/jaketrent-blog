@@ -13,7 +13,6 @@ tags:
   - "js"
   - "ember"
 image: "http://i.imgur.com/1JMwQPM.jpg"
-reviewUrl: "https://jaketrent.com/post/developing-an-ember-edge-review/"
 title: "Developing an Ember Edge"
 ---
 

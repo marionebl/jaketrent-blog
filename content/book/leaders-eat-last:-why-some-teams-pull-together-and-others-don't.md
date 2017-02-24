@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/fiFnUEC.jpg"
-reviewUrl: ""
 title: "Leaders Eat Last: Why Some Teams Pull Together and Others Don't"
 ---
 

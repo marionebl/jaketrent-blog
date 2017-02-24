@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/LyMNp6P.jpg"
-reviewUrl: ""
 title: "Linchpin: Are You Indispensable?"
 ---
 

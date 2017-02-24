@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/gI4QYhh.jpg"
-reviewUrl: ""
 title: "The World Is Flat: A Brief History of the Twenty-first Century"
 ---
 

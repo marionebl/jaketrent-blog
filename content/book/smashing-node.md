@@ -10,7 +10,6 @@ draft: false
 image: "http://i.imgur.com/cMkY2aM.jpg"
 layout: "book"
 metaKeywords: js, nodejs, smashing mag, smashing node, guillermo rauch, javascript everywhere
-reviewUrl: "https://jaketrent.com/post/smashing-node-review/"
 tags:
   - "js"
   - "nodejs"

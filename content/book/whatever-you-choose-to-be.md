@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/Fejv878.jpg"
-reviewUrl: ""
 title: "Whatever You Choose to Be"
 ---
 

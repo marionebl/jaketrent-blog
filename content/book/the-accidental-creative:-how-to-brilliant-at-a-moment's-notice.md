@@ -10,7 +10,6 @@ draft: false
 metaKeywords: accidental creative, creativity, productivity, schedulgin
 layout: "book"
 image: "http://i.imgur.com/CT3FoZT.jpg"
-reviewUrl: "https://jaketrent.com/post/ideas-from-accidental-creative/"
 tags:
   - "productivity"
   - "creativity"

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/wX8zzNL.jpg"
-reviewUrl: ""
 title: "Warren Buffet’s Management Secrets"
 ---
 

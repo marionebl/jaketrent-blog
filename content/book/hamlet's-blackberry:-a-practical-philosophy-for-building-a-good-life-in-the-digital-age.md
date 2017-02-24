@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/rZPNikS.jpg"
-reviewUrl: ""
 title: "Hamlet's BlackBerry: A Practical Philosophy for Building a Good Life in the Digital Age"
 ---
 

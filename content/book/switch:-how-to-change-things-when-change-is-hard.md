@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/mEyRbZ8.jpg"
-reviewUrl: "https://jaketrent.com/post/switch-review/"
 title: "Switch: How to Change Things When Change is Hard"
 ---
 

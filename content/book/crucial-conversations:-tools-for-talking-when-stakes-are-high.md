@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/onCCbtY.jpg"
-reviewUrl: ""
 title: "Crucial Conversations: Tools for Talking When Stakes Are High"
 ---
 

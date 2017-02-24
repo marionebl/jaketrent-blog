@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/gtgmmdb.jpg"
-reviewUrl: ""
 title: "The 5000 Year Leap"
 ---
 

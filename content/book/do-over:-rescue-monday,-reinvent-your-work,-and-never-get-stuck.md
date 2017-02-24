@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/ROLzxZd.jpg"
-reviewUrl: ""
 title: "Do Over: Rescue Monday, Reinvent Your Work, and Never Get Stuck"
 ---
 

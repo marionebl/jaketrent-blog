@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/xKcNcAJ.jpg"
-reviewUrl: ""
 title: "Being George Washington"
 ---
 

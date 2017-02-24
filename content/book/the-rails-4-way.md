@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/T4lolsi.jpg"
-reviewUrl: ""
 title: "The Rails 4 Way"
 ---
 

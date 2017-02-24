@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/y7okRsQ.jpg"
-reviewUrl: ""
 title: "The Way We're Workin"
 ---
 

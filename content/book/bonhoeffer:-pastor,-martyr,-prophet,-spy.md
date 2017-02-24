@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/l0ifT2Q.jpg"
-reviewUrl: ""
 title: "Bonhoeffer: Pastor, Martyr, Prophet, Spy"
 ---
 

@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/h0vc0we.jpg"
-reviewUrl: ""
 title: "Power of Everyday Missionaries"
 ---
 

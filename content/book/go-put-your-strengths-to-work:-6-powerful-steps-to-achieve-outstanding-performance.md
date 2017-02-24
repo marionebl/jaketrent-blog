@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/595e2Im.jpg"
-reviewUrl: ""
 title: "Go Put Your Strengths to Work: 6 Powerful Steps to Achieve Outstanding Performance"
 ---
 

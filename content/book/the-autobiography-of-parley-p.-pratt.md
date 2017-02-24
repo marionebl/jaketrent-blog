@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/7vL6SMS.jpg"
-reviewUrl: ""
 title: "The Autobiography of Parley P. Pratt"
 ---
 

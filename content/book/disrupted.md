@@ -10,7 +10,6 @@ draft: false
 image: "http://i.imgur.com/QO1TBQD.jpg"
 metaKeywords: "startup, marketing, journalist, hubspot"
 layout: book
-reviewUrl: ""
 tags:
   - "startup"
   - "marketing"

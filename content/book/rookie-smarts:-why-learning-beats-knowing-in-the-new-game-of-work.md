@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/DQOQMcG.jpg"
-reviewUrl: ""
 title: "Rookie Smarts: Why Learning Beats Knowing in the New Game of Work"
 ---
 

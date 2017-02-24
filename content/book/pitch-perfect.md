@@ -10,7 +10,6 @@ draft: false
 keywords: ""
 layout: "book"
 image: "http://i.imgur.com/liv177O.jpg"
-reviewUrl: ""
 title: "Pitch Perfect"
 ---
 
