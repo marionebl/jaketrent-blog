@@ -123,6 +123,8 @@ a {
   color: #4e2b55;
 }
 .home-highlight-image {
+  display: block;
+  margin: 0 auto;
   max-width: 100%;
   border-radius: 0.3em;
   box-shadow: rgba(0,0,0,0.45) 0 1px 4px;
@@ -503,6 +505,10 @@ a {
 
 /* size: med - content-related */
 @media screen and (min-width: 621px) {
+  .home-highlight-image {
+    margin: 0;
+  }
+
   .post-summ-content p,
   .post-content p,
   .post-summ-content ul,
@@ -616,6 +622,10 @@ a {
   }
   .home-highlight-image {
     max-width: calc(100% - 1em);
+  }
+  .home-highlight-image--book {
+    float: left;
+    margin: 0 10px 20px 0;
   }
   .home-list {
     flex: 1;
