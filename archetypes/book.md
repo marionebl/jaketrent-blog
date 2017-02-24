@@ -6,11 +6,9 @@ categories:
 tags:
   - ""
 description: ""
-keywords: ""
+metaKeywords: ""
 draft: false
 image: ""
-completeDates:
-  - ""
 reviewUrl: ""
 author: ""
 affiliateUrl: ""
