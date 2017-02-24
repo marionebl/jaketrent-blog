@@ -4,7 +4,7 @@ author: "Ted Koppel"
 categories:
   - "Book"
 comments: true
-date: 2017-05-19
+date: 2016-05-19
 description: "A look at the effects of a cyberattack on the U.S. electrical grid"
 draft: false
 image: "http://i.imgur.com/47NXG6C.jpg"

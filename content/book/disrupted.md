@@ -4,7 +4,7 @@ author: "Dan Lyons"
 categories:
   - "Book"
 comments: true
-date: 2017-06-13
+date: 2016-06-13
 description: "Journalist goes into a tech startup's marketing department and hates it"
 draft: false
 image: "http://i.imgur.com/QO1TBQD.jpg"
