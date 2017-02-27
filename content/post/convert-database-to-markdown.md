@@ -16,7 +16,7 @@ image: http://i.imgur.com/mJ02xsf.jpg
 
 Once you get a bunch of data that you want to put on your site, it's common to reach for a database.  Then you'll write an app that consumes that database and renders a dynamic site.  What if, instead, you could create a static site from that data.  What would that buy you?
 
-<!-- more -->
+<!--more-->
 
 ## Dynamic Database
 

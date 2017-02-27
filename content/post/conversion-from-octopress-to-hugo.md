@@ -17,7 +17,7 @@ image: http://i.imgur.com/EksouVh.jpg
 
 Several weeks ago, I decided it was time for me to move on from Octopress.  It's given me a good run.  But there were a couple of causes that pushed me over the edge.  My experience has been good with a few pains in the conversion.
 
-<!-- more -->
+<!--more-->
 
 ## Outgrowing Octopress
 

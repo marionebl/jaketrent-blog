@@ -17,7 +17,7 @@ title: "Context Assists Appreciation"
 
 When we are exposed to a new thing, we might not at first see its full grandeur.  After a bit of context and perspective, our appreciation for that thing may increase substantially.
 
-<!-- more -->
+<!--more-->
 
 ## Subjects are Deep and Broad 
 

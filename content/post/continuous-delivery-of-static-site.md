@@ -17,6 +17,8 @@ image: http://i.imgur.com/9BoMtUO.jpg
 
 Continuous delivery allows for you to release often what you are always developing.  This is even possible on a static site where we might not be hiding in-development features but content and visual styles.  Here is a strategy for doing that, executing in Hugo.
 
+<!--more-->
+
 ## Feature Toggles
 
 Main line development is a joy.  It's often good to avoid the long-lived, meandering paths of feature branches.  In order to stay in the master branch, you need to keep it always ready to deploy.  So anything that's half-baked needs to be committable but not impact the main experience. 

@@ -16,7 +16,7 @@ title: "Coding on Vacation"
 
 I have traditionally been a big holiday coder.  I've had a ton of fun projects start or finish on vacation.  It's a great time for these projects.  But what might we be missing on vacation if we're always coding?
 
-<!-- more -->
+<!--more-->
 
 ## Waiting for This Moment
 

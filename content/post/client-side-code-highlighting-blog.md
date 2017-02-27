@@ -17,7 +17,7 @@ title: "Add Client-side Code Highlighting to Your Blog"
 
 There are a few options for client-side code highlighting.  [Highlight.js](https://highlightjs.org/) is one of the most popular, and it's super easy to integrate into your site.  Let's do it!
 
-<!-- more -->
+<!--more-->
 
 ## Compared to Server Side
 

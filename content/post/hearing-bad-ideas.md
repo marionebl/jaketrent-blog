@@ -19,7 +19,7 @@ title: "Hearing Bad Ideas"
 
 Ideas happen all the time.  Statistically, we'll hear some bad ones.  At least we think they're bad.  How can we best hear and react to these bad ideas?
 
-<!-- more -->
+<!--more-->
 
 ## Ideas Have Value
 

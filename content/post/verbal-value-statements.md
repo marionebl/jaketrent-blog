@@ -18,7 +18,7 @@ title: "Verbal Value Statements"
 
 Language is powerful.  It's super interesting to discern viewpoints based on language used.  We make value statements all the time.  Depending on how we view something, we'll describe it differently.  This is just as true in software and software dev as anything.
 
-<!-- more -->
+<!--more-->
 
 ## Everyone Has Opinions
 

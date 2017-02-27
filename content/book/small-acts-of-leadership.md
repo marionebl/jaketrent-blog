@@ -20,7 +20,7 @@ title: "Small Acts of Leadership: 12 Intentional Behaviors That Lead to Big Impa
 
 There are things that each of us can do to show leadership in the role we're already in. Title is not required to make a real change in ourselves or to have a real impact on the people, organizations, and efforts around us.  This book reads like a series of standalone sections that have wonderful stories or illustrations to share compelling ways we can show leadership.  The anecdotes are engaging and inspiring.
 
-<!-- more -->
+<!--more-->
 
 The 12 behaviors discussed are:
 
