@@ -9,7 +9,6 @@ description: ""
 metaKeywords: ""
 draft: false
 image: ""
-reviewUrl: ""
 author: ""
 affiliateUrl: ""
 ---
