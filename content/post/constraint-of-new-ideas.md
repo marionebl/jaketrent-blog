@@ -17,7 +17,7 @@ title: "Constraint of New Ideas"
 
 Over time we can get very comfortable in our ways.  We do things as they've always been done.  In this state, sometimes we can find ourselves constraining new ideas or stifling new possibilities as they come to us.
 
-<!-- more -->
+<!--more-->
 
 ## Why Not Go For the Banana
 
