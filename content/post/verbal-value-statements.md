@@ -3,7 +3,7 @@ categories:
   - "Leadership"
 comments: true
 date: 2017-02-25T07:55:59-07:00
-description: "Listen closely, and you'll hear peoples' opinions in their choice of adjectives"
+description: "Listen closely, and you'll hear peoples' opinions in their choice of words."
 draft: false
 image: "http://i.imgur.com/VwDeidv.jpg"
 layout: post

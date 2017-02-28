@@ -39,7 +39,7 @@ Perhaps we or someone else already tried something like that before.  Perhaps it
 
 Perhaps we feel like we're betraying old ideas and customs.  Perhaps we feel like we're admitting we are wrong or were misguided in the past.  
 
-We might just like our current ideas.  We were there when they were initially thought.  What we made built upon these ideas has been great.  We feel ownership of these ideas and the results.
+We might just like our current ideas.  We were in the group that thought them.  We've built great things with them.  We feel ownership of these ideas and the results.
 
 If something new begins to take over, perhaps we'll lose relevancy.  We may feel threatened.
 
@@ -49,7 +49,7 @@ What can we do to let new ideas live?  Perhaps we don't need to [strike them dow
 
 We can realize that perfection is rarely achieved.  That means that things could be better.  We can really live in a mode of continuous improvement instead of just giving it lip service.
 
-We can separate ourselves from our ideas or our way of doing things.  We don't want to say or think of ourselves as "the guy that tought of that".  We can let ideas stand for themselves, using language such as "the idea of how we..." versus "the idea that Jake had was...".
+We can separate ourselves from our ideas or our way of doing things.  We don't want to say or think of ourselves as "the guy that thought of that".  We can let ideas stand for themselves, using language such as "the idea of how we..." versus "the idea that Jake had was...".
 
 We can cultivate an inclusive way of doing things.  We can invite participation from all.  We can encourage diversity of thought through listening and acceptance.  We can take ideas from wherever they come from and not be predisposed to dislike certain sources.
 
