@@ -24,7 +24,7 @@ There are things that each of us can do to show leadership in the role we're alr
 
 The 12 behaviors discussed are:
 
-1. **Belive in Yourself** - Instead of worrying when something bad happens, move with clarity and resolve, like the sailor of the sinking ship.  Believe that you're lucky, and take a chance.  Live the life that you want.
+1. **Believe in Yourself** - Instead of worrying when something bad happens, move with clarity and resolve, like the sailor of the sinking ship.  Believe that you're lucky, and take a chance.  Live the life that you want.
 2. **Build Confidence** - Practice and be prepared, and ye shall not fear.  Build your self-effacacy by working hard and making accomplishments happen.
 3. **Introduce Challenge** - Notice and overcome your fear, like those fearful of snakes that learned to handle them step by step.  Change your goal and mental context from performance to learning.  Coach the uncomfortable to be comfortable and the comfortable to be uncomfortable, staying in the zone of growth.
 4. **Express Gratitude** - Support the work, being the best female vocalist the world has never heard of, Lisa Fischer.  Build relationships with the good people around you.
