@@ -552,6 +552,7 @@ a {
     background: url(/img/sun.png) no-repeat center;
     animation: 1000s linear planet-rotate;
     z-index: 1;
+    pointer-events: none;
   }
   .header-inner,
   .footer-inner,
