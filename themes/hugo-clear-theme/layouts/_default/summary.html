@@ -6,7 +6,9 @@
   </header>
   <div class="post-summ-content">
     {{ if .Params.image }}
-      <img class="post-summ-image" src="{{ .Params.image }}" />
+      <a class="post-summ-image-link" href="{{ .URL }}">
+        <img class="post-summ-image" src="{{ .Params.image }}" />
+      </a>
     {{ end }}
     <p>
       {{ .Summary }}

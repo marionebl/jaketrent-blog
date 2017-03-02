@@ -11,7 +11,9 @@
           <header>
             <h3 class="home-highlight-label">Latest Post</h3>
             <h2 class="home-highlight-title"><a class="home-highlight-title-link" href="{{ .URL }}">{{ .Title }}</a></h2>
-            <img class="home-highlight-image" src="{{ .Params.image }}}">
+            <a class="home-highlight-image-link" href="{{ .URL }}">
+              <img class="home-highlight-image" src="{{ .Params.image }}}">
+            </a>
           </header>
           <p class="home-highlight-summary">
             {{ .Summary }}
@@ -36,7 +38,9 @@
           <header>
             <h3 class="home-highlight-label">Latest Book</h3>
           </header>
-          <img class="home-highlight-image home-highlight-image--book" src="{{ .Params.image }}}">
+          <a href="{{ .URL }}" class="home-highlight-image-link">
+            <img class="home-highlight-image home-highlight-image--book" src="{{ .Params.image }}}">
+          </aa>
           <p class="home-highlight-summary">
             {{ .Summary }}
           </p>
