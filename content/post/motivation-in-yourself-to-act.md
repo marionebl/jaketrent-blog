@@ -13,7 +13,7 @@ tags:
   - "confidence"
   - "motivation"
   - "fear"
-title: "Motivation in Yourself to Act"
+title: "Motivation Within You to Act"
 ---
 
 We find motivation in many ways.  Some motivations will prove to be more reliable than others.  There are barriers to start and keep going -- to act.  Sometimes looking within ourselves for motivation will be more helpful than other sources.  We can be better able to put ourselves out there and make of our lives what we desire.
