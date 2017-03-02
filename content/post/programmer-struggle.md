@@ -19,4 +19,4 @@ The life of a programmer is mostly a never-ending struggle.  Solving problems in
 
 If you write code, you will struggle.  Most professional programmers learn to struggle hour after hour, day after day, without getting (too) frustrated.  This is another skill that will serve you well.
 
-<!-- more -->
+<!--more-->
