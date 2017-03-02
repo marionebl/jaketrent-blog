@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "An allegorical story about mice and little people in a maze of life that can help prompt helpful thinking about what is worth pursuing in life. Life c"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/jX9SFHI.jpg"
 title: "Who Moved My Cheese?"

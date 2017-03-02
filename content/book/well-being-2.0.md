@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "The facets of our life are interconnected. We cannot have independent wellness in one and avoid the other. For greatest wellbeing, we should consider "
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/sg9PGKs.jpg"
 title: "Well-being 2.0"

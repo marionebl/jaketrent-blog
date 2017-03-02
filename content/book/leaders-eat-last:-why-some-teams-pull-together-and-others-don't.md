@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Awesome exhortation to work together and for one another.  We can all do little things that encourage selflessness and safety within our organizations"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/fiFnUEC.jpg"
 title: "Leaders Eat Last: Why Some Teams Pull Together and Others Don't"

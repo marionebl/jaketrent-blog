@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "A bit of a rant but full of good things to say for people in small business.  Great counter-culture wisdom about being frugal, being small, and ignori"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/xdzGcxQ.jpg"
 title: "Rework"

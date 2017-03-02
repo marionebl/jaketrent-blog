@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Plenty of dad-related anecdotes that touch on Jim's favorite topic of food.  His jokes about parenting are at once impossible and relatable."
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/2hfj0uV.jpg"
 title: "Dad is Fat"

@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "You have a unique combination of strengths.  These are the activities that make you strong.  Use them more often, and you will be more engaged and pro"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/595e2Im.jpg"
 title: "Go Put Your Strengths to Work: 6 Powerful Steps to Achieve Outstanding Performance"

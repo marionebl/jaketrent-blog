@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Since my first world history class, I've been intrigued by this classic.  Machiavelli is very cutthroat in describing to his sovereign how he should g"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/YgL9ye0.jpg"
 title: "The Prince"

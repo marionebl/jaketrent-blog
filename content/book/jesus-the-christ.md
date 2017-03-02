@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Jesus Christ gave the world His life and teachings, and it's all very amazing to learn more about.  Talmage gives a rich, full view of the nature of a"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/f6oHYek.jpg"
 title: "Jesus the Christ"

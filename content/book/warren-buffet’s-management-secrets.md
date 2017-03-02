@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "It turns out Warren Buffet has some real people and management skills behind his sprawling financial success. These are down-to-earth and useful insig"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/wX8zzNL.jpg"
 title: "Warren Buffet’s Management Secrets"

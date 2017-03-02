@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "We often think of underdogs as having absolute disadvantages.  Often, these disadvantages lead us to compensate and learn new advantages or play by di"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/TJZTet1.jpg"
 title: "David and Goliath"

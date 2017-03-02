@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "This is the biography of Thomas Monson, President of The Church of Jesus Christ of Latter-day Saints. Reading the account of his life was super inspir"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/AyDapOdl.jpg"
 title: "To the Rescue"

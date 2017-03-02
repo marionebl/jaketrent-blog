@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Mitt speaks plainly about how he sees the world and the ideas he has for facing our challenges.  He fundamentally believes in the goodness and greatne"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/VuDJn84.jpg"
 title: "No Apology"

@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Lots of interesting observations on our modern tendency to need to be busy and stimulated constantly.  Followed by helpful advice on how to be more pr"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/aOuoM4C.jpg"
 title: "Wanting More: The Challenge of Enjoyment in the Age of Addiction"

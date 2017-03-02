@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Touching reflections from those involved or connected to World War II.  It is amazing to consider the real lives affected by that period marked by con"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/RwkWphn.jpg"
 title: "The Greatest Generation Speaks"

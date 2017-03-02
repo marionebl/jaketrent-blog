@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Even though we often expect our leaders to be perfect, no one is.  If we realize this, we can be mindful about what causes tension in our lives and ho"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/cZwElOW.jpg"
 title: "Leadership and the Art of Struggle"

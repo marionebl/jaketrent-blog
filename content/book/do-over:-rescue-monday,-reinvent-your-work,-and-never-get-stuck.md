@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "There are unexpected and planned career adjustments.  Constant investment in a career savings account of skills, connections, character, and hustle wi"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/ROLzxZd.jpg"
 title: "Do Over: Rescue Monday, Reinvent Your Work, and Never Get Stuck"

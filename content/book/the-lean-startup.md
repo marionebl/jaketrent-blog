@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Learn to bootstrap your idea in the form of a minimum viable product. Create your feedback loop, and make your product better through your learning. I"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/ORVm8kxl.jpg"
 title: "The Lean Startup"

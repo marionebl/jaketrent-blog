@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Malcolm argues that we over-idolize the self-made made. He focuses on stories of people where success predictably includes unique opportunity and cult"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/D0LTIbk.jpg"
 title: "Outliers: The Story of Success"

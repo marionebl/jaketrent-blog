@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Not only is it the right thing to really care for people, your customers, now it's economically expedient.  New engagement tools are many and allow us"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/okkACz5.jpg"
 title: "The Thank You Economy"

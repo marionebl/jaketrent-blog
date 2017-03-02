@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "David is all about helping people organize their lives by getting everything out of their head into a reliable system.  Once reliance on the system is"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/aMQbKPd.jpg"
 title: "Getting Things Done"

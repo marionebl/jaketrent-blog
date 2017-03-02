@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "George Washington was just a human.  Despite and because of his humanity, he accomplished great things personally and for our nation.  What if we all "
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/xKcNcAJ.jpg"
 title: "Being George Washington"

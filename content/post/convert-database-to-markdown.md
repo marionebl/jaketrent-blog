@@ -112,7 +112,7 @@ categories:
 comments: true
 description: "${line.descriptionSummary}"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "${line.coverUrl}"
 reviewUrl: "${line.reviewUrl}"

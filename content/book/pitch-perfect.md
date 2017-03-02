@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Life is filled with important situations in which you want to say things right the first time.  This book is full of great tactics and stories to help"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/liv177O.jpg"
 title: "Pitch Perfect"

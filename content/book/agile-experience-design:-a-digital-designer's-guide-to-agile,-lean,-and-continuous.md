@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "The book is meant to help designers as they try to integrate better in an agile environment.  In my case, I was attempting to learn how to better comm"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/6zjjxza.jpg"
 title: "Agile Experience Design: A Digital Designer's Guide to Agile, Lean, and Continuous"

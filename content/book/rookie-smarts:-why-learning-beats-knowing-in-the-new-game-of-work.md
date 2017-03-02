@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Inspiring thoughts on not underestimating the learner.  The person in a curious, growth mindset is often going to go faster and innovate in unforeseen"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/DQOQMcG.jpg"
 title: "Rookie Smarts: Why Learning Beats Knowing in the New Game of Work"

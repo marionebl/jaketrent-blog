@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "The foundational moments of general computing are chronicled here.  The genius of those early pioneers is highlighted.  It's a little dry at times, bu"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/9jXue7K.jpg"
 title: "Turing's Cathedral"

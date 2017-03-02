@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "This collection of thoughts on the software creation process still rings true today.  Observations related to team dynamics, project staffing, and org"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/qPG443F.jpg"
 title: "The Mythical Man-Month: Essays on Software Engineering"

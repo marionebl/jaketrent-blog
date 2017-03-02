@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "To build your platform, you’ll need an online presence. Michael is a social media mezzo forte."
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/hv7KVWp.jpg"
 tags:

@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "An inspiring look inside Pixar and Disney animation studios.  The creative process can not be distilled into pithy t-shirt slogans.  It's messy and we"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/v1CZ0Lb.jpg"
 title: "Creativity, Inc.: Overcoming the Unseen Forces That Stand in the Way of True Inspiration"

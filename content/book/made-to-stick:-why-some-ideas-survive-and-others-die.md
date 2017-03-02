@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Chip & Dan make a clear outline of the elements of SUCCESsful, sticky ideas: simple, unexpected, concrete, credible, emotional, story.  Considering th"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/9QTgcjg.jpg"
 title: "Made to Stick: Why Some Ideas Survive and Others Die"

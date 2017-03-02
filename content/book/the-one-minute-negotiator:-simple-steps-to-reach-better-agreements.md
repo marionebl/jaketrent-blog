@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "EASY negotiations -- realize and Engage in the negotiation, Assess yours and the others' tendencies, select the best Strategy, spend time for Your one"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/yramlDL.jpg"
 title: "The One Minute Negotiator: Simple Steps to Reach Better Agreements"

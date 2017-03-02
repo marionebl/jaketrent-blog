@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Prepping the entrepreneur to have the necessary drive, vision, and grasp of tactical issues such as finances in order to get a new business off the gr"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/PooQk8z.jpg"
 title: "Launch!: The Critical 90 Days from Idea to Market"

@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Ever the great story-teller, Malcolm presents several interesting episodes here.  Each is meant to prove that we make snap judgements as a part of our"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/aqe6LXb.jpg"
 title: "Blink"

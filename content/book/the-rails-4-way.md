@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Great coverage of the Rails framework.  Lots of reference material and lots of tips from material experts."
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/T4lolsi.jpg"
 title: "The Rails 4 Way"

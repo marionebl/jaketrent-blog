@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "An inspiring work from a time that those of faith had need to support one another.  Still applicable now.  Great thoughts from a great mind and heart "
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/1AdhMVb.jpg"
 title: "Mere Christianity"

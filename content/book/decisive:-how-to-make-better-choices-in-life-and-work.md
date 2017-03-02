@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "There are specific traits of being human that make us not natural at making great decisions. Recognizing these weaknesses and pitfalls and learning ne"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/8MmPYD0l.jpg"
 title: "Decisive: How to Make Better Choices in Life and Work"

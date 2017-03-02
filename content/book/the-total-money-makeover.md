@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Dave went broke and vowed it would never happen to him again. He learned valuable principles in handling money and shares them with his intense person"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/GtfeXcd.jpg"
 title: "The Total Money Makeover"

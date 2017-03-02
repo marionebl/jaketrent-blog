@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Likening people to an elephant and rider, Chip and Dan show a lot of interesting examples of how people and situations have been successfully changed "
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/mEyRbZ8.jpg"
 title: "Switch: How to Change Things When Change is Hard"

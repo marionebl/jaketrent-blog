@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "This is the first \"Effective\" style book I've read.  It was chock full of great patterns I could use in my code.  Still hold it as a standard by whi"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/nWXQjE3.jpg"
 title: "Effective Java"

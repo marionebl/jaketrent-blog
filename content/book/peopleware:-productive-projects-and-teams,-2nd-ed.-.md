@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "It is refreshing to remember that people are the single greatest asset in a creative business.  With intention and care, people can be treated in such"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/1M5ld1X.jpg"
 title: "Peopleware: Productive Projects and Teams, 2nd Ed. "

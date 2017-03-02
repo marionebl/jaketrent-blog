@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Jobs is revealed as a man of many passions.  Reading the formative moments of the personal computing technology and industry is very interesting!  How"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/hpwhvgx.jpg"
 title: "Steve Jobs"

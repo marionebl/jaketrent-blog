@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Some tell you to follow your passions. Cal tells you to master what you do, opportunities and passion will follow."
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/CzQSrjb.jpg"
 title: "So Good They Can’t Ignore You"

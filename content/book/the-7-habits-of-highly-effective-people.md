@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Now a classic upon which many subsequent books relating to productivity, goals, communicating, and relationships have been based.  "
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/hasvB6S.jpg"
 title: "The 7 Habits of Highly Effective People"

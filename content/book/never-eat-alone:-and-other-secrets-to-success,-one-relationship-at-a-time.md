@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "How intentional are we about the people we invite into our lives?  There is great mutual benefit to be had in good relationships with good people.  Ke"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/PDyQ47N.png"
 title: "Never Eat Alone: And Other Secrets to Success, One Relationship at a Time"

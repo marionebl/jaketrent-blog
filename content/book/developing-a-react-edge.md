@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Great coverage on overall React library.  Better editing than previous Bleeding Edge Press books.  Good examples.  Scattershot survey of React testing"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/z8qdQFW.jpg"
 title: "Developing a React Edge"

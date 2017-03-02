@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Willpower is here shown as a virtue to influence all others -- one that we don't recognize enough.  They present good insights into why we do what we "
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/gvySvlz.jpg"
 title: "Willpower: Rediscovering the Greatest Human Strength"

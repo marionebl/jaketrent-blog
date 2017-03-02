@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "In an effort to help people want to come to work and give more to their company, Ricardo tried many untraditional approaches in his business.  He demo"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/iR58SgU.jpg"
 title: "Maverick: The Success Story Behind the World's Most Unusual Workplace"

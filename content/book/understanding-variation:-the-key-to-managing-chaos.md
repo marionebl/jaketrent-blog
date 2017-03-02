@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "It is easy to try and explain what looks light meaningful data but is just a red herring.  Learn to discern more clearly real signs in your data so th"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/gn9qPZV.jpg"
 title: "Understanding Variation: The Key to Managing Chaos"

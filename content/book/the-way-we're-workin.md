@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Humans are not like machines.  We work in rhythms, where periods of productivity are stoked with regular intervals of renewal.  Tony gives some intere"
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/y7okRsQ.jpg"
 title: "The Way We're Workin"

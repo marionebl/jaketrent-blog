@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "A look at the ancient and modern history and motivation for building these sanctuaries dedicated to Jesus Christ."
 draft: false
-keywords: ""
+metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/Uty6HGj.jpg"
 title: "The House of the Lord"
