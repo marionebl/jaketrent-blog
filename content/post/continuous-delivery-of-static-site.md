@@ -12,7 +12,7 @@ tags:
 description: A story of my migration from Octopress to Hugo static site generator
 metaKeywords: hugo, static-site, continuous delivery, feature toggles, main line development, environment variables
 published: true
-image: http://i.imgur.com/9BoMtUO.jpg
+image: https://i.imgur.com/9BoMtUO.jpg
 ---
 
 Continuous delivery allows for you to release often what you are always developing.  This is even possible on a static site where we might not be hiding in-development features but content and visual styles.  Here is a strategy for doing that, executing in Hugo.

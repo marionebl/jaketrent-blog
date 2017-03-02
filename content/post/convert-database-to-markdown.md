@@ -11,7 +11,7 @@ tags:
 description: You have a site with a cms and a database.  Would it work as a static site based on markdown?  Maybe.
 metaKeywords: hugo, static-site, static site generator, markdown, database, cms
 published: true
-image: http://i.imgur.com/mJ02xsf.jpg
+image: https://i.imgur.com/mJ02xsf.jpg
 ---
 
 Once you get a bunch of data that you want to put on your site, it's common to reach for a database.  Then you'll write an app that consumes that database and renders a dynamic site.  What if, instead, you could create a static site from that data.  What would that buy you?

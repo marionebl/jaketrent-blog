@@ -12,7 +12,7 @@ tags:
 description: In seeking a new position, take a chance on yourself before others may and just start doing
 metaKeywords: interviewing, permission, platform, self confidence, career change
 published: true
-image: http://i.imgur.com/2ahyoBv.jpg
+image: https://i.imgur.com/2ahyoBv.jpg
 ---
 
 When we are seeking a new position or an advancement in our current career path, we are asking others to take a chance on us.  Hiring managers, peers, teams, whole companies are among those that we ask to take a chance on and trust us to do a new thing.  Sometimes the most important person to convince in taking a chance on us is ourself.
