@@ -2,7 +2,11 @@
 <html lang="en-US">
   <head>
     <meta charset="utf-8" />
-    <title>{{ .Title | default .Site.Title }}</title>
+    {{ if .IsPage }}
+      <title>{{ .Title }} | {{ .Site.Title }}</title>
+    {{ else }}
+      <title>{{ .Title | default .Site.Title }}</title>
+    {{ end }}
     {{ if .IsPage }}
       <meta name="description" content="{{ .Description }}" />
     {{ else }}
