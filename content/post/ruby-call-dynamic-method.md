@@ -9,7 +9,7 @@ tags:
   - "ruby"
 description: Sometimes it's useful to be able to call a different method in your code at runtime depending on a parameter.  Ruby easily does the job.
 metaKeywords: ruby, dynamic method, send, send with parameters
-published: true
+draft: false
 image: https://i.imgur.com/Z7WWtL0.jpg
 ---
 

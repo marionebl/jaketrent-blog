@@ -10,7 +10,7 @@ tags:
   - "project-management"
 description: In Agile software development, an iteration is a time period of work, where the full software dev cycle is completed.  Iterations are iterative, done over a
 metaKeywords: agile, project-management
-published: true
+draft: false
 ---
 
 In Agile software development, an iteration is a time period of work, where the full software dev cycle is completed.  Iterations are iterative, done over and over again.  And yet, many project teams find making the most of each iteration challenging.  On my current project, I feel like an important part of making each iteration solid and progressive is the iteration planning, which I feel is done very well.  Iteration planning, done well, relies upon project management and each team member.  Here are some of my observations.

@@ -10,7 +10,7 @@ tags:
   - "java"
 description: Say words like generics, enums, or interfaces, and you've immediately transported to the realm of conjured whirlwind sandstorms and curved-sw
 metaKeywords: generics, java
-published: true
+draft: false
 ---
 
 [flash bang!]  Say words like generics, enums, or interfaces, and you've immediately transported to the realm of conjured whirlwind sandstorms and curved-sword-weilding assasins.  Well, I guess we're going there, because I think this is pretty cool.  Plus, undocumented, or at least un-reiterated to myself, and later I'll look at it and think it's just pretty complicated.  Prepare for angle brackets in the amount of parens in lisp. 

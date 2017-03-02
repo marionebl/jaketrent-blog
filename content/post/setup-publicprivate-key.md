@@ -11,7 +11,7 @@ tags:
   - "ssh"
 description: When you connect to a remote server, you're connecting over ssh or scp or a similar protocol.  In each case, you may have to provide some authentication cre
 metaKeywords: encryption, networking, ssh
-published: true
+draft: false
 ---
 
 When you connect to a remote server, you're connecting over ssh or scp or a similar protocol.  In each case, you may have to provide some authentication credentials to prove you are who you say you are.  This can come in the form of a user/password combo, but if you're connecting a lot or if you're trying to setup a non-interactive connection, this can become either really monotonous or really problematic.  Public/private keys will come to our rescue, and we'll never need to enter our password again.

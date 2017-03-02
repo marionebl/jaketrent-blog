@@ -9,7 +9,7 @@ tags:
   - "marklogic"
   - "xquery"
 description: MarkLogic was a very new experience for me.  I don't program in it these days, but it helped me become a better programmer.
-published: true
+draft: false
 image: https://i.imgur.com/32OKIUH.png
 ---
 

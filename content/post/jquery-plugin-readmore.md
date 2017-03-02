@@ -11,7 +11,7 @@ tags:
   - "plugins"
 description: Jquery plugins are a joy to use, and they are surprisingly easy to write.  Everyone that writes lots of Jquery code should seek to take potentially-resuable
 metaKeywords: javascript, jquery, plugins
-published: true
+draft: false
 ---
 
 Jquery plugins are a joy to use, and they are surprisingly easy to write.  Everyone that writes lots of Jquery code should seek to take potentially-resuable functionalities of code and put them into a nice, compact plugin.  In the app I've been working on, we have a lot of user-generated content that we don't limit the length on, so it can grow very large.  To combat this, there is the UI pattern on the site that there is a "read more" link available to show the remaining text for the long-winded texts, while just showing a snippet otherwise.  This exists everywhere, for lots of different content; hence, the "readmore" plugin was born.

@@ -10,7 +10,7 @@ tags:
   - "xquery"
 description: Have you ever needed to know the location of the actual file that houses the code that's currently executing?  Well, if you have then you're not alone.  I h
 metaKeywords: marklogic, xquery
-published: true
+draft: false
 ---
 
 Have you ever needed to know the location of the actual file that houses the code that's currently executing?  Well, if you have then you're not alone.  I have been there myself.  The answer might not be as interesting as some of life's deeper mysteries unveiled, but I was excited about it nonetheless.

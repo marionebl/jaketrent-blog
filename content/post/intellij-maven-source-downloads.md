@@ -10,7 +10,7 @@ tags:
   - "maven"
 description: Debugging time is a blessed time in one's day where the hotkeys for continue, step into, step over, and others often grace the pads of the programmer's fing
 metaKeywords: intellij, maven
-published: true
+draft: false
 ---
 
 Debugging time is a blessed time in one's day where the hotkeys for continue, step into, step over, and others often grace the pads of the programmer's fingers.  This can be quite a rewarding experience.  Now ponder on the disappointment that materializes on the programmer's crestfallen brow when the step into button is pressed and upon the screen displays the all-descriptive and utterly useless "/** compiled code */".  Maven mixed with IntelliJ to the rescue -- download the sources!

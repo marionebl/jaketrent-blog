@@ -13,7 +13,7 @@ tags:
   - "wireshark"
 description: Recently, I've been working on a project where I've tried to use AES encryption for the first time.  I didn't have to implement it myself, thank goodness, b
 metaKeywords: aes, bouncy castle, encryption, java, tomcat, wireshark
-published: true
+draft: false
 ---
 
 Recently, I've been working on a project where I've tried to use AES encryption for the first time.  I didn't have to implement it myself, thank goodness, but I still ran into a few snags.  Perhaps you can avoid my pitfalls and rise to new greatness on the peaks of glory and fortitude!  This article title sounds like a laundry detergent.

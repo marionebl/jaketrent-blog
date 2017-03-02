@@ -14,7 +14,7 @@ tags:
   - "unit-testing"
 description: Webpack's dev server for static assets can be quickly configured to handle JavaScript history api pushState.
 metaKeywords: webpack, webpack-dev-server, pushState, history api, client router
-published: true
+draft: false
 image: https://i.imgur.com/DXuSNbw.png
 ---
 

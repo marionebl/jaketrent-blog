@@ -11,7 +11,7 @@ tags:
   - "souit"
 description: Callback functions are a nice feature of Javascript.  It's nice to be able to just use a function handle to show that it should be called when a certain som
 metaKeywords: javascript, jquery, souit
-published: true
+draft: false
 ---
 
 Callback functions are a nice feature of Javascript.  It's nice to be able to just use a function handle to show that it should be called when a certain something completes.  Sometimes, however, we want to do more than just specify a function handle.  We want to pass parameters.  Why?  Because sometimes the callback method cares about other data that was available before the original request.  Here's an example:

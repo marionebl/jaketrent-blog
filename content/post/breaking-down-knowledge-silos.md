@@ -12,7 +12,7 @@ tags:
   - "project-management"
 description: Barriers are created all the time on software projects (by organization layout, role definition, project management, or indiscriminately) that keep develope
 metaKeywords: agile, pair-programming, project-management
-published: true
+draft: false
 ---
 
 Barriers are created all the time on software projects (by organization layout, role definition, project management, or indiscriminately) that keep developer knowledge separate.  Sometimes these barriers are referred to as silos.  We can create better teams and products for our organizations if we can break down these silos -- or if particularly scrappy, blow them up.

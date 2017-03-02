@@ -10,7 +10,7 @@ tags:
   - "rails"
 description: Exercism.io has great JavaScript exercises that are made better by a better test runner.  Use grunt-init to set up.
 metaKeywords: grunt, grunt-init, exercism, jasmine_node, watch, js, javascript
-published: true
+draft: false
 image: https://i.imgur.com/XOUecnw.jpg
 ---
 

@@ -12,7 +12,7 @@ tags:
   - "postgres"
 description: Django comes with some awesome CLI tools.  Manage.py is a beast of magic and lore.  And it loves the fantastical kingdom of Heroku, where is romps with merr
 metaKeywords: django, python, heroku, postgres
-published: true
+draft: false
 ---
 
 Django comes with some awesome CLI tools.  Manage.py is a beast of magic and lore.  And it loves the fantastical kingdom of Heroku, where is romps with merry measure twixt the ether.  But, when I've tried to go through a dumpdata of a previous site, syncdb on a migration to Heroku, and loaddata for moving the data, I've run into a snag on django_content_type_app_label_key more than once.  Here are some resolutions.

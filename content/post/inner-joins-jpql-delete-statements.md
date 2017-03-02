@@ -12,7 +12,7 @@ tags:
   - "jpql"
 description: I'm working on a project that utilizes JPA/Hibernate as its ORM.  I was writing a few named queries for an JPQL/HQL delete and was getting an SQLGrammarExce
 metaKeywords: hibernate, hql, jpa, jpql
-published: true
+draft: false
 ---
 
 I'm working on a project that utilizes JPA/Hibernate as its ORM.  I was writing a few named queries for an JPQL/HQL delete and was getting an SQLGrammarException.  I soon found out that I couldn't use inner joins on a delete statement, even at the SQL level.  Here's the query transformation:

@@ -11,7 +11,7 @@ tags:
   - "jsf"
 description: Facelets is a great template framework that sits on top of JSF.  They have some fun template includes and parameters that you can pass into the included tem
 metaKeywords: facelets, java, jsf
-published: true
+draft: false
 ---
 
 Facelets is a great template framework that sits on top of JSF.  They have some fun template includes and parameters that you can pass into the included templates.  Here is an example with one gotcha pertaining to the parameter name.

@@ -8,7 +8,7 @@ categories:
 tags:
   - "js"
 description: JavaScript makes mixins inherently easy.  Here are a few methods.
-published: true
+draft: false
 image: https://i.imgur.com/XemDUw8.jpg
 ---
 

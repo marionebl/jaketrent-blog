@@ -11,7 +11,7 @@ tags:
   - "redux"
 description: Some thoughts on how to identify and split smart and dumb components in React.
 metaKeywords: react, js, smart components, dumb components, presentational, container, design
-published: true
+draft: false
 image: https://i.imgur.com/9VKyXtu.png
 ---
 

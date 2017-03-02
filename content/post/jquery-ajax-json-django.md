@@ -13,7 +13,7 @@ tags:
   - "json"
 description: Jquery, Ajax, Json, Django -- this is quite a laundry list of technologies.  In fact, it's pretty much the whole stack.
 metaKeywords: ajax, django, django-piston, jquery-templates, json, sammyjs
-published: true
+draft: false
 ---
 
 Jquery, Ajax, Json, Django -- this is quite a laundry list of technologies.  In fact, it's pretty much the whole stack: client tech, server requests, over-the-network data format, and a backend app server.  In the following slidedeck and example code, we're going to touch on the whole stack and not get too deep into any one area.  By the end, you should be able to at least have a grasp of what technologies one can use in an Ajax Django application, a little bit of what they're capable of, and then, hopefully, a list in your brain that you can go back, reference, and then drill into specific technologies when you want to go build something similar yourself.

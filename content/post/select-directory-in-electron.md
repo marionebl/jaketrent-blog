@@ -10,7 +10,7 @@ tags:
   - "electron"
 description: Two ways to select a directory to open in Electron
 metaKeywords: electron, directory, open, file input for directory, electron.js
-published: true
+draft: false
 image: https://i.imgur.com/Vp8Zuix.jpg
 ---
 

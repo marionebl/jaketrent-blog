@@ -10,7 +10,7 @@ tags:
   - "jquery"
 description: Jquery and other sweeto js frameworks have some awesomeness to help you change the css classes of various elements on the page with ease and grace.  They ha
 metaKeywords: javascript, jquery
-published: true
+draft: false
 ---
 
 Jquery and other sweeto js frameworks have some awesomeness to help you change the css classes of various elements on the page with ease and grace.  They have some very convenient functions to add and remove classes.  These are uber-useful and highly recommended for saving you precious time and gigawatts, but if you don't have one of these tools available to you, sometimes you may want to do this in raw JavaScript.

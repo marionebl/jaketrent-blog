@@ -11,7 +11,7 @@ tags:
   - "sql"
 description: I was running an SQL query today and it was sooooo slow.  So slow, in fact, that it never returned.  I asked the DBA, Reed, who built the table what might b
 metaKeywords: oracle, performance, sql
-published: true
+draft: false
 ---
 
 I was running an SQL query today and it was sooooo slow.  So slow, in fact, that it never returned.  I asked the DBA, Reed, who built the table what might be up, and he informed me that it was not indexed.  And proceeded to show me some cool stuff I could do to actually get my query to return.  In the end, it was a comparison between the "not in" operator and a "left join".

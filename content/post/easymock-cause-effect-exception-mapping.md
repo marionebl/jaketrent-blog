@@ -11,7 +11,7 @@ tags:
   - "unit-testing"
 description: EasyMock is a great tool for separating external dependencies from unit tests.  There is a learning curve to learning the mock method of testing, and unfort
 metaKeywords: easymock, java, unit-testing
-published: true
+draft: false
 ---
 
 EasyMock is a great tool for separating external dependencies from unit tests.  There is a learning curve to learning the mock method of testing, and unfortunately, EasyMock does not give very good prompts when you do something wrong.  The exception messages are actually quite cryptic.  This article is meant to be a crude mapping of exception output and the behavior that might have caused it.  At least, this is a log of many of my experiences with EasyMock and how I usually get into the messes I do.  It is quite possible that the same exception output could be had via different behavior.  It's also important to note that I'm not trying to show how to create meaningful tests here (I don't even show full tests half the time), only help figure out how mysterious EasyMock exceptions were thrown.  These experiences were documented on EasyMock 2.2 and 2.4.

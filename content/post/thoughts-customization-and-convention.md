@@ -11,7 +11,7 @@ tags:
   - "project-management"
 description: There is an epic balancing act in software today, fought between customization and convention.  When to build, when to buy?  When to create new solutions or
 metaKeywords: convention, customization, project-management
-published: true
+draft: false
 ---
 
 There is an epic balancing act in software today, fought between customization and convention.  When to build, when to buy?  When to create new solutions or reuse those already created?  What are the pros and cons to either?  I don't think that there is a quick answer that is going to always be true for any of these questions?  Each situation brings with it too many diverse aspects.  But, here are some of my observations.

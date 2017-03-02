@@ -11,7 +11,7 @@ tags:
   - "jsf"
 description: Sometimes it's useful to know what the invariant value is for your loop within a facelets loop.  I use ui:repeat a lot, but have seen <a href="http://aprila
 metaKeywords: a4j, facelets, jsf
-published: true
+draft: false
 ---
 
 Sometimes it's useful to know what the invariant value is for your loop within a facelets loop.  I use ui:repeat a lot, but have seen <a href="http://aprilandjake.com/content/jsf-wont-submit-null-uirepeat/">some problems</a> with it in the past.   If you want to get the loop index for your ui:repeat, you may be disappointed.  Basically, it requires that you use a different looping mechanism.  A nice alternative is the a4j:repeat, which offers the same functionality, plus more awesomeness...

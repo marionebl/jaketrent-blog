@@ -11,7 +11,7 @@ tags:
   - "ubuntu"
 description: When you setup your computer at the time of your initial Ubuntu installation, you assign your computer a hostname.  In my case, I gave it a hostname and the
 metaKeywords: linux, networking, ubuntu
-published: true
+draft: false
 ---
 
 When you setup your computer at the time of your initial Ubuntu installation, you assign your computer a hostname.  In my case, I gave it a hostname and then later wanted to change it to something else.  This is accomplished in two easy steps.  

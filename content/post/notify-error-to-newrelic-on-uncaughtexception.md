@@ -11,7 +11,7 @@ tags:
   - "nodejs"
 description: When your app goes down, call newrelic.notifyError with enough time to send
 metaKeywords: js, javascript, express, nodejs, node, error handling, uncaughtException, newrelic, monitoring
-published: true
+draft: false
 image: https://i.imgur.com/ApNvY7f.jpg
 ---
 

@@ -11,7 +11,7 @@ tags:
   - "unit-testing"
 description: Add a cookie to mock requests in order to test your Rack app.
 metaKeywords: ruby, rack, mock, mock request, set cookie, cookie header, testing
-published: true
+draft: false
 image: https://i.imgur.com/044x6s6.jpg
 ---
 

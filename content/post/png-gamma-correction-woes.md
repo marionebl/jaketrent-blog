@@ -10,7 +10,7 @@ tags:
   - "png"
 description: PNG was a file format that, among the original reasons for conception, was created to show the same color over different computers, with different OS's, and
 metaKeywords: images, png
-published: true
+draft: false
 ---
 
 PNG was a file format that, among the original reasons for conception, was created to show the same color over different computers, with different OS's, and browsers.  To this end, gamma, or lighting, correction was added.  While solving the original problem, a new, bigger, badder problem was created.  Now, there was the potential for color inconsistencies on the SAME web page.  For example, the color of certain items rendered on the page with the same hex value will display differently than PNGs rendered on the page painted with the same hex value.

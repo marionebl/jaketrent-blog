@@ -10,7 +10,7 @@ tags:
   - "sql-developer"
 description: In Oracle's SQL Developer 1.5 tool, there seems to be a crazy bug where one can't see the full timestamp value (including time) by default.  You can change 
 metaKeywords: sql, sql-developer
-published: true
+draft: false
 ---
 
 In Oracle's SQL Developer 1.5 tool, there seems to be a crazy bug where one can't see the full timestamp value (including time) by default.  You can change this by running this awesome piece of code...

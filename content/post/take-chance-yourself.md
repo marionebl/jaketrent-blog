@@ -11,7 +11,7 @@ tags:
   - "confidence"
 description: In seeking a new position, take a chance on yourself before others may and just start doing
 metaKeywords: interviewing, permission, platform, self confidence, career change
-published: true
+draft: false
 image: https://i.imgur.com/2ahyoBv.jpg
 ---
 

@@ -12,7 +12,7 @@ tags:
   - "ubuntu"
 description: Sometimes you need to install a security certificate for authentication to work for certain services -- services that are accessed by your java application 
 metaKeywords: java, linux, security, ubuntu
-published: true
+draft: false
 ---
 
 Sometimes you need to install a security certificate for authentication to work for certain services -- services that are accessed by your java application that requirement a secure connection.  For instance, needing to authenticate against an LDAP server from one of our apps, we had to run a little InstallCert.java on all JDKs used to run the app.

@@ -10,7 +10,7 @@ tags:
   - "nodejs"
 description: Express-validator is a great library for validating input.  Here's how you might test code that uses it.
 metaKeywords: js, javascript, node, nodejs, express-validator, test, unit test
-published: true
+draft: false
 image: https://i.imgur.com/ZfK9bv4.png
 ---
 

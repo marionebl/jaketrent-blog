@@ -9,7 +9,7 @@ tags:
   - "fun"
 description: It goes without saying, but we forget.  If you're having fun, you'll like what you're doing.
 metaKeywords: fun, happiness, workplace fun, career
-published: true
+draft: false
 image: https://i.imgur.com/YdZuWS2.jpg
 ---
 

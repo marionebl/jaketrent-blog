@@ -10,7 +10,7 @@ tags:
   - "project-management"
 description: Is negativism between developers the norm?  Probably not, but it's common.  Do developers ever compliment each other?  Yes, but it sometimes seems rare.  Wh
 metaKeywords: engineering, project-management
-published: true
+draft: false
 ---
 
 Is negativism between developers the norm?  Probably not, but it's common.  Do developers ever compliment each other?  Yes, but it sometimes seems rare.  When I step back, it does in fact seem that there is sometimes a noticeable wealth of negativism and a noticeable lack of complimenting.  The nature of software and its developers may contribute.  But we can overcome our challenges.

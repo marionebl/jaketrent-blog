@@ -9,7 +9,7 @@ tags:
   - "dev-happiness"
 description: Liking the tech you use is ok, advantageous, and desireable
 metaKeywords: productivity, liking, differences, enjoyment, developer happiness, choosing a tech
-published: true
+draft: false
 image: https://i.imgur.com/HmNq6Xz.jpg
 ---
 

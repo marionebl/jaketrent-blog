@@ -11,7 +11,7 @@ tags:
   - "vcs"
 description: In projects that create project meta data or compiled class files in the same directory as source, svn commits can be particularly cluttered with those file
 metaKeywords: svn, vcs
-published: true
+draft: false
 ---
 
 In projects that create project meta data or compiled class files in the same directory as source, svn commits can be particularly cluttered with those files that we really don't care to keep under version control.  This is where svn:ignore can beceome our good friend.

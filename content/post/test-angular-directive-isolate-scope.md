@@ -10,7 +10,7 @@ tags:
   - "jasmine"
   - "angularjs"
 description: Directives with isolate scope do not inherit their scope from their parent.  Thus, the pattern to test them is slightly different.
-published: true
+draft: false
 image: https://i.imgur.com/wVBKD.png
 ---
 

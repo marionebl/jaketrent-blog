@@ -10,7 +10,7 @@ tags:
   - "ubuntu"
 description: It's important to understand what libraries, utilities, engines and so on that are used by your Ubuntu Linux OS.  It's easy to tell if you only have on opti
 metaKeywords: java, ubuntu
-published: true
+draft: false
 ---
 
 It's important to understand what libraries, utilities, engines and so on that are used by your Ubuntu Linux OS.  It's easy to tell if you only have on option -- of course, it uses the only thing available.  But if there are multiple options, which does it use?  In general, the default;  Here's how to set it.

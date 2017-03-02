@@ -12,7 +12,7 @@ tags:
   - "xquery"
 description: If you've created an internationalized website lately, you've probably implemented some sort of language chooser widget in your site ui to allow your users 
 metaKeywords: browser, http, marklogic, xquery
-published: true
+draft: false
 ---
 
 If you've created an internationalized website lately, you've probably implemented some sort of language chooser widget in your site ui to allow your users to indicate which language they would like to see content displayed in.  What I often forget is that the user may have already made this indication previous to visiting your site, and you might be like to think about respecting their previously indicated preference.

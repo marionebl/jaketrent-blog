@@ -10,7 +10,7 @@ tags:
   - "testing"
 description: A quick tip to make your APIs fail and test client error handling.
 metaKeywords: js, api, spa, axios, promise, async await
-published: true
+draft: false
 image: https://i.imgur.com/8Fm1cn2.jpg
 ---
 

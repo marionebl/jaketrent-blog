@@ -10,7 +10,7 @@ tags:
   - "vcs"
 description: Comments are essential to Subversion checkins.  A good text editor is essential to a good comment.  Here's how to set the editor of your choice to pop up wh
 metaKeywords: svn, vcs
-published: true
+draft: false
 ---
 
 Comments are essential to Subversion checkins.  A good text editor is essential to a good comment.  Here's how to set the editor of your choice to pop up when you do an svn checkin.

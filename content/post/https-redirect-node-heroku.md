@@ -12,7 +12,7 @@ tags:
   - "express"
 description: Make a NodeJs app on Heroku redirect to an https address when it is not using one.
 metaKeywords: js, nodejs, node, heroku, https, https redirect, express
-published: true
+draft: false
 ---
 
 When your app requires users to be using the `https` protocol to make requests and get responses, it's helpful to have an automatic redirect so the user is always in the right place.  Here's how to do that for a Node Express app on Heroku.

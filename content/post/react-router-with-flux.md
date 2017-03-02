@@ -11,7 +11,7 @@ tags:
   - "react-router"
 description: react-router routing and flux data display needs a bit of glue to work well together.
 metaKeywords: react, react-router, transition, data change, store
-published: true
+draft: false
 image: https://i.imgur.com/DXuSNbw.png
 ---
 

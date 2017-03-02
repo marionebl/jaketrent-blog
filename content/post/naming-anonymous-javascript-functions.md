@@ -9,7 +9,7 @@ tags:
   - "js"
 description: In JavaScript, functions can be defined and used in the same statement.  These are anonymous, but labeling them can be helpful.
 metaKeywords: js, javascript, anonymous functions, stack trace
-published: true
+draft: false
 image: https://i.imgur.com/uH7E2.jpg
 ---
 

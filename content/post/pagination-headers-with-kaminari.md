@@ -10,7 +10,7 @@ tags:
   - "rails"
 description: Kaminari provides easy pagination in a rails app.  Add a little function to your controllers, and you'll have great pagination headers
 metaKeywords: ruby, rails, kaminari, pagination, Link, http headers, pagination header
-published: true
+draft: false
 image: https://i.imgur.com/XOUecnw.jpg
 ---
 

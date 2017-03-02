@@ -11,7 +11,7 @@ tags:
   - "intellij"
 description: Development on JEE projects can be a real pain sometime.  1/2 of this (sometimes in literal minutes) is because of the need to spin up the server in order t
 metaKeywords: deployment, ide, intellij
-published: true
+draft: false
 ---
 
 Development on JEE projects can be a real pain sometime.  1/2 of this (sometimes in literal minutes) is because of the need to spin up the server in order to run your code.  This server startup time can be a killer of one's development momentum. 

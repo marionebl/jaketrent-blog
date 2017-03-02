@@ -11,7 +11,7 @@ tags:
   - "js"
 description: Your Sinatra webservice can be made to serve json quite easily.
 metaKeywords: sinatra, json, sinatra-contrib, ruby
-published: true
+draft: false
 image: https://i.imgur.com/ZyCgi56.jpg
 ---
 

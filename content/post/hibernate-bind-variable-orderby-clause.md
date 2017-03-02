@@ -11,7 +11,7 @@ tags:
   - "orm"
 description: I have spent mucho time trying to get some named parameters working in the "order by" clause of a dynamic sql query that I'm building.  The query isn't even
 metaKeywords: hibernate, jpa, orm
-published: true
+draft: false
 ---
 
 I have spent mucho time trying to get some named parameters working in the "order by" clause of a dynamic sql query that I'm building.  The query isn't even HQL/JPQL.  It's native.  And yet, it turns out that you cannot use bind variables, named or ordered, in an order by clause.  

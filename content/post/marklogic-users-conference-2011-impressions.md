@@ -10,7 +10,7 @@ tags:
   - "marklogic"
 description: I just returned from the MarkLogic Users Conference in San Francisco.  I had a good time.  I think the conference was worthwhile.  I'd go again, and I'd rec
 metaKeywords: confs, marklogic
-published: true
+draft: false
 ---
 
 I just returned from the MarkLogic Users Conference in San Francisco.  I had a good time.  I think the conference was worthwhile.  I'd go again, and I'd recommend it as a regular ritual for those that create on the MarkLogic platform.

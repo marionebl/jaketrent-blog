@@ -12,7 +12,7 @@ tags:
   - "rails"
 description: If you don't see your HTTP response header in the browser, check your CORS policy.  It's likely the culprit.
 metaKeywords: js, cors, http, access-control-expose-headers, superagent, expose, unsafe header, Link, github api
-published: true
+draft: false
 image: https://i.imgur.com/JAce7py.jpg
 ---
 

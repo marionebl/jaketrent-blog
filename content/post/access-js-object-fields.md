@@ -9,7 +9,7 @@ tags:
   - "js"
 description: Sometimes it is useful to be able to iterate through the fields in a javascript object and use the values kept therein for something spectacular.  I've foun
 metaKeywords: javascript
-published: true
+draft: false
 ---
 
 Sometimes it is useful to be able to iterate through the fields in a javascript object and use the values kept therein for something spectacular.  I've found this to be the case for POJSOs (+S = 'Script') that I pass down to the client with new-found data from the backend.

@@ -10,7 +10,7 @@ tags:
   - "vm"
 description: One of the stinky things about having a VM is that is can be difficult to transfer files to and from the host machine.  You generally have everything that y
 metaKeywords: virtualbox, vm
-published: true
+draft: false
 ---
 
 One of the stinky things about having a VM is that is can be difficult to transfer files to and from the host machine.  You generally have everything that you need on the host machine and don't want to re-download stuff, burn CD's, or go through any of that jazz.  Sharing folders is probably the best option.

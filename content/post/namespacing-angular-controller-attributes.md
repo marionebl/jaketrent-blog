@@ -9,7 +9,7 @@ tags:
   - "angularjs"
   - "js"
 description: Usually attributes of your Angular controllers are not namespaced.  But you can namespace them.  But you might not want to.
-published: true
+draft: false
 image: https://i.imgur.com/wVBKD.png
 ---
 

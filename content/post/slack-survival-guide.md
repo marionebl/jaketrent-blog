@@ -10,7 +10,7 @@ tags:
   - "communication"
 description: Slack can be a great help.  If you're not careful, it can be a burden.  Manage with care.
 metaKeywords: slack, chat, ping, channels, keywords, distraction
-published: true
+draft: false
 image: https://i.imgur.com/gFBW4F4.jpg
 ---
 

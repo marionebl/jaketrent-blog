@@ -12,7 +12,7 @@ tags:
   - "ubuntu"
 description: I haven't done php for a while, but at work our prototypes are in html/php.  So, I needed to get Apache webserver downloaded and working on my Linux box wit
 metaKeywords: apache, linux, php, ubuntu
-published: true
+draft: false
 ---
 
 I haven't done php for a while, but at work our prototypes are in html/php.  So, I needed to get Apache webserver downloaded and working on my Linux box with php.  Here's how it all went down.

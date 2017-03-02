@@ -11,7 +11,7 @@ tags:
   - "python"
 description: Don't you hate developing a blasted simple webpage that does some asynchronous requests that gets you into cross-origin policy trouble.  If you just read a 
 metaKeywords: ajax, http, python
-published: true
+draft: false
 ---
 
 Don't you hate developing a blasted simple webpage that does some asynchronous requests that gets you into cross-origin policy trouble.  If you just read a `.html` file off the file system, this will bite you.  But, it's easy to get around.  Just host your .html file on a simple http server.  And it's easy to make that happen.  Here's one way.

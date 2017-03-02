@@ -9,7 +9,7 @@ tags:
   - "java"
 description: I was having problems doing operations on a java.util.List object returned by Arrays.asList() method call.   The specific exception was a java.lang.Unsuppor
 metaKeywords: java
-published: true
+draft: false
 ---
 
 I was having problems doing operations on a java.util.List object returned by Arrays.asList() method call.   The specific exception was a java.lang.UnsupportedOperationException.  I soon found out why this was a problem.

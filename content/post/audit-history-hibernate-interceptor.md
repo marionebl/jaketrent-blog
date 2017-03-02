@@ -11,7 +11,7 @@ tags:
   - "orm"
 description: Our goal is to create a history audit tool that fires automatically, tracks only selected fields, categorizes those fields, and saves old vs. new data.
 metaKeywords: hibernate, java, orm
-published: true
+draft: false
 ---
 
 Our goal is to create a history audit tool that fires automatically, tracks only selected fields, categorizes those fields, and saves old vs. new data.

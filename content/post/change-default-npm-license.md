@@ -10,7 +10,7 @@ tags:
   - "npm"
 description: Change your npm defaults for npm init
 metaKeywords: npm init, npm init defaults, npm license
-published: true
+draft: false
 image: https://i.imgur.com/P34k4L5.png
 ---
 

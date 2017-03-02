@@ -11,7 +11,7 @@ tags:
   - "ubuntu"
 description: On a Sun keyboard, the ctrl key is actually in the space that the caps lock key occupies on a standard qwerty keyboard nowadays.  In a program where the ctr
 metaKeywords: customization, linux, ubuntu
-published: true
+draft: false
 ---
 
 On a Sun keyboard, the ctrl key is actually in the space that the caps lock key occupies on a standard qwerty keyboard nowadays.  In a program where the ctrl key is often used, this positioning can be helpful as no Vulcan figure stretches are required for common key patterns.  So, why not change caps lock to be a control key.

@@ -11,7 +11,7 @@ tags:
   - "react"
 description: JavaScript's Function.prototype.bind is a great tool to give you control over the this keyword.
 metaKeywords: js, function, bind, function.prototype.bind, partial function application, context, react
-published: true
+draft: false
 image: https://i.imgur.com/4huM3Xb.jpg
 ---
 

@@ -10,7 +10,7 @@ tags:
   - "java"
 description: By default, Java has a limit on the length of your encryption key.  The limit, by default 128-bit, seems a little small and dated.  So, let's break through 
 metaKeywords: encryption, java
-published: true
+draft: false
 ---
 
 By default, Java has a limit on the length of your encryption key.  The limit, by default 128-bit, seems a little small and dated.  So, let's break through that glass ceiling!  With the hammer of Thor!

@@ -10,7 +10,7 @@ tags:
   - "graphql"
 description: How to return an array or a single item from Facebook's graphql
 metaKeywords: js, javascript, graphql, graphqllist, array, multiple items, return array, return multiple
-published: true
+draft: false
 image: https://i.imgur.com/RitF21I.jpg
 ---
 

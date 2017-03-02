@@ -11,7 +11,7 @@ tags:
   - "requirejs"
 description: Backbone has a great inheritance mechanism.  It's as easy as Backbone.Model.extend().  This much is obvious.  Let's try a few other things.
 metaKeywords: javascript, backbonejs, requirejs
-published: true
+draft: false
 ---
 
 Backbone has a great inheritance mechanism.  It's as easy as Backbone.Model.extend().  This much is obvious.  Let's try a few other things, like:  Subclassing our own classes, calling to super classes, adding subclass attributes, and adding various subclasses to a collection based on a super class.

@@ -11,7 +11,7 @@ tags:
   - "rails"
 description: Mountain West Ruby Conference is the premier Ruby Conference in the Mountain West.  :)
 metaKeywords: mountain west, ruby, ruby conf, rails, conference
-published: true
+draft: false
 image: https://i.imgur.com/ABNr5MC.jpg
 ---
 

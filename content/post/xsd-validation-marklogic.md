@@ -12,7 +12,7 @@ tags:
   - "xsd"
 description: Sometimes you want to ensure that your xml document matches a given schema (xsd).  Xquery on MarkLogic gives you a few tools to do this.  If you want to val
 metaKeywords: marklogic, xml, xquery, xsd
-published: true
+draft: false
 ---
 
 Sometimes you want to ensure that your xml document matches a given schema (xsd).  Xquery on MarkLogic gives you a few tools to do this.  If you want to validate your xml against an xsd, read on fair reader.

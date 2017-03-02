@@ -11,7 +11,7 @@ tags:
   - "nodejs"
 description: A CLI tool that will help you list available npm scripts to run.
 metaKeywords: npm, scripts, node, rake -T, list scripts, cli
-published: true
+draft: false
 image: https://i.imgur.com/ZDCd9u1.png
 ---
 

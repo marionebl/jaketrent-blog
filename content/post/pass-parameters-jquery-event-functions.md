@@ -11,7 +11,7 @@ tags:
   - "souit"
 description: Jquery has some awesome event-handling abilities.  The elusive ability to pass parameters into these event callbacks seems way harder than it should be.  Ne
 metaKeywords: javascript, jquery, souit
-published: true
+draft: false
 ---
 
 Jquery has some awesome event-handling abilities.  The elusive ability to pass parameters into these event callbacks seems way harder than it should be.  Nevertheless, I have found *a* solution.  I really doubt it's the best one.  I really hope it isn't.  

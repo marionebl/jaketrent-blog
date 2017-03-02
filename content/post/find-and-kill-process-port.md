@@ -9,7 +9,7 @@ tags:
   - "bash"
 description: Have you ever tried to start up a local dev server and attach it to a port only to find that the port says it's already in use.  Here's a quick way to find 
 metaKeywords: bash
-published: true
+draft: false
 ---
 
 Have you ever tried to start up a local dev server and attach it to a port only to find that the port says it's already in use.  Here's a quick way to find those zombies and kill 'em good.

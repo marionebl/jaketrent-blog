@@ -13,7 +13,7 @@ tags:
   - "requirejs"
 description: BackboneJS is setup to do some pretty sweet single-page app action.  And of course, a single page app will probably be wanting to talk to web services on th
 metaKeywords: ajax, java, webservice, backbonejs, requirejs
-published: true
+draft: false
 ---
 
 BackboneJS is setup to do some pretty sweet single-page app action.  And of course, a single page app will probably be wanting to talk to web services on the server.  And if your server code is doing the Java jive, then a great way to expose your REST services is via JAX-RS.  It's as easy as Mikey singin' ABC-123!

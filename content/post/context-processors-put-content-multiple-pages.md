@@ -10,7 +10,7 @@ tags:
   - "python"
 description: Make your django context processors dry.  
 metaKeywords: django, python
-published: true
+draft: false
 ---
 
 In software development, be <a href="http://en.wikipedia.org/wiki/Don%27t_repeat_yourself">dry</a>, and define data once.  But, what if that data needs to be used in many places?  This is the case with parts of a web page, for instance, that are common to many different pages.  Django has a great mechanism for this: it is context processors.

@@ -10,7 +10,7 @@ tags:
   - "react"
   - "css"
 description: React Components are self contained.  How can I reach out and modify the body tag from a React app.
-published: true
+draft: false
 image: https://i.imgur.com/DXuSNbw.png
 ---
 

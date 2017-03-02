@@ -9,7 +9,7 @@ tags:
   - "confs"
 description: It seems that in the IT, there are many, many conferences offered every year that people are invited to attend in order to glean something of use.  Which ar
 metaKeywords: confs
-published: true
+draft: false
 ---
 
 It seems that in the IT, there are many, many conferences offered every year that people are invited to attend in order to glean something of use.  Which are the good?  Which are the bad?  There are a few points that may make a differentiation.

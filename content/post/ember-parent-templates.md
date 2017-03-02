@@ -12,7 +12,7 @@ tags:
   - "emblem"
 description: Ember's convention of template hierarchy is very specific.  Learn it once, and you'll know it every time.
 metaKeywords: js, coffeescript, javascript, ember, emblem, handlebars, template hierarchy, parent template
-published: true
+draft: false
 image: https://i.imgur.com/x5HT4FN.jpg
 ---
 

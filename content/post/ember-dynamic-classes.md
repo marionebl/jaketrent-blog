@@ -9,7 +9,7 @@ tags:
   - "js"
   - "ember"
 description: Get your UI to show classes based on the state of your Ember models.
-published: true
+draft: false
 image: https://i.imgur.com/85v8PQP.png
 ---
 

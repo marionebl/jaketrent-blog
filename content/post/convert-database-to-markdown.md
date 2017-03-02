@@ -10,7 +10,7 @@ tags:
   - "markdown"
 description: You have a site with a cms and a database.  Would it work as a static site based on markdown?  Maybe.
 metaKeywords: hugo, static-site, static site generator, markdown, database, cms
-published: true
+draft: false
 image: https://i.imgur.com/mJ02xsf.jpg
 ---
 

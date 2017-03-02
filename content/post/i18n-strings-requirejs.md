@@ -12,7 +12,7 @@ tags:
   - "handlebars"
 description: If you have to store your text strings for internationalization (i18n) on the server, that's <a href="http://rockycode.com/blog/i18n-strings-javascript/">on
 metaKeywords: i18n, javascript, requirejs, handlebarsjs
-published: true
+draft: false
 ---
 
 If you have to store your text strings for internationalization (i18n) on the server, that's <a href="http://rockycode.com/blog/i18n-strings-javascript/">one thing</a>.  But, if you can store them in Javascript, you might think about using RequireJs and its i18n plugin, because it makes it nice and easy.

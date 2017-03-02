@@ -11,7 +11,7 @@ tags:
   - "orm"
 description: Hibernate's @Enumerated annotation seems much too brittle in the case of using it with EnumType.ORDINAL.   If you're using EnumType.STRING, I think it works
 metaKeywords: hibernate, jpa, orm
-published: true
+draft: false
 ---
 
 Hibernate's @Enumerated annotation seems much too brittle in the case of using it with EnumType.ORDINAL.   If you're using EnumType.STRING, I think it works beautifully.  This is because the annotation can use the name of the enum to make the mapping.  In the case of ORDINAL, the value of the enum is used.  This presents a couple problems...

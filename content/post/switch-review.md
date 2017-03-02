@@ -11,7 +11,7 @@ tags:
   - "motivation"
 description: The book Switch shows interesting anecdotes and good strategies on how to motivate people and situations to change.
 metaKeywords: book, productivity, switch, dan and chip health, change, change is hard
-published: true
+draft: false
 image: https://i.imgur.com/zjnOrqX.jpg
 ---
 

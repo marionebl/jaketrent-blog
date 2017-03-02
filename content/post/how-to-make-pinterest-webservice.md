@@ -11,7 +11,7 @@ tags:
   - "social"
 description: Pintereset doesn't currently have an API.  Here's how to use NodeJs to make a simple Pinterest webservice.
 metaKeywords: pinterest webservice, pinterest api, js, javascript, node
-published: true
+draft: false
 image: https://i.imgur.com/7cv9d.png
 ---
 

@@ -9,7 +9,7 @@ tags:
   - "open-office"
 description: Sometimes I paste text into a spreadsheet so that I can quickly manipulate it.  The same could be done with a small script, but this particular feature is b
 metaKeywords: open-office
-published: true
+draft: false
 ---
 
 Sometimes I paste text into a spreadsheet so that I can quickly manipulate it.  The same could be done with a small script, but this particular feature is built into Open Office Spreadsheet: You can split text into separate columns using delimiters.

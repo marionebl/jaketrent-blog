@@ -12,7 +12,7 @@ tags:
   - "xquery"
 description: Unit testing is a required part of a healthy software development lifecycle and a balanced breakfast.  But test-driven development is a rockin' part of an *
 metaKeywords: marklogic, tdd, unit-testing, xquery
-published: true
+draft: false
 ---
 
 Unit testing is a required part of a healthy software development lifecycle and a balanced breakfast.  But test-driven development is a rockin' part of an *awesome* development lifecycle.  What's the difference?  If you don't test-drive the dev of your MarkLogic XQuery, you may never come back to test again.  Test-driven XQuery development will ease your headaches, put you into the plush seat of a developer with confidence, and rocket you down the road to making all your wildest dreams come true.  Kachow!

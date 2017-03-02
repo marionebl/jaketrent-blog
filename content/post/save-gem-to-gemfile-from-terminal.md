@@ -10,7 +10,7 @@ tags:
   - "rubygem"
 description: Add a gem to your gemfile without opening the file.  Do it straight from your terminal
 metaKeywords: ruby, gem, gemfile, gemrat, gem install save
-published: true
+draft: false
 image: https://i.imgur.com/x2I31sl.jpg
 ---
 

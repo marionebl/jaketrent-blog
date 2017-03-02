@@ -10,7 +10,7 @@ tags:
   - "riot"
 description: How to test Riot.js tags that are written in es2015. 
 metaKeywords: es2015, riot, riotjs, riot.js, riot tags, testing, unit test, ava, avajs, jsdom
-published: true
+draft: false
 image: https://i.imgur.com/EF2IK3G.png
 ---
 

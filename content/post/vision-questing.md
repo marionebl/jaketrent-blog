@@ -11,7 +11,7 @@ tags:
   - "introspection"
 description: Find the vision of what work you think is most important to do
 metaKeywords: ponder, focus, work, vision walk, vision quest, think day
-published: true
+draft: false
 image: https://i.imgur.com/kEjGTZc.jpg
 ---
 

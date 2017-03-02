@@ -12,7 +12,7 @@ tags:
   - "requirejs"
 description: BusterJs is a still-in-beta library that allows for testing your Javascript.  It's got a wealth of cool features.  The browser capturing is awesome for runn
 metaKeywords: javascript, unit-testing, backbonejs, requirejs
-published: true
+draft: false
 ---
 
 BusterJs is a still-in-beta library that allows for testing your Javascript.  It's got a wealth of cool features.  The browser capturing is awesome for running your Javascript directly in the browsers you choose from one runner.  You can also execute within Node.  In short, it rocks.  But, how to get this rockin' with your project, specifically your AMD RequireJs with BackboneJs combo project is the lock that must be opened before daily buster love can be had.

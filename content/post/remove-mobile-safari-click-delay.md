@@ -9,7 +9,7 @@ tags:
   - "js"
 description: Mobile Safari, by default, delays click events.  To make your site more responsive, remove this delay.
 metaKeywords: js, mobile safari, click event, delay, slow, mobile browser delay, click delay
-published: true
+draft: false
 image: https://i.imgur.com/PH8Zosr.png
 ---
 

@@ -10,7 +10,7 @@ tags:
   - "reflection"
 description: Java is about objects.  Reflection is about knowing things about those objects generally without have specific fields and methods in hand.  I must get to on
 metaKeywords: java, reflection
-published: true
+draft: false
 ---
 
 Java is about objects.  Reflection is about knowing things about those objects generally without have specific fields and methods in hand.  I must get to one of those field values via its accessor, allowing me to keep the fields private and abstracted away... of course, until I start unit testing.  Here's one method...

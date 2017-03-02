@@ -11,7 +11,7 @@ tags:
   - "nodejs"
 description: Node can fork and run external binaries.
 metaKeywords: bash, javascript, nodejs, shell, spawn, fork, exec
-published: true
+draft: false
 ---
 
 NodeJs can do many things.  It can even run things that it can't do itself.  For instance, I have a shell script that I don't want to rewrite in Javascript, so I want my Node app to run the shell script.  No problemo.  

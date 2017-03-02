@@ -9,7 +9,7 @@ tags:
   - "ruby"
 description: Making a CLI tool in Ruby is made more straightforward with an OptionParser in stdlib.
 metaKeywords: ruby, OptionParser, OpenStruct, cli, command line, terminal, tool, options
-published: true
+draft: false
 image: https://i.imgur.com/Z7WWtL0.jpg
 ---
 

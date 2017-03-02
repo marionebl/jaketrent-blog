@@ -11,7 +11,7 @@ tags:
   - "xquery"
 description: Recently, we've been working on writing an API using xquery.  We have wanted to make the API as solid as possible, since we're putting the brunt of the comp
 metaKeywords: marklogic, typing, xquery
-published: true
+draft: false
 ---
 
 Recently, we've been working on writing an API using xquery.  We have wanted to make the API as solid as possible, since we're putting the brunt of the complexity of our system into this module of code.  What might typing our parameters and return types give us?  We are hoping for safety and readability.  

@@ -10,7 +10,7 @@ tags:
   - "grunt"
 description: My impressions of writing Grunt plugins and why one might want to.
 metaKeywords: js, javascript, grunt, build configuration
-published: true 
+draft: false
 image: https://i.imgur.com/4773D.jpg
 ---
 

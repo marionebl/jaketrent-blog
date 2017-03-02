@@ -10,7 +10,7 @@ tags:
   - "broccoli"
 description: Broccoli.js is good at building assets.  Now, how do I use them on a webpage?
 metaKeywords: js, broccoli, broccoli.js, reference, link to broccoli assets, serve broccoli
-published: true
+draft: false
 image: https://i.imgur.com/oYpiHcU.jpg
 ---
 

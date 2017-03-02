@@ -9,7 +9,7 @@ tags:
   - "conf"
 description: Fluent Conf was a great mix of web tech talk and inspiration.
 metaKeywords: fluent, fluent conf, web tech, web conf
-published: true
+draft: false
 image: https://i.imgur.com/aG1CC3U.jpg
 ---
 

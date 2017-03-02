@@ -10,7 +10,7 @@ tags:
   - "culture"
 description: Here's a simple test to determine if your company's culture is as healthy as you think it is
 metaKeywords: health check, culture check, maintain culture, company culture, clay christensen
-published: true
+draft: false
 image: https://i.imgur.com/Y1WvMlu.jpg
 ---
 

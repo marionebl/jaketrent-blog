@@ -11,7 +11,7 @@ tags:
   - "cors"
 description: How to make a jsonp request in AngularJs for cross-domain requests.
 metaKeywords: angularjs, js, javascript, cors, cross domain, jsonp, json
-published: true
+draft: false
 image: https://i.imgur.com/wVBKD.png
 ---
 

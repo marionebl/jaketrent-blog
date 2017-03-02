@@ -12,7 +12,7 @@ tags:
   - "rails"
 description: Sinatra is quick.  Slim templates are quick.  Together, Slim fits Sinatra quite nicely.
 metaKeywords: sinatra, ruby, slim, slim templates, rails, slim-rails
-published: true
+draft: false
 ---
 
 [Sintra](http://www.sinatrarb.com/) is a light web server that's easy to start writing Ruby on.  Coming from Node/Express, I feel quite at home there.  Slim also feels like another JavaScript-world templating language, Jade, that I've had good experiences with.  [Slim](http://slim-lang.com/) makes for quick templating and feels quite nice compared to ERB if you can handle the Haml style.  It's likewise quick and easy to get working on Sinatra.

@@ -12,7 +12,7 @@ tags:
   - "spring"
 description: In addition to some sweet Inversion of Control injection action, Spring brings flowers and baby deer.  And it brings some nice database connection help.  Sp
 metaKeywords: ioc, java, oracle, spring
-published: true
+draft: false
 ---
 
 In addition to some sweet Inversion of Control injection action, Spring brings flowers and baby deer.  And it brings some nice database connection help.  Spring JdbcTemplate is a vanguard of strength and ease for connecting to your favorite RDBMS.  And it so happens that the DBA I'm working with right now digs the stored procs.  So, we'll meet in the middle with some more goodness born of Spring.

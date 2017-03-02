@@ -10,7 +10,7 @@ tags:
   - "angularjs"
 description: When you change routes in Angular, the page title doesn't change automatically, but this can be done rather simply.
 metaKeywords: js, javascript, angular, angularjs, page title, title
-published: true
+draft: false
 image: https://i.imgur.com/wVBKD.png
 ---
 

@@ -10,7 +10,7 @@ tags:
   - "intellij"
 description: Jetbrains makes quality coder products.  IntelliJ 12 is no exception.  Here's what I mostly like.
 metaKeywords: ide, jetbrains, intellij, idea, darkula, review
-published: true 
+draft: false
 image: https://i.imgur.com/RM3Q1.jpg
 ---
 

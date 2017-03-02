@@ -11,7 +11,7 @@ tags:
   - "superagent"
 description: Help your React components set state safely in callbacks
 metaKeywords: js, react, components, setState, componentWillUnmount, componentDidMount, unmounted
-published: true
+draft: false
 image: https://i.imgur.com/DXuSNbw.png
 ---
 

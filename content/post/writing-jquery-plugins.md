@@ -11,7 +11,7 @@ tags:
   - "plugins"
 description: Jquery has made developing javascript fun and enjoyable.  It is a fantastic library that essentially allows the creation of library extensions on top of it 
 metaKeywords: javascript, jquery, plugins
-published: true
+draft: false
 ---
 
 Jquery has made developing javascript fun and enjoyable.  It is a fantastic library that essentially allows the creation of library extensions on top of it via plugins.  Jquery plugins are surprisingly easy to write and elegant to read and use.  Here are a few tips on where to find good plugin candidates, design principles for plugins, and an outline of the basic structure that I have found most useful when writing plugins.

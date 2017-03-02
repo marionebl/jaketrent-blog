@@ -10,7 +10,7 @@ tags:
   - "handlebars"
 description: HandlebarsJs is a great Javascript templating engine.  It's pretty much Mustache templates on steriods -- or Rogaine or something like that.  Well, there's 
 metaKeywords: javascript, handlebarsjs
-published: true
+draft: false
 ---
 
 HandlebarsJs is a great Javascript templating engine.  It's pretty much Mustache templates on steriods -- or Rogaine or something like that.  Well, there's a great for loop, but it'd be cool if it had a loop index built in.  It doesn't have one as of the current version (1.0.0.beta.6).  But, we can make an easy helper.

@@ -11,7 +11,7 @@ tags:
   - "ubuntu"
 description: Mark Logic Server seems to be the latest, greatest in content serve-up.  At least it is generating a lot of excitement at the LDS Church, where it's being u
 metaKeywords: linux, marklogic, ubuntu
-published: true
+draft: false
 ---
 
 Mark Logic Server seems to be the latest, greatest in content serve-up.  At least it is generating a lot of excitement at the LDS Church, where it's being used for new content-centric apps/sites.  Being caught in the wave of awesome, I was interested in getting it running in my favorite dev environment: Ubunutu-flavored Linux.

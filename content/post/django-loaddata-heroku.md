@@ -11,7 +11,7 @@ tags:
   - "heroku"
 description: Django's manage.py script comes with some great utilitarian commands.  Two of my favorites are dumpdata and loaddata.  I've used these commands recently to 
 metaKeywords: django, python, heroku
-published: true
+draft: false
 ---
 
 Django's manage.py script comes with some great utilitarian commands.  Two of my favorites are dumpdata and loaddata.  I've used these commands recently to migrate a Django app's data to the same Django app now running on Heroku.  Here's a little taste of the glory.

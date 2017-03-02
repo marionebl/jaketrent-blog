@@ -9,7 +9,7 @@ tags:
   - "js"
   - "bower"
 description: Bower is a client-side package manager.  To make it really useful, package your own components.  Here's how.
-published: true
+draft: false
 image: https://i.imgur.com/t4XxrHn.jpg
 ---
 

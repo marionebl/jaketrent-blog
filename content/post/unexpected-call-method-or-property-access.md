@@ -11,7 +11,7 @@ tags:
   - "browser"
 description: In a recent admin tool I was creating, I was using SOUIT of Javascript... apparently more than I knew how to write well.  Eventually, it all worked wonderfu
 metaKeywords: ie, javascript, web-browser
-published: true
+draft: false
 ---
 
 In a recent admin tool I was creating, I was using SOUIT of Javascript... apparently more than I knew how to write well.  Eventually, it all worked wonderfully -- that is, until someone tried to use it in a lesser browser -- Internet Explorer. The error was thus:

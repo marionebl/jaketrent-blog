@@ -9,7 +9,7 @@ tags:
   - "deployment"
 description: My take on the 12factor.net Principles
 metaKeywords: 12 factor app, 12 factors, architecture, deployment, summary
-published: true
+draft: false
 image: https://i.imgur.com/8aY0qiD.jpg
 ---
 

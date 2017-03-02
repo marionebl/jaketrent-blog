@@ -10,7 +10,7 @@ tags:
   - "nodejs"
 description: Deep objects need some extra help to log all their contents
 metaKeywords: js, console.log, inspect, depth, deep,
-published: true
+draft: false
 image: https://i.imgur.com/00WAox4.jpg
 ---
 

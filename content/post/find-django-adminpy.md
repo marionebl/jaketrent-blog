@@ -11,7 +11,7 @@ tags:
   - "python"
 description: django-admin.py is a utility script that is used by django to start projects, etc.  Sometimes, it seems that it's available to me in the terminal.  At other
 metaKeywords: bash, django, python
-published: true
+draft: false
 ---
 
 django-admin.py is a utility script that is used by django to start projects, etc.  Sometimes, it seems that it's available to me in the terminal.  At other times, it melts away, unavailable.  So, where is it, and how do I make it findable?

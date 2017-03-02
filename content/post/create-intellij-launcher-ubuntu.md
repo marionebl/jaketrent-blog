@@ -11,7 +11,7 @@ tags:
   - "ubuntu"
 description: IntelliJ IDEA is a great development environment.  I enjoy it very much.  It complements the OS of pleasure, Linux.
 metaKeywords: intellij, linux, ubuntu
-published: true
+draft: false
 ---
 
 IntelliJ IDEA is a great development environment.  I enjoy it very much.  It complements the OS of pleasure, Linux.  I mostly the Ubuntu distro or a derivative.  Here's a easy way to get yourself an IntelliJ launcher so you don't have to run the bin/idea.sh file if you don't want to.

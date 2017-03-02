@@ -12,7 +12,7 @@ tags:
   - "websockets"
 description: When you run a shell script or some other process from NodeJs and want to get the output in a stream to a client, you can redirect or pipe the output from t
 metaKeywords: bash, javascript, nodejs, websockets
-published: true
+draft: false
 ---
 
 When you run a shell script or some other process from NodeJs and want to get the output in a stream to a client, you can redirect or pipe the output from the process that originally outputs to stdout into your socketio stream.  

@@ -13,7 +13,7 @@ tags:
   - "spam-filter"
 description: I really need an answer to this question.  Why?  Because I was, until recently, on the verge of shutting down the comments on the site because of the load o
 metaKeywords: captcha, django, pil, python, spam-filter
-published: true
+draft: false
 ---
 
 I really need an answer to this question.  Why?  Because I was, until recently, on the verge of shutting down the comments on the site because of the load of blog spam that I was receiving.  It was insufferable.  But, luckily, Django came to my rescue again and made a potential solution very pain-free -- except for one problem.

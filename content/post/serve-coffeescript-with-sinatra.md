@@ -11,7 +11,7 @@ tags:
   - "coffeescript"
 description: CoffeeScript is nice.  Sinatra is nice.  Get Sinatra to serve your nice CoffeeScript.
 metaKeywords: sinatra, coffeescript, ruby
-published: true
+draft: false
 image: https://i.imgur.com/Ta27Zd4.jpg
 ---
 

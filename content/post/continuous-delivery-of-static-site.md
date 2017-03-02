@@ -11,7 +11,7 @@ tags:
   - "feature-toggles"
 description: A story of my migration from Octopress to Hugo static site generator
 metaKeywords: hugo, static-site, continuous delivery, feature toggles, main line development, environment variables
-published: true
+draft: false
 image: https://i.imgur.com/9BoMtUO.jpg
 ---
 

@@ -12,7 +12,7 @@ tags:
   - "iframe"
 description: With few exceptions, it seems that when a developer puts a iframe on his page, he wants it to be seamless on his page.  In other words, he doesn't want the 
 metaKeywords: cross-browser, css, html, iframe
-published: true
+draft: false
 ---
 
 With few exceptions, it seems that when a developer puts a iframe on his page, he wants it to be seamless on his page.  In other words, he doesn't want the viewer to know that it's actually an iframe.  To that end, there are a couple of things you can do to make the iframe virtually invisible.

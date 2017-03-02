@@ -11,7 +11,7 @@ tags:
   - "xquery"
 description: When a person looks at an Xquery module import, ... um, sorry... he usually gets distracted by something else before he can get to the semicolon at the end 
 metaKeywords: marklogic, maven, xquery
-published: true
+draft: false
 ---
 
 When a person looks at an Xquery module import, ... um, sorry... he usually gets distracted by something else before he can get to the semicolon at the end of the statement.  They're seriously long!  Few are the files in which one-line imports adhere to an 80 character width limit.  Read on for my other Martin Luther-spirited grievances.

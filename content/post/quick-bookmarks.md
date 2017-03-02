@@ -9,7 +9,7 @@ tags:
   - "browser"
 description: For someone who spends mucho time daily on the interwebs, being able to jump around quickly is important -- both for focused productivity and ADD-inducing w
 metaKeywords: browser, web
-published: true
+draft: false
 ---
 
 For someone who spends mucho time daily on the interwebs, being able to jump around quickly is important -- both for focused productivity and ADD-inducing web surfing.  Bookmarks have long facilitated savings your place on the web for a future return, but there are a few enhancements to the regular vanilla bookmarks that have greatly added to my bookmark delight: 1) Bookmarks in the cloud and 2) Keywords/custom search engines.

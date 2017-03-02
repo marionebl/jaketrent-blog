@@ -10,7 +10,7 @@ tags:
   - "communication"
 description: Why log issues for the project you're working on?  There are many reasons.  Here are a few.
 metaKeywords: git, git log, communication, teamwork, issues, bugtracker
-published: true
+draft: false
 image: https://i.imgur.com/QNf1k.jpg
 ---
 

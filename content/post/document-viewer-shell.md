@@ -11,7 +11,7 @@ tags:
   - "ubuntu"
 description: For me, one of the major draws for Linux is the oh-so-awesome bash shell.  I also like the default pdf viewer for Ubuntu.  I always forget that this thing i
 metaKeywords: linux, pdf, ubuntu
-published: true
+draft: false
 ---
 
 For me, one of the major draws for Linux is the oh-so-awesome bash shell.  I also like the default pdf viewer for Ubuntu.  I always forget that this thing is called evince.  

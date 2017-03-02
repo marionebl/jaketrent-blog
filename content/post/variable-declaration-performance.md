@@ -10,7 +10,7 @@ tags:
   - "performance"
 description: Often when coding, we use a single local variable multiple times, overwriting the value many times.  It is considered good practice to move the variable out
 metaKeywords: java, performance
-published: true
+draft: false
 ---
 
 Often when coding, we use a single local variable multiple times, overwriting the value many times.  It is considered good practice to move the variable out of the looping overwrite and into the smallest scope of code that is run once.  But, this makes the code a little bit less concise.  So, how useful is it, anyway?  I wanted to run a few little tests and see if there's really a noticable difference in performance.  

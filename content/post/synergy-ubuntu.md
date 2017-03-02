@@ -11,7 +11,7 @@ tags:
   - "ubuntu"
 description: <a href="http://synergy2.sourceforge.net/" target="_blank">Synergy</a> is a fantastic project that allows you to share a single set of input devices (keyboa
 metaKeywords: linux, synergy, ubuntu
-published: true
+draft: false
 ---
 
 [Synergy](http://synergy2.sourceforge.net/) is a fantastic project that allows you to share a single set of input devices (keyboard and mouse) over multiple machines.  Clipboard sharing is also supported.  It's remarkably easy to set up, and it works across multiple platforms.

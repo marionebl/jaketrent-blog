@@ -11,7 +11,7 @@ tags:
   - "tomcat"
 description: One of the worst things to debug can be something that works just fine in your local development environment but does not work in a deployed environment.  I
 metaKeywords: debugging, intellij, tomcat
-published: true
+draft: false
 ---
 
 One of the worst things to debug can be something that works just fine in your local development environment but does not work in a deployed environment.  If you deploy to Tomcat, you can debug it remotely.  If you use IntelliJ IDEA, you can do it with style.

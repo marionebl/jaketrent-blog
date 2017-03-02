@@ -11,7 +11,7 @@ tags:
   - "unit-testing"
 description: Don't write duplicate tests.  If you have duplicates, destroy them.
 metaKeywords: testing, tdd, duplicates, test code smells
-published: true
+draft: false
 image: https://i.imgur.com/ozzuTNQ.png
 ---
 

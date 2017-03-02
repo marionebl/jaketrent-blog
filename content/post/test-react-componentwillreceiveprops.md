@@ -11,7 +11,7 @@ tags:
   - "unit-testing"
 description: Testing the componentWillReceiveProps of a React component will take some setup.
 metaKeywords: react, unit testing, testing, nextprops, test setup, componentWillReceiveProps, lifecycle
-published: true
+draft: false
 image: https://i.imgur.com/DXuSNbw.png
 ---
 

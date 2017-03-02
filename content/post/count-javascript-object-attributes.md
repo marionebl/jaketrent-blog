@@ -9,7 +9,7 @@ tags:
   - "js"
 description: How do you find the number of attributes in a JS object?  Turns out there's not a fantastic way to do it
 metaKeywords: js, javascript attributes, count js attributes
-published: true
+draft: false
 image: https://i.imgur.com/54smb.jpg
 ---
 

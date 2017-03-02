@@ -11,7 +11,7 @@ tags:
   - "windows7"
 description: The spectre of webdav has again appeared before me.  This time's it's on Windows.  My last experience on webdav was in the dojo of Linux.  Now, my Linuxy nu
 metaKeywords: marklogic, webdav, windows7
-published: true
+draft: false
 ---
 
 The spectre of webdav has again appeared before me.  This time's it's on Windows.  My last experience on webdav was in the dojo of Linux.  Now, my Linuxy nun chucks aren't quite as deadly.  I must tame this beast.  Here's a Windows-webdav must.

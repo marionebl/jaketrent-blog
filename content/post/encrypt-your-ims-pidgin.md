@@ -12,7 +12,7 @@ tags:
   - "security"
 description: Around the office, when someone security-minded finds out that I instant message (IM) over Pidgin (using Google Talk's service), there tends to be wailing a
 metaKeywords: chat, encryption, pidgin, security
-published: true
+draft: false
 ---
 
 Around the office, when someone security-minded finds out that I instant message (IM) over Pidgin (using Google Talk's service), there tends to be wailing and gnashing of teeth, because I am chatting in clear text over the wire.  I am encouraged to use a clunky, Windows-only, proprietary, corporate, different tool that is for internal talk with internal people.  "It's secure."  "It's encrypted," they say.  I never though I said too much of worth over chat, and what was occasionally awesome was well-encoded in l33t.  But, now my friend Dean teaches me the goodness of encrypting your IMs in Pidgin.

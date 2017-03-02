@@ -11,7 +11,7 @@ tags:
   - "python"
 description: At Sort 2009, a technical conference at the LDS Church, I gave a presentation on my favorite all-in-one web framework, Django.  It's a great tool, and here'
 metaKeywords: django, python
-published: true
+draft: false
 ---
 
 At Sort 2009, a technical conference at the LDS Church, I gave a presentation on my favorite all-in-one web framework, Django.  It's a great tool, and here's a look at the slides produced to accompany my presentation.  Also, checkout bitbucket for the <a href="http://www.bitbucket.org/jtsnake/hymnorganizer">source code</a> for the demo project.

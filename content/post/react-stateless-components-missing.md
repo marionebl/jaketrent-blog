@@ -10,7 +10,7 @@ tags:
   - "react"
 description: Statless components, new to React 0.14, don't have a few things that you might be used to by now.
 metaKeywords: js, react, stateless components, statless functions, ref, backing instance, lifecycle
-published: true
+draft: false
 image: https://i.imgur.com/DXuSNbw.png
 ---
 

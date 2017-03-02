@@ -10,7 +10,7 @@ tags:
   - "requirements"
 description: Recently, I had the opportunity to look at a set of user stories on an upcoming project and apply a high level estimate to each.  These estimates were going
 metaKeywords: project-management, requirements
-published: true
+draft: false
 ---
 
 Recently, I had the opportunity to look at a set of user stories on an upcoming project and apply a high level estimate to each.  These estimates were going to provide a starting point for determining project timeline and schedule.  Every time I'm presented with a request for estimation, I shiver a little because I'm so bad at it.  As I understand it, I'm not alone in this weakness.  I have found, however, that the more requirements that can be defined and the more detail that can be described for each, the more accurate a timeline can be established.

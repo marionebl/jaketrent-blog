@@ -11,7 +11,7 @@ tags:
   - "nodejs"
 description: How to handle 3 types of errors in an Express API in Node.
 metaKeywords: js, javascript, express, nodejs, node, error handling, uncaughtException, middleware
-published: true
+draft: false
 image: https://i.imgur.com/1arT8Ho.jpg
 ---
 

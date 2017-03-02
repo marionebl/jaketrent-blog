@@ -9,7 +9,7 @@ tags:
   - "networking"
 description: I wanted to count packets coming back and forth while telnet'ing to test out some different email protocols on our mail server and found this nifty little u
 metaKeywords: networking
-published: true
+draft: false
 ---
 
 I wanted to count packets coming back and forth while telnet'ing to test out some different email protocols on our mail server and found this nifty little utility: it's called EtherApe.  Supposedly it's a clone of Etherman, which, if it has clones, probably costs money.  

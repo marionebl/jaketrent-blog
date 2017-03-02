@@ -11,7 +11,7 @@ tags:
   - "xquery"
 description: How do you log into a MarkLogic application to run as a user besides the default app server user?  Use xdmp:login(), baby!  User/role management can be awes
 metaKeywords: marklogic, security, xquery
-published: true
+draft: false
 ---
 
 How do you log into a MarkLogic application to run as a user besides the default app server user?  Use xdmp:login(), baby!  User/role management can be awesome -- when it's done and coded.  For now, let's sing out a few important things to remember about xdmp:login() and all its hidden secrets.

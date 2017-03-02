@@ -12,7 +12,7 @@ tags:
   - "plugins"
 description: Jquery gives a great, easy-to-use mechanism for extending its API and creating your own plugins.  For stuff that looks like it could be useful generally, yo
 metaKeywords: ajax, javascript, jquery, plugins
-published: true
+draft: false
 ---
 
 Jquery gives a great, easy-to-use mechanism for extending its API and creating your own plugins.  For stuff that looks like it could be useful generally, you should really try to put it into a nice little plugin package.  For submit buttons, there is a general thought that they shouldn't be clicked twice (especially for functions such as financial transactions), so I created a plugin that fits an app that I have been working on recently, where there are many, many submit buttons, saving very granual pieces of content through ajax requests.

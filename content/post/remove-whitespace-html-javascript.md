@@ -10,7 +10,7 @@ tags:
   - "js"
 description: Lots of websites give you the ability to copy certain pieces of text/code/something off their website in a "copy to clipboard"-type functionality.  In the p
 metaKeywords: html, javascript
-published: true
+draft: false
 ---
 
 Lots of websites give you the ability to copy certain pieces of text/code/something off their website in a "copy to clipboard"-type functionality.  In the process of creating just such a function on a little page I was making, I wanted to make the html that was copied very tight and compact.  The most annoying things were the whitespace and the newlines.  Here's some javascript to strip out the whitespace between xml/html tags.

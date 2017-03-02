@@ -13,7 +13,7 @@ tags:
   - "spring"
 description: Meet the new web.  The simpler the better. The cleaner the better.  The more pleasing the colors the better.  The fuzzier feelings the better.  The latest f
 metaKeywords: hibernate, jquery, jsf, seam, spring
-published: true
+draft: false
 ---
 
 Meet the new web.  The simpler the better. The cleaner the better.  The more pleasing the colors the better.  The fuzzier feelings the better.  The latest fuzzies have been brought on by a slew of modals.  Previously, we haven't used many modals in our layouts and designs, so here's the first working pattern on how to get this kind of stuff working.  

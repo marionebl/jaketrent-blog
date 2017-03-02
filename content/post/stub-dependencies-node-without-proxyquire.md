@@ -11,7 +11,7 @@ tags:
   - "nodejs"
 description: How to stub your own dependencies in node without using a library like proxyquire
 metaKeywords: js, node, stub, spy, unit testing, proxyquire, mock
-published: true
+draft: false
 image: https://i.imgur.com/1arT8Ho.jpg
 ---
 

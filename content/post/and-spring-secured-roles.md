@@ -11,7 +11,7 @@ tags:
   - "aop"
 description: Spring Security (previously Acegi) gives you an awesome AOP way of locking down methods in your Java application.  And well-placed <a href="http://www.youtu
 metaKeywords: security, spring, aop
-published: true
+draft: false
 ---
 
 Spring Security (previously Acegi) gives you an awesome AOP way of locking down methods in your Java application.  And well-placed <a href="http://www.youtube.com/watch?v=ldFOHUaf2zg">lock down</a> is a special power indeed.  However, Spring disappoints a bit on this score because it turns out its default behavior is to 'or' the roles listed in @Secured annotation.  You'd think the default would be the stricter 'and', but alas.  But never fear, there is hope.

@@ -10,7 +10,7 @@ tags:
   - "jsf"
 description: Here's an important tidbit...  JSF does not give any default validators for your data if you use a custom converter.  If you're getting a ValidationError ex
 metaKeywords: java, jsf
-published: true
+draft: false
 ---
 
 Here's an important tidbit...  JSF does not give any default validators for your data if you use a custom converter.  If you're getting a ValidationError exception, overriding equals and hashcode methods might be a good idea.  For more, read on...

@@ -12,7 +12,7 @@ tags:
   - "career"
 description: So Good They Can't Ignore You, a book by Cal Newport debunks for the follow your passion mindset and helps you find the job you'll love.
 metaKeywords: job choice, follow your passion, career capital, craftsman mentality
-published: true
+draft: false
 image: https://i.imgur.com/VWjzM2c.jpg
 ---
 

@@ -10,7 +10,7 @@ tags:
   - "bower"
 description: Sometimes there are different versions that bower packages rely on.  You can save your resolution choices in bower.json
 metaKeywords: js, bower, bower.json, resolutions
-published: true
+draft: false
 image: https://i.imgur.com/t4XxrHn.jpg
 ---
 

@@ -10,7 +10,7 @@ tags:
   - "images"
 description: Sometimes bland text on a webpage needs a little spicing up with an image.  Instead of having to mess with markup, this text can be replaced with an image. 
 metaKeywords: css, images
-published: true
+draft: false
 ---
 
 Sometimes bland text on a webpage needs a little spicing up with an image.  Instead of having to mess with markup, this text can be replaced with an image.  Plus, the remaining text in the markup allows for better screen-reader access.  There is a fair amount of discussion on the best way to do this.  One of the ways that I've found works pretty well for me is what is known as the <a href="http://stopdesign.com/archive/2003/03/07/replace-text.html#notes">Leahy/Langridge Image Replacement (LIR)</a>

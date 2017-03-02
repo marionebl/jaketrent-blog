@@ -11,7 +11,7 @@ tags:
   - "xquery"
 description: When ordering a sequence of items in XQuery, sometimes it's desirable to be able to decide the order based on a parameter value (something dynamic).  XQuery
 metaKeywords: marklogic, xquery
-published: true
+draft: false
 ---
 
 When ordering a sequence of items in XQuery, sometimes it's desirable to be able to decide the order based on a parameter value (something dynamic).  XQuery doesn't look extremely elegant when it comes to this feature, but depending on exactly what you want, you should be able to get the job done.

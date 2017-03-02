@@ -10,7 +10,7 @@ tags:
   - "ubuntu"
 description: I love the volume control scheme for Vista that allows one to adjust the volume on a per-application basis.  It turns out that this functionality is also av
 metaKeywords: linux, ubuntu
-published: true
+draft: false
 ---
 
 I love the volume control scheme for Vista that allows one to adjust the volume on a per-application basis.  It turns out that this functionality is also available for Linux!

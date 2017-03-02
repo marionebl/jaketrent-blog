@@ -11,7 +11,7 @@ tags:
   - "orm"
 description: The object-relational mapping world of JPA and Hibernate has made a lot of things really nice and easy.  As with any framework of this sort, however, it bec
 metaKeywords: hibernate, jpa, orm
-published: true
+draft: false
 ---
 
 The object-relational mapping world of JPA and Hibernate has made a lot of things really nice and easy.  As with any framework of this sort, however, it becomes frustrating when the pieces that are supposed to provide magic ease of development do not work as expected.  The frustration is only exacerbated when the docs are skimpy.

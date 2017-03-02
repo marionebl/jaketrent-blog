@@ -13,7 +13,7 @@ tags:
   - "xquery"
 description: Have you ever had a problem with ajax requests caching in Internet Explorer.  I have, and recently I came across a nicer solution than I have traditionally 
 metaKeywords: ajax, ie, java, javascript, xquery
-published: true
+draft: false
 ---
 
 Have you ever had a problem with ajax requests caching in Internet Explorer.  I have, and recently I came across a nicer solution than I have traditionally used.  In the past, I have used a unique parameter on the url to keep IE from caching previous requests to the same url, like so:

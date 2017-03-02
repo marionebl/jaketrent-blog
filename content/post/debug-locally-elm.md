@@ -9,7 +9,7 @@ tags:
   - "elm"
 metaKeywords: elm, debug, time traveling, locally, watch
 description: Debugging in Elm is easy once you know where to look
-published: true
+draft: false
 image: https://i.imgur.com/1c6FH0f.png
 ---
 

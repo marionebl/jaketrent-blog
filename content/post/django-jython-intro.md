@@ -13,7 +13,7 @@ tags:
   - "python"
 description: Here is a "new and shiney" presentation for running Django on Jython.  It's based on my experiences with the <a href="http://wiki.python.org/jython/DjangoOn
 metaKeywords: django, java, jython, python
-published: true
+draft: false
 ---
 
 Here is a "new and shiney" presentation for running Django on Jython.  It's based on my experiences with the <a href="http://wiki.python.org/jython/DjangoOnJython">DjangoJython tutorial</a>.

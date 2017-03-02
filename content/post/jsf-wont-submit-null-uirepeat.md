@@ -10,7 +10,7 @@ tags:
   - "jsf"
 description: It stinks when your jsf components don't do what they're supposed to or even what they usually do.    This was the case with my h:inputText field when tryin
 metaKeywords: facelets, jsf
-published: true
+draft: false
 ---
 
 It stinks when your jsf components don't do what they're supposed to or even what they usually do.    This was the case with my h:inputText field when trying to submit a null value -- but!  only within a ui:repeat component.

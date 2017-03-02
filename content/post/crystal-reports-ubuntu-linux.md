@@ -11,7 +11,7 @@ tags:
   - "ubuntu"
 description: All over the net, there are questions asked about running Crystal Reports in Linux.  This isn't a solution for running Crystal in Linux per se, but running 
 metaKeywords: crystal-reports, linux, ubuntu
-published: true
+draft: false
 ---
 
 All over the net, there are questions asked about running Crystal Reports in Linux.  This isn't a solution for running Crystal in Linux per se, but running Crystal as lightweight as possible on a Linux host machine.  This means, run a VM, install Crystal, and use a small Oracle client.

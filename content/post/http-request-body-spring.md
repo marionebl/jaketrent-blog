@@ -11,7 +11,7 @@ tags:
   - "http"
 description: Want to read the body of a request within a Spring bean?  It takes a surprising amount of code.
 metaKeywords: java, spring, http, request body
-published: true 
+draft: false
 image: https://i.imgur.com/w8Ezm.jpg
 ---
 

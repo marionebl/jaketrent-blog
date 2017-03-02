@@ -10,7 +10,7 @@ tags:
   - "d3"
 description: D3 makes awesome charts, made awesomer by animations.  Make your lines animate!
 metaKeywords: js, d3, line, animating, drawing, line chart
-published: true
+draft: false
 image: https://i.imgur.com/94JQ8N8.jpg
 ---
 

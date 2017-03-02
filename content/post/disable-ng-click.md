@@ -9,7 +9,7 @@ tags:
   - "js"
   - "angularjs"
 description: ngClicks can go on anything.  Your program might require that they be disabled at certain points.  Here's an easy directive to help.
-published: true
+draft: false
 image: https://i.imgur.com/wVBKD.png
 ---
 

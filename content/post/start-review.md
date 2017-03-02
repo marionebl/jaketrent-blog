@@ -6,7 +6,7 @@ comments: true
 categories: [Review]
 description: Want to have an awesome life?  Start today and find it.
 metaKeywords: start, jon acuff, awesome, start book, stages of awesome
-published: true
+draft: false
 image: https://i.imgur.com/ERlkwHb.jpg
 ---
 

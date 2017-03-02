@@ -10,7 +10,7 @@ tags:
   - "requirejs"
 description: Often when building a single-page app, you'll want to optimize all your js into a single asset.  RequireJs is a great mechanism for managing your js depende
 metaKeywords: javascript, requirejs
-published: true
+draft: false
 ---
 
 Often when building a single-page app, you'll want to optimize all your js into a single asset.  RequireJs is a great mechanism for managing your js dependencies.  It also comes with a great build tool for doing the optimization (r.js).  But sometimes you won't want to put all your js into a single asset.  For instance, perhaps you only want to load a large chunk of code when the user interacts with the app so that you know he intends to use that functionality, and so you load it dynamically.  But, you still want that dynamically-loaded set of modules to be optimized to increase the performance of your app.  It's a pretty simple desired functionality, but I didn't just stumble upon the solution.  

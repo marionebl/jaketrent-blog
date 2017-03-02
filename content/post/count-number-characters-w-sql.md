@@ -10,7 +10,7 @@ tags:
   - "sql"
 description: There's no pre-defined method to count the number of occurrences of a certain character in a database table column using SQL.  There's a quick and dirty way
 metaKeywords: oracle, sql
-published: true
+draft: false
 ---
 
 There's no pre-defined method to count the number of occurrences of a certain character in a database table column using SQL.  There's a quick and dirty way to get it done however.  In my case, I wanted to figure out how many lines existed in a column that held address information, separated by line breaks.  Here's a spot of code that helped from the friendly neighborhood DBA, Reed.
