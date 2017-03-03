@@ -1,18 +1,18 @@
-<article class="post-summ">
-  <header class="post-summ-header">
-    <h2 class="post-summ-title">
-      <a class="post-summ-title-link" href="{{ .URL }}">{{ .Title }}</a>
+<article class="summ">
+  <header class="summ-header">
+    <h2 class="summ-title">
+      <a class="summ-title-link" href="{{ .URL }}">{{ .Title }}</a>
     </h2>
   </header>
-  <div class="post-summ-content">
+  <div class="summ-content">
     {{ if .Params.image }}
-      <a class="post-summ-image-link" href="{{ .URL }}">
-        <img class="post-summ-image" src="{{ .Params.image }}" />
+      <a class="summ-image-link" href="{{ .URL }}">
+        <img class="summ-image" src="{{ .Params.image }}" />
       </a>
     {{ end }}
     <p>
       {{ .Summary }}
     </p>
   </div>
-  <a class="post-summ-link" href="{{ .URL }}">Read more<span class="post-summ-link-icon">→</span></a>
+  <a class="summ-link" href="{{ .URL }}">Read more<span class="summ-link-icon">→</span></a>
 </article>

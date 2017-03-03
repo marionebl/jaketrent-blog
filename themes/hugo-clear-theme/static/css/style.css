@@ -226,12 +226,12 @@ a {
 .book-footer {
 }
 
-/* section: post-summ (sm) */
-.post-summ {
+/* section: summ (sm) */
+.summ {
   padding: 0 0 35px 0;
 }
-.post-summ-header {}
-.post-summ-title {
+.summ-header {}
+.summ-title {
   display: flex;
   align-items: flex-start;
   line-height: 1.2em;
@@ -239,17 +239,17 @@ a {
   font-weight: 100;
   color: #4e2b55;
 }
-.post-summ-title-link {
+.summ-title-link {
   text-decoration: none;
   color: #4e2b55;
 }
-.post-summ-content {
+.summ-content {
   padding: 0 0 15px 0;
 }
-.post-summ-image {
+.summ-image {
   margin-bottom: 20px;
 }
-.post-summ-link {
+.summ-link {
   display: inline-block;
   margin: 15px 0 0 0;
   padding: 25px 30px 25px 20px;
@@ -258,21 +258,25 @@ a {
   font-family: Junction;
   font-weight: 100;
 }
-.post-summ-link:hover {
+.summ-link:hover {
   background: url("/img/readmore.jpg") no-repeat center;
   background-size: 100%;
   color: #efefef;
 }
 
-/* section: book-summ */
-.book-summs {
+/* section: summ--book */
+
+
+/* section: book-cover (sm) */
+.book-covers {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
 }
-.book-summ {
-  padding: 0 0 35px 0;
+.book-cover {
+  padding: 0 0 35px 0; 
 }
-.book-summ-link {
+.book-cover-link {
   display: inline-block;
   margin: 15px 0 0 0;
   padding: 25px 30px 25px 20px;
@@ -281,10 +285,10 @@ a {
   font-family: Junction;
   font-weight: 100;
 }
-.book-summ-image {
+.book-cover-image {
   max-width: 150px;
 }
-.book-summ-link:hover .book-summ-image {
+.book-cover-link:hover .book-cover-image {
   box-shadow: 0 5px 10px rgba(0, 0, 0, .5);
 }
 
@@ -316,8 +320,8 @@ a {
 
 
 /* post-content dynamic tags */
-.post-summ-content img,
-.post-summ-content object,
+.summ-content img,
+.summ-content object,
 .post-content img,
 .post-content object,
 .book-content img,
@@ -513,11 +517,11 @@ a {
     margin: 0;
   }
 
-  .post-summ-content p,
+  .summ-content p,
   .post-content p,
-  .post-summ-content ul,
+  .summ-content ul,
   .post-content ul,
-  .post-summ-content ol,
+  .summ-content ol,
   .post-content ol {
     max-width: 620px;
   }
@@ -643,16 +647,22 @@ a {
     padding: 15px 0;
   }
 
-  /* section: post-summ (large) */
-  .post-summ-title {
+  /* section: summ (large) */
+  .summ-title {
     font-size: 35px;
   }
-  .post-summ-link {
+  .summ-link {
     padding: 25px 50px 25px 40px;
   }
 
-  /* section: book-summ (large) */
-  .book-summ-image {
+  /* section: summ--book (large) */
+  .summ-image--book {
+    float: left;
+    margin: 0 10px 20px 0;
+  }
+
+  /* section: book-cover (large) */
+  .book-cover-image {
     max-width: 200px;
   }
 
