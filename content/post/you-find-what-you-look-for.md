@@ -50,6 +50,6 @@ There is a large demand in tech organizations today to hire greater programmer p
 
 Don't turn a blind eye to problems.  Growth means learning, and learning often comes from problems and pain.  Learning also requires seeing opportunity.  We needn't fixate on problems or wallow in our sour situation.  In the words of Gordon B. Hinckley, "I am asking that we stop seeking out the storms and enjoy more fully the sunlight."
 
-Would you rather think good of someone?  Would you rather enjoy so much that is good around youo?  Our reality and our experience in it is largely a choice.  What reality will you find?
+Would you rather think good of someone?  Would you rather enjoy so much that is good around you?  Our reality and our experience in it is largely a choice.  What reality will you find?
 
 How do you remember to see the good in people?
