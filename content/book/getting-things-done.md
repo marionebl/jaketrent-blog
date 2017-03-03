@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/aMQbKPd.jpg"
 title: "Getting Things Done"
+rating: 3
 ---
 
 David is all about helping people organize their lives by getting everything out of their head into a reliable system.  Once reliance on the system is trusted, we can get priority work done and relax.

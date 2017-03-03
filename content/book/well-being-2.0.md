@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/sg9PGKs.jpg"
 title: "Well-being 2.0"
+rating: 4
 ---
 
 The facets of our life are interconnected. We cannot have independent wellness in one and avoid the other. For greatest wellbeing, we should consider our total wellness.

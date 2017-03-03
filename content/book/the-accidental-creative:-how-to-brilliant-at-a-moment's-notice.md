@@ -14,6 +14,7 @@ tags:
   - "productivity"
   - "creativity"
 title: "The Accidental Creative: How to Brilliant at a Moment's Notice"
+rating: 4
 ---
 
 I just finished a book about becoming a more productive and effective creative person, called “The Accidental Creative”.  It was a great book and included some thoughtful ideas that I ended up pondering and have started incorporating into my life.

@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/Uty6HGj.jpg"
 title: "The House of the Lord"
+rating: 4
 ---
 
 A look at the ancient and modern history and motivation for building these sanctuaries dedicated to Jesus Christ.

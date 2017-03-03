@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/hpwhvgx.jpg"
 title: "Steve Jobs"
+rating: 3
 ---
 
 Jobs is revealed as a man of many passions.  Reading the formative moments of the personal computing technology and industry is very interesting!  However, the coarse language in the book causes me to not recommend it.

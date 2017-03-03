@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/Z3NWpSA.jpg"
 title: "A Short History of Nearly Everything"
+rating: 5
 ---
 
 Such a fun exploration of short topics* such as the origins of our solar system, the cellular workings of biology and more.  The accompanying analogies and fun comparisons make introduction and illumination of these types of subjects a joy.

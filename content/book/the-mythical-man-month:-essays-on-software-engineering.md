@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/qPG443F.jpg"
 title: "The Mythical Man-Month: Essays on Software Engineering"
+rating: 4
 ---
 
 This collection of thoughts on the software creation process still rings true today.  Observations related to team dynamics, project staffing, and organizational structure are still relevant.  This is a classic.

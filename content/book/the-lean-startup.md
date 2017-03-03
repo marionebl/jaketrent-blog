@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/ORVm8kxl.jpg"
 title: "The Lean Startup"
+rating: 4
 ---
 
 Learn to bootstrap your idea in the form of a minimum viable product. Create your feedback loop, and make your product better through your learning. If you aren’t embarrassed when you release it, you’ve waited too long.

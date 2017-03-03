@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/uFFHemF.jpg"
 title: "Do Fathers Matter?: What Science Is Telling Us About the Parent We've Overlooked"
+rating: 3
 ---
 
 Really interesting reports on issues of genetics, child development previous to, at conception, during pregnancy, in the home, and over the generations.  There's a lot of responsibility to being a dad.  Scientific inquiry is making that even more clear

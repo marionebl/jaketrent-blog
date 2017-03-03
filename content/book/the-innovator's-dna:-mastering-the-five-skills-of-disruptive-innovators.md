@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/cIHrlp7.jpg"
 title: "The Innovator's DNA: Mastering the Five Skills of Disruptive Innovators"
+rating: 3
 ---
 
 There are native and learned skills of discovering, experimenting, etc. that the authors found present in many innovators.  The companies where these innovators lead often exhibit similar attributes.

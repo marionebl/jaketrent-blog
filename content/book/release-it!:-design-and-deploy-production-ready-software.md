@@ -14,6 +14,7 @@ tags:
   - "functional-testing"
   - "requirements"
 title: "Release It!: Design and Deploy Production-Ready Software"
+rating: 4
 ---
 
 I recently read Release It! by Michael Nygard.  I became interested in this book when the NFJS 2008 panel cited it as their #1 suggested read.  In my view, the essence of Nygard's expose boils down to two points. 

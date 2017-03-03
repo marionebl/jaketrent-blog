@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/fiFnUEC.jpg"
 title: "Leaders Eat Last: Why Some Teams Pull Together and Others Don't"
+rating: 5
 ---
 
 Awesome exhortation to work together and for one another.  We can all do little things that encourage selflessness and safety within our organizations.  These intangibles will multiply your potential value and will make your work life satisfying.

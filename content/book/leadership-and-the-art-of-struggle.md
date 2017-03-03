@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/cZwElOW.jpg"
 title: "Leadership and the Art of Struggle"
+rating: 4
 ---
 
 Even though we often expect our leaders to be perfect, no one is.  If we realize this, we can be mindful about what causes tension in our lives and how to navigate it as we keep moving toward our future goals.

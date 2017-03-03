@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/7vL6SMS.jpg"
 title: "The Autobiography of Parley P. Pratt"
+rating: 4
 ---
 
 An inspiring account of this man's conversion to Christ, his persecutions because of his beliefs, his missionary and pioneering efforts, and experiences with the early Church of Jesus Christ of Latter-day Saints.

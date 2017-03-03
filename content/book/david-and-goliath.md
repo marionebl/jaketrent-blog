@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/TJZTet1.jpg"
 title: "David and Goliath"
+rating: 4
 ---
 
 We often think of underdogs as having absolute disadvantages.  Often, these disadvantages lead us to compensate and learn new advantages or play by different rules.  We should be more watchful for what we can learn in our various circumstances.

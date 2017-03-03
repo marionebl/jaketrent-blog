@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/onCCbtY.jpg"
 title: "Crucial Conversations: Tools for Talking When Stakes Are High"
+rating: 4
 ---
 
 When people differ in opinion, we need to know how to communicate well.  The existence of hard kinds of conversations mean that we need to give more to the art of communicating at these times.

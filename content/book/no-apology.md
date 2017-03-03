@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/VuDJn84.jpg"
 title: "No Apology"
+rating: 4
 ---
 
 Mitt speaks plainly about how he sees the world and the ideas he has for facing our challenges.  He fundamentally believes in the goodness and greatness of America, our past positive impact, and our future potential for good in the world.

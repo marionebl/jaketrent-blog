@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/2hfj0uV.jpg"
 title: "Dad is Fat"
+rating: 4
 ---
 
 Plenty of dad-related anecdotes that touch on Jim's favorite topic of food.  His jokes about parenting are at once impossible and relatable.

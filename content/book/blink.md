@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/aqe6LXb.jpg"
 title: "Blink"
+rating: 4
 ---
 
 Ever the great story-teller, Malcolm presents several interesting episodes here.  Each is meant to prove that we make snap judgements as a part of our basic nature and as a result of our training.  He shows how this can be both good and bad.

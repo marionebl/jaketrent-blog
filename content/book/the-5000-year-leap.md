@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/gtgmmdb.jpg"
 title: "The 5000 Year Leap"
+rating: 4
 ---
 
 Puts forth the principles that the founders of America espoused in their nation building.  Quoting from the words of the actual founders helps make their actual feelings and positions clear.  Inspiring read.

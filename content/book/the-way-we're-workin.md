@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/y7okRsQ.jpg"
 title: "The Way We're Workin"
+rating: 4
 ---
 
 Humans are not like machines.  We work in rhythms, where periods of productivity are stoked with regular intervals of renewal.  Tony gives some interesting quadrants that help us introspect and manage our energy and time better.

@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/rZPNikS.jpg"
 title: "Hamlet's BlackBerry: A Practical Philosophy for Building a Good Life in the Digital Age"
+rating: 4
 ---
 
 Tech is indeed a blessing, but it's also a liability.  Tech, if not used purposefully and consciously in our lives can make us less productive, happy, and connected.  Williams has some great tips to get the best and avoid the worst.

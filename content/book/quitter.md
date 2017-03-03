@@ -15,6 +15,7 @@ tags:
   - "dream"
   - "startup"
 title: "Quitter"
+rating: 4
 ---
 
 When you feel you're ready to quit your day job to pursue your dream job, think twice, and read this book.

@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/PDyQ47N.png"
 title: "Never Eat Alone: And Other Secrets to Success, One Relationship at a Time"
+rating: 4
 ---
 
 How intentional are we about the people we invite into our lives?  There is great mutual benefit to be had in good relationships with good people.  Keith shares specific techniques to connect with people.

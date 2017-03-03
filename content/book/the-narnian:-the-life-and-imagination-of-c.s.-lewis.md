@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/i4p2Jm3.jpg"
 title: "The Narnian: The Life and Imagination of C.S. Lewis"
+rating: 3
 ---
 
 C.S. Lewis' own life experience and preparation influenced what he wrote and was the catalyst for themes in his many famous works. 

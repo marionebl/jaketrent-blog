@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/YgL9ye0.jpg"
 title: "The Prince"
+rating: 3
 ---
 
 Since my first world history class, I've been intrigued by this classic.  Machiavelli is very cutthroat in describing to his sovereign how he should gain and maintain power.

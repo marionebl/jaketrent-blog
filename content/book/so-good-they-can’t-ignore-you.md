@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/CzQSrjb.jpg"
 title: "So Good They Can’t Ignore You"
+rating: 4
 ---
 
 Some tell you to follow your passions. Cal tells you to master what you do, opportunities and passion will follow.

@@ -16,6 +16,7 @@ tags:
   - "skills"
   - "practice"
 title: "Talent is Overrated: What Really Separates World-Class Performers from Everybody Else"
+rating: 4
 ---
 
 Mr. Colvin goes through a list of well-known prodigies and examines some common threads.  The likes of Mozart and Tiger Woods are examined.  Their performance has been generally amazing and noteworthy.  But is this because they were simply born with a gift?  I believe we are born with gifts.  Colvin shows a compelling argument that there is more than this in these performances.  They have special circumstance, timing, help, training, and heaps of practice.  Colvin goes on to show that amazing performance is within the grasp of us "laymen" through dedicated and well-formed training.

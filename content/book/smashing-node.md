@@ -14,6 +14,7 @@ tags:
   - "js"
   - "nodejs"
 title: "Smashing Node"
+rating: 3
 ---
 
 Node.js is everywhere.  There's a lot of room for people to learn and get into it.  A good starter book is [Smashing Node by Guillermo Rauch](http://amzn.to/14ttetp).  Here's what I thought and what I learned while reading it.

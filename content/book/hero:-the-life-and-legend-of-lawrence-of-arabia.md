@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/BRhH3rE.jpg"
 title: "Hero: The Life and Legend of Lawrence of Arabia"
+rating: 4
 ---
 
 T.E. Lawrence was, and perhaps is, the most well-known and studied player in World War 1.  His personality and experiences are very interesting.  He is essentially the inventor of modern guerrilla warfare.

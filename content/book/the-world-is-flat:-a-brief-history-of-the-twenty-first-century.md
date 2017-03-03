@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/gI4QYhh.jpg"
 title: "The World Is Flat: A Brief History of the Twenty-first Century"
+rating: 3
 ---
 
 The business, economic, and social worlds are now often essentially one world.  We are interconnected.  Thus, new models of business and living are available.

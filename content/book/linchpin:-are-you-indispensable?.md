@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/LyMNp6P.jpg"
 title: "Linchpin: Are You Indispensable?"
+rating: 4
 ---
 
 The world has changed. We each have an inner genius, and we need to use it. Artists provide real value, blazing trails without a map and shipping their art, again and again.

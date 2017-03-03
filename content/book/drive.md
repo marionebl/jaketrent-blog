@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/CvEfMN6.jpg"
 title: "Drive"
+rating: 5
 ---
 
 People are motivated by various things. Read this and figure out what motivates you and others.  It is helpful to realize the power of autonomy, mastery, and purpose.

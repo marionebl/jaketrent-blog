@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/aOuoM4C.jpg"
 title: "Wanting More: The Challenge of Enjoyment in the Age of Addiction"
+rating: 5
 ---
 
 Lots of interesting observations on our modern tendency to need to be busy and stimulated constantly.  Followed by helpful advice on how to be more present, mindful with our circumstances, and positive toward others.

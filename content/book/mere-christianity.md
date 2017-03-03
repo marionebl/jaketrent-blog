@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/1AdhMVb.jpg"
 title: "Mere Christianity"
+rating: 5
 ---
 
 An inspiring work from a time that those of faith had need to support one another.  Still applicable now.  Great thoughts from a great mind and heart on the blessing of the gospel of Christ

@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/wX8zzNL.jpg"
 title: "Warren Buffet’s Management Secrets"
+rating: 3
 ---
 
 It turns out Warren Buffet has some real people and management skills behind his sprawling financial success. These are down-to-earth and useful insights from a man worth learning some principles from.

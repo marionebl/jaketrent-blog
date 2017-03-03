@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/f6oHYek.jpg"
 title: "Jesus the Christ"
+rating: 5
 ---
 
 Jesus Christ gave the world His life and teachings, and it's all very amazing to learn more about.  Talmage gives a rich, full view of the nature of and contributions to humanity from Jesus Christ.  Highly recommended.

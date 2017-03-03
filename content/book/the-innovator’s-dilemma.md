@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/exW4j8F.jpg"
 title: "The Innovator’s Dilemma"
+rating: 4
 ---
 
 The simultaneous need and danger to reinvent oneself and one's business is the dilemma.  Do we disrupt ourselves or do we double-down on core competencies?  A dilemma indeed!

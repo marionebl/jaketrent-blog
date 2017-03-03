@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/iSFZRiZ.jpg"
 title: "Start: Punch Fear in the Face, Escape Average and Do Work That Matters"
+rating: 4
 ---
 
 We have great opportunities to begin something and start towards mastery. Often the largest barrier is to start. So, get movin’!

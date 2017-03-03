@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/hasvB6S.jpg"
 title: "The 7 Habits of Highly Effective People"
+rating: 4
 ---
 
 Now a classic upon which many subsequent books relating to productivity, goals, communicating, and relationships have been based.  

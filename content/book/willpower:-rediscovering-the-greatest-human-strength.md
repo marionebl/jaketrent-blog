@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/gvySvlz.jpg"
 title: "Willpower: Rediscovering the Greatest Human Strength"
+rating: 4
 ---
 
 Willpower is here shown as a virtue to influence all others -- one that we don't recognize enough.  They present good insights into why we do what we do.  Among the many things I did appreciate, I didn't appreciate their points of agnostic musing.

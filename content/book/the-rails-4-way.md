@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/T4lolsi.jpg"
 title: "The Rails 4 Way"
+rating: 3
 ---
 
 Great coverage of the Rails framework.  Lots of reference material and lots of tips from material experts.

@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/GtfeXcd.jpg"
 title: "The Total Money Makeover"
+rating: 4
 ---
 
 Dave went broke and vowed it would never happen to him again. He learned valuable principles in handling money and shares them with his intense personality and clear baby steps. So good.

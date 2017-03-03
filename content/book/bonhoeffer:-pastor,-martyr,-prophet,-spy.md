@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/l0ifT2Q.jpg"
 title: "Bonhoeffer: Pastor, Martyr, Prophet, Spy"
+rating: 5
 ---
 
 Bonhoeffer was not well-known to me but was definitely revealed in this book as a singular person. He is known for taking a strong stance for Christianity and conspiring against Hitler in WWII.

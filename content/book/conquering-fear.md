@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/3rFBGQp.jpg"
 title: "Conquering Fear"
+rating: 3
 ---
 
 Kushner explores the societal and personal fears.  His thoughts are generally philosophical and theological.  He had some good thoughts.  With additional enlightenment, I think he could share better thoughts on the nature of God and the purpose of life.

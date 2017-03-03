@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/liv177O.jpg"
 title: "Pitch Perfect"
+rating: 4
 ---
 
 Life is filled with important situations in which you want to say things right the first time.  This book is full of great tactics and stories to help you remember what to do next time you open your mouth.

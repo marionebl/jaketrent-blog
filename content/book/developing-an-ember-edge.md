@@ -14,6 +14,7 @@ tags:
   - "ember"
 image: "http://i.imgur.com/1JMwQPM.jpg"
 title: "Developing an Ember Edge"
+rating: 3
 ---
 
 The latest book on The List at [emberwatch](http://emberwatch.com/books) is [Developing an Ember Edge](http://bleedingedgepress.com/our-books/developing-an-ember-edge/).  It's a great intro book to Ember.js.

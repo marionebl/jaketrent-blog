@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/AyDapOdl.jpg"
 title: "To the Rescue"
+rating: 5
 ---
 
 This is the biography of Thomas Monson, President of The Church of Jesus Christ of Latter-day Saints. Reading the account of his life was super inspiring, making me want to be a better person every day.

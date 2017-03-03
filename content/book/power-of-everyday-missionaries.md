@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/h0vc0we.jpg"
 title: "Power of Everyday Missionaries"
+rating: 5
 ---
 
 These are Clayton's inspiring personal stories and feelings about sharing a part of what matters most him.  His natural desire to share and uplift is motivating to read about.

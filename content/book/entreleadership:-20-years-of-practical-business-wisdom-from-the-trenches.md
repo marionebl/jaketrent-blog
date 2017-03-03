@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/QvArJDV.jpg"
 title: "EntreLeadership: 20 Years of Practical Business Wisdom from the Trenches"
+rating: 5
 ---
 
 Dave Ramsey has solid common sense advice on how to build and run a business.  His approach to building business and leading people is powerful and inspiring.

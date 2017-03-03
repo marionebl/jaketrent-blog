@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/tTVoQlE.jpg"
 title: "Leadership Vertigo: Why Even the Best Leaders Go Off Course and How They Can Get Back On Track"
+rating: 3
 ---
 
 Every leader can become distracted by false signals from the brain that can deter them from acting their best.  To minimize episodes of vertigo, reflect on your own leadership ability related to community, competence, credibility, and compassion.

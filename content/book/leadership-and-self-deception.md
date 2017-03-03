@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/CHWi2aK.jpg"
 title: "Leadership and Self-Deception"
+rating: 4
 ---
 
 The people that you interact with are just that – people. Things will go better and we’ll all be happier as we learn to treat people like people and not objects.

@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/xdzGcxQ.jpg"
 title: "Rework"
+rating: 4
 ---
 
 A bit of a rant but full of good things to say for people in small business.  Great counter-culture wisdom about being frugal, being small, and ignoring the competition.

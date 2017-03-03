@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/9jXue7K.jpg"
 title: "Turing's Cathedral"
+rating: 4
 ---
 
 The foundational moments of general computing are chronicled here.  The genius of those early pioneers is highlighted.  It's a little dry at times, but these events are fantastic to know more about.

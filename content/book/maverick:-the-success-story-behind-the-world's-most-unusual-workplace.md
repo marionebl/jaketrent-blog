@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/iR58SgU.jpg"
 title: "Maverick: The Success Story Behind the World's Most Unusual Workplace"
+rating: 4
 ---
 
 In an effort to help people want to come to work and give more to their company, Ricardo tried many untraditional approaches in his business.  He democratized decision making in the company, leading to a special place to work for their business.

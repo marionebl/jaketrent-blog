@@ -10,6 +10,7 @@ draft: false
 layout: "book"
 image: "http://i.imgur.com/lguzP61.jpg"
 metaKeywords: career-building, design, evolution
+rating: 5
 tags:
   - "career"
   - "design"

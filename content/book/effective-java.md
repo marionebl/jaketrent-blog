@@ -11,6 +11,7 @@ metaKeywords: ""
 layout: "book"
 image: "http://i.imgur.com/nWXQjE3.jpg"
 title: "Effective Java"
+rating: 4
 ---
 
 This is the first \"Effective\" style book I've read.  It was chock full of great patterns I could use in my code.  Still hold it as a standard by which a programming tactics book is judged.
