@@ -4,7 +4,9 @@
 
 <main class="main">
   <div class="list">
-    <h2 class="list-title">In {{ .Title | title }}</h2>
+    <header class="list-header">
+      <h2 class="list-title">In {{ .Title | title }}</h2>
+    </header>
     {{ $paginator := .Paginate .Data.Pages }}
     {{ range $paginator.Pages }}
       {{ .Render "summary" }}

@@ -139,15 +139,25 @@ a {
 }
 
 /* section: list */
-.list {
+.list-header {
+  display: flex;
+  align-items: center;
+  padding: 20px 0 30px 0;
+  margin: 5px 0 30px 0;
+  border-bottom: 1px solid orange;
 }
 .list-title {
+  margin: 0;
   font-family: "Junction";
   font-weight: 600;
   color: #4e2b55;
-  padding: 20px 0 30px 0;
-  margin-bottom: 30px;
-  border-bottom: 1px solid orange;
+}
+.list-nav {
+  margin-left: auto;
+}
+/* section: list--tag */
+.list-item--tag {
+  margin-bottom: 0.3em;
 }
 
 /* section: post */
@@ -526,6 +536,11 @@ a {
     max-width: 620px;
   }
 
+  /* section: list--tag (med) */
+  .list-content--tag {
+    column-count: 3;
+  }
+
   .book {
     overflow: auto;
     padding-bottom: 50px;
@@ -620,6 +635,7 @@ a {
     animation: 1.3s ease-in-out .6s infinite topnav-link-icon-planet-bob;
   }
 
+  /* section: home (large) */
   .home-section {
     display: flex;
   }
@@ -645,6 +661,11 @@ a {
   }
   .home-list-link-all {
     padding: 15px 0;
+  }
+
+  /* section: list (large) */
+  .list-header {
+    margin: 20px 0 30px 0;
   }
 
   /* section: summ (large) */

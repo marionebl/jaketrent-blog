@@ -4,7 +4,12 @@
 
 <main class="main">
   <div class="list">
-    <h2 class="list-title">Tag: {{ .Title | title }}</h2>
+    <header class="list-header">
+      <h2 class="list-title">Tag: {{ .Title | title }}</h2>
+      <div class="list-nav">
+        <a class="list-nav-link" href="/tags/">All tags</a>
+      </div>
+    </header>
     {{ $paginator := .Paginate .Data.Pages }}
     {{ range $paginator.Pages }}
       {{ .Render "summary" }}

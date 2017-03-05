@@ -4,7 +4,9 @@
 
 <main class="main">
   <div class="list">
-    <h2 class="list-title">Books I've Read</h2>
+    <header class="list-header">
+      <h2 class="list-title">Books I've Read</h2>
+    </header>
     <div class="book-covers">
       {{ $paginator := .Paginate (where .Data.Pages "Section" "book") 32 }}
       {{ range $paginator.Pages }}

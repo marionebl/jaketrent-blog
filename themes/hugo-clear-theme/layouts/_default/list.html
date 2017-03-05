@@ -4,11 +4,13 @@
 
 <main class="main">
   <div class="list">
-    <h2 class="list-title">{{ .Section | pluralize | title }}</h2>
-  {{ $paginator := .Paginate (where .Data.Pages "Section" "post") }}
-  {{ range $paginator.Pages }}
-    {{ .Render "summary" }}
-  {{ end }}
+    <header class="list-header">
+      <h2 class="list-title">{{ .Section | pluralize | title }}</h2>
+    </header>
+    {{ $paginator := .Paginate (where .Data.Pages "Section" "post") }}
+    {{ range $paginator.Pages }}
+      {{ .Render "summary" }}
+    {{ end }}
   </div>
   {{ partial "paginator.html" . }}
 </main>
