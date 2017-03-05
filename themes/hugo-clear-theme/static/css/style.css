@@ -257,6 +257,9 @@ a {
 .book-categories {
   margin: 0 10px 0 0;
 }
+.book-tags {
+  margin: 0 10px 0 0;
+}
 .book-categories-link {}
 .book-tags {}
 .book-tags-link {}
