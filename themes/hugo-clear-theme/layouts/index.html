@@ -22,7 +22,11 @@
         </article>
       {{ end  }}
       <div class="home-list">
-        <h3 class="home-list-links-title">More Posts</h3>
+        <h3 class="home-list-links-title">
+          <a href="/post/" class="home-list-links-title-link">
+            More Posts
+          </a>
+        </h3>
         {{ range first 5 (after 1 (where .Data.Pages "Section" "post")) }}
           <a class="home-list-link" href="{{ .URL }}">
             {{ .Title }}
@@ -48,7 +52,11 @@
         </article>
       {{ end  }}
       <div class="home-list">
-        <h3 class="home-list-links-title">More Books</h3>
+        <h3 class="home-list-links-title">
+          <a href="/post/" class="home-list-links-title-link">
+            More Books
+          </a>
+        </h3>
         {{ range first 5 (after 1 (where .Data.Pages "Section" "book")) }}
           <a class="home-list-link" href="{{ .URL }}">
             {{ .Title }}
