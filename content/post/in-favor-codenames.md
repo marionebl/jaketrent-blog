@@ -8,6 +8,7 @@ categories:
 tags:
   - "teams"
   - "passion"
+  - "fun"
 description: Be happy, use codenames on your project.
 metaKeywords: project, coordination, codenames, team name, project name, fun
 draft: false

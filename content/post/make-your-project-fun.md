@@ -7,6 +7,7 @@ categories:
   - "Leadership"
 tags:
   - "teams"
+  - "fun"
 description: Don't wait to make your software project fun.
 metaKeywords: fun, have fun, project, teams, morale
 draft: false
