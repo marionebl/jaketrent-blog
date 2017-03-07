@@ -8,7 +8,7 @@
       <h1 class="book-title">{{ .Title }}</h1>
       <div class="book-subheader">
         <time class="book-date" pubdate datetime="{{ .Date }}">
-          {{- .Date.Format "1 Jan 2006" -}}
+          {{- dateFormat "2 Jan 2006" .Date -}}
         </time>
         <div class="book-categories">
           In
