@@ -22,7 +22,7 @@ It's easy to see the options in front of us.  Valuable leaders can see beyond wh
 
 You are given a paper in the middle of which you see nine dots in total, arranged in small 3x3 grid.  You have the instruction "Join all nine dots with four straight lines, without taking pen from paper."  Go ahead, try it.
 
-![nine dots](http://www.moneychimp.com/calculator/compound_interest_calculator.htm)
+![nine dots](http://i.imgur.com/pFH43fU.jpg)
 
 (see [solution](https://www.youtube.com/watch?v=eDJ61mKulmU))
 
