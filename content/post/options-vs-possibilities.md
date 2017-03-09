@@ -22,9 +22,11 @@ It's easy to see the options in front of us.  Valuable leaders can see beyond wh
 
 You are given a paper in the middle of which you see nine dots in total, arranged in small 3x3 grid.  You have the instruction "Join all nine dots with four straight lines, without taking pen from paper."  Go ahead, try it.
 
-The vast majority of us can't figure it out.  We try over and over, but our minds don't see a method to this far out request given the options before us.  If you add the instruction "feel free to use the whole sheet of paper", new possibilities emerge.  You begin to draw lines outside the grid formed by the the dots.  You have seen new possibility.
+![nine dots](http://www.moneychimp.com/calculator/compound_interest_calculator.htm)
 
-<iframe width="853" height="480" src="https://www.youtube.com/embed/eDJ61mKulmU?rel=0" frameborder="0" allowfullscreen></iframe>
+(see [solution](https://www.youtube.com/watch?v=eDJ61mKulmU))
+
+The vast majority of us can't figure it out.  We try over and over, but our minds don't see a method to this far out request given the options before us.  If you add the instruction "feel free to use the whole sheet of paper", new possibilities emerge.  You begin to draw lines outside the grid formed by the the dots.  You have seen new possibility.
 
 ## The Now and The Future
 
