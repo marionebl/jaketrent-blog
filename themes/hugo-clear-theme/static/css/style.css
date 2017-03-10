@@ -391,6 +391,14 @@ a {
 
 
 /* syntax highlighting */
+.post-content h1 code,
+.post-content h2 code,
+.post-content h3 code,
+.post-content h4 code,
+.post-content h5 code,
+.post-content h6 code,
+.post-content ul code,
+.post-content ol code,
 .post-content p code {
   display: inline-block;
   white-space: nowrap;
