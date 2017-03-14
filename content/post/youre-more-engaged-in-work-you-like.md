@@ -46,4 +46,4 @@ This applies to more than just the software industry. A chef that likes making p
 When we have an affinity toward something, we'll try harder to do more of it.  This is natural.  We'll do our duty along the way.  This is right and professional.  We're always looking for fulfillment.  Eventually we'll rearrange our situation to allow for more of this.  Creatives (and really all people) don't want just a dutiful job.  
 Fortunately for software engineers, there's a great market to choose from.  Engineers have the opportunity to find a job that suits them.  We should be good at helping them find something suitable for their talents and interests.  Life's short anyway.  We should all be doing fulfilling work.  Work, yes.  Satisfying, yes.
 
-Do you ever feel guilty you're looking to do more work you enjoy?  If so, why do you think that is?  What do you do when this happens?
+Do you ever feel guilty when you're looking to do more work you enjoy?  If so, why do you think that is?  What do you do when this happens?
