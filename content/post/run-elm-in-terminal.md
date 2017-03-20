@@ -4,7 +4,7 @@ categories:
 comments: true
 date: 2017-03-20T07:27:26-06:00
 description: "Here's a way to run headless elm in the terminal via node."
-draft: true
+draft: false
 image: "http://i.imgur.com/VLYEPps.jpg"
 layout: post
 metaKeywords: "elm, run in node, run in terminal, run on commandline"
