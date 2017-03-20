@@ -23,7 +23,7 @@ A headless program is one without a UI.  If we run in a terminal or the commandl
 
 Let's walk through a quick code snippet.  Let's say that I wrote an elm program in `MyProgram.elm`.  In this case, it's simply logging a value: 
 
-```haskell
+```
 module MyProgram exposing (..)
 
 
@@ -36,7 +36,7 @@ Pretty interest, eh? How should we run this?  Let's write a program runner.  In 
 
 First, import your program that you want to run.
 
-```haskell
+```
 module Main exposing (..)
 
 import MyProgram exposing (print)
@@ -44,13 +44,13 @@ import MyProgram exposing (print)
 
 Then import the `program` function from platform.  This is the function that Elm provides to create a headless program:
 
-```haskell
+```
 import Platform exposing (program)
 ```
 
 Now let's write the function that calls the `program` function and initializes it with sufficient setup data.  First, the function signature:
 
-```haskell
+```
 nodeProgram : a -> Program Never () ()
 ```
 
@@ -64,7 +64,7 @@ Let's break it down:
 
 The actual body of the function and the call to `program` is like this:
 
-```haskell
+```
 nodeProgram _ =
     program
         { init = ( (), Cmd.none )
@@ -81,7 +81,7 @@ Another quick breakdown:
 
 Finally, we get to run the module with a `main` function:
 
-```haskell
+```
 main : Program Never () ()
 main =
     nodeProgram (print 9)
@@ -93,19 +93,19 @@ This is the entry point for our runner.  It is also the place where we call our 
 
 Now all we have to do is compile and run.  To compile:
 
-```
+```bash
 elm make --output main.js *.elm
 ```
 
 And then to run:
 
-```
+```bash
 node main.js
 ```
 
 And as we'd expect from our setup, the output is:
 
-```
+```bash
 num of destiny: 9
 ```
 
@@ -117,13 +117,13 @@ Not too bad, right?  Well it can get even easier.  If you'd like to have this `M
 
 To install:
 
-```
+```bash
 npm install -g elm-run
 ```
 
 And then to run against your program:
 
-```
+```bash
 elm-run MyProgram.elm
 ```
 
