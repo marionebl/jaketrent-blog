@@ -2,8 +2,8 @@
 categories:
 - "Code"
 comments: true
-date: 2017-03-17T07:27:26-06:00
-description: "Here's a simple, surprisingly add-on way to run Elm code in the terminal."
+date: 2017-03-20T07:27:26-06:00
+description: "Here's a way to run headless elm in the terminal via node."
 draft: true
 image: "http://i.imgur.com/VLYEPps.jpg"
 layout: post
