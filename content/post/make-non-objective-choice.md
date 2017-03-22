@@ -3,17 +3,17 @@ categories:
 - "Leadership"
 comments: true
 date: 2017-03-22T08:13:47-06:00
-description: "Are you objective?  Not as much as you'd like to think you are.  Embrace this fact, and choose tools you like using."
+description: "Are you objective?  Not as much as you'd like to think you are.  Embrace this fact, and make better decisions you're happier with."
 draft: false
 image: "http://i.imgur.com/6G4vl9Y.jpg"
 layout: post
 metaKeywords: "objective, gut, trust gut, start with why, reason for being, choose tools, identity"
 tags:
-- "tools"
-title: "Pick a Tool You Identify With"
+- "decisions"
+title: "Make a Non-Objective Choice"
 ---
 
-It turns out that we're not as objective as we think we are.  We want to think we're rational.  The tools that you'll gravitate toward and stick with will be those that you identify most closely with -- you like what that tool represents and why it exists.
+It turns out that we're not as objective as we think we are.  We want to think we're rational.  The things that you'll gravitate toward and stick with will be those that you identify most closely with -- you like what that that thing represents and why it exists.
 
 <!--more-->
 
