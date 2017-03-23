@@ -21,7 +21,7 @@ You do yourself and your audience a disservice when you preface your talk with w
 
 Everyone knows that when thy go to a conference or a meetup there will be some talks that rock your socks.  There will be other talks that are generally boring with a few islands of interest.  You potentially maroon *yourself* to one of these islands when you put yourself down or come up with reasons why people *shouldn't* listen to your talk.  Maybe you've heard or said some of these.
 
-## Right Next to Something
+## Close Proximity
 
 The talk, no matter what time of day you give it, will always be right next to something.  "I know it's early and everyone's coffee hasn't kicked in, so I'll try to make this interesting."  It already sounds like a stretch, right? 
 
@@ -31,7 +31,7 @@ The talk, no matter what time of day you give it, will always be right next to s
 
 "There's that other awesome speaker talking right now.  I'm glad you came to my talk."  Likely a very sincere statement of gratitude, you're still creating doubt in the minds of your listeners who have already made their choice to be there with *you*.  Make it seem like they made the right choice, no question.
 
-## Too Something
+## Too Much
 
 No matter what your topic, your audience will probably always be broad enough that you're not hitting a home run with everyone.  "I know this is complicated and hard to understand.  I'll go slower."  For some, this will mean they're dumb.  For others, this will create an unneeded artificial mental barrier that they can't learn what you're saying.
 
