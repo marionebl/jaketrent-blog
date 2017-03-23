@@ -13,7 +13,7 @@ tags:
 title: "Run Elm in the Terminal"
 ---
 
-Elm is usually run in a browser with output in HTML.  So how does one run Elm outside the browser, say, in the terminal?  Here's a quick setup.
+[Elm](http://elm-lang.org/) is usually run in a browser with output in HTML.  So how does one run Elm outside the browser, say, in the terminal?  Here's a quick setup.
 
 <!--more-->
 
