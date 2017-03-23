@@ -12,7 +12,7 @@ tags:
 - "confidence"
 - "speaking"
 - "presentations"
-title: "Don't Announce Why People Shouldn't Listen"
+title: "Don't Announce Why People Shouldn't Listen To You"
 ---
 
 You do yourself and your audience a disservice when you preface your talk with why we shouldn't listen.
