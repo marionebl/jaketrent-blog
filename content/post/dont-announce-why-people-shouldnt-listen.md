@@ -49,7 +49,7 @@ There will always be someone smarter than you, probably right in the audience.  
 
 I know I've said some of these.  It's really quite easy to do.  It's usually just a case of the nerves.  We get up in front of a group where we're a bit out of our element, and we say and do things that are just silly and do not help us advance the tenents of our talk.  
 
-I did this just the other day when I asked a friend who was stepping out of my talk where he was going.  Lol, what was I thinking?  It was a distraction from my subject and pretty ironic considering what I was talking about -- granting autonomy. :)  
+I did this just the other day when I asked a friend who was stepping out of my talk where he was going.  Lol, what was I thinking?  It was a distraction from my subject and pretty ironic considering what I was talking about -- encouraging autonomy. :)  
 
 Keep your nerves, be confident, make full preparations, and you'll let fewer of these unhelpful phrases come out of your mouth.
 
