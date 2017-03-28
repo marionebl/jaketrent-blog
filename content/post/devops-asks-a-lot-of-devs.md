@@ -34,7 +34,7 @@ In ops terms, gone are the days of your app sitting behind a simple webserver.  
 
 ## Doing it All
 
-To do both dev and ops requires a wide breadth of knowledge. Having considered the state of both dev & ops on the web today, they seem to require a depth of expertise.  Now devops seems to be asking us to combine the fields into one.  To find such an engineer that embodies the breadth and depth of both fields is rare.  To train such an engineer will take time, experience, proper trainig, be expensive, and put a lot on her shoulders.
+To do both dev and ops requires a wide breadth of knowledge. Having considered the state of both dev & ops on the web today, they seem to require a depth of expertise.  Now devops seems to be asking us to combine the fields into one.  To find such an engineer that embodies the breadth and depth of both fields is rare.  To train such an engineer will take time, experience, proper training, be expensive, and put a lot on her shoulders.
 
 ## Making it More Realistic
 
