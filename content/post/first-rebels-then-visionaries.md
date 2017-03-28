@@ -22,7 +22,7 @@ You are just doing what you think is best.  You might not go with the flow.  You
 
 At Pluralsight, our architecture recommendations used to include Cassandra as a primary data store.  There were a number of reasons for this, based on valid interpretations of current use cases and reasonable predictions of future use cases.  There was a basic problem, however.  Most teams didn't know how to use this tool very well.  But most wanted to be good citizens, so projects adopted it and tried to figure it out anyway.  Overall, expertise and competent use increased, but there was still continuing pain.  Sometimes it felt like a solution mismatched to the problem space.
 
-One of the project teams didn't understand the whys or hows of this tech recommendation either.  They had other expertise in another database tech, Postgres.  So they refused to use Cassandra.  This team shared their good experiences.  They helped others understand the gains they had experienced.  Soon other projects started picking up Cassandra and having their own success.  Soon the usefulness and fit of Cassandra in the architecture was being widely questioned.
+One of the project teams didn't understand the whys or hows of this tech recommendation either.  They had other expertise in another database tech, Postgres.  So they refused to use Cassandra.  This team shared their good experiences.  They helped others understand the gains they had experienced.  Soon other projects started picking up Postgres and having their own success.  Soon the usefulness and fit of Cassandra in the architecture was being widely questioned.
 
 ## Enacting Change
 
