@@ -11,6 +11,7 @@ draft: false
 image: ""
 author: ""
 affiliateUrl: ""
+rating: 4
 ---
 
 

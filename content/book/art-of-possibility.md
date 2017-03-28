@@ -16,6 +16,7 @@ tags:
 - "perspective"
 - "positivity"
 title: "The Art of Possibility: Transforming Professional & Personal Life"
+rating: 5
 ---
 
 Ben Zander is one of the most interesting and intriguing people that I've discovered recently.  He has endless positivity and energy.  He is poetic.  He sees great poissibility in others and in life.  He commands a set of thoughts about leadership and relationships that are very thought-provoking and inspiring.  This book is probably the best representation of his collective thoughts that I've worked through.  There's some other great content from him on the Internet.
