@@ -2,10 +2,10 @@
 categories:
 - "Code"
 comments: true
-date: 2017-04-01T19:42:34-06:00
+date: 2017-04-04T19:42:34-06:00
 description: "Local auth for an API in Koa will take a few pieces working together.  Here's one way to do it."
-draft: true
-image: ""
+draft: false
+image: "http://i.imgur.com/k629FhL.jpg"
 layout: post
 metaKeywords: "local strategy, local auth, local user, koa, node, js, passport"
 tags:
@@ -14,10 +14,11 @@ tags:
 - "koa"
 - "api"
 - "auth"
-title: "Local Auth in a Koa API"
+- "bcrypt"
+title: "Local Authentication in a Koa API"
 ---
 
-Local auth for an API in Koa will take a few pieces working together.  Here's one way to do it.
+Local auth for an API in [koa](http://koajs.com/) will take a few pieces working together.  Here's one way to do it.
 
 <!--more-->
 
@@ -59,9 +60,9 @@ exports.store = store
 
 A few things to note:
 
-- It's important to connect your `PgStore` to a full database connection string, like: `postgres://username:password@host:port/database`.
-- We expose `store` for use in multiple places later, and it's important that it's the same instance, so this is a singleton in our app.
-- We'll use `init` later... stay tuned.
+- It's important to connect your `PgStore` with a full database connection string, like: `postgres://username:password@host:port/database`.  Don't store this in source code.  We're loding this from the environment variable `DATABASE_URL`. 
+- We expose `store` for use in multiple places later, and it's important that it's the same instance, so this is a singleton in our app. 
+- We'll use `init` later... stay tuned. 
 
 ## Session Middleware Stack
 
@@ -91,13 +92,14 @@ app.use(convert(session({
 })))
 app.use(passport.initialize())
 app.use(passport.session())
+// ..
 ```
 
 - The setting of `app.keys` is for the cookie signing.  Make sure you have this set or you'll get a funky error saying that there's a cookie setting error and the key needs to be a Buffer.  (agh!)  For me, I'm setting this in an environment variable, `SECRET_KEY`.
 - The first middleware is the `koa-generic-session` middleware.  Make sure you `convert` it to make it compatible with koa v2.
-- The `cookie` attribute are all the options for how cookies are set in the browser.  Noticed, we're setting `signed: true`, hence the need for `SECRET_KEY`.
+- The `cookie` attribute contains all the options for how cookies are set in the browser.  Notice we're setting `signed: true`, hence the need for `SECRET_KEY`.
 - The `key` attribute is the cookie name, customizable by you.
-- The `store` is the singleton `PgStore` that we instantiated in the `auth/session.js` module.
+- The `store` is the singleton `PgStore` that we instantiated in the `auth/session.js` module.  Remember to always use this one instance.
 
 ## Session Store Initialization
 
@@ -131,11 +133,11 @@ module.exports = async function requireLogin(ctx, next) {
 }
 ```
 
-- `ctx.isAuthenticated` comes from `koa-passport`.  This is checking for valid session.  
-- If we are authenticated, let the request continue
+- `ctx.isAuthenticated` comes from `koa-passport`.  This is checking for a valid session.  
+- If we are authenticated, let the request continue.
 - If we are not authenticated, the request cannot continue, and we return a response of `401`, "Unauthorized".
 
-Now let's use that middleware, putting it in front of a resource that we want to protect.  Let's say that our `/ringsofpower` are precious to us, so we want to require authentication there.  We might write:
+Now let's use that middleware, putting it in front of a resource that we want to protect.  Let's say that our `/ringsofpower` are precious to us, so we want to require authentication there.  We might write this in the controller:
 
 ```
 const koa = require('koa')
@@ -150,7 +152,7 @@ app.use(requireLogin)
 app.use(route.delete('/:id', mountDoom))
 ```
 
-- We're using another library here, `koa-route`, which simply lets you define urls for your endpoints, mapping them to request handlers.
+- We're using another library here, `koa-route`, which simply lets you define urls for your endpoints, mapping them to request handlers.  You definitely don't need this library for this to work, but it's really nice.
 - `requireLogin` becomes the local alias for the `auth/login.js` function we wrote above.
 - We stack `app.use(requireLogin)` before our precious resources later in the `app.use` stack in order to require its execution before anything else.
 
@@ -158,26 +160,113 @@ At this point, all of our requests will start to fail with `401`s because we hav
 
 ## Valid Users
 
-First, we need a set of valid users.  We're already using postgres, so let's create a table in the database that will hold our valid userbase.  The migration script might look something like this:
-
-```
-begin;
-
-create table auth_user (
-  username varchar(255) primary key,
-  password_hash varchar(255) not null,
-  created date default now(),
-  updated date default now()
-);
-
-end;
-```
-
-Side note: Don't try to create the table named `user` because Postgres already has one of those built in.
-
-Now that we have a  1
+To have a set of valid users, we'll need to create user records and store them in our database.  We will need to take extra care in storing passwords -- in fact, we'll just store password hashes, no more -- using [bcrypt](https://github.com/kelektiv/node.bcrypt.js).  For the down low on how this might look, check out the post [on storing local user passwords using bcrypt](/post/store-local-user-password-bcrypt/).  Once we have valid users in the system, we're ready to login.
 
 ## Logging In
 
-Now we assume that your web app client has a UI for a user to enter their username and password.
+We're assuming that your web app client has a UI for a user to enter their username and password.  We're just going to look at the server-side flow for logging in for now.  We're going to make a module, `auth/index.js` that will be the controller to create our new session.  First, we register our route for session creation:
+
+```js
+const koa = require('koa')
+const route = require('koa-route')
+
+const app = new koa()
+
+async function create(ctx) {
+  // ..
+}
+
+app.use(route.post('/', create))
+```
+
+This is all as expected.  Now what goes in `create`?  It might look like this:
+
+```js
+const bcrypt = require('bcrypt')
+
+const repo = require('./repo')
+
+function serialize(user) {
+  return {
+    data: {
+      username: user.username
+    }
+  }
+}
+
+async function create(ctx) {
+  const { username, password } = ctx.request.body
+  try {
+    const user = await repo.find(username)
+    if (!user) {
+      ctx.status = 401
+      return ctx.body = { errors: [{ title: 'User not found', status: 401 }]}
+    }
+
+    const matches = await bcrypt.compare(password, user.passwordHash)
+    if (matches) {
+      ctx.status = 201
+      ctx.body = serialize(user)
+      return ctx.login(user)
+    } else {
+      console.log('u, p', username, password)
+      ctx.status = 401
+      return ctx.body = { errors: [{ title: 'Password does not match', status: 401 }]}
+    }
+  } catch (err) {
+    ctx.status = 500
+    return ctx.body = { errors: [{ title: err.message, status: 500, stack: err.stack }]}
+  }
+}
+```
+
+There's a lot here:
+
+- The `username` and `password` come from the client via the `ctx.request.body`.
+- We lookup the user using a `repo.js` module.  This is some code that takes a username and matches it to a user in your database.  The implementation is up to you and not super important here.
+- `bcrypt.compare` is the line that determines if the passwords match.
+- The `serialize` function makes sure we only expose fields we desire to the client.
+- `ctx.login` is provided by `koa-passport`.  It will actually trigger the session creation, storage in our session store, and setting of the cookie.
+
+Now for the response options based on the logic branches in this function:
+
+- 401 - if username is not in our user database
+- 401 - if the password does not match
+- 500 - if any part of this fails
+- 201 - if password matches a valid user
+
+There is one more piece to setup.  We need to teach passport how we want the user record that we're `ctx.login`ing in with to be serialized.  So in this same file, we can add:
+
+```js
+const passport = require('koa-passport')
+
+passport.serializeUser((user, done) => {
+  done(null, { username: user.username })
+})
+
+passport.deserializeUser((user, done) => {
+  done(null, user)
+})
+```
+
+In this configuration, we show we only want to store the user's `username`.
+
+## Logging Out
+
+Now the user has had exposure to the precious resources of our REST API long enough.  Before the grow wizen and corrupt, let us revoke their access.  They might not come willingly, so we must be firm.  Thankfully, revoking access is much simpler than revoking just about anything else in real life.  Let's register another endpoint in `auth/index.js`, and we'll be ready:
+
+```js
+async function destroy(ctx) {
+  ctx.logout()
+  ctx.status = 204
+}
+
+app.use(route.delete('/', destroy))
+```
+
+That's all there is to it.  The session record in the store will be removed as will the session cookie.
+
+So it turns out there are lot of things to get in place for a full auth flow through an API.  Do you do this in a similar way?  What could be simplified or made better?
+
+
 
