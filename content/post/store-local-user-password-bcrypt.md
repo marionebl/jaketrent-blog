@@ -67,7 +67,7 @@ A few things to note:
 
 And what about that `serialize` function?  Well...
 
-## Serialize Database Record
+## Serialize the Database Record
 
 The user that we'll insert will have a `username` and `password` field.  But we don't want to store the `password` as plaintext in the database.  Therefore we need to let [`bcrypt`](https://github.com/kelektiv/node.bcrypt.js) create a hash of the password first.  
 

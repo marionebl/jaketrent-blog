@@ -193,7 +193,7 @@ map transform list =
 - `head :: tail` matches a non-empty `list` variable.
 - `::` is an operator for adding an element to the front of a list. So this pattern can be thought of as "Is there an element at the front of the list?"
 - The pattern binds the `head` and `tail` variables to the actual head (first, single element) and the tail (`List` of remaining elements).  Those variables are available to use in the expression after the `->`. 
-- `transform head` changes just the first elemnt of the original `list`.
+- `transform head` changes just the first element of the original `list`.
 - The call to `map` is recursive.  We send the `transform` function straight through. `tail` becomes a new list (because the first element has already been transformed).
 - As the stack returns, the new list will concat using the `::` operator.
 
