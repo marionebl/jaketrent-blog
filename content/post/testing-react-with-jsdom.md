@@ -115,7 +115,7 @@ instead of:
 window.navigator.userAgent.indexOf('Chrome') > -1
 ```
 
-Withing taking `window.navigator` and putting it on `global.navigator`, you'd get an error like this when running your tests:
+Without taking `window.navigator` and putting it on `global.navigator`, you'd get an error like this when running your tests:
 
 ```
 ReferenceError: navigator is not defined
