@@ -7,7 +7,7 @@ comments: true
 date: 2017-04-20T19:49:53-06:00
 description: "If you manage you energy, not your time, you'll be more productive in the long run"
 draft: false
-image: "http://i.imgur.com/648ZUvh.jpg"
+image: "http://i.imgur.com/YbTp4Q3.jpg"
 layout: book
 metaKeywords: "energy, productivity, time management, rest, renewal, life rituals"
 rating: 4
