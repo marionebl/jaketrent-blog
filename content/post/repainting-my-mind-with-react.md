@@ -3,7 +3,7 @@ categories:
 - "Code"
 comments: true
 date: 2017-04-21T07:22:24-06:00
-description: "My favorite thing about React is how it simplifies the mental model of the developer when coding a UI.  They key is the repaint."
+description: "My favorite thing about React is how it simplifies the mental model of the developer when coding a UI.  The key is the repaint."
 draft: false
 image: "http://i.imgur.com/0dHFUCG.jpg"
 layout: post
@@ -14,7 +14,7 @@ tags:
 title: "Repainting My Mind with React"
 ---
 
-My favorite thing about React is how it simplifies the mental model of the developer when coding a UI.  They key is the repaint.
+My favorite thing about React is how it simplifies the mental model of the developer when coding a UI.  The key is the repaint.
 
 <!--more-->
 
