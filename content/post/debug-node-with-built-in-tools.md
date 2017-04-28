@@ -5,7 +5,7 @@ comments: true
 date: 2017-04-28T09:35:43-06:00
 description: "Debug your Node.js app without having to buy or install other tools."
 draft: false
-image: ""
+image: "https://i.imgur.com/1arT8Ho.jpg"
 layout: post
 metaKeywords: "js, nodejs, node, node.js, debug, step into, test, debugger, inspect"
 tags:
