@@ -629,6 +629,7 @@ a {
     margin-right: 50px;
     font-size: 20px;
     text-decoration: none;
+    transition: color .2s;
   }
   .topnav-link:last-child {
     margin-right: 0;
@@ -641,9 +642,8 @@ a {
   .topnav-link-icon {
     position: absolute;
     top: 0;
-    transform: translateY(-400px);
+    transform: translateY(-280px);
     display: block;
-    transition: transform .6s;
   }
   .topnav-link-icon-line {
     margin: 0 auto 15px auto;
@@ -656,6 +656,7 @@ a {
     width: 52px;
     background-position: center;
     background-repeat: no-repeat;
+    animation: 1.3s ease-in-out infinite paused topnav-link-icon-planet-bob;
   }
   .topnav-link__blue .topnav-link-icon-planet {
     background-image: url("/img/blueplanet-sm.png");
@@ -666,11 +667,8 @@ a {
   .topnav-link__green .topnav-link-icon-planet {
     background-image: url("/img/greenplanet-sm.png");
   }
-  .topnav-link:hover .topnav-link-icon {
-    transform: translateY(-280px);
-  }
   .topnav-link:hover .topnav-link-icon-planet {
-    animation: 1.3s ease-in-out .6s infinite topnav-link-icon-planet-bob;
+    animation-play-state: running;
   }
 
   /* section: home (large) */
