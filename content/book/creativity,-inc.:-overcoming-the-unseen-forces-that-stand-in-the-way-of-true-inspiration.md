@@ -9,7 +9,7 @@ description: "An inspiring look inside Pixar and Disney animation studios.  The 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/v1CZ0Lb.jpg"
+image: "https://i.imgur.com/v1CZ0Lb.jpg"
 title: "Creativity, Inc.: Overcoming the Unseen Forces That Stand in the Way of True Inspiration"
 rating: 5
 ---

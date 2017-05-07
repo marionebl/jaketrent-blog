@@ -5,7 +5,7 @@ comments: true
 date: 2017-04-19T07:22:09-06:00
 description: "Writing middleware for Redux that gets executed on every action is easy.  Here's a method."
 draft: false
-image: "http://i.imgur.com/vsKdQVh.jpg"
+image: "https://i.imgur.com/vsKdQVh.jpg"
 layout: post
 metaKeywords: "js, react, redux, middleware, redux middleware, every action"
 tags:

@@ -9,7 +9,7 @@ description: "Really interesting reports on issues of genetics, child developmen
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/uFFHemF.jpg"
+image: "https://i.imgur.com/uFFHemF.jpg"
 title: "Do Fathers Matter?: What Science Is Telling Us About the Parent We've Overlooked"
 rating: 3
 ---

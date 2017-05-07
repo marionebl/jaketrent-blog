@@ -12,7 +12,7 @@ layout: "book"
 tags: 
   - "js"
   - "ember"
-image: "http://i.imgur.com/1JMwQPM.jpg"
+image: "https://i.imgur.com/1JMwQPM.jpg"
 title: "Developing an Ember Edge"
 rating: 3
 ---

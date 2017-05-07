@@ -9,7 +9,7 @@ description: "Every leader can become distracted by false signals from the brain
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/tTVoQlE.jpg"
+image: "https://i.imgur.com/tTVoQlE.jpg"
 title: "Leadership Vertigo: Why Even the Best Leaders Go Off Course and How They Can Get Back On Track"
 rating: 3
 ---

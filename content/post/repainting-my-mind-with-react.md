@@ -5,7 +5,7 @@ comments: true
 date: 2017-04-21T07:22:24-06:00
 description: "My favorite thing about React is how it simplifies the mental model of the developer when coding a UI.  The key is the repaint."
 draft: false
-image: "http://i.imgur.com/0dHFUCG.jpg"
+image: "https://i.imgur.com/0dHFUCG.jpg"
 layout: post
 metaKeywords: "ui, spa, js, react, favorite, virtual-dom"
 tags:

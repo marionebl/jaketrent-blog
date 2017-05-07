@@ -9,7 +9,7 @@ description: "Even though we often expect our leaders to be perfect, no one is. 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/cZwElOW.jpg"
+image: "https://i.imgur.com/cZwElOW.jpg"
 title: "Leadership and the Art of Struggle"
 rating: 4
 ---

@@ -9,7 +9,7 @@ description: "Not only is it the right thing to really care for people, your cus
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/okkACz5.jpg"
+image: "https://i.imgur.com/okkACz5.jpg"
 title: "The Thank You Economy"
 rating: 4
 ---

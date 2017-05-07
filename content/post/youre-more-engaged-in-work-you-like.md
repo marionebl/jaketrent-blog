@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-13T21:39:23-06:00
 description: "We give more and find more fulfillment in work we enjoy.  Why not find it and do it?"
 draft: false
-image: "http://i.imgur.com/u5OG2ot.jpg"
+image: "https://i.imgur.com/u5OG2ot.jpg"
 layout: post
 metaKeywords: "organization, likes, dislikes, fulfilling work, work you like, engagement"
 tags:

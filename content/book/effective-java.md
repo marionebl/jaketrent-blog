@@ -9,7 +9,7 @@ description: "This is the first \"Effective\" style book I've read.  It was choc
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/nWXQjE3.jpg"
+image: "https://i.imgur.com/nWXQjE3.jpg"
 title: "Effective Java"
 rating: 4
 ---

@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-09T19:49:20-07:00
 description: "Naming's a hard problem, right?  Here are a few of my naming conventions for React or event handling in general."
 draft: false
-image: "http://i.imgur.com/0dHFUCG.jpg"
+image: "https://i.imgur.com/0dHFUCG.jpg"
 layout: post
 metaKeywords: "event handler, pub sub, react, naming, naming convention"
 tags:

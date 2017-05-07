@@ -9,7 +9,7 @@ description: "Inspiring thoughts on not underestimating the learner.  The person
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/DQOQMcG.jpg"
+image: "https://i.imgur.com/DQOQMcG.jpg"
 title: "Rookie Smarts: Why Learning Beats Knowing in the New Game of Work"
 rating: 5
 ---

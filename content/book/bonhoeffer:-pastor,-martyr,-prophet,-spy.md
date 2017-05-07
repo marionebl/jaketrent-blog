@@ -9,7 +9,7 @@ description: "Bonhoeffer was not well-known to me but was definitely revealed in
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/l0ifT2Q.jpg"
+image: "https://i.imgur.com/l0ifT2Q.jpg"
 title: "Bonhoeffer: Pastor, Martyr, Prophet, Spy"
 rating: 5
 ---

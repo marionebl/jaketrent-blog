@@ -5,7 +5,7 @@ comments: true
 date: 2017-04-24T07:18:46-06:00
 description: "Format your code automatically on commit with pretter.js."
 draft: false
-image: "http://i.imgur.com/H0nj6Gd.jpg"
+image: "https://i.imgur.com/H0nj6Gd.jpg"
 layout: post
 metaKeywords: "prettier, formatting, static, precommit, lint, semicolons, tabs, jsx, react"
 tags:

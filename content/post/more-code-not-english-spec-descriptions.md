@@ -5,7 +5,7 @@ comments: true
 date: 2017-04-08T23:22:18-06:00
 description: "Sometimes it might be better to write test descriptions that are less like an English sentence and more like code."
 draft: false
-image: "http://i.imgur.com/NjnyWWS.jpg"
+image: "https://i.imgur.com/NjnyWWS.jpg"
 layout: post
 metaKeywords: "testing, specs, test descriptions"
 tags:

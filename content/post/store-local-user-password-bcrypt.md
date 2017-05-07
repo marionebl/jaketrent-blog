@@ -5,7 +5,7 @@ comments: true
 date: 2017-04-03T19:59:24-06:00
 description: "Be careful when you store a user password record locally.  Here's how to protect the password in node."
 draft: false
-image: "http://i.imgur.com/4f7B1QX.jpg"
+image: "https://i.imgur.com/4f7B1QX.jpg"
 layout: post
 metaKeywords: "js, nodejs, massive, bcrypt, password hash"
 tags:

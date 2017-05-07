@@ -9,7 +9,7 @@ description: "Creatives are compensated for the value they create.  Todd gives a
 draft: false
 metaKeywords: accidental creative, creativity, productivity, schedulgin
 layout: "book"
-image: "http://i.imgur.com/CT3FoZT.jpg"
+image: "https://i.imgur.com/CT3FoZT.jpg"
 tags:
   - "productivity"
   - "creativity"

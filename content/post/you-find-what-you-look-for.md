@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-03T06:25:51-07:00
 description: "Our perception shapes our reality.  What reality will you find?"
 draft: false
-image: "http://i.imgur.com/OvYTgBg.jpg"
+image: "https://i.imgur.com/OvYTgBg.jpg"
 layout: post
 metaKeywords: "reality, positive, perception, perception is reality, polyanna"
 tags:

@@ -9,7 +9,7 @@ description: "C.S. Lewis' own life experience and preparation influenced what he
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/i4p2Jm3.jpg"
+image: "https://i.imgur.com/i4p2Jm3.jpg"
 title: "The Narnian: The Life and Imagination of C.S. Lewis"
 rating: 3
 ---

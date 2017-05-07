@@ -9,7 +9,7 @@ description: "Tech is indeed a blessing, but it's also a liability.  Tech, if no
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/rZPNikS.jpg"
+image: "https://i.imgur.com/rZPNikS.jpg"
 title: "Hamlet's BlackBerry: A Practical Philosophy for Building a Good Life in the Digital Age"
 rating: 4
 ---

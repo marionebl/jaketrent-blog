@@ -5,7 +5,7 @@ comments: true
 date: 2017-02-23T07:16:30-07:00
 description: "When you have the background of context, you're able to better see the value of things."
 draft: false
-image: "http://i.imgur.com/DstiIhy.jpg"
+image: "https://i.imgur.com/DstiIhy.jpg"
 layout: post
 metaKeywords: "appreciation, cross-functional, empathy, learning, legacy code, expertise, speciality"
 tags:

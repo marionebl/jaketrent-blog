@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-01T07:03:01-07:00
 description: "We have limits to our learning -- thresholds for how much we can take and quotas for how much we need.  Find your zone and thrive in it."
 draft: false
-image: "http://i.imgur.com/ZgiJ2eE.jpg"
+image: "https://i.imgur.com/ZgiJ2eE.jpg"
 layout: post
 metaKeywords: ""
 tags:

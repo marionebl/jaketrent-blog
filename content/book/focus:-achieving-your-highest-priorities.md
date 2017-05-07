@@ -9,7 +9,7 @@ description: "A great reminder that we will need to be purposeful in our values 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/qO5w2ka.jpg"
+image: "https://i.imgur.com/qO5w2ka.jpg"
 title: "Focus: Achieving Your Highest Priorities"
 rating: 3
 ---

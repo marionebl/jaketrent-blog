@@ -7,7 +7,7 @@ comments: true
 date: 2017-03-31T06:26:55-06:00
 description: "People don't buy what you do.  They buy why you do it."
 draft: false
-image: "http://i.imgur.com/UTR6BwU.jpg"
+image: "https://i.imgur.com/UTR6BwU.jpg"
 layout: book
 metaKeywords: "inspiration, motivation, purpose driven, "
 tags:

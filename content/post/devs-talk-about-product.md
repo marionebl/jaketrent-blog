@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-29T07:00:17-06:00
 description: "Some product people may see devs as a roadblock to getting good product. Some devs may view product as authoritarian and arbitrary. Perhaps we can have better conversations instead."
 draft: false
-image: "http://i.imgur.com/SR4Bh5j.jpg"
+image: "https://i.imgur.com/SR4Bh5j.jpg"
 layout: post
 metaKeywords: "product vs. dev, communication, teams, no men, arbitrary requirements, early collaboration, cross-functional teams"
 tags:

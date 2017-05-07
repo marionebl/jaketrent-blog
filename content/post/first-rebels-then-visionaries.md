@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-27T06:31:56-06:00
 description: "When you go against the grain, just doing what you think is best, you're branded a rebel.  Later, you might be a visionary."
 draft: false
-image: "http://i.imgur.com/nteQalv.jpg"
+image: "https://i.imgur.com/nteQalv.jpg"
 layout: post
 metaKeywords: "confidence, autonomy, solution mismatch, right tool for the job"
 tags:

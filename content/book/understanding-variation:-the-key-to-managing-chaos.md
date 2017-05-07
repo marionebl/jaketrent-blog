@@ -9,7 +9,7 @@ description: "It is easy to try and explain what looks light meaningful data but
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/gn9qPZV.jpg"
+image: "https://i.imgur.com/gn9qPZV.jpg"
 title: "Understanding Variation: The Key to Managing Chaos"
 rating: 2
 ---

@@ -9,7 +9,7 @@ description: "The people that you interact with are just that – people. Things
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/CHWi2aK.jpg"
+image: "https://i.imgur.com/CHWi2aK.jpg"
 title: "Leadership and Self-Deception"
 rating: 4
 ---

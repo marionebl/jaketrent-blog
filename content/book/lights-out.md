@@ -7,7 +7,7 @@ comments: true
 date: 2016-05-19
 description: "A look at the effects of a cyberattack on the U.S. electrical grid"
 draft: false
-image: "http://i.imgur.com/47NXG6C.jpg"
+image: "https://i.imgur.com/47NXG6C.jpg"
 layout: book
 metaKeywords: "cyberattack, electrical grid, emp, transformers, preparation"
 tags:

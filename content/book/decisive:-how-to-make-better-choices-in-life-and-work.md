@@ -9,7 +9,7 @@ description: "There are specific traits of being human that make us not natural 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/8MmPYD0l.jpg"
+image: "https://i.imgur.com/8MmPYD0l.jpg"
 title: "Decisive: How to Make Better Choices in Life and Work"
 rating: 3
 ---

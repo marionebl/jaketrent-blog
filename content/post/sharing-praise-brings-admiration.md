@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-16T20:31:25-06:00
 description: "Sharing praise, instead of hogging it, will bring you more admiration (and praise) in the end"
 draft: false
-image: "http://i.imgur.com/B05dYH0.jpg"
+image: "https://i.imgur.com/B05dYH0.jpg"
 layout: post
 metaKeywords: "praise, admiration, pride, compliments"
 tags:

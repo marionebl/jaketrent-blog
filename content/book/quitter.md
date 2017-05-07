@@ -8,7 +8,7 @@ comments: true
 description: "Quit your day job at the right moment in order to pursue your dream. At the right moment, the transition can be much smoother and your dream is more l"
 draft: false
 layout: "book"
-image: "http://i.imgur.com/RsOmHsb.jpg"
+image: "https://i.imgur.com/RsOmHsb.jpg"
 metaKeywords: quitter, jon acuff, dream job, quitter book
 tags:
   - "entrepreneur"

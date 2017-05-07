@@ -9,7 +9,7 @@ description: "Willpower is here shown as a virtue to influence all others -- one
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/gvySvlz.jpg"
+image: "https://i.imgur.com/gvySvlz.jpg"
 title: "Willpower: Rediscovering the Greatest Human Strength"
 rating: 4
 ---

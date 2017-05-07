@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-15T15:30:39-06:00
 description: "Do software engineers get taken advantage of? Why might this be?"
 draft: false
-image: "http://i.imgur.com/NHKNgPt.jpg"
+image: "https://i.imgur.com/NHKNgPt.jpg"
 layout: post
 metaKeywords: "programmer, software engineer, engineers, take advantage, death march, burn out"
 tags:

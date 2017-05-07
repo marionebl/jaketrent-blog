@@ -9,7 +9,7 @@ description: "When people differ in opinion, we need to know how to communicate 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/onCCbtY.jpg"
+image: "https://i.imgur.com/onCCbtY.jpg"
 title: "Crucial Conversations: Tools for Talking When Stakes Are High"
 rating: 4
 ---

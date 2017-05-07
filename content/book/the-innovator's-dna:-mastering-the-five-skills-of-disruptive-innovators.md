@@ -9,7 +9,7 @@ description: "There are native and learned skills of discovering, experimenting,
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/cIHrlp7.jpg"
+image: "https://i.imgur.com/cIHrlp7.jpg"
 title: "The Innovator's DNA: Mastering the Five Skills of Disruptive Innovators"
 rating: 3
 ---

@@ -7,7 +7,7 @@ comments: true
 date: 2016-06-13
 description: "Journalist goes into a tech startup's marketing department and hates it"
 draft: false
-image: "http://i.imgur.com/QO1TBQD.jpg"
+image: "https://i.imgur.com/QO1TBQD.jpg"
 metaKeywords: "startup, marketing, journalist, hubspot"
 layout: book
 tags:

@@ -5,7 +5,7 @@ comments: true
 date: 2017-02-24T07:05:21-07:00
 description: "Highlight.js is a great option to add client-side code highlighting to your blog"
 draft: false
-image: "http://i.imgur.com/r1zuWrq.jpg"
+image: "https://i.imgur.com/r1zuWrq.jpg"
 layout: post
 metaKeywords: "js, blog, javascript, website, code highlighting, highlight.js, prism, hugo"
 tags:

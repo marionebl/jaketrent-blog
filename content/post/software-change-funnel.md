@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-10T05:43:17-07:00
 description: "As final releases get closer, the funnel becomes smaller, changes should be less likely."
 draft: false
-image: "http://i.imgur.com/ajpDa6e.jpg"
+image: "https://i.imgur.com/ajpDa6e.jpg"
 layout: post
 metaKeywords: ""
 tags:

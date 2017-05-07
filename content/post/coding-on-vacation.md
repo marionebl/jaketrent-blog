@@ -5,7 +5,7 @@ comments: true
 date: 2017-02-21T12:39:34-07:00
 description: ""
 draft: false
-image: "http://i.imgur.com/OMTOhHO.jpg"
+image: "https://i.imgur.com/OMTOhHO.jpg"
 layout: post
 metaKeywords: "vacation, relationships, working vacation, holiday, being present"
 tags:

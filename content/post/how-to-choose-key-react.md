@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-14T21:40:34-06:00
 description: "Some tips on how to select the proper value for a key attribute in reacSome tips on how to select the proper value for a key attribute in react."
 draft: false
-image: "http://i.imgur.com/0dHFUCG.jpg"
+image: "https://i.imgur.com/0dHFUCG.jpg"
 layout: post
 metaKeywords: "js, react, key prop"
 tags:

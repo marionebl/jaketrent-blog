@@ -9,7 +9,7 @@ description: "Such a fun exploration of short topics* such as the origins of our
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/Z3NWpSA.jpg"
+image: "https://i.imgur.com/Z3NWpSA.jpg"
 title: "A Short History of Nearly Everything"
 rating: 5
 ---

@@ -9,7 +9,7 @@ description: "You have a unique combination of strengths.  These are the activit
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/595e2Im.jpg"
+image: "https://i.imgur.com/595e2Im.jpg"
 title: "Go Put Your Strengths to Work: 6 Powerful Steps to Achieve Outstanding Performance"
 rating: 3
 ---

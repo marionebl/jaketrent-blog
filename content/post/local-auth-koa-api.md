@@ -5,7 +5,7 @@ comments: true
 date: 2017-04-04T19:42:34-06:00
 description: "Local auth for an API in Koa will take a few pieces working together.  Here's one way to do it."
 draft: false
-image: "http://i.imgur.com/k629FhL.jpg"
+image: "https://i.imgur.com/k629FhL.jpg"
 layout: post
 metaKeywords: "local strategy, local auth, local user, koa, node, js, passport"
 tags:

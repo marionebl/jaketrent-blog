@@ -9,7 +9,7 @@ description: "Since my first world history class, I've been intrigued by this cl
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/YgL9ye0.jpg"
+image: "https://i.imgur.com/YgL9ye0.jpg"
 title: "The Prince"
 rating: 3
 ---

@@ -5,7 +5,7 @@ comments: true
 date: 2017-04-01T20:36:55-06:00
 description: "It is refreshing when your leader is not the center of your work.  Rather, it's the purpose that is clear.  Your leader is almost invisible."
 draft: false
-image: "http://i.imgur.com/JhlCKRv.jpg"
+image: "https://i.imgur.com/JhlCKRv.jpg"
 layout: post
 metaKeywords: "confidence, pride, self important, inspire, shared vision"
 tags:

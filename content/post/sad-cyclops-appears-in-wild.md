@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-04T19:24:02-07:00
 description: "In an effor to add more fun to work, I made a logo for a team."
 draft: false
-image: "http://i.imgur.com/KibFhZu.jpg"
+image: "https://i.imgur.com/KibFhZu.jpg"
 layout: post
 metaKeywords: "team unity, fun, team identity, stickers"
 tags:
@@ -24,7 +24,7 @@ At Pluralsight, we have product dev teams that own a full product vertical.  One
 
 A prominent part of the UI for this experience is the profile icon.  As a user, if you have an individual avatar, that will be used in the UI.  But in the case your avatar doesn't exist, you get the default icon:
 
-![default profile icon](http://i.imgur.com/4c47pTO.png)
+![default profile icon](https://i.imgur.com/4c47pTO.png)
 
 At some point, someone saw this default profile icon as a "sad cyclops".  I've heard this quite a bit from this team, and I love that it's become a part of their team identity.  It's fun to hear about team lore like that.  I wanted to make it a little more epic and fun than the original profile icon -- you know, play it up a bit.  
 
@@ -34,7 +34,7 @@ I first drew an eye because that is what I first perceived in the picture.  Afte
 
 I also wear one proudly on my laptop.  I'm digging it.  It's fun.
 
-![a laptop of stickers](http://i.imgur.com/qB4z1ka.jpg)
+![a laptop of stickers](https://i.imgur.com/qB4z1ka.jpg)
 
 ## Team Fun
 

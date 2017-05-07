@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Releasing software doesn’t just mean meeting the product feature requirements. It means meeting certain non-functional requirements that make the app "
 draft: false
-image: "http://i.imgur.com/gxejToi.jpg"
+image: "https://i.imgur.com/gxejToi.jpg"
 layout: "book"
 metaKeywords: functional-testing, requirements
 tags:

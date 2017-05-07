@@ -5,7 +5,7 @@ comments: true
 date: 2017-02-27T07:29:29-07:00
 description: "Often we get comfortable in our ways and end up constraining new ideas and possibility."
 draft: false
-image: "http://i.imgur.com/aouHCFO.jpg"
+image: "https://i.imgur.com/aouHCFO.jpg"
 layout: post
 metaKeywords: "ideas, innovation, listening, old ways, elder knowledge, monkeys, monkeys sprayed with cold water"
 tags:

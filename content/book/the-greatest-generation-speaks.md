@@ -9,7 +9,7 @@ description: "Touching reflections from those involved or connected to World War
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/RwkWphn.jpg"
+image: "https://i.imgur.com/RwkWphn.jpg"
 title: "The Greatest Generation Speaks"
 rating: 3
 ---

@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-30T06:45:48-06:00
 description: "Get a first taste of Elm's syntax in this kata to implement your own map function"
 draft: false
-image: "http://i.imgur.com/VLYEPps.jpg"
+image: "https://i.imgur.com/VLYEPps.jpg"
 layout: post
 metaKeywords: "elm, kata, beginner, syntax, tdd, elm-test"
 tags:

@@ -9,7 +9,7 @@ description: "Mitt speaks plainly about how he sees the world and the ideas he h
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/VuDJn84.jpg"
+image: "https://i.imgur.com/VuDJn84.jpg"
 title: "No Apology"
 rating: 4
 ---

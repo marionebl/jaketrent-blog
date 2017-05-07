@@ -5,7 +5,7 @@ comments: true
 date: 2017-04-06T06:55:18-06:00
 description: "You may want to chime in on chat any time of the day.  Choose not to, and lead a better life, build a better company."
 draft: false
-image: "http://i.imgur.com/LrMmXE9.jpg"
+image: "https://i.imgur.com/LrMmXE9.jpg"
 layout: post
 metaKeywords: "chat, slack, late night, example, disconnect, work-life balance"
 tags:

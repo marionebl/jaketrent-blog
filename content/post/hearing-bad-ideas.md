@@ -5,7 +5,7 @@ comments: true
 date: 2017-02-22T20:22:39-07:00
 description: "The next time you hear an idea you think is bad: hear, learn, be graceful, be honest."
 draft: false
-image: "http://i.imgur.com/l01tCnG.jpg"
+image: "https://i.imgur.com/l01tCnG.jpg"
 layout: post
 metaKeywords: "bad idea, hear, listen, learn, honest, empathetic, innovation, team work, collaboration"
 tags:

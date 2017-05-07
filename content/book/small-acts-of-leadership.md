@@ -7,7 +7,7 @@ comments: true
 date: 2017-02-27T07:59:57-07:00
 description: "The real substance of leadership"
 draft: false
-image: "http://i.imgur.com/n91qlWn.jpg"
+image: "https://i.imgur.com/n91qlWn.jpg"
 layout: book
 metaKeywords: "leadership, confidence, gratitude, curiosity, autonomy, mindfulness, be present"
 tags:

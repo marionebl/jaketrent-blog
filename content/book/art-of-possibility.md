@@ -7,7 +7,7 @@ comments: true
 date: 2017-03-07T09:06:09-07:00
 description: "You invent your own life of possibility.  This is a great book by Ben and Ross Zander."
 draft: false
-image: "http://i.imgur.com/xmLAZID.jpg"
+image: "https://i.imgur.com/xmLAZID.jpg"
 layout: book
 metaKeywords: "potential, relationships, perspective, positivity, ben zander, give an a, invented"
 tags:

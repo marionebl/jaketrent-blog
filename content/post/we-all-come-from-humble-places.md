@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-18T20:45:11-06:00
 description: "We all come from somewhere.  Each of us as normal people can accomplish great things.  So don't discount yourself."
 draft: false
-image: "http://i.imgur.com/WfxXDmG.jpg"
+image: "https://i.imgur.com/WfxXDmG.jpg"
 layout: post
 metaKeywords: ""
 tags:

@@ -9,7 +9,7 @@ description: "The business, economic, and social worlds are now often essentiall
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/gI4QYhh.jpg"
+image: "https://i.imgur.com/gI4QYhh.jpg"
 title: "The World Is Flat: A Brief History of the Twenty-first Century"
 rating: 3
 ---

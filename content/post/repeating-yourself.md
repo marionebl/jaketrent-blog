@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-11T22:30:51-07:00
 description: "It's ok to repeat yourself.  This is often required.  It's just a part of communication."
 draft: false
-image: "http://i.imgur.com/uCKgD32.jpg"
+image: "https://i.imgur.com/uCKgD32.jpg"
 layout: post
 metaKeywords: "repeating, repeat yourself, communication, shared vision, clarity, seek understanding"
 tags:

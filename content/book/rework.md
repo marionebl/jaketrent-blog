@@ -9,7 +9,7 @@ description: "A bit of a rant but full of good things to say for people in small
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/xdzGcxQ.jpg"
+image: "https://i.imgur.com/xdzGcxQ.jpg"
 title: "Rework"
 rating: 4
 ---

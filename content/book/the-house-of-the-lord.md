@@ -9,7 +9,7 @@ description: "A look at the ancient and modern history and motivation for buildi
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/Uty6HGj.jpg"
+image: "https://i.imgur.com/Uty6HGj.jpg"
 title: "The House of the Lord"
 rating: 4
 ---

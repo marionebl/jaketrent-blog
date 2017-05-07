@@ -9,7 +9,7 @@ description: "T.E. Lawrence was, and perhaps is, the most well-known and studied
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/BRhH3rE.jpg"
+image: "https://i.imgur.com/BRhH3rE.jpg"
 title: "Hero: The Life and Legend of Lawrence of Arabia"
 rating: 4
 ---

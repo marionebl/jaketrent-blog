@@ -7,7 +7,7 @@ categories:
 comments: true
 description: "Node.js is hot. This book is green. Read it. It’s a survey of Node and a variety of interesting features."
 draft: false
-image: "http://i.imgur.com/cMkY2aM.jpg"
+image: "https://i.imgur.com/cMkY2aM.jpg"
 layout: "book"
 metaKeywords: js, nodejs, smashing mag, smashing node, guillermo rauch, javascript everywhere
 tags:

@@ -9,7 +9,7 @@ description: "Jesus Christ gave the world His life and teachings, and it's all v
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/f6oHYek.jpg"
+image: "https://i.imgur.com/f6oHYek.jpg"
 title: "Jesus the Christ"
 rating: 5
 ---

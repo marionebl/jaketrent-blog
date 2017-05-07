@@ -9,7 +9,7 @@ description: "Dave went broke and vowed it would never happen to him again. He l
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/GtfeXcd.jpg"
+image: "https://i.imgur.com/GtfeXcd.jpg"
 title: "The Total Money Makeover"
 rating: 4
 ---

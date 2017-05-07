@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-24T06:52:08-06:00
 description: "Is a Porsche or a Honda Minivan the best car for you?  It depends on why you're buying it."
 draft: false
-image: "http://i.imgur.com/94wmD3Q.jpg"
+image: "https://i.imgur.com/94wmD3Q.jpg"
 layout: post
 metaKeywords: "choice, priorities, decisions, identity"
 tags:

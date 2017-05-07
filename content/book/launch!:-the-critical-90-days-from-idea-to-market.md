@@ -9,7 +9,7 @@ description: "Prepping the entrepreneur to have the necessary drive, vision, and
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/PooQk8z.jpg"
+image: "https://i.imgur.com/PooQk8z.jpg"
 title: "Launch!: The Critical 90 Days from Idea to Market"
 rating: 3
 ---

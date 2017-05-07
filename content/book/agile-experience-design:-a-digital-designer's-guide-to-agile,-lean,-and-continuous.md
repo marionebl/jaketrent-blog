@@ -9,7 +9,7 @@ description: "The book is meant to help designers as they try to integrate bette
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/6zjjxza.jpg"
+image: "https://i.imgur.com/6zjjxza.jpg"
 title: "Agile Experience Design: A Digital Designer's Guide to Agile, Lean, and Continuous"
 rating: 3
 ---

@@ -9,7 +9,7 @@ description: "We often think of underdogs as having absolute disadvantages.  Oft
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/TJZTet1.jpg"
+image: "https://i.imgur.com/TJZTet1.jpg"
 title: "David and Goliath"
 rating: 4
 ---

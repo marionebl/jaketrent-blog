@@ -5,7 +5,7 @@ comments: true
 date: 2017-05-06T18:56:46-06:00
 description: "There are only a few tabindex attribute values you can use.  Learn the few differences, and be empowered forever -- and beyond!"
 draft: false
-image: "http://i.imgur.com/oI6daFM.jpg"
+image: "https://i.imgur.com/oI6daFM.jpg"
 layout: post
 metaKeywords: "accessibility, tabindex, tab order, focusable, focus management, tab, tabbing"
 tags:

@@ -9,7 +9,7 @@ description: "To build your platform, you’ll need an online presence. Michael 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/hv7KVWp.jpg"
+image: "https://i.imgur.com/hv7KVWp.jpg"
 tags:
   - "blog"
   - "entrepreneur"

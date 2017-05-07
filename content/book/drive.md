@@ -9,7 +9,7 @@ description: "People are motivated by various things. Read this and figure out w
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/CvEfMN6.jpg"
+image: "https://i.imgur.com/CvEfMN6.jpg"
 title: "Drive"
 rating: 5
 ---

@@ -5,7 +5,7 @@ comments: true
 date: 2017-05-02T07:21:17-06:00
 description: "Simplify your Babel setup by not manually tracking plugins.  Use a target browser strategy instead."
 draft: false
-image: "http://i.imgur.com/Ji3sVsi.jpg"
+image: "https://i.imgur.com/Ji3sVsi.jpg"
 layout: post
 metaKeywords: "js, babel, transpile, autoprefixer, babelrc, preset, plugin, simple"
 tags:

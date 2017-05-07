@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-25T21:07:55-06:00
 description: "You don't always know the impact you have.  Realize this, and have faith to keep going."
 draft: false
-image: "http://i.imgur.com/FSyH9JO.jpg"
+image: "https://i.imgur.com/FSyH9JO.jpg"
 layout: post
 metaKeywords: "inspiring, confidence, second-rate"
 tags:

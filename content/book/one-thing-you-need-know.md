@@ -7,7 +7,7 @@ comments: true
 date: 2017-03-16T07:51:58-06:00
 description: "Hardly one thing, here are many interesting insights into great leadership, management, and individual success."
 draft: false
-image: "http://i.imgur.com/dmzypXE.jpg"
+image: "https://i.imgur.com/dmzypXE.jpg"
 layout: book
 metaKeywords: "leadership, management"
 tags:

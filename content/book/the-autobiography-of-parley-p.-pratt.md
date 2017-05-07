@@ -9,7 +9,7 @@ description: "An inspiring account of this man's conversion to Christ, his perse
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/7vL6SMS.jpg"
+image: "https://i.imgur.com/7vL6SMS.jpg"
 title: "The Autobiography of Parley P. Pratt"
 rating: 4
 ---

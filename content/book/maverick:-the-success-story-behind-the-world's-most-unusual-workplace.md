@@ -9,7 +9,7 @@ description: "In an effort to help people want to come to work and give more to 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/iR58SgU.jpg"
+image: "https://i.imgur.com/iR58SgU.jpg"
 title: "Maverick: The Success Story Behind the World's Most Unusual Workplace"
 rating: 4
 ---

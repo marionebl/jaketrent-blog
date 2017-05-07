@@ -5,7 +5,7 @@ comments: true
 date: 2017-04-27T07:36:41-06:00
 description: "In React, mount means the moment when your Component is inserted into the DOM."
 draft: false
-image: "http://i.imgur.com/0dHFUCG.jpg"
+image: "https://i.imgur.com/0dHFUCG.jpg"
 layout: post
 metaKeywords: "js, react, dom, insert, mount, unmount, what does mount mean in react"
 tags:

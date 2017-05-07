@@ -9,7 +9,7 @@ description: "David is all about helping people organize their lives by getting 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/aMQbKPd.jpg"
+image: "https://i.imgur.com/aMQbKPd.jpg"
 title: "Getting Things Done"
 rating: 3
 ---

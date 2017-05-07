@@ -9,7 +9,7 @@ description: "Peter gives his view of the past economic bubbles and his predicte
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/65Wy6zx.jpg"
+image: "https://i.imgur.com/65Wy6zx.jpg"
 title: "The Real Crash"
 rating: 4
 ---

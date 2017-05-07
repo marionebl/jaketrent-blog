@@ -9,7 +9,7 @@ description: "Life is filled with important situations in which you want to say 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/liv177O.jpg"
+image: "https://i.imgur.com/liv177O.jpg"
 title: "Pitch Perfect"
 rating: 4
 ---

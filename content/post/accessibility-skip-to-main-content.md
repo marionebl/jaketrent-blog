@@ -5,7 +5,7 @@ comments: true
 date: 2017-05-01T07:21:31-06:00
 description: "Give keyboard users a way to get to the main content of your site quickly."
 draft: false
-image: "http://i.imgur.com/x5v9QuQ.jpg"
+image: "https://i.imgur.com/x5v9QuQ.jpg"
 layout: post
 metaKeywords: "js, accessibility, skip to main content, skip nav"
 tags:
@@ -49,7 +49,7 @@ Often a "Skip to Main Content" feature isn't necessarily visually appealling or 
 
 The design is really up to you, but the convention is generally to put the visual representation of the "Skip to Main Content" element in the top-left corner of the page, often overlaid above everything else. Here are a couple of variations on how the "Skip to Main Content" element can be shown:
 
-![skip to main transition](http://i.imgur.com/if1Lzod.jpg)
+![skip to main transition](https://i.imgur.com/if1Lzod.jpg)
 
 ## Single Page Applications
 

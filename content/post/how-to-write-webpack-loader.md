@@ -5,7 +5,7 @@ comments: true
 date: 2017-05-03T07:30:01-06:00
 description: "There are many useful webpack loaders.  But sometimes you need something special, and it's easy to write your own."
 draft: false
-image: "http://i.imgur.com/z6INGGW.jpg"
+image: "https://i.imgur.com/z6INGGW.jpg"
 layout: post
 metaKeywords: "js, webpack, loader, webpack loader, custom loader, loader function"
 tags:

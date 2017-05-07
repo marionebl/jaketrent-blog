@@ -9,7 +9,7 @@ description: "Now a classic upon which many subsequent books relating to product
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/hasvB6S.jpg"
+image: "https://i.imgur.com/hasvB6S.jpg"
 title: "The 7 Habits of Highly Effective People"
 rating: 4
 ---

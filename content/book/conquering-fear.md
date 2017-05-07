@@ -9,7 +9,7 @@ description: "Kushner explores the societal and personal fears.  His thoughts ar
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/3rFBGQp.jpg"
+image: "https://i.imgur.com/3rFBGQp.jpg"
 title: "Conquering Fear"
 rating: 3
 ---

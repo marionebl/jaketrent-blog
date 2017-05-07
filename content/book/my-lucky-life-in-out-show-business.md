@@ -7,7 +7,7 @@ comments: true
 date: 2016-04-14T08:36:26-06:00
 description: "Dick Van Dyke has lived for show business and inspires through his own happiness and gratitude for life."
 draft: false
-image: "http://i.imgur.com/UY9pXiS.jpg"
+image: "https://i.imgur.com/UY9pXiS.jpg"
 layout: book
 metaKeywords: "dick van dyke, lucky life, gratitude"
 rating: 4

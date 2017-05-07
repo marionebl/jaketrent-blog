@@ -5,7 +5,7 @@ comments: true
 date: 2017-04-07T06:37:06-06:00
 description: "You may think you're just doing a job, but the people around you notice who you are.  They will remember your kindness."
 draft: false
-image: "http://i.imgur.com/bxiiOei.jpg"
+image: "https://i.imgur.com/bxiiOei.jpg"
 layout: post
 metaKeywords: "friendship, kindness, legacy, smile, eulogy"
 tags:
@@ -29,7 +29,7 @@ She was a force to be reckoned with.  In our product meetings, you knew she was 
 
 I will miss her.  I have missed her since we have gone to different jobs since.  When my wife and I were expecting our first son, Bea made a wonderful jungle and chameleon-themed quilt for him.  She has made many such quilts for friends and family.  I wrote her a couple years ago to send her a photo of the boy that had since outgrown the small quilt but still used it.  She wrote back, "I was hoping it would work for tents in the dining room for a good long while!"
 
-![boy with quilt](http://i.imgur.com/Eh3KWHJ.jpg)
+![boy with quilt](https://i.imgur.com/Eh3KWHJ.jpg)
 
 Bea is a fabulous human being.  She is a kind soul.  I will remember her kindness, her smile, and the way we all felt when around her.  What a life well lived!  I'm glad I could be a part of your trip of a lifetime, Bea.
 

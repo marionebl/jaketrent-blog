@@ -9,7 +9,7 @@ description: "Dave Ramsey has solid common sense advice on how to build and run 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/QvArJDV.jpg"
+image: "https://i.imgur.com/QvArJDV.jpg"
 title: "EntreLeadership: 20 Years of Practical Business Wisdom from the Trenches"
 rating: 5
 ---

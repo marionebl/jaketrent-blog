@@ -9,7 +9,7 @@ description: "Plenty of dad-related anecdotes that touch on Jim's favorite topic
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/2hfj0uV.jpg"
+image: "https://i.imgur.com/2hfj0uV.jpg"
 title: "Dad is Fat"
 rating: 4
 ---

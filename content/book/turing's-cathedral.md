@@ -9,7 +9,7 @@ description: "The foundational moments of general computing are chronicled here.
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/9jXue7K.jpg"
+image: "https://i.imgur.com/9jXue7K.jpg"
 title: "Turing's Cathedral"
 rating: 4
 ---

@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-17T16:04:31-06:00
 description: "What do you do when you need a job but don't have enough experience for the job?"
 draft: false
-image: "http://i.imgur.com/dVYTXTq.jpg"
+image: "https://i.imgur.com/dVYTXTq.jpg"
 layout: post
 metaKeywords: "job hunting, self learning, need experience, too junior, junior programmer"
 tags:

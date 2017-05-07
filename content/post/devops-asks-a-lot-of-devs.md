@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-28T06:59:37-06:00
 description: "The devops mindset asks a lot.  They must learn a whole new world of ops, in addition to development."
 draft: false
-image: "http://i.imgur.com/Ph5VDKA.jpg"
+image: "https://i.imgur.com/Ph5VDKA.jpg"
 layout: post
 metaKeywords: "devops, teams, specialists, wear many hats, expecations"
 tags:

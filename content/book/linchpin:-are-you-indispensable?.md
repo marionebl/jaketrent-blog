@@ -9,7 +9,7 @@ description: "The world has changed. We each have an inner genius, and we need t
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/LyMNp6P.jpg"
+image: "https://i.imgur.com/LyMNp6P.jpg"
 title: "Linchpin: Are You Indispensable?"
 rating: 4
 ---

@@ -9,7 +9,7 @@ description: "It is refreshing to remember that people are the single greatest a
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/1M5ld1X.jpg"
+image: "https://i.imgur.com/1M5ld1X.jpg"
 title: "Peopleware: Productive Projects and Teams, 2nd Ed. "
 rating: 5
 ---

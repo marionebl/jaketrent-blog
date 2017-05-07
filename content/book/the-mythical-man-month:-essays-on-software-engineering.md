@@ -9,7 +9,7 @@ description: "This collection of thoughts on the software creation process still
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/qPG443F.jpg"
+image: "https://i.imgur.com/qPG443F.jpg"
 title: "The Mythical Man-Month: Essays on Software Engineering"
 rating: 4
 ---

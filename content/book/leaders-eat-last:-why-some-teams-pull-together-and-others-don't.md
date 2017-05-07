@@ -9,7 +9,7 @@ description: "Awesome exhortation to work together and for one another.  We can 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/fiFnUEC.jpg"
+image: "https://i.imgur.com/fiFnUEC.jpg"
 title: "Leaders Eat Last: Why Some Teams Pull Together and Others Don't"
 rating: 5
 ---

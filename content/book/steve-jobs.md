@@ -9,7 +9,7 @@ description: "Jobs is revealed as a man of many passions.  Reading the formative
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/hpwhvgx.jpg"
+image: "https://i.imgur.com/hpwhvgx.jpg"
 title: "Steve Jobs"
 rating: 3
 ---

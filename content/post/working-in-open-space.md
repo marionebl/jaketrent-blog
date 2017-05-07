@@ -5,7 +5,7 @@ comments: true
 date: 2017-04-20T06:45:59-06:00
 description: "In the trendy open spaces of today's tech environments, we need to find space for focused attention."
 draft: false
-image: "http://i.imgur.com/rJtILWQ.jpg"
+image: "https://i.imgur.com/rJtILWQ.jpg"
 layout: post
 metaKeywords: "open space, distraction, productivity, headphones, grace"
 tags:

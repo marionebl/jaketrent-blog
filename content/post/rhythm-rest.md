@@ -5,7 +5,7 @@ comments: true
 date: 2017-04-17T07:01:14-06:00
 description: "Humans are not machines.  Energy will deplete, and in our rhythm of living, we must be able to rest and recover."
 draft: false
-image: "http://i.imgur.com/EqoXn1p.jpg"
+image: "https://i.imgur.com/EqoXn1p.jpg"
 layout: post
 metaKeywords: "rest, recover, machines, energy depletion, rhythm"
 tags:

@@ -9,7 +9,7 @@ description: "The simultaneous need and danger to reinvent oneself and one's bus
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/exW4j8F.jpg"
+image: "https://i.imgur.com/exW4j8F.jpg"
 title: "The Innovator’s Dilemma"
 rating: 4
 ---

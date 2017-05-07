@@ -9,7 +9,7 @@ description: "George Washington was just a human.  Despite and because of his hu
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/xKcNcAJ.jpg"
+image: "https://i.imgur.com/xKcNcAJ.jpg"
 title: "Being George Washington"
 rating: 4
 ---

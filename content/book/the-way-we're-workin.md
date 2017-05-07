@@ -9,7 +9,7 @@ description: "Humans are not like machines.  We work in rhythms, where periods o
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/y7okRsQ.jpg"
+image: "https://i.imgur.com/y7okRsQ.jpg"
 title: "The Way We're Workin"
 rating: 4
 ---

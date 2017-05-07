@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-02T07:31:59-07:00
 description: "It is sometimes hard to find the motivation to start or continue.  We can look within."
 draft: false
-image: "http://i.imgur.com/J8kfm2p.jpg"
+image: "https://i.imgur.com/J8kfm2p.jpg"
 layout: post
 metaKeywords: "motivation, judgement, comparison, joy, start, voices"
 tags:

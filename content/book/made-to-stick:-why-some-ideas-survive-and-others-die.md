@@ -9,7 +9,7 @@ description: "Chip & Dan make a clear outline of the elements of SUCCESsful, sti
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/9QTgcjg.jpg"
+image: "https://i.imgur.com/9QTgcjg.jpg"
 title: "Made to Stick: Why Some Ideas Survive and Others Die"
 rating: 4
 ---

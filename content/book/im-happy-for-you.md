@@ -7,7 +7,7 @@ comments: true
 date: 2017-04-15T06:53:08-06:00
 description: "We rob ourselves of joy when we compare ourselves needlessly to others."
 draft: false
-image: "http://i.imgur.com/05KsDIn.jpg"
+image: "https://i.imgur.com/05KsDIn.jpg"
 layout: book
 metaKeywords: "comparison, contentment, happiness, vanity, keeping up with the joneses"
 rating: 4

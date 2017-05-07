@@ -9,7 +9,7 @@ description: "A few short tips that will help you look back without regret on wh
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/Fejv878.jpg"
+image: "https://i.imgur.com/Fejv878.jpg"
 title: "Whatever You Choose to Be"
 rating: 4
 ---

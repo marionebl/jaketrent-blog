@@ -9,7 +9,7 @@ description: "This is the biography of Thomas Monson, President of The Church of
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/AyDapOdl.jpg"
+image: "https://i.imgur.com/AyDapOdl.jpg"
 title: "To the Rescue"
 rating: 5
 ---

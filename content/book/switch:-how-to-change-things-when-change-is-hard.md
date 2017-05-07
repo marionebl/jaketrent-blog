@@ -11,7 +11,7 @@ metaKeywords: ""
 tags: 
   - "psychology"
 layout: "book"
-image: "http://i.imgur.com/mEyRbZ8.jpg"
+image: "https://i.imgur.com/mEyRbZ8.jpg"
 title: "Switch: How to Change Things When Change is Hard"
 rating: 5
 ---

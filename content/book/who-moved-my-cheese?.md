@@ -9,7 +9,7 @@ description: "An allegorical story about mice and little people in a maze of lif
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/jX9SFHI.jpg"
+image: "https://i.imgur.com/jX9SFHI.jpg"
 title: "Who Moved My Cheese?"
 rating: 4
 ---

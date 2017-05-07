@@ -9,7 +9,7 @@ description: "The facets of our life are interconnected. We cannot have independ
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/sg9PGKs.jpg"
+image: "https://i.imgur.com/sg9PGKs.jpg"
 title: "Well-being 2.0"
 rating: 4
 ---

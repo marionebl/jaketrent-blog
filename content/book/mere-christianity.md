@@ -9,7 +9,7 @@ description: "An inspiring work from a time that those of faith had need to supp
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/1AdhMVb.jpg"
+image: "https://i.imgur.com/1AdhMVb.jpg"
 title: "Mere Christianity"
 rating: 5
 ---

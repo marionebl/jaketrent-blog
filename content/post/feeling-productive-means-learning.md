@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-21T07:41:27-06:00
 description: "If we want to feel productive, we can help each other progress on clear paths of learning."
 draft: false
-image: "http://i.imgur.com/68vrKom.jpg"
+image: "https://i.imgur.com/68vrKom.jpg"
 layout: post
 metaKeywords: ""
 tags:

@@ -5,7 +5,7 @@ comments: true
 date: 2017-05-05T14:37:36-06:00
 description: "Snippets are prebaked bits of code.  Creating them and accessing them in spacemacs is easy."
 draft: false
-image: "http://i.imgur.com/rYPNoPw.jpg"
+image: "https://i.imgur.com/rYPNoPw.jpg"
 layout: post
 metaKeywords: "spacemacs, emacs, snippets, evil-mode"
 tags:

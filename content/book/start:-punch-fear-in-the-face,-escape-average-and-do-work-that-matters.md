@@ -9,7 +9,7 @@ description: "We have great opportunities to begin something and start towards m
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/iSFZRiZ.jpg"
+image: "https://i.imgur.com/iSFZRiZ.jpg"
 title: "Start: Punch Fear in the Face, Escape Average and Do Work That Matters"
 rating: 4
 ---

@@ -9,7 +9,7 @@ description: "Ever the great story-teller, Malcolm presents several interesting 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/aqe6LXb.jpg"
+image: "https://i.imgur.com/aqe6LXb.jpg"
 title: "Blink"
 rating: 4
 ---

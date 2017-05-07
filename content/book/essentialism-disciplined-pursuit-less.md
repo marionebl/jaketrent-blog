@@ -7,7 +7,7 @@ comments: true
 date: 2017-04-26T07:29:38-06:00
 description: "Less but better can be a mantra that increasese happiness and focus in lives."
 draft: false
-image: "http://i.imgur.com/u6mXxJf.jpg"
+image: "https://i.imgur.com/u6mXxJf.jpg"
 layout: book
 metaKeywords: "essentialism, focus, editing, priorities, energy, clutter"
 rating: 4

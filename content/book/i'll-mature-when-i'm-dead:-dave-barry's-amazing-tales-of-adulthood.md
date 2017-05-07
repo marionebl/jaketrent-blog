@@ -9,7 +9,7 @@ description: "A funny treatment of what being an adult, a parent, and generally 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/o9ATfaY.jpg"
+image: "https://i.imgur.com/o9ATfaY.jpg"
 title: "I'll Mature When I'm Dead: Dave Barry's Amazing Tales of Adulthood"
 rating: 3
 ---

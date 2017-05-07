@@ -9,7 +9,7 @@ description: "Lots of interesting observations on our modern tendency to need to
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/aOuoM4C.jpg"
+image: "https://i.imgur.com/aOuoM4C.jpg"
 title: "Wanting More: The Challenge of Enjoyment in the Age of Addiction"
 rating: 5
 ---

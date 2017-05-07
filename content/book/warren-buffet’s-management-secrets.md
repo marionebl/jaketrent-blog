@@ -9,7 +9,7 @@ description: "It turns out Warren Buffet has some real people and management ski
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/wX8zzNL.jpg"
+image: "https://i.imgur.com/wX8zzNL.jpg"
 title: "Warren Buffet’s Management Secrets"
 rating: 3
 ---

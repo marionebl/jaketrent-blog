@@ -9,7 +9,7 @@ description: "These are Clayton's inspiring personal stories and feelings about 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/h0vc0we.jpg"
+image: "https://i.imgur.com/h0vc0we.jpg"
 title: "Power of Everyday Missionaries"
 rating: 5
 ---

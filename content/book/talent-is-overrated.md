@@ -7,7 +7,7 @@ comments: true
 date: 2016-09-15
 description: "We often give innnate talent all the credit for amazing performance.  This is largely undue."
 draft: false
-image: "http://i.imgur.com/5icSwsE.jpg"
+image: "https://i.imgur.com/5icSwsE.jpg"
 layout: book
 metaKeywords: "talent is overrated, it takes practice, focus, growth"
 tags:

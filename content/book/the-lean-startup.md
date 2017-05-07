@@ -9,7 +9,7 @@ description: "Learn to bootstrap your idea in the form of a minimum viable produ
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/ORVm8kxl.jpg"
+image: "https://i.imgur.com/ORVm8kxl.jpg"
 title: "The Lean Startup"
 rating: 4
 ---

@@ -9,7 +9,7 @@ description: "Puts forth the principles that the founders of America espoused in
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/gtgmmdb.jpg"
+image: "https://i.imgur.com/gtgmmdb.jpg"
 title: "The 5000 Year Leap"
 rating: 4
 ---

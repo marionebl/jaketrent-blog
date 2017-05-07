@@ -9,7 +9,7 @@ description: "How intentional are we about the people we invite into our lives? 
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/PDyQ47N.png"
+image: "https://i.imgur.com/PDyQ47N.png"
 title: "Never Eat Alone: And Other Secrets to Success, One Relationship at a Time"
 rating: 4
 ---

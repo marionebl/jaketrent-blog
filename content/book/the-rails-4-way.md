@@ -9,7 +9,7 @@ description: "Great coverage of the Rails framework.  Lots of reference material
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/T4lolsi.jpg"
+image: "https://i.imgur.com/T4lolsi.jpg"
 title: "The Rails 4 Way"
 rating: 3
 ---

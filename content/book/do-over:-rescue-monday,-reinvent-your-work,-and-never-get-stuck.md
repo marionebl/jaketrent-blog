@@ -9,7 +9,7 @@ description: "There are unexpected and planned career adjustments.  Constant inv
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/ROLzxZd.jpg"
+image: "https://i.imgur.com/ROLzxZd.jpg"
 title: "Do Over: Rescue Monday, Reinvent Your Work, and Never Get Stuck"
 rating: 3
 ---

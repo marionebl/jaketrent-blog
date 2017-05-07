@@ -9,7 +9,7 @@ description: "Malcolm argues that we over-idolize the self-made made. He focuses
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/D0LTIbk.jpg"
+image: "https://i.imgur.com/D0LTIbk.jpg"
 title: "Outliers: The Story of Success"
 rating: 4
 ---

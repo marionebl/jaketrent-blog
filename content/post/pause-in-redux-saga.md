@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-06T06:06:18-07:00
 description: "Things happening too fast?  Want an offset?  Pause your saga in redux-saga."
 draft: false
-image: "http://i.imgur.com/lXOETiM.jpg"
+image: "https://i.imgur.com/lXOETiM.jpg"
 layout: post
 metaKeywords: "js, redux, redux-saga, setTimeout, timeout, pause"
 tags:

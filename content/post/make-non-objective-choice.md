@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-22T08:13:47-06:00
 description: "Are you objective?  Not as much as you'd like to think you are.  Embrace this fact, and make better decisions you're happier with."
 draft: false
-image: "http://i.imgur.com/6G4vl9Y.jpg"
+image: "https://i.imgur.com/6G4vl9Y.jpg"
 layout: post
 metaKeywords: "objective, gut, trust gut, start with why, reason for being, choose tools, identity"
 tags:

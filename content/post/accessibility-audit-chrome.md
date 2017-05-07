@@ -5,7 +5,7 @@ comments: true
 date: 2017-02-28T06:50:04-07:00
 description: "Chrome has a nice tool for running an easy accessibility audit."
 draft: false
-image: "http://i.imgur.com/w0DFSZA.jpg"
+image: "https://i.imgur.com/w0DFSZA.jpg"
 layout: post
 metaKeywords: "accessibility, chrome, testing, axe-core, aria"
 tags:
@@ -24,7 +24,7 @@ The tooling for running the audit is available in the Chrome Web Store as an [Ac
 
 Once installed, access the new panel in the developer tools.  Press `cmd-opt-i` or the equivalent to open the Developer Tools.  Click the Audit tab, and you should see this panel:
 
-![chrome dev tools audit panel](http://i.imgur.com/nEpwQc0.jpg)
+![chrome dev tools audit panel](https://i.imgur.com/nEpwQc0.jpg)
 
 From here, select the 'Accessibility' audit, and you can click `Run` to run the audit.  Note that you can run this on local webpages as well, so this is a great local dev tool.
 
@@ -32,11 +32,11 @@ From here, select the 'Accessibility' audit, and you can click `Run` to run the 
 
 Once you click run, you'll get a list of accessibility issues, either at the level of error or warning.  Go from top to bottom, and you should be resolving issues in order of severity.
 
-![list of accessibility infractions](http://i.imgur.com/mwMLRcD.jpg)
+![list of accessibility infractions](https://i.imgur.com/mwMLRcD.jpg)
 
 To get more information on the errors, there are great links to small explanations of the [rules](https://github.com/GoogleChrome/accessibility-developer-tools/wiki/Audit-Rules).  For instance, this one about [AX_ARIA_10](https://github.com/GoogleChrome/accessibility-developer-tools/wiki/Audit-Rules), "This element has an unsupported ARIA attribute".
 
-![specific AX_ARIA_10 infraction](http://i.imgur.com/fw4snXc.jpg)
+![specific AX_ARIA_10 infraction](https://i.imgur.com/fw4snXc.jpg)
 
 For even more information about things like ARIA properties, the w3c has some more comprehensive documentation, such as its [Supported States and Properties](https://www.w3.org/TR/wai-aria/states_and_properties) page.
 

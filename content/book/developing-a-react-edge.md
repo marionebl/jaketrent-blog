@@ -9,7 +9,7 @@ description: "Great coverage on overall React library.  Better editing than prev
 draft: false
 metaKeywords: ""
 layout: "book"
-image: "http://i.imgur.com/z8qdQFW.jpg"
+image: "https://i.imgur.com/z8qdQFW.jpg"
 title: "Developing a React Edge"
 rating: 3
 ---

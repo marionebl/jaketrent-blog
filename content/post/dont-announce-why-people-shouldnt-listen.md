@@ -5,7 +5,7 @@ comments: true
 date: 2017-03-23T07:38:37-06:00
 description: "You do yourself and your audience a disservice when you preface your talk with why we shouldn't listen."
 draft: false
-image: "http://i.imgur.com/fQ1mKbM.jpg"
+image: "https://i.imgur.com/fQ1mKbM.jpg"
 layout: post
 metaKeywords: "speaking, presentations, confidence, public speaking"
 tags:
