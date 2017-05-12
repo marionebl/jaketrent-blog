@@ -18,6 +18,6 @@ tags:
 title: "The World According to Star Wars"
 ---
 
-The only common theme in this book is Star Wars.  The subjects that are brought in are of a vast variety.  There are comparisons made to Star Wars.  Cass susses out how Star Wars is commenting on various things in our world (this galaxy).  There is a fun amount of Star Wars trivia and history.  There are also some of Cass' favorite subjects, such as constitutional law the trepid tie-ins to Star Wars.  It's a playful romp.  I enjoyed it.
+The only common theme in this book is Star Wars.  The subjects that are brought in are of a vast variety.  There are comparisons made to Star Wars.  Cass susses out how Star Wars is commenting on various things in our world (this galaxy).  There is a fun amount of Star Wars trivia and history.  There are also some of Cass' favorite subjects, such as constitutional law with only trepid tie-ins to Star Wars.  It's a playful romp.  I enjoyed it.
 
 <!--more-->
