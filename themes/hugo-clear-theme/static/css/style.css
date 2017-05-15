@@ -184,8 +184,7 @@ a {
 }
 .book-cover-link {
   display: inline-block;
-  margin: 15px 0 0 0;
-  padding: 25px 30px 25px 20px;
+  margin: 40px 30px 25px 20px;
   text-decoration: none;
   color: gray;
   font-family: Junction;
@@ -199,7 +198,13 @@ a {
 }
 
 /* section: rating (sm) */
+.rating-container {
+  position: relative;
+}
 .rating {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
   display: flex;
 }
 .rating-star {
@@ -209,6 +214,37 @@ a {
   fill: orange;
   stroke: black;
   stroke-width: 10;
+}
+.rating-star-1 {
+  height: 20px;
+  width: 20px;
+  fill: #c62121;
+}
+rrating-star-2 {
+  height: 20px;
+  width: 20px;
+  fill: #f81700;
+}
+.rating-star-3 {
+  bottom: -15px;
+  right: -15px;
+  height: 30px;
+  width: 30px;
+  fill: #ff7300;
+}
+.rating-star-4 {
+  bottom: -20px;
+  right: -20px;
+  height: 40px;
+  width: 40px;
+  fill: #ffbb00;
+}
+.rating-star-5 {
+  bottom: -25px;
+  right: -25px;
+  height: 50px;
+  width: 50px;
+  fill: #f8f831;
 }
 
 /* section: post */
