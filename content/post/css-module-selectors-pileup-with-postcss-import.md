@@ -21,9 +21,9 @@ Use of postcss-import in your CSS module processing can lead to more selectors t
 
 [postcss-import](https://github.com/postcss/postcss-import) is a useful [postcss](http://postcss.org/) plugin.  It allows loading CSS from npm modules by looking up module entry [via `package.json`'s `"style"` attribute](https://github.com/postcss/postcss-import/blob/ac9903b658b1d447f62b9021081051e8b8d42538/lib/resolve-id.js#L22). But if you don't realize that one of its main features is inlining what you `@import`, the consequences can be unexpected.  So what can you do?
 
-## Don't Use postcss-import
+## If You Don't Use postcss-import
 
-That's one option.  But the plugin does seem to smooth out importing.  You're able to import from `node_modules`, `web_modules`, and utilize that `package.json` `"style"` attribute.  So, I'm keeping it.  Ok, where from here?
+It's one option to just not use it.  But the plugin does seem to smooth out importing.  You're able to import from `node_modules`, `web_modules`, and utilize that `package.json` `"style"` attribute.  So, I'm keeping it.  Ok, where from here?
 
 ## Scenario
 
