@@ -12,7 +12,7 @@ tags:
 - "css"
 - "css-modules"
 - "postcss"
-title: "CSS Modules Selectors Pile Up with postcss-import"
+title: "CSS Module Selectors Pile Up with postcss-import"
 ---
 
 Use of postcss-import in your CSS module processing can lead to more selectors than you realized.  Here are some ways to deal with it.
