@@ -5,7 +5,7 @@ comments: true
 date: 2017-05-16T07:38:13-06:00
 description: "If you use React to render your static site and browser app, you'll need routing to work in both places."
 draft: false
-image: "http://i.imgur.com/XFiva32.jpg"
+image: "https://i.imgur.com/XFiva32.jpg"
 layout: post
 metaKeywords: "js, react, react router, static site, webpack, static-site-generator-webpack-plugin"
 tags:

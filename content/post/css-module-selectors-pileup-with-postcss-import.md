@@ -5,7 +5,7 @@ comments: true
 date: 2017-05-18T07:09:53-06:00
 description: "Use of postcss-import in your CSS module processing can lead to more selectors than you realized."
 draft: false
-image: "http://i.imgur.com/mkC5IV3.jpg"
+image: "https://i.imgur.com/mkC5IV3.jpg"
 layout: post
 metaKeywords: "css, css-modules, postcss, composes, composes from, css variables, css module dependencies, inline selectors"
 tags:

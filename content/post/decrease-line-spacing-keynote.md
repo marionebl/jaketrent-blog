@@ -5,7 +5,7 @@ comments: true
 date: 2017-05-15T09:05:06-06:00
 description: "The default line spacing in Keynote is wickedly high.  Find the spacing submenu and make it line spacing better."
 draft: false
-image: "http://i.imgur.com/RKcCt88.jpg"
+image: "https://i.imgur.com/RKcCt88.jpg"
 layout: post
 metaKeywords: "keynote, powerpoint, presentation"
 tags:

@@ -7,7 +7,7 @@ comments: true
 date: 2017-05-12T08:26:28-06:00
 description: "Star wars has near-universal appeal and says many things about the world we live in."
 draft: false
-image: "http://i.imgur.com/JA5EDJb.jpg"
+image: "https://i.imgur.com/JA5EDJb.jpg"
 layout: book
 metaKeywords: "star wars, politics, law"
 rating: 4

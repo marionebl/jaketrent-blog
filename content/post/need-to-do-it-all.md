@@ -5,7 +5,7 @@ comments: true
 date: 2017-05-13T07:42:08-06:00
 description: ""
 draft: false
-image: "http://i.imgur.com/kycDaeA.jpg"
+image: "https://i.imgur.com/kycDaeA.jpg"
 layout: post
 metaKeywords: "teams, specialization, full stack"
 tags:

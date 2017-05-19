@@ -5,7 +5,7 @@ comments: true
 date: 2017-05-08T06:53:01-06:00
 description: "As we define limits in our life and work, we gain the freedom to be more productive."
 draft: false
-image: "http://i.imgur.com/OqzhUta.jpg"
+image: "https://i.imgur.com/OqzhUta.jpg"
 layout: post
 metaKeywords: ""
 tags:

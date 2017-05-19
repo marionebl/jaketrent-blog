@@ -7,7 +7,7 @@ comments: true
 date: 2017-05-08T07:41:19-06:00
 description: "Retirement is not an age that happens to you.  It's a dream that you envision and work toward until you obtain it."
 draft: false
-image: "http://i.imgur.com/rrbA9mX.jpg"
+image: "https://i.imgur.com/rrbA9mX.jpg"
 layout: book
 metaKeywords: ""
 rating: 4

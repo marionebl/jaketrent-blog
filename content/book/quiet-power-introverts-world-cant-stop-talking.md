@@ -7,7 +7,7 @@ comments: true
 date: 2017-05-11T05:49:15-06:00
 description: "One out of three people are introverts. We can value what they offer better."
 draft: false
-image: "http://i.imgur.com/TwNAo4n.jpg"
+image: "https://i.imgur.com/TwNAo4n.jpg"
 layout: book
 metaKeywords: "introvert, extrovert, personality, societal norms"
 rating: 5

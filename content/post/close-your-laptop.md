@@ -5,7 +5,7 @@ comments: true
 date: 2017-05-19T08:57:17-06:00
 description: "When you're in a meeting with other people, be with them, not with your laptop."
 draft: false
-image: "http://i.imgur.com/0Zq8U6h.jpg"
+image: "https://i.imgur.com/0Zq8U6h.jpg"
 layout: post
 metaKeywords: "relationships, meetings, respect, phone addiction, boring meetings, laptop at meeting"
 tags:

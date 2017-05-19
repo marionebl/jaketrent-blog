@@ -5,7 +5,7 @@ comments: true
 date: 2017-05-17T07:31:21-06:00
 description: "It shouldn't. Edit your life."
 draft: false
-image: "http://i.imgur.com/nCSF3mT.jpg"
+image: "https://i.imgur.com/nCSF3mT.jpg"
 layout: post
 metaKeywords: "slack, chat, communication, leave channel, manage expectations, edit life"
 tags:
@@ -28,7 +28,7 @@ We should make it ok for someone to leave the channel.  It doesn't mean they don
 
 Have you ever wanted to leave a channel but were intimidated to leave the "uh oh, Jake left the channel and doesn't care any more" notice?:
 
-![jake left channel notice](http://i.imgur.com/Fza6fZo.png)
+![jake left channel notice](https://i.imgur.com/Fza6fZo.png)
 
 This should not be intimidating.  It should be ok to come and go as you choose.  That's how it is in real life. When the meeting's over, you leave.  When you've written your letter, you press send.  When the party's over, you go home.  Why then, does a Slack channel, arguably less important than all of those things in most respects, have this great pull on us.  
 
