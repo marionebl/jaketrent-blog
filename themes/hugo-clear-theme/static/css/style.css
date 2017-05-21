@@ -327,6 +327,16 @@ a {
 
 /* section: summ--book */
 
+/* section: summ--work */
+.summ-link--work {
+  padding-left: 0;
+  padding-top: 0;
+}
+.summ-link--work:hover {
+  background: none;
+  color: #000;
+}
+
 
 
 /* section: social */
@@ -705,14 +715,16 @@ a {
   .summ-title {
     font-size: 35px;
   }
-  .summ-link {
-    padding: 25px 50px 25px 40px;
-  }
 
   /* section: summ--book (large) */
   .summ-image--book {
     float: left;
     margin: 0 10px 20px 0;
+  }
+
+  /* section: summ--work (large) */
+  .summ-link--work {
+    padding-top: 0;
   }
 
   /* section: book-cover (large) */

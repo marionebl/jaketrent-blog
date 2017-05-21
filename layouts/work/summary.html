@@ -1,0 +1,22 @@
+<article class="summ">
+  <header class="summ-header">
+    <h2 class="summ-title">
+      <a class="summ-title-link" href="{{ .Params.site }}">{{ .Title }}</a>
+    </h2>
+  </header>
+  <div class="summ-content">
+    {{ if .Params.image }}
+      <a class="summ-image-link" href="{{ .Params.site }}">
+        <img class="summ-image" src="{{ .Params.image }}" />
+      </a>
+    {{ end }}
+    <p>
+      {{ .Summary }}
+    </p>
+  </div>
+  <a class="summ-link summ-link--work" href="{{ .Params.site }}">{{ .Params.site }}</a>
+  {{ if .Params.source }}
+    <a class="summ-link summ-link--work" href="{{ .Params.source }}">{{ .Params.source }}</a>
+  {{ end }}
+</article>
+
