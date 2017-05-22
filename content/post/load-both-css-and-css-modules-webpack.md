@@ -76,7 +76,7 @@ Here we will only explore how to load CSS, but we have two totally different con
 
 Both `*.css` and `*.module.css` files are loaded using the [`css-loader`](https://github.com/webpack-contrib/css-loader), but the CSS modules are being loaded with a key extra option enabled: `modules: true`.
 
-That first entry with the [gnarly regex](https://regex101.com/r/rS5uZp/1) is a "negative lookahead" that matches "*.css files that include a `.module`" file names.  If you don't include this negation of `*.module.css` files, your `*.module.css` files will go through both loader rules, causing an error.  Depending on your setup, another option might be to use the [`excludes`](https://webpack.js.org/configuration/module/#rule-exclude) option from Webpack.
+That first entry with the [gnarly regex](https://regex101.com/r/rS5uZp/1) is a "negative lookahead" that matches "*.css files that don't include a `.module` substring" file names.  If you don't include this negation of `*.module.css` files, your `*.module.css` files will go through both loader rules, causing an error.  Depending on your setup, another option might be to use the [`excludes`](https://webpack.js.org/configuration/module/#rule-exclude) option from Webpack.
 
 Now both are loadable using the same tool in the same config.  All we need to do now is stay consistent in our file naming.
 
