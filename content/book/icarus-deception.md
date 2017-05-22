@@ -7,7 +7,7 @@ comments: true
 date: 2017-05-20T19:24:04-06:00
 description: "We have been taught to fall in line and not be too extraordinary.  This is a deception of the industrialists."
 draft: false
-image: "http://i.imgur.com/UV0cbiZ.jpg"
+image: "https://i.imgur.com/UV0cbiZ.jpg"
 layout: book
 metaKeywords: "art, entreprenuership, seth godin, industrialists, make art"
 rating: 4
