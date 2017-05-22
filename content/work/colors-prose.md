@@ -19,4 +19,3 @@ One day I mused to Jon: wouldn't it be cool if  you could embed secret messages 
 
 <!--more-->
 
-asdf

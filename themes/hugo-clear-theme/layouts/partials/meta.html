@@ -1,0 +1,21 @@
+<div class="meta">
+  <time class="meta-date" pubdate datetime="{{ .Date }}">
+    {{- dateFormat "2 Jan 2006" .Date -}}
+  </time>
+  <div class="meta-categories">
+    In
+    {{ $baseUrl := .Site.BaseURL }}
+    {{ range .Params.categories }}
+      <a class="meta-categories-link" href="{{ $baseUrl }}/categories/{{ . | urlize }}">{{ . }}</a>
+    {{ end }}
+  </div>
+  {{ if .Params.tags }}
+  <div class="meta-tags">
+    Tags
+    {{ $baseUrl := .Site.BaseURL }}
+    {{ range .Params.tags }}
+      <a class="meta-tags-link" href="{{ $baseUrl }}/tags/{{ . | urlize }}">#{{ . }}</a>
+    {{ end }}
+  </div>
+  {{ end }}
+</div>

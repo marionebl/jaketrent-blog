@@ -3,41 +3,25 @@
 {{ partial "header.html" . }}
 
 <main class="main">
-  <article class="book">
-    <header class="book-header">
-      <h1 class="book-title">{{ .Title }}</h1>
-      <div class="book-subheader">
-        <time class="book-date" pubdate datetime="{{ .Date }}">
-          {{- dateFormat "2 Jan 2006" .Date -}}
-        </time>
-        <div class="book-categories">
-          In
-          {{ $baseUrl := .Site.BaseURL }}
-          {{ range .Params.categories }}
-            <a class="book-categories-link" href="{{ $baseUrl }}/categories/{{ . | urlize }}">{{ . }}</a>
-          {{ end }}
-        </div>
-        {{ if .Params.tags }}
-        <div class="book-tags">
-          Tags
-          {{ $baseUrl := .Site.BaseURL }}
-          {{ range .Params.tags }}
-            <a class="book-tags-link" href="{{ $baseUrl }}/tags/{{ . | urlize }}">#{{ . }}</a>
-          {{ end }}
-        </div>
-        {{ end }}
-        {{ partial "rating" . }}
+  <article class="work">
+    <header class="work-header">
+      <h1 class="work-title">{{ .Title }}</h1>
+      <div class="work-meta-container">
+        {{ partial "meta" . }}
       </div>
     </header>
-    <div class="book-content">
+    <div class="work-content">
       {{ if .Params.image }}
-        <img class="book-image" src="{{ .Params.image }}" />
+        <img class="work-image" src="{{ .Params.image }}" />
       {{ end }}
-      <div class="book-words">
+      <div class="work-words">
         {{ .Content }}
       </div>
+      <div class="work-meta-container">
+        {{ .Render "links" }}
+      </div>
     </div>
-    <footer class="book-footer">
+    <footer class="work-footer">
       {{ .Render "social" }}
     </footem>
   </article>

@@ -211,6 +211,27 @@ a {
   stroke-width: 10;
 }
 
+/* section: meta (sm) */
+.meta {
+  display: flex;
+  color: #ababab;
+}
+.meta-date {
+  margin-right: 16px;
+}
+.meta-categories {
+  margin-right: 16px;
+}
+.meta-categories-link {
+  color: #8a8391;
+}
+.meta-tags {
+  
+}
+.meta-tags-link {
+  color: #8a8391;
+}
+
 /* section: post */
 .post {
   padding: 35px 0 0 0;
@@ -287,6 +308,52 @@ a {
 .book-footer {
 }
 
+/* section: work (sm) */
+.work {
+  padding: 36px 0 0 0;
+}
+.work-title {
+  margin: 0;
+  padding: 0;
+  line-height: 1.2em;
+  font-family: "Junction";
+  font-weight: 100;
+  color: #4e2b55;
+}
+.work-meta-container {
+  margin-bottom: 16px;
+}
+.work-image {
+  margin-bottom: 16px;
+}
+.work-words {
+}
+.work-links {
+  
+}
+.work-link {
+  display: inline-flex;
+  align-items: center;
+  background: #754778;
+  text-decoration: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+}
+.work-link:hover {
+  background: #4e2b55;
+}
+.work-link-icon {
+  height: 22px;
+  width: 22px;
+  margin-right: 5px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 10px;
+}
+.work-link-label {
+  color: #fff;
+}
+
 /* section: summ (sm) */
 .summ {
   padding: 0 0 35px 0;
@@ -327,17 +394,6 @@ a {
 
 /* section: summ--book */
 
-/* section: summ--work */
-.summ-link--work {
-  padding-left: 0;
-  padding-top: 0;
-}
-.summ-link--work:hover {
-  background: none;
-  color: #000;
-}
-
-
 
 /* section: social */
 .social {}
@@ -372,7 +428,9 @@ a {
 .post-content img,
 .post-content object,
 .book-content img,
-.book-content object {
+.book-content object,
+.work-content img,
+.work-content object {
   display: block;
   max-width: calc(100% - 1em);
   border-radius: 0.3em;
@@ -586,6 +644,7 @@ a {
     column-count: 3;
   }
 
+  /* section: book (med) */
   .book {
     overflow: auto;
     padding-bottom: 50px;
@@ -722,11 +781,6 @@ a {
     margin: 0 10px 20px 0;
   }
 
-  /* section: summ--work (large) */
-  .summ-link--work {
-    padding-top: 0;
-  }
-
   /* section: book-cover (large) */
   .book-cover-image {
     max-width: 200px;
@@ -749,6 +803,11 @@ a {
     display: flex;
   }
   .book-title {
+    font-size: 50px;
+  }
+
+  /* section: work (large) */
+  .work-title {
     font-size: 50px;
   }
 

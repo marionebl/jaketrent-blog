@@ -13,10 +13,7 @@
     <p>
       {{ .Summary }}
     </p>
+    {{ .Render "links" }}
   </div>
-  <a class="summ-link summ-link--work" href="{{ .Params.site }}">{{ .Params.site }}</a>
-  {{ if .Params.source }}
-    <a class="summ-link summ-link--work" href="{{ .Params.source }}">{{ .Params.source }}</a>
-  {{ end }}
 </article>
 
