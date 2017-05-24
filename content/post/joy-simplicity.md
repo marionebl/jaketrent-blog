@@ -3,7 +3,7 @@ categories:
 - "Leadership"
 comments: true
 date: 2017-05-23T20:03:25-06:00
-description: "Waiting, building up and do some great thing can sometimes not feel as joyful as just doing something simple."
+description: "Waiting, building up to do some great thing can sometimes not feel as joyful as just doing something simple."
 draft: false
 image: "https://i.imgur.com/VBwS54t.jpg"
 layout: post
@@ -15,7 +15,7 @@ tags:
 title: "The Joy of Simplicity"
 ---
 
-Waiting, building up and do some great thing can sometimes not feel as joyful as just doing something simple.
+Waiting, building up to do some great thing can sometimes not feel as joyful as just doing something simple.
 
 <!--more-->
 
