@@ -29,7 +29,7 @@ But we had *something* in the interim.  We had *some* time, energy, interest, an
 
 In the constellation of wonders on the website, I have just added another.  It gleams with an emerald glow.  It's the green planet!, labeled "Works", which is short for "Creative Works". 
 
-These are artifacts.  These are things that are the often the simple product of some small thought or effort on my part.  It will catalog toys, sites, libraries, art, music, creative trinkets, or even professional work.  But it's taken me way too long to put something together that I think would be awesome enough.  So I'm just giving it a very simple to start.  For now it contains one small, uncategorized item, ["The Colors of Prose"](/work/colors-of-prose).  It was a fun, simple project that brought me joy.  I hope it does the same for someone else.
+These are artifacts.  These are things that are the often the simple product of some small thought or effort on my part.  It will catalog toys, sites, libraries, art, music, creative trinkets, or even professional work.  But it's taken me way too long to put something together that I think would be awesome enough.  So I'm just giving it a very simple to start.  For now it contains one small, uncategorized item, ["The Colors of Prose"](/work/colors-prose/).  It was a fun, simple project that brought me joy.  I hope it does the same for someone else.
 
 ## Simple Reminiscing
 
