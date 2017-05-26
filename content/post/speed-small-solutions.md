@@ -3,7 +3,7 @@ categories:
 - "Leadership"
 comments: true
 date: 2017-05-26T07:17:39-06:00
-description: "The pace of technology change requires nible solution change.  Small solutions help."
+description: "The pace of technology change requires nimble solution change.  Small solutions help."
 draft: false
 image: "https://i.imgur.com/xCOaJOm.jpg"
 layout: post
@@ -13,7 +13,7 @@ tags:
 title: "The Speed of Small Solutions"
 ---
 
-The pace of technology change requires nible solution change.  Small solutions help.
+The pace of technology change requires nimble solution change.  Small solutions help.
 
 <!--more-->
 
