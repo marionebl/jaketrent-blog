@@ -12,6 +12,8 @@ tags:
 - "email"
 - "networking"
 title: "Setup Email Address With a Custom Domain for Free"
+disclosures: 
+- "affiliate" 
 ---
 
 [Zoho Mail](https://www.zoho.com/mail/) is a great mail host that supports free custom domains.  Here are the steps to get it all put together.
