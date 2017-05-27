@@ -5,7 +5,7 @@ comments: true
 date: 2017-05-27T14:09:19-06:00
 description: "Zoho Mail is a great mail host that supports free custom domains.  Here are the steps to setup."
 draft: false
-image: ""
+image: "https://i.imgur.com/Da72MWa.jpg"
 layout: post
 metaKeywords: "blogging, business, custom domain, email, gmail, zoho, dns, free"
 tags:
