@@ -17,6 +17,6 @@ tags:
 title: "Daily Bread"
 ---
 
-I need daily inspiration to stay hopefully about the present and the future.  Just like eating and fueling up daily, I acknowledge my daily reliance on God's greater strength.  I hope these inspired words are available to me in the moments I need to remember them -- daily.
+I need daily inspiration to stay hopeful about the present and the future.  Just like eating and fueling up daily, I acknowledge my daily reliance on God's greater strength.  I hope these inspired words are available to me in the moments I need to remember them -- daily.
 
 <!--more-->
