@@ -34,7 +34,7 @@ fs.readFile('myFile.txt', 'utf8', (err, data) => {
 
 This works great.  It does require care to not recreate a biblical tower of doom with nested callbacks. 
 
-There is a new native kid in Node.js town that might help.  Promises have been there for a long while, and constructing towers of terror is possible with these as well.  But now [async functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) are available as of Node 7.x.  `async` and `await` are keywords that you can use without a code compilation step.  This syntax will help flatten out your code, and it's quite nice. That might be one reason to want to get back on the Promise train and use the built-in Node APIs as if they were Promise-based as well.
+There is a new native kid in Node.js town that might help.  Promises have been there for a long while, and constructing towers of terror is possible with these as well.  But now [async functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) are available as of Node [7.x](http://kangax.github.io/compat-table/es2016plus/#node7_6).  `async` and `await` are keywords that you can use without a code compilation step.  This syntax will help flatten out your code, and it's quite nice. That might be one reason to want to get back on the Promise train and use the built-in Node APIs as if they were Promise-based as well.
 
 ## Converting Node Functions to Use Promises
 
