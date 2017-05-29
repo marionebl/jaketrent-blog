@@ -3,69 +3,71 @@
 {{ partial "header" . }}
 
 <main class="main">
-  <div class="home">
+  <div class="page-spacer">
+    <div class="home">
 
-    <section class="home-section">
-      {{ range first 1 (where .Data.Pages "Section" "post") }}
-        <article class="home-highlight">
-          <header>
-            <h3 class="home-highlight-label">Latest Post</h3>
-            <h2 class="home-highlight-title"><a class="home-highlight-title-link" href="{{ .URL }}">{{ .Title }}</a></h2>
-            <a class="home-highlight-image-link" href="{{ .URL }}">
-              <img class="home-highlight-image" src="{{ .Params.image }}">
+      <section class="home-section">
+        {{ range first 1 (where .Data.Pages "Section" "post") }}
+          <article class="home-highlight">
+            <header>
+              <h3 class="home-highlight-label">Latest Post</h3>
+              <h2 class="home-highlight-title"><a class="home-highlight-title-link" href="{{ .URL }}">{{ .Title }}</a></h2>
+              <a class="home-highlight-image-link" href="{{ .URL }}">
+                <img class="home-highlight-image" src="{{ .Params.image }}">
+              </a>
+            </header>
+            <p class="home-highlight-summary">
+              {{ .Summary }}
+            </p>
+            <a class="home-highlight-link" href="{{ .URL }}">Read more<span>→</span></a>
+          </article>
+        {{ end  }}
+        <div class="home-list">
+          <h3 class="home-list-links-title">
+            <a href="/post/" class="home-list-links-title-link">
+              More Posts
             </a>
-          </header>
-          <p class="home-highlight-summary">
-            {{ .Summary }}
-          </p>
-          <a class="home-highlight-link" href="{{ .URL }}">Read more<span>→</span></a>
-        </article>
-      {{ end  }}
-      <div class="home-list">
-        <h3 class="home-list-links-title">
-          <a href="/post/" class="home-list-links-title-link">
-            More Posts
-          </a>
-        </h3>
-        {{ range first 5 (after 1 (where .Data.Pages "Section" "post")) }}
-          <a class="home-list-link" href="{{ .URL }}">
-            {{ .Title }}
-          </a>
-        {{ end }}
-        <a class="home-list-link home-list-link-all" href="/post/">All posts<span>→</span></a>
-      </div>
-    </section>
+          </h3>
+          {{ range first 5 (after 1 (where .Data.Pages "Section" "post")) }}
+            <a class="home-list-link" href="{{ .URL }}">
+              {{ .Title }}
+            </a>
+          {{ end }}
+          <a class="home-list-link home-list-link-all" href="/post/">All posts<span>→</span></a>
+        </div>
+      </section>
 
-    <section class="home-section">
-      {{ range first 1 (where .Data.Pages "Section" "book") }}
-        <article class="home-highlight">
-          <header>
-            <h3 class="home-highlight-label">Latest Book</h3>
-          </header>
-          <a href="{{ .URL }}" class="home-highlight-image-link">
-            <img class="home-highlight-image home-highlight-image--book" src="{{ .Params.image }}}">
-          </a>
-          <p class="home-highlight-summary">
-            {{ .Summary }}
-          </p>
-          <a class="home-highlight-link" href="{{ .URL }}">Read more<span>→</span></a>
-        </article>
-      {{ end  }}
-      <div class="home-list">
-        <h3 class="home-list-links-title">
-          <a href="/post/" class="home-list-links-title-link">
-            More Books
-          </a>
-        </h3>
-        {{ range first 5 (after 1 (where .Data.Pages "Section" "book")) }}
-          <a class="home-list-link" href="{{ .URL }}">
-            {{ .Title }}
-          </a>
-        {{ end }}
-        <a class="home-list-link home-list-link-all" href="/book/">All books<span>→</span></a>
-      </div>
-    </section>
+      <section class="home-section">
+        {{ range first 1 (where .Data.Pages "Section" "book") }}
+          <article class="home-highlight">
+            <header>
+              <h3 class="home-highlight-label">Latest Book</h3>
+            </header>
+            <a href="{{ .URL }}" class="home-highlight-image-link">
+              <img class="home-highlight-image home-highlight-image--book" src="{{ .Params.image }}}">
+            </a>
+            <p class="home-highlight-summary">
+              {{ .Summary }}
+            </p>
+            <a class="home-highlight-link" href="{{ .URL }}">Read more<span>→</span></a>
+          </article>
+        {{ end  }}
+        <div class="home-list">
+          <h3 class="home-list-links-title">
+            <a href="/post/" class="home-list-links-title-link">
+              More Books
+            </a>
+          </h3>
+          {{ range first 5 (after 1 (where .Data.Pages "Section" "book")) }}
+            <a class="home-list-link" href="{{ .URL }}">
+              {{ .Title }}
+            </a>
+          {{ end }}
+          <a class="home-list-link home-list-link-all" href="/book/">All books<span>→</span></a>
+        </div>
+      </section>
 
+    </div>
   </div>
 </main>
 

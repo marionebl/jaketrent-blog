@@ -829,6 +829,11 @@ a {
     margin-right: auto;
     max-width: 1000px;
   }
+
+  /* section: home (xl) */
+  .home {
+    padding-top: 40px;
+  }
 }
 
 
