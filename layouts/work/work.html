@@ -3,30 +3,32 @@
 {{ partial "header.html" . }}
 
 <main class="main">
-  <article class="work">
-    <header class="work-header">
-      <h1 class="work-title">{{ .Title }}</h1>
-      <div class="work-meta-container">
-        {{ partial "meta" . }}
+  <div class="page-spacer">
+    <article class="work">
+      <header class="work-header">
+        <h1 class="work-title">{{ .Title }}</h1>
+        <div class="work-meta-container">
+          {{ partial "meta" . }}
+        </div>
+      </header>
+      <div class="work-content">
+        {{ if .Params.image }}
+          <img class="work-image" src="{{ .Params.image }}" />
+        {{ end }}
+        <div class="work-words">
+          {{ .Content }}
+        </div>
+        <div class="work-meta-container">
+          {{ .Render "links" }}
+        </div>
       </div>
-    </header>
-    <div class="work-content">
-      {{ if .Params.image }}
-        <img class="work-image" src="{{ .Params.image }}" />
-      {{ end }}
-      <div class="work-words">
-        {{ .Content }}
-      </div>
-      <div class="work-meta-container">
-        {{ .Render "links" }}
-      </div>
+      <footer class="work-footer">
+        {{ .Render "social" }}
+      </footem>
+    </article>
+    <div class="comments">
+      {{ template "_internal/disqus.html" . }}
     </div>
-    <footer class="work-footer">
-      {{ .Render "social" }}
-    </footem>
-  </article>
-  <div class="comments">
-    {{ template "_internal/disqus.html" . }}
   </div>
 </main>
 

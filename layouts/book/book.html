@@ -3,46 +3,48 @@
 {{ partial "header.html" . }}
 
 <main class="main">
-  <article class="book">
-    <header class="book-header">
-      <h1 class="book-title">{{ .Title }}</h1>
-      <div class="book-subheader">
-        <time class="book-date" pubdate datetime="{{ .Date }}">
-          {{- dateFormat "2 Jan 2006" .Date -}}
-        </time>
-        <div class="book-categories">
-          In
-          {{ $baseUrl := .Site.BaseURL }}
-          {{ range .Params.categories }}
-            <a class="book-categories-link" href="{{ $baseUrl }}/categories/{{ . | urlize }}">{{ . }}</a>
+  <div class="page-spacer">
+    <article class="book">
+      <header class="book-header">
+        <h1 class="book-title">{{ .Title }}</h1>
+        <div class="book-subheader">
+          <time class="book-date" pubdate datetime="{{ .Date }}">
+            {{- dateFormat "2 Jan 2006" .Date -}}
+          </time>
+          <div class="book-categories">
+            In
+            {{ $baseUrl := .Site.BaseURL }}
+            {{ range .Params.categories }}
+              <a class="book-categories-link" href="{{ $baseUrl }}/categories/{{ . | urlize }}">{{ . }}</a>
+            {{ end }}
+          </div>
+          {{ if .Params.tags }}
+          <div class="book-tags">
+            Tags
+            {{ $baseUrl := .Site.BaseURL }}
+            {{ range .Params.tags }}
+              <a class="book-tags-link" href="{{ $baseUrl }}/tags/{{ . | urlize }}">#{{ . }}</a>
+            {{ end }}
+          </div>
           {{ end }}
+          {{ partial "rating" . }}
         </div>
-        {{ if .Params.tags }}
-        <div class="book-tags">
-          Tags
-          {{ $baseUrl := .Site.BaseURL }}
-          {{ range .Params.tags }}
-            <a class="book-tags-link" href="{{ $baseUrl }}/tags/{{ . | urlize }}">#{{ . }}</a>
-          {{ end }}
-        </div>
+      </header>
+      <div class="book-content">
+        {{ if .Params.image }}
+          <img class="book-image" src="{{ .Params.image }}" />
         {{ end }}
-        {{ partial "rating" . }}
+        <div class="book-words">
+          {{ .Content }}
+        </div>
       </div>
-    </header>
-    <div class="book-content">
-      {{ if .Params.image }}
-        <img class="book-image" src="{{ .Params.image }}" />
-      {{ end }}
-      <div class="book-words">
-        {{ .Content }}
-      </div>
+      <footer class="book-footer">
+        {{ .Render "social" }}
+      </footem>
+    </article>
+    <div class="comments">
+      {{ template "_internal/disqus.html" . }}
     </div>
-    <footer class="book-footer">
-      {{ .Render "social" }}
-    </footem>
-  </article>
-  <div class="comments">
-    {{ template "_internal/disqus.html" . }}
   </div>
 </main>
 
