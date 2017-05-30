@@ -427,6 +427,7 @@ a {
 .post-content h4,
 .post-content h5,
 .post-content h6 {
+  line-height: 1.1em;
   font-family: Junction;
   font-weight: 100;
   color: #4e2b55
