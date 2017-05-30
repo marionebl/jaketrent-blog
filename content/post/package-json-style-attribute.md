@@ -36,7 +36,7 @@ npm install some-stylesheet-package
 Once it's on your filesystem, you could reference it in `node_modules` straight from a script tag:
 
 ```html
-<script src="node-modules/some-stylesheet-package/index.css"></script>
+<script src="node-modules/some-stylesheet-package/css/index.css"></script>
 ```
 
 This bypasses any usage or need for the `"style"` attribute in `package.json`. There is probably a more sophisticated and flexible option with the use of a module loader like [webpack](https://webpack.js.org/).  Webpack provides [loaders](https://webpack.js.org/concepts/loaders/) that define how to transform source code (eg, '*.css') into something that your code can import and use.  
