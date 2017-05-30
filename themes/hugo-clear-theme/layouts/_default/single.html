@@ -4,9 +4,18 @@
 
 <main class="main">
   <article class="post">
+    {{ if .Params.image }}
+      <div class="post-image1">
+        <img class="post-image1-bg" src="{{ .Params.image }}" />
+        <h1 class="post-image1-title">{{ .Title }}</h1>
+        <img class="post-image1-fg" src="{{ .Params.image }}" />
+      </div>
+    {{ end }}
     <div class="page-spacer">
       <header class="post-header">
-        <h1 class="post-title">{{ .Title }}</h1>
+        {{ if not .Params.image }}
+          <h1 class="post-title">{{ .Title }}</h1>
+        {{ end }}
         <div class="post-subheader">
           <time class="post-date" pubdate datetime="{{ .Date }}">
             {{- dateFormat "2 Jan 2006" .Date -}}
@@ -28,12 +37,6 @@
         </div>
       </header>
     </div>
-    {{ if .Params.image }}
-      <div class="post-image1">
-        <img class="post-image1-bg" src="{{ .Params.image }}" />
-        <img class="post-image1-fg" src="{{ .Params.image }}" />
-      </div>
-    {{ end }}
     <div class="page-spacer">
       <div class="post-content">
         {{ .Content }}

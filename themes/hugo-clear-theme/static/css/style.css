@@ -205,7 +205,6 @@ a {
 
 /* section: post */
 .post {
-  padding: 35px 0 0 0;
 }
 .post-header {}
 .post-subheader {
@@ -226,7 +225,7 @@ a {
 .post-tags {}
 .post-tags-link {}
 .post-title {
-  margin: 0;
+  margin: 24px 0 0 0;
   padding: 0;
   line-height: 1.2em;
   font-family: "Junction";
@@ -818,6 +817,9 @@ a {
   .home {
     padding-top: 40px;
   }
+  .post-title {
+    margin: 48px 0 0 0;
+  }
 }
 
 
@@ -828,6 +830,17 @@ a {
 .post-image1 {
   position: relative;
   overflow: hidden;
+  padding: 24px 0;
+}
+.post-image1-title {
+  position: relative;
+  margin: 0 0 18px 0;
+  padding: 0 10px;
+  line-height: 1.2em;
+  font-family: "Junction";
+  font-weight: 100;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 0, 0, 0.9);
 }
 .post-image1-fg {
   position: relative;
@@ -835,28 +848,38 @@ a {
   left: 0;
   display: block;
   max-width: 100%;
+  box-shadow: 1px 1px 16px rgba(0, 0, 0, 0.5);
 }
 .post-image1-bg {
-  display: none;
+  /* display: none; */
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: calc(100% + 16px);
+  height: calc(100% + 16px);
+  filter: blur(8px) brightness(120%) contrast(70%);
+  -webkit-filter: blur(8px) brightness(120%) contrast(70%);
 }
 @media screen and (min-width: 621px) {
+  .post-image1-title {
+    font-size: 30px;
+  }
   .post-image1-fg {
-    box-shadow: 1px 1px 16px rgba(0, 0, 0, 0.5);
   }
   .post-image1-bg {
-    display: block;
-    position: absolute;
-    top: -8px;
-    left: -8px;
-    width: calc(100% + 16px);
-    height: calc(100% + 16px);
-    filter: blur(8px) brightness(120%) contrast(70%);
-    -webkit-filter: blur(8px) brightness(120%) contrast(70%);
   }
 }
 @media screen and (min-width: 701px) {
   .post-image1 {
     padding: 40px 0 40px 40px;
+  }
+  .post-image1-title {
+    padding: 0;
+  }
+}
+@media screen and (min-width: 800px) {
+  .post-image1-title {
+    font-size: 42px;
   }
 }
 
