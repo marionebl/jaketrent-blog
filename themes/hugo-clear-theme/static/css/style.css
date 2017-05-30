@@ -582,7 +582,6 @@ a {
 /* section: footer (sm) */
 .footer-border {
   background: #151412 url(/img/footer2-1600-40.jpg) no-repeat top center;
-  border-left: 8px solid #eda43a;
   background-size: 100%;
   height: 42vw;
   padding-top: 15px;
@@ -590,7 +589,6 @@ a {
 }
 .footer {
   background: #151412;
-  border-left: 8px solid #eda43a;
 }
 .footer-inner {
   color: #ababab;
