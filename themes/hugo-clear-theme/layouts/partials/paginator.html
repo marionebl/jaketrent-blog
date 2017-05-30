@@ -1,10 +1,10 @@
 {{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
   <div class="paginator">
     {{ if .Paginator.HasNext }}
-      <a class="paginator-next" href="{{ .Paginator.Next.URL }}">Older</a>
+      <a class="read-more read-more--left" href="{{ .Paginator.Next.URL }}">Older</a>
     {{ end }}
     {{ if .Paginator.HasPrev }}
-      <a class="paginator-prev" href="{{ .Paginator.Prev.URL }}">Newer</a>
+      <a class="read-more" href="{{ .Paginator.Prev.URL }}">Newer</a>
     {{ end }}
   </div>
 {{ end }}

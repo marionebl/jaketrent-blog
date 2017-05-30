@@ -335,20 +335,6 @@ a {
 .summ-image {
   margin-bottom: 20px;
 }
-.summ-link {
-  display: inline-block;
-  margin: 15px 0 0 0;
-  padding: 25px 30px 25px 20px;
-  text-decoration: none;
-  color: gray;
-  font-family: sans-serif;
-  font-weight: 100;
-}
-.summ-link:hover {
-  background: url("/img/readmore.jpg") no-repeat center;
-  background-size: 100%;
-  color: #efefef;
-}
 
 /* section: summ--book */
 
@@ -533,19 +519,8 @@ a {
   justify-content: center;
 }
 .paginator a {
-  text-decoration: none;
-  color: gray;
-  font-family: sans-serif;
-  font-weight: 100;
-  padding: 15px 60px 15px 40px;
+  margin: 0 24px;
 }
-.paginator a:hover {
-  background: url("/img/readmore.jpg") no-repeat center;
-  background-size: 100%;
-  color: #efefef;
-}
-.paginator-prev {}
-.paginator-next {}
 
 /* section: error (sm) */
 .error {
@@ -878,4 +853,28 @@ a {
     padding-left: 40px;
     padding-right: 40px;
   }
+}
+
+/* component: read-more */
+.read-more {
+  display: inline-block;
+  margin: 6px 0 0 0;
+  padding: 12px 16px;
+  /* padding: 25px 30px 25px 20px; */
+  text-decoration: none;
+  color: gray;
+  font-family: sans-serif;
+  font-weight: 100;
+  border-radius: 3px;
+  transform: translateX(-16px);
+  transition: transform 300ms, color 500ms, background 500ms;
+}
+.read-more--left {
+  transform: translateX(16px);
+}
+.read-more:hover,
+.read-more:active {
+  color: #fff;
+  background: #eda43a;
+  transform: translateX(0);
 }

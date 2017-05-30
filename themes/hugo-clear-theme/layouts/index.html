@@ -19,7 +19,7 @@
             <p class="home-highlight-summary">
               {{ .Summary }}
             </p>
-            <a class="home-highlight-link" href="{{ .URL }}">Read more<span>→</span></a>
+            {{ partial "read-more.html" . }}
           </article>
         {{ end  }}
         <div class="home-list">
@@ -49,7 +49,7 @@
             <p class="home-highlight-summary">
               {{ .Summary }}
             </p>
-            <a class="home-highlight-link" href="{{ .URL }}">Read more<span>→</span></a>
+            {{ partial "read-more.html" . }}
           </article>
         {{ end  }}
         <div class="home-list">
