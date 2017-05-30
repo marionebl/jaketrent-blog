@@ -72,4 +72,16 @@ const promiseBasedReadFileFunction = promisify(fs.readFile)
 
 Pretty cool, huh?  Although I was a little disconcerted when I saw some of the [guts](https://github.com/nodegit/promisify-node/blob/master/index.js#L61) of how this is accomplished by this library.  :)
 
-What library do you use to accomplish this?  Or do you use another method?  Worth it?
+## Built-in Support in v8.0.0
+
+Now things are even better!  If you're on a new enough version of Node, this is built in. As of [node 8.0.0](https://nodejs.org/en/blog/release/v8.0.0/#improved-support-for-promises), the ability to `promisify` is a core API itself:
+
+```js
+const { promisify } = require('util')
+const fs = require('fs')
+
+const promiseBasedReadFileFunction = promisify(fs.readFile)
+// then use async/await as above...
+```
+
+Do you `promisify` your usage of core Node APIs?  Why or why not?
