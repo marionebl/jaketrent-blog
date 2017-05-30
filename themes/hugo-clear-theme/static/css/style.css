@@ -1,20 +1,6 @@
 @font-face {
-  font-family: 'Junction';
-  src: url('/type/junction-bold.woff') format('woff');
-  font-weight: bold;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Junction';
-  src: url('/type/junction-light.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Junction';
-  src: url('/type/junction-regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
+  font-family: 'Gobold-Regular';
+  src: url('/type/gobold-regular.otf') format('opentype');
 }
 
 body {
@@ -88,7 +74,7 @@ a {
 }
 .home-highlight-title {
   line-height: 1.2em;
-  font-family: "Junction";
+  font-family: "Gobold-Regular";
   font-weight: 100;
   color: #4e2b55;
 }
@@ -126,7 +112,7 @@ a {
 }
 .list-title {
   margin: 0;
-  font-family: "Junction";
+  font-family: "Gobold-Regular";
   font-weight: 600;
   color: #4e2b55;
 }
@@ -159,7 +145,7 @@ a {
   padding: 25px 30px 25px 20px;
   text-decoration: none;
   color: gray;
-  font-family: Junction;
+  font-family: sans-serif;
   font-weight: 100;
 }
 .book-cover-image {
@@ -228,7 +214,7 @@ a {
   margin: 24px 0 0 0;
   padding: 0;
   line-height: 1.2em;
-  font-family: "Junction";
+  font-family: "Gobold-Regular";
   font-weight: 100;
   color: #4e2b55;
 }
@@ -267,7 +253,7 @@ a {
   margin: 0;
   padding: 0;
   line-height: 1.2em;
-  font-family: "Junction";
+  font-family: "Gobold-Regular";
   font-weight: 100;
   color: #4e2b55;
 }
@@ -288,7 +274,7 @@ a {
   margin: 0;
   padding: 0;
   line-height: 1.2em;
-  font-family: "Junction";
+  font-family: "Gobold-Regular";
   font-weight: 100;
   color: #4e2b55;
 }
@@ -335,7 +321,7 @@ a {
   display: flex;
   align-items: flex-start;
   line-height: 1.2em;
-  font-family: "Junction";
+  font-family: "Gobold-Regular";
   font-weight: 100;
   color: #4e2b55;
 }
@@ -355,7 +341,7 @@ a {
   padding: 25px 30px 25px 20px;
   text-decoration: none;
   color: gray;
-  font-family: Junction;
+  font-family: sans-serif;
   font-weight: 100;
 }
 .summ-link:hover {
@@ -428,7 +414,7 @@ a {
 .post-content h5,
 .post-content h6 {
   line-height: 1.1em;
-  font-family: Junction;
+  font-family: "Gobold-Regular";
   font-weight: 100;
   color: #4e2b55
   margin: 0;
@@ -549,7 +535,7 @@ a {
 .paginator a {
   text-decoration: none;
   color: gray;
-  font-family: Junction;
+  font-family: sans-serif;
   font-weight: 100;
   padding: 15px 60px 15px 40px;
 }
@@ -571,7 +557,7 @@ a {
   line-height: 22vw;
   margin: 0;
   color: #4e2b55;
-  font-family: "Junction";
+  font-family: "Gobold-Regular";
   text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 .error-subtitle {
@@ -836,7 +822,7 @@ a {
   margin: 0 0 18px 0;
   padding: 0 10px;
   line-height: 1.2em;
-  font-family: "Junction";
+  font-family: "Gobold-Regular";
   font-weight: 100;
   color: #fff;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 0, 0, 0.9);
