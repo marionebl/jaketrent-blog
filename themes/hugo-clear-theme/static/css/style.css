@@ -887,6 +887,7 @@ a {
 }
 .meta__link:hover ,
 .meta__link:active {
+  background: #4e2b55;
 }
 .meta__link--date {
   color: #fff;
