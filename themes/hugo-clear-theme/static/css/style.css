@@ -765,7 +765,7 @@ a {
 
 /* components */
 
-/* component: post-image */
+/* component: post-image1 */
 .post-image1 {
   position: relative;
   overflow: hidden;
@@ -790,7 +790,6 @@ a {
   box-shadow: 1px 1px 16px rgba(0, 0, 0, 0.5);
 }
 .post-image1-bg {
-  /* display: none; */
   position: absolute;
   top: -8px;
   left: -8px;

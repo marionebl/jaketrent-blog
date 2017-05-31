@@ -5,11 +5,7 @@
 <main class="main">
   <article class="post">
     {{ if .Params.image }}
-      <div class="post-image1">
-        <img class="post-image1-bg" src="{{ .Params.image }}" />
-        <h1 class="post-image1-title">{{ .Title }}</h1>
-        <img class="post-image1-fg" src="{{ .Params.image }}" />
-      </div>
+      {{ partial "post-image1.html" . }}
     {{ end }}
     <div class="page-spacer">
       <header class="post-header">
