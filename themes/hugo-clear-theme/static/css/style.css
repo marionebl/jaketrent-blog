@@ -862,7 +862,6 @@ a {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin: 18px 0 12px 0;
   color: #fff;
   margin: 12px -3px;
 }
@@ -876,11 +875,11 @@ a {
   color: #000;
   text-decoration: none;
   border-radius: 3px; 
-  padding: 3px 10px;
-  font-size: 16px;
+  padding: 1px 6px;
+  font-size: 12px;
   font-weight: 100;
-  line-height: 24px;
-  height: 24px;
+  line-height: 18px;
+  height: 18px;
   background: #ababab;
   color: #fff;
 }
@@ -890,9 +889,9 @@ a {
 }
 .meta__link--date {
   color: #fff;
-  height: 32px;
-  line-height: 32px;
-  font-size: 18px;
+  height: 24px;
+  line-height: 24px;
+  font-size: 16px;
 
   background: #eda43a;
   border-radius: 3px; 
@@ -904,4 +903,23 @@ a {
 .meta__link--date:hover ,
 .meta__link--date:active {
   background: #eda43a;
+}
+@media screen and (min-width: 621px) {
+  .meta {
+    margin: 24px -6px;
+  }
+  .meta__links--tags {
+    margin-left: 12px;
+  }
+  .meta__link {
+    padding: 3px 14px;
+    font-size: 16px;
+    line-height: 24px;
+    height: 24px;
+  }
+  .meta__link--date {
+    height: 32px;
+    line-height: 32px;
+    font-size: 18px;
+  }
 }
