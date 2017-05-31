@@ -4,9 +4,8 @@ baseurl: "https://jaketrent.com"
 theme: "hugo-clear-theme"
 MetaDataFormat: "yaml"
 
-disqusShortname: "jaketrent"
-
 params:
+  disqusShortname: "jaketrent"
   description: "Jibber jabber on tech topics around code, productivity, & leadership."
   keywords: "Jake Trent, jaketrent, tech, code, leadership"
   googleAuthor: "https://plus.google.com/115032056022257436849"
