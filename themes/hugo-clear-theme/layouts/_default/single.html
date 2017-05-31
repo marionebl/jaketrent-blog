@@ -4,14 +4,9 @@
 
 <main class="main">
   <article class="post">
-    {{ if .Params.image }}
-      {{ partial "post-image1.html" . }}
-    {{ end }}
+    {{ partial "post-image1.html" . }}
     <div class="page-spacer">
       <header class="post-header">
-        {{ if not .Params.image }}
-          <h1 class="post-title">{{ .Title }}</h1>
-        {{ end }}
         {{ partial "meta.html" . }}
       </header>
     </div>
