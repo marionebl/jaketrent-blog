@@ -2,10 +2,10 @@
 <html lang="en-US">
   <head>
     <meta charset="utf-8" />
-    {{ if .IsPage }}
-      <title>{{ .Title }} | {{ .Site.Title }}</title>
+    {{ if eq .Title .Site.Title }}
+      <title>{{ .Title }}</title>
     {{ else }}
-      <title>{{ .Title | default .Site.Title }}</title>
+      <title>{{ .Title | default "Welcome" }} | {{ .Site.Title }}</title>
     {{ end }}
     {{ if .IsPage }}
       <meta name="description" content="{{ .Description }}" />
