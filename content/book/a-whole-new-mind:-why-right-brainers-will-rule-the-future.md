@@ -22,8 +22,6 @@ I recently finished reading a great book by Daniel Pink, A Whole New Mind: Why R
   
 <!--more-->
 
-![Dan Pink](http://www.danpink.com/wp-content/uploads/2009/11/wnm.jpg)
-
 Pink does, I think, a good job laying out his case.  His book is well organized, and the voice is engaging and conversational.  I do get a little tongue-tied reading this book aloud, however, if I'm wanting to share a particularly riveting passage about neuroscience with my wife because of all the lengthy doctor titles or lofty names of research institutions that produced many of the ideas that Pink compiles in his book.  It is, in large part, a compilation, but I think he weaves it together into a compelling narrative.  
 
 His thesis?  There are three things that will drive you to needing the right side of your brain to succeed in business during the coming years, dubbed the Conceptual Age:
