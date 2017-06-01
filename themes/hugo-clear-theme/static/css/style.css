@@ -847,14 +847,25 @@ a {
   max-width: 100%;
   box-shadow: 1px 1px 16px rgba(0, 0, 0, 0.5);
 }
+@keyframes post-image1-bg-zoom {
+  0% {}
+  100% {
+    width: calc(105% + 16px);
+    height: calc(105% + 16px);
+    filter: blur(8px) brightness(120%) contrast(70%);
+    -webkit-filter: blur(8px) brightness(120%) contrast(70%);
+  }
+}
 .post-image1-bg {
   position: absolute;
-  top: -8px;
-  left: -8px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: calc(100% + 16px);
   height: calc(100% + 16px);
-  filter: blur(8px) brightness(120%) contrast(70%);
-  -webkit-filter: blur(8px) brightness(120%) contrast(70%);
+  animation: 1700ms ease-in-out 700ms forwards post-image1-bg-zoom;
+  filter: blur(8px) brightness(100%) contrast(70%);
+  -webkit-filter: blur(8px) brightness(100%) contrast(70%);
 }
 @media screen and (min-width: 621px) {
   .post-image1-title {
