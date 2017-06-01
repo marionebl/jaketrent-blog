@@ -70,7 +70,7 @@ The mobile view will then look like this:
 
 Spacing is still there, just specified in as `margin-top` or `margin-left`, depending on the media query.
 
-## Multi-line for `flex-wrap`ed Designs
+## Multi-line for flex-wrap'ed Designs
 
 But what if you have more than one side-by-side `.child` element.  And sometimes they're side-by-side, but other times you want them to wrap to the next line if sizing requirements call for it? 
 
