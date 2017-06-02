@@ -3,29 +3,31 @@
 {{ partial "header.html" . }}
 
 <main class="main">
-  <div class="page-spacer">
-    <article class="work">
+  <article class="work">
+    <div class="page-spacer">
       <header class="work-header">
         <h1 class="work-title">{{ .Title }}</h1>
         <div class="work-meta-container">
           {{ partial "meta" . }}
         </div>
       </header>
-      <div class="markdown-content">
-        {{ if .Params.image }}
-          <img class="work-image" src="{{ .Params.image }}" />
-        {{ end }}
-        <div class="work-words">
-          {{ .Content }}
-        </div>
-      </div>
+      {{ if .Params.image }}
+        <img class="work-image" src="{{ .Params.image }}" />
+      {{ end }}
+    </div>
+    <div class="markdown-content">
+      {{ .Content }}
+    </div>
+    <div class="page-spacer">
       <div class="work-meta-container">
         {{ .Render "links" }}
       </div>
-      <footer class="work-footer">
-        {{ .Render "social" }}
-      </footem>
-    </article>
+    </div>
+  </article>
+  <div class="page-spacer">
+    <footer class="work-footer">
+      {{ .Render "social" }}
+    </footem>
     <div class="comments">
       {{ partial "comments.html" . }}
     </div>

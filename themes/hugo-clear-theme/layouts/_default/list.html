@@ -3,18 +3,18 @@
 {{ partial "header.html" . }}
 
 <main class="main">
-  <div class="page-spacer">
-    <div class="list">
+  <div class="list">
+    <div class="page-spacer">
       <header class="list-header">
         <h2 class="list-title">{{ .Section | pluralize | title }}</h2>
       </header>
-      {{ $paginator := .Paginate (where .Data.Pages "Section" "post") }}
-      {{ range $paginator.Pages }}
-        {{ .Render "summary" }}
-      {{ end }}
     </div>
-    {{ partial "paginator.html" . }}
+    {{ $paginator := .Paginate (where .Data.Pages "Section" "post") }}
+    {{ range $paginator.Pages }}
+      {{ .Render "summary" }}
+    {{ end }}
   </div>
+  {{ partial "paginator.html" . }}
 </main>
 
 {{ partial "footer.html" }}

@@ -205,26 +205,9 @@ a {
   padding: 35px 0 0 0;
 }
 .book-header {}
-.book-subheader {
-  padding: 10px 0;
-  color: #ababab;
+.book-rating {
+  margin-bottom: .5em;
 }
-.book-subheader a {
-  color: #ababab;
-  color: #8a8391;
-}
-.book-date {
-  margin: 0 10px 0 0;
-}
-.book-categories {
-  margin: 0 10px 0 0;
-}
-.book-tags {
-  margin: 0 10px 0 0;
-}
-.book-categories-link {}
-.book-tags {}
-.book-tags-link {}
 .book-title {
   margin: 0;
   padding: 0;
@@ -432,7 +415,7 @@ a {
   }
   .book-image {
     float: left;
-    margin: 0 30px 20px 0;
+    margin: 10px 20px 10px 0;
   }
 }
 
@@ -900,15 +883,19 @@ a {
   overflow: scroll;
   overflow-y: hidden;
   display: block;
-  padding: 10px;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
   overflow-x: auto;
   line-height: 1.45em;
   margin: 0;
   background: rgb(40, 44, 52);
   color: #f3e2ed;
-  border-radius: 0.3em;
   box-shadow: rgba(0,0,0,0.45) 0 1px 4px;
-  border: #fff 0.5em solid;
+}
+.markdown-content > :not(pre), /* page-spacer */ 
+.markdown-content pre code {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 @media screen and (min-width: 621px) {
   .markdown-content p,
@@ -920,5 +907,12 @@ a {
 @media screen and (min-width: 800px) {
   .markdown-content pre {
     margin: 2em 0;
+  }
+}
+@media screen and (min-width: 1130px) {
+  .markdown-content > :not(pre), /* page-spacer */
+  .markdown-content pre code {
+    padding-left: 40px;
+    padding-right: 40px;
   }
 }

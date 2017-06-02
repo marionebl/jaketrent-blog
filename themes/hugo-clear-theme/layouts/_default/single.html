@@ -10,10 +10,10 @@
         {{ partial "meta.html" . }}
       </header>
     </div>
+    <div class="markdown-content">
+      {{ .Content }}
+    </div>
     <div class="page-spacer">
-      <div class="markdown-content">
-        {{ .Content }}
-      </div>
       <footer class="post-footer">
         {{ .Render "social" }}
         {{ partial "disclosures.html" . }}
