@@ -11,16 +11,16 @@
           {{ partial "meta" . }}
         </div>
       </header>
-      <div class="work-content">
+      <div class="markdown-content">
         {{ if .Params.image }}
           <img class="work-image" src="{{ .Params.image }}" />
         {{ end }}
         <div class="work-words">
           {{ .Content }}
         </div>
-        <div class="work-meta-container">
-          {{ .Render "links" }}
-        </div>
+      </div>
+      <div class="work-meta-container">
+        {{ .Render "links" }}
       </div>
       <footer class="work-footer">
         {{ .Render "social" }}

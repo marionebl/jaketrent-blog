@@ -4,7 +4,7 @@
       <a class="summ-title-link" href="{{ .Params.site }}">{{ .Title }}</a>
     </h2>
   </header>
-  <div class="summ-content">
+  <div class="markdown-content">
     {{ if .Params.image }}
       <a class="summ-image-link" href="{{ .Params.site }}">
         <img class="summ-image" src="{{ .Params.image }}" />
@@ -13,7 +13,7 @@
     <p>
       {{ .Summary }}
     </p>
-    {{ .Render "links" }}
   </div>
+  {{ .Render "links" }}
 </article>
 
