@@ -919,6 +919,10 @@ a {
 .markdown-content pre code.javascript::after {
   content: "js";
 }
+.markdown-content pre code.language-json::after,
+.markdown-content pre code.json::after {
+  content: "json";
+}
 @media screen and (min-width: 621px) {
   .markdown-content p,
   .markdown-content ul,

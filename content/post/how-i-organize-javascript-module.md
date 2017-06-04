@@ -92,7 +92,7 @@ const mapToGradient = str =>
     .reduce(formatStyle)
 ```
 
-## Exports
+## Module Exports
 
 Putting the facade functions towards the bottom of the file usually has another advantage.  This is where I do exports.  In an es6 imports/exports environment, I will inline the named exports, ie:
 
