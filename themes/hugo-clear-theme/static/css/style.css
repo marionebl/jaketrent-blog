@@ -888,7 +888,7 @@ a {
   overflow-x: auto;
   line-height: 1.45em;
   margin: 0;
-  background: rgb(40, 44, 52);
+  background: rgb(40, 44, 52) url(/img/code-bg.jpg) no-repeat bottom right / 100% auto;
   color: #f3e2ed;
   box-shadow: rgba(0,0,0,0.45) 0 1px 4px;
 }
