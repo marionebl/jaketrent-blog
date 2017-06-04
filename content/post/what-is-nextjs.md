@@ -105,7 +105,7 @@ With all your app wrapped up nicely inside the Next.js framework, it's not surpr
 
 Procure your app on Heroku and push your code, and you're one with the Internet.
 
-```
+```bash
 heroku create my-next-app
 git push heroku master
 ```

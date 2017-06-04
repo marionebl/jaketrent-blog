@@ -923,6 +923,16 @@ a {
 .markdown-content pre code.json::after {
   content: "json";
 }
+.markdown-content pre code.language-html::after,
+.markdown-content pre code.html::after {
+  content: "html";
+}
+.markdown-content pre code.language-bash::after {
+  content: "bash";
+}
+.markdown-content pre code.language-txt::after {
+  content: "txt";
+}
 @media screen and (min-width: 621px) {
   .markdown-content p,
   .markdown-content ul,

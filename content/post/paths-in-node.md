@@ -32,7 +32,7 @@ path.join('dev', 'magic.txt')
 
 On Mac, this would output:
 
-```bash
+```txt
 "dev/magic.txt"
 ```
 
@@ -75,7 +75,7 @@ path.resolve(path.join(__dirname, '..', 'files'))
 
 ...will output something like:
 
-```bash
+```txt
 /Users/jaketrent/dev/secret-tunnels-project/files
 ```
 
