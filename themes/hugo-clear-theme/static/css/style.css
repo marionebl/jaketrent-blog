@@ -879,6 +879,7 @@ a {
   border: #fff 0.2em solid;
 }
 .markdown-content pre code {
+  position: relative;
   font-family: Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
   overflow: scroll;
   overflow-y: hidden;
@@ -896,6 +897,27 @@ a {
 .markdown-content pre code {
   padding-left: 10px;
   padding-right: 10px;
+}
+.markdown-content pre code::after {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: orange;
+  color: white;
+  padding: 0 .5em .125em .5em;
+  font-size: .875em;
+  background: #eda43a;
+  font-family: "Gobold-Regular";
+  text-shadow: 1px 1px 0 #000;
+}
+.markdown-content pre code.language-css::after,
+.markdown-content pre code.css::after {
+  content: "css";
+}
+.markdown-content pre code.language-javascript::after,
+.markdown-content pre code.javascript::after {
+  content: "js";
 }
 @media screen and (min-width: 621px) {
   .markdown-content p,

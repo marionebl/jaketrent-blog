@@ -24,7 +24,7 @@ PostCSS is a system that uses Javascript to parse and process CSS.  This means t
 
 PostCSS has little in the way of CSS processors built into it.  You have to provide it an array of processor plugins that you want your CSS to pass through:  
 
-```
+```js
 postcss([<yourProcessorsHere>])
 ```
 
@@ -58,7 +58,7 @@ As you can tell, the `postcss.process` function is async and returns a Promise.
 
 A plugin signature is a function takes `options` and returns a function that processes PostCSS-parsed CSS:
 
-```
+```text
 options -> css -> ()
 ```
 
