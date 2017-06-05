@@ -5,17 +5,7 @@
 <main class="main">
   <div class="page-spacer">
 
-    <div class="solar">
-      <svg class="solar__map" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1000 1000">
-        <path class="solar__path solar__path--orange" d="M97.86,646.54C94.56,634.74,62.6,512.71,466.61,361s459.85-36.86,465.77-24.06C938,347,986.59,462.2,563.63,622.48S101.5,659.51,97.86,646.54Z"/>
-        <path class="solar__path solar__path--blue" d="M253.6,590c-2.53-9-27-102.59,282.68-218.91s352.52-28.26,357.05-18.44c4.28,7.75,41.56,96-282.68,218.91S256.38,599.9,253.6,590Z"/>
-        <path class="solar__path solar__path--green" d="M417.68,529.84c-1.77-6.33-18.94-71.87,198-153.36s247-19.79,250.13-12.92c3,5.43,29.12,67.28-198,153.36S419.63,536.81,417.68,529.84Z"/>
-        <image class="solar__planet solar__planet--blue" x="0" y="0" height="52" width="52" xlink:href="/img/blueplanet-sm.png"></image>
-        <image class="solar__planet solar__planet--green" x="0" y="0" height="52" width="52" xlink:href="/img/greenplanet-sm.png"></image>
-        <image class="solar__planet solar__planet--orange" x="0" y="0" height="42" width="42" xlink:href="/img/orangeplanet-sm.png"></image>
-        <image class="solar__sun" x="615" y="390" height="100" width="100" xlink:href="/img/sun-sm.png"></image>
-      </svg>
-    </div>
+    {{ parital "solar" . }}
 
     <div class="home">
 
