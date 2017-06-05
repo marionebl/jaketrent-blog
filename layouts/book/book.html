@@ -23,8 +23,13 @@
     </div>
     <div class="page-spacer">
       <footer class="book-footer">
-        {{ partial "twitter" . }}
-        {{ partial "amazon" . }}
+        <div>
+          {{ partial "twitter" . }}
+          {{ partial "amazon" . }}
+        </div>
+        <div class="disclosures">
+          {{ partial "disclosures-affiliate" }}
+        </div>
       </footem>
     </div>
   </article>
