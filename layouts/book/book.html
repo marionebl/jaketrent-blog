@@ -23,7 +23,8 @@
     </div>
     <div class="page-spacer">
       <footer class="book-footer">
-        {{ .Render "social" }}
+        {{ partial "twitter" . }}
+        {{ partial "amazon" . }}
       </footem>
     </div>
   </article>

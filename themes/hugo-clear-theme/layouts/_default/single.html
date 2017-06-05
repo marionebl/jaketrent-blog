@@ -15,7 +15,9 @@
     </div>
     <div class="page-spacer">
       <footer class="post-footer">
-        {{ .Render "social" }}
+        <div>
+          {{ partial "twitter" . }}
+        </div>
         {{ partial "disclosures.html" . }}
       </footem>
     </div>

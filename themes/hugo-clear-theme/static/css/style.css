@@ -298,28 +298,6 @@ a {
 /* section: summ--book */
 
 
-/* section: social */
-.social {}
-.social-link {
-  display: inline-flex;
-  align-items: center;
-  background: #1da1f2;
-  text-decoration: none;
-  border-radius: 4px;
-  padding: 8px 12px;
-}
-.social-link:hover {
-  background: #4e2b55;
-}
-.social-icon {
-  height: 22px;
-  width: 22px;
-  margin-right: 5px;
-  fill: white;
-}
-.social-label {
-  color: white;
-}
 
 /* section: disclosures */
 .disclosures {
@@ -951,4 +929,38 @@ a {
     padding-left: 40px;
     padding-right: 40px;
   }
+}
+
+/* component: btn */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  background: grey;
+  text-decoration: none;
+  border-radius: 4px;
+  padding: 0.45em 0.85em;
+}
+.btn:hover {
+  background: darkgrey;
+}
+.btn__icon {
+  height: 1em;
+  width: 1em;
+  margin-right: 0.5em;
+  fill: white;
+}
+.btn__label {
+  color: white;
+}
+.btn--amazon {
+  background: #eda43a;
+}
+.btn--amazon:hover {
+  background: #ffba55;
+}
+.btn--twitter {
+  background: #1da1f2;
+}
+.btn--twitter:hover {
+  background: #4bcaff;
 }
