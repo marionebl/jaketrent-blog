@@ -10,6 +10,7 @@ layout: post
 metaKeywords: "js, react, server-side react, react node framework"
 tags:
 - "js"
+- "nextjs"
 - "nodejs"
 - "react"
 - "server-rendering"
