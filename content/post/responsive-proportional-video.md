@@ -5,7 +5,7 @@ comments: true
 date: 2017-06-12T07:38:43-06:00
 description: "It's easy to make a video embed responsive, but it's not the default.  Here are some styles."
 draft: false
-image: "http://i.imgur.com/41CGSuN.png"
+image: "https://image.ibb.co/eObdca/responsive_Vid.jpg"
 layout: post
 metaKeywords: "rwd, responsive video, fit video to screen, video keep proportion, responsive iframe, responsive youtube embed, flexible"
 tags:
