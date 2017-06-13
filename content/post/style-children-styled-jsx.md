@@ -5,7 +5,7 @@ comments: true
 date: 2017-06-10T06:54:54-06:00
 description: "Styling children elements in styled-jsx is not ideal.  Here's one way."
 draft: false
-image: "http://i.imgur.com/Tidhkd9.jpg"
+image: "https://i.imgur.com/Tidhkd9.jpg"
 layout: post
 metaKeywords: "styled-jsx, nextjs, style children, style children elements, zeit"
 tags:
