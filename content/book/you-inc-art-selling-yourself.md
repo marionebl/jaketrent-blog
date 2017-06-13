@@ -12,7 +12,7 @@ layout: book
 metaKeywords: ""
 rating: 4
 tags:
-- ""
+- "passion"
 title: "You, Inc.: The Art of Selling Yourself"
 ---
 
