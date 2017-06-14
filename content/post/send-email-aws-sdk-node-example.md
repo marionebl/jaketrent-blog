@@ -5,7 +5,7 @@ comments: true
 date: 2017-06-14T07:50:09-06:00
 description: "An example of how to send email using the aws-sdk on Node.js."
 draft: false
-image: "http://i.imgur.com/Q5ui0SB.png"
+image: "https://i.imgur.com/Q5ui0SB.png"
 layout: post
 metaKeywords: "send email with node.js, send email with aws ses on node, aws-sdk ses node example, tutorial"
 tags:
