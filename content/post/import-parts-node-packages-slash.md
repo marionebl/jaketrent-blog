@@ -60,7 +60,7 @@ If you want to allow the users of your package to import subsets of your package
 Sometimes, if you have a more complicated directory/file setup, you'll want to create some convenience for users that want to import things this way.  Let's say that `buried.js` is deep in the directory structure, but you want it importable via `require('some-package/convenience')`.  You might set this up as:
 
 ```
-├── convience.js
+├── convenience.js
 ├── deep
 │   └── deeper
 │       └── buried.js
@@ -74,4 +74,4 @@ Where `convenience.js` contains:
 module.exports = require('./deep/deeper/buried')
 ```
 
-Do you import packages with slashes in this way?  Do you think it's a good thing to do?  When you publish your next package, is there some convience for this method you could provide? 
+Do you import packages with slashes in this way?  Do you think it's a good thing to do?  When you publish your next package, is there some convenience for this method you could provide? 
