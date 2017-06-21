@@ -35,19 +35,21 @@ Instead, Heroku forwards an http header that allows us to do the same "is secure
 
 If you're using the Express framework on Node, then you have it easy.  There's already a great middleware mechanism for you to send any or all requests through.  If you set your Express app (v3) up like this:
 
-```coffeescript
-app = express()
+```js
+const app = express()
 ```
 
 Then you can use the `app.use` functionality to specify a middleware.  Since I only have certificates and want the redirect to happen in the production environment, I will likewise wrap this middleware inside `app.configure` for prod (it inspects `NODE_ENV` for you).  This redirect will be pretty rudimentary, but it's just that simple, so here it goes:
 
-```coffeescript
-app.configure 'production', ->
-  app.use forceSsl(req, res, next) ->
-    if req.header 'x-forwarded-proto' != 'https'
-      res.redirect "https://#{req.header 'host'}#{req.url}"
+```js
+app.configure('production', => {
+  app.use((req, res, next) => {
+    if (req.header 'x-forwarded-proto' !== 'https')
+      res.redirect(`https://${req.header('host')}${req.url}`)
     else
       next()
+  })
+})
 ```
 
 If it's not `https` already, redirect the same url on `https`.  If it is, that's what I want, and you can pass on through my middleware function.  Note that this middleware will protect *all* urls on the site with an `https` redirect.  Your middleware could be more selective.  You could even create this as a stacked middleware per route if you wanted.  We could even enhance our middleware to use inspect both the http header *and* the `secure` flag.
