@@ -30,7 +30,7 @@ Note the `*` after `function`.  This is the function declaration difference.  Th
 
 ## Starts Paused
 
-When you call a *generator function*, it doesn't actually execute the body of the function.  Rather, it "starts" paused. Instead of invoking the function, returing a return value, it returns a *generator object*, also called an *iterator*.  An iterator is a special object that allows you to iterate through a collection. 
+When you call a **generator function**, it doesn't actually execute the body of the function.  Rather, it "starts" paused. Instead of invoking the function, returing a return value, it returns a **generator object**, also called an **iterator**.  An iterator is a special object that allows you to iterate through a collection. 
 
 If I call this generator function, the error will _not_ be thrown:
 
@@ -46,7 +46,7 @@ We haven't actually executed the first line of the function yet.
 
 ## Can Advance Programmatically
 
-The returned iterator conforms to an [*iterator protocol*](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterator).  This means that the object will have a special property, `next`, which is a function that, when called, advances the iterator.
+The returned iterator conforms to an [**iterator protocol**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterator).  This means that the object will have a special property, `next`, which is a function that, when called, advances the iterator.
 
 ```js
 function* generator() {
@@ -90,7 +90,7 @@ Note the accessing of `.value` on the object that `next()` returns in order to a
 
 How do you know when to stop calling `next()`?  After all, the generator in the example above has finite values to `yield`.  We could check to see if `next().value` is `undefined` and then stop iterating.  But what if `undefined` is a valid, expected value to be returned from this generator.  For something much more sure, the object returned by `next()` also includes the property boolean `done`, as a sibling to `value`, which, if true, signifies the end of the iterable collection of `yield`s.
 
-To clarify the picture a bit, calls to `next()` return *an object with `{ value, done }`*.  This is an oddly long, possibly-ambiguous term, for this object because it is a rather specialized object.  But it's the best term I've been able to find.
+To clarify the picture a bit, calls to `next()` return **an object with `{ value, done }`**.  This is an oddly long, possibly-ambiguous term, for this object because it is a rather specialized object.  But it's the best term I've been able to find.
 
 ## Can Resume with Client Values
 
