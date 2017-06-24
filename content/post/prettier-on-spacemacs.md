@@ -5,7 +5,7 @@ comments: true
 date: 2017-06-23T18:14:18-06:00
 description: "These days, getting prettier into spacemacs is easy."
 draft: false
-image: "https://i.imgur.com/H0nj6Gd.jpg"
+image: "https://i.imgur.com/rYPNoPw.jpg"
 layout: post
 metaKeywords: "spacemacs, emacs, prettier, javascript formatting"
 tags:
