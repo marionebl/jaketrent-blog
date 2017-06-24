@@ -23,7 +23,12 @@ I've tried a few different methods, and recently I tried again and found one tha
 
 ## Install
 
-To install, clone [the repo](https://github.com/praveenperera/spacemacs-prettier) into `~/.emacs.d/private/`
+To install, clone [the repo](https://github.com/praveenperera/spacemacs-prettier) into `~/.emacs.d/private/`:
+
+```bash
+cd ~/.emacs.d/private/
+git clone git@github.com:praveenperera/spacemacs-prettier.git
+```
 
 Next, use `SPC f e d` to open your `.spacemacs` file.  Add `spacemacs-pretter` to your config there:
 
