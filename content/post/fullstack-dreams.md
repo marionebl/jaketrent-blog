@@ -3,7 +3,7 @@ categories:
 - "Leadership"
 comments: true
 date: 2017-06-29T07:26:47-06:00
- description: "Developers and managers dream of fullstack developers."
+description: "Developers and managers dream of fullstack developers."
 draft: false
 image: "https://i.imgur.com/WnIAzz7.jpg"
 layout: post
