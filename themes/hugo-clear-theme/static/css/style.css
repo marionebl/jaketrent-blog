@@ -580,63 +580,6 @@ a {
 
 /* components */
 
-/* component: summary-image1 */
-.summary-image1 {
-  position: relative;
-  overflow: hidden;
-  padding: 24px 0;
-  background-color: #eda43a;
-}
-.summary-image1-title {
-  position: relative;
-  margin: 0 0 18px 0;
-  padding: 0 10px;
-  line-height: 1.2em;
-  font-family: "Gobold-Regular";
-  font-weight: 100;
-  color: #fff;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 0, 0, 0.9);
-}
-.summary-image1-fg {
-  position: relative;
-  top: 0;
-  left: 0;
-  display: block;
-  max-width: 100%;
-  box-shadow: 1px 1px 16px rgba(0, 0, 0, 0.5);
-}
-.summary-image1-bg {
-  position: absolute;
-  top: -8px;
-  left: -8px;
-  width: calc(100% + 16px);
-  height: calc(100% + 16px);
-  filter: blur(8px) brightness(120%) contrast(70%);
-  -webkit-filter: blur(8px) brightness(120%) contrast(70%);
-}
-@media screen and (min-width: 621px) {
-  .summary-image1-title {
-    font-size: 30px;
-  }
-  .summary-image1-fg {
-  }
-  .summary-image1-bg {
-  }
-}
-@media screen and (min-width: 701px) {
-  .summary-image1 {
-    padding: 40px 0 40px 40px;
-  }
-  .summary-image1-title {
-    padding: 0;
-  }
-}
-@media screen and (min-width: 800px) {
-  .summary-image1-title {
-    font-size: 42px;
-  }
-}
-
 /* component: post-image1 */
 .post-image1 {
   position: relative;
