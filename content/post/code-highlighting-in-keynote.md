@@ -48,4 +48,6 @@ Here's to beautifully-formatted code slides!
 
 Are there other ways that you've accomplished this?
 
+<div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/8vQXJSn3Nlo?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>

@@ -21,4 +21,6 @@ So much for Apple products that are so simple and usable that you're delighted b
 
 Well, I found the option to change it.  Please pop some corn, and watch me click the spacing submenu:
 
+<div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/e2oWDf8-bPo?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
