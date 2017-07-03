@@ -3,21 +3,21 @@
 {{ partial "header.html" . }}
 
 <main class="main">
-  <div class="page-spacer">
-    <div class="list">
+  <div class="list">
+    <div class="page-spacer">
       <header class="list-header">
         <h2 class="list-title">Tag: {{ .Title | title }}</h2>
         <div class="list-nav">
           <a class="list-nav-link" href="/tags/">All tags</a>
         </div>
       </header>
-      {{ $paginator := .Paginate .Data.Pages }}
-      {{ range $paginator.Pages }}
-        {{ .Render "summary" }}
-      {{ end }}
     </div>
-    {{ partial "paginator.html" . }}
+    {{ $paginator := .Paginate .Data.Pages }}
+    {{ range $paginator.Pages }}
+      {{ .Render "summary" }}
+    {{ end }}
   </div>
+  {{ partial "paginator.html" . }}
 </main>
 
 {{ partial "footer.html" }}
