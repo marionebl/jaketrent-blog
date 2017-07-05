@@ -29,10 +29,10 @@ npm install connect-livereload --save-dev
 
 Next, import:
 
-{% codeblock lang:coffeescript %}
+```coffeescript
 app.configure 'development', ->
   app.use require('connect-livereload') 35729
-{% endcodeblock %}
+```
 
 Note that we only want to import and use the middleware when in development.  This matches the fact that we are only declaring this package as in `devDependencies`.
 
@@ -53,7 +53,7 @@ npm install grunt grunt-regarde grunt-contrib-livereload --save-dev
 
 Next setup the `Gruntfile.coffee`:
 
-{% codeblock lang:coffeescript %}
+```coffeescript
 module.exports = (grunt) ->
   grunt.initConfig
 
@@ -65,7 +65,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-livereload'
 
   grunt.registerTask 'be-lively', [ 'livereload-start', 'regarde' ]
-{% endcodeblock %}
+```
 
 Now when you run:
 

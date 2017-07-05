@@ -25,11 +25,11 @@ Recently, we built a portal.  It contains a bunch of widgets that are served fro
 
 Because the widgets live on other domains, those widgets' subdependencies needed a path that would be relative to that other widget domain and not the portal domain.  In order to accomplish this, widget dependencies were specified in this way:
 
-{% codeblock lang:js %}
+```js
 define(['./widgetDependency.js'], function (dep) {
   // my widget code
 });
-{% endcodeblock %} 
+``` 
 
 The `.js` extension tells RequireJs to load the dependency [as a URL](https://github.com/jrburke/r.js/blob/2.1.1/require.js#L1521).  The `./` makes the URL relative to the widget domain.
 
@@ -39,9 +39,9 @@ When you go to test your modules in a test environment, you may not want to load
 
 In prod, I needed the `.js` extension.  But, in test I didn't want to load modules from URLs.  So, I need to make the test environment ignore the extension.  The solution?  Override the regular expression that checks for the extension in my test runner to be something that was never matched:
 
-{% codeblock lang:js %}
+```js
 require.jsExtRegExp = /^pileOTest/;
-{% endcodeblock %}
+```
 
 This allows RequireJs to load the module by module name.
 
@@ -55,11 +55,11 @@ But there is one final way to trick it out:  Add a '?' to the name.  This rule w
 
 So now your module dependencies will look like this:
 
-{% codeblock lang:js %}
+```js
 define(['./widgetDependency.js?'], function (dep) {
   // my widget code
 });
-{% endcodeblock %} 
+``` 
 
 And in your test environment they will load, and you will be happy.  Until...
 
@@ -80,19 +80,19 @@ You may cry a little, but we're almost there.  Remember, your module dependency 
 
 The `r.js` configuration in `app.build.js` includes an function called `onBuildRead()`'.  Call it to transform the code as it goes out the door for optimization.  We want to strip out the '?' question marks from our dependency arrays.  Stripping out all '?'s might be a bit too dangerous.  So, let's make a benign adjustment that will help us identify exactly what we're trying to strip out and replace our '?' string in our dependency paths with '?test', finally:
 
-{% codeblock lang:js %}
+```js
 define(['./widgetDependency.js?test'], function (dep) {
   // my widget code
 });
-{% endcodeblock %} 
+``` 
 
 And [implement `onBuildRead`](https://github.com/jrburke/r.js/blob/2.1.1/build/example.build.js#L417) as:
 
-{% codeblock lang:js %}
+```js
 onBuildRead: function (moduleName, path, contents) {  
   return contents.replace(/\?test/g, '');
 }
-{% endcodeblock %}
+```
 
 #### "Shut off all the garbage smashers on the detention level!"
 

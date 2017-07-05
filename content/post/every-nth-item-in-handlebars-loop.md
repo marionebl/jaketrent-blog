@@ -25,7 +25,7 @@ Inside a block helper in Handlebars, when you call `options.fn`, you pass the co
 
 The code in full looks like this:
 
-{% codeblock lang:js %}
+```js
 Handlebars.registerHelper('everyNth', function(context, every, options) {
   var fn = options.fn, inverse = options.inverse;
   var ret = "";
@@ -43,7 +43,7 @@ Handlebars.registerHelper('everyNth', function(context, every, options) {
   }
   return ret;
 });
-{% endcodeblock %}
+```
 
 Note: This implementation uses [underscore `_.extend()`](http://underscorejs.org/#extend).
 

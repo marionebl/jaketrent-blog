@@ -59,7 +59,7 @@ npm install gzippo express coffee-script --save
 
 Now create your app server, `web.coffee`.  It's about as light as they come:
 
-{% codeblock lang:coffeescript %}
+```coffeescript
 gzippo = require 'gzippo'
 express = require 'express'
 
@@ -67,7 +67,7 @@ app = express()
 app.use express.logger 'dev'
 app.use gzippo.staticGzip "#{__dirname}/dist"
 app.listen process.env.PORT || 5000
-{% endcodeblock %}
+```
 
 It's going to be serving the static resources that you build w/ Yeoman/Grunt that end up in the `dist` directory.  In order for code to get to Heroku, it needs to be commited to your git repo.  Thus, you need to remove the "dist" line from your `.gitignore` file, and don't forget to add and commit the files to git as you build them.  You may also have to add more tasks to the `Gruntfile.js` to copy over any other assets to `dist` that your app needs to run.
 

@@ -36,7 +36,7 @@ In my local environment, my code looked like this and worked fine:
 angular.module('myModule', [], function ($interpolateProvider) {
   // interpolate stuff
 });
-{% endcodeblock %}
+```
 
 After my build process and mangled local variables, it looked like this:
 
@@ -44,7 +44,7 @@ After my build process and mangled local variables, it looked like this:
 angular.module('myModule', [], function (e) {
   // interpolate stuff
 });
-{% endcodeblock %}
+```
 
 Oh boy.  A few StackOverflow articles later, and I was led to the [dependency injection guide](http://docs.angularjs.org/guide/di) that's a part of the Angular docs.  It revealed that my pattern of dependency injection wasn't gonna cut it:
 
@@ -56,21 +56,21 @@ While you can build Angular code that way, it just simply won't be reliable.  "P
 
 #### Reliable Style #1: "Controller Style"
 
-{% codeblock lang:javascript %}
+```js
 var MyController = function ($scope) {
 };
 MyController.$inject = ['$scope'];
-{% endcodeblock %}
+```
 
 The `$scope` parameter in the function is soon to be renamed once minified, so save a list of the parameter names as strings in the `$inject` array.  Make sure the order and length of these two lists match.
 
 #### Reliable Style #2: "Module Style"
 
-{% codeblock lang:javascript %}
+```js
 angular.module('myModule', [])
   .config(['$interpolateProvider', function ($interpolateProvider) {
   }]);
-{% endcodeblock %}
+```
 
 The idea is the exact same.  Note the placement of the square brackets;  It's a bit different.
 

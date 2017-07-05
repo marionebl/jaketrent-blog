@@ -21,25 +21,25 @@ Sometimes it may be useful to know how many attributes a JavaScript object has. 
 
 If instantiate a new object, it does *not* have a built-in length attribute:
 
-{% codeblock lang:js %}
+```js
 > var obj = {}
 undefined
 > obj.length
 undefined
-{% endcodeblock %}
+```
 
 If I add an arbitrary property that object, it still doesn't affect the length:
 
-{% codeblock lang:js %}
+```js
 > obj.prop1 = "adsf"
 'adsf'
 > obj.length
 undefined
-{% endcodeblock %}
+```
 
 If I instantiate a new array, it has a built-in length attribute:
 
-{% codeblock lang:js %}
+```js
 > var arr = []
 undefined
 > arr.push(1)
@@ -48,16 +48,16 @@ undefined
 2
 > arr.length
 2
-{% endcodeblock %}
+```
 
 But an array is an object whose attributes are numbers, right?  So, if I put an arbitrary property on it, does it affect length:
 
-{% codeblock lang:js %}
+```js
 > arr.prop1 = "asdf"
 'asdf'
 > arr.length
 2
-{% endcodeblock %}
+```
 
 No, this `arr` array still just has the two items we previously pushed onto it.
 
@@ -65,7 +65,7 @@ No, this `arr` array still just has the two items we previously pushed onto it.
 
 So, how do you find out how many attributes are in an object (not array)?  Just iterate on it:
 
-{% codeblock lang:js %}
+```js
 function numAttrs(obj) {
   var count = 0;
   for(var key in obj) {
@@ -75,7 +75,7 @@ function numAttrs(obj) {
   }
   return count;
 }
-{% endcodeblock %}
+```
 
 I found this a bit painful to write.  There should be a better way, right?  Do you know what it is?
 
@@ -83,8 +83,8 @@ I found this a bit painful to write.  There should be a better way, right?  Do y
 
 If your in a [Modern JavaScript environment](http://kangax.github.com/es5-compat-table/), give this a whirl:
 
-{% codeblock lang:js %}
+```js
   Object.keys(obj).length
-{% endcodeblock %}
+```
 
 Way nicer.  Don't try in <= IE8.

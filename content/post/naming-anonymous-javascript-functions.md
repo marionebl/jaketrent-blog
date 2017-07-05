@@ -23,25 +23,25 @@ A great thing about functions in general is that they will tell you what they're
 
 The performance of anonymous functions can often be determined from the calling context, but why not just name it for what it does like all other functions?  Did you know that you can?  Piece of pi.  Where you would normally write this:
 
-{% codeblock lang:javascript %}
+```js
 doStuff(function () {
   console.log('reporting…');
 });
-{% endcodeblock %}
+```
 
 Additionally label your callback:
 
-{% codeblock lang:javascript %}
+```js
 doStuff(function reportResults() {
   console.log('reporting…');
 });
-{% endcodeblock %}
+```
 
 ## Easier Stack Traces
 
 To make this code actually run, let's add a little bit and stick in a thrown error that should provide us a stack trace:
 
-{% codeblock lang:javascript %}
+```js
 function doStuff(callback) {
    callback();
 }
@@ -49,13 +49,13 @@ function doStuff(callback) {
 doStuff(function reportResults() {
 	throw new Error('problem');
 });
-{% endcodeblock %}
+```
 
 Another difference between labeled and non-labeled anonymous functions is what they print in a stack trace. Without a label, you are getting line numbers, but the stack trace itself is harder to follow without bring up the source in order to interpret it.
 
 Without named function:
 
-{% codeblock lang:javascript %}
+```js
 /.../error.js:10
 	throw new Error('problem');
 	      ^
@@ -65,9 +65,9 @@ Error: problem
     at Object.<anonymous> (/.../error.js:8:1)
     at Module._compile (module.js:449:26)
     ...
-{% endcodeblock %}
+```
 
-{% codeblock lang:javascript %}
+```js
 /.../error.js:8
 	throw new Error('problem');
 	      ^
@@ -77,7 +77,7 @@ Error: problem
     at Object.<anonymous> (/.../error.js:7:1)
     at Module._compile (module.js:449:26)
     …
-{% endcodeblock %}
+```
 
 Notice that every frame of the stack is now clearly displaying its name.
 

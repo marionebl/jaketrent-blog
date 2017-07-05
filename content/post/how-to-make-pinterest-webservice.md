@@ -41,7 +41,7 @@ To make this retrieval even faster for repeat use, caching could be very helpful
 
 Here's the final solution in all its glory.  This snippet only includes only the code inside the Express route.
 
-{% codeblock lang:javascript %}
+```js
 // request is a library for making http requests
 var request = require('request');
 
@@ -78,13 +78,13 @@ exports.list = function (req, res) {
     res.send(pins);
   });
 };
-{% endcodeblock %}
+```
 
 When I wrote it out for my own use, I was surprised at the brevity.  I love it.  Given, there's no handling of any errors or attempts to make this semi-robust.  This just gets us the data on a good day.
 
 The final json that's exposed at our chosen Express endpoint looks like it this:
 
-{% codeblock lang:javascript %}
+```js
 [ {
     "img": "http://myimg.jpg",
     "url": "http://pinterest.com/pin/mypin",
@@ -92,7 +92,7 @@ The final json that's exposed at our chosen Express endpoint looks like it this:
   }, {
   // ...
 ]
-{% endcodeblock %}
+```
 
 It's ready for use by a json-ready client.  So stinkin easy.  We're connecting the web together, and it's awesome!  Now the world will know of the baked goods and flower arrangements that we love the most.
 

@@ -34,7 +34,7 @@ Lots of webapps have portions of their sites that require authenticated to acces
 
 Supertest has no cookiejar for holding cookies like the sessionid.  But, superagent does.  So, we're going to need to import it explicitly.  A login helper could look something like this:
 
-{% codeblock lang:javascript %}
+```js
 var superagent = require('superagent');
 var agent = superagent.agent();
 var theAccount = {
@@ -54,7 +54,7 @@ exports.login = function (request, done) {
       done(agent);
     });
 };
-{% endcodeblock %}
+```
 
 A few points:
 
@@ -66,7 +66,7 @@ A few points:
 
 Now that we've made login request and saved the cookies, it's time to make our authenticated request(s).  Easy cheesy.  A simple test to see if the login worked might look like this:
 
-{% codeblock lang:javascript %}
+```js
 var request = require('supertest')(app);
 var login = require('./login');
 
@@ -88,7 +88,7 @@ describe('MyApp', function () {
   });
 
 });
-{% endcodeblock %}
+```
 
 More jabber about the code:
 

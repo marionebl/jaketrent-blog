@@ -40,11 +40,11 @@ And it turns out that `NODE_ENV` is the single most-used environment variable of
 
 For instance, in an [Express](http://expressjs.com/) app, you'll see this a lot:
 
-{% codeblock lang:js %}
+```js
 if ('production' == app.get('env')) {
   app.set('dbUri', 'n.n.n.n/prod');
 }
-{% endcodeblock %}
+```
 
 Actually, you see [`configure()`](http://expressjs.com/api.html#app.configure), but it's all just sugar around a check to `process.env.NODE_ENV`.
 
@@ -66,32 +66,32 @@ You could just grab all your variables out the process environment, but the cool
 
 One could access these sources in code with this beaut:
 
-{% codeblock lang:js %}
+```js
 var nconf = require('nconf');
 nconf.argv()
      .env()
      .file({ file: 
        'config.json' 
      });
-{% endcodeblock %}
+```
 
 You could even have a config file specific to each environment that ships with your app and load it with a slightly spiffier:
 
-{% codeblock lang:js %}
+```js
 var nconf = require('nconf');
 nconf.argv()
      .env()
      .file({ file: 
        process.env.NODE_ENV + '.json'
      });
-{% endcodeblock %}
+```
 
 #### Using the Data
 
 Finally, after loading, just access your environment variables and incorporate them in your code as you will:
 
-{% codeblock lang:js %}
+```js
 nconf.get('NODE_ENV');
-{% endcodeblock %}
+```
 
 Declare some variables per environment.  Likely candidates are database connection strings or web service endpoints or feature flags.  These will help you avoid as many nasty if-else branches in your code.

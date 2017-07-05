@@ -29,7 +29,7 @@ And really, who doesn't use dependency injection in any of their Angular code?  
 
 The final Mocha code to test our simple controller should look something like this:
 
-{% codeblock lang:javascript %}
+```js
   var assert = chai.assert,
     expect = chai.expect,
     should = chai.should();
@@ -41,7 +41,7 @@ The final Mocha code to test our simple controller should look something like th
     });
     expect(ctrl).to.not.be.undefined;
   }));
-{% endcodeblock %}
+```
 
 A couple of points:
 
@@ -58,22 +58,22 @@ If you look at the solution above, it should give you the working test of DI tha
 
 My controller looked somewhat like this:
 
-{% codeblock lang:javascript %}
+```js
 function MyController($scope) {
   $scope.$on('$viewContentLoaded', function () {
     // ... stuff when dom in the controller is ready
   });
 }
-{% endcodeblock %}
+```
 
 And this was the start of my test:
 
-{% codeblock lang:javascript %}
+```js
   it('should be available', function() {
     var ctrl = new MyController();
     // ... assertions
   });
-{% endcodeblock %}
+```
 
 Ths `$scope.$on()` line couldn't run because `$scope` was simply not injected and undefined.
 blah - scope is not there
@@ -82,6 +82,6 @@ blah - scope is not there
 
 In Mocha, you'll need to import an assertion library of your choice.  Otherwise, `expect()` and other assertions will not be available to use.  I prefer Chai for its should-style assertions.  They read as a sentence really well:
 
-{% codeblock lang:javascript %}
+```js
     expect(ctrl).to.not.be.undefined;
-{% endcodeblock %}
+```

@@ -41,18 +41,18 @@ A sample run and the file structure that it will create looks something like thi
 
 In that generated code, your `app.js` references a route like this:
 
-{% codeblock lang:js %}
+```js
 var routes = require('./routes');
 app.get('/', routes.index);
-{% endcodeblock %}
+```
 
 And the route, `index.js`, looks like:
 
-{% codeblock lang:js %}
+```js
 exports.index = function(req, res){
   res.render('index', { title: 'Express' });
 };
-{% endcodeblock %}
+```
 
 I like this, but it's still not the best.  I don't like having to list the `app.get()`, etc. in `app.js`.  This list will get long.  So, how would I adjust?
 
@@ -62,20 +62,20 @@ Instead, I want to tell `app.js` about my routes, but I want each route file to 
 
 Showing the adjustments, `app.js`:
 
-{% codeblock lang:js %}
+```js
 var app = express();
 var indexRt = require('./routes/index')(app);
-{% endcodeblock %}
+```
 
 This time, more goodies in `index.js`:
 
-{% codeblock lang:js %}
+```js
 module.exports = function (app) {
   app.get('/', function (req, res) {
     res.render('index');
   });
 }
-{% endcodeblock %}
+```
 
 The difference is somewhat slight.  Now, instead of each http command listed in your app, only each resource (in REST terms) is listed in app.  Each command for a resource is listed in that resource's route.js.
 

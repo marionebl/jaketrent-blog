@@ -30,13 +30,13 @@ Add the current version to your `package.json` for the future:
 
 Import the plugin in your `grunt.js` file:
 
-{% codeblock lang:js %}
+```js
 grunt.loadNpmTasks('grunt-testacular');
-{% endcodeblock %}
+```
 
 And finally, in `grunt.js`, specify your tasks:
 
-{% codeblock lang:js %}
+```js
 testacularServer: {
   unit: {
     options: {
@@ -50,7 +50,7 @@ testacularRun: {
     runnerPort: 9100
   }
 }
-{% endcodeblock %}
+```
 
 #### Two Tasks
 
@@ -108,7 +108,7 @@ To manage the options that are distinct to these two work flows, one could just 
 
 Instead, the grunt-testacular plugin gives you override ability on a per-variable basis.  To support the development and integration scenario, the grunt multiTask might look like this:
 
-{% codeblock lang:js %}
+```js
 testacularServer: {
   unit: {
     options: {
@@ -125,7 +125,7 @@ testacularServer: {
     singleRun: true
   }
 }
-{% endcodeblock %}
+```
 
 Following this same pattern, you could create a separate config for automated functional or end-to-end tests as well.
 

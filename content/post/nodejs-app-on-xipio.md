@@ -45,7 +45,7 @@ Pow only knows how to handle Rack apps, so we have to create one to be loaded in
 
 I found a bit of [proxy app code](https://github.com/linjunpop/node-with-pow), which you should save in your project root as `config.ru`, and which I paste here:
 
-{% codeblock lang:ruby %}
+```ruby
 require "net/http"
 
 class ProxyApp
@@ -69,7 +69,7 @@ class ProxyApp
   end
 end
 run ProxyApp.new
-{% endcodeblock %}
+```
 
 The only change you might have to make is the port number for your app (line 13).  In this case, I'm using port 3000 for my NodeJs app.
 

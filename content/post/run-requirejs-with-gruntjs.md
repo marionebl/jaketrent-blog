@@ -35,7 +35,7 @@ Install the plugin:
 
 Add the requirejs config to your grunt.js file:
 
-{% codeblock lang:js %}
+```js
 module.exports = function(grunt) {
   grunt.initConfig({
     /* ... */
@@ -70,7 +70,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
 
 };
-{% endcodeblock %}
+```
 
 And run the task:
 

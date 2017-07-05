@@ -87,7 +87,7 @@ The final point is that the RequireJs main module for your test runner should be
 
 So, finally, here is the 'file' excerpt of `testacular.conf.js`:
 
-{% codeblock lang:js %}
+```js
 files = [
   MOCHA,
   MOCHA_ADAPTER,
@@ -113,7 +113,7 @@ files = [
   // !! test main require module last
   'test/test-main.js'
 ];
-{% endcodeblock %}
+```
 
 This config is awesome.  It replaces an html test runner that you would otherwise have to build.
 
@@ -135,7 +135,7 @@ Because the RequireJs require statements are asynchronous, Testacular needs to w
 
 The `main-test.js` file ends up looking like this:
 
-{% codeblock lang:js %}
+```js
 require({
 
   // !! Testacular serves files from '/base'
@@ -147,7 +147,7 @@ require({
 }, ['../test/MyModule.test'], function() {
   window.__testacular__.start();
 });
-{% endcodeblock %}
+```
 
 ## RequireJs Test in Testacular
 
@@ -161,7 +161,7 @@ And finally, `should()` must be invoked to be available in the test.
 
 So, a simple test will look like:
 
-{% codeblock lang:js %}
+```js
 define(['../node_modules/chai/chai', 'MyModule'],
   function(chai, MyModule) {
 
@@ -178,7 +178,7 @@ define(['../node_modules/chai/chai', 'MyModule'],
     });
   });
 });
-{% endcodeblock %}
+```
 
 ## Run the Tests in Testacular
 

@@ -27,7 +27,7 @@ First, install the plugin:
 
 Second, fix up your grunt.js file to include:
 
-{% codeblock lang:js %}
+```js
 module.exports = function(grunt) {
   grunt.initConfig({
     /* ... */
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
   // !! load the plugin
   grunt.loadNpmTasks('grunt-context');
 };
-{% endcodeblock %}
+```
 
 Finally, run the grunt build and target a specific context.  If you want to build locally and not have requirejs run, type:
 

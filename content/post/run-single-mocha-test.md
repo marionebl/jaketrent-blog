@@ -40,14 +40,14 @@ describe('api', _ => {
 
 Often we're in the test code making changes, and it's easy to make adjustments to what subset of tests you run from here as well.  If I want to run a single `describe()` function, I can add a `.only()` to the function call, like this:
 
-{% codeblock lang:javascript %}
+```js
 describe(function () {
   // these tests will be skipped
 });
 describe.only(function () {
   // these tests will run
 });
-{% endcodeblock %}
+```
 
 You can stick the `.only()` on any `describe`, no matter if it's first or last in the list of specs.
 
@@ -55,14 +55,14 @@ You can stick the `.only()` on any `describe`, no matter if it's first or last i
 
 Just as you can with `describe`, the tests can be specified to exclusively run if you attach `.only()` to the function call.
 
-{% codeblock lang:javascript %}
+```js
 it.only(function () {
   // this test will run
 });
 it(function () {
   // this test will be skipped
 });
-{% endcodeblock %}
+```
 
 **Update 12 Oct 2015**: The following note now does not apply.  `before`, etc hooks are now verified to be run when running a single test.
 

@@ -42,18 +42,18 @@ In this way, NodeJs/Grunt seems like an awkward fit as a build tool.
 
 When I end up doing custom things in my Grunt build, it tends to be that I'm trying to get to the shell and execute something.  If I have a shell script, I can just execute it with [grunt-exec](https://github.com/jharding/grunt-exec).  If I'm trying to keep all logic in Grunt, I'll use [shelljs](https://github.com/arturadib/shelljs).  The thing that gets me with both of these solutions is that I'm in Node, constantly trying to get out of Node to run something in the shell, like a git command.  So my code ends up looking like lots of these:
 
-{% codeblock lang:js %}
+```js
 var shell = require('shelljs');
 grunt.log.writeln('Cloning repo');
 shell.exec('git clone ' + opts.repo);
-{% endcodeblock %}
+```
 
 There's a bit of cruft to recreate bash in Node.  It's not as clean and does not read as well as a vanilla shell script might:
 
-{% codeblock lang:bash %}
+```bash
 echo 'Cloning repo';
 git clone $repo
-{% endcodeblock %}
+```
 
 ## New APIs
 
