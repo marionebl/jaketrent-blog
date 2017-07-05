@@ -10,7 +10,7 @@ layout: post
 metaKeywords: "junior programmer, resume preparation, resume tips, new developer resume"
 tags:
 - "resume"
-title: "A Junior Programmer Resume: Enthusiastic Learning"
+title: "A Junior Programmer Resume: Enthusiastic Learner"
 ---
 
 As a new programmer, you may be more challenged in landing jobs early in your career.  Here are a few resume tips that focus on how to express your passion and early learning experiences.
