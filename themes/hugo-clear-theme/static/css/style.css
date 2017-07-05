@@ -637,7 +637,7 @@ a {
 }
 @media screen and (min-width: 701px) {
   .post-image1 {
-    padding: 40px 0 40px 40px;
+    padding: 40px;
   }
   .post-image1-title {
     padding: 0;
