@@ -3,7 +3,7 @@ categories:
 - "Code"
 comments: true
 date: 2017-07-06T07:22:05-06:00
-description: "A long dependency list in Node is part of its philosophy."
+description: "A long dependency list in a Node project is part of the philosophy."
 draft: false
 image: "https://i.imgur.com/qTlbn7f.jpg"
 layout: post
@@ -14,7 +14,7 @@ tags:
 title: "Lots of Node Dependencies"
 ---
 
-A long dependency list in Node is part of its philosophy.
+A long dependency list in a Node project is part of the philosophy.
 
 <!--more-->
 
