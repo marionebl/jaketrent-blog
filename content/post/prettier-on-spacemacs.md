@@ -10,7 +10,7 @@ layout: post
 metaKeywords: "spacemacs, emacs, prettier, javascript formatting"
 tags:
 - "tools"
-- "spacemeacs"
+- "spacemacs"
 - "js"
 title: "Prettier on Spacemacs"
 ---

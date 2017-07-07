@@ -10,7 +10,7 @@ layout: post
 metaKeywords: "spacemacs, emacs, snippets, evil-mode"
 tags:
 - "tools"
-- "spacemeacs"
+- "spacemacs"
 title: "Code Snippets in Spacemacs"
 ---
 
