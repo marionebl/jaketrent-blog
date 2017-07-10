@@ -56,7 +56,7 @@ Then in `users/actions.js`, you can write:
 ```js
 import types from 'redux-types'
 
-export const TYPES = types(users, 'FETCH')
+export const TYPES = types('users', 'FETCH')
 
 export const fetch = _ => ({ type: TYPES.FETCH })
 ```
