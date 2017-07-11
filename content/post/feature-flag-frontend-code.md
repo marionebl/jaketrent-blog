@@ -10,7 +10,7 @@ layout: post
 metaKeywords: "continuous delivery of frontend code, feature flags in browser, bootstrap feature flags"
 tags:
 - "continuous-delivery"
-title: feature flag frontend code
+title: "Feature Flag Frontend Code"
 ---
 
 Feature flagging in your frontend code will allow you to release continually.
