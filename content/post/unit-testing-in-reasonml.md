@@ -101,7 +101,7 @@ bsb -make-world
 
 Now in the `./lib` directory you have your source and your tests.  Something like this:
 
-```
+```txt
 lib
 ├── bs
 │   ├── __tests__
