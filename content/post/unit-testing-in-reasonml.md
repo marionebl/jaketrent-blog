@@ -27,7 +27,7 @@ So I checked out the work-in-progress Jest bindings.
 
 ## Install bs-jest
 
-[bs-jest](https://github.com/BuckleTypes/bs-jest) seems to be the most Reason/JavaScrfipt-oriented testing tool currently available. 
+[bs-jest](https://github.com/BuckleTypes/bs-jest) seems to be the most Reason/JavaScript-oriented testing tool currently available. 
 
 In its current form, it's listed as "very very" experimental (which is apparently less experimental than before).  It's not 100% complete, but basic APIs seem to be there.  Lacking a better option, cowabunga!
 
