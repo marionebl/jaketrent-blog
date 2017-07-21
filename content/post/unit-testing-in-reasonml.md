@@ -167,4 +167,5 @@ Ran all test suites.
 
 Yippee!  What else do you do to make your Reason unit tests rock?
 
+If you're ready to use this setup, try [TDDing a ReasonML function](/post/tdd-reasonml-function/).
 
