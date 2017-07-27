@@ -22,6 +22,10 @@ Let's test-drive some ReasonML code together.
 
 Our goal will be to recreate a simple [List.map](https://en.wikipedia.org/wiki/Map_(higher-order_function)) from the [stdlib](https://reasonml.github.io/api/List.html).  Ours will be called `Listy.map`.
 
+<div class="video-container">
+<iframe width="1280" height="720" src="https://www.youtube.com/embed/nivVNJPj2z8?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
+
 To get started, download [the exercise on github](https://github.com/jaketrent/reason-kata-map):
 
 ```bash
