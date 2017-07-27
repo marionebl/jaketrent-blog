@@ -72,7 +72,7 @@ To run the tests:
 npm tests
 ```
 
-## Test 1: Empty Array
+## Test 1: Empty List
 
 The first test defines what should be returned by map for an empty list.  This first test is currently failing.
 
@@ -334,6 +334,6 @@ Ran all test suites.
 
 ## All Green!
 
-We did it!  We used a test suite to drive our development of some Reason code.  Now we have our own `map` function The errors helped us learn some things about the Reason syntax and compiler along the way.
+We did it!  We used a test suite to drive our development of some Reason code.  Now we have our own `map` function. The errors helped us learn some things about the Reason syntax and compiler along the way.
 
 What else did you learn in this process?  What are you going to write next?
