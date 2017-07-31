@@ -67,4 +67,4 @@ Handled!
 
 What other tips would you have for implementing a mouse *and* touch-capable web interface?
 
-_Props to April for the sweeto graphic for this article!_
+_Props to April for the sweeto graphic for this article! _
