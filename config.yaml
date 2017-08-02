@@ -3,6 +3,7 @@ title: "Jake Trent"
 baseurl: "https://jaketrent.com"
 theme: "hugo-clear-theme"
 MetaDataFormat: "yaml"
+enableemoji: true
 
 params:
   disqusShortname: "jaketrent"
