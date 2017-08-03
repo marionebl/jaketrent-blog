@@ -3,7 +3,7 @@ categories:
 - "Code"
 comments: true
 date: 2017-08-03T14:41:40-06:00
-description: "Styled components create components that take their styles with them.  Primitives styled cross-platform components."
+description: "Styled components create components that take their styles with them.  Primitives style cross-platform components."
 draft: false
 image: "https://i.imgur.com/mSqJNBq.jpg"
 layout: post
@@ -16,7 +16,7 @@ tags:
 title: "Hello, styled-components/primitives"
 ---
 
-Styled components create components that take their styles with them.  Primitives styled cross-platform components.
+[Styled components](https://github.com/styled-components/styled-components) create components that take their styles with them.  Primitives style *cross-platform* components.
 
 <!--more-->
 
