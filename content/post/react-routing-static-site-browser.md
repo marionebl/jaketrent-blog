@@ -155,7 +155,7 @@ import ReactDOM from 'react-dom'
 if (typeof document != 'undefined') {
   ReactDOM.render(
     <BrowserRouter>{routes}</BrowserRouter>,
-    document.getElementById('#app')
+    document.getElementById('app')
   )
 }
 ```
