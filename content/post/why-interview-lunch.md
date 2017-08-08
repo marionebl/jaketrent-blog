@@ -17,9 +17,9 @@ Why we go to lunch as a part of the interview process.
 
 <!--more-->
 
-## We Need to Eat Anyway
+## We Need to Eat
 
-We're going to need to take time during the day to eat anyway.  Why not eat with someone else?  Keith Ferrazzi wrote a great book, enticing us to [never eat alone](/book/never-eat-alone:-and-other-secrets-to-success,-one-relationship-at-a-time/).
+We're going to need to take time during the day to eat.  Why not eat with someone else?  Keith Ferrazzi wrote a great book, enticing us to [never eat alone](/book/never-eat-alone:-and-other-secrets-to-success,-one-relationship-at-a-time/).
 
 When you're at lunch, eat.  Use good manners, but eat like you always would.  It's a lunch.
 
