@@ -49,8 +49,8 @@ Otherwise, everything remains the same.
 The sameness or similarity with the single item query feels good from someone coming from a REST API, where resources similar to the above would be queried from URIs something like:
 
 ```
-/books          # single
-/books/123      # multiple
+/books          # multiple
+/books/123      # single
 ```
 
 But keeping the same query field, `books`, for both queries will provide a challenge because we will have to support both the single and multiple query from the same place.
