@@ -83,10 +83,10 @@ const getVar = name => {
 }
 
 const load = (seed: ?Cache): Cache => {
-  cache = Object.assign(cache, seed, {
+  cache = Object.freeze(Object.assign(cache, seed, {
     databaseUrl: getVar('DATABASE_URL'),
     // ...
-  })
+  }))
 
   return cache
 }
