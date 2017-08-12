@@ -41,4 +41,4 @@ We do this to survive mentally.  As in the "red things" awareness exercise, how 
 
 When we create a boundary around an abstraction in code, we often strive to follow the single responsibility principle.  If this bit of code does _one_ thing, it'll do it well.  If it does one thing, when I examine it, I know what to expect.  If I change its inner content, I will effect that abstraction and it _only_.
 
-Imagine if your own focus was deepend.  What would you go deeper in?  At what cost?  At what gain?
+Imagine if your own focus was deepened.  What would you go deeper in?  At what cost?  At what gain?
