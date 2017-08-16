@@ -43,14 +43,14 @@ To prep your Github Pages site to be served by a custom domain, you'll need to f
 
 For an [example project](https://github.com/jaketrent/electron-course), my DNS setup has two entries:
 
-```
+```txt
 CNAME electroncourse.com jaketrent.github.io
 CNAME www                electroncourse.com
 ```
 
 Connect your custom domain to your Github Pages site by adding a file to `docs/CNAME` with the contents of your custom domain:
 
-```
+```txt
 electroncourse.com
 ```
 
