@@ -76,7 +76,7 @@ Now go to your [repo](https://github.com/jaketrent/electron-course) on Github an
 
 This will serve your page from that `docs/` directory.
 
-To see if your page is working, visit your Github Pages URL, eg [`jaketrent.github.io/electroncourse`](http://jaketrent.github.io/electron-course).  If the DNS is working, you'll get a redirect to your custom domain, [`electroncourse.com`](http://electroncourse.com).
+To see if your page is working, visit your Github Pages URL, eg [`jaketrent.github.io/electron-course`](http://jaketrent.github.io/electron-course).  If the DNS is working, you'll get a redirect to your custom domain, [`electroncourse.com`](http://electroncourse.com).
 
 You've now deployed your Next.js site to Github Pages!
 
