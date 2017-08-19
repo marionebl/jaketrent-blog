@@ -1,20 +1,3 @@
 <article class="summ">
-  <div class="page-spacer">
-    <header class="summ-header">
-      <h2 class="summ-title">
-        <a class="summ-title-link" href="{{ .URL }}">{{ .Title }}</a>
-      </h2>
-    </header>
-    {{ if .Params.image }}
-      <a class="summ-image-link" href="{{ .URL }}">
-        <img class="summ-image" src="{{ .Params.image }}" />
-      </a>
-    {{ end }}
-  </div>
-  <div class="markdown-content">
-    {{ .Summary }}
-  </div>
-  <div class="page-spacer">
-    {{ partial "read-more.html" . }}
-  </div>
+  {{ partial "post-image2.html" . }}
 </article>
