@@ -23,7 +23,7 @@ Some short, one-liners on take-aways from each of these great talks.
 - [mjackson](https://twitter.com/mjackson) - [unpkg](https://unpkg.com) is a cdn capable of serving modules natively in the browser, so include a "module" attribute in your package.json
 - [sxywu](https://twitter.com/sxywu) - there is no *best* approach to d3 in react so far, which is ok, as long as you just make more viz
 - [devonbl](https://twitter.com/devonbl) - hardware is hard, but try the [Raspberry Pi](https://raspberrypi.org), [Johnny-Five](http://johnny-five.io/), [pm532](https://www.adafruit.com/product/364) for NFC, and [react-hardware](https://github.com/iamdustan/react-hardware), and you'll be on the right track
-- [chantastic](https://twitter.com/chantastic) - then simplicity of react is why you love it
+- [chantastic](https://twitter.com/chantastic) - the simplicity of react is why you love it
 - [linclark](https://twitter.com/linclark) - WebAssembly's great, obvious, future application in React would be to write the reconciler in it
 - [benmvp](https://twitter.com/benmvp) - react 16 has some great new features
 - [bonniemilianb](https://twitter.com/bonniemilianb) - getting into deep learning can be fun, so try [google facial recognition api](https://cloud.google.com/vision/)
