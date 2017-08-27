@@ -9,12 +9,10 @@
         <h2 class="list-title">In {{ .Title | title }}</h2>
       </header>
     </div>
-    {{ $paginator := .Paginate .Data.Pages }}
-    {{ range $paginator.Pages }}
+    {{ range .Data.Pages }}
       {{ .Render "summary" }}
     {{ end }}
   </div>
-  {{ partial "paginator.html" . }}
 </main>
 
 {{ partial "footer.html" }}
