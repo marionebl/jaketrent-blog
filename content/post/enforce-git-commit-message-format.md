@@ -17,6 +17,8 @@ Enforce a git commit message format for your project.
 
 <!--more-->
 
+Updated: 28 Aug 2017 to use commitmsg hook.  Thanks to [marionebl](https://github.com/marionebl).
+
 ## Power of a Convention
 
 You could choose any format.  One git commit message format that I like is [conventional commits](https://conventionalcommits.org/).  With a convention, you can [generate a changelog](https://github.com/conventional-changelog/conventional-changelog) or use tools like lerna to automatically determine what package versions to [publish](https://github.com/lerna/lerna#--conventional-commits).
@@ -36,11 +38,7 @@ echo "Some commit message" | commitlint
 
 ## Checking Message on Commit
 
-However, you're not usually going to want to run the cli on an echoed string.  In the best case, you'd write a commit message, it would fail the formatting check, and you'd be denied the privelege to commit until you'd committed with a well-formatted message.
-
-I haven't quite gotten to that golden state, and I'd be happy to hear how people have done that.  My main challenge was getting access to the commit message before the commit.
-
-What I have done is created a git commit hook that checks your commit message *after* your commit and tells you whether it's bad or not.  If it's bad, you can amend your commit message. So it doesn't enforce at this point, but it at least gives feedback.
+However, you're not usually going to want to run the cli on an echoed string.  We want to write a commit message in our regular git workflow, it would fail the formatting check, and you'd be denied the privelege to commit until you'd committed with a well-formatted message.
 
 To do this you'll want a package that helps you handle commit hooks:
 
@@ -52,11 +50,13 @@ And add a script to `package.json`:
 
 ```json
 "scripts": {
-  "postcommit": "cat .git/COMMIT_EDITMSG | commitlint",
+  "commitmsg": "commitlint -e",
 }
 ```
 
-Now in the case of bad commit, you'll get warnings telling you what formatting rules you're failing.
+Using the `-e` flag, `commitlint` will automatically go to the `COMMIT_EDITMSG`, your latest commit message, to do its linting.
+
+In the case of bad commit, you'll get the errors telling you what formatting rules you need to fix to let your commit through.
 
 ![commitlint output](https://i.imgur.com/a7RFcY7.jpg)
 
