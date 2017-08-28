@@ -62,3 +62,6 @@ Each person has a special set of skills.  If we considered combinations of team 
 
 How do you try to create this magic on your teams?  What are some special combinations that you look for?
 
+This inspired a meetup talk: 
+
+<script async class="speakerdeck-embed" data-id="7f90d9681bd043f4b11057f372ab9590" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
