@@ -56,17 +56,23 @@ electroncourse.com
 
 You'll notice that this `CNAME` file is in the `docs/` directory, which is the target of the Next.js `export` command.  `export` will blow the directory away, removing your `CNAME` file.  We want to make sure we don't lose it after an export.
 
+## NoJekyll Support
+
+Github pages are processed by [Jekyll](https://jekyllrb.com/) by default.  In our case, the directories Next.js builds by default include a `_next` directory with all the built JavaScript assets.  In order to make those findable in our deployed site, we need to [add a special file](https://help.github.com/articles/files-that-start-with-an-underscore-are-missing/) called `.nojekyll` inside the `docs/` directory.  
+
+We'll also need to take care not to remove this file when running a `next export` command.
+
 ## All-in-one Deploy Script
 
-So here is an all-in-one deploy script for building, exporting, preserving the `CNAME`, committing, and pushing your content to the server.  If we put this in `package.json`:
+So here is an all-in-one deploy script for building, exporting, preserving the `CNAME` and `.nojekyll` files, committing, and pushing your content to the server.  If we put this in `package.json`:
 
 ```json
 "scripts": {
-  "deploy": "next build && next export -o docs && git checkout -- docs/CNAME && git add docs && git commit -m \"chore: regen site\" && git push origin master"
+  "deploy": "next build && next export -o docs && git checkout -- docs/CNAME && git checkout -- docs/.nojekyll && git add docs && git commit -m \"chore: regen site\" && git push origin master"
 }
 ```
 
-Then we can run it with: `npm run deploy`.
+Epic!  Then we can run it with: `npm run deploy`.
 
 ## Setup Repo for Github Pages
 
