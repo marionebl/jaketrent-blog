@@ -864,13 +864,14 @@ a {
   flex-wrap: wrap;
 }
 .meta__link {
+  display: inline-block;
   margin: 3px;
-  flex: 0 0 auto;
   color: #000;
   text-decoration: none;
   border-radius: 3px; 
-  padding: 1px 6px;
+  padding: 0 6px;
   font-size: 12px;
+  line-height: 1.5em;
   font-weight: 100;
   background: #ababab;
   color: #fff;
@@ -903,14 +904,11 @@ a {
     margin-left: 12px;
   }
   .meta__link {
-    padding: 3px 14px;
+    padding: 0 14px;
     font-size: 16px;
-    line-height: 24px;
-    height: 24px;
   }
   .meta__link--date {
-    height: 32px;
-    line-height: 32px;
+    line-height: 2em;
     font-size: 18px;
   }
 }
