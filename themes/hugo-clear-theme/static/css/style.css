@@ -188,8 +188,14 @@ a {
 
 
 .home-books {
+  display: flex;
+  flex-wrap: wrap;
   margin-top: 64px;
   max-width: 100%;
+  margin: 96px -16px -16px -16px;
+}
+.home-book {
+  margin: 16px;
 }
 .home-book-img {
   width: 100%;
@@ -205,9 +211,10 @@ a {
 .home-books-link .read-more {
   color: white;
 }
-@media screen and (min-width: 621px) {
+@media screen and (min-width: 969px) {
   .home-books {
     display: flex;
+    flex-wrap: nowrap;
   }
   .home-book + .home-book {
     margin-left: 16px;
