@@ -58,10 +58,37 @@ a {
   padding: 0 10px;
 }
 
+/* component: header2 */
+.header2 {
+  border-bottom: 6px solid #eda43a;
+  box-shadow: 0 1px 0 #000;
+}
+.header2-title-link {
+  display: block;
+}
+.header2-title-img {
+  display: block;
+  max-width: 50vw;
+  margin: 0 auto;
+}
+@media screen and (min-width: 621px) {
+  .header2-header {
+    margin-top: 42px;
+  }
+  .header2-title-img {
+    margin: 0;
+    max-width: 280px;
+  }
+}
+@media screen and (min-width: 800px) {
+  .header2 {
+    margin: 64px 0 0 0;
+  }
+}
+
 /* component: footer2 */
 .footer2 {
   background: #30052e;
-  margin-top: 96px;
 }
 .footer2-inner {
   color: #ababab;
@@ -92,35 +119,9 @@ a {
   background-attachment: fixed;
 }
 
-.home-header {
-  border-bottom: 6px solid #eda43a;
-  margin-bottom: 24px;
-  box-shadow: 0 1px 0 #000;
-}
-.home-title-link {
-  display: block;
-}
-.home-title-img {
-  display: block;
-  max-width: 50vw;
-  margin: 0 auto;
-}
-@media screen and (min-width: 621px) {
-  .home-header {
-    margin-top: 42px;
-  }
-  .home-title-img {
-    margin: 0;
-    max-width: 280px;
-  }
-}
-@media screen and (min-width: 800px) {
-  .home-header {
-    margin: 64px 0 48px 0;
-  }
-}
 
 .home-courses {
+  margin-top: 24px;
 }
 .home-course {
   max-width: 100%;
@@ -138,6 +139,11 @@ a {
   }
   .home-course + .home-course {
     margin-left: 16px;
+  }
+}
+@media screen and (min-width: 800px) {
+  .home-courses {
+    margin-top: 96px;
   }
 }
 
@@ -194,7 +200,7 @@ a {
   margin: 0 auto 8px auto;
 }
 .home-books-link {
-  margin-top: 12px;
+  margin: 12px 0 96px 0;
 }
 .home-books-link .read-more {
   color: white;
@@ -257,10 +263,6 @@ a {
 .main {
   background: #fff;
   /* background: linear-gradient(white 0px, transparent 60vw); */
-}
-.main {
-  border-top: 8px solid #eda43a;
-  border-left: 8px solid #eda43a;
 }
 
 /* section: home (sm) */
@@ -611,8 +613,7 @@ a {
     pointer-events: none;
   }
   .header-inner,
-  .footer-inner,
-  .main {
+  .footer-inner {
     margin-left: auto;
     margin-right: auto;
     max-width: 800px;
@@ -744,8 +745,7 @@ a {
 /* size: xl - larger home screen */
 @media screen and (min-width: 1130px) {
   .header-inner,
-  .footer-inner,
-  .main {
+  .footer-inner {
     margin-left: auto;
     margin-right: auto;
     max-width: 1000px;
@@ -865,10 +865,9 @@ a {
   padding: 1px 6px;
   font-size: 12px;
   font-weight: 100;
-  line-height: 18px;
-  height: 18px;
   background: #ababab;
   color: #fff;
+  white-space: nowrap;
 }
 .meta__link:hover ,
 .meta__link:active {
@@ -876,8 +875,6 @@ a {
 }
 .meta__link--date {
   color: #fff;
-  height: 24px;
-  line-height: 24px;
   font-size: 16px;
 
   background: #eda43a;
