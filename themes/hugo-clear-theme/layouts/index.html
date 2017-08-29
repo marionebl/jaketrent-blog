@@ -1,77 +1,72 @@
 {{ partial "head" . }}
 
-{{ partial "header" . }}
+<body class="home-body">
 
-<main class="main">
-  <div class="page-spacer">
+<div class="content">
 
-    <div class="home">
+  <header class="home-header">
+    <h1>
+      <a class="home-title-link" href="/">
+        <img class="home-title-img" src="/img/jaketrent-logo-inverted.png" alt="{{ .Site.Title }}" />
+      </a>
+    </h1>
+  </header>
 
-      <section class="home-section">
-        {{ range first 1 (where .Data.Pages "Section" "post") }}
-          <article class="home-highlight">
-            <header>
-              <h3 class="home-highlight-label">Latest Post</h3>
-              <h2 class="home-highlight-title"><a class="home-highlight-title-link" href="{{ .URL }}">{{ .Title }}</a></h2>
-              <a class="home-highlight-image-link" href="{{ .URL }}">
-                <img class="home-highlight-image" src="{{ .Params.image }}">
-              </a>
-            </header>
-            <p class="home-highlight-summary">
-              {{ .Summary }}
-            </p>
-            {{ partial "read-more.html" . }}
-          </article>
-        {{ end  }}
-        <div class="home-list">
-          <h3 class="home-list-links-title">
-            <a href="/post/" class="home-list-links-title-link">
-              More Posts
-            </a>
-          </h3>
-          {{ range first 5 (after 1 (where .Data.Pages "Section" "post")) }}
-            <a class="home-list-link" href="{{ .URL }}">
-              {{ .Title }}
-            </a>
-          {{ end }}
-          <a class="home-list-link home-list-link-all" href="/post/">All posts<span>→</span></a>
-        </div>
-      </section>
-
-      <section class="home-section">
-        {{ range first 1 (where .Data.Pages "Section" "book") }}
-          <article class="home-highlight">
-            <header>
-              <h3 class="home-highlight-label">Latest Book</h3>
-            </header>
-            <a href="{{ .URL }}" class="home-highlight-image-link">
-              <img class="home-highlight-image home-highlight-image--book" src="{{ .Params.image }}}">
-            </a>
-            <p class="home-highlight-summary">
-              {{ .Summary }}
-            </p>
-            {{ partial "read-more.html" . }}
-          </article>
-        {{ end  }}
-        <div class="home-list">
-          <h3 class="home-list-links-title">
-            <a href="/post/" class="home-list-links-title-link">
-              More Books
-            </a>
-          </h3>
-          {{ range first 5 (after 1 (where .Data.Pages "Section" "book")) }}
-            <a class="home-list-link" href="{{ .URL }}">
-              {{ .Title }}
-            </a>
-          {{ end }}
-          <a class="home-list-link home-list-link-all" href="/book/">All books<span>→</span></a>
-        </div>
-      </section>
-
-    </div>
+  <div class="home-courses">
+    <a class="home-course" href="http://stylingreact.com">
+      <img src="/img/stylingreactadvert.jpg" class="home-course-img" />
+    </a>
+    <a class="home-course" href="http://electroncourse.com">
+      <img src="/img/electroncourseadvert.jpg" class="home-course-img" />
+    </a>
   </div>
-</main>
 
-{{ partial "footer" . }}
+  <div class="home-arts">
+    {{ range first 1 (where .Data.Pages "Section" "post") }}
+      <article class="home-art">
+        <a class="home-art-title" href="{{ .URL }}">{{ .Title }}</a></h2>
+        <time class="home-art-date" pubdate datetime="{{ .Date }}">
+          {{- dateFormat "2 Jan 2006" .Date -}}
+        </time>
+        <a class="home-art-img-link" href="{{ .URL }}">
+          <img class="home-art-img" src="{{ .Params.image }}">
+        </a>
+      </article>
+    {{ end  }}
+
+    {{ range first 2 (after 1 (where .Data.Pages "Section" "post")) }}
+      <a class="home-art-title" href="{{ .URL }}">
+        {{ .Title }}
+      </a>
+      <time class="home-art-date" pubdate datetime="{{ .Date }}">
+        {{- dateFormat "2 Jan 2006" .Date -}}
+      </time>
+    {{ end }}
+
+    <div class="home-arts-link">
+      <a href="/post" class="read-more">All posts</a>
+    </div>
+
+  </div>
+
+  <div class="home-books">
+
+    {{ range first 6 (where .Data.Pages "Section" "book") }}
+      <article class="home-book">
+        <a class="home-book-link" href="{{ .URL }}">
+          <img class="home-book-img" src="{{ .Params.image }}">
+        </a>
+      </article>
+    {{ end  }}
+
+  </div>
+
+  <div class="home-books-link">
+    <a href="/book" class="read-more">All books</a>
+  </div>
+  
+</div>
+
+{{ partial "footer2" . }}
 
 {{ partial "foot" . }}
