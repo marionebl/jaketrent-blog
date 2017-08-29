@@ -92,11 +92,6 @@ One possible solution is to use plain 'ol `margin`.  We can get a reliable `12px
 .parent {
   display: flex;
   flex-wrap: wrap;
-  margin: -12px -12px
-}
-.parent {
-  display: flex;
-  flex-wrap: wrap;
   margin: -6px -6px;
 }
 .child {
