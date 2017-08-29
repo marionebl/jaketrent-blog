@@ -269,7 +269,6 @@ a {
 }
 .main {
   background: #fff;
-  /* background: linear-gradient(white 0px, transparent 60vw); */
 }
 
 /* section: home (sm) */
@@ -844,7 +843,7 @@ a {
   padding-left: 10px;
   padding-right: 10px;
 }
-@media screen and (min-width: 1130px) {
+@media screen and (min-width: 701px) {
   .page-spacer {
     padding-left: 40px;
     padding-right: 40px;
@@ -1023,6 +1022,13 @@ a {
   .markdown-content ul,
   .markdown-content ol {
     max-width: 620px;
+  }
+}
+@media screen and (min-width: 701px) {
+  .markdown-content > :not(pre), /* page-spacer */ 
+  .markdown-content pre code {
+    padding-left: 40px;
+    padding-right: 40px;
   }
 }
 @media screen and (min-width: 800px) {
