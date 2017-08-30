@@ -11,6 +11,8 @@ metaKeywords: "free host, free website hosting, free web app, hosting options"
 tags:
 - "heroku"
 title: "Host a Web App For Free"
+disclosures: 
+- "affiliate" 
 ---
 
 Heroku is an great option to host a web app for free.
