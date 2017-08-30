@@ -163,7 +163,7 @@ a {
 }
 .home-art-img {
   display: block;
-  max-width: calc(100% - 16px);
+  max-width: 100%;
   border: 8px solid #fff;
   border-radius: 2px;
   box-shadow: 1px 1px 0 #000;
@@ -183,6 +183,17 @@ a {
 }
 .home-arts-link .read-more {
   color: white;
+}
+@media screen and (min-width: 900px) {
+  .home-arts {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 64px -16px 0 -16px;
+  }
+  .home-art {
+    max-width: calc(50% - (2 * 16px));
+    margin: 16px;
+  }
 }
 
 
