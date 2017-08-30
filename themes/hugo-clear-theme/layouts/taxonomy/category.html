@@ -1,20 +1,24 @@
 {{ partial "head.html" . }}
 
-{{ partial "header.html" . }}
+<body class="home-body">
 
-<main class="main">
-  <div class="list">
-    <div class="page-spacer">
-      <header class="list-header">
-        <h2 class="list-title">In {{ .Title | title }}</h2>
-      </header>
+{{ partial "header2.html" . }}
+
+<div class="content">
+  <main class="main">
+    <div class="list">
+      <div class="page-spacer">
+        <header class="list-header">
+          <h2 class="list-title">In {{ .Title | title }}</h2>
+        </header>
+        {{ range .Data.Pages }}
+          {{ .Render "summary" }}
+        {{ end }}
+      </div>
     </div>
-    {{ range .Data.Pages }}
-      {{ .Render "summary" }}
-    {{ end }}
-  </div>
-</main>
+  </main>
+<div>
 
-{{ partial "footer.html" }}
+{{ partial "footer2.html" }}
 
 {{ partial "foot.html" . }}
