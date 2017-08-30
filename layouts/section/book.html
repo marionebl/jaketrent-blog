@@ -1,24 +1,19 @@
 {{ partial "head.html" . }}
 
-{{ partial "header.html" . }}
+<body class="home-body">
 
-<main class="main">
-  <div class="list list--book">
-    <div class="page-spacer">
-      <header class="list-header">
-        <h2 class="list-title">Books I've Read</h2>
-      </header>
-    </div>
-    <div class="list-content list-content--book">
-      {{ $paginator := .Paginate (where .Data.Pages "Section" "book") 32 }}
-      {{ range $paginator.Pages }}
-        {{ .Render "cover" }}
-      {{ end }}
-    </div>
+{{ partial "header2.html" . }}
+
+<div class="content">
+  <div class="books">
+    {{ $paginator := .Paginate (where .Data.Pages "Section" "book") 32 }}
+    {{ range $paginator.Pages }}
+      {{ .Render "cover" }}
+    {{ end }}
   </div>
   {{ partial "paginator.html" . }}
-</main>
+</div>
 
-{{ partial "footer.html" }}
+{{ partial "footer2.html" }}
 
 {{ partial "foot.html" . }}

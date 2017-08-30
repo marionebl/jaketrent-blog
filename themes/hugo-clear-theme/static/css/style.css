@@ -1,12 +1,11 @@
+/* globals */
 @font-face {
   font-family: 'Gobold-Regular';
   src: url('/type/gobold-regular.otf') format('opentype');
 }
-
 * {
   box-sizing: border-box;
 }
-
 body {
   margin: 0;
   padding: 0;
@@ -21,15 +20,11 @@ a {
   color: #754778;
 }
 
-
-
-
 /* component: read-more */
 .read-more {
   display: inline-block;
   margin: 6px 0 0 0;
   padding: 12px 16px;
-  /* padding: 25px 30px 25px 20px; */
   text-decoration: none;
   color: gray;
   font-family: sans-serif;
@@ -112,13 +107,49 @@ a {
   padding: 0 0 10px 0;
 }
 
+/* component: book-cover */
+.book-cover {
+  margin: 8px;
+}
+.book-cover-link {
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+  font-family: sans-serif;
+  font-weight: 100;
+}
+.book-cover-image {
+  max-width: 150px;
+  border: 8px solid #fff;
+}
+.book-cover-link:hover .book-cover-image {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, .5);
+}
+@media screen and (min-width: 800px) {
+  .book-cover {
+  }
+  .book-cover-image {
+    max-width: 200px;
+  }
+}
+
+/* component: paginator */
+.paginator {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+.paginator a {
+  color: #fff;
+  margin: 0 24px;
+}
+
 /* page: home */
 .home-body {
   background: #8d0688;
-  background: linear-gradient(120deg, #8d0688, #7f057b, #6d066a);
+  background: linear-gradient(240deg, #490547, #5a0658, #6d066a, #7f057b, #8d0688, #7f057b, #6d066a, #5a0658, #490547);
   background-attachment: fixed;
 }
-
 
 .home-courses {
   margin-top: 24px;
@@ -146,7 +177,6 @@ a {
     margin-top: 96px;
   }
 }
-
 
 .home-arts {
   margin-top: 64px;
@@ -196,8 +226,6 @@ a {
   }
 }
 
-
-
 .home-books {
   display: flex;
   flex-wrap: wrap;
@@ -230,6 +258,13 @@ a {
   .home-book + .home-book {
     margin-left: 16px;
   }
+}
+
+/* page: books */
+.books {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 32px -8px 32px -8px;
 }
 
 
@@ -323,8 +358,8 @@ a {
 .list-header {
   display: flex;
   align-items: center;
-  padding: 20px 0 30px 0;
-  margin: 5px 0 30px 0;
+  padding: 30px 0 30px 0;
+  margin: 0 0 30px 0;
   border-bottom: 1px solid orange;
 }
 .list-title {
@@ -343,34 +378,17 @@ a {
 }
 .list-content--book {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
 }
 
 /* section: list--tag */
+.list--tag {
+  padding-bottom: 4em;
+}
 .list-item--tag {
   margin-bottom: 0.3em;
 }
 
-/* section: book-cover (sm) */
-.book-cover {
-  padding: 0 0 35px 0; 
-}
-.book-cover-link {
-  display: inline-block;
-  margin: 15px 0 0 0;
-  padding: 25px 30px 25px 20px;
-  text-decoration: none;
-  color: gray;
-  font-family: sans-serif;
-  font-weight: 100;
-}
-.book-cover-image {
-  max-width: 150px;
-}
-.book-cover-link:hover .book-cover-image {
-  box-shadow: 0 5px 10px rgba(0, 0, 0, .5);
-}
 
 /* section: rating (sm) */
 .rating {
@@ -529,13 +547,6 @@ a {
 /* https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/atom-one-dark.min.css */
 .hljs{display:block;overflow-x:auto;padding:0.5em;color:#abb2bf;background:#282c34}.hljs-comment,.hljs-quote{color:#5c6370;font-style:italic}.hljs-doctag,.hljs-keyword,.hljs-formula{color:#c678dd}.hljs-section,.hljs-name,.hljs-selector-tag,.hljs-deletion,.hljs-subst{color:#e06c75}.hljs-literal{color:#56b6c2}.hljs-string,.hljs-regexp,.hljs-addition,.hljs-attribute,.hljs-meta-string{color:#98c379}.hljs-built_in,.hljs-class .hljs-title{color:#e6c07b}.hljs-attr,.hljs-variable,.hljs-template-variable,.hljs-type,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-number{color:#d19a66}.hljs-symbol,.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-title{color:#61aeee}.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:bold}.hljs-link{text-decoration:underline}
 
-.paginator {
-  display: flex;
-  justify-content: center;
-}
-.paginator a {
-  margin: 0 24px;
-}
 
 /* section: error (sm) */
 .error {
@@ -716,21 +727,12 @@ a {
     padding: 15px 0;
   }
 
-  /* section: list (large) */
-  .list-header {
-    margin: 20px 0 30px 0;
-  }
-
   /* section: summ--book (large) */
   .summ-image--book {
     float: left;
     margin: 0 10px 20px 0;
   }
 
-  /* section: book-cover (large) */
-  .book-cover-image {
-    max-width: 200px;
-  }
 
 
   /* section: post (large) */
