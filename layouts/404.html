@@ -1,15 +1,19 @@
-{{ partial "head.html" . }}
+{{ partial "head" . }}
 
-{{ partial "header.html" . }}
+<body class="home-body">
 
-<main class="main">
-  <div class="error">
-    <h2 class="error-title">404</h2>
-    <div class="error-subtitle">Not found</div>
-    <a class="error-link" href="/">Back to the landing page</a>
-  </div>
-</main>
+{{ partial "header2" . }}
 
-{{ partial "footer.html" . }}
+<div class="content">
+  <main class="main">
+    <div class="error">
+      <h2 class="error-title">404</h2>
+      <div class="error-subtitle">Not found</div>
+      <a class="error-link" href="/">Back to the landing page</a>
+    </div>
+  </main>
+</div>
 
-{{ partial "foot.html" . }}
+{{ partial "footer2" . }}
+
+{{ partial "foot" . }}
