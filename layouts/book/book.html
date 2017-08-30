@@ -12,9 +12,6 @@
           <h1 class="book-title">{{ .Title }}</h1>
           {{ partial "meta.html" . }}
         </header>
-        <div class="book-rating">
-          {{ partial "rating.html" . }}
-        </div>
         {{ if .Params.image }}
           <img class="book-image" src="{{ .Params.image }}" />
         {{ end }}
