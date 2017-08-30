@@ -16,7 +16,7 @@
   </div>
 
   <div class="home-arts">
-    {{ range first 1 (where .Data.Pages "Section" "post") }}
+    {{ range first 4 (where .Data.Pages "Section" "post") }}
       <article class="home-art">
         <a class="home-art-title" href="{{ .URL }}">{{ .Title }}</a></h2>
         <time class="home-art-date" pubdate datetime="{{ .Date }}">
@@ -27,15 +27,6 @@
         </a>
       </article>
     {{ end  }}
-
-    {{ range first 2 (after 1 (where .Data.Pages "Section" "post")) }}
-      <a class="home-art-title" href="{{ .URL }}">
-        {{ .Title }}
-      </a>
-      <time class="home-art-date" pubdate datetime="{{ .Date }}">
-        {{- dateFormat "2 Jan 2006" .Date -}}
-      </time>
-    {{ end }}
 
     <div class="home-arts-link">
       <a href="/post" class="read-more">All posts</a>
