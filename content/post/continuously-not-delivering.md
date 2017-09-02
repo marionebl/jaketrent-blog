@@ -10,7 +10,7 @@ layout: post
 metaKeywords: "ship it, mvp, lean, intimidated, procrastinating"
 tags:
 - "lean"
-- "entreprenuer"
+- "entrepreneur"
 - "productivity"
 title: "Continuously Not Delivering"
 ---
