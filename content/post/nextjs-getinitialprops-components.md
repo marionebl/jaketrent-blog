@@ -100,7 +100,7 @@ export default withServerProps(_ =>
 
 Then `ChildComponent` or any similar non-root node component can get the `pathname` from context:
 
-```
+```js
 class ChildComponent extends React.Component {
   render() { return <div>{this.context.pathname}</div> }
 }
