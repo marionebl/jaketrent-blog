@@ -7,7 +7,7 @@ comments: true
 date: 2017-06-12T11:28:31-06:00
 description: "A book on how to present oneself, conduct business, and find happiness"
 draft: false
-image: "http://i.imgur.com/ZJJDF3o.jpg"
+image: "https://i.imgur.com/ZJJDF3o.jpg"
 layout: book
 metaKeywords: ""
 rating: 4
