@@ -2,7 +2,7 @@
 affiliateUrl: "http://amzn.to/2wzTqZJ"
 author: "Richard Garriott"
 categories:
-- "Books"
+- "Book"
 comments: true
 date: 2017-08-23T21:02:39-06:00
 description: ""
